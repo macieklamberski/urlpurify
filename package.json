@@ -1,0 +1,48 @@
+{
+  "name": "urlcleaner",
+  "description": "Unwrap redirect, affiliate, and tracking wrapper URLs and strip tracking parameters. Turn noisy links into clean, direct URLs.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/macieklamberski/urlcleaner.git"
+  },
+  "bugs": {
+    "url": "https://github.com/macieklamberski/urlcleaner/issues"
+  },
+  "license": "MIT",
+  "author": "Maciej Lamberski",
+  "sideEffects": false,
+  "keywords": [
+    "url",
+    "clean",
+    "tracking",
+    "utm",
+    "redirect",
+    "unwrap",
+    "affiliate",
+    "privacy"
+  ],
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./defaults": {
+      "types": "./dist/defaults.d.ts",
+      "default": "./dist/defaults.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "prepare": "lefthook install",
+    "build": "tsdown src/index.ts src/defaults.ts --format esm --dts --clean --unbundle --no-fixed-extension",
+    "test": "bun test"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.3.14",
+    "kvalita": "^1.14.0",
+    "tsdown": "^0.22.2"
+  }
+}
