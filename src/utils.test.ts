@@ -113,8 +113,20 @@ describe('createParamExtractor', () => {
 })
 
 describe('isHostOf', () => {
-  it('should match the exact hostname', () => {
+  it('should match the exact hostname for a string input', () => {
     expect(isHostOf('https://example.com/path', 'example.com')).toBe(true)
+  })
+
+  it('should match the exact hostname for a URL instance', () => {
+    const value = new URL('https://example.com/path')
+
+    expect(isHostOf(value, 'example.com')).toBe(true)
+  })
+
+  it('should not match a different hostname for a URL instance', () => {
+    const value = new URL('https://sub.example.com/path')
+
+    expect(isHostOf(value, 'example.com')).toBe(false)
   })
 
   it('should match hostnames case-insensitively', () => {
@@ -139,8 +151,20 @@ describe('isHostOf', () => {
 })
 
 describe('isSubdomainOf', () => {
-  it('should match subdomains', () => {
+  it('should match subdomains for a string input', () => {
     expect(isSubdomainOf('https://sub.example.com/path', 'example.com')).toBe(true)
+  })
+
+  it('should match subdomains for a URL instance', () => {
+    const value = new URL('https://sub.example.com/path')
+
+    expect(isSubdomainOf(value, 'example.com')).toBe(true)
+  })
+
+  it('should not match the bare domain for a URL instance', () => {
+    const value = new URL('https://example.com/path')
+
+    expect(isSubdomainOf(value, 'example.com')).toBe(false)
   })
 
   it('should match domains given as an array', () => {

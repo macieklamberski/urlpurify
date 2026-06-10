@@ -8,7 +8,7 @@ const httpPathRegex = /^\/c\/(?!s\/)(.+)$/
 // publisher subdomain is a hint; the path always carries the canonical
 // hostname.
 export const unwrapAmpCache: UrlUnwrapper = (url) => {
-  if (!isHostOf(url.href, 'cdn.ampproject.org') && !isSubdomainOf(url.href, 'cdn.ampproject.org')) {
+  if (!isHostOf(url, 'cdn.ampproject.org') && !isSubdomainOf(url, 'cdn.ampproject.org')) {
     return
   }
 

@@ -24,6 +24,10 @@ const parseUrl = (url: string): URL | undefined => {
 // Delete tracking parameters in place, matching names case-insensitively.
 // Returns whether anything was removed.
 const deleteTrackingParams = (url: URL, trackingParams: Array<string>): boolean => {
+  if (!url.search) {
+    return false
+  }
+
   const trackingSet = getTrackingParamsSet(trackingParams)
   const keysToDelete: Array<string> = []
 

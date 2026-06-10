@@ -15,7 +15,7 @@ const protobufFramingRegex = /\x08\x13".+?(https?:\/\/[^\xd2]+)\xd2\x01/
 // (typically post-2023) require a server-side signature exchange and can
 // only be resolved with a network call, those return undefined silently.
 export const unwrapGoogleNewsModern: UrlUnwrapper = (url) => {
-  if (!isHostOf(url.href, 'news.google.com')) {
+  if (!isHostOf(url, 'news.google.com')) {
     return
   }
 

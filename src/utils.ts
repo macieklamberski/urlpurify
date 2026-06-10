@@ -6,16 +6,18 @@ export type ParamExtractorConfig = {
   params: Array<string>
 }
 
-export const createParamExtractor = (config: ParamExtractorConfig): UrlUnwrapper => {
-  const matchesHost = (host: string): boolean => {
-    if (config.hosts instanceof RegExp) {
-      return config.hosts.test(host)
-    }
-
-    const list = Array.isArray(config.hosts) ? config.hosts : [config.hosts]
-
-    return list.includes(host)
+const createHostMatcher = (hosts: string | Array<string> | RegExp): ((host: string) => boolean) => {
+  if (hosts instanceof RegExp) {
+    return (host) => hosts.test(host)
   }
+
+  const hostSet = new Set(Array.isArray(hosts) ? hosts : [hosts])
+
+  return (host) => hostSet.has(host)
+}
+
+export const createParamExtractor = (config: ParamExtractorConfig): UrlUnwrapper => {
+  const matchesHost = createHostMatcher(config.hosts)
 
   return (url) => {
     if (!matchesHost(url.hostname)) {
@@ -36,10 +38,10 @@ export const createParamExtractor = (config: ParamExtractorConfig): UrlUnwrapper
   }
 }
 
-// TODO: Duplicated from feedscout. Extract into a shared toolbox package and inline at build time.
-export const isHostOf = (url: string, hosts: string | Array<string>): boolean => {
+// TODO: Duplicated from feedscout (with URL instances also accepted). Extract into a shared toolbox package and inline at build time.
+export const isHostOf = (url: string | URL, hosts: string | Array<string>): boolean => {
   try {
-    const hostname = new URL(url).hostname.toLowerCase()
+    const hostname = (url instanceof URL ? url : new URL(url)).hostname.toLowerCase()
     const list = Array.isArray(hosts) ? hosts : [hosts]
 
     return list.some((host) => hostname === host.toLowerCase().trim())
@@ -48,10 +50,10 @@ export const isHostOf = (url: string, hosts: string | Array<string>): boolean =>
   return false
 }
 
-// TODO: Duplicated from feedscout. Extract into a shared toolbox package and inline at build time.
-export const isSubdomainOf = (url: string, domains: string | Array<string>): boolean => {
+// TODO: Duplicated from feedscout (with URL instances also accepted). Extract into a shared toolbox package and inline at build time.
+export const isSubdomainOf = (url: string | URL, domains: string | Array<string>): boolean => {
   try {
-    const hostname = new URL(url).hostname.toLowerCase()
+    const hostname = (url instanceof URL ? url : new URL(url)).hostname.toLowerCase()
     const list = Array.isArray(domains) ? domains : [domains]
 
     return list.some((domain) => hostname.endsWith(`.${domain}`))
