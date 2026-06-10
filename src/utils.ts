@@ -41,7 +41,7 @@ export const isHostOf = (url: string, hosts: string | Array<string>): boolean =>
     const hostname = new URL(url).hostname.toLowerCase()
     const list = Array.isArray(hosts) ? hosts : [hosts]
 
-    return list.includes(hostname)
+    return list.some((host) => hostname === host.toLowerCase().trim())
   } catch {}
 
   return false

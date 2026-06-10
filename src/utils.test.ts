@@ -121,6 +121,10 @@ describe('isHostOf', () => {
     expect(isHostOf('https://EXAMPLE.com/path', 'example.com')).toBe(true)
   })
 
+  it('should match host patterns case-insensitively', () => {
+    expect(isHostOf('https://example.com/path', 'EXAMPLE.com')).toBe(true)
+  })
+
   it('should match hosts given as an array', () => {
     expect(isHostOf('https://example.com/path', ['other.com', 'example.com'])).toBe(true)
   })
