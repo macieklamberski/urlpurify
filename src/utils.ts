@@ -36,6 +36,7 @@ export const createParamExtractor = (config: ParamExtractorConfig): UrlUnwrapper
   }
 }
 
+// TODO: Duplicated from feedscout. Extract into a shared toolbox package and inline at build time.
 export const isHostOf = (url: string, hosts: string | Array<string>): boolean => {
   try {
     const hostname = new URL(url).hostname.toLowerCase()
@@ -47,6 +48,7 @@ export const isHostOf = (url: string, hosts: string | Array<string>): boolean =>
   return false
 }
 
+// TODO: Duplicated from feedscout. Extract into a shared toolbox package and inline at build time.
 export const isSubdomainOf = (url: string, domains: string | Array<string>): boolean => {
   try {
     const hostname = new URL(url).hostname.toLowerCase()
