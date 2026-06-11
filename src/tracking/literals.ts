@@ -1,5 +1,5 @@
 // Known tracking parameters that carry no content, only analytics state.
-export const defaultTrackingParams = [
+export const trackingParamsLiterals = [
   // Google Analytics / UTM.
   'utm_source', // Traffic source (e.g., google, newsletter).
   'utm_medium', // Marketing medium (e.g., cpc, email).

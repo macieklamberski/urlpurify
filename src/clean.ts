@@ -1,15 +1,30 @@
-import { defaultUnwrappers } from './defaults.js'
-import { defaultTrackingParams } from './params.js'
-import type { CleanUrlOptions, UrlUnwrapper } from './types.js'
+import { defaultTrackingParams, defaultUnwrappers } from './defaults.js'
+import type { CleanUrlOptions, TrackingParam, UrlUnwrapper } from './types.js'
 
-const trackingParamsCache = new WeakMap<Array<string>, Set<string>>()
+type TrackingMatcher = {
+  literals: Set<string>
+  patterns: Array<RegExp>
+}
 
-const getTrackingParamsSet = (params: Array<string>): Set<string> => {
-  let cached = trackingParamsCache.get(params)
+const trackingMatcherCache = new WeakMap<Array<TrackingParam>, TrackingMatcher>()
+
+const getTrackingMatcher = (params: Array<TrackingParam>): TrackingMatcher => {
+  let cached = trackingMatcherCache.get(params)
 
   if (!cached) {
-    cached = new Set(params.map((param) => param.toLowerCase()))
-    trackingParamsCache.set(params, cached)
+    const literals = new Set<string>()
+    const patterns: Array<RegExp> = []
+
+    for (const param of params) {
+      if (param instanceof RegExp) {
+        patterns.push(param)
+      } else {
+        literals.add(param.toLowerCase())
+      }
+    }
+
+    cached = { literals, patterns }
+    trackingMatcherCache.set(params, cached)
   }
 
   return cached
@@ -21,18 +36,21 @@ const parseUrl = (url: string): URL | undefined => {
   } catch {}
 }
 
-// Delete tracking parameters in place, matching names case-insensitively.
-// Returns whether anything was removed.
-const deleteTrackingParams = (url: URL, trackingParams: Array<string>): boolean => {
+// Delete tracking parameters in place. Literal names match case-insensitively;
+// patterns are tested against the lowercased name. Returns whether anything
+// was removed.
+const deleteTrackingParams = (url: URL, trackingParams: Array<TrackingParam>): boolean => {
   if (!url.search) {
     return false
   }
 
-  const trackingSet = getTrackingParamsSet(trackingParams)
+  const matcher = getTrackingMatcher(trackingParams)
   const keysToDelete: Array<string> = []
 
   for (const key of url.searchParams.keys()) {
-    if (trackingSet.has(key.toLowerCase())) {
+    const name = key.toLowerCase()
+
+    if (matcher.literals.has(name) || matcher.patterns.some((pattern) => pattern.test(name))) {
       keysToDelete.push(key)
     }
   }
@@ -74,7 +92,7 @@ export const unwrapUrl = (
 // matches or it cannot be parsed.
 export const stripTrackingParams = (
   url: string,
-  trackingParams: Array<string> = defaultTrackingParams,
+  trackingParams: Array<TrackingParam> = defaultTrackingParams,
 ): string => {
   const parsed = parseUrl(url)
 

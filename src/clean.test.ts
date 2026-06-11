@@ -17,6 +17,9 @@ const nestedUnwrapper = createParamExtractor({
   params: ['url'],
 })
 
+const sessionParamRegex = /^session_[a-z]$/
+const utmFamilyRegex = /^utm_[a-z0-9_-]+$/
+
 describe('unwrapUrl', () => {
   it('should return the target from the matching unwrapper', () => {
     const value = 'https://redirect.example.com/?target=https%3A%2F%2Fexample.com%2Fpost'
@@ -120,6 +123,40 @@ describe('stripTrackingParams', () => {
 
   it('should return the input unchanged when it is not a valid URL', () => {
     expect(stripTrackingParams('not a url')).toBe('not a url')
+  })
+
+  it('should remove params matching default patterns', () => {
+    const value = 'https://example.com/post?utm_id=abc123&id=42'
+    const expected = 'https://example.com/post?id=42'
+
+    expect(stripTrackingParams(value)).toBe(expected)
+  })
+
+  it('should match patterns against lowercased names', () => {
+    const value = 'https://example.com/post?UTM_ID=abc123&id=42'
+    const expected = 'https://example.com/post?id=42'
+
+    expect(stripTrackingParams(value)).toBe(expected)
+  })
+
+  it('should accept regex entries in a custom list', () => {
+    const value = 'https://example.com/post?session_a=1&session_b=2&id=42'
+    const expected = 'https://example.com/post?id=42'
+
+    expect(stripTrackingParams(value, [sessionParamRegex])).toBe(expected)
+  })
+
+  it('should accept mixed literal and regex entries', () => {
+    const value = 'https://example.com/post?fbclid=abc&utm_extra=1&id=42'
+    const expected = 'https://example.com/post?id=42'
+
+    expect(stripTrackingParams(value, ['fbclid', utmFamilyRegex])).toBe(expected)
+  })
+
+  it('should not match anchored patterns inside longer names', () => {
+    const value = 'https://example.com/post?xutm_sourcey=1'
+
+    expect(stripTrackingParams(value)).toBe(value)
   })
 })
 
