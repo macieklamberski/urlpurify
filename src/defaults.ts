@@ -70,7 +70,18 @@ import { unwrapYouTube } from './unwraps/youtube.js'
 
 // import { unwrapZhihu } from './unwraps/zhihu.js'
 
-export { defaultTrackingParams } from './params.js'
+import { trackingParamsLiterals } from './tracking/literals.js'
+import { trackingParamsPatterns } from './tracking/patterns.js'
+import type { TrackingParam } from './types.js'
+
+export { trackingParamsLiterals } from './tracking/literals.js'
+export { trackingParamsPatterns } from './tracking/patterns.js'
+
+// Combined default list applied by cleanUrl and stripTrackingParams.
+export const defaultTrackingParams: Array<TrackingParam> = [
+  ...trackingParamsLiterals,
+  ...trackingParamsPatterns,
+]
 
 export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // Search engines.

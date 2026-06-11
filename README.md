@@ -35,8 +35,9 @@ import { cleanUrl, defaultUnwrappers, unwrapWebArchive } from 'urlpurify'
 const cleaned = cleanUrl(url, {
   // Unwrappers to apply, first match wins per pass (omit to use defaults).
   unwrappers: [...defaultUnwrappers, unwrapWebArchive],
-  // Query parameter names to remove, matched case-insensitively (omit to use defaults).
-  trackingParams: ['utm_source', 'utm_medium', 'fbclid'],
+  // Param names (matched case-insensitively) or anchored regexes tested against the
+  // lowercased name (omit to use defaults).
+  trackingParams: ['fbclid', /^utm_[a-z0-9_-]+$/],
   // Maximum number of unwrap passes for nested wrappers. Defaults to 3.
   maxUnwrapDepth: 3,
 })
@@ -69,7 +70,7 @@ For wrappers that encode the target (base64 path segments, custom escaping), wri
 
 ### Defaults
 
-`defaultTrackingParams` and `defaultUnwrappers` are exported from the package root. `defaultUnwrappers` enables a conservative subset of the catalog (search-engine redirects and social-platform shims); everything else is exported individually for explicit opt-in.
+`defaultTrackingParams` is the combined default list for `cleanUrl` and `stripTrackingParams`: literal names plus family regexes like `/^utm_[a-z0-9_-]+$/` that cover vendor namespaces where new variants keep appearing. Its parts are exported separately as `trackingParamsLiterals` (strings only, for consumers that need a plain string list) and `trackingParamsPatterns`. `defaultUnwrappers` is exported alongside. `defaultUnwrappers` enables a conservative subset of the catalog (search-engine redirects and social-platform shims); everything else is exported individually for explicit opt-in.
 
 ## Unwrappers
 
