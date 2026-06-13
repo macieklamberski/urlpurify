@@ -21,6 +21,4 @@ export const unwrapAceml: UrlUnwrapper = (url) => {
   if (decoded && (decoded.startsWith('http://') || decoded.startsWith('https://'))) {
     return decoded
   }
-
-  return
 }

@@ -21,6 +21,4 @@ export const unwrapAmpCache: UrlUnwrapper = (url) => {
   if (httpMatch) {
     return `http://${httpMatch[1]}`
   }
-
-  return
 }

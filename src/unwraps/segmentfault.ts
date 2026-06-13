@@ -20,6 +20,4 @@ export const unwrapSegmentfault: UrlUnwrapper = (url) => {
   if (decoded && (decoded.startsWith('http://') || decoded.startsWith('https://'))) {
     return decoded
   }
-
-  return
 }

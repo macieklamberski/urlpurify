@@ -18,6 +18,4 @@ export const unwrapMimecast: UrlUnwrapper = (url) => {
   if (targetDomain) {
     return `https://${targetDomain}`
   }
-
-  return
 }
