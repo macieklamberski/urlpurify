@@ -1,5 +1,5 @@
+import { isHostOf, isSubdomainOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { isHostOf, isSubdomainOf } from '../utils.js'
 
 const httpsPathRegex = /^\/c\/s\/(.+)$/
 const httpPathRegex = /^\/c\/(?!s\/)(.+)$/
