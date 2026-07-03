@@ -1,5 +1,6 @@
+import { isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { decodeBase64Binary, isHostOf } from '../utils.js'
+import { decodeBase64Binary } from '../utils.js'
 
 const articleIdRegex = /^\/(?:rss\/)?articles\/([\w-]+)/
 const base64UrlMinusRegex = /-/g

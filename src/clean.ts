@@ -1,3 +1,4 @@
+import { parseUrl } from 'trousse'
 import { defaultTrackingParams, defaultUnwrappers } from './defaults.js'
 import type { CleanUrlOptions, TrackingParam, UrlUnwrapper } from './types.js'
 
@@ -28,12 +29,6 @@ const getTrackingMatcher = (params: Array<TrackingParam>): TrackingMatcher => {
   }
 
   return cached
-}
-
-const parseUrl = (url: string): URL | undefined => {
-  try {
-    return new URL(url)
-  } catch {}
 }
 
 // Delete tracking parameters in place. Literal names match case-insensitively;
