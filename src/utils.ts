@@ -46,6 +46,9 @@ export const decodeBase64Binary = (value: string): string | undefined => {
   } catch {}
 }
 
+// Stateless for non-streaming decodes, so one instance is shared across calls.
+const utf8Decoder = new TextDecoder()
+
 export const decodeBase64 = (value: string): string | undefined => {
   const binary = decodeBase64Binary(value)
 
@@ -53,9 +56,14 @@ export const decodeBase64 = (value: string): string | undefined => {
     return
   }
 
-  const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0))
+  // A plain fill loop; Uint8Array.from with a mapper invokes a callback per byte.
+  const bytes = new Uint8Array(binary.length)
 
-  return new TextDecoder().decode(bytes)
+  for (let index = 0; index < binary.length; index++) {
+    bytes[index] = binary.charCodeAt(index)
+  }
+
+  return utf8Decoder.decode(bytes)
 }
 
 export const decodeBase64Url = (value: string): string | undefined => {
