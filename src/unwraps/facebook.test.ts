@@ -14,6 +14,12 @@ describe('unwrapFacebookShim', () => {
     expect(unwrapFacebookShim(url)).toBe('https://example.com/page')
   })
 
+  it('should extract target from l.messenger.com', () => {
+    const url = new URL('https://l.messenger.com/l.php?u=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapFacebookShim(url)).toBe('https://example.com/page')
+  })
+
   it('should return undefined for non-shim Facebook URLs', () => {
     const url = new URL('https://www.facebook.com/profile')
 
