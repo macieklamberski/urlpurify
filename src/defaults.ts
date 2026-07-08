@@ -5,6 +5,7 @@ import type { UrlUnwrapper } from './types.js'
 // import { unwrapAmpCache } from './unwraps/ampCache.js'
 // import { unwrapAwin } from './unwraps/awin.js'
 import { unwrapBing } from './unwraps/bing.js'
+import { unwrapBlueskyRedirect } from './unwraps/bsky.js'
 // import { unwrapCjNetwork } from './unwraps/cjNetwork.js'
 // import { unwrapDigidip } from './unwraps/digidip.js'
 // import { unwrapDisqus } from './unwraps/disqus.js'
@@ -64,6 +65,7 @@ import { unwrapRedditOut } from './unwraps/redditOut.js'
 // import { unwrapTumblr } from './unwraps/tumblr.js'
 // import { unwrapValuecommerce } from './unwraps/valuecommerce.js'
 // import { unwrapViglink } from './unwraps/viglink.js'
+import { unwrapThreadsShim } from './unwraps/threads.js'
 import { unwrapVkAway } from './unwraps/vkAway.js'
 import { unwrapYahooSearch } from './unwraps/yahooSearch.js'
 import { unwrapYouTube } from './unwraps/youtube.js'
@@ -139,10 +141,12 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // Social and community platforms.
   unwrapFacebookShim,
   unwrapInstagramShim,
+  unwrapThreadsShim,
   // unwrapPocket,
   // unwrapTumblr,
   unwrapVkAway,
   unwrapRedditOut,
+  unwrapBlueskyRedirect,
   // unwrapDisqus,
   // unwrapSteamLinkfilter,
   // unwrapDouban,
