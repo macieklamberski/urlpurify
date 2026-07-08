@@ -57,6 +57,29 @@ const deleteTrackingParams = (url: URL, trackingParams: Array<TrackingParam>): b
   return keysToDelete.length > 0
 }
 
+const wwwPrefixRegex = /^www\./
+
+const stripHostPrefix = (host: string): string => {
+  return host.replace(wwwPrefixRegex, '').toLowerCase()
+}
+
+// Drop a `ref` param only when its value is the URL's own host — Ghost's
+// self-referral `?ref=example.com` on example.com. With any other value `ref`
+// is often a real referral target, so a blanket strip would break links; this
+// is why `ref` is kept out of the plain tracking list. Runs on every clean, no
+// matter which tracking list the caller passes.
+const deleteSelfReferentialParams = (url: URL): boolean => {
+  const value = url.searchParams.get('ref')
+
+  if (!value || stripHostPrefix(value) !== stripHostPrefix(url.hostname)) {
+    return false
+  }
+
+  url.searchParams.delete('ref')
+
+  return true
+}
+
 const applyUnwrappers = (url: URL, unwrappers: Array<UrlUnwrapper>): string | undefined => {
   for (const unwrap of unwrappers) {
     const target = unwrap(url)
@@ -95,7 +118,10 @@ export const stripTrackingParams = (
     return url
   }
 
-  if (deleteTrackingParams(parsed, trackingParams)) {
+  const trackingRemoved = deleteTrackingParams(parsed, trackingParams)
+  const selfReferentialRemoved = deleteSelfReferentialParams(parsed)
+
+  if (trackingRemoved || selfReferentialRemoved) {
     return parsed.toString()
   }
 
@@ -138,7 +164,10 @@ export const cleanUrl = (url: string, options?: CleanUrlOptions): string => {
     currentParsed = targetParsed
   }
 
-  if (deleteTrackingParams(currentParsed, trackingParams)) {
+  const trackingRemoved = deleteTrackingParams(currentParsed, trackingParams)
+  const selfReferentialRemoved = deleteSelfReferentialParams(currentParsed)
+
+  if (trackingRemoved || selfReferentialRemoved) {
     return currentParsed.toString()
   }
 
