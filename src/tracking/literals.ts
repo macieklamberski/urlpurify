@@ -37,6 +37,7 @@ export const trackingParamsLiterals = [
   '_ke', // Undocumented, likely tracking-related.
 
   // Email marketing.
+  '__s', // Drip email recipient tracking.
   'mc_cid', // Mailchimp campaign ID.
   'mc_eid', // Mailchimp subscriber/member ID.
   'mc_tc', // Mailchimp time of click tracking.
@@ -214,6 +215,7 @@ export const trackingParamsLiterals = [
   'trk', // LinkedIn tracking parameter.
   'vero_conv', // Vero email conversion tracking.
   'vero_id', // Vero email user ID.
+  'vgo_ee', // Vero email engagement tracking.
   'wickedid', // Wicked Reports Facebook attribution.
   'xtor', // AT Internet campaign tracking.
 ]

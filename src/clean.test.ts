@@ -255,3 +255,42 @@ describe('cleanUrl', () => {
     expect(cleanUrl('')).toBe('')
   })
 })
+
+describe('self-referential ref param', () => {
+  it('should strip ref when its value is the same host', () => {
+    const value = 'https://example.com/post?ref=example.com'
+    const expected = 'https://example.com/post'
+
+    expect(stripTrackingParams(value)).toBe(expected)
+  })
+
+  it('should keep ref when its value is a different host', () => {
+    const value = 'https://example.com/post?ref=other.com'
+
+    expect(stripTrackingParams(value)).toBe(value)
+  })
+
+  it('should ignore www when comparing the host and the ref value', () => {
+    const value = 'https://example.com/post?ref=www.example.com'
+    const expected = 'https://example.com/post'
+
+    expect(stripTrackingParams(value)).toBe(expected)
+  })
+
+  it('should strip a self-referential ref even with a custom tracking list', () => {
+    const value = 'https://example.com/post?ref=example.com&keep=1'
+    const options = { trackingParams: ['utm_source'] }
+    const expected = 'https://example.com/post?keep=1'
+
+    expect(cleanUrl(value, options)).toBe(expected)
+  })
+
+  it('should strip a self-referential ref after unwrapping', () => {
+    const target = 'https://example.com/post?ref=example.com'
+    const value = `https://redirect.example.com/?target=${encodeURIComponent(target)}`
+    const options = { unwrappers: [exampleUnwrapper] }
+    const expected = 'https://example.com/post'
+
+    expect(cleanUrl(value, options)).toBe(expected)
+  })
+})

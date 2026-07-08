@@ -51,6 +51,8 @@ Applies the unwrappers in order (one pass) and returns the first extracted targe
 
 Removes matching query parameters and returns the cleaned URL. The input is returned unchanged when nothing matches or it cannot be parsed.
 
+Both `cleanUrl` and `stripTrackingParams` also drop a `ref` parameter when its value is the URL's own host (Ghost's self-referral `?ref=example.com` on `example.com`), regardless of the tracking list passed. With any other value `ref` is left alone, since it is often a real referral target.
+
 ### `createParamExtractor(config)`
 
 Builds an unwrapper for the common case where the target URL sits in a query parameter:
