@@ -22,6 +22,7 @@ export const trackingParamsLiterals = [
 
   // Google Search Results.
   'srsltid', // Merchant Center auto-tagging for shopping results.
+  'usqp', // AMP cache serving artifact.
 
   // Meta / Facebook.
   'fbclid', // Facebook Click ID for ad attribution.
@@ -29,12 +30,14 @@ export const trackingParamsLiterals = [
   'fb_action_types', // Legacy Open Graph action types (e.g., og.likes).
   'fb_source', // Click origin context within Facebook.
   'fb_ref', // Custom referral string for analytics.
+  'mibextid', // Share ID appended to links shared from Facebook.
 
   // Google Analytics cookies.
   '_ga', // GA client ID passed via URL.
   '_gl', // Cross-domain linker for session continuity.
   '_bk', // Undocumented, likely tracking-related.
   '_ke', // Undocumented, likely tracking-related.
+  '_kx', // Klaviyo email tracking identifier.
 
   // Email marketing.
   'mc_cid', // Mailchimp campaign ID.
@@ -47,12 +50,14 @@ export const trackingParamsLiterals = [
 
   // Twitter / X.
   'twclid', // X/Twitter click ID for conversion tracking.
+  '__twitter_impression', // Impression tracking flag on shared links.
 
   // TikTok.
   'ttclid', // TikTok click ID for ad attribution.
 
   // Instagram.
   'igshid', // Instagram share ID for tracking shared content.
+  'igsh', // Instagram share ID (successor to igshid).
 
   // Matomo / Piwik.
   'mtm_campaign', // Campaign name (modern Matomo prefix).
@@ -73,6 +78,7 @@ export const trackingParamsLiterals = [
   // General tracking / referral.
   'ncid', // NBC/CNET network content tracking.
   'sr_share', // Social share referral tracking.
+  'cmpid', // Generic publisher campaign ID.
   // 'ref', // Too generic, often functional.
   // 'ref_src', // Too generic, often functional.
   // 'ref_url', // Too generic, often functional.
@@ -102,6 +108,17 @@ export const trackingParamsLiterals = [
   's_kwcid', // Adobe Advertising AMO ID for attribution.
   'sc_cid', // Site Catalyst campaign ID.
   'ef_id', // Adobe EF ID for granular event tracking.
+  's_cid', // Adobe Analytics campaign ID.
+
+  // Webtrekk / Mapp.
+  'wt_mc', // Webtrekk media code campaign tracking.
+  'wt_zmc', // Webtrekk zoned media code.
+  'wtrid', // Webtrekk/Mapp referrer tracking ID.
+
+  // Cxense / Chartbeat.
+  'cx_click', // Cxense click tracking.
+  'cx_recsOrder', // Cxense recommendation order.
+  'cx_recsWidget', // Cxense recommendation widget ID.
 
   // Outbrain / Taboola.
   'obOrigUrl', // Outbrain original URL preservation.
@@ -111,12 +128,24 @@ export const trackingParamsLiterals = [
   'yclid', // Yahoo click ID for ad attribution.
   'ysclid', // Yandex click ID for ad attribution.
   '_openstat', // OpenStat campaign tracking (Russian analytics).
+  'guccounter', // Yahoo/Verizon consent redirect counter.
+  'guce_referrer', // Yahoo/Verizon consent redirect referrer URL.
+  'guce_referrer_sig', // Yahoo/Verizon consent redirect referrer signature.
 
   // Affiliate networks.
   'awinaffid', // Awin affiliate/publisher ID.
   'awinmid', // Awin merchant/advertiser ID.
   'clickref', // Affiliate sub-campaign tracking (SubID).
   'afftrack', // ShareASale affiliate tracking.
+  'sscid', // ShareASale click ID.
+  'awc', // Awin click ID.
+  'cjevent', // CJ Affiliate click ID.
+  'cjdata', // CJ Affiliate encrypted tracking data.
+  'irclickid', // Impact Radius click ID.
+  'irgwc', // Impact Radius global web conversion flag.
+  'ir_adid', // Impact Radius ad ID.
+  'ir_campaignid', // Impact Radius campaign ID.
+  'ir_partnerid', // Impact Radius partner ID.
 
   // Internal tracking systems.
   'itm_source', // Internal campaign source.
