@@ -204,6 +204,15 @@ describe('cleanUrl', () => {
     expect(cleanUrl(value)).toBe(target)
   })
 
+  // Zhihu wraps every outbound link in a post body, not just cards, so the redirector
+  // reaches feeds on ordinary anchors.
+  it('should unwrap a link.zhihu.com redirect', () => {
+    const target = 'https://finagle.github.io/'
+    const value = `https://link.zhihu.com/?target=${encodeURIComponent(target)}`
+
+    expect(cleanUrl(value)).toBe(target)
+  })
+
   it('should stop unwrapping at maxUnwrapDepth', () => {
     const target = 'https://example.com/post'
     const inner = `https://redirect.example.com/?target=${encodeURIComponent(target)}`

@@ -72,7 +72,13 @@ For wrappers that encode the target (base64 path segments, custom escaping), wri
 
 ### Defaults
 
-`defaultTrackingParams` is the combined default list for `cleanUrl` and `stripTrackingParams`: literal names plus family regexes like `/^utm_[a-z0-9_-]+$/` that cover vendor namespaces where new variants keep appearing. Its parts are exported separately as `trackingParamsLiterals` (strings only, for consumers that need a plain string list) and `trackingParamsPatterns`. `defaultUnwrappers` is exported alongside. `defaultUnwrappers` enables a conservative subset of the catalog (search-engine redirects and social-platform shims); everything else is exported individually for explicit opt-in.
+`defaultTrackingParams` is the combined default list for `cleanUrl` and `stripTrackingParams`: literal names plus family regexes like `/^utm_[a-z0-9_-]+$/` that cover vendor namespaces where new variants keep appearing. Its parts are exported separately as `trackingParamsLiterals` (strings only, for consumers that need a plain string list) and `trackingParamsPatterns`. `defaultUnwrappers` is exported alongside. `defaultUnwrappers` enables a conservative subset of the catalog; everything else is exported individually for explicit opt-in.
+
+**On by default:** redirects that only track the click — search-engine redirects and platform shims. Unwrapping them costs the destination nothing.
+
+**Off by default:** affiliate and referral wrappers (`unwrapSkimlinks`, `unwrapAwin`, `unwrapShareasale`, `unwrapAmazonAffiliate`, `unwrapViglink`, and the rest). The reader lands on the same page either way — unwrapping only removes the writer's commission, which for a small blog is the money paying for the work. Opt in explicitly if you want them.
+
+Prevalence is not the test: affiliate wrappers are more common than tracking shims.
 
 ## Unwrappers
 
@@ -82,19 +88,33 @@ Enabled by default:
 | --- | --- |
 | `unwrapBing` | Bing search-result redirect (www.bing.com/ck/a?u=a1\<base64url\>) |
 | `unwrapBlueskyRedirect` | Bluesky outbound link redirect (go.bsky.app/redirect?u=\<target\>) |
+| `unwrapDisqus` | Disqus outbound link redirect (disq.us/?url=\<target\>) |
+| `unwrapDouban` | Douban external link redirect (www.douban.com/link2/?url=\<target\>) |
 | `unwrapFacebookShim` | Meta link shim (l.facebook.com / l.messenger.com /l.php?u=\<target\>) |
+| `unwrapFlipboard` | Flipboard outbound redirect (flipboard.com/redirect?url=\<target\>) |
+| `unwrapGitee` | Gitee external link redirect (gitee.com/link?target=\<target\>) |
 | `unwrapGoogle` | Google redirect (google.\<TLD\>/url?url=\<target\> or ?q=\<target\>) |
 | `unwrapGoogleAmpViewer` | Google AMP viewer (www.google.\<TLD\>/amp/s/\<host\>/\<path\>) |
 | `unwrapGoogleNews` | Google News legacy redirect (news.google.\<TLD\>/news/url?url=\<target\>) |
 | `unwrapGoogleNewsModern` | Google News modern article URLs (news.google.com/articles/\<base64\>) |
 | `unwrapGoogleScholar` | Google Scholar search-result redirect (scholar.google.\<TLD\>/scholar_url?url=\<target\>) |
+| `unwrapHashnode` | Hashnode outbound redirect (hashnode.com/util/redirect?url=\<target\>) |
 | `unwrapHrefLi` | href.li referrer stripper (href.li/?\<target\>), used by Tumblr |
 | `unwrapInstagramShim` | Instagram outbound link shim (l.instagram.com with ?u=\<target\>) |
+| `unwrapJianshuGo` | Jianshu external link redirect (links.jianshu.com/go?to=\<target\>) |
+| `unwrapJuejin` | Juejin external link redirect (link.juejin.cn/?target=\<target\>) |
+| `unwrapMedium` | Medium outbound link redirect (medium.com/r/?url=\<target\>) |
+| `unwrapMozillaOutgoing` | Mozilla outgoing-link redirector (outgoing.prod.mozaws.net/v1/\<hash\>/\<target\>) |
+| `unwrapPocket` | Pocket redirect (getpocket.com/redirect?url=\<target\>) |
 | `unwrapRedditOut` | Reddit outbound click tracker (out.reddit.com/?url=\<target\>) |
+| `unwrapSegmentfault` | Segmentfault external link redirect (link.segmentfault.com/?enc=\<base64\>) |
+| `unwrapSspai` | Sspai external link redirect (sspai.com/link?target=\<target\>) |
+| `unwrapSteamLinkfilter` | Steam outbound link filter (steamcommunity.com/linkfilter/?url=\<target\>) |
 | `unwrapThreadsShim` | Threads outbound link shim (l.threads.com / l.threads.net with ?u=\<target\>) |
 | `unwrapTumblr` | Tumblr outbound redirect (t.umblr.com/redirect?z=\<target\>) |
 | `unwrapVkAway` | VK away redirect (vk.com/away.php?to=\<target\>) |
 | `unwrapYahooSearch` | Yahoo Search redirect (r.search.yahoo.com/.../RU=\<target\>/RK=...) |
 | `unwrapYouTube` | YouTube external redirect (www.youtube.com/redirect?q=\<target\>) |
+| `unwrapZhihu` | Zhihu external redirect (link.zhihu.com/?target=\<target\>) |
 
 Many more are available for explicit opt-in: email security gateways (Outlook SafeLinks, Proofpoint, Mimecast), affiliate networks (Awin, Skimlinks, Commission Junction), CJK platforms, AMP caches, and others. See [src/unwraps](src/unwraps) for the full catalog, each documented in its source file.
