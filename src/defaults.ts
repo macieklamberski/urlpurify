@@ -27,6 +27,7 @@ import { unwrapGoogleNews } from './unwraps/googleNews.js'
 import { unwrapGoogleNewsModern } from './unwraps/googleNewsModern.js'
 import { unwrapGoogleScholar } from './unwraps/googleScholar.js'
 // import { unwrapHashnode } from './unwraps/hashnode.js'
+import { unwrapHrefLi } from './unwraps/hrefLi.js'
 // import { unwrapIcptrack } from './unwraps/icptrack.js'
 // import { unwrapIdealoPartner } from './unwraps/idealoPartner.js'
 import { unwrapInstagramShim } from './unwraps/instagram.js'
@@ -52,6 +53,9 @@ import { unwrapInstagramShim } from './unwraps/instagram.js'
 // import { unwrapPxf } from './unwraps/pxf.js'
 // import { unwrapRecruitics } from './unwraps/recruitics.js'
 import { unwrapRedditOut } from './unwraps/redditOut.js'
+// import { unwrapValuecommerce } from './unwraps/valuecommerce.js'
+// import { unwrapViglink } from './unwraps/viglink.js'
+import { unwrapThreadsShim } from './unwraps/threads.js'
 // import { unwrapRedirectingat } from './unwraps/redirectingat.js'
 // import { unwrapSegmentfault } from './unwraps/segmentfault.js'
 // import { unwrapShareasale } from './unwraps/shareasale.js'
@@ -62,10 +66,7 @@ import { unwrapRedditOut } from './unwraps/redditOut.js'
 // import { unwrapSspai } from './unwraps/sspai.js'
 // import { unwrapSteamLinkfilter } from './unwraps/steamLinkfilter.js'
 // import { unwrapTradedoubler } from './unwraps/tradedoubler.js'
-// import { unwrapTumblr } from './unwraps/tumblr.js'
-// import { unwrapValuecommerce } from './unwraps/valuecommerce.js'
-// import { unwrapViglink } from './unwraps/viglink.js'
-import { unwrapThreadsShim } from './unwraps/threads.js'
+import { unwrapTumblr } from './unwraps/tumblr.js'
 import { unwrapVkAway } from './unwraps/vkAway.js'
 import { unwrapYahooSearch } from './unwraps/yahooSearch.js'
 import { unwrapYouTube } from './unwraps/youtube.js'
@@ -143,7 +144,8 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   unwrapInstagramShim,
   unwrapThreadsShim,
   // unwrapPocket,
-  // unwrapTumblr,
+  unwrapTumblr,
+  unwrapHrefLi,
   unwrapVkAway,
   unwrapRedditOut,
   unwrapBlueskyRedirect,
