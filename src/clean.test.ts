@@ -213,6 +213,34 @@ describe('cleanUrl', () => {
     expect(cleanUrl(value)).toBe(target)
   })
 
+  it('should unwrap an anonym.to redirect', () => {
+    const target = 'https://example.com/post'
+    const value = `https://anonym.to/?${target}`
+
+    expect(cleanUrl(value)).toBe(target)
+  })
+
+  it('should unwrap a deviantart outgoing redirect', () => {
+    const target = 'https://example.com/post'
+    const value = `https://www.deviantart.com/someuser/outgoing?${target}`
+
+    expect(cleanUrl(value)).toBe(target)
+  })
+
+  it('should unwrap a Naver cc.loginfra redirect', () => {
+    const target = 'https://example.com/post'
+    const value = `https://cc.loginfra.com/cc?a=post.click&u=${encodeURIComponent(target)}`
+
+    expect(cleanUrl(value)).toBe(target)
+  })
+
+  it('should unwrap a link.csdn.net redirect', () => {
+    const target = 'https://example.com/post'
+    const value = `https://link.csdn.net/?target=${encodeURIComponent(target)}`
+
+    expect(cleanUrl(value)).toBe(target)
+  })
+
   it('should stop unwrapping at maxUnwrapDepth', () => {
     const target = 'https://example.com/post'
     const inner = `https://redirect.example.com/?target=${encodeURIComponent(target)}`
