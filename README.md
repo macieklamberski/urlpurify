@@ -87,7 +87,10 @@ Enabled by default:
 | Unwrapper | Description |
 | --- | --- |
 | `unwrapBing` | Bing search-result redirect (www.bing.com/ck/a?u=a1\<base64url\>) |
+| `unwrapAnonymTo` | anonym.to referrer anonymizer (anonym.to/?\<target\>) |
 | `unwrapBlueskyRedirect` | Bluesky outbound link redirect (go.bsky.app/redirect?u=\<target\>) |
+| `unwrapCsdn` | CSDN external link redirect (link.csdn.net/?target=\<target\>) |
+| `unwrapDeviantartOutgoing` | DeviantArt outbound link shim (deviantart.com/\<user\>/outgoing?\<target\>) |
 | `unwrapDisqus` | Disqus outbound link redirect (disq.us/?url=\<target\>) |
 | `unwrapDouban` | Douban external link redirect (www.douban.com/link2/?url=\<target\>) |
 | `unwrapFacebookShim` | Meta link shim (l.facebook.com / l.messenger.com /l.php?u=\<target\>) |
@@ -106,6 +109,7 @@ Enabled by default:
 | `unwrapMedium` | Medium outbound link redirect (medium.com/r/?url=\<target\>) |
 | `unwrapMozillaOutgoing` | Mozilla outgoing-link redirector (outgoing.prod.mozaws.net/v1/\<hash\>/\<target\>) |
 | `unwrapPocket` | Pocket redirect (getpocket.com/redirect?url=\<target\>) |
+| `unwrapNaverOutgoing` | Naver outbound link redirect (cc.loginfra.com/...?u=\<target\>) |
 | `unwrapRedditOut` | Reddit outbound click tracker (out.reddit.com/?url=\<target\>) |
 | `unwrapSegmentfault` | Segmentfault external link redirect (link.segmentfault.com/?enc=\<base64\>) |
 | `unwrapSspai` | Sspai external link redirect (sspai.com/link?target=\<target\>) |

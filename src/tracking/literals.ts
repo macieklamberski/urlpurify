@@ -233,6 +233,7 @@ export const trackingParamsLiterals = [
   'hmb_campaign', // Unknown campaign tracking.
   'hmb_medium', // Unknown medium tracking.
   'hmb_source', // Unknown source tracking.
+  'ck_subscriber_id', // ConvertKit / Kit per-recipient email tracking ID.
   'ml_subscriber', // MailerLite subscriber ID.
   'ml_subscriber_hash', // MailerLite subscriber hash.
   'oly_anon_id', // Olytics/Omeda anonymous user ID.
