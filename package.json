@@ -31,6 +31,9 @@
   "files": [
     "dist"
   ],
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "prepare": "lefthook install",
     "build": "tsdown src/index.ts --format esm --dts --clean --unbundle",
