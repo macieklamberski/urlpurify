@@ -29,13 +29,13 @@ const decodeReplacements = (mangled: string, replacementBase64: string): string 
   const replacementChars = Array.from(replacement)
   const urlChars = Array.from(mangled)
   const result: Array<string> = []
-  const matcher = /(?<!\*)\*(?!\*)|\*{2}[A-Za-z0-9\-_]/g
+  const markerRegex = /(?<!\*)\*(?!\*)|\*{2}[A-Za-z0-9\-_]/g
 
   let lastIndex = 0
   let savedBytes = 0
   let match: RegExpExecArray | null
 
-  match = matcher.exec(mangled)
+  match = markerRegex.exec(mangled)
   while (match !== null) {
     const startChar = positionInChars(mangled, match.index)
     const endChar = positionInChars(mangled, match.index + match[0].length)
@@ -77,7 +77,7 @@ const decodeReplacements = (mangled: string, replacementBase64: string): string 
     }
 
     lastIndex = endChar
-    match = matcher.exec(mangled)
+    match = markerRegex.exec(mangled)
   }
 
   for (let charIndex = lastIndex; charIndex < urlChars.length; charIndex += 1) {
