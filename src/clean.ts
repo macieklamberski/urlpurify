@@ -82,7 +82,6 @@ const applyUnwrappers = (url: URL, unwrappers: Array<UrlUnwrapper>): string | un
   for (const unwrap of unwrappers) {
     const target = unwrap(url)
 
-    // A wrapper carries whatever the link author typed, `javascript:` and `data:` included.
     if (target && isHttpUrl(target)) {
       return target
     }
