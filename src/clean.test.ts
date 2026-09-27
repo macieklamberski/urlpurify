@@ -179,6 +179,12 @@ describe('stripTrackingParams', () => {
     expect(stripTrackingParams(value, ['fbclid', utmFamilyRegex])).toBe(expected)
   })
 
+  it('should keep cid, which carries functional IDs', () => {
+    const value = 'https://www.google.com/maps?cid=1234567890'
+
+    expect(stripTrackingParams(value)).toBe(value)
+  })
+
   it('should not match anchored patterns inside longer names', () => {
     const value = 'https://example.com/post?xutm_sourcey=1'
 
@@ -248,6 +254,32 @@ describe('cleanUrl', () => {
 
   it('should unwrap a deviantart outgoing redirect', () => {
     const target = 'https://example.com/post'
+    const value = `https://www.deviantart.com/someuser/outgoing?${target}`
+
+    expect(cleanUrl(value)).toBe(target)
+  })
+
+  it('should return an anonym.to URL without a target unchanged', () => {
+    const value = 'https://anonym.to/'
+
+    expect(cleanUrl(value)).toBe(value)
+  })
+
+  it('should return a deviantart outgoing URL without a target unchanged', () => {
+    const value = 'https://www.deviantart.com/someuser/outgoing'
+
+    expect(cleanUrl(value)).toBe(value)
+  })
+
+  it('should keep the target fragment through an anonym.to redirect', () => {
+    const target = 'https://example.com/post#section'
+    const value = `https://anonym.to/?${target}`
+
+    expect(cleanUrl(value)).toBe(target)
+  })
+
+  it('should keep the target fragment through a deviantart outgoing redirect', () => {
+    const target = 'https://example.com/post#section'
     const value = `https://www.deviantart.com/someuser/outgoing?${target}`
 
     expect(cleanUrl(value)).toBe(target)

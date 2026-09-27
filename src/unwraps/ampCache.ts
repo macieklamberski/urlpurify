@@ -1,4 +1,4 @@
-import { isHostOf, isSubdomainOf } from 'trousse'
+import { isHostOrSubdomainOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
 const httpsPathRegex = /^\/c\/s\/(.+)$/
@@ -8,17 +8,17 @@ const httpPathRegex = /^\/c\/(?!s\/)(.+)$/
 // publisher subdomain is a hint; the path always carries the canonical
 // hostname.
 export const unwrapAmpCache: UrlUnwrapper = (url) => {
-  if (!isHostOf(url, 'cdn.ampproject.org') && !isSubdomainOf(url, 'cdn.ampproject.org')) {
+  if (!isHostOrSubdomainOf(url, 'cdn.ampproject.org')) {
     return
   }
 
   const httpsMatch = url.pathname.match(httpsPathRegex)
   if (httpsMatch) {
-    return `https://${httpsMatch[1]}`
+    return `https://${httpsMatch[1]}${url.search}${url.hash}`
   }
 
   const httpMatch = url.pathname.match(httpPathRegex)
   if (httpMatch) {
-    return `http://${httpMatch[1]}`
+    return `http://${httpMatch[1]}${url.search}${url.hash}`
   }
 }

@@ -29,7 +29,13 @@ describe('unwrapGoogleAmpViewer', () => {
   it('should preserve nested path segments', () => {
     const url = new URL('https://www.google.com/amp/s/example.com/section/sub/article?id=42')
 
-    expect(unwrapGoogleAmpViewer(url)).toBe('https://example.com/section/sub/article')
+    expect(unwrapGoogleAmpViewer(url)).toBe('https://example.com/section/sub/article?id=42')
+  })
+
+  it('should keep the target query string on the http variant', () => {
+    const url = new URL('https://www.google.com/amp/example.com/article.php?id=5')
+
+    expect(unwrapGoogleAmpViewer(url)).toBe('http://example.com/article.php?id=5')
   })
 
   it('should return undefined for non-/amp/ paths', () => {
