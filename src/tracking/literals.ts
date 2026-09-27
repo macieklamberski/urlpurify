@@ -105,7 +105,7 @@ export const trackingParamsLiterals = [
   '__hssc', // Session tracking (view count, session start).
 
   // Adobe.
-  'cid', // Adobe Analytics campaign tracking (s.campaign).
+  // 'cid', // Too generic, often functional: Google Maps place IDs.
   's_kwcid', // Adobe Advertising AMO ID for attribution.
   'sc_cid', // Site Catalyst campaign ID.
   'ef_id', // Adobe EF ID for granular event tracking.

@@ -7,14 +7,7 @@ const v3PathRegex = /^\/v3\/__(.+)__;([^!]*)!/
 const v3Hosts = ['urldefense.com', 'urldefense.proofpoint.com', 'urldefense.us']
 
 // `**X` runs replace a fixed byte count: A=2, B=3, ... `_`=65.
-const runLengthMap: Record<string, number> = (() => {
-  const map: Record<string, number> = {}
-  const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_'
-  for (let index = 0; index < alphabet.length; index += 1) {
-    map[alphabet[index]] = index + 2
-  }
-  return map
-})()
+const runLengthAlphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_'
 
 const decodeReplacements = (mangled: string, replacementBase64: string): string | undefined => {
   if (replacementBase64.length === 0) {
@@ -52,7 +45,7 @@ const decodeReplacements = (mangled: string, replacementBase64: string): string 
       }
       result.push(next)
     } else {
-      let bytesToReplace = runLengthMap[match[0][2]]
+      let bytesToReplace = runLengthAlphabet.indexOf(match[0][2]) + 2
       if (savedBytes !== 0) {
         bytesToReplace += savedBytes
         savedBytes = 0

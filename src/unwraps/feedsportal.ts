@@ -1,3 +1,4 @@
+import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
 const feedsportalPathRegex = /\/([0-9A-Za-z]{20,})\/story01\.htm$/
@@ -53,7 +54,7 @@ export const unwrapFeedsportal: UrlUnwrapper = (url) => {
     })
     .join('')
 
-  if (!decoded.startsWith('http://') && !decoded.startsWith('https://')) {
+  if (!isHttpUrl(decoded)) {
     return
   }
 

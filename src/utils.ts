@@ -1,4 +1,4 @@
-import { isHostOf } from 'trousse'
+import { isAnyOf } from 'trousse'
 import type { UrlUnwrapper } from './types.js'
 
 export type ParamExtractorConfig = {
@@ -7,17 +7,9 @@ export type ParamExtractorConfig = {
   params: Array<string>
 }
 
-const matchesHost = (url: URL, hosts: string | Array<string> | RegExp): boolean => {
-  if (hosts instanceof RegExp) {
-    return hosts.test(url.hostname)
-  }
-
-  return isHostOf(url, hosts)
-}
-
 export const createParamExtractor = (config: ParamExtractorConfig): UrlUnwrapper => {
   return (url) => {
-    if (!matchesHost(url, config.hosts)) {
+    if (!isAnyOf(url.hostname, config.hosts)) {
       return
     }
 
@@ -63,10 +55,20 @@ export const decodeBase64 = (value: string): string | undefined => {
   return utf8Decoder.decode(bytes)
 }
 
-export const decodeBase64Url = (value: string): string | undefined => {
-  return decodeBase64(value.replace(/-/g, '+').replace(/_/g, '/'))
+const toBase64 = (base64Url: string): string => {
+  return base64Url.replace(/-/g, '+').replace(/_/g, '/')
 }
 
+export const decodeBase64Url = (value: string): string | undefined => {
+  return decodeBase64(toBase64(value))
+}
+
+export const decodeBase64UrlBinary = (value: string): string | undefined => {
+  return decodeBase64Binary(toBase64(value))
+}
+
+const utf8Encoder = new TextEncoder()
+
 export const getUtf8ByteLength = (value: string): number => {
-  return new TextEncoder().encode(value).length
+  return utf8Encoder.encode(value).length
 }

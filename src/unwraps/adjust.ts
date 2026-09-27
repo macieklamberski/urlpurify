@@ -1,4 +1,4 @@
-import { isHostOf } from 'trousse'
+import { isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
 // Adjust deep-link tracker (app.adjust.com/<token>?redirect=<target>). The
@@ -10,7 +10,7 @@ export const unwrapAdjust: UrlUnwrapper = (url) => {
   }
 
   const target = url.searchParams.get('redirect')
-  if (target?.startsWith('https://') !== true && target?.startsWith('http://') !== true) {
+  if (!target || !isHttpUrl(target)) {
     return
   }
 

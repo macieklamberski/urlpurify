@@ -1,4 +1,4 @@
-import { parseUrl, stripWww } from 'trousse'
+import { isHttpUrl, parseUrl, stripWww } from 'trousse'
 import { defaultTrackingParams, defaultUnwrappers } from './defaults.js'
 import type { CleanUrlOptions, TrackingParam, UrlUnwrapper } from './types.js'
 
@@ -81,7 +81,7 @@ const applyUnwrappers = (url: URL, unwrappers: Array<UrlUnwrapper>): string | un
   for (const unwrap of unwrappers) {
     const target = unwrap(url)
 
-    if (target) {
+    if (target && isHttpUrl(target)) {
       return target
     }
   }

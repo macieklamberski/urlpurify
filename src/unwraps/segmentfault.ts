@@ -1,3 +1,4 @@
+import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createParamExtractor, decodeBase64 } from '../utils.js'
 
@@ -17,7 +18,7 @@ export const unwrapSegmentfault: UrlUnwrapper = (url) => {
 
   const decoded = decodeBase64(raw)
 
-  if (decoded && (decoded.startsWith('http://') || decoded.startsWith('https://'))) {
+  if (decoded && isHttpUrl(decoded)) {
     return decoded
   }
 }
