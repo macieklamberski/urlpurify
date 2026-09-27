@@ -58,6 +58,32 @@ describe('unwrapUrl', () => {
   it('should return undefined when the input is not a valid URL', () => {
     expect(unwrapUrl('not a url', [exampleUnwrapper])).toBeUndefined()
   })
+
+  it('should skip a javascript: target', () => {
+    const value = 'https://l.facebook.com/l.php?u=javascript:alert(1)'
+
+    expect(unwrapUrl(value)).toBeUndefined()
+  })
+
+  it('should skip a data: target', () => {
+    const value = 'https://www.google.com/url?q=data:text/html,%3Cscript%3E%3C/script%3E'
+
+    expect(unwrapUrl(value)).toBeUndefined()
+  })
+
+  it('should skip a target that is not a URL', () => {
+    const value = 'https://www.google.com/url?q=hello+world'
+
+    expect(unwrapUrl(value)).toBeUndefined()
+  })
+
+  it('should fall through to the next unwrapper when a target is not http', () => {
+    const value =
+      'https://redirect.example.com/?target=javascript:alert(1)&fallback=https://example.com/post'
+    const expected = 'https://example.com/post'
+
+    expect(unwrapUrl(value, [exampleUnwrapper, exampleFallbackUnwrapper])).toBe(expected)
+  })
 })
 
 describe('stripTrackingParams', () => {
@@ -302,6 +328,12 @@ describe('cleanUrl', () => {
 
   it('should return the input unchanged when it is not a valid URL', () => {
     expect(cleanUrl('not a url')).toBe('not a url')
+  })
+
+  it('should return the wrapper unchanged when its target is javascript:', () => {
+    const value = 'https://anonym.to/?javascript:alert(1)'
+
+    expect(cleanUrl(value)).toBe(value)
   })
 
   it('should handle empty strings', () => {
