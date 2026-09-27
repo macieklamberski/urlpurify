@@ -1,3 +1,4 @@
+import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { decodeBase64Url } from '../utils.js'
 
@@ -19,7 +20,7 @@ export const unwrapBing: UrlUnwrapper = (url) => {
 
   const decoded = decodeBase64Url(value.slice(2))
 
-  if (!decoded || (!decoded.startsWith('https://') && !decoded.startsWith('http://'))) {
+  if (!decoded || !isHttpUrl(decoded)) {
     return
   }
 

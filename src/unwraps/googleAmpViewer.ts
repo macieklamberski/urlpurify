@@ -13,11 +13,11 @@ export const unwrapGoogleAmpViewer: UrlUnwrapper = (url) => {
 
   const httpsMatch = url.pathname.match(httpsPathRegex)
   if (httpsMatch) {
-    return `https://${httpsMatch[1]}`
+    return `https://${httpsMatch[1]}${url.search}`
   }
 
   const httpMatch = url.pathname.match(httpPathRegex)
   if (httpMatch) {
-    return `http://${httpMatch[1]}`
+    return `http://${httpMatch[1]}${url.search}`
   }
 }

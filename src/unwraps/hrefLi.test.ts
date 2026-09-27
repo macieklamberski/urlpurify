@@ -14,6 +14,12 @@ describe('unwrapHrefLi', () => {
     expect(unwrapHrefLi(url)).toBe('https://example.com/post?page=2&sort=new')
   })
 
+  it('should keep the target fragment', () => {
+    const url = new URL('https://href.li/?https://example.com/post#section')
+
+    expect(unwrapHrefLi(url)).toBe('https://example.com/post#section')
+  })
+
   it('should extract the target from the www host', () => {
     const url = new URL('https://www.href.li/?https://example.com/post')
 
