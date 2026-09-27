@@ -1,6 +1,8 @@
 import type { UrlUnwrapper } from '../types.js'
 
 const turbopagesHostRegex = /\.turbopages\.org$/
+// Some links put `/turbo/` before the host, `/turbo/<host>/s/<path>`, and are not matched.
+// turbopages.org answers 404 for both shapes as of 2026-09-27, so only archived feeds carry them.
 const turbopagesPathRegex = /^\/[^/]+\/s\/(.+)$/
 const dashRegex = /-/g
 
