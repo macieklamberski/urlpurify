@@ -1,21 +1,3 @@
-import { decodeSegment } from 'trousse'
-import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createProofpointUnwrapper } from './proofpointV1.js'
 
-const baseExtractor = createParamExtractor({
-  hosts: 'urldefense.proofpoint.com',
-  path: '/v2/url',
-  params: ['u'],
-})
-
-// Proofpoint URLDefense v2 (urldefense.proofpoint.com/v2/url?u=<encoded>). The
-// encoded URL substitutes `_` for `/` and `-` for `%`, then is URL-decoded.
-export const unwrapProofpointV2: UrlUnwrapper = (url) => {
-  const raw = baseExtractor(url)
-
-  if (!raw) {
-    return
-  }
-
-  return decodeSegment(raw.replace(/-/g, '%').replace(/_/g, '/'))
-}
+export const unwrapProofpointV2 = createProofpointUnwrapper('/v2/url')
