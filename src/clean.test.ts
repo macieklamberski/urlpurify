@@ -227,6 +227,12 @@ describe('cleanUrl', () => {
     expect(cleanUrl(value)).toBe(target)
   })
 
+  it('should not unwrap an outgoing path on a host that only ends with deviantart.com', () => {
+    const value = 'https://evildeviantart.com/someuser/outgoing?https://example.com/post'
+
+    expect(cleanUrl(value)).toBe(value)
+  })
+
   it('should unwrap a Naver cc.loginfra redirect', () => {
     const target = 'https://example.com/post'
     const value = `https://cc.loginfra.com/cc?a=post.click&u=${encodeURIComponent(target)}`
