@@ -40,40 +40,39 @@ const deleteTrackingParams = (url: URL, trackingParams: Array<TrackingParam>): b
   }
 
   const matcher = getTrackingMatcher(trackingParams)
-  const keysToDelete: Array<string> = []
+  const host = stripWww(url.hostname)
+  const pairs = url.search.slice(1).split('&')
 
-  for (const key of url.searchParams.keys()) {
+  // Kept pairs stay byte-for-byte: re-serializing through URLSearchParams turns
+  // `%20` into `+`, `flag` into `flag=` and escapes `;`, which servers can read differently.
+  const keptPairs = pairs.filter((pair) => {
+    const entry = new URLSearchParams(pair).entries().next().value
+
+    if (!entry) {
+      return true
+    }
+
+    const [key, value] = entry
     const name = key.toLowerCase()
 
-    if (matcher.literals.has(name) || matcher.patterns.some((pattern) => pattern.test(name))) {
-      keysToDelete.push(key)
+    // `search` ignores `lastIndex`, so a caller's `g` or `y` pattern matches on every call.
+    if (
+      matcher.literals.has(name) ||
+      matcher.patterns.some((pattern) => name.search(pattern) !== -1)
+    ) {
+      return false
     }
-  }
 
-  for (const key of keysToDelete) {
-    url.searchParams.delete(key)
-  }
+    // A `ref` holding the URL's own host is Ghost's self-referral, `?ref=example.com` on
+    // example.com. With any other value `ref` is often a real referral target.
+    return key !== 'ref' || stripWww(value.toLowerCase()) !== host
+  })
 
-  return keysToDelete.length > 0
-}
-
-const stripHostPrefix = (host: string): string => {
-  return stripWww(host).toLowerCase()
-}
-
-// Drop a `ref` param only when its value is the URL's own host — Ghost's
-// self-referral `?ref=example.com` on example.com. With any other value `ref`
-// is often a real referral target, so a blanket strip would break links; this
-// is why `ref` is kept out of the plain tracking list. Runs on every clean, no
-// matter which tracking list the caller passes.
-const deleteSelfReferentialParams = (url: URL): boolean => {
-  const value = url.searchParams.get('ref')
-
-  if (!value || stripHostPrefix(value) !== stripHostPrefix(url.hostname)) {
+  if (keptPairs.length === pairs.length) {
     return false
   }
 
-  url.searchParams.delete('ref')
+  url.search = keptPairs.join('&')
 
   return true
 }
@@ -116,10 +115,7 @@ export const stripTrackingParams = (
     return url
   }
 
-  const trackingRemoved = deleteTrackingParams(parsed, trackingParams)
-  const selfReferentialRemoved = deleteSelfReferentialParams(parsed)
-
-  if (trackingRemoved || selfReferentialRemoved) {
+  if (deleteTrackingParams(parsed, trackingParams)) {
     return parsed.toString()
   }
 
@@ -162,10 +158,7 @@ export const cleanUrl = (url: string, options?: CleanUrlOptions): string => {
     currentParsed = targetParsed
   }
 
-  const trackingRemoved = deleteTrackingParams(currentParsed, trackingParams)
-  const selfReferentialRemoved = deleteSelfReferentialParams(currentParsed)
-
-  if (trackingRemoved || selfReferentialRemoved) {
+  if (deleteTrackingParams(currentParsed, trackingParams)) {
     return currentParsed.toString()
   }
 

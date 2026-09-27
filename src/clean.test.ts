@@ -158,6 +158,57 @@ describe('stripTrackingParams', () => {
 
     expect(stripTrackingParams(value)).toBe(value)
   })
+
+  it('should keep a valueless param as written', () => {
+    const value = 'https://example.com/post?flag&utm_source=feed'
+    const expected = 'https://example.com/post?flag'
+
+    expect(stripTrackingParams(value)).toBe(expected)
+  })
+
+  it('should keep an empty pair as written', () => {
+    const value = 'https://example.com/post?a=1&&utm_source=feed'
+    const expected = 'https://example.com/post?a=1&'
+
+    expect(stripTrackingParams(value)).toBe(expected)
+  })
+
+  it('should keep the encoding of the remaining params', () => {
+    const value = 'https://example.com/get?file=my%20doc.pdf&q=a+b&utm_source=feed'
+    const expected = 'https://example.com/get?file=my%20doc.pdf&q=a+b'
+
+    expect(stripTrackingParams(value)).toBe(expected)
+  })
+
+  it('should keep semicolon-separated values as written', () => {
+    const value = 'https://example.com/post?a=1;b=2&utm_source=feed'
+    const expected = 'https://example.com/post?a=1;b=2'
+
+    expect(stripTrackingParams(value)).toBe(expected)
+  })
+
+  it('should match encoded param names', () => {
+    const value = 'https://example.com/post?utm%5Fsource=feed&id=42'
+    const expected = 'https://example.com/post?id=42'
+
+    expect(stripTrackingParams(value)).toBe(expected)
+  })
+
+  it('should keep the fragment', () => {
+    const value = 'https://example.com/post?utm_source=feed#section'
+    const expected = 'https://example.com/post#section'
+
+    expect(stripTrackingParams(value)).toBe(expected)
+  })
+
+  it('should strip on every call with a global regex', () => {
+    const value = 'https://example.com/post?session_a=1'
+    const params = [/^session_[a-z]$/g]
+    const expected = 'https://example.com/post'
+
+    expect(stripTrackingParams(value, params)).toBe(expected)
+    expect(stripTrackingParams(value, params)).toBe(expected)
+  })
 })
 
 describe('cleanUrl', () => {
@@ -326,6 +377,20 @@ describe('self-referential ref param', () => {
   it('should ignore www when comparing the host and the ref value', () => {
     const value = 'https://example.com/post?ref=www.example.com'
     const expected = 'https://example.com/post'
+
+    expect(stripTrackingParams(value)).toBe(expected)
+  })
+
+  it('should ignore case when comparing the host and the ref value', () => {
+    const value = 'https://example.com/post?ref=WWW.Example.com'
+    const expected = 'https://example.com/post'
+
+    expect(stripTrackingParams(value)).toBe(expected)
+  })
+
+  it('should keep a ref to another host next to a self-referential one', () => {
+    const value = 'https://example.com/post?ref=example.com&ref=partner.com'
+    const expected = 'https://example.com/post?ref=partner.com'
 
     expect(stripTrackingParams(value)).toBe(expected)
   })
