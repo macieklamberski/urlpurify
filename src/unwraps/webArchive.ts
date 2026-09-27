@@ -1,3 +1,4 @@
+import { decodeSegment, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
 const pathRegex = /^\/web\/\d{14}\*?\/(.+)$/
@@ -8,7 +9,7 @@ const pathRegex = /^\/web\/\d{14}\*?\/(.+)$/
 // the live page, which may have changed or 404'd. Opt in by passing a custom
 // urlUnwrappers array.
 export const unwrapWebArchive: UrlUnwrapper = (url) => {
-  if (url.hostname !== 'web.archive.org') {
+  if (!isHostOf(url, 'web.archive.org')) {
     return
   }
 
@@ -17,7 +18,5 @@ export const unwrapWebArchive: UrlUnwrapper = (url) => {
     return
   }
 
-  try {
-    return decodeURIComponent(match[1])
-  } catch {}
+  return decodeSegment(match[1])
 }

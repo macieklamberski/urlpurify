@@ -1,3 +1,4 @@
+import { isHostOf } from 'trousse'
 import type { UrlUnwrapper } from './types.js'
 
 export type ParamExtractorConfig = {
@@ -6,21 +7,17 @@ export type ParamExtractorConfig = {
   params: Array<string>
 }
 
-const createHostMatcher = (hosts: string | Array<string> | RegExp): ((host: string) => boolean) => {
+const matchesHost = (url: URL, hosts: string | Array<string> | RegExp): boolean => {
   if (hosts instanceof RegExp) {
-    return (host) => hosts.test(host)
+    return hosts.test(url.hostname)
   }
 
-  const hostSet = new Set(Array.isArray(hosts) ? hosts : [hosts])
-
-  return (host) => hostSet.has(host)
+  return isHostOf(url, hosts)
 }
 
 export const createParamExtractor = (config: ParamExtractorConfig): UrlUnwrapper => {
-  const matchesHost = createHostMatcher(config.hosts)
-
   return (url) => {
-    if (!matchesHost(url.hostname)) {
+    if (!matchesHost(url, config.hosts)) {
       return
     }
 
