@@ -1,4 +1,4 @@
-import { parseUrl } from 'trousse'
+import { parseUrl, stripWww } from 'trousse'
 import { defaultTrackingParams, defaultUnwrappers } from './defaults.js'
 import type { CleanUrlOptions, TrackingParam, UrlUnwrapper } from './types.js'
 
@@ -57,10 +57,8 @@ const deleteTrackingParams = (url: URL, trackingParams: Array<TrackingParam>): b
   return keysToDelete.length > 0
 }
 
-const wwwPrefixRegex = /^www\./
-
 const stripHostPrefix = (host: string): string => {
-  return host.replace(wwwPrefixRegex, '').toLowerCase()
+  return stripWww(host).toLowerCase()
 }
 
 // Drop a `ref` param only when its value is the URL's own host — Ghost's

@@ -1,9 +1,10 @@
+import { isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { decodeBase64Url, getUtf8ByteLength } from '../utils.js'
 
 const v3PathRegex = /^\/v3\/__(.+)__;([^!]*)!/
 
-const v3HostSet = new Set(['urldefense.com', 'urldefense.proofpoint.com', 'urldefense.us'])
+const v3Hosts = ['urldefense.com', 'urldefense.proofpoint.com', 'urldefense.us']
 
 // `**X` runs replace a fixed byte count: A=2, B=3, ... `_`=65.
 const runLengthMap: Record<string, number> = (() => {
@@ -106,7 +107,7 @@ const positionInChars = (source: string, codeUnitIndex: number): number => {
 // `*` characters in the mangled URL are restored from the base64 segment;
 // `**X` runs restore a fixed byte count (A=2 through `_`=65).
 export const unwrapProofpointV3: UrlUnwrapper = (url) => {
-  if (!v3HostSet.has(url.hostname)) {
+  if (!isHostOf(url, v3Hosts)) {
     return
   }
 
