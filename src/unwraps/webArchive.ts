@@ -18,5 +18,12 @@ export const unwrapWebArchive: UrlUnwrapper = (url) => {
     return
   }
 
-  return decodeSegment(match[1])
+  const target = decodeSegment(match[1])
+
+  if (!target) {
+    return
+  }
+
+  // An unencoded target's query and fragment land in the snapshot URL's own `search` and `hash`.
+  return `${target}${url.search}${url.hash}`
 }
