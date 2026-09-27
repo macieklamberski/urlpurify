@@ -11,5 +11,10 @@ export const unwrapAmazonAffiliate: UrlUnwrapper = (url) => {
   }
 
   const match = url.pathname.match(amazonPathRegex)
-  return match?.[1]
+
+  if (!match) {
+    return
+  }
+
+  return `${match[1]}${url.search}${url.hash}`
 }

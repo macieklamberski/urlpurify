@@ -10,6 +10,14 @@ describe('unwrapWebArchive', () => {
     expect(unwrapWebArchive(url)).toBe('https://example.com/article')
   })
 
+  it('should keep the query string and fragment of an unencoded target', () => {
+    const url = new URL(
+      'https://web.archive.org/web/20240101120000/https://example.com/a?id=5#section',
+    )
+
+    expect(unwrapWebArchive(url)).toBe('https://example.com/a?id=5#section')
+  })
+
   it('should accept the wildcard suffix on the timestamp', () => {
     const url = new URL(
       'https://web.archive.org/web/20240101120000*/https%3A%2F%2Fexample.com%2Fpage',

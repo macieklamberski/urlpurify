@@ -10,6 +10,14 @@ describe('unwrapAmazonAffiliate', () => {
     expect(unwrapAmazonAffiliate(url)).toBe('https://www.amazon.com/dp/B0EXAMPLE')
   })
 
+  it('should keep the target query string', () => {
+    const url = new URL(
+      'https://aax-us-east.amazon-adsystem.com/x/c/abc123/https://www.amazon.com/dp/B0EXAMPLE?th=1',
+    )
+
+    expect(unwrapAmazonAffiliate(url)).toBe('https://www.amazon.com/dp/B0EXAMPLE?th=1')
+  })
+
   it('should accept http:// targets', () => {
     const url = new URL('https://aax-eu.amazon-adsystem.com/x/c/xyz789/http://example.com/page')
 

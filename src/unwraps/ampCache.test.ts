@@ -8,6 +8,12 @@ describe('unwrapAmpCache', () => {
     expect(unwrapAmpCache(url)).toBe('https://example.com/article')
   })
 
+  it('should keep the target query string and fragment', () => {
+    const url = new URL('https://cdn.ampproject.org/c/s/example.com/article.php?id=5#section')
+
+    expect(unwrapAmpCache(url)).toBe('https://example.com/article.php?id=5#section')
+  })
+
   it('should extract HTTPS target from publisher subdomain', () => {
     const url = new URL(
       'https://www-bbc-com.cdn.ampproject.org/c/s/www.bbc.com/news/amp/business-48879976',
