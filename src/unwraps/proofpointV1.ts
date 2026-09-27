@@ -1,3 +1,4 @@
+import { decodeSegment } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createParamExtractor } from '../utils.js'
 
@@ -16,7 +17,5 @@ export const unwrapProofpointV1: UrlUnwrapper = (url) => {
     return
   }
 
-  try {
-    return decodeURIComponent(raw.replace(/-/g, '%').replace(/_/g, '/'))
-  } catch {}
+  return decodeSegment(raw.replace(/-/g, '%').replace(/_/g, '/'))
 }
