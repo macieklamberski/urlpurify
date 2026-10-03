@@ -26,7 +26,8 @@ export const unwrapRakutenAffiliate: UrlUnwrapper = (url) => {
   for (const param of targetParams) {
     const value = url.searchParams.get(param)
 
-    if (value) {
+    // A target percent-encoded outside UTF-8 decodes to U+FFFD, so it stays wrapped.
+    if (value && !value.includes('\uFFFD')) {
       return value
     }
   }
