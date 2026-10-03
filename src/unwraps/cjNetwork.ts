@@ -14,9 +14,18 @@ const hosts = [
 ]
 
 // Optional sid/<x>/ and fragment/<x>/ segments sit before the target, which is unencoded and
-// sometimes has its scheme collapsed to https:/.
+// sometimes has its scheme collapsed to https:/. The fragment segment is the target's anchor,
+// percent-encoded once.
 const deepLinkPathRegex =
-  /^\/links\/\d+\/type\/dlg\/(?:(?:sid|fragment)\/[^/]*\/)*(https?):\/\/?(.+)$/
+  /^\/links\/\d+\/type\/dlg\/(?:sid\/[^/]*\/)?(?:fragment\/([^/]*)\/)?(https?):\/\/?(.+)$/
+
+const decodeFragment = (value: string): string => {
+  try {
+    return decodeURIComponent(value)
+  } catch {
+    return value
+  }
+}
 
 const extractUrlParam = createParamExtractor({
   hosts,
@@ -36,5 +45,8 @@ export const unwrapCjNetwork: UrlUnwrapper = (url) => {
     return
   }
 
-  return `${match[1]}://${match[2]}${url.search}${url.hash}`
+  const [, fragment, scheme, target] = match
+  const hash = url.hash || (fragment ? `#${decodeFragment(fragment)}` : '')
+
+  return `${scheme}://${target}${url.search}${hash}`
 }
