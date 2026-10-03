@@ -11,6 +11,7 @@ import { unwrapAnonymTo } from './unwraps/anonymTo.js'
 // import { unwrapAwin } from './unwraps/awin.js'
 import { unwrapBing } from './unwraps/bing.js'
 import { unwrapBlueskyRedirect } from './unwraps/bsky.js'
+import { unwrapBusinessWire } from './unwraps/businessWire.js'
 import { unwrapCsdn } from './unwraps/csdn.js'
 import { unwrapDeviantartOutgoing } from './unwraps/deviantartOutgoing.js'
 import { unwrapDisqus } from './unwraps/disqus.js'
@@ -169,6 +170,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   unwrapGitee,
   unwrapCsdn,
   unwrapHashnode,
+  unwrapBusinessWire,
 
   // Cache and proxy services.
   // unwrapAmpCache,
