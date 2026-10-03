@@ -8,6 +8,7 @@ import { unwrapAnonymTo } from './unwraps/anonymTo.js'
 // import { unwrapAdjust } from './unwraps/adjust.js'
 // import { unwrapAmazonAffiliate } from './unwraps/amazonAffiliate.js'
 // import { unwrapAmpCache } from './unwraps/ampCache.js'
+// import { unwrapArchiveToday } from './unwraps/archiveToday.js'
 // import { unwrapAwin } from './unwraps/awin.js'
 import { unwrapBing } from './unwraps/bing.js'
 import { unwrapBlueskyRedirect } from './unwraps/bsky.js'
@@ -172,6 +173,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
 
   // Cache and proxy services.
   // unwrapAmpCache,
+  // unwrapArchiveToday, // Snapshot of a page at a point in time, not a redirect
   // unwrapEmbedly,
   unwrapMozillaOutgoing,
 
