@@ -12,8 +12,7 @@ const carrierParams: Record<string, string> = {
   '/fs-bin/stat': 'RD_PARM1',
 }
 
-// LinkSynergy (Rakuten) affiliate redirect on linksynergy.com and every subdomain, such as
-// click.linksynergy.com, and on linksynergy.jrs5.com and linksynergy.walmart.com:
+// LinkSynergy (Rakuten) affiliate redirect on linksynergy.com, its subdomains and merchant hosts:
 // /deeplink?murl=<target>, /link?murl=<target> and /fs-bin/{click,stat}?RD_PARM1=<target>. Not in
 // defaultUnwrappers: it is an affiliate link.
 export const unwrapLinksynergy: UrlUnwrapper = (url) => {

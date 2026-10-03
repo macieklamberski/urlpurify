@@ -159,4 +159,10 @@ describe('unwrapLinksynergy', () => {
 
     expect(unwrapLinksynergy(url)).toBeUndefined()
   })
+
+  it('should return undefined for other hosts on the jrs5.com merchant domain', () => {
+    const url = new URL('https://www.jrs5.com/deeplink?murl=https%3A%2F%2Fexample.com')
+
+    expect(unwrapLinksynergy(url)).toBeUndefined()
+  })
 })
