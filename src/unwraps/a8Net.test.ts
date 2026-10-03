@@ -46,6 +46,38 @@ describe('unwrapA8Net', () => {
     expect(unwrapA8Net(url)).toBeUndefined()
   })
 
+  it('should extract target from url param on the ow.a8.net deep link', () => {
+    const url = new URL(
+      'https://ow.a8.net/s00000014283002/redirect_v2.php?type=deeplink&url=https%3A%2F%2Fexample.com%2Fhotel%2Fjp%2Fstay.ja.html',
+    )
+
+    expect(unwrapA8Net(url)).toBe('https://example.com/hotel/jp/stay.ja.html')
+  })
+
+  it('should return undefined for other paths on the ow.a8.net host', () => {
+    const url = new URL(
+      'https://ow.a8.net/s00000014283002/other.php?url=https%3A%2F%2Fexample.com%2F',
+    )
+
+    expect(unwrapA8Net(url)).toBeUndefined()
+  })
+
+  it('should return undefined when the target is percent-encoded in EUC-JP', () => {
+    const url = new URL(
+      'http://px.a8.net/svt/ejp?a8mat=TY8WP+1JYSEY+5WS+BWVTD&a8ejpredirect=http%3A%2F%2Fexample.jp%2Frb%2F%A4%A2%A4%C3%A4%C1%2Fitem%2F6284228%2F',
+    )
+
+    expect(unwrapA8Net(url)).toBeUndefined()
+  })
+
+  it('should return undefined for the URL param on the same path', () => {
+    const url = new URL(
+      'http://px.a8.net/svt/ejp?a8mat=OB1XY+9FD6OI+1N6+67JUB&URL=http://example.jp/afa8/goods.jsp?GOODS_NO=4012312',
+    )
+
+    expect(unwrapA8Net(url)).toBeUndefined()
+  })
+
   it('should return undefined for other paths on the A8.net host', () => {
     const url = new URL('https://px.a8.net/svt/other?a8ejpredirect=https%3A%2F%2Fexample.com%2F')
 
