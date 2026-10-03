@@ -44,6 +44,14 @@ describe('unwrapGoogleTranslate', () => {
     expect(unwrapGoogleTranslate(url)).toBe('https://example.com/page')
   })
 
+  it('should extract target from www.translate.google.com host', () => {
+    const url = new URL(
+      'http://www.translate.google.com/translate?prev=hp&hl=hu&js=n&u=http%3A%2F%2Fexample.com%2Fpage&sl=hu&tl=en',
+    )
+
+    expect(unwrapGoogleTranslate(url)).toBe('http://example.com/page')
+  })
+
   it('should extract target from the website path', () => {
     const url = new URL(
       'https://translate.google.com/website?sl=de&tl=en&hl=en-US&client=webapp&u=https://example.com/page',
