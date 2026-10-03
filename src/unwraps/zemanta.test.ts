@@ -42,6 +42,14 @@ describe('unwrapZemanta', () => {
     expect(unwrapZemanta(url)).toBe('https://example.com/')
   })
 
+  it('should restore a double slash the target lost', () => {
+    const url = new URL(
+      'http://r.zemanta.com/?u=http%3A/www.example.com/news/story%3Fpartner%3Drss&a=1&rid=2&e=3',
+    )
+
+    expect(unwrapZemanta(url)).toBe('http://www.example.com/news/story?partner=rss')
+  })
+
   it('should return undefined for another path on the domain', () => {
     const url = new URL('https://r.zemanta.com/about?u=https%3A%2F%2Fexample.com%2F')
 
