@@ -28,6 +28,14 @@ describe('unwrapFacebookShim', () => {
     expect(unwrapFacebookShim(url)).toBe('https://example.com/page')
   })
 
+  it('should extract target from upload.facebook.com', () => {
+    const url = new URL(
+      'http://upload.facebook.com/l.php?u=http%3A%2F%2Fexample.com%2Fpage&h=oAQHWXxza&s=1',
+    )
+
+    expect(unwrapFacebookShim(url)).toBe('http://example.com/page')
+  })
+
   it('should return undefined for the share intent on www.facebook.com', () => {
     const url = new URL('https://www.facebook.com/sharer.php?u=https%3A%2F%2Fexample.com%2Fpage')
 

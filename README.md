@@ -95,7 +95,7 @@ Enabled by default:
 | `unwrapDeviantartOutgoing` | DeviantArt outbound link shim (deviantart.com/\<user\>/outgoing?\<target\>) |
 | `unwrapDisqus` | Disqus outbound link redirect (disq.us/?url=\<target\>) |
 | `unwrapDouban` | Douban external link redirect (www.douban.com/link2/?url=\<target\>) |
-| `unwrapFacebookShim` | Meta link shim (l.facebook.com, lm.facebook.com, www.facebook.com and l.messenger.com /l.php?u=\<target\>) |
+| `unwrapFacebookShim` | Meta link shim (l.facebook.com, lm.facebook.com, www.facebook.com, upload.facebook.com and l.messenger.com /l.php?u=\<target\>) |
 | `unwrapFlipboard` | Flipboard outbound redirect (flipboard.com/redirect?url=\<target\>) |
 | `unwrapGitee` | Gitee external link redirect (gitee.com/link?target=\<target\>) |
 | `unwrapGoogle` | Google redirect (google.\<TLD\>/url?url=\<target\> or ?q=\<target\>) |
