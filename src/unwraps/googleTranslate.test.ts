@@ -52,12 +52,12 @@ describe('unwrapGoogleTranslate', () => {
     expect(unwrapGoogleTranslate(url)).toBe('http://example.com/page')
   })
 
-  it('should return undefined for other subdomains of translate.google.com', () => {
+  it('should extract target from any other subdomain of translate.google.com', () => {
     const url = new URL(
       'https://x.translate.google.com/translate?u=https%3A%2F%2Fexample.com%2Fpage',
     )
 
-    expect(unwrapGoogleTranslate(url)).toBeUndefined()
+    expect(unwrapGoogleTranslate(url)).toBe('https://example.com/page')
   })
 
   it('should return undefined for www glued to the translate host', () => {
@@ -94,6 +94,14 @@ describe('unwrapGoogleTranslate', () => {
 
   it('should return undefined for other paths on translate.googleusercontent.com', () => {
     const url = new URL('https://translate.googleusercontent.com/?u=https://example.com/page')
+
+    expect(unwrapGoogleTranslate(url)).toBeUndefined()
+  })
+
+  it('should return undefined for the translated frame on subdomains of translate.googleusercontent.com', () => {
+    const url = new URL(
+      'https://x.translate.googleusercontent.com/translate_c?u=https://example.com/page',
+    )
 
     expect(unwrapGoogleTranslate(url)).toBeUndefined()
   })
