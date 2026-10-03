@@ -4,6 +4,7 @@ import { googleHostRegex } from './google.js'
 
 const extractors = [
   createParamExtractor({ hosts: googleHostRegex, path: '/aclk', params: ['adurl'] }),
+  createParamExtractor({ hosts: googleHostRegex, path: '/pagead/iclk', params: ['adurl'] }),
   createParamExtractor({ hosts: 'syndicatedsearch.goog', path: '/aclk', params: ['adurl'] }),
   createParamExtractor({
     hosts: 'www.googleadservices.com',
@@ -16,6 +17,11 @@ const extractors = [
     params: ['adurl'],
   }),
   createParamExtractor({
+    hosts: 'googleads.g.doubleclick.net',
+    path: '/pagead/iclk',
+    params: ['adurl'],
+  }),
+  createParamExtractor({
     hosts: ['ad.doubleclick.net', 'adclick.g.doubleclick.net', 'googleads.g.doubleclick.net'],
     path: '/pcs/click',
     params: ['adurl'],
@@ -23,6 +29,7 @@ const extractors = [
 ]
 
 // Google Ads click redirect (google.<TLD>/aclk?adurl=<target>,
+// {google.<TLD>,googleads.g.doubleclick.net}/pagead/iclk?adurl=<target>,
 // syndicatedsearch.goog/aclk?adurl=<target>,
 // www.googleadservices.com/pagead/aclk?adurl=<target>,
 // {adclick,googleads}.g.doubleclick.net/aclk?adurl=<target>,

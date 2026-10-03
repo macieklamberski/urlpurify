@@ -30,6 +30,24 @@ describe('unwrapGoogleAds', () => {
     })
   })
 
+  describe('{google.<TLD>,googleads.g.doubleclick.net}/pagead/iclk', () => {
+    it('should extract a percent-encoded target from google.<TLD>', () => {
+      const url = new URL(
+        'http://www.google.at/pagead/iclk?sa=l&ai=BI-QuW4OBRo3EN4PcwQHq6ai7D8eSiyWfvN-bA-eB1HjAuAIIABABGAE4AVDa2cP4&adurl=https://example.com/accounts/login%3Fservice%3Dmail%26hl%3Dde',
+      )
+
+      expect(unwrapGoogleAds(url)).toBe('https://example.com/accounts/login?service=mail&hl=de')
+    })
+
+    it('should extract a target from googleads followed by the client param', () => {
+      const url = new URL(
+        'http://googleads.g.doubleclick.net/pagead/iclk?sa=l&ai=Bdmui4Eu3SYe-MpSAvQPU4NHYCIH0qJEBwcbCpQuxqomHGoCb7gIQARgB&num=1&adurl=http://example.com/GG31&client=ca-pub-1234567890123456',
+      )
+
+      expect(unwrapGoogleAds(url)).toBe('http://example.com/GG31')
+    })
+  })
+
   describe('syndicatedsearch.goog/aclk', () => {
     it('should extract a target followed by Google params', () => {
       const url = new URL(
@@ -131,6 +149,39 @@ describe('unwrapGoogleAds', () => {
 
     it('should return undefined for an aclk path on another host', () => {
       const url = new URL('https://example.com/aclk?sa=L&adurl=https://example.org/landing/')
+
+      expect(unwrapGoogleAds(url)).toBeUndefined()
+    })
+
+    // Constructed: an impression or view beacon with an adurl, on a host that carries clicks.
+    it('should return undefined for pagead/adview on google.<TLD>', () => {
+      const url = new URL(
+        'https://www.google.com/pagead/adview?ai=DChcSEwjv&sig=AOD64_0FMF&adurl=https://example.com/landing/',
+      )
+
+      expect(unwrapGoogleAds(url)).toBeUndefined()
+    })
+
+    it('should return undefined for pagead/adview on www.googleadservices.com', () => {
+      const url = new URL(
+        'https://www.googleadservices.com/pagead/adview?ai=C_nMd6&sig=AOD64_3GJ0&adurl=https://example.com/landing/',
+      )
+
+      expect(unwrapGoogleAds(url)).toBeUndefined()
+    })
+
+    it('should return undefined for pagead/adview on googleads.g.doubleclick.net', () => {
+      const url = new URL(
+        'https://googleads.g.doubleclick.net/pagead/adview?ai=CmYGyP&sig=AOD64_2nOv&adurl=https://example.com/landing/',
+      )
+
+      expect(unwrapGoogleAds(url)).toBeUndefined()
+    })
+
+    it('should return undefined for pcs/view on adclick.g.doubleclick.net', () => {
+      const url = new URL(
+        'https://adclick.g.doubleclick.net/pcs/view?xai=AKAOjstJDMpk&sig=Cg0ArKJSzOrV&urlfix=1&adurl=https://example.com/creative.png',
+      )
 
       expect(unwrapGoogleAds(url)).toBeUndefined()
     })

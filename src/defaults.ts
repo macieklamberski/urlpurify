@@ -93,7 +93,6 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   unwrapBing,
   // unwrapDuckduckgo,
   unwrapGoogle,
-  // unwrapGoogleAds,
   unwrapGoogleNews,
   unwrapGoogleNewsModern,
   unwrapGoogleScholar,
@@ -141,6 +140,9 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapRecruitics,
   // unwrapGeoriot,
   // unwrapFirebaseDynamicLinks,
+
+  // Ad networks.
+  // unwrapGoogleAds,
 
   // Social and community platforms.
   unwrapFacebookShim,
