@@ -93,6 +93,30 @@ describe('unwrapAmazonAffiliate', () => {
     expect(unwrapAmazonAffiliate(url)).toBe('https://example.com/orders')
   })
 
+  it('should extract the U param of a store email redirect on the f.html path', () => {
+    const url = new URL(
+      'https://www.amazon.ca/gp/f.html?C=1JDTYWBDK5ZYA&M=urn:rtn:msg:20190106004449f59482f188a348aab016089016e0p0na&R=3WYOPBPLHUVC&T=C&U=https%3A%2F%2Fexample.com%2Fwishlist%2F1P4Z6P897JRCU&H=OOM6BJIBISAR4JASTLTAQTXNVEWA',
+    )
+
+    expect(unwrapAmazonAffiliate(url)).toBe('https://example.com/wishlist/1P4Z6P897JRCU')
+  })
+
+  it('should extract the U param of a store email redirect on the com.au tld', () => {
+    const url = new URL(
+      'https://www.amazon.com.au/gp/f.html?C=3PA7Q5PDNDL9K&R=3MI5VW5WPB4EJ&T=C&U=https%3A%2F%2Fexample.com%2Fdp%2FB00ICS8MEI',
+    )
+
+    expect(unwrapAmazonAffiliate(url)).toBe('https://example.com/dp/B00ICS8MEI')
+  })
+
+  it('should extract the url param of a sponsored product redirect', () => {
+    const url = new URL(
+      'https://www.amazon.com/gp/slredirect/picassoRedirect.html/ref=pa_sp_atf_aps_sr_pg1_1?ie=UTF8&adId=A04820722IPKTVSMTMVM9&url=https%3A%2F%2Fexample.com%2Fdp%2FB00O4L3F9E%3Fpsc%3D1&qualifier=1495471480',
+    )
+
+    expect(unwrapAmazonAffiliate(url)).toBe('https://example.com/dp/B00O4L3F9E?psc=1')
+  })
+
   it('should return undefined for a twice-encoded store redirect target', () => {
     const url = new URL(
       'http://www.amazon.com/gp/redirect.html?ie=UTF8&location=http%253A%252F%252Fexample.com%252Fs%253Fk%253Dbooks&tag=example-20',
@@ -122,6 +146,30 @@ describe('unwrapAmazonAffiliate', () => {
   it('should return undefined for a store redirect shape on a non-Amazon host', () => {
     const url = new URL(
       'https://example.com/gp/redirect.html?location=https%3A%2F%2Fexample.org%2F',
+    )
+
+    expect(unwrapAmazonAffiliate(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a store redirect on another Amazon subdomain', () => {
+    const url = new URL(
+      'https://sellercentral.amazon.com/gp/redirect.html?location=https%3A%2F%2Fexample.com%2F',
+    )
+
+    expect(unwrapAmazonAffiliate(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a store redirect on a lookalike host', () => {
+    const url = new URL(
+      'https://www.amazon.example.com/gp/redirect.html?location=https%3A%2F%2Fexample.com%2F',
+    )
+
+    expect(unwrapAmazonAffiliate(url)).toBeUndefined()
+  })
+
+  it('should return undefined for the path param on another obidos path', () => {
+    const url = new URL(
+      'https://www.amazon.com/exec/obidos/ASIN/0142000280?path=https%3A%2F%2Fexample.com%2F',
     )
 
     expect(unwrapAmazonAffiliate(url)).toBeUndefined()
