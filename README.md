@@ -121,6 +121,7 @@ Enabled by default:
 | `unwrapVkAway` | VK away redirect (vk.com/away.php?to=\<target\>) |
 | `unwrapYahooSearch` | Yahoo Search redirect (r.search.yahoo.com/.../RU=\<target\>/RK=...) |
 | `unwrapYouTube` | YouTube external redirect (www.youtube.com/redirect?q=\<target\>) |
+| `unwrapZemanta` | Zemanta related-article redirect (r.zemanta.com/?u=\<target\>) |
 | `unwrapZhihu` | Zhihu external redirect (link.zhihu.com/?target=\<target\>) |
 
 Many more are available for explicit opt-in: email security gateways (Outlook SafeLinks, Proofpoint, Mimecast), affiliate networks (Awin, Skimlinks, Commission Junction), CJK platforms, AMP caches, and others. See [src/unwraps](src/unwraps) for the full catalog, each documented in its source file.
