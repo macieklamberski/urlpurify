@@ -115,7 +115,7 @@ Enabled by default:
 | `unwrapRedditOut` | Reddit outbound click tracker (out.reddit.com/?url=\<target\>) |
 | `unwrapSegmentfault` | Segmentfault external link redirect (link.segmentfault.com/?enc=\<base64\>) |
 | `unwrapSspai` | Sspai external link redirect (sspai.com/link?target=\<target\>) |
-| `unwrapSteamLinkfilter` | Steam outbound link filter (steamcommunity.com/linkfilter/?url=\<target\>) |
+| `unwrapSteamLinkfilter` | Steam outbound link filter (steamcommunity.com/linkfilter/?url=\<target\> or ?u=\<target\>) |
 | `unwrapThreadsShim` | Threads outbound link shim (l.threads.com / l.threads.net with ?u=\<target\>) |
 | `unwrapTumblr` | Tumblr outbound redirect (t.umblr.com/redirect?z=\<target\>) |
 | `unwrapVkAway` | VK away redirect (vk.com/away.php?to=\<target\>) |
