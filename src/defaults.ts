@@ -68,6 +68,7 @@ import { unwrapSegmentfault } from './unwraps/segmentfault.js'
 // import { unwrapSmartredirect } from './unwraps/smartredirect.js'
 import { unwrapSspai } from './unwraps/sspai.js'
 import { unwrapSteamLinkfilter } from './unwraps/steamLinkfilter.js'
+// import { unwrapStreak } from './unwraps/streak.js'
 // import { unwrapValuecommerce } from './unwraps/valuecommerce.js'
 // import { unwrapViglink } from './unwraps/viglink.js'
 import { unwrapThreadsShim } from './unwraps/threads.js'
@@ -110,6 +111,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapIcptrack,
   // unwrapMailchimp,
   // unwrapMailtrack,
+  // unwrapStreak,
   // unwrapMailpanion,
   // unwrapMailpgn,
   // unwrapLeverAnalytics,
