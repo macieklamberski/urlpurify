@@ -151,4 +151,12 @@ describe('unwrapCiscoSecureWeb', () => {
 
     expect(unwrapCiscoSecureWeb(url)).toBeUndefined()
   })
+
+  it('should return undefined for a path with a segment before the token', () => {
+    const url = new URL(
+      'https://secure-web.cisco.com/c/1FUSlj3K3QVkKY875RHGJXaTEmxvyRjzy/https%3A%2F%2Fexample.com%2F',
+    )
+
+    expect(unwrapCiscoSecureWeb(url)).toBeUndefined()
+  })
 })
