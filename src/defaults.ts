@@ -35,6 +35,7 @@ import { unwrapHashnode } from './unwraps/hashnode.js'
 import { unwrapHrefLi } from './unwraps/hrefLi.js'
 // import { unwrapIcptrack } from './unwraps/icptrack.js'
 // import { unwrapIdealoPartner } from './unwraps/idealoPartner.js'
+import { unwrapIndexHu } from './unwraps/indexHu.js'
 import { unwrapInstagramShim } from './unwraps/instagram.js'
 import { unwrapJianshuGo } from './unwraps/jianshuGo.js'
 import { unwrapJuejin } from './unwraps/juejin.js'
@@ -154,6 +155,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   unwrapAnonymTo,
   unwrapDeviantartOutgoing,
   unwrapNaverOutgoing,
+  unwrapIndexHu,
   unwrapSteamLinkfilter,
   unwrapDouban,
   // unwrapNicoMs,
