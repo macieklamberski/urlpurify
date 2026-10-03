@@ -174,4 +174,12 @@ describe('unwrapAmazonAffiliate', () => {
 
     expect(unwrapAmazonAffiliate(url)).toBeUndefined()
   })
+
+  it('should return undefined for the url param on a store path that is not a redirect', () => {
+    const url = new URL(
+      'https://www.amazon.com/gp/bit/apps/web/SIA/scraper?url=https%3A%2F%2Fexample.com%2F',
+    )
+
+    expect(unwrapAmazonAffiliate(url)).toBeUndefined()
+  })
 })
