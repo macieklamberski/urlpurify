@@ -34,7 +34,7 @@ export const unwrapLinksynergy: UrlUnwrapper = (url) => {
     return target
   }
 
-  // RD_PARM1 is often percent-encoded twice.
+  // The target is often percent-encoded twice.
   try {
     const decoded = decodeURIComponent(target)
 

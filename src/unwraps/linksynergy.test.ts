@@ -63,6 +63,16 @@ describe('unwrapLinksynergy', () => {
       expect(unwrapLinksynergy(url)).toBe('http://example.com/album?id=322871516&s=143441')
     })
 
+    it('should extract target encoded twice with a tail encoded once', () => {
+      const url = new URL(
+        'http://click.linksynergy.com/fs-bin/stat?id=abc&offerid=94348&type=3&subid=0&tmpid=2192&RD_PARM1=http%253A%252F%252Fexample.com%252Falbum%253FplayListId%253D30646014%2526s%253D1%26partnerId%3D30',
+      )
+
+      expect(unwrapLinksynergy(url)).toBe(
+        'http://example.com/album?playListId=30646014&s=1&partnerId=30',
+      )
+    })
+
     it('should return undefined when RD_PARM1 param is missing', () => {
       const url = new URL(
         'http://click.linksynergy.com/fs-bin/stat?id=abc&offerid=78941&type=3&subid=0',
