@@ -22,6 +22,7 @@ import { unwrapDouban } from './unwraps/douban.js'
 import { unwrapFacebookShim } from './unwraps/facebook.js'
 // import { unwrapFeedsportal } from './unwraps/feedsportal.js'
 // import { unwrapFirebaseDynamicLinks } from './unwraps/firebaseDynamicLinks.js'
+// import { unwrapFireeye } from './unwraps/fireeye.js'
 import { unwrapFlipboard } from './unwraps/flipboard.js'
 // import { unwrapGateSc } from './unwraps/gateSc.js'
 // import { unwrapGeoriot } from './unwraps/georiot.js'
@@ -104,6 +105,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapProofpointV1,
   // unwrapProofpointV2,
   // unwrapProofpointV3,
+  // unwrapFireeye,
   // unwrapMimecast,
   // unwrapPostmark,
   // unwrapAceml,
