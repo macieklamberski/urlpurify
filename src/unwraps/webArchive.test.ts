@@ -7,8 +7,6 @@ const modifierUrls = [
   'https://web.archive.org/web/20240101120000mp_/https://example.com/page',
   'https://web.archive.org/web/20240101120000fw_/https://example.com/page',
   'https://web.archive.org/web/20240101120000oe_/https://example.com/page',
-  'https://web.archive.org/web/20240101120000js_/https://example.com/page',
-  'https://web.archive.org/web/20240101120000cs_/https://example.com/page',
 ]
 
 const hostUrls = [
@@ -18,6 +16,7 @@ const hostUrls = [
   'https://web-old.archive.org/web/20240101120000/https://example.com/page',
   'https://classic-web.archive.org/web/20240101120000/https://example.com/page',
   'https://replay.web.archive.org/20240101120000/https://example.com/page',
+  'https://web.archive.org/20240101120000/https://example.com/page',
 ]
 
 const archiveItUrls = [
@@ -25,6 +24,12 @@ const archiveItUrls = [
   'https://wayback.archive-it.org/org-1234/20240101120000/https://example.com/page',
   'https://wayback.archive-it.org/all/20240101120000/https://example.com/page',
   'https://wayback.archive-it.org/23504/20240101120000mp_/https://example.com/page',
+]
+
+const prefixedUrls = [
+  'https://web.archive.org/x/web/20240101120000/https://example.com/page',
+  'https://replay.web.archive.org/x/20240101120000/https://example.com/page',
+  'https://wayback.archive-it.org/x/23504/20240101120000/https://example.com/page',
 ]
 
 describe('unwrapWebArchive', () => {
@@ -114,6 +119,18 @@ describe('unwrapWebArchive', () => {
     expect(unwrapWebArchive(value)).toBeUndefined()
   })
 
+  it('should return undefined for the script modifier', () => {
+    const value = new URL('https://web.archive.org/web/20240101120000js_/https://example.com/a.js')
+
+    expect(unwrapWebArchive(value)).toBeUndefined()
+  })
+
+  it('should return undefined for the stylesheet modifier', () => {
+    const value = new URL('https://web.archive.org/web/20240101120000cs_/https://example.com/a.css')
+
+    expect(unwrapWebArchive(value)).toBeUndefined()
+  })
+
   it('should return undefined for the calendar wildcard', () => {
     const value = new URL('https://web.archive.org/web/*/https://example.com/page')
 
@@ -143,4 +160,11 @@ describe('unwrapWebArchive', () => {
 
     expect(unwrapWebArchive(value)).toBeUndefined()
   })
+
+  it.each(prefixedUrls)(
+    'should return undefined for a snapshot path under another prefix: %s',
+    (value) => {
+      expect(unwrapWebArchive(new URL(value))).toBeUndefined()
+    },
+  )
 })
