@@ -199,4 +199,12 @@ describe('unwrapBingAds', () => {
 
     expect(unwrapBingAds(url)).toBeUndefined()
   })
+
+  it('should return undefined for a long label between bing and the tld', () => {
+    const url = new URL(
+      'https://bing.example.com/aclk?ld=e8v53HweaYYJO4&u=aHR0cHMlM2ElMmYlMmZ3d3cuZXhhbXBsZS5jb20lMmZib29raW5nJTJmMTIzNDU=',
+    )
+
+    expect(unwrapBingAds(url)).toBeUndefined()
+  })
 })
