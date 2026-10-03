@@ -73,4 +73,26 @@ describe('unwrapMedium', () => {
 
     expect(unwrapMedium(url)).toBeUndefined()
   })
+
+  it('should return undefined for url param on a nested r path', () => {
+    const url = new URL('https://medium.com/@author/r?url=https%3A%2F%2Fexample.com')
+
+    expect(unwrapMedium(url)).toBeUndefined()
+  })
+
+  it('should return undefined for redirectUrl param on a nested global-identity path', () => {
+    const url = new URL(
+      'https://medium.com/p/m/global-identity?redirectUrl=https%3A%2F%2Fexample.com',
+    )
+
+    expect(unwrapMedium(url)).toBeUndefined()
+  })
+
+  it('should return undefined for redirectUrl param on a longer global-identity path', () => {
+    const url = new URL(
+      'https://medium.com/m/global-identity-3?redirectUrl=https%3A%2F%2Fexample.com',
+    )
+
+    expect(unwrapMedium(url)).toBeUndefined()
+  })
 })
