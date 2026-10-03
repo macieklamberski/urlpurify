@@ -34,10 +34,10 @@ describe('unwrapPrNewswire', () => {
 
   it('should extract the last target when a tracker is nested unencoded', () => {
     const url = new URL(
-      'https://c212.net/c/link/?t=0&l=en&o=3351776-1&h=3653965204&u=https://c212.net/c/link/?t=0&l=en&o=2975775-1&h=3055853517&u=https%253A%252F%252Fwww.petpoisonhelpline.com%252F&a=Pet+Poison+Helpline&a=Pet+Poison+Helpline',
+      'https://c212.net/c/link/?t=0&l=en&o=3351776-1&h=3653965204&u=https://c212.net/c/link/?t=0&l=en&o=2975775-1&h=3055853517&u=https%253A%252F%252Fexample.com%252F&a=Pet+Poison+Helpline&a=Pet+Poison+Helpline',
     )
 
-    expect(unwrapPrNewswire(url)).toBe('https://www.petpoisonhelpline.com/')
+    expect(unwrapPrNewswire(url)).toBe('https://example.com/')
   })
 
   it('should return a nested PR Newswire link for the next unwrap pass', () => {
