@@ -19,6 +19,7 @@ import { unwrapDouban } from './unwraps/douban.js'
 // import { unwrapEbayRover } from './unwraps/ebayRover.js'
 // import { unwrapEffiliation } from './unwraps/effiliation.js'
 // import { unwrapEmbedly } from './unwraps/embedly.js'
+import { unwrapEvernote } from './unwraps/evernote.js'
 import { unwrapFacebookShim } from './unwraps/facebook.js'
 // import { unwrapFeedsportal } from './unwraps/feedsportal.js'
 // import { unwrapFirebaseDynamicLinks } from './unwraps/firebaseDynamicLinks.js'
@@ -169,6 +170,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   unwrapGitee,
   unwrapCsdn,
   unwrapHashnode,
+  unwrapEvernote,
 
   // Cache and proxy services.
   // unwrapAmpCache,
