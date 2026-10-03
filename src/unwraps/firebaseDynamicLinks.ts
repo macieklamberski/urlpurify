@@ -2,10 +2,17 @@ import type { UrlUnwrapper } from '../types.js'
 import { createParamExtractor } from '../utils.js'
 
 const appPathRegex = /^\/app\/[\w-]+$/
+const params = ['link', 'ofl']
 
 const extractTarget = createParamExtractor({
-  hosts: /\.page\.link$|^[\w-]+(?:\.[\w-]+)*\.app\.goo\.gl$|^goo\.gl$/,
-  params: ['link', 'ofl'],
+  domains: ['app.goo.gl', 'page.link'],
+  params,
+})
+
+// goo.gl itself is the URL shortener, so it matches exactly and only on /app/<name>.
+const extractGooGlTarget = createParamExtractor({
+  hosts: 'goo.gl',
+  params,
 })
 
 // Firebase Dynamic Links (<project>.page.link/?link=<canonical>&ofl=<fallback>), and the older
@@ -14,10 +21,14 @@ const extractTarget = createParamExtractor({
 // app handler is available. They're often identical, but when they differ
 // `link` is the more correct choice.
 export const unwrapFirebaseDynamicLinks: UrlUnwrapper = (url) => {
+  if (url.hostname !== 'goo.gl') {
+    return extractTarget(url)
+  }
+
   // Every other goo.gl path is the URL shortener, which holds only an id.
-  if (url.hostname === 'goo.gl' && !appPathRegex.test(url.pathname)) {
+  if (!appPathRegex.test(url.pathname)) {
     return
   }
 
-  return extractTarget(url)
+  return extractGooGlTarget(url)
 }

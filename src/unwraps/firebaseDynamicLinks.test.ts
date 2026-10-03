@@ -61,4 +61,40 @@ describe('unwrapFirebaseDynamicLinks', () => {
 
     expect(unwrapFirebaseDynamicLinks(url)).toBeUndefined()
   })
+
+  it('should return undefined for a deeper path under goo.gl/app', () => {
+    const url = new URL('https://goo.gl/app/playmusic/extra?link=https://example.com/page')
+
+    expect(unwrapFirebaseDynamicLinks(url)).toBeUndefined()
+  })
+
+  it('should return undefined when app is not the first goo.gl path segment', () => {
+    const url = new URL('https://goo.gl/x/app/playmusic?link=https://example.com/page')
+
+    expect(unwrapFirebaseDynamicLinks(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a host that only ends in goo.gl', () => {
+    const url = new URL('https://notgoo.gl/?link=https://example.com/page')
+
+    expect(unwrapFirebaseDynamicLinks(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a host that only ends in page.link', () => {
+    const url = new URL('https://examplepage.link/?link=https://example.com/page')
+
+    expect(unwrapFirebaseDynamicLinks(url)).toBeUndefined()
+  })
+
+  it('should return undefined for the app path on another goo.gl subdomain', () => {
+    const url = new URL('https://www.goo.gl/app/playmusic?link=https://example.com/page')
+
+    expect(unwrapFirebaseDynamicLinks(url)).toBeUndefined()
+  })
+
+  it('should extract target from link param on app.goo.gl itself', () => {
+    const url = new URL('https://app.goo.gl/?link=https://example.com/page')
+
+    expect(unwrapFirebaseDynamicLinks(url)).toBe('https://example.com/page')
+  })
 })
