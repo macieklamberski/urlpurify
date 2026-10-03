@@ -72,6 +72,7 @@ import { unwrapSteamLinkfilter } from './unwraps/steamLinkfilter.js'
 // import { unwrapViglink } from './unwraps/viglink.js'
 import { unwrapThreadsShim } from './unwraps/threads.js'
 // import { unwrapTradedoubler } from './unwraps/tradedoubler.js'
+// import { unwrapTravelpayouts } from './unwraps/travelpayouts.js'
 import { unwrapTumblr } from './unwraps/tumblr.js'
 import { unwrapVkAway } from './unwraps/vkAway.js'
 import { unwrapYahooSearch } from './unwraps/yahooSearch.js'
@@ -139,6 +140,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapRecruitics,
   // unwrapGeoriot,
   // unwrapFirebaseDynamicLinks,
+  // unwrapTravelpayouts,
 
   // Social and community platforms.
   unwrapFacebookShim,
