@@ -30,6 +30,16 @@ describe('unwrapGoogleAds', () => {
     })
   })
 
+  describe('syndicatedsearch.goog/aclk', () => {
+    it('should extract a target followed by Google params', () => {
+      const url = new URL(
+        'https://syndicatedsearch.goog/aclk?sa=L&ai=DChcSEwiWw_XevPGHAxV8oGgJHTsuAhEYABAHGgJ3Zg&co=1&gclid=EAIaIQobChMIlsP13rzxhwMVfKBoCR07LgIREAAYASAAEgIEAvD_BwE&sig=AOD64_1ndDSnHaibZ85XdUcci04M6836zA&adurl=https://www.example.com/%3Fgad_source%3D5&q=&nb=1&nm=5&nx=23&ny=16',
+      )
+
+      expect(unwrapGoogleAds(url)).toBe('https://www.example.com/?gad_source=5')
+    })
+  })
+
   describe('www.googleadservices.com/pagead/aclk', () => {
     it('should extract a target placed last', () => {
       const url = new URL(
@@ -65,6 +75,32 @@ describe('unwrapGoogleAds', () => {
       )
 
       expect(unwrapGoogleAds(url)).toBe('http://www.example.com/')
+    })
+  })
+
+  describe('{ad,adclick.g,googleads.g}.doubleclick.net/pcs/click', () => {
+    it('should extract a percent-encoded target from adclick', () => {
+      const url = new URL(
+        'https://adclick.g.doubleclick.net/pcs/click?xai=AKAOjssxwPx9VuPh4d8Z1Ri5KQx0EuyH3wq&sai=AMfl-YT3Rk1oK8F2HSpL&sig=Cg0ArKJSzKQ2&fbs_aeid=%5Bgw_fbsaeid%5D&urlfix=1&adurl=https%3A%2F%2Fexample.com%2Fsetor-de-ti%2F',
+      )
+
+      expect(unwrapGoogleAds(url)).toBe('https://example.com/setor-de-ti/')
+    })
+
+    it('should extract a target from googleads followed by Google params', () => {
+      const url = new URL(
+        'https://googleads.g.doubleclick.net/pcs/click?xai=AKAOjssf6PY9ZFt3JajlFk6RdSdZm4bopgOGlXtVijhs&sai=AMfl-YSMctXxUOa1fyJAWncYN4D1&sig=Cg0ArKJSzJ8v&adurl=https://example.com/&nm=4&nx=691&ny=-601&mb=2&clkt=57',
+      )
+
+      expect(unwrapGoogleAds(url)).toBe('https://example.com/')
+    })
+
+    it('should extract a target from ad.doubleclick.net', () => {
+      const url = new URL(
+        'https://ad.doubleclick.net/pcs/click?xai=AKAOjsv-zJrS4-Umk5PI89ZOviGh4pAcs-3oVzoshk8m6jO9Iof3M6p3&sai=AMfl-YSNDNWLPt3F3W2iStEvERg9rUQ5&sig=Cg0ArKJSzOYB01SAygJd&cry=1&urlfix=1&nx=537&ny=51&dim=728x90&adurl=https://example.com/campaign/%3Futm_source%3Ddisplay',
+      )
+
+      expect(unwrapGoogleAds(url)).toBe('https://example.com/campaign/?utm_source=display')
     })
   })
 
