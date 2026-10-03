@@ -52,12 +52,36 @@ describe('unwrapGoogleTranslate', () => {
     expect(unwrapGoogleTranslate(url)).toBe('http://example.com/page')
   })
 
+  it('should return undefined for other subdomains of translate.google.com', () => {
+    const url = new URL(
+      'https://x.translate.google.com/translate?u=https%3A%2F%2Fexample.com%2Fpage',
+    )
+
+    expect(unwrapGoogleTranslate(url)).toBeUndefined()
+  })
+
+  it('should return undefined for www glued to the translate host', () => {
+    const url = new URL(
+      'https://wwwtranslate.google.com/translate?u=https%3A%2F%2Fexample.com%2Fpage',
+    )
+
+    expect(unwrapGoogleTranslate(url)).toBeUndefined()
+  })
+
   it('should extract target from the website path', () => {
     const url = new URL(
       'https://translate.google.com/website?sl=de&tl=en&hl=en-US&client=webapp&u=https://example.com/page',
     )
 
     expect(unwrapGoogleTranslate(url)).toBe('https://example.com/page')
+  })
+
+  it('should return undefined for the translated frame path on translate.google.com', () => {
+    const url = new URL(
+      'https://translate.google.com/translate_c?u=https%3A%2F%2Fexample.com%2Fpage',
+    )
+
+    expect(unwrapGoogleTranslate(url)).toBeUndefined()
   })
 
   it('should extract target from the translated frame on translate.googleusercontent.com', () => {
