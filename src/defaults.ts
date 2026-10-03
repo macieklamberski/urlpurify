@@ -19,6 +19,7 @@ import { unwrapDouban } from './unwraps/douban.js'
 // import { unwrapEbayRover } from './unwraps/ebayRover.js'
 // import { unwrapEffiliation } from './unwraps/effiliation.js'
 // import { unwrapEmbedly } from './unwraps/embedly.js'
+// import { unwrapEsva } from './unwraps/esva.js'
 import { unwrapFacebookShim } from './unwraps/facebook.js'
 // import { unwrapFeedsportal } from './unwraps/feedsportal.js'
 // import { unwrapFirebaseDynamicLinks } from './unwraps/firebaseDynamicLinks.js'
@@ -101,6 +102,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
 
   // Email and security gateways.
   // unwrapOutlookSafelinks,
+  // unwrapEsva,
   // unwrapProofpointV1,
   // unwrapProofpointV2,
   // unwrapProofpointV3,
