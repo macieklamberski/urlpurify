@@ -151,4 +151,10 @@ describe('unwrapAccesstrade', () => {
 
     expect(unwrapAccesstrade(url)).toBeUndefined()
   })
+
+  it('should return undefined for a look-alike of the adv path', () => {
+    const url = new URL('https://click.accesstrade.vn/advxphp?url=https%3A%2F%2Fexample.com%2F')
+
+    expect(unwrapAccesstrade(url)).toBeUndefined()
+  })
 })
