@@ -1,26 +1,47 @@
-import { decodeSegment, isHostOf } from 'trousse'
+import { decodeSegment, isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
-const pathRegex = /^\/web\/\d{14}\*?\/(.+)$/
+const hosts = [
+  'web.archive.org',
+  'wayback.archive.org',
+  'web-beta.archive.org',
+  'web-wp.archive.org',
+]
 
-// Web Archive snapshot wrapper (web.archive.org/web/<timestamp>/<URL>).
+// A 14-digit timestamp, then the wildcard or a replay modifier, such as `id_` for the original
+// bytes. `im_` serves the archived image and is left out.
+const snapshot = String.raw`\d{14}(?:\*|(?:id|if|mp|fw|oe|js|cs)_)?`
+const pathRegex = new RegExp(`^/web/${snapshot}/(.+)$`)
+const archiveItPathRegex = new RegExp(String.raw`^/(?:\d+|org-\d+|all)/${snapshot}/(.+)$`)
+
+// Some snapshot links carry the target as `https:/host`, with the double slash collapsed.
+const collapsedSchemeRegex = /^(https?:)\/(?!\/)/i
+
+// Web Archive snapshot wrapper (web.archive.org/web/<timestamp>[<modifier>]/<URL>), also served
+// from wayback.archive.org, web-beta.archive.org and web-wp.archive.org, and Archive-It
+// collections (wayback.archive-it.org/<collection or all>/<timestamp>[<modifier>]/<URL>).
 // Not included in defaultUnwrappers: an archive URL is a historical
 // snapshot at a specific point in time, not a redirect; unwrapping returns
 // the live page, which may have changed or 404'd. Opt in by passing a custom
 // unwrappers array.
 export const unwrapWebArchive: UrlUnwrapper = (url) => {
-  if (!isHostOf(url, 'web.archive.org')) {
-    return
+  let match: RegExpMatchArray | null = null
+
+  if (isHostOf(url, hosts)) {
+    match = url.pathname.match(pathRegex)
   }
 
-  const match = url.pathname.match(pathRegex)
+  if (isHostOf(url, 'wayback.archive-it.org')) {
+    match = url.pathname.match(archiveItPathRegex)
+  }
+
   if (!match) {
     return
   }
 
-  const target = decodeSegment(match[1])
+  const target = decodeSegment(match[1])?.replace(collapsedSchemeRegex, '$1//')
 
-  if (!target) {
+  if (!target || !isHttpUrl(target)) {
     return
   }
 

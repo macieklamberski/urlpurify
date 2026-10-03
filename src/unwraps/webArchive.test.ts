@@ -1,6 +1,29 @@
 import { describe, expect, it } from 'bun:test'
 import { unwrapWebArchive } from './webArchive.js'
 
+const modifierUrls = [
+  'https://web.archive.org/web/20240101120000id_/https://example.com/page',
+  'https://web.archive.org/web/20240101120000if_/https://example.com/page',
+  'https://web.archive.org/web/20240101120000mp_/https://example.com/page',
+  'https://web.archive.org/web/20240101120000fw_/https://example.com/page',
+  'https://web.archive.org/web/20240101120000oe_/https://example.com/page',
+  'https://web.archive.org/web/20240101120000js_/https://example.com/page',
+  'https://web.archive.org/web/20240101120000cs_/https://example.com/page',
+]
+
+const hostUrls = [
+  'https://wayback.archive.org/web/20240101120000/https://example.com/page',
+  'https://web-beta.archive.org/web/20240101120000/https://example.com/page',
+  'https://web-wp.archive.org/web/20240101120000/https://example.com/page',
+]
+
+const archiveItUrls = [
+  'https://wayback.archive-it.org/23504/20240101120000/https://example.com/page',
+  'https://wayback.archive-it.org/org-1234/20240101120000/https://example.com/page',
+  'https://wayback.archive-it.org/all/20240101120000/https://example.com/page',
+  'https://wayback.archive-it.org/23504/20240101120000mp_/https://example.com/page',
+]
+
 describe('unwrapWebArchive', () => {
   it('should extract original URL from snapshot path', () => {
     const url = new URL(
@@ -42,5 +65,67 @@ describe('unwrapWebArchive', () => {
     const url = new URL('https://web.archive.org/web/20240101120000/bad%ZZ')
 
     expect(unwrapWebArchive(url)).toBeUndefined()
+  })
+
+  it.each(modifierUrls)('should extract the target from %s', (value) => {
+    expect(unwrapWebArchive(new URL(value))).toBe('https://example.com/page')
+  })
+
+  it.each(hostUrls)('should extract the target from %s', (value) => {
+    expect(unwrapWebArchive(new URL(value))).toBe('https://example.com/page')
+  })
+
+  it.each(archiveItUrls)('should extract the target from %s', (value) => {
+    expect(unwrapWebArchive(new URL(value))).toBe('https://example.com/page')
+  })
+
+  it('should keep the query string and fragment of an Archive-It target', () => {
+    const value = new URL(
+      'https://wayback.archive-it.org/23504/20240101120000/https://example.com/a?id=5#section',
+    )
+
+    expect(unwrapWebArchive(value)).toBe('https://example.com/a?id=5#section')
+  })
+
+  it('should restore the double slash of a collapsed target scheme', () => {
+    const value = new URL('https://web.archive.org/web/20240101120000/https:/example.com/page')
+
+    expect(unwrapWebArchive(value)).toBe('https://example.com/page')
+  })
+
+  it('should return undefined for the image modifier', () => {
+    const value = new URL('https://web.archive.org/web/20240101120000im_/https://example.com/a.png')
+
+    expect(unwrapWebArchive(value)).toBeUndefined()
+  })
+
+  it('should return undefined for the calendar wildcard', () => {
+    const value = new URL('https://web.archive.org/web/*/https://example.com/page')
+
+    expect(unwrapWebArchive(value)).toBeUndefined()
+  })
+
+  it('should return undefined for a partial timestamp with a modifier', () => {
+    const value = new URL('https://web.archive.org/web/20240101id_/https://example.com/page')
+
+    expect(unwrapWebArchive(value)).toBeUndefined()
+  })
+
+  it('should return undefined for an Archive-It collection page', () => {
+    const value = new URL('https://wayback.archive-it.org/23504/')
+
+    expect(unwrapWebArchive(value)).toBeUndefined()
+  })
+
+  it('should return undefined for the Archive-It path shape on another host', () => {
+    const value = new URL('https://web.archive.org/23504/20240101120000/https://example.com/page')
+
+    expect(unwrapWebArchive(value)).toBeUndefined()
+  })
+
+  it('should return undefined for a non-http target', () => {
+    const value = new URL('https://web.archive.org/web/20240101120000/ftp://example.com/file')
+
+    expect(unwrapWebArchive(value)).toBeUndefined()
   })
 })
