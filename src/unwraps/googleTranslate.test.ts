@@ -43,4 +43,32 @@ describe('unwrapGoogleTranslate', () => {
 
     expect(unwrapGoogleTranslate(url)).toBe('https://example.com/page')
   })
+
+  it('should extract target from the website path', () => {
+    const url = new URL(
+      'https://translate.google.com/website?sl=de&tl=en&hl=en-US&client=webapp&u=https://example.com/page',
+    )
+
+    expect(unwrapGoogleTranslate(url)).toBe('https://example.com/page')
+  })
+
+  it('should extract target from the translated frame on translate.googleusercontent.com', () => {
+    const url = new URL(
+      'https://translate.googleusercontent.com/translate_c?depth=1&hl=en&prev=_t&rurl=translate.google.com&sl=auto&tl=en&u=https://example.com/page&usg=ALkJrhhisjTfKfIJmulggi8658qv7rQlpg',
+    )
+
+    expect(unwrapGoogleTranslate(url)).toBe('https://example.com/page')
+  })
+
+  it('should return undefined for other paths on translate.googleusercontent.com', () => {
+    const url = new URL('https://translate.googleusercontent.com/?u=https://example.com/page')
+
+    expect(unwrapGoogleTranslate(url)).toBeUndefined()
+  })
+
+  it('should return undefined for the translated frame path on other hosts', () => {
+    const url = new URL('https://example.com/translate_c?u=https://example.com/page')
+
+    expect(unwrapGoogleTranslate(url)).toBeUndefined()
+  })
 })
