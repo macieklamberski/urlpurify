@@ -83,4 +83,36 @@ describe('unwrapValuecommerce', () => {
 
     expect(unwrapValuecommerce(url)).toBeUndefined()
   })
+
+  it('should return undefined for the dck path below another segment', () => {
+    const url = new URL(
+      'https://dalr.valuecommerce.com/x/dck/f46a15718a?vcurl=https%3A%2F%2Fexample.com%2Fshop%2F',
+    )
+
+    expect(unwrapValuecommerce(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a segment after the dck id', () => {
+    const url = new URL(
+      'https://dalr.valuecommerce.com/dck/f46a15718a/extra?vcurl=https%3A%2F%2Fexample.com%2Fshop%2F',
+    )
+
+    expect(unwrapValuecommerce(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a dck id that is not hex', () => {
+    const url = new URL(
+      'https://dalr.valuecommerce.com/dck/xyz?vcurl=https%3A%2F%2Fexample.com%2Fshop%2F',
+    )
+
+    expect(unwrapValuecommerce(url)).toBeUndefined()
+  })
+
+  it('should return undefined for the dck path without an id', () => {
+    const url = new URL(
+      'https://dalr.valuecommerce.com/dck/?vcurl=https%3A%2F%2Fexample.com%2Fshop%2F',
+    )
+
+    expect(unwrapValuecommerce(url)).toBeUndefined()
+  })
 })
