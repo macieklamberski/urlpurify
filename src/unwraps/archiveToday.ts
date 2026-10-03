@@ -6,6 +6,8 @@ const pathRegex = /^\/(?:\d{14}|\d{4}\.\d{2}\.\d{2}-\d{6}|o\/[^/]+|newest)\/(.+)
 const encodedSchemeRegex = /^https?%3A/i
 const collapsedSchemeRegex = /^(https?):\/(?!\/)/i
 const schemeRegex = /^[a-z][a-z\d+.-]*:/i
+const escapedQueryRegex = /%3F/i
+const selectionHashRegex = /^#selection-\d+\.\d+-\d+\.\d+$/
 
 // archive.today snapshot (archive.ph/<timestamp>/<URL>, archive.ph/o/<id>/<URL> and
 // archive.ph/newest/<URL>, on every archive.today mirror domain).
@@ -40,8 +42,13 @@ export const unwrapArchiveToday: UrlUnwrapper = (url) => {
     target = `http://${target}`
   }
 
-  // An unencoded target's query and fragment land in the snapshot URL's own `search` and `hash`.
-  const unwrapped = `${target}${url.search}${url.hash}`
+  // An older or /o/ link escapes the target's own `?` and `#` as `%3F` and `%23` in the path.
+  target = target.replace(escapedQueryRegex, '?').replace('%23', '#')
+
+  // An unencoded target's query and fragment land in the snapshot URL's own `search` and `hash`,
+  // except archive.today's own `#selection-` highlight, which points into the snapshot.
+  const hash = selectionHashRegex.test(url.hash) ? '' : url.hash
+  const unwrapped = `${target}${url.search}${hash}`
 
   if (!isHttpUrl(unwrapped)) {
     return

@@ -128,6 +128,62 @@ describe('unwrapArchiveToday', () => {
     expect(unwrapArchiveToday(url)).toBeUndefined()
   })
 
+  it('should restore an escaped query separator', () => {
+    const url = new URL(
+      'https://archive.is/20121211084659/http:/www.example.com/people/search%3Flastname=Doe',
+    )
+
+    expect(unwrapArchiveToday(url)).toBe('http://www.example.com/people/search?lastname=Doe')
+  })
+
+  it('should restore an escaped fragment separator', () => {
+    const url = new URL(
+      'https://archive.is/o/NTGoD/https://www.example.com/standard%23:~:text=Congress',
+    )
+
+    expect(unwrapArchiveToday(url)).toBe('https://www.example.com/standard#:~:text=Congress')
+  })
+
+  it('should drop the snapshot highlight fragment', () => {
+    const url = new URL(
+      'https://archive.ph/20220919102213/https://example.com/news/article#selection-3608.0-3608.2',
+    )
+
+    expect(unwrapArchiveToday(url)).toBe('https://example.com/news/article')
+  })
+
+  it('should keep a highlight fragment followed by a text directive', () => {
+    const url = new URL(
+      'https://archive.ph/20220919102213/https://example.com/a#selection-1.0-1.5:~:text=word',
+    )
+
+    expect(unwrapArchiveToday(url)).toBe('https://example.com/a#selection-1.0-1.5:~:text=word')
+  })
+
+  it('should return undefined for a date-only dotted timestamp', () => {
+    const url = new URL('https://archive.is/2026.06.28/https://example.com/page')
+
+    expect(unwrapArchiveToday(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a subdomain of a mirror host', () => {
+    const url = new URL('https://sub.archive.ph/20240814014001/https://example.com/page')
+
+    expect(unwrapArchiveToday(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a mirror host as a label of another host', () => {
+    const url = new URL('https://archive.ph.example.com/20240814014001/https://example.com/page')
+
+    expect(unwrapArchiveToday(url)).toBeUndefined()
+  })
+
+  it('should return undefined for the shape below another path', () => {
+    const url = new URL('https://archive.ph/x/20240814014001/https://example.com/page')
+
+    expect(unwrapArchiveToday(url)).toBeUndefined()
+  })
+
   it('should unwrap through cleanUrl when passed as an unwrapper', () => {
     const value = 'https://archive.is/o/v8cfx/https:/www.example.com/us/story?utm_source=feed'
 
