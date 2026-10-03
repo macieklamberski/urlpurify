@@ -31,6 +31,23 @@ describe('unwrapViglink', () => {
 
       expect(unwrapViglink(value)).toBe(expected)
     })
+
+    it('should return undefined when only loc param is present', () => {
+      const value = new URL(
+        'https://redirect.viglink.com/?format=go&key=1f2e3d4c5b6a79881f2e3d4c5b6a7988&loc=https%3A%2F%2Fexample.org%2F2023%2F08%2F17%2Fpost%2F&v=1',
+      )
+
+      expect(unwrapViglink(value)).toBeUndefined()
+    })
+
+    it('should prefer u over out when both are present', () => {
+      const value = new URL(
+        'https://redirect.viglink.com/?key=1f2e3d4c5b6a79881f2e3d4c5b6a7988&out=https%3A%2F%2Fexample.com%2Fb&u=https%3A%2F%2Fexample.com%2Fa',
+      )
+      const expected = 'https://example.com/a'
+
+      expect(unwrapViglink(value)).toBe(expected)
+    })
   })
 
   describe('api.viglink.com/api/click', () => {
