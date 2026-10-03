@@ -66,6 +66,7 @@ import { unwrapSegmentfault } from './unwraps/segmentfault.js'
 // import { unwrapSkimlinks } from './unwraps/skimlinks.js'
 // import { unwrapSlack } from './unwraps/slack.js'
 // import { unwrapSmartredirect } from './unwraps/smartredirect.js'
+import { unwrapSoundcloud } from './unwraps/soundcloud.js'
 import { unwrapSspai } from './unwraps/sspai.js'
 import { unwrapSteamLinkfilter } from './unwraps/steamLinkfilter.js'
 // import { unwrapValuecommerce } from './unwraps/valuecommerce.js'
@@ -159,6 +160,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapNicoMs,
   unwrapMedium,
   unwrapFlipboard,
+  unwrapSoundcloud,
 
   // Developer and publishing platforms.
   unwrapZhihu,
