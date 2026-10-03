@@ -62,6 +62,36 @@ describe('unwrapA8Net', () => {
     expect(unwrapA8Net(url)).toBeUndefined()
   })
 
+  it('should return undefined for a deep link path with a trailing segment', () => {
+    const url = new URL(
+      'https://ow.a8.net/s00000014283002/redirect_v2.php/extra?url=https%3A%2F%2Fexample.com%2F',
+    )
+
+    expect(unwrapA8Net(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a deep link path with a leading segment', () => {
+    const url = new URL(
+      'https://ow.a8.net/x/s00000014283002/redirect_v2.php?url=https%3A%2F%2Fexample.com%2F',
+    )
+
+    expect(unwrapA8Net(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a deep link path with a non-numeric program id', () => {
+    const url = new URL('https://ow.a8.net/sx/redirect_v2.php?url=https%3A%2F%2Fexample.com%2F')
+
+    expect(unwrapA8Net(url)).toBeUndefined()
+  })
+
+  it('should return undefined for the deep link path on another A8.net host', () => {
+    const url = new URL(
+      'https://px.a8.net/s00000014283002/redirect_v2.php?url=https%3A%2F%2Fexample.com%2F',
+    )
+
+    expect(unwrapA8Net(url)).toBeUndefined()
+  })
+
   it('should return undefined when the target is percent-encoded in EUC-JP', () => {
     const url = new URL(
       'http://px.a8.net/svt/ejp?a8mat=TY8WP+1JYSEY+5WS+BWVTD&a8ejpredirect=http%3A%2F%2Fexample.jp%2Frb%2F%A4%A2%A4%C3%A4%C1%2Fitem%2F6284228%2F',
