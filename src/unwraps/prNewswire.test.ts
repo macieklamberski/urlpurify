@@ -75,7 +75,9 @@ describe('unwrapPrNewswire', () => {
   })
 
   it('should return undefined for a release page on the tracker host', () => {
-    const url = new URL('https://edge.prnewswire.com/news-releases/x.html')
+    const url = new URL(
+      'https://edge.prnewswire.com/news-releases/x.html?u=https%3A%2F%2Fexample.com%2F',
+    )
 
     expect(unwrapPrNewswire(url)).toBeUndefined()
   })
