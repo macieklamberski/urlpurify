@@ -1,6 +1,7 @@
 import { trackingParamsLiterals } from './tracking/literals.js'
 import { trackingParamsPatterns } from './tracking/patterns.js'
 import type { TrackingParam, UrlUnwrapper } from './types.js'
+// import { unwrap12ft } from './unwraps/12ft.js'
 // import { unwrapCjNetwork } from './unwraps/cjNetwork.js'
 // import { unwrapDigidip } from './unwraps/digidip.js'
 import { unwrapAnonymTo } from './unwraps/anonymTo.js'
@@ -173,6 +174,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // Cache and proxy services.
   // unwrapAmpCache,
   // unwrapEmbedly,
+  // unwrap12ft,
   unwrapMozillaOutgoing,
 
   // Legacy aggregators.
