@@ -9,6 +9,7 @@ import { unwrapAnonymTo } from './unwraps/anonymTo.js'
 // import { unwrapAmazonAffiliate } from './unwraps/amazonAffiliate.js'
 // import { unwrapAmpCache } from './unwraps/ampCache.js'
 // import { unwrapAwin } from './unwraps/awin.js'
+// import { unwrapBarracudaLinkProtect } from './unwraps/barracudaLinkProtect.js'
 import { unwrapBing } from './unwraps/bing.js'
 import { unwrapBlueskyRedirect } from './unwraps/bsky.js'
 import { unwrapCsdn } from './unwraps/csdn.js'
@@ -101,6 +102,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
 
   // Email and security gateways.
   // unwrapOutlookSafelinks,
+  // unwrapBarracudaLinkProtect,
   // unwrapProofpointV1,
   // unwrapProofpointV2,
   // unwrapProofpointV3,
