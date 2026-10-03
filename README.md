@@ -63,12 +63,15 @@ Builds an unwrapper for the common case where the target URL sits in a query par
 import { cleanUrl, createParamExtractor, defaultUnwrappers } from 'urlpurify'
 
 const unwrapExample = createParamExtractor({
-  hosts: 'go.example.com', // Also accepts an array of hosts or a regex.
+  domains: 'example.com', // Matches example.com and every subdomain. Also accepts an array.
+  path: '/out',
   params: ['target'],
 })
 
 cleanUrl(url, { unwrappers: [...defaultUnwrappers, unwrapExample] })
 ```
+
+On a domain where anyone can get a subdomain, such as a blog host, pass `hosts` instead of `domains`. It takes a host or an array of hosts, matched exactly, or a regex.
 
 For wrappers that encode the target (base64 path segments, custom escaping), write a plain function of type `UrlUnwrapper`: it receives a `URL` and returns the target string or `undefined`.
 
@@ -108,6 +111,7 @@ Enabled by default:
 | `unwrapInstagramShim` | Instagram outbound link shim (l.instagram.com with ?u=\<target\>) |
 | `unwrapJianshuGo` | Jianshu external link redirect (links.jianshu.com/go?to=\<target\>) |
 | `unwrapJuejin` | Juejin external link redirect (link.juejin.cn/?target=\<target\>) |
+| `unwrapLinkedin` | LinkedIn outbound link shims and click trackers (www.linkedin.com/safety/go?url=\<target\>, /redir/redirect, /redirect, /nhome/nus-redirect, /nus-trk, /e/v2, /company/\<id\>/redirect) |
 | `unwrapMedium` | Medium outbound link redirect (medium.com/r/?url=\<target\>) |
 | `unwrapMozillaOutgoing` | Mozilla outgoing-link redirector (outgoing.prod.mozaws.net/v1/\<hash\>/\<target\>) |
 | `unwrapPocket` | Pocket redirect (getpocket.com/redirect?url=\<target\>) |
