@@ -17,7 +17,7 @@ const extractors = [
     params: ['adurl'],
   }),
   createParamExtractor({
-    hosts: 'googleads.g.doubleclick.net',
+    hosts: ['googleads.g.doubleclick.net', 'pagead2.googlesyndication.com'],
     path: '/pagead/iclk',
     params: ['adurl'],
   }),
@@ -30,6 +30,7 @@ const extractors = [
 
 // Google Ads click redirect (google.<TLD>/aclk?adurl=<target>,
 // {google.<TLD>,googleads.g.doubleclick.net}/pagead/iclk?adurl=<target>,
+// pagead2.googlesyndication.com/pagead/iclk?adurl=<target>,
 // syndicatedsearch.goog/aclk?adurl=<target>,
 // www.googleadservices.com/pagead/aclk?adurl=<target>,
 // {adclick,googleads}.g.doubleclick.net/aclk?adurl=<target>,

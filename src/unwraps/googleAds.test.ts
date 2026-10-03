@@ -30,7 +30,7 @@ describe('unwrapGoogleAds', () => {
     })
   })
 
-  describe('{google.<TLD>,googleads.g.doubleclick.net}/pagead/iclk', () => {
+  describe('{google.<TLD>,googleads.g.doubleclick.net,pagead2.googlesyndication.com}/pagead/iclk', () => {
     it('should extract a percent-encoded target from google.<TLD>', () => {
       const url = new URL(
         'http://www.google.at/pagead/iclk?sa=l&ai=BI-QuW4OBRo3EN4PcwQHq6ai7D8eSiyWfvN-bA-eB1HjAuAIIABABGAE4AVDa2cP4&adurl=https://example.com/accounts/login%3Fservice%3Dmail%26hl%3Dde',
@@ -45,6 +45,14 @@ describe('unwrapGoogleAds', () => {
       )
 
       expect(unwrapGoogleAds(url)).toBe('http://example.com/GG31')
+    })
+
+    it('should extract a target from pagead2.googlesyndication.com', () => {
+      const url = new URL(
+        'http://pagead2.googlesyndication.com/pagead/iclk?sa=l&ai=BG9KPILY3R6fEJ4Lw8wGH2N25A7TKtxect8mOAsCNtwGw8igQAhgC&num=2&adurl=http://www.example.com/microphones.htm&client=ca-pub-1234567890123456&nm=4',
+      )
+
+      expect(unwrapGoogleAds(url)).toBe('http://www.example.com/microphones.htm')
     })
   })
 
@@ -173,6 +181,14 @@ describe('unwrapGoogleAds', () => {
     it('should return undefined for pagead/adview on googleads.g.doubleclick.net', () => {
       const url = new URL(
         'https://googleads.g.doubleclick.net/pagead/adview?ai=CmYGyP&sig=AOD64_2nOv&adurl=https://example.com/landing/',
+      )
+
+      expect(unwrapGoogleAds(url)).toBeUndefined()
+    })
+
+    it('should return undefined for afs/ads on syndicatedsearch.goog', () => {
+      const url = new URL(
+        'https://syndicatedsearch.goog/afs/ads?client=partner-example&q=landing&adurl=https://example.com/landing/',
       )
 
       expect(unwrapGoogleAds(url)).toBeUndefined()
