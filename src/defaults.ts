@@ -46,6 +46,7 @@ import { unwrapJuejin } from './unwraps/juejin.js'
 // import { unwrapMailtrack } from './unwraps/mailtrack.js'
 import { unwrapMedium } from './unwraps/medium.js'
 // import { unwrapMimecast } from './unwraps/mimecast.js'
+// import { unwrapMoshimo } from './unwraps/moshimo.js'
 import { unwrapMozillaOutgoing } from './unwraps/mozillaOutgoing.js'
 // import { unwrapPostmark } from './unwraps/postmark.js'
 // import { unwrapProofpointV1 } from './unwraps/proofpointV1.js'
@@ -139,6 +140,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapRecruitics,
   // unwrapGeoriot,
   // unwrapFirebaseDynamicLinks,
+  // unwrapMoshimo,
 
   // Social and community platforms.
   unwrapFacebookShim,
