@@ -82,6 +82,16 @@ describe('unwrapLinksynergy', () => {
     })
   })
 
+  describe('other linksynergy.com subdomains', () => {
+    it('should extract target from deeplink murl param', () => {
+      const url = new URL(
+        'https://eu.linksynergy.com/deeplink?id=abc&mid=12345&murl=https%3A%2F%2Fexample.com%2Fproduct',
+      )
+
+      expect(unwrapLinksynergy(url)).toBe('https://example.com/product')
+    })
+  })
+
   describe('linksynergy.jrs5.com host', () => {
     it('should extract target from link murl param', () => {
       const url = new URL(
@@ -134,6 +144,18 @@ describe('unwrapLinksynergy', () => {
 
   it('should return undefined for non-LinkSynergy hosts', () => {
     const url = new URL('https://example.com/deeplink?murl=https%3A%2F%2Fexample.org')
+
+    expect(unwrapLinksynergy(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a lookalike domain', () => {
+    const url = new URL('https://notlinksynergy.com/deeplink?murl=https%3A%2F%2Fexample.com')
+
+    expect(unwrapLinksynergy(url)).toBeUndefined()
+  })
+
+  it('should return undefined for other hosts on a merchant domain', () => {
+    const url = new URL('https://www.walmart.com/deeplink?murl=https%3A%2F%2Fexample.com')
 
     expect(unwrapLinksynergy(url)).toBeUndefined()
   })

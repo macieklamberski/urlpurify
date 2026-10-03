@@ -1,7 +1,9 @@
-import { isHostOf, isHttpUrl } from 'trousse'
+import { isHostOf, isHostOrSubdomainOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
-const hosts = ['click.linksynergy.com', 'linksynergy.jrs5.com', 'linksynergy.walmart.com']
+// Merchant hosts that point at LinkSynergy. They sit on the merchant's own domain, so they match
+// exactly.
+const merchantHosts = ['linksynergy.jrs5.com', 'linksynergy.walmart.com']
 
 const carrierParams: Record<string, string> = {
   '/deeplink': 'murl',
@@ -10,11 +12,12 @@ const carrierParams: Record<string, string> = {
   '/fs-bin/stat': 'RD_PARM1',
 }
 
-// LinkSynergy (Rakuten) affiliate redirect on click.linksynergy.com, linksynergy.jrs5.com and
-// linksynergy.walmart.com: /deeplink?murl=<target>, /link?murl=<target> and
-// /fs-bin/{click,stat}?RD_PARM1=<target>. Not in defaultUnwrappers: it is an affiliate link.
+// LinkSynergy (Rakuten) affiliate redirect on linksynergy.com and every subdomain, such as
+// click.linksynergy.com, and on linksynergy.jrs5.com and linksynergy.walmart.com:
+// /deeplink?murl=<target>, /link?murl=<target> and /fs-bin/{click,stat}?RD_PARM1=<target>. Not in
+// defaultUnwrappers: it is an affiliate link.
 export const unwrapLinksynergy: UrlUnwrapper = (url) => {
-  if (!isHostOf(url, hosts)) {
+  if (!isHostOrSubdomainOf(url, 'linksynergy.com') && !isHostOf(url, merchantHosts)) {
     return
   }
 
