@@ -67,6 +67,7 @@ import { unwrapSegmentfault } from './unwraps/segmentfault.js'
 // import { unwrapSlack } from './unwraps/slack.js'
 // import { unwrapSmartredirect } from './unwraps/smartredirect.js'
 import { unwrapSspai } from './unwraps/sspai.js'
+// import { unwrapStay22 } from './unwraps/stay22.js'
 import { unwrapSteamLinkfilter } from './unwraps/steamLinkfilter.js'
 // import { unwrapValuecommerce } from './unwraps/valuecommerce.js'
 // import { unwrapViglink } from './unwraps/viglink.js'
@@ -139,6 +140,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapRecruitics,
   // unwrapGeoriot,
   // unwrapFirebaseDynamicLinks,
+  // unwrapStay22,
 
   // Social and community platforms.
   unwrapFacebookShim,
