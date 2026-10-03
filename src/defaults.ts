@@ -74,6 +74,7 @@ import { unwrapThreadsShim } from './unwraps/threads.js'
 // import { unwrapTradedoubler } from './unwraps/tradedoubler.js'
 import { unwrapTumblr } from './unwraps/tumblr.js'
 import { unwrapVkAway } from './unwraps/vkAway.js'
+// import { unwrapWordpressEmail } from './unwraps/wordpressEmail.js'
 import { unwrapYahooSearch } from './unwraps/yahooSearch.js'
 import { unwrapYouTube } from './unwraps/youtube.js'
 import { unwrapZhihu } from './unwraps/zhihu.js'
@@ -114,6 +115,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapMailpgn,
   // unwrapLeverAnalytics,
   // unwrapSlack,
+  // unwrapWordpressEmail,
 
   // Affiliate networks.
   // unwrapShareasale,
