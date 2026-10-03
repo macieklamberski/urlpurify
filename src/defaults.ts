@@ -10,6 +10,7 @@ import { unwrapAnonymTo } from './unwraps/anonymTo.js'
 // import { unwrapAmpCache } from './unwraps/ampCache.js'
 // import { unwrapAwin } from './unwraps/awin.js'
 import { unwrapBing } from './unwraps/bing.js'
+// import { unwrapBolPartner } from './unwraps/bolPartner.js'
 import { unwrapBlueskyRedirect } from './unwraps/bsky.js'
 import { unwrapCsdn } from './unwraps/csdn.js'
 import { unwrapDeviantartOutgoing } from './unwraps/deviantartOutgoing.js'
@@ -139,6 +140,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapRecruitics,
   // unwrapGeoriot,
   // unwrapFirebaseDynamicLinks,
+  // unwrapBolPartner,
 
   // Social and community platforms.
   unwrapFacebookShim,
