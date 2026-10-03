@@ -1,7 +1,7 @@
 import { isAnyOf, isHostOrSubdomainOf } from 'trousse'
 import type { UrlUnwrapper } from './types.js'
 
-// `domains` matches each domain and every subdomain of it. `hosts` matches exactly, for a domain
+// `domains` also matches every subdomain. `hosts` matches a host exactly, or by regex, for a domain
 // where a third party can get a subdomain, such as a blog host.
 export type ParamExtractorConfig = (
   | { domains: string | Array<string>; hosts?: never }
@@ -13,11 +13,12 @@ export type ParamExtractorConfig = (
 
 export const createParamExtractor = (config: ParamExtractorConfig): UrlUnwrapper => {
   return (url) => {
-    if (config.domains !== undefined && !isHostOrSubdomainOf(url, config.domains)) {
-      return
-    }
+    const isHostMatch =
+      config.domains !== undefined
+        ? isHostOrSubdomainOf(url, config.domains)
+        : isAnyOf(url.hostname, config.hosts)
 
-    if (config.hosts !== undefined && !isAnyOf(url.hostname, config.hosts)) {
+    if (!isHostMatch) {
       return
     }
 

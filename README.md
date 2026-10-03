@@ -71,7 +71,7 @@ const unwrapExample = createParamExtractor({
 cleanUrl(url, { unwrappers: [...defaultUnwrappers, unwrapExample] })
 ```
 
-On a domain where anyone can get a subdomain, such as a blog host, pass `hosts` instead of `domains`. It matches exactly, and takes a host, an array of hosts or a regex.
+On a domain where anyone can get a subdomain, such as a blog host, pass `hosts` instead of `domains`. It takes a host or an array of hosts, matched exactly, or a regex.
 
 For wrappers that encode the target (base64 path segments, custom escaping), write a plain function of type `UrlUnwrapper`: it receives a `URL` and returns the target string or `undefined`.
 

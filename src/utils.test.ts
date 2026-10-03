@@ -109,6 +109,26 @@ describe('createParamExtractor', () => {
     expect(extract(value)).toBeUndefined()
   })
 
+  it('should return undefined for an empty domain', () => {
+    const extract = createParamExtractor({
+      domains: '',
+      params: ['url'],
+    })
+    const value = new URL('https://example.com/?url=https%3A%2F%2Fexample.org')
+
+    expect(extract(value)).toBeUndefined()
+  })
+
+  it('should return undefined for an empty host', () => {
+    const extract = createParamExtractor({
+      hosts: '',
+      params: ['url'],
+    })
+    const value = new URL('https://example.com/?url=https%3A%2F%2Fexample.org')
+
+    expect(extract(value)).toBeUndefined()
+  })
+
   it('should require the configured path when given', () => {
     const extract = createParamExtractor({
       hosts: 'redirect.example.com',
