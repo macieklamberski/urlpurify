@@ -59,4 +59,10 @@ describe('unwrapDuckduckgo', () => {
 
     expect(unwrapDuckduckgo(url)).toBeUndefined()
   })
+
+  it('should return undefined for u3 param outside the ad click path', () => {
+    const url = new URL('https://duckduckgo.com/?u3=https%3A%2F%2Fexample.com')
+
+    expect(unwrapDuckduckgo(url)).toBeUndefined()
+  })
 })
