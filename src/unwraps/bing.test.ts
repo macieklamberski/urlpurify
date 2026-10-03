@@ -149,4 +149,12 @@ describe('unwrapBing', () => {
 
     expect(unwrapBing(url)).toBeUndefined()
   })
+
+  it('should return undefined for a bing subdomain of another domain', () => {
+    const url = new URL(
+      'https://bing.example.com/news/apiclick.aspx?url=https%3A%2F%2Fexample.com%2F',
+    )
+
+    expect(unwrapBing(url)).toBeUndefined()
+  })
 })
