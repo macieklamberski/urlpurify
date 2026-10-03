@@ -14,6 +14,7 @@ import { unwrapBlueskyRedirect } from './unwraps/bsky.js'
 import { unwrapCsdn } from './unwraps/csdn.js'
 import { unwrapDeviantartOutgoing } from './unwraps/deviantartOutgoing.js'
 import { unwrapDisqus } from './unwraps/disqus.js'
+// import { unwrapDmmAffiliate } from './unwraps/dmmAffiliate.js'
 import { unwrapDouban } from './unwraps/douban.js'
 // import { unwrapDuckduckgo } from './unwraps/duckduckgo.js'
 // import { unwrapEbayRover } from './unwraps/ebayRover.js'
@@ -139,6 +140,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapRecruitics,
   // unwrapGeoriot,
   // unwrapFirebaseDynamicLinks,
+  // unwrapDmmAffiliate,
 
   // Social and community platforms.
   unwrapFacebookShim,
