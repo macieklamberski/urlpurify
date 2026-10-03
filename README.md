@@ -120,6 +120,7 @@ Enabled by default:
 | `unwrapTumblr` | Tumblr outbound redirect (t.umblr.com/redirect?z=\<target\>) |
 | `unwrapVkAway` | VK away redirect (vk.com/away.php?to=\<target\>) |
 | `unwrapYahooSearch` | Yahoo Search redirect (r.search.yahoo.com/.../RU=\<target\>/RK=...) |
+| `unwrapYandexMail` | Yandex Mail link redirect (mail.yandex.\<TLD\>/re.jsx?l=\<base64url\>) |
 | `unwrapYouTube` | YouTube external redirect (www.youtube.com/redirect?q=\<target\>) |
 | `unwrapZhihu` | Zhihu external redirect (link.zhihu.com/?target=\<target\>) |
 
