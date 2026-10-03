@@ -1,13 +1,6 @@
 import { describe, expect, it } from 'bun:test'
 import { unwrapBing } from './bing.js'
 
-const newsHostCases: Array<[string]> = [
-  ['cn.bing.com'],
-  ['www4.bing.com'],
-  ['ssl.bing.com'],
-  ['global.bing.com'],
-]
-
 describe('unwrapBing', () => {
   it('should extract target from u param with a1 prefix', () => {
     const url = new URL('https://www.bing.com/ck/a?!&&u=a1aHR0cHM6Ly9leGFtcGxlLmNvbS9wYWdl')
@@ -77,8 +70,16 @@ describe('unwrapBing', () => {
     expect(unwrapBing(url)).toBe('https://example.com/')
   })
 
-  it.each(newsHostCases)('should accept news apiclick on %s', (host) => {
-    const url = new URL(`https://${host}/news/apiclick.aspx?url=https%3A%2F%2Fexample.com%2F`)
+  it('should accept news apiclick on any bing.com subdomain', () => {
+    const url = new URL('https://edge.bing.com/news/apiclick.aspx?url=https%3A%2F%2Fexample.com%2F')
+
+    expect(unwrapBing(url)).toBe('https://example.com/')
+  })
+
+  it('should accept news apiclick on a Bing country domain', () => {
+    const url = new URL(
+      'https://www.bing.co.uk/news/apiclick.aspx?url=https%3A%2F%2Fexample.com%2F',
+    )
 
     expect(unwrapBing(url)).toBe('https://example.com/')
   })

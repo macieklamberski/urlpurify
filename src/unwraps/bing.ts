@@ -2,7 +2,8 @@ import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { decodeBase64Url } from '../utils.js'
 
-const bingHostRegex = /^(?:(?:www|www4|cn|ssl|global)\.)?bing\.com$/
+// Match bing.<TLD> and every subdomain, such as www., cn. or ssl.
+const bingHostRegex = /(?:^|\.)bing\.(?:com|[a-z]{2,3}(?:\.[a-z]{2,3})?)$/
 const bingPrefixRegex = /^a\d/
 
 // Bing redirects, in two shapes:
