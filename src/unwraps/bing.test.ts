@@ -83,6 +83,12 @@ describe('unwrapBing', () => {
     expect(unwrapBing(url)).toBe('https://example.com/')
   })
 
+  it('should accept search-result redirect on ssl.bing.com', () => {
+    const url = new URL('https://ssl.bing.com/ck/a?u=a1aHR0cHM6Ly9leGFtcGxlLmNvbS9wYWdl')
+
+    expect(unwrapBing(url)).toBe('https://example.com/page')
+  })
+
   it('should keep query and fragment of the news apiclick target', () => {
     const url = new URL(
       'https://www.bing.com/news/apiclick.aspx?url=https%3A%2F%2Fexample.com%2Fpage%3Fid%3D1%23top',
@@ -122,13 +128,23 @@ describe('unwrapBing', () => {
   })
 
   it('should return undefined for other news paths', () => {
-    const url = new URL('https://www.bing.com/news/search?q=example&FORM=HDRSC6')
+    const url = new URL(
+      'https://www.bing.com/news/search?q=example&url=https%3A%2F%2Fexample.com%2F',
+    )
 
     expect(unwrapBing(url)).toBeUndefined()
   })
 
   it('should return undefined for news apiclick on non-Bing hosts', () => {
     const url = new URL('https://example.com/news/apiclick.aspx?url=https%3A%2F%2Fexample.com%2F')
+
+    expect(unwrapBing(url)).toBeUndefined()
+  })
+
+  it('should return undefined for hosts ending in bing.com', () => {
+    const url = new URL(
+      'https://examplebing.com/news/apiclick.aspx?url=https%3A%2F%2Fexample.com%2F',
+    )
 
     expect(unwrapBing(url)).toBeUndefined()
   })
