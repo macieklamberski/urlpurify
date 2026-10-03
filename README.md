@@ -63,12 +63,15 @@ Builds an unwrapper for the common case where the target URL sits in a query par
 import { cleanUrl, createParamExtractor, defaultUnwrappers } from 'urlpurify'
 
 const unwrapExample = createParamExtractor({
-  hosts: 'go.example.com', // Also accepts an array of hosts or a regex.
+  domains: 'example.com', // Matches example.com and every subdomain. Also accepts an array.
+  path: '/out',
   params: ['target'],
 })
 
 cleanUrl(url, { unwrappers: [...defaultUnwrappers, unwrapExample] })
 ```
+
+On a domain where anyone can get a subdomain, such as a blog host, pass `hosts` instead of `domains`. It takes a host or an array of hosts, matched exactly, or a regex.
 
 For wrappers that encode the target (base64 path segments, custom escaping), write a plain function of type `UrlUnwrapper`: it receives a `URL` and returns the target string or `undefined`.
 
