@@ -34,6 +34,14 @@ describe('unwrapBusinessWire', () => {
     expect(unwrapBusinessWire(url)).toBe('https://example.com/educate/#report')
   })
 
+  it('should extract an uppercase twice-encoded target', () => {
+    const url = new URL(
+      'https://cts.businesswire.com/ct/CT?id=smartlink&url=HTTPS%253A%252F%252Fexample.com%252F',
+    )
+
+    expect(unwrapBusinessWire(url)).toBe('HTTPS://example.com/')
+  })
+
   it('should return undefined when url param is missing', () => {
     const url = new URL('https://cts.businesswire.com/ct/CT?id=smartlink&esheet=54545904&index=1')
 

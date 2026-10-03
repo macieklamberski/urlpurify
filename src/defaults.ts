@@ -170,6 +170,8 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   unwrapGitee,
   unwrapCsdn,
   unwrapHashnode,
+
+  // Press release wires.
   unwrapBusinessWire,
 
   // Cache and proxy services.

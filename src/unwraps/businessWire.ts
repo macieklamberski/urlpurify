@@ -22,9 +22,7 @@ export const unwrapBusinessWire: UrlUnwrapper = (url) => {
   if (encodedSchemeRegex.test(target)) {
     try {
       target = decodeURIComponent(target)
-    } catch {
-      return
-    }
+    } catch {}
   }
 
   if (isHttpUrl(target)) {
