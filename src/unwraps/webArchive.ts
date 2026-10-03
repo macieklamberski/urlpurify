@@ -37,8 +37,8 @@ export const unwrapWebArchive: UrlUnwrapper = (url) => {
     match = url.pathname.match(pathRegex)
   }
 
-  if (isHostOf(url, ['web.archive.org', 'replay.web.archive.org'])) {
-    match ??= url.pathname.match(replayPathRegex)
+  if (!match && isHostOf(url, ['web.archive.org', 'replay.web.archive.org'])) {
+    match = url.pathname.match(replayPathRegex)
   }
 
   if (isHostOf(url, 'wayback.archive-it.org')) {
