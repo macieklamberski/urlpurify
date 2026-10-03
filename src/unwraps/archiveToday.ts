@@ -42,7 +42,7 @@ export const unwrapArchiveToday: UrlUnwrapper = (url) => {
     target = `http://${target}`
   }
 
-  // An older or /o/ link escapes the target's own `?` and `#` as `%3F` and `%23` in the path.
+  // A link can escape the target's own `?` and `#` as `%3F` and `%23` in the path.
   target = target.replace(escapedQueryRegex, '?').replace('%23', '#')
 
   // An unencoded target's query and fragment land in the snapshot URL's own `search` and `hash`,

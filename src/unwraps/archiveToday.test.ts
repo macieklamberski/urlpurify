@@ -184,6 +184,22 @@ describe('unwrapArchiveToday', () => {
     expect(unwrapArchiveToday(url)).toBeUndefined()
   })
 
+  it('should restore a lowercase escaped query separator', () => {
+    const url = new URL(
+      'https://archive.is/20121211084659/http:/www.example.com/people/search%3flastname=Doe',
+    )
+
+    expect(unwrapArchiveToday(url)).toBe('http://www.example.com/people/search?lastname=Doe')
+  })
+
+  it('should restore only the first escaped query and fragment separators', () => {
+    const url = new URL(
+      'https://archive.is/20121211084659/http:/www.example.com/search%3Fq=a%3Fb%23top%23x',
+    )
+
+    expect(unwrapArchiveToday(url)).toBe('http://www.example.com/search?q=a%3Fb#top%23x')
+  })
+
   it('should unwrap through cleanUrl when passed as an unwrapper', () => {
     const value = 'https://archive.is/o/v8cfx/https:/www.example.com/us/story?utm_source=feed'
 
