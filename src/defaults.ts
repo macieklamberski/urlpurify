@@ -58,6 +58,7 @@ import { unwrapNaverOutgoing } from './unwraps/naverOutgoing.js'
 // import { unwrapOutlookSafelinks } from './unwraps/outlookSafelinks.js'
 // import { unwrapPartnerAds } from './unwraps/partnerAds.js'
 import { unwrapPocket } from './unwraps/pocket.js'
+import { unwrapPrNewswire } from './unwraps/prNewswire.js'
 import { unwrapRedditOut } from './unwraps/redditOut.js'
 // import { unwrapRedirectingat } from './unwraps/redirectingat.js'
 import { unwrapSegmentfault } from './unwraps/segmentfault.js'
@@ -169,6 +170,9 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   unwrapGitee,
   unwrapCsdn,
   unwrapHashnode,
+
+  // Press release wires.
+  unwrapPrNewswire,
 
   // Cache and proxy services.
   // unwrapAmpCache,
