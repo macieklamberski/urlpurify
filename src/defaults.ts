@@ -12,6 +12,7 @@ import { unwrapAnonymTo } from './unwraps/anonymTo.js'
 import { unwrapBing } from './unwraps/bing.js'
 import { unwrapBlueskyRedirect } from './unwraps/bsky.js'
 import { unwrapCsdn } from './unwraps/csdn.js'
+import { unwrapDerefMail } from './unwraps/derefMail.js'
 import { unwrapDeviantartOutgoing } from './unwraps/deviantartOutgoing.js'
 import { unwrapDisqus } from './unwraps/disqus.js'
 import { unwrapDouban } from './unwraps/douban.js'
@@ -152,6 +153,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   unwrapBlueskyRedirect,
   unwrapDisqus,
   unwrapAnonymTo,
+  unwrapDerefMail,
   unwrapDeviantartOutgoing,
   unwrapNaverOutgoing,
   unwrapSteamLinkfilter,
