@@ -51,4 +51,10 @@ describe('unwrapYahooSearch', () => {
 
     expect(unwrapYahooSearch(url)).toBeUndefined()
   })
+
+  it('should return undefined when an unencoded RU segment holds no http url', () => {
+    const url = new URL('https://r.search.yahoo.com/_ylt=AAA/RU=example.com/page/RK=2/RS=abc')
+
+    expect(unwrapYahooSearch(url)).toBeUndefined()
+  })
 })
