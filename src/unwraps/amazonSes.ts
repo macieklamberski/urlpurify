@@ -1,7 +1,7 @@
 import { isHostOrSubdomainOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
-const pathRegex = /^\/L0\/([^/]+)\/\d+\/[^/]+\/[^/]+$/
+const pathRegex = /^\/L0\/(.+?)\/\d+\/[^/]+\/[^/]+$/
 
 // Amazon SES click tracking (<id>.r.<region>.awstrack.me/L0/<target>/<n>/<message id>/<signature>).
 // Opt-in: unwrapping removes the sender's click count.

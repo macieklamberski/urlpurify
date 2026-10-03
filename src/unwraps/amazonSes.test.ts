@@ -146,12 +146,12 @@ describe('unwrapAmazonSes', () => {
     expect(unwrapAmazonSes(url)).toBeUndefined()
   })
 
-  it('should return undefined when the target has literal slashes', () => {
+  it('should extract a target with literal slashes', () => {
     const url = new URL(
       `https://abcd1234.r.us-east-1.awstrack.me/L0/https://example.com/a/b${tail}`,
     )
 
-    expect(unwrapAmazonSes(url)).toBeUndefined()
+    expect(unwrapAmazonSes(url)).toBe('https://example.com/a/b')
   })
 
   it('should return undefined when the target segment is empty', () => {
