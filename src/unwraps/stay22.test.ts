@@ -177,4 +177,12 @@ describe('unwrapStay22', () => {
 
     expect(unwrapStay22(url)).toBeUndefined()
   })
+
+  it('should extract a plain http target encoded twice', () => {
+    const url = new URL(
+      'https://www.stay22.com/allez/booking?aid=examplepublisher&link=http%253A%252F%252Fwww.example.com%252F',
+    )
+
+    expect(unwrapStay22(url)).toBe('http://www.example.com/')
+  })
 })
