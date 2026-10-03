@@ -7,6 +7,7 @@ import { unwrapAnonymTo } from './unwraps/anonymTo.js'
 // import { unwrapAceml } from './unwraps/aceml.js'
 // import { unwrapAdjust } from './unwraps/adjust.js'
 // import { unwrapAmazonAffiliate } from './unwraps/amazonAffiliate.js'
+// import { unwrapAmazonSes } from './unwraps/amazonSes.js'
 // import { unwrapAmpCache } from './unwraps/ampCache.js'
 // import { unwrapAwin } from './unwraps/awin.js'
 import { unwrapBing } from './unwraps/bing.js'
@@ -106,6 +107,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapProofpointV3,
   // unwrapMimecast,
   // unwrapPostmark,
+  // unwrapAmazonSes,
   // unwrapAceml,
   // unwrapIcptrack,
   // unwrapMailchimp,
