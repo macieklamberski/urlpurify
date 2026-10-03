@@ -81,4 +81,10 @@ describe('unwrapYandexTurbo', () => {
 
     expect(unwrapYandexTurbo(url)).toBeUndefined()
   })
+
+  it('should return undefined for the Turbo view on a host that extends yandex.ru', () => {
+    const url = new URL('https://yandex.ru.example.com/turbo?text=https%3A%2F%2Fexample.com%2F')
+
+    expect(unwrapYandexTurbo(url)).toBeUndefined()
+  })
 })
