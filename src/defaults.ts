@@ -8,6 +8,7 @@ import { unwrapAnonymTo } from './unwraps/anonymTo.js'
 // import { unwrapAdjust } from './unwraps/adjust.js'
 // import { unwrapAmazonAffiliate } from './unwraps/amazonAffiliate.js'
 // import { unwrapAmpCache } from './unwraps/ampCache.js'
+// import { unwrapAvantlink } from './unwraps/avantlink.js'
 // import { unwrapAwin } from './unwraps/awin.js'
 import { unwrapBing } from './unwraps/bing.js'
 import { unwrapBlueskyRedirect } from './unwraps/bsky.js'
@@ -139,6 +140,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapRecruitics,
   // unwrapGeoriot,
   // unwrapFirebaseDynamicLinks,
+  // unwrapAvantlink,
 
   // Social and community platforms.
   unwrapFacebookShim,
