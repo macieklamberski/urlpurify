@@ -42,6 +42,46 @@ describe('unwrapLinkedin', () => {
     expect(unwrapLinkedin(url)).toBe('http://example.com/talks.html')
   })
 
+  it('should extract target from /nhome/nus-redirect', () => {
+    const url = new URL(
+      'https://www.linkedin.com/nhome/nus-redirect?url=http%3A%2F%2Fexample%2Ecom%2Farticle&urlhash=tQtC&pos=3%3A1',
+    )
+
+    expect(unwrapLinkedin(url)).toBe('http://example.com/article')
+  })
+
+  it('should extract target from /nus-trk', () => {
+    const url = new URL(
+      'https://www.linkedin.com/nus-trk?trkact=viewShareLink&ut=NUS_UNIU_SHARE&url=http%3A%2F%2Fexample%2Ecom%2Farticle&urlhash=cuei',
+    )
+
+    expect(unwrapLinkedin(url)).toBe('http://example.com/article')
+  })
+
+  it('should extract target from /e/v2', () => {
+    const url = new URL(
+      'https://www.linkedin.com/e/v2?urlhash=miI9&url=https%3A%2F%2Fexample%2Ecom%2Farticle&midToken=AQF3_rJ-ffYOkA',
+    )
+
+    expect(unwrapLinkedin(url)).toBe('https://example.com/article')
+  })
+
+  it('should extract target from /company/<id>/redirect with a numeric id', () => {
+    const url = new URL(
+      'https://www.linkedin.com/company/3129713/redirect?url=https%3A%2F%2Fexample%2Ecom%2Farticle&urlhash=BAar',
+    )
+
+    expect(unwrapLinkedin(url)).toBe('https://example.com/article')
+  })
+
+  it('should extract target from /company/<id>/redirect with a slug id', () => {
+    const url = new URL(
+      'https://www.linkedin.com/company/example-inc-/redirect?url=http%3A%2F%2Fwww%2Eexample%2Ecom&urlhash=GCS5',
+    )
+
+    expect(unwrapLinkedin(url)).toBe('http://www.example.com')
+  })
+
   it('should keep the query of an unencoded target', () => {
     const url = new URL(
       'https://www.linkedin.com/safety/go?url=https://example.com/watch?v=abc&trk=flagship-messaging-web',
