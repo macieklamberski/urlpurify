@@ -49,4 +49,10 @@ describe('unwrapMailchimp', () => {
 
     expect(unwrapMailchimp(url)).toBeUndefined()
   })
+
+  it('should return undefined for url param on a nested click path', () => {
+    const url = new URL('https://us5.mailchimp.com/x/mctx/click?url=https%3A%2F%2Fexample.com')
+
+    expect(unwrapMailchimp(url)).toBeUndefined()
+  })
 })
