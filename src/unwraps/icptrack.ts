@@ -1,7 +1,7 @@
 import type { UrlUnwrapper } from '../types.js'
 import { createParamExtractor } from '../utils.js'
 
-const clickPathRegex = /^\/icp\/r(?:elay|click)\.php$/
+const clickPaths = ['/icp/relay.php', '/icp/rclick.php']
 
 const extractDestination = createParamExtractor({
   hosts: 'click.icptrack.com',
@@ -11,7 +11,7 @@ const extractDestination = createParamExtractor({
 // ICPTrack email click tracker (click.icptrack.com/icp/relay.php?...&destination=<target>,
 // also /icp/rclick.php?...&destination=<target>).
 export const unwrapIcptrack: UrlUnwrapper = (url) => {
-  if (!clickPathRegex.test(url.pathname)) {
+  if (!clickPaths.includes(url.pathname)) {
     return
   }
 

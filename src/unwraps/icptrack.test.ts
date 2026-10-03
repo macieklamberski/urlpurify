@@ -40,6 +40,22 @@ describe('unwrapIcptrack', () => {
     expect(unwrapIcptrack(url)).toBeUndefined()
   })
 
+  it('should return undefined for rclick.php below another path', () => {
+    const url = new URL(
+      'https://click.icptrack.com/prefix/icp/rclick.php?destination=https%3A%2F%2Fexample.com',
+    )
+
+    expect(unwrapIcptrack(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a path that only resembles rclick.php', () => {
+    const url = new URL(
+      'https://click.icptrack.com/icp/rclickxphp?destination=https%3A%2F%2Fexample.com',
+    )
+
+    expect(unwrapIcptrack(url)).toBeUndefined()
+  })
+
   it('should return undefined for non-relay paths', () => {
     const url = new URL('https://click.icptrack.com/other?destination=https%3A%2F%2Fexample.com')
 
