@@ -10,6 +10,20 @@ describe('unwrapMailchimp', () => {
     expect(unwrapMailchimp(url)).toBe('https://example.com/article')
   })
 
+  it('should extract target from url param on the singular click path', () => {
+    const url = new URL(
+      'https://us5.mailchimp.com/mctx/click?url=http%3A%2F%2Fexample.com%2Fp%2Fdroles-doiseaux.html&xid=7d119d894a&uid=11704579&pool=&subject=',
+    )
+
+    expect(unwrapMailchimp(url)).toBe('http://example.com/p/droles-doiseaux.html')
+  })
+
+  it('should return undefined for url param below the click path', () => {
+    const url = new URL('https://us5.mailchimp.com/mctx/click/extra?url=https%3A%2F%2Fexample.com')
+
+    expect(unwrapMailchimp(url)).toBeUndefined()
+  })
+
   it('should match other Mailchimp subdomains', () => {
     const url = new URL(
       'https://eepurl.mailchimp.com/mctx/clicks?url=https%3A%2F%2Fexample.com%2Fother',
