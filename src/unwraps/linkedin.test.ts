@@ -137,4 +137,64 @@ describe('unwrapLinkedin', () => {
 
     expect(unwrapLinkedin(url)).toBeUndefined()
   })
+
+  it('should return undefined for hosts ending in linkedin.com', () => {
+    const url = new URL('https://examplelinkedin.com/safety/go?url=https%3A%2F%2Fexample.com%2F')
+
+    expect(unwrapLinkedin(url)).toBeUndefined()
+  })
+
+  it('should extract target on any linkedin.com subdomain', () => {
+    const url = new URL('https://uk.linkedin.com/safety/go?url=https%3A%2F%2Fexample.com%2F')
+
+    expect(unwrapLinkedin(url)).toBe('https://example.com/')
+  })
+
+  it('should return undefined when a shim path is nested under another path', () => {
+    const url = new URL(
+      'https://www.linkedin.com/in/example/safety/go?url=https%3A%2F%2Fexample.com%2F',
+    )
+
+    expect(unwrapLinkedin(url)).toBeUndefined()
+  })
+
+  it('should return undefined when a redirect path is nested under another path', () => {
+    const url = new URL(
+      'https://www.linkedin.com/in/example/company/example-inc/redirect?url=https%3A%2F%2Fexample.com%2F',
+    )
+
+    expect(unwrapLinkedin(url)).toBeUndefined()
+  })
+
+  it('should return undefined when /safety/go has more segments', () => {
+    const url = new URL(
+      'https://www.linkedin.com/safety/go/example?url=https%3A%2F%2Fexample.com%2F',
+    )
+
+    expect(unwrapLinkedin(url)).toBeUndefined()
+  })
+
+  it('should return undefined when /redirect has more segments', () => {
+    const url = new URL(
+      'https://www.linkedin.com/redirect/example?url=https%3A%2F%2Fexample.com%2F',
+    )
+
+    expect(unwrapLinkedin(url)).toBeUndefined()
+  })
+
+  it('should return undefined when /company/<id>/redirect has more segments', () => {
+    const url = new URL(
+      'https://www.linkedin.com/company/example-inc/redirect/example?url=https%3A%2F%2Fexample.com%2F',
+    )
+
+    expect(unwrapLinkedin(url)).toBeUndefined()
+  })
+
+  it('should return undefined when /company/<id>/redirect has two id segments', () => {
+    const url = new URL(
+      'https://www.linkedin.com/company/example-inc/life/redirect?url=https%3A%2F%2Fexample.com%2F',
+    )
+
+    expect(unwrapLinkedin(url)).toBeUndefined()
+  })
 })
