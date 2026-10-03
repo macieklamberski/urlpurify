@@ -113,6 +113,12 @@ describe('unwrapWebArchive', () => {
     expect(unwrapWebArchive(value)).toBe('https://example.com/page')
   })
 
+  it('should restore the double slash of an uppercase collapsed target scheme', () => {
+    const value = new URL('https://web.archive.org/web/20240101120000/HTTP:/example.com/page')
+
+    expect(unwrapWebArchive(value)).toBe('HTTP://example.com/page')
+  })
+
   it('should return undefined for the image modifier', () => {
     const value = new URL('https://web.archive.org/web/20240101120000im_/https://example.com/a.png')
 
