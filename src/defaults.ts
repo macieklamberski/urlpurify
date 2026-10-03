@@ -38,6 +38,7 @@ import { unwrapHrefLi } from './unwraps/hrefLi.js'
 import { unwrapInstagramShim } from './unwraps/instagram.js'
 import { unwrapJianshuGo } from './unwraps/jianshuGo.js'
 import { unwrapJuejin } from './unwraps/juejin.js'
+// import { unwrapKlook } from './unwraps/klook.js'
 // import { unwrapLeverAnalytics } from './unwraps/leverAnalytics.js'
 // import { unwrapLinksynergy } from './unwraps/linksynergy.js'
 // import { unwrapMailchimp } from './unwraps/mailchimp.js'
@@ -129,6 +130,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapSjv,
   // unwrapEbayRover,
   // unwrapAmazonAffiliate,
+  // unwrapKlook,
   // unwrapAdjust,
   // unwrapGateSc,
   // unwrapSmartredirect,
