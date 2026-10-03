@@ -56,6 +56,59 @@ describe('createParamExtractor', () => {
     expect(extract(value)).toBe(expected)
   })
 
+  it('should match the domain itself when given as domains', () => {
+    const extract = createParamExtractor({
+      domains: 'example.com',
+      params: ['url'],
+    })
+    const value = new URL('https://example.com/?url=https%3A%2F%2Fexample.org')
+    const expected = 'https://example.org'
+
+    expect(extract(value)).toBe(expected)
+  })
+
+  it('should match any subdomain of a domain given as domains', () => {
+    const extract = createParamExtractor({
+      domains: 'example.com',
+      params: ['url'],
+    })
+    const value = new URL('https://a.b.example.com/?url=https%3A%2F%2Fexample.org')
+    const expected = 'https://example.org'
+
+    expect(extract(value)).toBe(expected)
+  })
+
+  it('should match domains given as an array', () => {
+    const extract = createParamExtractor({
+      domains: ['example.com', 'example.net'],
+      params: ['url'],
+    })
+    const value = new URL('https://redirect.example.net/?url=https%3A%2F%2Fexample.org')
+    const expected = 'https://example.org'
+
+    expect(extract(value)).toBe(expected)
+  })
+
+  it('should return undefined for a host that only ends in a domain given as domains', () => {
+    const extract = createParamExtractor({
+      domains: 'example.com',
+      params: ['url'],
+    })
+    const value = new URL('https://notexample.com/?url=https%3A%2F%2Fexample.org')
+
+    expect(extract(value)).toBeUndefined()
+  })
+
+  it('should return undefined for a host outside the domains', () => {
+    const extract = createParamExtractor({
+      domains: 'example.com',
+      params: ['url'],
+    })
+    const value = new URL('https://example.net/?url=https%3A%2F%2Fexample.org')
+
+    expect(extract(value)).toBeUndefined()
+  })
+
   it('should require the configured path when given', () => {
     const extract = createParamExtractor({
       hosts: 'redirect.example.com',
