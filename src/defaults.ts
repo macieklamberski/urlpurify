@@ -31,6 +31,7 @@ import { unwrapGoogleAmpViewer } from './unwraps/googleAmpViewer.js'
 import { unwrapGoogleNews } from './unwraps/googleNews.js'
 import { unwrapGoogleNewsModern } from './unwraps/googleNewsModern.js'
 import { unwrapGoogleScholar } from './unwraps/googleScholar.js'
+// import { unwrapGovdelivery } from './unwraps/govdelivery.js'
 import { unwrapHashnode } from './unwraps/hashnode.js'
 import { unwrapHrefLi } from './unwraps/hrefLi.js'
 // import { unwrapIcptrack } from './unwraps/icptrack.js'
@@ -114,6 +115,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapMailpgn,
   // unwrapLeverAnalytics,
   // unwrapSlack,
+  // unwrapGovdelivery,
 
   // Affiliate networks.
   // unwrapShareasale,
