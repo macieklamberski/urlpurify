@@ -1,8 +1,7 @@
 import { isAnyOf, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
-// translate.google.<TLD> and every subdomain. The frame host matches exactly: googleusercontent.com
-// gives third parties subdomains, such as Apps Script web apps.
+// translate.google.<TLD> and every subdomain.
 const googleTranslateHostRegex = /(?:^|\.)translate\.google\.(?:com|[a-z]{2,3}(?:\.[a-z]{2,3})?)$/
 
 const googleTranslatePaths = ['/translate', '/website']
@@ -13,6 +12,7 @@ const googleTranslatePaths = ['/translate', '/website']
 export const unwrapGoogleTranslate: UrlUnwrapper = (url) => {
   const isTranslatePage =
     isAnyOf(url.hostname, googleTranslateHostRegex) && googleTranslatePaths.includes(url.pathname)
+  // googleusercontent.com gives third parties subdomains, such as Apps Script web apps.
   const isTranslateFrame =
     isHostOf(url, 'translate.googleusercontent.com') && url.pathname === '/translate_c'
 

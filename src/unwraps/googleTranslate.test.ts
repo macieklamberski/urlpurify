@@ -68,6 +68,14 @@ describe('unwrapGoogleTranslate', () => {
     expect(unwrapGoogleTranslate(url)).toBeUndefined()
   })
 
+  it('should return undefined for a host that only starts with translate.google.com', () => {
+    const url = new URL(
+      'https://translate.google.com.example.net/translate?u=https%3A%2F%2Fexample.com%2Fpage',
+    )
+
+    expect(unwrapGoogleTranslate(url)).toBeUndefined()
+  })
+
   it('should extract target from the website path', () => {
     const url = new URL(
       'https://translate.google.com/website?sl=de&tl=en&hl=en-US&client=webapp&u=https://example.com/page',
