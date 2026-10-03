@@ -27,6 +27,7 @@ import { unwrapFlipboard } from './unwraps/flipboard.js'
 // import { unwrapGeoriot } from './unwraps/georiot.js'
 import { unwrapGitee } from './unwraps/gitee.js'
 import { unwrapGoogle } from './unwraps/google.js'
+// import { unwrapGoogleAds } from './unwraps/googleAds.js'
 import { unwrapGoogleAmpViewer } from './unwraps/googleAmpViewer.js'
 import { unwrapGoogleNews } from './unwraps/googleNews.js'
 import { unwrapGoogleNewsModern } from './unwraps/googleNewsModern.js'
@@ -92,6 +93,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   unwrapBing,
   // unwrapDuckduckgo,
   unwrapGoogle,
+  // unwrapGoogleAds,
   unwrapGoogleNews,
   unwrapGoogleNewsModern,
   unwrapGoogleScholar,
