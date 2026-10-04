@@ -1,6 +1,19 @@
 import { describe, expect, it } from 'bun:test'
 import { unwrapDerefMail } from './derefMail.js'
 
+const dereferrerDomains: Array<string> = [
+  'deref-1und1.de',
+  'deref-1und1-02.de',
+  'deref-gmx.co.uk',
+  'deref-gmx.com',
+  'deref-gmx.fr',
+  'deref-gmx.net',
+  'deref-mail.com',
+  'deref-mail-02.com',
+  'deref-web.de',
+  'deref-web-02.de',
+]
+
 describe('unwrapDerefMail', () => {
   it('should extract target from redirectUrl param', () => {
     const url = new URL(
@@ -42,6 +55,14 @@ describe('unwrapDerefMail', () => {
     )
 
     expect(unwrapDerefMail(url)).toBe('http://www.example.org')
+  })
+
+  it.each(dereferrerDomains)('should extract target on %s', (domain) => {
+    const url = new URL(
+      `https://${domain}/mail/client/q8XRYc3V_nM/dereferrer/?redirectUrl=http%3A%2F%2Fwww.example.com`,
+    )
+
+    expect(unwrapDerefMail(url)).toBe('http://www.example.com')
   })
 
   it('should extract target on a subdomain of a dereferrer domain', () => {
