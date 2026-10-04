@@ -103,6 +103,7 @@ import { unwrapThreadsShim } from './unwraps/threads.js'
 import { unwrapTumblr } from './unwraps/tumblr.js'
 // import { unwrapUkgwa } from './unwraps/ukgwa.js'
 import { unwrapVkAway } from './unwraps/vkAway.js'
+// import { unwrapWordpressEmail } from './unwraps/wordpressEmail.js'
 // import { unwrapWebgains } from './unwraps/webgains.js'
 import { unwrapYahooSearch } from './unwraps/yahooSearch.js'
 import { unwrapYandexMail } from './unwraps/yandexMail.js'
@@ -152,6 +153,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapMailpgn,
   // unwrapLeverAnalytics,
   // unwrapSlack,
+  // unwrapWordpressEmail,
 
   // Affiliate networks.
   // unwrapShareasale,
