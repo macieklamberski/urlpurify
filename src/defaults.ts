@@ -20,6 +20,7 @@ import { unwrapBusinessWire } from './unwraps/businessWire.js'
 import { unwrapCsdn } from './unwraps/csdn.js'
 import { unwrapDeviantartOutgoing } from './unwraps/deviantartOutgoing.js'
 import { unwrapDisqus } from './unwraps/disqus.js'
+// import { unwrapDmmAffiliate } from './unwraps/dmmAffiliate.js'
 import { unwrapDouban } from './unwraps/douban.js'
 // import { unwrapDuckduckgo } from './unwraps/duckduckgo.js'
 // import { unwrapEbayRover } from './unwraps/ebayRover.js'
@@ -159,6 +160,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapRakutenAffiliate,
   // unwrapMoshimo,
   // unwrapBolPartner,
+  // unwrapDmmAffiliate,
 
   // Ad networks.
   // unwrapGoogleAds,
