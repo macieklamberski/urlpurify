@@ -12,6 +12,7 @@ import { unwrapAnonymTo } from './unwraps/anonymTo.js'
 // import { unwrapBarracudaLinkProtect } from './unwraps/barracudaLinkProtect.js'
 import { unwrapBing } from './unwraps/bing.js'
 import { unwrapBlueskyRedirect } from './unwraps/bsky.js'
+import { unwrapBusinessWire } from './unwraps/businessWire.js'
 import { unwrapCsdn } from './unwraps/csdn.js'
 import { unwrapDeviantartOutgoing } from './unwraps/deviantartOutgoing.js'
 import { unwrapDisqus } from './unwraps/disqus.js'
@@ -176,6 +177,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   unwrapHashnode,
 
   // Press release wires.
+  unwrapBusinessWire,
   unwrapPrNewswire,
 
   // Cache and proxy services.
