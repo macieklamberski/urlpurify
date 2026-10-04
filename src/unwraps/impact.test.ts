@@ -108,8 +108,14 @@ describe('unwrapImpact', () => {
     expect(unwrapImpact(url)).toBeUndefined()
   })
 
-  it('should return undefined for a target that is encoded twice', () => {
+  it('should extract a target that is encoded twice', () => {
     const url = new URL('https://goto.example.com/c/1/2/3?u=https%253A%252F%252Fexample.com%252F')
+
+    expect(unwrapImpact(url)).toBe('https://example.com/')
+  })
+
+  it('should return undefined for a target that is encoded twice and malformed', () => {
+    const url = new URL('https://goto.example.com/c/1/2/3?u=https%253A%252F%252Fexample.com%25')
 
     expect(unwrapImpact(url)).toBeUndefined()
   })
