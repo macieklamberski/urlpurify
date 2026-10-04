@@ -1,8 +1,8 @@
 import { createParamExtractor } from '../utils.js'
 
-// ShareASale affiliate redirect (shareasale.com/r.cfm?urllink=<target>), on every subdomain.
+// ShareASale affiliate redirect (shareasale.com/r.cfm?urllink=<target>).
 export const unwrapShareasale = createParamExtractor({
-  domains: 'shareasale.com',
+  hosts: ['shareasale.com', 'www.shareasale.com'],
   path: '/r.cfm',
   params: ['urllink'],
 })

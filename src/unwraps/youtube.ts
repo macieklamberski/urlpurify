@@ -1,8 +1,8 @@
 import { createParamExtractor } from '../utils.js'
 
-// YouTube external redirect (www.youtube.com/redirect?q=<target>), on every subdomain.
+// YouTube external redirect (www.youtube.com/redirect?q=<target>).
 export const unwrapYouTube = createParamExtractor({
-  domains: 'youtube.com',
+  hosts: ['www.youtube.com', 'youtube.com'],
   path: '/redirect',
   params: ['q'],
 })

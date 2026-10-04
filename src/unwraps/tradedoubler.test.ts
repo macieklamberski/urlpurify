@@ -36,12 +36,12 @@ describe('unwrapTradedoubler', () => {
     expect(unwrapTradedoubler(url)).toBe('https://example.com/page')
   })
 
-  it('should extract target on a subdomain no specimen shows', () => {
+  it('should return undefined for an unlisted subdomain', () => {
     const url = new URL(
       'https://clkfr.tradedoubler.com/click?p=1&url=https%3A%2F%2Fexample.com%2Fpage',
     )
 
-    expect(unwrapTradedoubler(url)).toBe('https://example.com/page')
+    expect(unwrapTradedoubler(url)).toBeUndefined()
   })
 
   it('should return undefined for a lookalike host', () => {
@@ -50,5 +50,21 @@ describe('unwrapTradedoubler', () => {
     )
 
     expect(unwrapTradedoubler(url)).toBeUndefined()
+  })
+
+  it('should extract target on the clkde host', () => {
+    const url = new URL(
+      'https://clkde.tradedoubler.com/click?p=1&url=https%3A%2F%2Fexample.com%2Fpage',
+    )
+
+    expect(unwrapTradedoubler(url)).toBe('https://example.com/page')
+  })
+
+  it('should extract target on the tracker host', () => {
+    const url = new URL(
+      'https://tracker.tradedoubler.com/click?p=1&url=https%3A%2F%2Fexample.com%2Fpage',
+    )
+
+    expect(unwrapTradedoubler(url)).toBe('https://example.com/page')
   })
 })

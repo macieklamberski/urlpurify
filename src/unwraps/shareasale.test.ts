@@ -28,12 +28,12 @@ describe('unwrapShareasale', () => {
     expect(unwrapShareasale(url)).toBeUndefined()
   })
 
-  it('should extract target on a subdomain no specimen shows', () => {
+  it('should return undefined for an unlisted subdomain', () => {
     const url = new URL(
       'https://shop.shareasale.com/r.cfm?urllink=https%3A%2F%2Fexample.com%2Fpage',
     )
 
-    expect(unwrapShareasale(url)).toBe('https://example.com/page')
+    expect(unwrapShareasale(url)).toBeUndefined()
   })
 
   it('should return undefined for a lookalike host', () => {
@@ -42,5 +42,11 @@ describe('unwrapShareasale', () => {
     )
 
     expect(unwrapShareasale(url)).toBeUndefined()
+  })
+
+  it('should extract target on the www host', () => {
+    const url = new URL('https://www.shareasale.com/r.cfm?urllink=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapShareasale(url)).toBe('https://example.com/page')
   })
 })

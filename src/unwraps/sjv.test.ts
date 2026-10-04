@@ -16,10 +16,10 @@ describe('unwrapSjv', () => {
     expect(unwrapSjv(url)).toBe('https://example.com/item')
   })
 
-  it('should extract target on the bare domain', () => {
+  it('should return undefined for the bare domain', () => {
     const url = new URL('https://sjv.io/c/1/2/3?u=https%3A%2F%2Fexample.com%2Fitem')
 
-    expect(unwrapSjv(url)).toBe('https://example.com/item')
+    expect(unwrapSjv(url)).toBeUndefined()
   })
 
   it('should extract target from a short id path', () => {

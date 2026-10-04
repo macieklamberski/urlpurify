@@ -1,8 +1,8 @@
 import { createParamExtractor } from '../utils.js'
 
-// Tumblr outbound redirect (t.umblr.com/redirect?z=<target>), on every umblr.com subdomain.
+// Tumblr outbound redirect (t.umblr.com/redirect?z=<target>).
 export const unwrapTumblr = createParamExtractor({
-  domains: 'umblr.com',
+  hosts: 't.umblr.com',
   path: '/redirect',
   params: ['z'],
 })

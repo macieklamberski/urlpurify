@@ -32,15 +32,33 @@ describe('unwrapVkAway', () => {
     expect(unwrapVkAway(url)).toBe('https://example.com/page')
   })
 
-  it('should extract target on a subdomain no specimen shows', () => {
-    const url = new URL('https://m.vk.com/away.php?to=https%3A%2F%2Fexample.com%2Fpage')
+  it('should return undefined for an unlisted subdomain', () => {
+    const url = new URL('https://x.vk.com/away.php?to=https%3A%2F%2Fexample.com%2Fpage')
 
-    expect(unwrapVkAway(url)).toBe('https://example.com/page')
+    expect(unwrapVkAway(url)).toBeUndefined()
   })
 
   it('should return undefined for a lookalike host', () => {
     const url = new URL('https://examplevk.ru/away.php?to=https%3A%2F%2Fexample.com%2Fpage')
 
     expect(unwrapVkAway(url)).toBeUndefined()
+  })
+
+  it('should extract target on m.vk.com', () => {
+    const url = new URL('https://m.vk.com/away.php?to=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapVkAway(url)).toBe('https://example.com/page')
+  })
+
+  it('should extract target on new.vk.com', () => {
+    const url = new URL('https://new.vk.com/away.php?to=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapVkAway(url)).toBe('https://example.com/page')
+  })
+
+  it('should extract target on m.vk.ru', () => {
+    const url = new URL('https://m.vk.ru/away.php?to=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapVkAway(url)).toBe('https://example.com/page')
   })
 })

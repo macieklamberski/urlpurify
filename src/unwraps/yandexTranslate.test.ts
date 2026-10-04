@@ -50,10 +50,10 @@ describe('unwrapYandexTranslate', () => {
     expect(unwrapYandexTranslate(url)).toBeUndefined()
   })
 
-  it('should extract target on a subdomain no specimen shows', () => {
+  it('should return undefined for an unlisted subdomain', () => {
     const url = new URL('https://proxy.turbopages.org/proxy_u/en-es.en/https/example.com/page')
 
-    expect(unwrapYandexTranslate(url)).toBe('https://example.com/page')
+    expect(unwrapYandexTranslate(url)).toBeUndefined()
   })
 
   it('should return undefined for a lookalike host', () => {

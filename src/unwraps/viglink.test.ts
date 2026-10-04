@@ -98,10 +98,10 @@ describe('unwrapViglink', () => {
     })
   })
 
-  it('should extract target of the click api on a subdomain no specimen shows', () => {
+  it('should return undefined for an unlisted subdomain', () => {
     const url = new URL('https://eu.viglink.com/api/click?out=https%3A%2F%2Fexample.com%2Fpage')
 
-    expect(unwrapViglink(url)).toBe('https://example.com/page')
+    expect(unwrapViglink(url)).toBeUndefined()
   })
 
   it('should return undefined for another path on the redirect host', () => {

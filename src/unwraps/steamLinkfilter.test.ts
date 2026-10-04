@@ -42,12 +42,12 @@ describe('unwrapSteamLinkfilter', () => {
     expect(unwrapSteamLinkfilter(url)).toBeUndefined()
   })
 
-  it('should extract target on a subdomain no specimen shows', () => {
+  it('should return undefined for an unlisted subdomain', () => {
     const url = new URL(
       'https://store.steamcommunity.com/linkfilter/?url=https%3A%2F%2Fexample.com%2Fpage',
     )
 
-    expect(unwrapSteamLinkfilter(url)).toBe('https://example.com/page')
+    expect(unwrapSteamLinkfilter(url)).toBeUndefined()
   })
 
   it('should return undefined for a lookalike host', () => {

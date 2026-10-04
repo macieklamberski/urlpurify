@@ -24,10 +24,10 @@ describe('unwrapSmartredirect', () => {
     expect(unwrapSmartredirect(url)).toBe('https://example.com/post')
   })
 
-  it('should extract target on a subdomain no specimen shows', () => {
+  it('should return undefined for an unlisted subdomain', () => {
     const url = new URL('https://go.smartredirect.de/?url=https%3A%2F%2Fexample.com%2Fproduct')
 
-    expect(unwrapSmartredirect(url)).toBe('https://example.com/product')
+    expect(unwrapSmartredirect(url)).toBeUndefined()
   })
 
   it('should return undefined when url param is missing', () => {

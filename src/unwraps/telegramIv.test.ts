@@ -26,10 +26,10 @@ describe('unwrapTelegramIv', () => {
     expect(unwrapTelegramIv(url)).toBeUndefined()
   })
 
-  it('should extract target on a subdomain no specimen shows', () => {
+  it('should return undefined for an unlisted subdomain', () => {
     const url = new URL('https://web.t.me/iv?url=https%3A%2F%2Fexample.com%2Fpage')
 
-    expect(unwrapTelegramIv(url)).toBe('https://example.com/page')
+    expect(unwrapTelegramIv(url)).toBeUndefined()
   })
 
   it('should return undefined for a lookalike host', () => {
@@ -42,5 +42,11 @@ describe('unwrapTelegramIv', () => {
     const url = new URL('https://t.me/channelname?url=https%3A%2F%2Fexample.com%2Fpage')
 
     expect(unwrapTelegramIv(url)).toBeUndefined()
+  })
+
+  it('should extract target on the www host', () => {
+    const url = new URL('https://www.t.me/iv?url=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapTelegramIv(url)).toBe('https://example.com/page')
   })
 })

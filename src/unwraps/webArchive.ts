@@ -1,5 +1,16 @@
-import { decodeSegment, isHostOrSubdomainOf, isHttpUrl } from 'trousse'
+import { decodeSegment, isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
+
+const hosts = [
+  'web.archive.org',
+  'wayback.archive.org',
+  'web-beta.archive.org',
+  'web-wp.archive.org',
+  'web-old.archive.org',
+  'classic-web.archive.org',
+  'wayback-api.archive.org',
+  'archive.org',
+]
 
 // A 14-digit timestamp, then the wildcard or a replay modifier, such as `id_` for the original
 // bytes or `im_`, `js_` and `cs_` for an archived image, script or stylesheet.
@@ -10,8 +21,8 @@ const replayPathRegex = new RegExp(`^/${snapshot}/(.+)$`)
 const archiveItPathRegex = new RegExp(String.raw`^/(?:\d+|org-\d+|all)/${snapshot}/(.+)$`)
 
 // Web Archive snapshot wrapper (web.archive.org/web/<timestamp>[<modifier>]/<URL>), also served
-// from every other archive.org subdomain, such as wayback. and classic-web., the latest snapshot
-// (web.archive.org/web/<URL>), the replay path (replay.web.archive.org/<timestamp>/<URL>, also on
+// from wayback, wayback-api, web-beta, web-wp, web-old and classic-web.archive.org and from
+// archive.org itself, the latest snapshot (web.archive.org/web/<URL>), the replay path (replay.web.archive.org/<timestamp>/<URL>, also on
 // web.archive.org), and Archive-It collections
 // (wayback.archive-it.org/<collection or all>/<timestamp>[<modifier>]/<URL>).
 // Not included in defaultUnwrappers: an archive URL is a historical
@@ -21,15 +32,15 @@ const archiveItPathRegex = new RegExp(String.raw`^/(?:\d+|org-\d+|all)/${snapsho
 export const unwrapWebArchive: UrlUnwrapper = (url) => {
   let match: RegExpMatchArray | null = null
 
-  if (isHostOrSubdomainOf(url, 'archive.org')) {
+  if (isHostOf(url, hosts)) {
     match = url.pathname.match(pathRegex)
   }
 
-  if (!match && isHostOrSubdomainOf(url, 'web.archive.org')) {
+  if (!match && isHostOf(url, ['web.archive.org', 'replay.web.archive.org'])) {
     match = url.pathname.match(replayPathRegex)
   }
 
-  if (isHostOrSubdomainOf(url, 'archive-it.org')) {
+  if (isHostOf(url, 'wayback.archive-it.org')) {
     match = url.pathname.match(archiveItPathRegex)
   }
 
