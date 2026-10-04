@@ -14,6 +14,7 @@ import { unwrapAnonymTo } from './unwraps/anonymTo.js'
 // import { unwrapAwin } from './unwraps/awin.js'
 // import { unwrapBarracudaLinkProtect } from './unwraps/barracudaLinkProtect.js'
 import { unwrapBing } from './unwraps/bing.js'
+// import { unwrapBolPartner } from './unwraps/bolPartner.js'
 import { unwrapBlueskyRedirect } from './unwraps/bsky.js'
 import { unwrapBusinessWire } from './unwraps/businessWire.js'
 import { unwrapCsdn } from './unwraps/csdn.js'
@@ -157,6 +158,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // Opt-in like the rest of the group: unwrapping drops the publisher's commission.
   // unwrapRakutenAffiliate,
   // unwrapMoshimo,
+  // unwrapBolPartner,
 
   // Ad networks.
   // unwrapGoogleAds,
