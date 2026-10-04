@@ -4,13 +4,18 @@ import type { TrackingParam, UrlUnwrapper } from './types.js'
 // import { unwrapCjNetwork } from './unwraps/cjNetwork.js'
 // import { unwrapDigidip } from './unwraps/digidip.js'
 import { unwrapAnonymTo } from './unwraps/anonymTo.js'
+// import { unwrapA8Net } from './unwraps/a8Net.js'
 // import { unwrapAceml } from './unwraps/aceml.js'
 // import { unwrapAdjust } from './unwraps/adjust.js'
 // import { unwrapAmazonAffiliate } from './unwraps/amazonAffiliate.js'
 // import { unwrapAmpCache } from './unwraps/ampCache.js'
+// import { unwrapArchiveToday } from './unwraps/archiveToday.js'
+// import { unwrapAvantlink } from './unwraps/avantlink.js'
 // import { unwrapAwin } from './unwraps/awin.js'
+// import { unwrapBarracudaLinkProtect } from './unwraps/barracudaLinkProtect.js'
 import { unwrapBing } from './unwraps/bing.js'
 import { unwrapBlueskyRedirect } from './unwraps/bsky.js'
+import { unwrapBusinessWire } from './unwraps/businessWire.js'
 import { unwrapCsdn } from './unwraps/csdn.js'
 import { unwrapDeviantartOutgoing } from './unwraps/deviantartOutgoing.js'
 import { unwrapDisqus } from './unwraps/disqus.js'
@@ -27,6 +32,7 @@ import { unwrapFlipboard } from './unwraps/flipboard.js'
 // import { unwrapGeoriot } from './unwraps/georiot.js'
 import { unwrapGitee } from './unwraps/gitee.js'
 import { unwrapGoogle } from './unwraps/google.js'
+// import { unwrapGoogleAds } from './unwraps/googleAds.js'
 import { unwrapGoogleAmpViewer } from './unwraps/googleAmpViewer.js'
 import { unwrapGoogleNews } from './unwraps/googleNews.js'
 import { unwrapGoogleNewsModern } from './unwraps/googleNewsModern.js'
@@ -39,6 +45,7 @@ import { unwrapInstagramShim } from './unwraps/instagram.js'
 import { unwrapJianshuGo } from './unwraps/jianshuGo.js'
 import { unwrapJuejin } from './unwraps/juejin.js'
 // import { unwrapLeverAnalytics } from './unwraps/leverAnalytics.js'
+import { unwrapLinkedin } from './unwraps/linkedin.js'
 // import { unwrapLinksynergy } from './unwraps/linksynergy.js'
 // import { unwrapMailchimp } from './unwraps/mailchimp.js'
 // import { unwrapMailpanion } from './unwraps/mailpanion.js'
@@ -52,12 +59,14 @@ import { unwrapMozillaOutgoing } from './unwraps/mozillaOutgoing.js'
 // import { unwrapProofpointV2 } from './unwraps/proofpointV2.js'
 // import { unwrapProofpointV3 } from './unwraps/proofpointV3.js'
 // import { unwrapPxf } from './unwraps/pxf.js'
+// import { unwrapRakutenAffiliate } from './unwraps/rakutenAffiliate.js'
 // import { unwrapRecruitics } from './unwraps/recruitics.js'
 import { unwrapNaverOutgoing } from './unwraps/naverOutgoing.js'
 // import { unwrapNicoMs } from './unwraps/nicoMs.js'
 // import { unwrapOutlookSafelinks } from './unwraps/outlookSafelinks.js'
 // import { unwrapPartnerAds } from './unwraps/partnerAds.js'
 import { unwrapPocket } from './unwraps/pocket.js'
+import { unwrapPrNewswire } from './unwraps/prNewswire.js'
 import { unwrapRedditOut } from './unwraps/redditOut.js'
 // import { unwrapRedirectingat } from './unwraps/redirectingat.js'
 import { unwrapSegmentfault } from './unwraps/segmentfault.js'
@@ -101,6 +110,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
 
   // Email and security gateways.
   // unwrapOutlookSafelinks,
+  // unwrapBarracudaLinkProtect,
   // unwrapProofpointV1,
   // unwrapProofpointV2,
   // unwrapProofpointV3,
@@ -139,6 +149,14 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapRecruitics,
   // unwrapGeoriot,
   // unwrapFirebaseDynamicLinks,
+  // unwrapAvantlink,
+  // unwrapA8Net,
+  // Rakuten Japan's own program, separate from the LinkSynergy network in unwrapLinksynergy.
+  // Opt-in like the rest of the group: unwrapping drops the publisher's commission.
+  // unwrapRakutenAffiliate,
+
+  // Ad networks.
+  // unwrapGoogleAds,
 
   // Social and community platforms.
   unwrapFacebookShim,
@@ -159,6 +177,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapNicoMs,
   unwrapMedium,
   unwrapFlipboard,
+  unwrapLinkedin,
 
   // Developer and publishing platforms.
   unwrapZhihu,
@@ -170,8 +189,13 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   unwrapCsdn,
   unwrapHashnode,
 
+  // Press release wires.
+  unwrapBusinessWire,
+  unwrapPrNewswire,
+
   // Cache and proxy services.
   // unwrapAmpCache,
+  // unwrapArchiveToday, // Snapshot of a page at a point in time, not a redirect
   // unwrapEmbedly,
   unwrapMozillaOutgoing,
 
