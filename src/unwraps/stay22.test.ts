@@ -46,12 +46,12 @@ describe('unwrapStay22', () => {
     expect(unwrapStay22(url)).toBe('https://www.example.com/tour-t1/')
   })
 
-  it('should extract the target from a subdomain no specimen shows', () => {
+  it('should return undefined for an unlisted subdomain', () => {
     const url = new URL(
-      'https://go.stay22.com/allez/booking?aid=examplepublisher&link=https%3A%2F%2Fwww.example.com%2F',
+      'https://booking.stay22.com/allez/booking?link=https%3A%2F%2Fwww.example.com%2Fpage',
     )
 
-    expect(unwrapStay22(url)).toBe('https://www.example.com/')
+    expect(unwrapStay22(url)).toBeUndefined()
   })
 
   it('should extract the target of a plain http wrapper', () => {

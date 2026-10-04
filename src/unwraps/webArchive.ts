@@ -8,7 +8,6 @@ const hosts = [
   'web-wp.archive.org',
   'web-old.archive.org',
   'classic-web.archive.org',
-  'wayback-api.archive.org',
   'archive.org',
 ]
 
@@ -21,9 +20,9 @@ const replayPathRegex = new RegExp(`^/${snapshot}/(.+)$`)
 const archiveItPathRegex = new RegExp(String.raw`^/(?:\d+|org-\d+|all)/${snapshot}/(.+)$`)
 
 // Web Archive snapshot wrapper (web.archive.org/web/<timestamp>[<modifier>]/<URL>), also served
-// from wayback, wayback-api, web-beta, web-wp, web-old and classic-web.archive.org and from
-// archive.org itself, the latest snapshot (web.archive.org/web/<URL>), the replay path (replay.web.archive.org/<timestamp>/<URL>, also on
-// web.archive.org), and Archive-It collections
+// from wayback, web-beta, web-wp, web-old and classic-web.archive.org and from archive.org
+// itself, the latest snapshot (web.archive.org/web/<URL>), the replay path
+// (replay.web.archive.org/<timestamp>/<URL>, also on web.archive.org), and Archive-It collections
 // (wayback.archive-it.org/<collection or all>/<timestamp>[<modifier>]/<URL>).
 // Not included in defaultUnwrappers: an archive URL is a historical
 // snapshot at a specific point in time, not a redirect; unwrapping returns

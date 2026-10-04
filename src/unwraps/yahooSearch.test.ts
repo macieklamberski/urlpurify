@@ -95,4 +95,10 @@ describe('unwrapYahooSearch', () => {
 
     expect(unwrapYahooSearch(url)).toBe('https://example.com/page')
   })
+
+  it('should return undefined for an empty first segment with an unencoded target', () => {
+    const url = new URL('https://r.search.yahoo.com//RU=https://example.com/page/RK=0')
+
+    expect(unwrapYahooSearch(url)).toBeUndefined()
+  })
 })

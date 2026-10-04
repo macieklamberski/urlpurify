@@ -1,4 +1,4 @@
-import { isHostOrSubdomainOf, isHttpUrl } from 'trousse'
+import { isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
 // The snapshot is a 14-digit timestamp with an optional replay modifier, or `+` for the latest.
@@ -8,7 +8,7 @@ const pathRegex = /^(?:\/ukgwa)?\/(?:\d{14}(?:mp_)?|\+)\/(.+)$/
 // <target>, or `+` for the latest). Opt-in: unwrapping returns the live page, which may have
 // changed or be gone.
 export const unwrapUkgwa: UrlUnwrapper = (url) => {
-  if (!isHostOrSubdomainOf(url, 'webarchive.nationalarchives.gov.uk')) {
+  if (!isHostOf(url, 'webarchive.nationalarchives.gov.uk')) {
     return
   }
 

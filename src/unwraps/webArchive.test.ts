@@ -192,12 +192,4 @@ describe('unwrapWebArchive', () => {
 
     expect(unwrapWebArchive(url)).toBe('https://example.com/page')
   })
-
-  it('should extract target on wayback-api.archive.org', () => {
-    const url = new URL(
-      'https://wayback-api.archive.org/web/20240101120000*/https://example.com/page',
-    )
-
-    expect(unwrapWebArchive(url)).toBe('https://example.com/page')
-  })
 })

@@ -72,12 +72,12 @@ describe('unwrapUkgwa', () => {
     )
   })
 
-  it('should extract target on a subdomain no specimen shows', () => {
+  it('should return undefined for an unlisted subdomain', () => {
     const url = new URL(
-      'https://www.webarchive.nationalarchives.gov.uk/ukgwa/20220828193851/https://www.example.gov.uk/',
+      'https://x.webarchive.nationalarchives.gov.uk/ukgwa/20160111174808/http://example.com/a',
     )
 
-    expect(unwrapUkgwa(url)).toBe('https://www.example.gov.uk/')
+    expect(unwrapUkgwa(url)).toBeUndefined()
   })
 
   it('should return undefined for a snapshot with no target', () => {
