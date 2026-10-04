@@ -341,4 +341,28 @@ describe('unwrapAmazonSes', () => {
 
     expect(unwrapAmazonSes(url)).toBeUndefined()
   })
+
+  it('should return undefined when the message id is empty', () => {
+    const url = new URL(
+      'https://abcd1234.r.us-east-1.awstrack.me/L0/https:%2F%2Fexample.com%2F/1//c2ln',
+    )
+
+    expect(unwrapAmazonSes(url)).toBeUndefined()
+  })
+
+  it('should return undefined when the signature is empty', () => {
+    const url = new URL(
+      'https://abcd1234.r.us-east-1.awstrack.me/L0/https:%2F%2Fexample.com%2F/1/0100019819a7eb85-8577ee14/',
+    )
+
+    expect(unwrapAmazonSes(url)).toBeUndefined()
+  })
+
+  it('should return undefined on a custom domain when the signature is empty', () => {
+    const url = new URL(
+      'https://ses.example.de/CL0/https:%2F%2Fexample.com%2F/1/0100019819a7eb85-8577ee14-000000/',
+    )
+
+    expect(unwrapAmazonSes(url)).toBeUndefined()
+  })
 })

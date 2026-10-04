@@ -4,8 +4,8 @@ import type { UrlUnwrapper } from '../types.js'
 const awstrackPathRegex = /^\/L0\/(.+?)\/\d+\/[^/]+\/[^/]+$/
 const customPathRegex = /^\/CL0\/(.+?)\/\d+\/[^/]+-000000\/[^/]+$/
 
-// Amazon SES click tracking (<id>.r.<region>.awstrack.me/L0/<target>/<n>/<message id>/<signature>),
-// and a sender's own tracking domain on any host (/CL0/<target>/<n>/<message id>-000000/<signature>).
+// Amazon SES click tracking (<id>.r.<region>.awstrack.me/L0/<target>/<n>/<message id>/<signature>)
+// and a sender's own host (/CL0/<target>/<n>/<message id>-000000/<signature>).
 // Opt-in: unwrapping removes the sender's click count.
 export const unwrapAmazonSes: UrlUnwrapper = (url) => {
   const pathRegex = isHostOrSubdomainOf(url, 'awstrack.me') ? awstrackPathRegex : customPathRegex
