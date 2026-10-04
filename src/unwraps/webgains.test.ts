@@ -34,9 +34,17 @@ describe('unwrapWebgains', () => {
     expect(unwrapWebgains(url)).toBe('https://www.example.com')
   })
 
-  it('should extract target on a subdomain no specimen shows', () => {
+  it('should extract target on the tnforack typo host', () => {
     const url = new URL(
       'https://tnforack.webgains.com/click.html?wgcampaignid=159293&wgtarget=https://www.example.com/',
+    )
+
+    expect(unwrapWebgains(url)).toBe('https://www.example.com/')
+  })
+
+  it('should extract target on a subdomain no specimen shows', () => {
+    const url = new URL(
+      'https://www.webgains.com/click.html?wgcampaignid=159293&wgtarget=https://www.example.com/',
     )
 
     expect(unwrapWebgains(url)).toBe('https://www.example.com/')
@@ -87,6 +95,14 @@ describe('unwrapWebgains', () => {
   it('should return undefined for a host that only contains the domain', () => {
     const url = new URL(
       'https://webgains.com.example.org/click.html?wgtarget=https://www.example.com/',
+    )
+
+    expect(unwrapWebgains(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a host that swaps the dot', () => {
+    const url = new URL(
+      'https://track.webgainsxcom/click.html?wgtarget=https%3A%2F%2Fexample.com%2F',
     )
 
     expect(unwrapWebgains(url)).toBeUndefined()
