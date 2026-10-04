@@ -1,15 +1,40 @@
-import { isAnyOf } from 'trousse'
+import { isAnyOf, isHostOrSubdomainOf } from 'trousse'
 import type { UrlUnwrapper } from './types.js'
 
-export type ParamExtractorConfig = {
-  hosts: string | Array<string> | RegExp
+// `domains` also matches every subdomain. `hosts` matches a host exactly, or by regex, for a domain
+// where a third party can get a subdomain, such as a blog host.
+export type ParamExtractorConfig = (
+  | { domains: string | Array<string>; hosts?: never }
+  | { hosts: string | Array<string> | RegExp; domains?: never }
+) & {
   path?: string
   params: Array<string>
 }
 
+const encodedSchemeRegex = /^https?%3A/i
+
+// A value already decoded once still holds an encoded scheme (`https%3A%2F%2F`) when the
+// carrier encoded its target twice.
+const decodeEncodedScheme = (value: string): string => {
+  if (!encodedSchemeRegex.test(value)) {
+    return value
+  }
+
+  try {
+    return decodeURIComponent(value)
+  } catch {
+    return value
+  }
+}
+
 export const createParamExtractor = (config: ParamExtractorConfig): UrlUnwrapper => {
   return (url) => {
-    if (!isAnyOf(url.hostname, config.hosts)) {
+    const isHostMatch =
+      config.domains !== undefined
+        ? isHostOrSubdomainOf(url, config.domains)
+        : isAnyOf(url.hostname, config.hosts)
+
+    if (!isHostMatch) {
       return
     }
 
@@ -21,7 +46,7 @@ export const createParamExtractor = (config: ParamExtractorConfig): UrlUnwrapper
       const value = url.searchParams.get(param)
 
       if (value) {
-        return value
+        return decodeEncodedScheme(value)
       }
     }
   }

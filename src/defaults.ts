@@ -4,19 +4,30 @@ import type { TrackingParam, UrlUnwrapper } from './types.js'
 // import { unwrapCjNetwork } from './unwraps/cjNetwork.js'
 // import { unwrapDigidip } from './unwraps/digidip.js'
 import { unwrapAnonymTo } from './unwraps/anonymTo.js'
+// import { unwrapA8Net } from './unwraps/a8Net.js'
 // import { unwrapAccesstrade } from './unwraps/accesstrade.js'
 // import { unwrapAceml } from './unwraps/aceml.js'
 // import { unwrapAdjust } from './unwraps/adjust.js'
 // import { unwrapAmazonAffiliate } from './unwraps/amazonAffiliate.js'
+// import { unwrapAmazonSes } from './unwraps/amazonSes.js'
 // import { unwrapAmpCache } from './unwraps/ampCache.js'
+// import { unwrapArchiveToday } from './unwraps/archiveToday.js'
+// import { unwrapAvantlink } from './unwraps/avantlink.js'
 // import { unwrapAwin } from './unwraps/awin.js'
+// import { unwrapBarracudaLinkProtect } from './unwraps/barracudaLinkProtect.js'
 import { unwrapBing } from './unwraps/bing.js'
+// import { unwrapBolPartner } from './unwraps/bolPartner.js'
 import { unwrapBlueskyRedirect } from './unwraps/bsky.js'
+import { unwrapBusinessWire } from './unwraps/businessWire.js'
+import { unwrapCalendly } from './unwraps/calendly.js'
 import { unwrapCsdn } from './unwraps/csdn.js'
+import { unwrapDerefMail } from './unwraps/derefMail.js'
 import { unwrapDeviantartOutgoing } from './unwraps/deviantartOutgoing.js'
 import { unwrapDisqus } from './unwraps/disqus.js'
+// import { unwrapDmmAffiliate } from './unwraps/dmmAffiliate.js'
 import { unwrapDouban } from './unwraps/douban.js'
 // import { unwrapDuckduckgo } from './unwraps/duckduckgo.js'
+import { unwrapDzen } from './unwraps/dzen.js'
 // import { unwrapEbayRover } from './unwraps/ebayRover.js'
 // import { unwrapEffiliation } from './unwraps/effiliation.js'
 // import { unwrapEmbedly } from './unwraps/embedly.js'
@@ -28,6 +39,7 @@ import { unwrapFlipboard } from './unwraps/flipboard.js'
 // import { unwrapGeoriot } from './unwraps/georiot.js'
 import { unwrapGitee } from './unwraps/gitee.js'
 import { unwrapGoogle } from './unwraps/google.js'
+// import { unwrapGoogleAds } from './unwraps/googleAds.js'
 import { unwrapGoogleAmpViewer } from './unwraps/googleAmpViewer.js'
 import { unwrapGoogleNews } from './unwraps/googleNews.js'
 import { unwrapGoogleNewsModern } from './unwraps/googleNewsModern.js'
@@ -40,6 +52,7 @@ import { unwrapInstagramShim } from './unwraps/instagram.js'
 import { unwrapJianshuGo } from './unwraps/jianshuGo.js'
 import { unwrapJuejin } from './unwraps/juejin.js'
 // import { unwrapLeverAnalytics } from './unwraps/leverAnalytics.js'
+import { unwrapLinkedin } from './unwraps/linkedin.js'
 // import { unwrapLinksynergy } from './unwraps/linksynergy.js'
 // import { unwrapMailchimp } from './unwraps/mailchimp.js'
 // import { unwrapMailpanion } from './unwraps/mailpanion.js'
@@ -47,18 +60,21 @@ import { unwrapJuejin } from './unwraps/juejin.js'
 // import { unwrapMailtrack } from './unwraps/mailtrack.js'
 import { unwrapMedium } from './unwraps/medium.js'
 // import { unwrapMimecast } from './unwraps/mimecast.js'
+// import { unwrapMoshimo } from './unwraps/moshimo.js'
 import { unwrapMozillaOutgoing } from './unwraps/mozillaOutgoing.js'
 // import { unwrapPostmark } from './unwraps/postmark.js'
 // import { unwrapProofpointV1 } from './unwraps/proofpointV1.js'
 // import { unwrapProofpointV2 } from './unwraps/proofpointV2.js'
 // import { unwrapProofpointV3 } from './unwraps/proofpointV3.js'
 // import { unwrapPxf } from './unwraps/pxf.js'
+// import { unwrapRakutenAffiliate } from './unwraps/rakutenAffiliate.js'
 // import { unwrapRecruitics } from './unwraps/recruitics.js'
 import { unwrapNaverOutgoing } from './unwraps/naverOutgoing.js'
 // import { unwrapNicoMs } from './unwraps/nicoMs.js'
 // import { unwrapOutlookSafelinks } from './unwraps/outlookSafelinks.js'
 // import { unwrapPartnerAds } from './unwraps/partnerAds.js'
 import { unwrapPocket } from './unwraps/pocket.js'
+import { unwrapPrNewswire } from './unwraps/prNewswire.js'
 import { unwrapRedditOut } from './unwraps/redditOut.js'
 // import { unwrapRedirectingat } from './unwraps/redirectingat.js'
 import { unwrapSegmentfault } from './unwraps/segmentfault.js'
@@ -67,6 +83,7 @@ import { unwrapSegmentfault } from './unwraps/segmentfault.js'
 // import { unwrapSkimlinks } from './unwraps/skimlinks.js'
 // import { unwrapSlack } from './unwraps/slack.js'
 // import { unwrapSmartredirect } from './unwraps/smartredirect.js'
+import { unwrapSoundcloud } from './unwraps/soundcloud.js'
 import { unwrapSspai } from './unwraps/sspai.js'
 import { unwrapSteamLinkfilter } from './unwraps/steamLinkfilter.js'
 // import { unwrapValuecommerce } from './unwraps/valuecommerce.js'
@@ -74,7 +91,9 @@ import { unwrapSteamLinkfilter } from './unwraps/steamLinkfilter.js'
 import { unwrapThreadsShim } from './unwraps/threads.js'
 // import { unwrapTradedoubler } from './unwraps/tradedoubler.js'
 import { unwrapTumblr } from './unwraps/tumblr.js'
+// import { unwrapUkgwa } from './unwraps/ukgwa.js'
 import { unwrapVkAway } from './unwraps/vkAway.js'
+// import { unwrapWebgains } from './unwraps/webgains.js'
 import { unwrapYahooSearch } from './unwraps/yahooSearch.js'
 import { unwrapYouTube } from './unwraps/youtube.js'
 import { unwrapZhihu } from './unwraps/zhihu.js'
@@ -102,11 +121,13 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
 
   // Email and security gateways.
   // unwrapOutlookSafelinks,
+  // unwrapBarracudaLinkProtect,
   // unwrapProofpointV1,
   // unwrapProofpointV2,
   // unwrapProofpointV3,
   // unwrapMimecast,
   // unwrapPostmark,
+  // unwrapAmazonSes,
   // unwrapAceml,
   // unwrapIcptrack,
   // unwrapMailchimp,
@@ -127,6 +148,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapValuecommerce,
   // unwrapAccesstrade,
   // unwrapViglink,
+  // unwrapWebgains,
   // unwrapPxf,
   // unwrapSjv,
   // unwrapEbayRover,
@@ -141,6 +163,17 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapRecruitics,
   // unwrapGeoriot,
   // unwrapFirebaseDynamicLinks,
+  // unwrapAvantlink,
+  // unwrapA8Net,
+  // Rakuten Japan's own program, separate from the LinkSynergy network in unwrapLinksynergy.
+  // Opt-in like the rest of the group: unwrapping drops the publisher's commission.
+  // unwrapRakutenAffiliate,
+  // unwrapMoshimo,
+  // unwrapBolPartner,
+  // unwrapDmmAffiliate,
+
+  // Ad networks.
+  // unwrapGoogleAds,
 
   // Social and community platforms.
   unwrapFacebookShim,
@@ -150,17 +183,22 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   unwrapTumblr,
   unwrapHrefLi,
   unwrapVkAway,
+  unwrapDzen,
   unwrapRedditOut,
   unwrapBlueskyRedirect,
   unwrapDisqus,
   unwrapAnonymTo,
+  unwrapDerefMail,
   unwrapDeviantartOutgoing,
   unwrapNaverOutgoing,
   unwrapSteamLinkfilter,
+  unwrapCalendly,
   unwrapDouban,
   // unwrapNicoMs,
   unwrapMedium,
   unwrapFlipboard,
+  unwrapLinkedin,
+  unwrapSoundcloud,
 
   // Developer and publishing platforms.
   unwrapZhihu,
@@ -172,9 +210,15 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   unwrapCsdn,
   unwrapHashnode,
 
+  // Press release wires.
+  unwrapBusinessWire,
+  unwrapPrNewswire,
+
   // Cache and proxy services.
   // unwrapAmpCache,
+  // unwrapArchiveToday, // Snapshot of a page at a point in time, not a redirect
   // unwrapEmbedly,
+  // unwrapUkgwa,
   unwrapMozillaOutgoing,
 
   // Legacy aggregators.
