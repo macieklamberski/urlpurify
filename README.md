@@ -107,6 +107,7 @@ Enabled by default:
 | `unwrapHrefLi` | href.li referrer stripper (href.li/?\<target\>), used by Tumblr |
 | `unwrapInstagramShim` | Instagram outbound link shim (l.instagram.com with ?u=\<target\>) |
 | `unwrapJianshuGo` | Jianshu external link redirect (links.jianshu.com/go?to=\<target\>) |
+| `unwrapJive` | Jive community external link redirect (\<any host\>/external-link.jspa?url=\<target\>) |
 | `unwrapJuejin` | Juejin external link redirect (link.juejin.cn/?target=\<target\>) |
 | `unwrapMedium` | Medium outbound link redirect (medium.com/r/?url=\<target\>) |
 | `unwrapMozillaOutgoing` | Mozilla outgoing-link redirector (outgoing.prod.mozaws.net/v1/\<hash\>/\<target\>) |

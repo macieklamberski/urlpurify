@@ -37,6 +37,7 @@ import { unwrapHrefLi } from './unwraps/hrefLi.js'
 // import { unwrapIdealoPartner } from './unwraps/idealoPartner.js'
 import { unwrapInstagramShim } from './unwraps/instagram.js'
 import { unwrapJianshuGo } from './unwraps/jianshuGo.js'
+import { unwrapJive } from './unwraps/jive.js'
 import { unwrapJuejin } from './unwraps/juejin.js'
 // import { unwrapLeverAnalytics } from './unwraps/leverAnalytics.js'
 // import { unwrapLinksynergy } from './unwraps/linksynergy.js'
@@ -159,6 +160,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapNicoMs,
   unwrapMedium,
   unwrapFlipboard,
+  unwrapJive,
 
   // Developer and publishing platforms.
   unwrapZhihu,
