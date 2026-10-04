@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'bun:test'
 import { cleanUrl, stripTrackingParams, unwrapUrl } from './clean.js'
+import type { UrlUnwrapper } from './types.js'
 import { createParamExtractor } from './utils.js'
 
 const exampleUnwrapper = createParamExtractor({
@@ -17,6 +18,7 @@ const nestedUnwrapper = createParamExtractor({
   params: ['url'],
 })
 
+const definitionPathRegex = /^\/v3\/__(https?):\/(.+?)__;/
 const sessionParamRegex = /^session_[a-z]$/
 const utmFamilyRegex = /^utm_[a-z0-9_-]+$/
 
@@ -421,6 +423,149 @@ describe('cleanUrl', () => {
 
   it('should handle empty strings', () => {
     expect(cleanUrl('')).toBe('')
+  })
+})
+
+describe('cleanUrl with a mis-decoded target', () => {
+  const definitionUnwrapper: UrlUnwrapper = (url) => {
+    if (url.hostname !== 'defense.example.net') {
+      return
+    }
+
+    const match = url.pathname.match(definitionPathRegex)
+
+    if (match) {
+      return `${match[1]}://${match[2]}`
+    }
+  }
+  const legacyUnwrapper = createParamExtractor({
+    hosts: 'redirect.example.com',
+    params: ['target'],
+  })
+
+  it('should keep the wrapper when the target decodes to U+FFFD', () => {
+    const value = 'https://redirect.example.com/?target=https%3A%2F%2Fexample.com%2F%A4%A2'
+
+    expect(cleanUrl(value, { unwrappers: [legacyUnwrapper] })).toBe(value)
+  })
+
+  it('should leave the tracking params of the broken target alone', () => {
+    const value =
+      'https://redirect.example.com/?target=https%3A%2F%2Fexample.com%2F%A4%3Futm_source%3Dfeed'
+
+    expect(cleanUrl(value, { unwrappers: [legacyUnwrapper] })).toBe(value)
+  })
+
+  it('should strip the tracking params of the wrapper it falls back to', () => {
+    const value =
+      'https://redirect.example.com/?utm_source=feed&target=https%3A%2F%2Fexample.com%2F%A4'
+    const expected = 'https://redirect.example.com/?target=https%3A%2F%2Fexample.com%2F%A4'
+
+    expect(cleanUrl(value, { unwrappers: [legacyUnwrapper] })).toBe(expected)
+  })
+
+  it('should return the final target when an inner hop holds U+FFFD', () => {
+    const value =
+      'https://redirect.example.com/?target=https://defense.example.net/v3/__https:/example.org/news/__;tail%%EDITOR'
+    const expected = 'https://example.org/news/'
+
+    expect(cleanUrl(value, { unwrappers: [legacyUnwrapper, definitionUnwrapper] })).toBe(expected)
+  })
+
+  it('should fall back to the last intact hop when a later hop decodes to U+FFFD', () => {
+    const value =
+      'https://outer.example.com/?url=https%3A%2F%2Fredirect.example.com%2F%3Ftarget%3Dhttps%253A%252F%252Fexample.com%252F%25A4'
+    const expected = 'https://redirect.example.com/?target=https%3A%2F%2Fexample.com%2F%A4'
+
+    expect(cleanUrl(value, { unwrappers: [nestedUnwrapper, legacyUnwrapper] })).toBe(expected)
+  })
+
+  it('should fall back to the last hop without U+FFFD', () => {
+    const value =
+      'https://redirect.example.com/?target=https://defense.example.net/v3/__https:/example.org/news/__;tail%%EDITOR'
+    const expected =
+      'https://redirect.example.com/?target=https://defense.example.net/v3/__https:/example.org/news/__;tail%%EDITOR'
+
+    expect(cleanUrl(value, { unwrappers: [legacyUnwrapper] })).toBe(expected)
+  })
+})
+
+describe('cleanUrl with a malformed target', () => {
+  const singleSlashUnwrapper: UrlUnwrapper = (url) => {
+    if (url.hostname !== 'defense.example.net') {
+      return
+    }
+
+    return url.pathname.slice('/v3/__'.length).split('__;')[0]
+  }
+
+  it('should keep the wrapper when the target has no host', () => {
+    const value = 'https://redirect.example.com/?target=https:///example.com/x'
+
+    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
+  })
+
+  it('should keep the wrapper when the target holds a line break', () => {
+    const value = 'https://redirect.example.com/?target=https%3A%2F%2Fexample.com%2Fa%0D%0Ab'
+
+    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
+  })
+
+  it('should keep the wrapper when the target holds a line separator', () => {
+    const value = 'https://redirect.example.com/?target=https%3A%2F%2Fexample.com%2Fa%E2%80%A8b'
+
+    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
+  })
+
+  it('should keep the wrapper when the target holds a paragraph separator', () => {
+    const value = 'https://redirect.example.com/?target=https%3A%2F%2Fexample.com%2Fa%E2%80%A9b'
+
+    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
+  })
+
+  it('should keep the wrapper when the target holds a delete character', () => {
+    const value = 'https://redirect.example.com/?target=https%3A%2F%2Fexample.com%2Fa%7Fb'
+
+    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
+  })
+
+  it('should trim a trailing line feed from the target', () => {
+    const value = 'https://redirect.example.com/?target=https%3A%2F%2Fexample.com%2Fx%0A'
+
+    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe('https://example.com/x')
+  })
+
+  it('should trim trailing whitespace from the target', () => {
+    const value = 'https://redirect.example.com/?target=https%3A%2F%2Fexample.com%2Fx%20%20'
+
+    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe('https://example.com/x')
+  })
+
+  it('should repair a single slash after the scheme', () => {
+    const value = 'https://redirect.example.com/?target=https:/example.com/x'
+
+    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe('https://example.com/x')
+  })
+
+  it('should repair a single slash after an http scheme', () => {
+    const value = 'https://redirect.example.com/?target=http:/example.com/x'
+
+    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe('http://example.com/x')
+  })
+
+  it('should repair a single slash after an uppercase scheme', () => {
+    const value = 'https://redirect.example.com/?target=HTTPS:/example.com/x'
+
+    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe('HTTPS://example.com/x')
+  })
+
+  it('should resolve a chain whose inner target has a single slash', () => {
+    const value =
+      'https://redirect.example.com/?target=https://defense.example.net/v3/__https:/example.org/news/__;tail'
+
+    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper, singleSlashUnwrapper] })).toBe(
+      'https://example.org/news/',
+    )
   })
 })
 

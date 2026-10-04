@@ -10,6 +10,14 @@ describe('unwrapSteamLinkfilter', () => {
     expect(unwrapSteamLinkfilter(url)).toBe('https://example.com/article')
   })
 
+  it('should extract target from u param', () => {
+    const url = new URL(
+      'https://steamcommunity.com/linkfilter/?u=https%3A%2F%2Fexample.com%2Farticle',
+    )
+
+    expect(unwrapSteamLinkfilter(url)).toBe('https://example.com/article')
+  })
+
   it('should return undefined when url param is missing', () => {
     const url = new URL('https://steamcommunity.com/linkfilter/?other=value')
 
@@ -18,6 +26,12 @@ describe('unwrapSteamLinkfilter', () => {
 
   it('should return undefined for non-linkfilter Steam paths', () => {
     const url = new URL('https://steamcommunity.com/profile?url=https%3A%2F%2Fexample.com')
+
+    expect(unwrapSteamLinkfilter(url)).toBeUndefined()
+  })
+
+  it('should return undefined for u param on non-linkfilter Steam paths', () => {
+    const url = new URL('https://steamcommunity.com/id/example?u=https%3A%2F%2Fexample.com')
 
     expect(unwrapSteamLinkfilter(url)).toBeUndefined()
   })
