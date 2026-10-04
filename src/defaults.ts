@@ -89,6 +89,7 @@ import { unwrapSteamLinkfilter } from './unwraps/steamLinkfilter.js'
 import { unwrapThreadsShim } from './unwraps/threads.js'
 // import { unwrapTradedoubler } from './unwraps/tradedoubler.js'
 import { unwrapTumblr } from './unwraps/tumblr.js'
+// import { unwrapUkgwa } from './unwraps/ukgwa.js'
 import { unwrapVkAway } from './unwraps/vkAway.js'
 import { unwrapYahooSearch } from './unwraps/yahooSearch.js'
 import { unwrapYouTube } from './unwraps/youtube.js'
@@ -211,6 +212,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapAmpCache,
   // unwrapArchiveToday, // Snapshot of a page at a point in time, not a redirect
   // unwrapEmbedly,
+  // unwrapUkgwa,
   unwrapMozillaOutgoing,
 
   // Legacy aggregators.
