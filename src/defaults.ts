@@ -53,6 +53,7 @@ import { unwrapLinkedin } from './unwraps/linkedin.js'
 // import { unwrapMailtrack } from './unwraps/mailtrack.js'
 import { unwrapMedium } from './unwraps/medium.js'
 // import { unwrapMimecast } from './unwraps/mimecast.js'
+// import { unwrapMoshimo } from './unwraps/moshimo.js'
 import { unwrapMozillaOutgoing } from './unwraps/mozillaOutgoing.js'
 // import { unwrapPostmark } from './unwraps/postmark.js'
 // import { unwrapProofpointV1 } from './unwraps/proofpointV1.js'
@@ -155,6 +156,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // Rakuten Japan's own program, separate from the LinkSynergy network in unwrapLinksynergy.
   // Opt-in like the rest of the group: unwrapping drops the publisher's commission.
   // unwrapRakutenAffiliate,
+  // unwrapMoshimo,
 
   // Ad networks.
   // unwrapGoogleAds,
