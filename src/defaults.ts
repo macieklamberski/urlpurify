@@ -58,6 +58,7 @@ import { unwrapHrefLi } from './unwraps/hrefLi.js'
 import { unwrapIndexHu } from './unwraps/indexHu.js'
 import { unwrapInstagramShim } from './unwraps/instagram.js'
 import { unwrapJianshuGo } from './unwraps/jianshuGo.js'
+import { unwrapJive } from './unwraps/jive.js'
 import { unwrapJuejin } from './unwraps/juejin.js'
 // import { unwrapKlook } from './unwraps/klook.js'
 // import { unwrapLeverAnalytics } from './unwraps/leverAnalytics.js'
@@ -225,6 +226,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapNicoMs,
   unwrapMedium,
   unwrapFlipboard,
+  unwrapJive,
   unwrapLinkedin,
   unwrapSoundcloud,
   unwrapYandexMail,

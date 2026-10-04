@@ -118,6 +118,7 @@ Enabled by default:
 | `unwrapIndexHu` | Index.hu and Dex.hu outbound link counter (index.hu/x.php?id=\<id\>&url=\<target\>) |
 | `unwrapInstagramShim` | Instagram outbound link shim (l.instagram.com with ?u=\<target\>) |
 | `unwrapJianshuGo` | Jianshu external link redirect (links.jianshu.com/go?to=\<target\>) |
+| `unwrapJive` | Jive community external link redirect (\<any host\>/external-link.jspa?url=\<target\>) |
 | `unwrapJuejin` | Juejin external link redirect (link.juejin.cn/?target=\<target\>) |
 | `unwrapLinkedin` | LinkedIn outbound link shims and click trackers (www.linkedin.com/safety/go?url=\<target\>, /redir/redirect, /redirect, /nhome/nus-redirect, /nus-trk, /e/v2, /company/\<id\>/redirect) |
 | `unwrapMedium` | Medium outbound link redirect (medium.com/r/?url=\<target\>) and sign-in hop (medium.com/m/global-identity?redirectUrl=\<target\>) |
