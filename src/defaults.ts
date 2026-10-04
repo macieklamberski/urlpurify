@@ -16,6 +16,7 @@ import { unwrapAnonymTo } from './unwraps/anonymTo.js'
 // import { unwrapAwin } from './unwraps/awin.js'
 // import { unwrapBarracudaLinkProtect } from './unwraps/barracudaLinkProtect.js'
 import { unwrapBing } from './unwraps/bing.js'
+// import { unwrapBingAds } from './unwraps/bingAds.js'
 // import { unwrapBizrate } from './unwraps/bizrate.js'
 // import { unwrapBolPartner } from './unwraps/bolPartner.js'
 import { unwrapBlueskyRedirect } from './unwraps/bsky.js'
@@ -193,6 +194,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
 
   // Ad networks.
   // unwrapGoogleAds,
+  // unwrapBingAds,
 
   // Social and community platforms.
   unwrapFacebookShim,
