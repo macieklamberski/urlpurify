@@ -105,6 +105,7 @@ import { unwrapThreadsShim } from './unwraps/threads.js'
 import { unwrapTumblr } from './unwraps/tumblr.js'
 // import { unwrapUkgwa } from './unwraps/ukgwa.js'
 import { unwrapVkAway } from './unwraps/vkAway.js'
+// import { unwrapWordpressGo2 } from './unwraps/wordpressGo2.js'
 // import { unwrapWordpressEmail } from './unwraps/wordpressEmail.js'
 // import { unwrapWebgains } from './unwraps/webgains.js'
 import { unwrapYahooSearch } from './unwraps/yahooSearch.js'
@@ -185,6 +186,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapRecruitics,
   // unwrapGeoriot,
   // unwrapFirebaseDynamicLinks,
+  // unwrapWordpressGo2,
   // unwrapTravelpayouts,
   // unwrapStay22,
   // unwrapAvantlink,
