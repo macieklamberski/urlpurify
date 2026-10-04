@@ -1,11 +1,44 @@
+import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
 const amazonHostRegex = /\.amazon-adsystem\.com$/
 const amazonPathRegex = /^\/x\/c\/[^/]+\/(https?:\/\/.+)$/
+const storeHostRegex =
+  /^(?:www|smile|affiliate-program)\.amazon\.(?:ca|co\.jp|co\.uk|com|com\.au|com\.br|de|es|fr|it)$/
+const storeRedirectPathRegex = /^\/gp\/redirect\.html(?:\/ref=.+)?$/
+const sponsoredRedirectPathRegex = /^\/gp\/slredirect\/picassoRedirect\.html\/ref=.+$/
+const emailRedirectPaths = ['/gp/r.html', '/gp/f.html']
 
-// Amazon affiliate click tracker (<region>.amazon-adsystem.com/x/c/<id>/<URL>).
-// The target URL is appended verbatim to the path after the click identifier.
+// Amazon affiliate click tracker (<region>.amazon-adsystem.com/x/c/<id>/<URL>) and store redirects
+// on amazon.<tld>: /gp/redirect.html[/ref=<ref>]?location=<URL>, /exec/obidos/redirect?path=<URL>,
+// /gp/r.html and /gp/f.html?U=<URL>, /gp/slredirect/picassoRedirect.html/ref=<ref>?url=<URL>.
 export const unwrapAmazonAffiliate: UrlUnwrapper = (url) => {
+  if (storeHostRegex.test(url.hostname)) {
+    let target: string | null = null
+
+    if (storeRedirectPathRegex.test(url.pathname)) {
+      target = url.searchParams.get('location')
+    }
+
+    if (url.pathname === '/exec/obidos/redirect') {
+      target = url.searchParams.get('path')
+    }
+
+    if (emailRedirectPaths.includes(url.pathname)) {
+      target = url.searchParams.get('U')
+    }
+
+    if (sponsoredRedirectPathRegex.test(url.pathname)) {
+      target = url.searchParams.get('url')
+    }
+
+    if (target && isHttpUrl(target)) {
+      return target
+    }
+
+    return
+  }
+
   if (!amazonHostRegex.test(url.hostname)) {
     return
   }
