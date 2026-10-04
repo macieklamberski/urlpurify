@@ -79,6 +79,21 @@ const deleteTrackingParams = (url: URL, trackingParams: Array<TrackingParam>): b
   return true
 }
 
+// A target the page can show: a scheme and a host, and no control characters.
+const usableTargetRegex = /^https?:\/\/[^/\s]/i
+const controlCharactersRegex = /[\p{Cc}\u2028\u2029]/u
+const singleSlashSchemeRegex = /^(https?:)\/(?!\/)/i
+
+// Trims the ends, repairs `https:/host`, which urldefense and web archives emit, and drops a target
+// that has no host or holds a control character, so the wrapper stays.
+const cleanTarget = (target: string | undefined): string | undefined => {
+  const trimmed = target?.trim().replace(singleSlashSchemeRegex, '$1//')
+
+  if (trimmed && usableTargetRegex.test(trimmed) && !controlCharactersRegex.test(trimmed)) {
+    return trimmed
+  }
+}
+
 const applyUnwrappers = (url: URL, unwrappers: Array<UrlUnwrapper>): string | undefined => {
   for (const unwrap of unwrappers) {
     const target = unwrap(url)
@@ -146,7 +161,7 @@ export const cleanUrl = (url: string, options?: CleanUrlOptions): string => {
   // Wrappers can nest (an email gateway wrapping a search redirect), so
   // unwrap repeatedly up to the depth limit.
   for (let depth = 0; depth < maxUnwrapDepth; depth += 1) {
-    const target = applyUnwrappers(currentParsed, unwrappers)
+    const target = cleanTarget(applyUnwrappers(currentParsed, unwrappers))
 
     if (!target) {
       break
