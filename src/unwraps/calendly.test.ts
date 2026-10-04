@@ -77,4 +77,10 @@ describe('unwrapCalendly', () => {
 
     expect(unwrapCalendly(url)).toBeUndefined()
   })
+
+  it('should return undefined for a host that swaps the dot', () => {
+    const url = new URL('https://www.calendlyxcom/url?q=https%3A%2F%2Fexample.com%2F')
+
+    expect(unwrapCalendly(url)).toBeUndefined()
+  })
 })
