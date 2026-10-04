@@ -6,6 +6,7 @@ export {
   trackingParamsPatterns,
 } from './defaults.js'
 export type { CleanUrlOptions, TrackingParam, UrlUnwrapper } from './types.js'
+export { unwrap12ft } from './unwraps/12ft.js'
 export { unwrapA8Net } from './unwraps/a8Net.js'
 export { unwrapAccesstrade } from './unwraps/accesstrade.js'
 export { unwrapAceml } from './unwraps/aceml.js'
