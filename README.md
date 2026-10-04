@@ -91,7 +91,7 @@ Enabled by default:
 
 | Unwrapper | Description |
 | --- | --- |
-| `unwrapBing` | Bing search-result redirect (www.bing.com/ck/a?u=a1\<base64url\>) |
+| `unwrapBing` | Bing search-result redirect (www.bing.com/ck/a?u=a1\<base64url\>) and news click (www.bing.com/news/apiclick.aspx?url=\<target\>) |
 | `unwrapAnonymTo` | anonym.to referrer anonymizer (anonym.to/?\<target\>) |
 | `unwrapBlueskyRedirect` | Bluesky outbound link redirect (go.bsky.app/redirect?u=\<target\>) |
 | `unwrapCsdn` | CSDN external link redirect (link.csdn.net/?target=\<target\>) |
