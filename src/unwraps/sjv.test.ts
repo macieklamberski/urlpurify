@@ -71,4 +71,28 @@ describe('unwrapSjv', () => {
 
     expect(unwrapSjv(url)).toBeUndefined()
   })
+
+  it('should extract target from a 5 character short id', () => {
+    const url = new URL('https://square.sjv.io/Y6oeO?u=https%3A%2F%2Fsquareup.com%2Fus%2Fen')
+
+    expect(unwrapSjv(url)).toBe('https://squareup.com/us/en')
+  })
+
+  it('should return undefined for a 7 character slug', () => {
+    const url = new URL('https://merchant.sjv.io/aB3dE9f?u=https%3A%2F%2Fexample.com%2Fitem')
+
+    expect(unwrapSjv(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a 4 character slug', () => {
+    const url = new URL('https://merchant.sjv.io/aB3d?u=https%3A%2F%2Fexample.com%2Fitem')
+
+    expect(unwrapSjv(url)).toBeUndefined()
+  })
+
+  it('should return undefined for the c path without a last id', () => {
+    const url = new URL('https://merchant.sjv.io/c/1/2/?u=https%3A%2F%2Fexample.com%2Fitem')
+
+    expect(unwrapSjv(url)).toBeUndefined()
+  })
 })

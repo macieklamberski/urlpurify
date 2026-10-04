@@ -123,4 +123,20 @@ describe('unwrapValuecommerce', () => {
 
     expect(unwrapValuecommerce(url)).toBeUndefined()
   })
+
+  it('should extract target on an atq subdomain no specimen shows', () => {
+    const url = new URL(
+      'https://atq.ck.us.valuecommerce.com/servlet/atq/referral?vc_url=https%3A%2F%2Fexample.com%2Fpage',
+    )
+
+    expect(unwrapValuecommerce(url)).toBe('https://example.com/page')
+  })
+
+  it('should extract target on a dck subdomain no specimen shows', () => {
+    const url = new URL(
+      'https://dalr2.valuecommerce.com/dck/ab12?vcurl=https%3A%2F%2Fexample.com%2Fpage',
+    )
+
+    expect(unwrapValuecommerce(url)).toBe('https://example.com/page')
+  })
 })

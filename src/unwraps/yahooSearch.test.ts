@@ -81,4 +81,10 @@ describe('unwrapYahooSearch', () => {
 
     expect(unwrapYahooSearch(url)).toBeUndefined()
   })
+
+  it('should return undefined when RU= does not start a path segment', () => {
+    const url = new URL('https://r.search.yahoo.com//RU=https%3A%2F%2Fexample.com/RK=0')
+
+    expect(unwrapYahooSearch(url)).toBeUndefined()
+  })
 })

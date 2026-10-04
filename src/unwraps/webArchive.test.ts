@@ -180,4 +180,10 @@ describe('unwrapWebArchive', () => {
 
     expect(unwrapWebArchive(url)).toBeUndefined()
   })
+
+  it('should return undefined for the save path', () => {
+    const url = new URL('https://web.archive.org/save/https://example.com/page')
+
+    expect(unwrapWebArchive(url)).toBeUndefined()
+  })
 })
