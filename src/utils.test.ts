@@ -56,6 +56,79 @@ describe('createParamExtractor', () => {
     expect(extract(value)).toBe(expected)
   })
 
+  it('should match the domain itself when given as domains', () => {
+    const extract = createParamExtractor({
+      domains: 'example.com',
+      params: ['url'],
+    })
+    const value = new URL('https://example.com/?url=https%3A%2F%2Fexample.org')
+    const expected = 'https://example.org'
+
+    expect(extract(value)).toBe(expected)
+  })
+
+  it('should match any subdomain of a domain given as domains', () => {
+    const extract = createParamExtractor({
+      domains: 'example.com',
+      params: ['url'],
+    })
+    const value = new URL('https://a.b.example.com/?url=https%3A%2F%2Fexample.org')
+    const expected = 'https://example.org'
+
+    expect(extract(value)).toBe(expected)
+  })
+
+  it('should match domains given as an array', () => {
+    const extract = createParamExtractor({
+      domains: ['example.com', 'example.net'],
+      params: ['url'],
+    })
+    const value = new URL('https://redirect.example.net/?url=https%3A%2F%2Fexample.org')
+    const expected = 'https://example.org'
+
+    expect(extract(value)).toBe(expected)
+  })
+
+  it('should return undefined for a host that only ends in a domain given as domains', () => {
+    const extract = createParamExtractor({
+      domains: 'example.com',
+      params: ['url'],
+    })
+    const value = new URL('https://notexample.com/?url=https%3A%2F%2Fexample.org')
+
+    expect(extract(value)).toBeUndefined()
+  })
+
+  it('should return undefined for a host outside the domains', () => {
+    const extract = createParamExtractor({
+      domains: 'example.com',
+      params: ['url'],
+    })
+    const value = new URL('https://example.net/?url=https%3A%2F%2Fexample.org')
+
+    expect(extract(value)).toBeUndefined()
+  })
+
+  it('should return undefined for an empty domain', () => {
+    const extract = createParamExtractor({
+      domains: '',
+      params: ['url'],
+    })
+    const value = new URL('https://example.com/?url=https%3A%2F%2Fexample.org')
+
+    expect(extract(value)).toBeUndefined()
+  })
+
+  it('should return undefined for an empty host', () => {
+    const extract = createParamExtractor({
+      hosts: '',
+      params: ['url'],
+    })
+    const value = new URL('https://example.com/?url=https%3A%2F%2Fexample.org')
+
+    expect(extract(value)).toBeUndefined()
+  })
+
   it('should require the configured path when given', () => {
     const extract = createParamExtractor({
       hosts: 'redirect.example.com',
@@ -107,6 +180,68 @@ describe('createParamExtractor', () => {
     const value = new URL('https://redirect.example.com/?url=')
 
     expect(extract(value)).toBeUndefined()
+  })
+
+  describe('twice-encoded target', () => {
+    const extract = createParamExtractor({
+      hosts: 'redirect.example.com',
+      params: ['url'],
+    })
+
+    it('should decode a twice-encoded http target', () => {
+      const value = new URL('https://redirect.example.com/?url=http%253A%252F%252Fexample.com%252F')
+      const expected = 'http://example.com/'
+
+      expect(extract(value)).toBe(expected)
+    })
+
+    it('should decode a twice-encoded https target', () => {
+      const value = new URL(
+        'https://redirect.example.com/?url=https%253A%252F%252Fexample.com%252Fpost%253Fid%253D1',
+      )
+      const expected = 'https://example.com/post?id=1'
+
+      expect(extract(value)).toBe(expected)
+    })
+
+    it('should decode a twice-encoded scheme in uppercase', () => {
+      const value = new URL(
+        'https://redirect.example.com/?url=HTTPS%253A%252F%252Fexample.com%252F',
+      )
+      const expected = 'HTTPS://example.com/'
+
+      expect(extract(value)).toBe(expected)
+    })
+
+    it('should decode a twice-encoded scheme with a lowercase colon escape', () => {
+      const value = new URL('https://redirect.example.com/?url=http%253a%252f%252fexample.com%252f')
+      const expected = 'http://example.com/'
+
+      expect(extract(value)).toBe(expected)
+    })
+
+    it('should leave a target encoded once as it is', () => {
+      const value = new URL(
+        'https://redirect.example.com/?url=https%3A%2F%2Fexample.com%2Fpost%253Fid%253D1',
+      )
+      const expected = 'https://example.com/post%3Fid%3D1'
+
+      expect(extract(value)).toBe(expected)
+    })
+
+    it('should not decode a value that only holds an encoded scheme later on', () => {
+      const value = new URL('https://redirect.example.com/?url=go-https%253A%252F%252Fexample.com')
+      const expected = 'go-https%3A%2F%2Fexample.com'
+
+      expect(extract(value)).toBe(expected)
+    })
+
+    it('should return the once-decoded value when the second decode throws', () => {
+      const value = new URL('https://redirect.example.com/?url=https%253A%252F%252Fexample.com%25')
+      const expected = 'https%3A%2F%2Fexample.com%'
+
+      expect(extract(value)).toBe(expected)
+    })
   })
 })
 
