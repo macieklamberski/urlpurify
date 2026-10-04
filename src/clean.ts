@@ -7,6 +7,8 @@ type TrackingMatcher = {
   patterns: Array<RegExp>
 }
 
+const replacementCharacter = '\uFFFD'
+
 const trackingMatcherCache = new WeakMap<Array<TrackingParam>, TrackingMatcher>()
 
 const getTrackingMatcher = (params: Array<TrackingParam>): TrackingMatcher => {
@@ -77,6 +79,21 @@ const deleteTrackingParams = (url: URL, trackingParams: Array<TrackingParam>): b
   return true
 }
 
+// A target the page can show: a scheme and a host, and no control characters.
+const usableTargetRegex = /^https?:\/\/[^/\s]/i
+const controlCharactersRegex = /[\p{Cc}\u2028\u2029]/u
+const singleSlashSchemeRegex = /^(https?:)\/(?!\/)/i
+
+// Trims the ends, repairs `https:/host`, which urldefense and web archives emit, and drops a target
+// that has no host or holds a control character, so the wrapper stays.
+const cleanTarget = (target: string | undefined): string | undefined => {
+  const trimmed = target?.trim().replace(singleSlashSchemeRegex, '$1//')
+
+  if (trimmed && usableTargetRegex.test(trimmed) && !controlCharactersRegex.test(trimmed)) {
+    return trimmed
+  }
+}
+
 const applyUnwrappers = (url: URL, unwrappers: Array<UrlUnwrapper>): string | undefined => {
   for (const unwrap of unwrappers) {
     const target = unwrap(url)
@@ -138,11 +155,13 @@ export const cleanUrl = (url: string, options?: CleanUrlOptions): string => {
 
   let currentUrl = url
   let currentParsed = parsed
+  let intactUrl = url
+  let intactParsed = parsed
 
   // Wrappers can nest (an email gateway wrapping a search redirect), so
   // unwrap repeatedly up to the depth limit.
   for (let depth = 0; depth < maxUnwrapDepth; depth += 1) {
-    const target = applyUnwrappers(currentParsed, unwrappers)
+    const target = cleanTarget(applyUnwrappers(currentParsed, unwrappers))
 
     if (!target) {
       break
@@ -156,6 +175,18 @@ export const cleanUrl = (url: string, options?: CleanUrlOptions): string => {
 
     currentUrl = target
     currentParsed = targetParsed
+
+    if (!target.includes(replacementCharacter)) {
+      intactUrl = target
+      intactParsed = targetParsed
+    }
+  }
+
+  // A target percent-encoded in a legacy charset such as EUC-JP or Shift_JIS decodes to U+FFFD.
+  // Fall back to the last hop without one, so a later hop that drops the damaged part still wins.
+  if (currentUrl.includes(replacementCharacter)) {
+    currentUrl = intactUrl
+    currentParsed = intactParsed
   }
 
   if (deleteTrackingParams(currentParsed, trackingParams)) {
