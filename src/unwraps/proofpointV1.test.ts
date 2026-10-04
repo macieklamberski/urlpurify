@@ -62,4 +62,10 @@ describe('unwrapProofpointV1', () => {
 
     expect(unwrapProofpointV1(url)).toBeUndefined()
   })
+
+  it('should return undefined for another proofpoint.com host', () => {
+    const url = new URL('https://other.proofpoint.com/v1/url?u=https-3A__example.com_post')
+
+    expect(unwrapProofpointV1(url)).toBeUndefined()
+  })
 })

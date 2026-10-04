@@ -45,4 +45,10 @@ describe('unwrapRedditOut', () => {
 
     expect(unwrapRedditOut(url)).toBeUndefined()
   })
+
+  it('should return undefined for another path on the host', () => {
+    const url = new URL('https://out.reddit.com/about?url=https%3A%2F%2Fexample.com%2Fpost')
+
+    expect(unwrapRedditOut(url)).toBeUndefined()
+  })
 })
