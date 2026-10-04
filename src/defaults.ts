@@ -91,6 +91,7 @@ import { unwrapThreadsShim } from './unwraps/threads.js'
 import { unwrapTumblr } from './unwraps/tumblr.js'
 // import { unwrapUkgwa } from './unwraps/ukgwa.js'
 import { unwrapVkAway } from './unwraps/vkAway.js'
+// import { unwrapWebgains } from './unwraps/webgains.js'
 import { unwrapYahooSearch } from './unwraps/yahooSearch.js'
 import { unwrapYouTube } from './unwraps/youtube.js'
 import { unwrapZhihu } from './unwraps/zhihu.js'
@@ -143,6 +144,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapCjNetwork,
   // unwrapValuecommerce,
   // unwrapViglink,
+  // unwrapWebgains,
   // unwrapPxf,
   // unwrapSjv,
   // unwrapEbayRover,
