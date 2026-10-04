@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'bun:test'
 import { unwrapUkgwa } from './ukgwa.js'
 
+const unclaimedModifiers: Array<string> = ['id_', 'if_', 'fw_', 'oe_']
+
 describe('unwrapUkgwa', () => {
   it('should extract target from a ukgwa snapshot', () => {
     const url = new URL(
@@ -111,6 +113,30 @@ describe('unwrapUkgwa', () => {
   it('should return undefined for a partial timestamp', () => {
     const url = new URL(
       'https://webarchive.nationalarchives.gov.uk/ukgwa/2022/https://www.example.gov.uk/',
+    )
+
+    expect(unwrapUkgwa(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a timestamp shorter than 14 digits', () => {
+    const url = new URL(
+      'https://webarchive.nationalarchives.gov.uk/ukgwa/202208281938/https://www.example.gov.uk/',
+    )
+
+    expect(unwrapUkgwa(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a path with another segment before the timestamp', () => {
+    const url = new URL(
+      'https://webarchive.nationalarchives.gov.uk/other/20220828193851/https://www.example.gov.uk/',
+    )
+
+    expect(unwrapUkgwa(url)).toBeUndefined()
+  })
+
+  it.each(unclaimedModifiers)('should return undefined for a %s snapshot', (modifier) => {
+    const url = new URL(
+      `https://webarchive.nationalarchives.gov.uk/ukgwa/20160613091026${modifier}/https://www.example.org/a`,
     )
 
     expect(unwrapUkgwa(url)).toBeUndefined()
