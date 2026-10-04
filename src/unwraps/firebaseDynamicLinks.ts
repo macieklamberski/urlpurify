@@ -6,6 +6,7 @@ const params = ['link', 'ofl']
 
 const extractTarget = createParamExtractor({
   domains: ['app.goo.gl', 'page.link'],
+  path: '/',
   params,
 })
 
@@ -17,6 +18,8 @@ const extractGooGlTarget = createParamExtractor({
 
 // Firebase Dynamic Links (<project>.page.link/?link=<canonical>&ofl=<fallback>), and the older
 // goo.gl hosts (<name>.app.goo.gl/?link=<canonical> and goo.gl/app/<name>?link=<canonical>).
+// A deeper path on page.link or app.goo.gl is a short link or another service, such as
+// maps.app.goo.gl/<id>, and is left alone.
 // `link` is the canonical destination; `ofl` is the web fallback used when no
 // app handler is available. They're often identical, but when they differ
 // `link` is the more correct choice.

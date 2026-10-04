@@ -92,6 +92,24 @@ describe('unwrapFirebaseDynamicLinks', () => {
     expect(unwrapFirebaseDynamicLinks(url)).toBeUndefined()
   })
 
+  it('should return undefined for a path on a page.link host', () => {
+    const url = new URL('https://example.page.link/abc123?link=https://example.com/page')
+
+    expect(unwrapFirebaseDynamicLinks(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a short link on an app.goo.gl subdomain', () => {
+    const url = new URL('https://maps.app.goo.gl/abc123?link=https://example.com/page')
+
+    expect(unwrapFirebaseDynamicLinks(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a path on app.goo.gl itself', () => {
+    const url = new URL('https://app.goo.gl/abc123?link=https://example.com/page')
+
+    expect(unwrapFirebaseDynamicLinks(url)).toBeUndefined()
+  })
+
   it('should extract target from link param on app.goo.gl itself', () => {
     const url = new URL('https://app.goo.gl/?link=https://example.com/page')
 
