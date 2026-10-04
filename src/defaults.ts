@@ -9,6 +9,7 @@ import { unwrapAnonymTo } from './unwraps/anonymTo.js'
 // import { unwrapAmazonAffiliate } from './unwraps/amazonAffiliate.js'
 // import { unwrapAmpCache } from './unwraps/ampCache.js'
 // import { unwrapAwin } from './unwraps/awin.js'
+// import { unwrapBarracudaLinkProtect } from './unwraps/barracudaLinkProtect.js'
 import { unwrapBing } from './unwraps/bing.js'
 import { unwrapBlueskyRedirect } from './unwraps/bsky.js'
 import { unwrapBusinessWire } from './unwraps/businessWire.js'
@@ -40,6 +41,7 @@ import { unwrapInstagramShim } from './unwraps/instagram.js'
 import { unwrapJianshuGo } from './unwraps/jianshuGo.js'
 import { unwrapJuejin } from './unwraps/juejin.js'
 // import { unwrapLeverAnalytics } from './unwraps/leverAnalytics.js'
+import { unwrapLinkedin } from './unwraps/linkedin.js'
 // import { unwrapLinksynergy } from './unwraps/linksynergy.js'
 // import { unwrapMailchimp } from './unwraps/mailchimp.js'
 // import { unwrapMailpanion } from './unwraps/mailpanion.js'
@@ -59,6 +61,7 @@ import { unwrapNaverOutgoing } from './unwraps/naverOutgoing.js'
 // import { unwrapOutlookSafelinks } from './unwraps/outlookSafelinks.js'
 // import { unwrapPartnerAds } from './unwraps/partnerAds.js'
 import { unwrapPocket } from './unwraps/pocket.js'
+import { unwrapPrNewswire } from './unwraps/prNewswire.js'
 import { unwrapRedditOut } from './unwraps/redditOut.js'
 // import { unwrapRedirectingat } from './unwraps/redirectingat.js'
 import { unwrapSegmentfault } from './unwraps/segmentfault.js'
@@ -102,6 +105,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
 
   // Email and security gateways.
   // unwrapOutlookSafelinks,
+  // unwrapBarracudaLinkProtect,
   // unwrapProofpointV1,
   // unwrapProofpointV2,
   // unwrapProofpointV3,
@@ -160,6 +164,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapNicoMs,
   unwrapMedium,
   unwrapFlipboard,
+  unwrapLinkedin,
 
   // Developer and publishing platforms.
   unwrapZhihu,
@@ -173,6 +178,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
 
   // Press release wires.
   unwrapBusinessWire,
+  unwrapPrNewswire,
 
   // Cache and proxy services.
   // unwrapAmpCache,
