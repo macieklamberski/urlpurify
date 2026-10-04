@@ -25,4 +25,44 @@ describe('unwrapPxf', () => {
 
     expect(unwrapPxf(url)).toBeUndefined()
   })
+
+  it('should extract target from the click path', () => {
+    const url = new URL(
+      'https://alltrails.pxf.io/c/1234567/654321/9876?u=https%3A%2F%2Fexample.com%2Fpost',
+    )
+
+    expect(unwrapPxf(url)).toBe('https://example.com/post')
+  })
+
+  it('should extract target from a short code path', () => {
+    const url = new URL('https://merchant.pxf.io/dOax33?u=https%3A%2F%2Fexample.com%2Fpost')
+
+    expect(unwrapPxf(url)).toBe('https://example.com/post')
+  })
+
+  it('should return undefined for a lookalike domain', () => {
+    const url = new URL('https://examplepxf.io/?u=https%3A%2F%2Fexample.com%2Fpost')
+
+    expect(unwrapPxf(url)).toBeUndefined()
+  })
+
+  it('should return undefined for another path on the host', () => {
+    const url = new URL('https://merchant.pxf.io/c/about/us?u=https%3A%2F%2Fexample.com%2Fpost')
+
+    expect(unwrapPxf(url)).toBeUndefined()
+  })
+
+  it('should extract target from a click path with a mangled tail', () => {
+    const url = new URL(
+      'https://merchant.pxf.io/c/381569/1https://merchant.pxf.io/c/381569/1448521/17195?u=https%3A%2F%2Fexample.com%2Fproduct',
+    )
+
+    expect(unwrapPxf(url)).toBe('https://example.com/product')
+  })
+
+  it('should return undefined for a click path without a second numeric id', () => {
+    const url = new URL('https://merchant.pxf.io/c/123/about?u=https%3A%2F%2Fexample.com%2Fpost')
+
+    expect(unwrapPxf(url)).toBeUndefined()
+  })
 })

@@ -42,4 +42,30 @@ describe('unwrapProofpointV1', () => {
 
     expect(unwrapProofpointV1(url)).toBeUndefined()
   })
+
+  it('should return undefined on urldefense.us', () => {
+    const url = new URL('https://urldefense.us/v1/url?u=https://example.com_path_to_article&k=key')
+
+    expect(unwrapProofpointV1(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a lookalike domain', () => {
+    const url = new URL(
+      'https://exampleurldefense.com/v1/url?u=https://example.com_path_to_article',
+    )
+
+    expect(unwrapProofpointV1(url)).toBeUndefined()
+  })
+
+  it('should return undefined on urldefense.com', () => {
+    const url = new URL('https://urldefense.com/v1/url?u=https-3A__example.com_post')
+
+    expect(unwrapProofpointV1(url)).toBeUndefined()
+  })
+
+  it('should return undefined for another proofpoint.com host', () => {
+    const url = new URL('https://other.proofpoint.com/v1/url?u=https-3A__example.com_post')
+
+    expect(unwrapProofpointV1(url)).toBeUndefined()
+  })
 })

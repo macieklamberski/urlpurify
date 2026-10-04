@@ -43,4 +43,36 @@ describe('unwrapMimecast', () => {
 
     expect(unwrapMimecast(url)).toBeUndefined()
   })
+
+  it('should extract target on a region no specimen shows', () => {
+    const url = new URL(
+      'https://protect-au.mimecast.com/s/abc123?url=https%3A%2F%2Fexample.com%2Fpost',
+    )
+
+    expect(unwrapMimecast(url)).toBe('https://example.com/post')
+  })
+
+  it('should return undefined for a lookalike domain', () => {
+    const url = new URL(
+      'https://protect-us.examplemimecast.com/s/abc123?url=https%3A%2F%2Fexample.com%2Fpost',
+    )
+
+    expect(unwrapMimecast(url)).toBeUndefined()
+  })
+
+  it('should return undefined for another path on the host', () => {
+    const url = new URL(
+      'https://protect-us.mimecast.com/other/abc123?url=https%3A%2F%2Fexample.com%2Fpost',
+    )
+
+    expect(unwrapMimecast(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a deeper path', () => {
+    const url = new URL(
+      'https://protect-us.mimecast.com/s/abc123/extra?url=https%3A%2F%2Fexample.com%2Fpost',
+    )
+
+    expect(unwrapMimecast(url)).toBeUndefined()
+  })
 })

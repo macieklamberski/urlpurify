@@ -44,4 +44,16 @@ describe('unwrapPostmark', () => {
 
     expect(unwrapPostmark(url)).toBeUndefined()
   })
+
+  it('should return undefined for a subdomain no specimen shows', () => {
+    const url = new URL('https://track.pstmrk.it/3s/example.com%2Farticle/abc123/def456')
+
+    expect(unwrapPostmark(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a lookalike domain', () => {
+    const url = new URL('https://examplepstmrk.it/3s/example.com%2Farticle/abc123/def456')
+
+    expect(unwrapPostmark(url)).toBeUndefined()
+  })
 })

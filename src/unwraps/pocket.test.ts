@@ -25,4 +25,18 @@ describe('unwrapPocket', () => {
 
     expect(unwrapPocket(url)).toBeUndefined()
   })
+
+  it('should return undefined for a subdomain no specimen shows', () => {
+    const url = new URL('https://www.getpocket.com/redirect?url=https%3A%2F%2Fexample.com%2Fpost')
+
+    expect(unwrapPocket(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a lookalike domain', () => {
+    const url = new URL(
+      'https://examplegetpocket.com/redirect?url=https%3A%2F%2Fexample.com%2Fpost',
+    )
+
+    expect(unwrapPocket(url)).toBeUndefined()
+  })
 })

@@ -4,11 +4,12 @@ import { createParamExtractor, decodeBase64 } from '../utils.js'
 
 const baseExtractor = createParamExtractor({
   hosts: 'link.segmentfault.com',
+  path: '/',
   params: ['enc'],
 })
 
-// Segmentfault external link redirect (link.segmentfault.com/?enc=<base64>).
-// The enc param is a base64-encoded target URL.
+// Segmentfault external link redirect (link.segmentfault.com/?enc=<base64>). The enc param is a
+// base64-encoded target URL.
 export const unwrapSegmentfault: UrlUnwrapper = (url) => {
   const raw = baseExtractor(url)
 

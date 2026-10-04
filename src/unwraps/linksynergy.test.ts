@@ -83,12 +83,12 @@ describe('unwrapLinksynergy', () => {
   })
 
   describe('other linksynergy.com subdomains', () => {
-    it('should extract target from deeplink murl param', () => {
+    it('should return undefined for an unlisted subdomain', () => {
       const url = new URL(
         'https://eu.linksynergy.com/deeplink?id=abc&mid=12345&murl=https%3A%2F%2Fexample.com%2Fproduct',
       )
 
-      expect(unwrapLinksynergy(url)).toBe('https://example.com/product')
+      expect(unwrapLinksynergy(url)).toBeUndefined()
     })
   })
 

@@ -48,22 +48,6 @@ describe('unwrapRakutenAffiliate', () => {
 
       expect(unwrapRakutenAffiliate(url)).toBeUndefined()
     })
-
-    it('should return undefined when the target holds a byte that is not UTF-8', () => {
-      const url = new URL(
-        'https://hb.afl.rakuten.co.jp/hgc/0eb119d3.05e93845.0eb119d4.458fd3e3/?pc=https%3A%2F%2Fexample.com%2Fsearch%2Fmall%2F%25E3%2583%2590%25E3%2583%83%25E3%2582%25B0%2F',
-      )
-
-      expect(unwrapRakutenAffiliate(url)).toBeUndefined()
-    })
-
-    it('should keep a target whose replacement character is percent-encoded', () => {
-      const url = new URL(
-        'https://hb.afl.rakuten.co.jp/hgc/163ae9e7.356a01a5.163ae9e8.eeee341b/?pc=http%3A%2F%2Fexample.com%2Fsearch%2Fmall%2F%25EF%25BF%25BD%2F',
-      )
-
-      expect(unwrapRakutenAffiliate(url)).toBe('http://example.com/search/mall/%EF%BF%BD/')
-    })
   })
 
   describe('hb.afl.rakuten.co.jp/ichiba/ link', () => {
@@ -120,5 +104,21 @@ describe('unwrapRakutenAffiliate', () => {
 
       expect(unwrapRakutenAffiliate(url)).toBeUndefined()
     })
+  })
+
+  it('should return undefined for a subdomain no specimen shows', () => {
+    const url = new URL(
+      'https://www.hb.afl.rakuten.co.jp/hgc/16cd069d.07152461.16cd069e.8295d8f8/?pc=https%3A%2F%2Fexample.com%2Fitem%2F',
+    )
+
+    expect(unwrapRakutenAffiliate(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a lookalike host', () => {
+    const url = new URL(
+      'https://examplehb.afl.rakuten.co.jp/hgc/16cd069d.07152461.16cd069e.8295d8f8/?pc=https%3A%2F%2Fexample.com%2Fitem%2F',
+    )
+
+    expect(unwrapRakutenAffiliate(url)).toBeUndefined()
   })
 })

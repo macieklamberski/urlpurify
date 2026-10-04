@@ -42,4 +42,16 @@ describe('unwrapProofpointV2', () => {
 
     expect(unwrapProofpointV2(url)).toBeUndefined()
   })
+
+  it('should return undefined for a subdomain no specimen shows', () => {
+    const url = new URL('https://eu.urldefense.proofpoint.com/v2/url?u=https-3A__example.com_path')
+
+    expect(unwrapProofpointV2(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a lookalike domain', () => {
+    const url = new URL('https://exampleurldefense.com/v2/url?u=https-3A__example.com_path')
+
+    expect(unwrapProofpointV2(url)).toBeUndefined()
+  })
 })
