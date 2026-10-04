@@ -96,6 +96,20 @@ describe('unwrapGovdelivery', () => {
     expect(unwrapGovdelivery(url)).toBeUndefined()
   })
 
+  it('should return undefined when the message id is empty', () => {
+    const url = new URL('https://links-2.govdelivery.com/CL0/https:%2F%2Fexample.com%2F/1//c2ln')
+
+    expect(unwrapGovdelivery(url)).toBeUndefined()
+  })
+
+  it('should return undefined when the signature is empty', () => {
+    const url = new URL(
+      'https://links-2.govdelivery.com/CL0/https:%2F%2Fexample.com%2F/1/0101019fb000000a-000000/',
+    )
+
+    expect(unwrapGovdelivery(url)).toBeUndefined()
+  })
+
   it('should return undefined for a path with a prefix before CL0', () => {
     const url = new URL(`https://links-2.govdelivery.com/x/CL0/https:%2F%2Fexample.com%2F${tail}`)
 
