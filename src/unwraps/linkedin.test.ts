@@ -144,10 +144,10 @@ describe('unwrapLinkedin', () => {
     expect(unwrapLinkedin(url)).toBeUndefined()
   })
 
-  it('should extract target on any linkedin.com subdomain', () => {
+  it('should return undefined for another linkedin.com subdomain', () => {
     const url = new URL('https://uk.linkedin.com/safety/go?url=https%3A%2F%2Fexample.com%2F')
 
-    expect(unwrapLinkedin(url)).toBe('https://example.com/')
+    expect(unwrapLinkedin(url)).toBeUndefined()
   })
 
   it('should return undefined when a shim path is nested under another path', () => {

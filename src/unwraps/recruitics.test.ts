@@ -22,12 +22,12 @@ describe('unwrapRecruitics', () => {
     expect(unwrapRecruitics(url)).toBeUndefined()
   })
 
-  it('should extract target on a subdomain no specimen shows', () => {
+  it('should return undefined for a subdomain no specimen shows', () => {
     const url = new URL(
       'https://www.recruitics.com/redirect?rx_url=https%3A%2F%2Fexample.com%2Fpost',
     )
 
-    expect(unwrapRecruitics(url)).toBe('https://example.com/post')
+    expect(unwrapRecruitics(url)).toBeUndefined()
   })
 
   it('should return undefined for a lookalike domain', () => {

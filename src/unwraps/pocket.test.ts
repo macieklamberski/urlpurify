@@ -26,10 +26,10 @@ describe('unwrapPocket', () => {
     expect(unwrapPocket(url)).toBeUndefined()
   })
 
-  it('should extract target on a subdomain no specimen shows', () => {
+  it('should return undefined for a subdomain no specimen shows', () => {
     const url = new URL('https://www.getpocket.com/redirect?url=https%3A%2F%2Fexample.com%2Fpost')
 
-    expect(unwrapPocket(url)).toBe('https://example.com/post')
+    expect(unwrapPocket(url)).toBeUndefined()
   })
 
   it('should return undefined for a lookalike domain', () => {

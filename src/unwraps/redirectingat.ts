@@ -1,9 +1,9 @@
 import { createParamExtractor } from '../utils.js'
 
 // Skimlinks family affiliate redirect (go.redirectingat.com/?url=<target>, also on
-// redirectingat.com, wordpress.redirectingat.com and every other redirectingat.com subdomain).
+// redirectingat.com and wordpress.redirectingat.com).
 export const unwrapRedirectingat = createParamExtractor({
-  domains: 'redirectingat.com',
+  hosts: ['redirectingat.com', 'go.redirectingat.com', 'wordpress.redirectingat.com'],
   path: '/',
   params: ['url'],
 })

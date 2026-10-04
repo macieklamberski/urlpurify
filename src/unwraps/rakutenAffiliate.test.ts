@@ -106,12 +106,12 @@ describe('unwrapRakutenAffiliate', () => {
     })
   })
 
-  it('should extract target on a subdomain no specimen shows', () => {
+  it('should return undefined for a subdomain no specimen shows', () => {
     const url = new URL(
       'https://www.hb.afl.rakuten.co.jp/hgc/16cd069d.07152461.16cd069e.8295d8f8/?pc=https%3A%2F%2Fexample.com%2Fitem%2F',
     )
 
-    expect(unwrapRakutenAffiliate(url)).toBe('https://example.com/item/')
+    expect(unwrapRakutenAffiliate(url)).toBeUndefined()
   })
 
   it('should return undefined for a lookalike host', () => {

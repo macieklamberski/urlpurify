@@ -1,10 +1,10 @@
-import { isHostOrSubdomainOf } from 'trousse'
+import { isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { decodeBase64Url, getUtf8ByteLength } from '../utils.js'
 
 const v3PathRegex = /^\/v3\/__(.+)__;([^!]*)!/
 
-const v3Domains = ['proofpoint.com', 'urldefense.com', 'urldefense.us']
+const v3Hosts = ['urldefense.com', 'urldefense.proofpoint.com', 'urldefense.us']
 
 // `**X` runs replace a fixed byte count: A=2, B=3, ... `_`=65.
 const runLengthAlphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_'
@@ -96,11 +96,10 @@ const positionInChars = (source: string, codeUnitIndex: number): number => {
   return charIndex
 }
 
-// Proofpoint URLDefense v3 (urldefense.com/v3/__<mangled>__;<b64>!!<sig>$), on proofpoint.com,
-// urldefense.com, urldefense.us and their subdomains. `*` and `**X` runs in the mangled URL are
+// Proofpoint URLDefense v3 (urldefense.com/v3/__<mangled>__;<b64>!!<sig>$). `*` and `**X` runs in the mangled URL are
 // restored from the base64 segment.
 export const unwrapProofpointV3: UrlUnwrapper = (url) => {
-  if (!isHostOrSubdomainOf(url, v3Domains)) {
+  if (!isHostOf(url, v3Hosts)) {
     return
   }
 

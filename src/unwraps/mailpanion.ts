@@ -1,9 +1,8 @@
 import { createParamExtractor } from '../utils.js'
 
-// Mailpanion email click tracker (mailpanion.com/?destination=<target>), on mailpanion.com and its
-// subdomains.
+// Mailpanion email click tracker (mailpanion.com/?destination=<target>).
 export const unwrapMailpanion = createParamExtractor({
-  domains: 'mailpanion.com',
+  hosts: 'mailpanion.com',
   path: '/',
   params: ['destination'],
 })

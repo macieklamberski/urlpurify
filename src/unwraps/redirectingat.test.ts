@@ -24,10 +24,10 @@ describe('unwrapRedirectingat', () => {
     expect(unwrapRedirectingat(url)).toBe('http://example.com/album')
   })
 
-  it('should extract target on any other redirectingat.com subdomain', () => {
+  it('should return undefined for another redirectingat.com subdomain', () => {
     const url = new URL('https://eu.redirectingat.com/?url=https%3A%2F%2Fexample.com%2Fproduct')
 
-    expect(unwrapRedirectingat(url)).toBe('https://example.com/product')
+    expect(unwrapRedirectingat(url)).toBeUndefined()
   })
 
   it('should extract an unencoded target', () => {

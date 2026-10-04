@@ -1,13 +1,12 @@
-import { isHostOrSubdomainOf, isHttpUrl } from 'trousse'
+import { isAnyOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
-const prNewswireDomains = ['c212.net', 'prnewswire.com']
+const prNewswireHosts = ['c212.net', 'edge.prnewswire.com']
 const encodedSchemeRegex = /^https?%3A/i
 
-// PR Newswire release click tracker (c212.net or edge.prnewswire.com /c/link/?u=<target>), on both
-// domains and every subdomain.
+// PR Newswire release click tracker (c212.net or edge.prnewswire.com /c/link/?u=<target>).
 export const unwrapPrNewswire: UrlUnwrapper = (url) => {
-  if (!isHostOrSubdomainOf(url, prNewswireDomains) || url.pathname !== '/c/link/') {
+  if (!isAnyOf(url.hostname, prNewswireHosts) || url.pathname !== '/c/link/') {
     return
   }
 

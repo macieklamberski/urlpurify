@@ -1,8 +1,8 @@
 import { createParamExtractor } from '../utils.js'
 
-// Juejin external link redirect (link.juejin.cn/?target=<target>), on juejin.cn and its subdomains.
+// Juejin external link redirect (link.juejin.cn/?target=<target>).
 export const unwrapJuejin = createParamExtractor({
-  domains: 'juejin.cn',
+  hosts: 'link.juejin.cn',
   path: '/',
   params: ['target'],
 })

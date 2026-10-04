@@ -30,14 +30,6 @@ describe('unwrapOutlookSafelinks', () => {
     expect(unwrapOutlookSafelinks(url)).toBeUndefined()
   })
 
-  it('should extract target on the bare domain', () => {
-    const url = new URL(
-      'https://safelinks.protection.outlook.com/?url=https%3A%2F%2Fexample.com%2Fpost',
-    )
-
-    expect(unwrapOutlookSafelinks(url)).toBe('https://example.com/post')
-  })
-
   it('should return undefined for a lookalike domain', () => {
     const url = new URL(
       'https://examplesafelinks.protection.outlook.com/?url=https%3A%2F%2Fexample.com%2Fpost',

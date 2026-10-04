@@ -44,12 +44,12 @@ describe('unwrapMailtrack', () => {
     expect(unwrapMailtrack(url)).toBe('https://example.com/post')
   })
 
-  it('should extract target on a subdomain no specimen shows', () => {
+  it('should return undefined for a subdomain no specimen shows', () => {
     const url = new URL(
       'https://eu.mailtrack.io/trace/link/abc123?url=https%3A%2F%2Fexample.com%2Fpost',
     )
 
-    expect(unwrapMailtrack(url)).toBe('https://example.com/post')
+    expect(unwrapMailtrack(url)).toBeUndefined()
   })
 
   it('should return undefined for a lookalike domain', () => {
