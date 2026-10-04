@@ -237,4 +237,36 @@ describe('unwrapCjNetwork', () => {
 
     expect(unwrapCjNetwork(url)).toBeUndefined()
   })
+
+  it('should extract target from the t path on www.pntra.com', () => {
+    const url = new URL(
+      'https://www.pntra.com/t/8-8364-43737-58790?url=https%3A%2F%2Fexample.com%2Fpage',
+    )
+
+    expect(unwrapCjNetwork(url)).toBe('https://example.com/page')
+  })
+
+  it('should extract target from the click path on www.qksrv.net', () => {
+    const url = new URL('http://www.qksrv.net/click-4897915-10273919?url=https://example.com/page')
+
+    expect(unwrapCjNetwork(url)).toBe('https://example.com/page')
+  })
+
+  it('should return undefined for an unlisted subdomain of pntra.com', () => {
+    const url = new URL('https://ad.pntra.com/t/8-1-2-3?url=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapCjNetwork(url)).toBeUndefined()
+  })
+
+  it('should extract target from the bare domain kqzyfj.com', () => {
+    const url = new URL('https://kqzyfj.com/click-12345-67890?url=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapCjNetwork(url)).toBe('https://example.com/page')
+  })
+
+  it('should extract target from the bare domain pjtra.com', () => {
+    const url = new URL('https://pjtra.com/click-12345-67890?url=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapCjNetwork(url)).toBe('https://example.com/page')
+  })
 })

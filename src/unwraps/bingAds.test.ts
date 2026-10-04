@@ -207,4 +207,20 @@ describe('unwrapBingAds', () => {
 
     expect(unwrapBingAds(url)).toBeUndefined()
   })
+
+  it('should extract the target from www4.bing.com', () => {
+    const url = new URL(
+      'https://www4.bing.com/aclk?u=aHR0cHMlM2ElMmYlMmZ3d3cuZXhhbXBsZS5jb20lMmZib29raW5nJTJmMTIzNDU=',
+    )
+
+    expect(unwrapBingAds(url)).toBe('https://www.example.com/booking/12345')
+  })
+
+  it('should extract the target from global.bing.com', () => {
+    const url = new URL(
+      'https://global.bing.com/aclk?u=aHR0cHMlM2ElMmYlMmZ3d3cuZXhhbXBsZS5jb20lMmZib29raW5nJTJmMTIzNDU=',
+    )
+
+    expect(unwrapBingAds(url)).toBe('https://www.example.com/booking/12345')
+  })
 })

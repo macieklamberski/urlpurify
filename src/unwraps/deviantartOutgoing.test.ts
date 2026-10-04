@@ -57,4 +57,16 @@ describe('unwrapDeviantartOutgoing', () => {
 
     expect(unwrapDeviantartOutgoing(url)).toBeUndefined()
   })
+
+  it('should return undefined for outgoing with no user segment', () => {
+    const url = new URL('https://www.deviantart.com/outgoing?https://example.com/')
+
+    expect(unwrapDeviantartOutgoing(url)).toBeUndefined()
+  })
+
+  it('should return undefined for outgoing below two segments', () => {
+    const url = new URL('https://www.deviantart.com/a/b/outgoing?https://example.com/')
+
+    expect(unwrapDeviantartOutgoing(url)).toBeUndefined()
+  })
 })

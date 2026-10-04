@@ -210,4 +210,20 @@ describe('unwrapAmazonAffiliate', () => {
 
     expect(unwrapAmazonAffiliate(url)).toBeUndefined()
   })
+
+  it('should return undefined for a store redirect on a host that nests www', () => {
+    const url = new URL(
+      'https://evil.www.amazon.com/gp/redirect.html?location=https%3A%2F%2Fexample.com%2F',
+    )
+
+    expect(unwrapAmazonAffiliate(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a store redirect on a host that only ends in www', () => {
+    const url = new URL(
+      'https://xwww.amazon.com/gp/redirect.html?location=https%3A%2F%2Fexample.com%2F',
+    )
+
+    expect(unwrapAmazonAffiliate(url)).toBeUndefined()
+  })
 })

@@ -157,4 +157,18 @@ describe('unwrapBing', () => {
 
     expect(unwrapBing(url)).toBeUndefined()
   })
+
+  it('should accept news apiclick on www4.bing.com', () => {
+    const url = new URL('https://www4.bing.com/news/apiclick.aspx?url=https%3A%2F%2Fexample.com%2F')
+
+    expect(unwrapBing(url)).toBe('https://example.com/')
+  })
+
+  it('should accept news apiclick on global.bing.com', () => {
+    const url = new URL(
+      'https://global.bing.com/news/apiclick.aspx?url=https%3A%2F%2Fexample.com%2F',
+    )
+
+    expect(unwrapBing(url)).toBe('https://example.com/')
+  })
 })
