@@ -65,4 +65,10 @@ describe('unwrapPxf', () => {
 
     expect(unwrapPxf(url)).toBe('https://example.com/product')
   })
+
+  it('should return undefined for a click path without a second numeric id', () => {
+    const url = new URL('https://merchant.pxf.io/c/123/about?u=https%3A%2F%2Fexample.com%2Fpost')
+
+    expect(unwrapPxf(url)).toBeUndefined()
+  })
 })

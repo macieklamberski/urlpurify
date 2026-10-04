@@ -56,4 +56,10 @@ describe('unwrapProofpointV1', () => {
 
     expect(unwrapProofpointV1(url)).toBeUndefined()
   })
+
+  it('should decode on urldefense.com', () => {
+    const url = new URL('https://urldefense.com/v1/url?u=https-3A__example.com_post')
+
+    expect(unwrapProofpointV1(url)).toBe('https://example.com/post')
+  })
 })

@@ -69,4 +69,12 @@ describe('unwrapOutlookSafelinks', () => {
 
     expect(unwrapOutlookSafelinks(url)).toBeUndefined()
   })
+
+  it('should extract target from a multi-letter app kind', () => {
+    const url = new URL(
+      'https://eur01.safelinks.protection.outlook.com/ap/od-59584e83/?url=https%3A%2F%2Fexample.com%2Fpost',
+    )
+
+    expect(unwrapOutlookSafelinks(url)).toBe('https://example.com/post')
+  })
 })

@@ -51,4 +51,12 @@ describe('unwrapPartnerAds', () => {
 
     expect(unwrapPartnerAds(url)).toBeUndefined()
   })
+
+  it('should extract target on the bare domain', () => {
+    const url = new URL(
+      'https://partner-ads.com/dk/klikbanner.php?htmlurl=https%3A%2F%2Fexample.com%2Fpost',
+    )
+
+    expect(unwrapPartnerAds(url)).toBe('https://example.com/post')
+  })
 })

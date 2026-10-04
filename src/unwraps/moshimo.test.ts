@@ -83,4 +83,12 @@ describe('unwrapMoshimo', () => {
 
     expect(unwrapMoshimo(url)).toBeUndefined()
   })
+
+  it('should extract target on the bare domain', () => {
+    const url = new URL(
+      'https://moshimo.com/af/c/click?a_id=1&p_id=54&pc_id=54&pl_id=616&url=https%3A%2F%2Fexample.com%2F',
+    )
+
+    expect(unwrapMoshimo(url)).toBe('https://example.com/')
+  })
 })

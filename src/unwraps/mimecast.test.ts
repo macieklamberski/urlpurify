@@ -67,4 +67,12 @@ describe('unwrapMimecast', () => {
 
     expect(unwrapMimecast(url)).toBeUndefined()
   })
+
+  it('should return undefined for a deeper path', () => {
+    const url = new URL(
+      'https://protect-us.mimecast.com/s/abc123/extra?url=https%3A%2F%2Fexample.com%2Fpost',
+    )
+
+    expect(unwrapMimecast(url)).toBeUndefined()
+  })
 })
