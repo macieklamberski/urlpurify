@@ -49,4 +49,16 @@ describe('unwrapGoogleAmpViewer', () => {
 
     expect(unwrapGoogleAmpViewer(url)).toBeUndefined()
   })
+
+  it('should extract https target from a subdomain no specimen shows', () => {
+    const url = new URL('https://m.google.co.uk/amp/s/example.com/article')
+
+    expect(unwrapGoogleAmpViewer(url)).toBe('https://example.com/article')
+  })
+
+  it('should return undefined for a lookalike host', () => {
+    const url = new URL('https://examplegoogle.com/amp/s/example.com/article')
+
+    expect(unwrapGoogleAmpViewer(url)).toBeUndefined()
+  })
 })

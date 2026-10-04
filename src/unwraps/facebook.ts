@@ -1,15 +1,9 @@
 import { createParamExtractor } from '../utils.js'
 
-// Meta link shim (l.facebook.com, lm.facebook.com, www.facebook.com, upload.facebook.com and
-// l.messenger.com /l.php?u=<target>).
+// Meta link shim (l.facebook.com/l.php?u=<target>, also lm., www., upload. and l.messenger.com),
+// on facebook.com, messenger.com and every subdomain.
 export const unwrapFacebookShim = createParamExtractor({
-  hosts: [
-    'l.facebook.com',
-    'lm.facebook.com',
-    'www.facebook.com',
-    'upload.facebook.com',
-    'l.messenger.com',
-  ],
+  domains: ['facebook.com', 'messenger.com'],
   path: '/l.php',
   params: ['u'],
 })

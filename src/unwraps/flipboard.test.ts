@@ -25,4 +25,24 @@ describe('unwrapFlipboard', () => {
 
     expect(unwrapFlipboard(url)).toBeUndefined()
   })
+
+  it('should extract target from a subdomain no specimen shows', () => {
+    const url = new URL('https://www.flipboard.com/redirect?url=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapFlipboard(url)).toBe('https://example.com/page')
+  })
+
+  it('should return undefined for a lookalike host', () => {
+    const url = new URL(
+      'https://exampleflipboard.com/redirect?url=https%3A%2F%2Fexample.com%2Fpage',
+    )
+
+    expect(unwrapFlipboard(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a sibling path with the carrier param', () => {
+    const url = new URL('https://flipboard.com/redirect/ws?url=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapFlipboard(url)).toBeUndefined()
+  })
 })

@@ -1,8 +1,9 @@
 import { createParamExtractor } from '../utils.js'
 
-// Hashnode outbound redirect (hashnode.com/util/redirect?url=<target>).
+// Hashnode outbound redirect (hashnode.com/util/redirect?url=<target>), on hashnode.com and every
+// subdomain.
 export const unwrapHashnode = createParamExtractor({
-  hosts: 'hashnode.com',
+  domains: 'hashnode.com',
   path: '/util/redirect',
   params: ['url'],
 })

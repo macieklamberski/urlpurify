@@ -59,4 +59,16 @@ describe('unwrapFacebookShim', () => {
 
     expect(unwrapFacebookShim(url)).toBeUndefined()
   })
+
+  it('should extract target from a subdomain no specimen shows', () => {
+    const url = new URL('https://m.facebook.com/l.php?u=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapFacebookShim(url)).toBe('https://example.com/page')
+  })
+
+  it('should return undefined for a lookalike host', () => {
+    const url = new URL('https://examplefacebook.com/l.php?u=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapFacebookShim(url)).toBeUndefined()
+  })
 })

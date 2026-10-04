@@ -63,4 +63,25 @@ describe('unwrapGoogleNewsModern', () => {
 
     expect(unwrapGoogleNewsModern(url)).toBeUndefined()
   })
+
+  it('should decode target from a country domain', () => {
+    const id = buildArticleId('https://example.com/article')
+    const url = new URL(`https://news.google.de/articles/${id}`)
+
+    expect(unwrapGoogleNewsModern(url)).toBe('https://example.com/article')
+  })
+
+  it('should decode target from a subdomain no specimen shows', () => {
+    const id = buildArticleId('https://example.com/article')
+    const url = new URL(`https://www.news.google.com/articles/${id}`)
+
+    expect(unwrapGoogleNewsModern(url)).toBe('https://example.com/article')
+  })
+
+  it('should return undefined for a lookalike host', () => {
+    const id = buildArticleId('https://example.com/article')
+    const url = new URL(`https://notnews.google.com/articles/${id}`)
+
+    expect(unwrapGoogleNewsModern(url)).toBeUndefined()
+  })
 })

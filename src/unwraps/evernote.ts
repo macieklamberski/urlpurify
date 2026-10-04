@@ -1,8 +1,9 @@
 import { createParamExtractor } from '../utils.js'
 
-// Evernote outbound link redirect (www.evernote.com/OutboundRedirect.action?dest=<target>).
+// Evernote outbound link redirect (www.evernote.com/OutboundRedirect.action?dest=<target>), on
+// evernote.com and every subdomain.
 export const unwrapEvernote = createParamExtractor({
-  hosts: /(^|\.)evernote\.com$/,
+  domains: 'evernote.com',
   path: '/OutboundRedirect.action',
   params: ['dest'],
 })

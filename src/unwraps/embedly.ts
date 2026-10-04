@@ -1,7 +1,9 @@
 import { createParamExtractor } from '../utils.js'
 
-// Embedly oEmbed widget proxy (cdn.embedly.com or embed.ly with ?src=<target>).
+// Embedly oEmbed widget proxy (cdn.embedly.com/widgets/media.html?src=<target>), on embedly.com,
+// embed.ly and every subdomain.
 export const unwrapEmbedly = createParamExtractor({
-  hosts: ['cdn.embedly.com', 'embed.ly'],
+  domains: ['embedly.com', 'embed.ly'],
+  path: '/widgets/media.html',
   params: ['src'],
 })

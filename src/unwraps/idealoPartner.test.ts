@@ -19,4 +19,22 @@ describe('unwrapIdealoPartner', () => {
 
     expect(unwrapIdealoPartner(url)).toBeUndefined()
   })
+
+  it('should extract target from a subdomain no specimen shows', () => {
+    const url = new URL('https://partner.idealo-partner.com/?trg=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapIdealoPartner(url)).toBe('https://example.com/page')
+  })
+
+  it('should return undefined for another path on the host', () => {
+    const url = new URL('https://www.idealo-partner.com/other?trg=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapIdealoPartner(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a lookalike host', () => {
+    const url = new URL('https://exampleidealo-partner.com/?trg=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapIdealoPartner(url)).toBeUndefined()
+  })
 })

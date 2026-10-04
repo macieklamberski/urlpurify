@@ -1,11 +1,11 @@
-import { isHostOf } from 'trousse'
+import { isHostOrSubdomainOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
 // href.li referrer stripper (href.li/?<target>), which Tumblr wraps outbound links in, both
-// on its own and nested inside a t.umblr.com redirect. The target is the whole query string
-// rather than a named parameter, and it is not encoded, so it is taken verbatim.
+// on its own and nested inside a t.umblr.com redirect, on href.li and every subdomain. The target
+// is the whole query string rather than a named parameter, so it is taken verbatim.
 export const unwrapHrefLi: UrlUnwrapper = (url) => {
-  if (!isHostOf(url, ['href.li', 'www.href.li'])) {
+  if (!isHostOrSubdomainOf(url, 'href.li') || url.pathname !== '/') {
     return
   }
 

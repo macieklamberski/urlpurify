@@ -202,4 +202,34 @@ describe('unwrapGoogleAds', () => {
       expect(unwrapGoogleAds(url)).toBeUndefined()
     })
   })
+
+  describe('domains', () => {
+    it('should extract a target from a subdomain of doubleclick.net no specimen shows', () => {
+      const url = new URL(
+        'https://ads.doubleclick.net/aclk?sa=L&adurl=https://example.com/landing/',
+      )
+
+      expect(unwrapGoogleAds(url)).toBe('https://example.com/landing/')
+    })
+
+    it('should extract a target from a subdomain of googlesyndication.com no specimen shows', () => {
+      const url = new URL(
+        'https://pagead3.googlesyndication.com/pagead/iclk?sa=L&adurl=https://example.com/landing/',
+      )
+
+      expect(unwrapGoogleAds(url)).toBe('https://example.com/landing/')
+    })
+
+    it('should return undefined for a lookalike host', () => {
+      const url = new URL('https://exampledoubleclick.net/aclk?sa=L&adurl=https://example.org/')
+
+      expect(unwrapGoogleAds(url)).toBeUndefined()
+    })
+
+    it('should return undefined for another path on doubleclick.net', () => {
+      const url = new URL('https://ad.doubleclick.net/ddm/clk?adurl=https://example.org/')
+
+      expect(unwrapGoogleAds(url)).toBeUndefined()
+    })
+  })
 })

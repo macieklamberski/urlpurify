@@ -1,6 +1,7 @@
-import { isHostOf } from 'trousse'
+import { isAnyOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { decodeBase64UrlBinary } from '../utils.js'
+import { googleNewsHostRegex } from './googleNews.js'
 
 const articleIdRegex = /^\/(?:rss\/)?articles\/([\w-]+)/
 // Protobuf framing around the destination URL: 0x08 0x13 + length-prefixed
@@ -8,13 +9,13 @@ const articleIdRegex = /^\/(?:rss\/)?articles\/([\w-]+)/
 // biome-ignore lint/suspicious/noControlCharactersInRegex: protobuf framing bytes
 const protobufFramingRegex = /\x08\x13".+?(https?:\/\/[^\xd2]+)\xd2\x01/
 
-// Google News modern article URLs (news.google.com/articles/<base64> or
-// /rss/articles/<base64>). The article id is a base64url-encoded protobuf
+// Google News modern article URLs (news.google.<TLD>/articles/<base64> or
+// /rss/articles/<base64>), on any tld and every subdomain. The article id is a base64url-encoded protobuf
 // containing the destination URL between known framing bytes. Some ids
 // (typically post-2023) require a server-side signature exchange and can
 // only be resolved with a network call, those return undefined silently.
 export const unwrapGoogleNewsModern: UrlUnwrapper = (url) => {
-  if (!isHostOf(url, 'news.google.com')) {
+  if (!isAnyOf(url.hostname, googleNewsHostRegex)) {
     return
   }
 

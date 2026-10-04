@@ -73,4 +73,20 @@ describe('unwrapIcptrack', () => {
 
     expect(unwrapIcptrack(url)).toBeUndefined()
   })
+
+  it('should extract target from an account host', () => {
+    const url = new URL(
+      'https://click-1346310.icptrack.com/icp/relay.php?destination=https%3A%2F%2Fexample.com%2Fpage',
+    )
+
+    expect(unwrapIcptrack(url)).toBe('https://example.com/page')
+  })
+
+  it('should return undefined for a lookalike host', () => {
+    const url = new URL(
+      'https://exampleicptrack.com/icp/relay.php?destination=https%3A%2F%2Fexample.com%2Fpage',
+    )
+
+    expect(unwrapIcptrack(url)).toBeUndefined()
+  })
 })

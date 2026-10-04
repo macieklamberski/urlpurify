@@ -3,19 +3,53 @@ import { unwrapEffiliation } from './effiliation.js'
 
 describe('unwrapEffiliation', () => {
   it('should extract target from url param', () => {
-    const url = new URL('https://track.effiliation.com/?url=https%3A%2F%2Fexample.com%2Fproduct')
+    const url = new URL(
+      'https://track.effiliation.com/servlet/effi.redir?url=https%3A%2F%2Fexample.com%2Fproduct',
+    )
 
     expect(unwrapEffiliation(url)).toBe('https://example.com/product')
   })
 
   it('should return undefined when url param is missing', () => {
-    const url = new URL('https://track.effiliation.com/?other=value')
+    const url = new URL('https://track.effiliation.com/servlet/effi.redir?other=value')
 
     expect(unwrapEffiliation(url)).toBeUndefined()
   })
 
   it('should return undefined for non-effiliation hosts', () => {
-    const url = new URL('https://example.com/?url=https%3A%2F%2Fother.com')
+    const url = new URL('https://example.com/servlet/effi.redir?url=https%3A%2F%2Fother.com')
+
+    expect(unwrapEffiliation(url)).toBeUndefined()
+  })
+
+  it('should extract target from effi.product', () => {
+    const url = new URL(
+      'https://track.effiliation.com/servlet/effi.product?id_compteur=22637591&url=https%3A%2F%2Fexample.com%2Fpage',
+    )
+
+    expect(unwrapEffiliation(url)).toBe('https://example.com/page')
+  })
+
+  it('should extract target from a subdomain no specimen shows', () => {
+    const url = new URL(
+      'https://click.effiliation.com/servlet/effi.redir?url=https%3A%2F%2Fexample.com%2Fpage',
+    )
+
+    expect(unwrapEffiliation(url)).toBe('https://example.com/page')
+  })
+
+  it('should return undefined for another path on the host', () => {
+    const url = new URL(
+      'https://track.effiliation.com/servlet/effi.other?url=https%3A%2F%2Fexample.com%2Fpage',
+    )
+
+    expect(unwrapEffiliation(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a lookalike host', () => {
+    const url = new URL(
+      'https://exampleeffiliation.com/servlet/effi.redir?url=https%3A%2F%2Fexample.com%2Fpage',
+    )
 
     expect(unwrapEffiliation(url)).toBeUndefined()
   })

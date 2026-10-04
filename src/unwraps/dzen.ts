@@ -1,8 +1,8 @@
 import { createParamExtractor } from '../utils.js'
 
-// Dzen away redirect (dzen.ru/away?to=<target>).
+// Dzen away redirect (dzen.ru/away?to=<target>), on dzen.ru and every subdomain.
 export const unwrapDzen = createParamExtractor({
-  hosts: /(^|\.)dzen\.ru$/,
+  domains: 'dzen.ru',
   path: '/away',
   params: ['to'],
 })

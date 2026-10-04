@@ -1,7 +1,8 @@
 import { createParamExtractor } from '../utils.js'
 
-// gate.sc URL-shortener-style redirect (?url=<target>).
+// gate.sc URL-shortener-style redirect (gate.sc/?url=<target>), on gate.sc and every subdomain.
 export const unwrapGateSc = createParamExtractor({
-  hosts: 'gate.sc',
+  domains: 'gate.sc',
+  path: '/',
   params: ['url'],
 })

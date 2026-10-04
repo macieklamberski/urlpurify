@@ -25,4 +25,16 @@ describe('unwrapGitee', () => {
 
     expect(unwrapGitee(url)).toBeUndefined()
   })
+
+  it('should extract target from a subdomain no specimen shows', () => {
+    const url = new URL('https://www.gitee.com/link?target=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapGitee(url)).toBe('https://example.com/page')
+  })
+
+  it('should return undefined for a lookalike host', () => {
+    const url = new URL('https://examplegitee.com/link?target=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapGitee(url)).toBeUndefined()
+  })
 })

@@ -1,11 +1,11 @@
 import type { UrlUnwrapper } from '../types.js'
 
-const googleAmpHostRegex = /^(?:www\.)?google\.(?:com|[a-z]{2,3}(?:\.[a-z]{2,3})?)$/
+const googleAmpHostRegex = /(?:^|\.)google\.(?:com|[a-z]{2,3}(?:\.[a-z]{2,3})?)$/
 const httpsPathRegex = /^\/amp\/s\/(.+)$/
 const httpPathRegex = /^\/amp\/(?!s\/)(.+)$/
 
-// Google AMP viewer (www.google.<TLD>/amp/s/<host>/<path> for https, or
-// /amp/<host>/<path> for http). Distinct from the cdn.ampproject.org cache.
+// Google AMP viewer (www.google.<TLD>/amp/s/<host>/<path> for https, or /amp/<host>/<path> for
+// http), on google.<TLD> and every subdomain. Distinct from the cdn.ampproject.org cache.
 export const unwrapGoogleAmpViewer: UrlUnwrapper = (url) => {
   if (!googleAmpHostRegex.test(url.hostname)) {
     return

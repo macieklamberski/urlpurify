@@ -39,4 +39,22 @@ describe('unwrapGoogleNews', () => {
 
     expect(unwrapGoogleNews(url)).toBe('https://example.com/article')
   })
+
+  it('should extract target from a subdomain no specimen shows', () => {
+    const url = new URL('https://www.news.google.com/news/url?url=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapGoogleNews(url)).toBe('https://example.com/page')
+  })
+
+  it('should return undefined for a lookalike host', () => {
+    const url = new URL('https://notnews.google.com/news/url?url=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapGoogleNews(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a sibling path with the carrier param', () => {
+    const url = new URL('https://news.google.com/news/other?url=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapGoogleNews(url)).toBeUndefined()
+  })
 })
