@@ -149,7 +149,13 @@ describe('unwrapFacebookShim', () => {
   })
 
   it('should return undefined for the root path on other Facebook hosts', () => {
-    for (const host of ['www.facebook.com', 'm.facebook.com', 'lm.facebook.com', 'facebook.com']) {
+    for (const host of [
+      'www.facebook.com',
+      'm.facebook.com',
+      'lm.facebook.com',
+      'facebook.com',
+      'l.messenger.com',
+    ]) {
       const url = new URL(`https://${host}/?u=https%3A%2F%2Fexample.com%2Fpage`)
 
       expect(unwrapFacebookShim(url)).toBeUndefined()
@@ -157,9 +163,11 @@ describe('unwrapFacebookShim', () => {
   })
 
   it('should return undefined for /lsr.php on other Facebook hosts', () => {
-    const url = new URL('https://www.facebook.com/lsr.php?u=https%3A%2F%2Fexample.com%2Fpage')
+    for (const host of ['www.facebook.com', 'lm.facebook.com', 'l.messenger.com', 'facebook.com']) {
+      const url = new URL(`https://${host}/lsr.php?u=https%3A%2F%2Fexample.com%2Fpage`)
 
-    expect(unwrapFacebookShim(url)).toBeUndefined()
+      expect(unwrapFacebookShim(url)).toBeUndefined()
+    }
   })
 
   it('should return undefined for the root path on a lookalike host', () => {
