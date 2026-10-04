@@ -115,7 +115,7 @@ Enabled by default:
 | `unwrapJianshuGo` | Jianshu external link redirect (links.jianshu.com/go?to=\<target\>) |
 | `unwrapJuejin` | Juejin external link redirect (link.juejin.cn/?target=\<target\>) |
 | `unwrapLinkedin` | LinkedIn outbound link shims and click trackers (www.linkedin.com/safety/go?url=\<target\>, /redir/redirect, /redirect, /nhome/nus-redirect, /nus-trk, /e/v2, /company/\<id\>/redirect) |
-| `unwrapMedium` | Medium outbound link redirect (medium.com/r/?url=\<target\>) |
+| `unwrapMedium` | Medium outbound link redirect (medium.com/r/?url=\<target\>) and sign-in hop (medium.com/m/global-identity?redirectUrl=\<target\>) |
 | `unwrapMozillaOutgoing` | Mozilla outgoing-link redirector (outgoing.prod.mozaws.net/v1/\<hash\>/\<target\>) |
 | `unwrapPocket` | Pocket redirect (getpocket.com/redirect?url=\<target\>) |
 | `unwrapNaverOutgoing` | Naver outbound link redirect (cc.loginfra.com/...?u=\<target\>) |
