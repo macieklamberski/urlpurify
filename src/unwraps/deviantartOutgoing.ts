@@ -1,10 +1,13 @@
-import { isHostOrSubdomainOf } from 'trousse'
+import { isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
-// DeviantArt outbound link shim (deviantart.com/<user>/outgoing?<target>). The target is the
-// whole query string, unencoded, so it is taken verbatim; only the `/outgoing` path redirects.
+const pathRegex = /^\/[^/]+\/outgoing$/
+
+// DeviantArt outbound link shim (www.deviantart.com/<user>/outgoing?<target>). Only the www host
+// redirects: every user has a subdomain of deviantart.com. The target is the whole query string,
+// unencoded, so it is taken verbatim.
 export const unwrapDeviantartOutgoing: UrlUnwrapper = (url) => {
-  if (!isHostOrSubdomainOf(url, 'deviantart.com') || !url.pathname.endsWith('/outgoing')) {
+  if (!isHostOf(url, ['www.deviantart.com', 'deviantart.com']) || !pathRegex.test(url.pathname)) {
     return
   }
 

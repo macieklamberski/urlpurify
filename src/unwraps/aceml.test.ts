@@ -38,13 +38,33 @@ describe('unwrapAceml', () => {
   })
 
   it('should return undefined for non-tracker paths', () => {
-    const url = new URL('https://abc.acemlna.com/redirect?redirectUrl=abc')
+    const url = new URL(
+      'https://abc.acemlna.com/redirect?redirectUrl=aHR0cHM6Ly9leGFtcGxlLmNvbS8%3D',
+    )
 
     expect(unwrapAceml(url)).toBeUndefined()
   })
 
   it('should return undefined for non-ACEML hosts', () => {
-    const url = new URL('https://example.com/Prod/link-tracker?redirectUrl=abc')
+    const url = new URL(
+      'https://example.com/Prod/link-tracker?redirectUrl=aHR0cHM6Ly9leGFtcGxlLmNvbS8%3D',
+    )
+
+    expect(unwrapAceml(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a lookalike host', () => {
+    const url = new URL(
+      'https://exampleacemlna.com/Prod/link-tracker?redirectUrl=aHR0cHM6Ly9leGFtcGxlLmNvbS8%3D',
+    )
+
+    expect(unwrapAceml(url)).toBeUndefined()
+  })
+
+  it('should return undefined for the bare domain', () => {
+    const url = new URL(
+      'https://acemlnb.com/Prod/link-tracker?redirectUrl=aHR0cHM6Ly9leGFtcGxlLmNvbS8%3D',
+    )
 
     expect(unwrapAceml(url)).toBeUndefined()
   })

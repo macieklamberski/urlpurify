@@ -27,4 +27,40 @@ describe('unwrapAdjust', () => {
 
     expect(unwrapAdjust(url)).toBeUndefined()
   })
+
+  it('should return undefined for a sibling path below the token', () => {
+    const url = new URL(
+      'https://app.adjust.com/abc123/extra?redirect=https%3A%2F%2Fexample.com%2Fpage',
+    )
+
+    expect(unwrapAdjust(url)).toBeUndefined()
+  })
+
+  it('should return undefined for the root of the host', () => {
+    const url = new URL('https://www.adjust.com/?redirect=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapAdjust(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a lookalike host', () => {
+    const url = new URL(
+      'https://exampleadjust.com/abc123?redirect=https%3A%2F%2Fexample.com%2Fpage',
+    )
+
+    expect(unwrapAdjust(url)).toBeUndefined()
+  })
+
+  it('should extract target from app.adjust.net.in', () => {
+    const url = new URL(
+      'https://app.adjust.net.in/abc123?redirect=https%3A%2F%2Fexample.com%2Fpage',
+    )
+
+    expect(unwrapAdjust(url)).toBe('https://example.com/page')
+  })
+
+  it('should return undefined for an unlisted Adjust host', () => {
+    const url = new URL('https://app.adjust.io/abc123?redirect=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapAdjust(url)).toBeUndefined()
+  })
 })

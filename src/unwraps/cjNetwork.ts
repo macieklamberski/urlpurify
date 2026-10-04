@@ -11,7 +11,15 @@ const hosts = [
   'www.pntrac.com',
   'www.pjtra.com',
   'www.pntrs.com',
+  'www.pntra.com',
+  'www.qksrv.net',
+  'anrdoezrs.net',
+  'kqzyfj.com',
+  'pjtra.com',
 ]
+
+// A click link is /click-<id>-<id>[-<timestamp>], /t/<token> or a single opaque token.
+const clickPathRegex = /^\/(?:t\/)?[^/]+$/
 
 // Optional sid/<x>/ and fragment/<x>/ segments sit before the target, which is unencoded and
 // sometimes has its scheme collapsed to https:/. The fragment segment is the target's anchor,
@@ -32,12 +40,17 @@ const extractUrlParam = createParamExtractor({
   params: ['url'],
 })
 
-// Commission Junction / CJ affiliate network redirects across rotating brand hostnames
-// (?url=<target>, and the deep link /links/<pid>/type/dlg/[sid/<x>/][fragment/<x>/]<target>).
+// Commission Junction / CJ affiliate network redirects on rotating brand domains and their
+// subdomains (/click-<pid>-<aid>?url=<target>, and the deep link
+// /links/<pid>/type/dlg/[sid/<x>/][fragment/<x>/]<target>).
 export const unwrapCjNetwork: UrlUnwrapper = (url) => {
   const match = url.pathname.match(deepLinkPathRegex)
 
   if (!match) {
+    if (!clickPathRegex.test(url.pathname)) {
+      return
+    }
+
     return extractUrlParam(url)
   }
 

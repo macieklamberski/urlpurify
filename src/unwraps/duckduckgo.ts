@@ -2,7 +2,7 @@ import type { UrlUnwrapper } from '../types.js'
 import { createParamExtractor } from '../utils.js'
 
 const extractSearchResultTarget = createParamExtractor({
-  hosts: 'duckduckgo.com',
+  hosts: ['duckduckgo.com', 'r.duckduckgo.com'],
   path: '/l/',
   params: ['uddg'],
 })

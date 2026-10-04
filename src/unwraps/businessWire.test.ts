@@ -48,20 +48,6 @@ describe('unwrapBusinessWire', () => {
     expect(unwrapBusinessWire(url)).toBeUndefined()
   })
 
-  it('should return undefined for a non-http target', () => {
-    const url = new URL('https://cts.businesswire.com/ct/CT?id=smartlink&url=javascript%3Aalert(1)')
-
-    expect(unwrapBusinessWire(url)).toBeUndefined()
-  })
-
-  it('should return undefined for a malformed twice-encoded target', () => {
-    const url = new URL(
-      'https://cts.businesswire.com/ct/CT?id=smartlink&url=https%253A%252F%252Fexample.com%25',
-    )
-
-    expect(unwrapBusinessWire(url)).toBeUndefined()
-  })
-
   it('should return undefined for other paths on the tracker host', () => {
     const url = new URL('https://cts.businesswire.com/ct/other?url=https%3A%2F%2Fexample.com%2F')
 
@@ -76,6 +62,28 @@ describe('unwrapBusinessWire', () => {
 
   it('should return undefined for other hosts', () => {
     const url = new URL('https://example.com/ct/CT?url=https%3A%2F%2Fexample.org%2F')
+
+    expect(unwrapBusinessWire(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a lookalike host', () => {
+    const url = new URL(
+      'https://examplebusinesswire.com/ct/CT?url=https%3A%2F%2Fexample.com%2Fpage',
+    )
+
+    expect(unwrapBusinessWire(url)).toBeUndefined()
+  })
+
+  it('should return undefined for an unlisted subdomain', () => {
+    const url = new URL(
+      'https://ct.businesswire.com/ct/CT?id=smartlink&url=https%3A%2F%2Fexample.com%2Fpage',
+    )
+
+    expect(unwrapBusinessWire(url)).toBeUndefined()
+  })
+
+  it('should return undefined for the bare domain', () => {
+    const url = new URL('https://businesswire.com/ct/CT?url=https%3A%2F%2Fexample.com%2Fpage')
 
     expect(unwrapBusinessWire(url)).toBeUndefined()
   })

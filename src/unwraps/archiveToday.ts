@@ -4,7 +4,6 @@ import type { UrlUnwrapper } from '../types.js'
 const hostRegex = /^(?:www\.)?archive\.(?:is|ph|today|md|fo|vn|li)$/
 const pathRegex = /^\/(?:\d{14}|\d{4}\.\d{2}\.\d{2}-\d{6}|o\/[^/]+|newest)\/(.+)$/
 const encodedSchemeRegex = /^https?%3A/i
-const collapsedSchemeRegex = /^(https?):\/(?!\/)/i
 const schemeRegex = /^[a-z][a-z\d+.-]*:/i
 const escapedQueryRegex = /%3F/i
 const selectionHashRegex = /^#selection-\d+\.\d+-\d+\.\d+$/
@@ -34,10 +33,7 @@ export const unwrapArchiveToday: UrlUnwrapper = (url) => {
     return
   }
 
-  // A target arrives with the scheme's double slash collapsed to one, and an older /o/ link
-  // carries an http target with no scheme at all.
-  target = target.replace(collapsedSchemeRegex, '$1://')
-
+  // An older /o/ link carries an http target with no scheme at all.
   if (!schemeRegex.test(target)) {
     target = `http://${target}`
   }

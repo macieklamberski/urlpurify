@@ -65,4 +65,26 @@ describe('unwrapAvantlink', () => {
 
     expect(unwrapAvantlink(url)).toBeUndefined()
   })
+
+  it('should return undefined for a lookalike host', () => {
+    const url = new URL(
+      'https://exampleavantlink.com/click.php?url=https%3A%2F%2Fexample.com%2Fpage',
+    )
+
+    expect(unwrapAvantlink(url)).toBeUndefined()
+  })
+
+  it('should extract target from the bare domain', () => {
+    const url = new URL('https://avantlink.com/click.php?url=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapAvantlink(url)).toBe('https://example.com/page')
+  })
+
+  it('should return undefined for an unlisted subdomain', () => {
+    const url = new URL(
+      'https://www-staging.avantlink.com/click.php?url=https%3A%2F%2Fexample.com%2Fpage',
+    )
+
+    expect(unwrapAvantlink(url)).toBeUndefined()
+  })
 })

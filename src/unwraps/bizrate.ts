@@ -1,9 +1,10 @@
 import { createParamExtractor } from '../utils.js'
 
-// Bizrate comparison-shopping redirect (rd.bizrate.com/rd?t=<target>, also on www.bizrate.com).
+// Bizrate comparison-shopping redirect (rd.bizrate.com/rd?t=<target>) on bizrate.com and its
+// subdomains.
 // Not included in defaultUnwrappers: unwrapping drops the publisher's affiliate commission.
 export const unwrapBizrate = createParamExtractor({
-  hosts: /(^|\.)bizrate\.com$/,
+  domains: 'bizrate.com',
   path: '/rd',
   params: ['t'],
 })

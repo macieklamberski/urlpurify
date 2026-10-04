@@ -18,14 +18,9 @@ const deeplinkPathRegex = /^\/s\d+\/redirect_v2\.php$/
 // /svt/ejp?a8ejpredirect=<target>) and deep link (ow.a8.net/s<id>/redirect_v2.php?url=<target>).
 // Not included in defaultUnwrappers: unwrapping drops the publisher's affiliate commission.
 export const unwrapA8Net: UrlUnwrapper = (url) => {
-  let target = extractRedirectTarget(url)
-
-  if (!target && deeplinkPathRegex.test(url.pathname)) {
-    target = extractDeeplinkTarget(url)
+  if (deeplinkPathRegex.test(url.pathname)) {
+    return extractDeeplinkTarget(url)
   }
 
-  // A target percent-encoded in EUC-JP or Shift_JIS decodes to U+FFFD, so it stays wrapped.
-  if (target && !target.includes('�')) {
-    return target
-  }
+  return extractRedirectTarget(url)
 }
