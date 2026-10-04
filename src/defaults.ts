@@ -35,6 +35,7 @@ import { unwrapHashnode } from './unwraps/hashnode.js'
 import { unwrapHrefLi } from './unwraps/hrefLi.js'
 // import { unwrapIcptrack } from './unwraps/icptrack.js'
 // import { unwrapIdealoPartner } from './unwraps/idealoPartner.js'
+// import { unwrapImpact } from './unwraps/impact.js'
 import { unwrapInstagramShim } from './unwraps/instagram.js'
 import { unwrapJianshuGo } from './unwraps/jianshuGo.js'
 import { unwrapJuejin } from './unwraps/juejin.js'
@@ -125,6 +126,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapCjNetwork,
   // unwrapValuecommerce,
   // unwrapViglink,
+  // unwrapImpact,
   // unwrapPxf,
   // unwrapSjv,
   // unwrapEbayRover,
