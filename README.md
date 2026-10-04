@@ -105,13 +105,13 @@ Enabled by default:
 | `unwrapDouban` | Douban external link redirect (www.douban.com/link2/?url=\<target\>) |
 | `unwrapDzen` | Dzen away redirect (dzen.ru/away?to=\<target\>) |
 | `unwrapEvernote` | Evernote outbound link redirect (www.evernote.com/OutboundRedirect.action?dest=\<target\>) |
-| `unwrapFacebookShim` | Meta link shim (l.facebook.com/l.php?u=\<target\>, also lm., www., upload. and l.messenger.com, on facebook.com, messenger.com and every subdomain) |
+| `unwrapFacebookShim` | Meta link shim (l.facebook.com/l.php?u=\<target\>, also lm., www., upload., m., web., pt-br., free., business., 0. and bare facebook.com, and l.messenger.com) |
 | `unwrapFlipboard` | Flipboard outbound redirect (flipboard.com/redirect?url=\<target\>) |
 | `unwrapGitee` | Gitee external link redirect (gitee.com/link?target=\<target\>) |
 | `unwrapGoogle` | Google redirect (google.\<TLD\>/url?url=\<target\> or ?q=\<target\>) |
 | `unwrapGoogleAmpViewer` | Google AMP viewer (www.google.\<TLD\>/amp/s/\<host\>/\<path\>) |
 | `unwrapGoogleNews` | Google News legacy redirect (news.google.\<TLD\>/news/url?url=\<target\>) |
-| `unwrapGoogleNewsModern` | Google News modern article URLs (news.google.\<TLD\>/articles/\<base64\>) |
+| `unwrapGoogleNewsModern` | Google News modern article URLs (news.google.com/articles/\<base64\>) |
 | `unwrapGoogleScholar` | Google Scholar search-result redirect (scholar.google.\<TLD\>/scholar_url?url=\<target\>) |
 | `unwrapHashnode` | Hashnode outbound redirect (hashnode.com/util/redirect?url=\<target\>) |
 | `unwrapHrefLi` | href.li referrer stripper (href.li/?\<target\>), used by Tumblr |

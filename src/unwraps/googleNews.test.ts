@@ -40,10 +40,10 @@ describe('unwrapGoogleNews', () => {
     expect(unwrapGoogleNews(url)).toBe('https://example.com/article')
   })
 
-  it('should extract target from a subdomain no specimen shows', () => {
+  it('should return undefined for an unlisted subdomain', () => {
     const url = new URL('https://www.news.google.com/news/url?url=https%3A%2F%2Fexample.com%2Fpage')
 
-    expect(unwrapGoogleNews(url)).toBe('https://example.com/page')
+    expect(unwrapGoogleNews(url)).toBeUndefined()
   })
 
   it('should return undefined for a lookalike host', () => {

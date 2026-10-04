@@ -1,9 +1,8 @@
 import { createParamExtractor } from '../utils.js'
 
-// Flipboard outbound redirect (flipboard.com/redirect?url=<target>), on flipboard.com and every
-// subdomain.
+// Flipboard outbound redirect (flipboard.com/redirect?url=<target>).
 export const unwrapFlipboard = createParamExtractor({
-  domains: 'flipboard.com',
+  hosts: 'flipboard.com',
   path: '/redirect',
   params: ['url'],
 })

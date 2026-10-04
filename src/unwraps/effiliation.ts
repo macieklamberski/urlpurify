@@ -4,12 +4,12 @@ import { createParamExtractor } from '../utils.js'
 const pathRegex = /^\/servlet\/effi\.(?:redir|product)$/
 
 const extractUrl = createParamExtractor({
-  domains: 'effiliation.com',
+  hosts: /\.effiliation\.com$/,
   params: ['url'],
 })
 
 // Effiliation French affiliate network (track.effiliation.com/servlet/effi.redir?url=<target>,
-// also /servlet/effi.product), on effiliation.com and every subdomain.
+// also /servlet/effi.product), on every subdomain of effiliation.com.
 export const unwrapEffiliation: UrlUnwrapper = (url) => {
   if (!pathRegex.test(url.pathname)) {
     return

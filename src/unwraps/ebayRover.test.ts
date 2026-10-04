@@ -30,12 +30,12 @@ describe('unwrapEbayRover', () => {
     expect(unwrapEbayRover(url)).toBeUndefined()
   })
 
-  it('should extract target from a subdomain no specimen shows', () => {
+  it('should return undefined for an unlisted subdomain', () => {
     const url = new URL(
       'https://m.rover.ebay.de/rover/1/707-53477-19255-0/1?mpre=https%3A%2F%2Fexample.com%2Fpage',
     )
 
-    expect(unwrapEbayRover(url)).toBe('https://example.com/page')
+    expect(unwrapEbayRover(url)).toBeUndefined()
   })
 
   it('should return undefined for another path on rover', () => {

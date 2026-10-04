@@ -28,12 +28,12 @@ describe('unwrapEmbedly', () => {
     expect(unwrapEmbedly(url)).toBeUndefined()
   })
 
-  it('should extract target from a subdomain no specimen shows', () => {
+  it('should return undefined for an unlisted subdomain', () => {
     const url = new URL(
       'https://i.embedly.com/widgets/media.html?src=https%3A%2F%2Fexample.com%2Fpage',
     )
 
-    expect(unwrapEmbedly(url)).toBe('https://example.com/page')
+    expect(unwrapEmbedly(url)).toBeUndefined()
   })
 
   it('should return undefined for another path on the host', () => {

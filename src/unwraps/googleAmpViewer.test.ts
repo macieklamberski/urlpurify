@@ -50,10 +50,10 @@ describe('unwrapGoogleAmpViewer', () => {
     expect(unwrapGoogleAmpViewer(url)).toBeUndefined()
   })
 
-  it('should extract https target from a subdomain no specimen shows', () => {
+  it('should return undefined for an unlisted subdomain', () => {
     const url = new URL('https://m.google.co.uk/amp/s/example.com/article')
 
-    expect(unwrapGoogleAmpViewer(url)).toBe('https://example.com/article')
+    expect(unwrapGoogleAmpViewer(url)).toBeUndefined()
   })
 
   it('should return undefined for a lookalike host', () => {

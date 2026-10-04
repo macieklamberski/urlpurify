@@ -1,9 +1,8 @@
 import { createParamExtractor } from '../utils.js'
 
-// Jianshu external link redirect (links.jianshu.com/go?to=<target>), on jianshu.com and every
-// subdomain.
+// Jianshu external link redirect (links.jianshu.com/go?to=<target>).
 export const unwrapJianshuGo = createParamExtractor({
-  domains: 'jianshu.com',
+  hosts: 'links.jianshu.com',
   path: '/go',
   params: ['to'],
 })

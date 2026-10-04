@@ -26,10 +26,10 @@ describe('unwrapJianshuGo', () => {
     expect(unwrapJianshuGo(url)).toBeUndefined()
   })
 
-  it('should extract target from a subdomain no specimen shows', () => {
+  it('should return undefined for an unlisted subdomain', () => {
     const url = new URL('https://www.jianshu.com/go?to=https%3A%2F%2Fexample.com%2Fpage')
 
-    expect(unwrapJianshuGo(url)).toBe('https://example.com/page')
+    expect(unwrapJianshuGo(url)).toBeUndefined()
   })
 
   it('should return undefined for a lookalike host', () => {

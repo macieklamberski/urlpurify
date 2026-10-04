@@ -204,28 +204,28 @@ describe('unwrapGoogleAds', () => {
   })
 
   describe('domains', () => {
-    it('should extract a target from a subdomain of doubleclick.net no specimen shows', () => {
+    it('should return undefined for an unlisted subdomain of doubleclick.net', () => {
       const url = new URL(
         'https://ads.doubleclick.net/aclk?sa=L&adurl=https://example.com/landing/',
       )
 
-      expect(unwrapGoogleAds(url)).toBe('https://example.com/landing/')
+      expect(unwrapGoogleAds(url)).toBeUndefined()
     })
 
-    it('should extract a target from a subdomain of googlesyndication.com no specimen shows', () => {
+    it('should return undefined for an unlisted subdomain of googlesyndication.com', () => {
       const url = new URL(
         'https://pagead3.googlesyndication.com/pagead/iclk?sa=L&adurl=https://example.com/landing/',
       )
 
-      expect(unwrapGoogleAds(url)).toBe('https://example.com/landing/')
+      expect(unwrapGoogleAds(url)).toBeUndefined()
     })
 
-    it('should extract a target from a subdomain of googleadservices.com no specimen shows', () => {
+    it('should return undefined for an unlisted subdomain of googleadservices.com', () => {
       const url = new URL(
         'https://imageads.googleadservices.com/pagead/aclk?adurl=https://example.com/landing/',
       )
 
-      expect(unwrapGoogleAds(url)).toBe('https://example.com/landing/')
+      expect(unwrapGoogleAds(url)).toBeUndefined()
     })
 
     it('should return undefined for a lookalike host', () => {

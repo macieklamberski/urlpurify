@@ -20,10 +20,10 @@ describe('unwrapGateSc', () => {
     expect(unwrapGateSc(url)).toBeUndefined()
   })
 
-  it('should extract target from a subdomain no specimen shows', () => {
+  it('should return undefined for an unlisted subdomain', () => {
     const url = new URL('https://www.gate.sc/?url=https%3A%2F%2Fexample.com%2Fpage')
 
-    expect(unwrapGateSc(url)).toBe('https://example.com/page')
+    expect(unwrapGateSc(url)).toBeUndefined()
   })
 
   it('should return undefined for another path on the host', () => {

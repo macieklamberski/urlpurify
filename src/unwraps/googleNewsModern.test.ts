@@ -64,18 +64,18 @@ describe('unwrapGoogleNewsModern', () => {
     expect(unwrapGoogleNewsModern(url)).toBeUndefined()
   })
 
-  it('should decode target from a country domain', () => {
+  it('should return undefined for a country domain other than com', () => {
     const id = buildArticleId('https://example.com/article')
     const url = new URL(`https://news.google.de/articles/${id}`)
 
-    expect(unwrapGoogleNewsModern(url)).toBe('https://example.com/article')
+    expect(unwrapGoogleNewsModern(url)).toBeUndefined()
   })
 
-  it('should decode target from a subdomain no specimen shows', () => {
+  it('should return undefined for an unlisted subdomain', () => {
     const id = buildArticleId('https://example.com/article')
     const url = new URL(`https://www.news.google.com/articles/${id}`)
 
-    expect(unwrapGoogleNewsModern(url)).toBe('https://example.com/article')
+    expect(unwrapGoogleNewsModern(url)).toBeUndefined()
   })
 
   it('should return undefined for a lookalike host', () => {

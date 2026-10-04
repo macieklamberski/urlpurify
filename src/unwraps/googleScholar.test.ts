@@ -44,12 +44,12 @@ describe('unwrapGoogleScholar', () => {
     expect(unwrapGoogleScholar(url)).toBeUndefined()
   })
 
-  it('should extract target from a subdomain no specimen shows', () => {
+  it('should return undefined for an unlisted subdomain', () => {
     const url = new URL(
       'https://www.scholar.google.com/scholar_url?url=https%3A%2F%2Fexample.com%2Fpage',
     )
 
-    expect(unwrapGoogleScholar(url)).toBe('https://example.com/page')
+    expect(unwrapGoogleScholar(url)).toBeUndefined()
   })
 
   it('should return undefined for a lookalike host', () => {

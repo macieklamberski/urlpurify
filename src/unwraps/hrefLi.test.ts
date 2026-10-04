@@ -38,10 +38,10 @@ describe('unwrapHrefLi', () => {
     expect(unwrapHrefLi(url)).toBeUndefined()
   })
 
-  it('should extract the target from a subdomain no specimen shows', () => {
+  it('should return undefined for an unlisted subdomain', () => {
     const url = new URL('https://m.href.li/?https://example.com/post')
 
-    expect(unwrapHrefLi(url)).toBe('https://example.com/post')
+    expect(unwrapHrefLi(url)).toBeUndefined()
   })
 
   it('should return undefined for another path on the host', () => {
