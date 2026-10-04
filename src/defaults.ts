@@ -74,6 +74,7 @@ import { unwrapThreadsShim } from './unwraps/threads.js'
 // import { unwrapTradedoubler } from './unwraps/tradedoubler.js'
 import { unwrapTumblr } from './unwraps/tumblr.js'
 import { unwrapVkAway } from './unwraps/vkAway.js'
+// import { unwrapWordpressGo2 } from './unwraps/wordpressGo2.js'
 import { unwrapYahooSearch } from './unwraps/yahooSearch.js'
 import { unwrapYouTube } from './unwraps/youtube.js'
 import { unwrapZhihu } from './unwraps/zhihu.js'
@@ -139,6 +140,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapRecruitics,
   // unwrapGeoriot,
   // unwrapFirebaseDynamicLinks,
+  // unwrapWordpressGo2,
 
   // Social and community platforms.
   unwrapFacebookShim,
