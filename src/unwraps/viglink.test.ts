@@ -97,4 +97,22 @@ describe('unwrapViglink', () => {
       expect(unwrapViglink(value)).toBeUndefined()
     })
   })
+
+  it('should extract target of the click api on a subdomain no specimen shows', () => {
+    const url = new URL('https://eu.viglink.com/api/click?out=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapViglink(url)).toBe('https://example.com/page')
+  })
+
+  it('should return undefined for another path on the redirect host', () => {
+    const url = new URL('https://redirect.viglink.com/other?u=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapViglink(url)).toBeUndefined()
+  })
+
+  it('should return undefined for the click api on a lookalike host', () => {
+    const url = new URL('https://exampleviglink.com/api/click?out=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapViglink(url)).toBeUndefined()
+  })
 })

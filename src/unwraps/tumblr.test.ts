@@ -27,4 +27,16 @@ describe('unwrapTumblr', () => {
 
     expect(unwrapTumblr(url)).toBeUndefined()
   })
+
+  it('should extract target on a subdomain no specimen shows', () => {
+    const url = new URL('https://x.umblr.com/redirect?z=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapTumblr(url)).toBe('https://example.com/page')
+  })
+
+  it('should return undefined for a lookalike host', () => {
+    const url = new URL('https://exampleumblr.com/redirect?z=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapTumblr(url)).toBeUndefined()
+  })
 })

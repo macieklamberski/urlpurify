@@ -110,9 +110,17 @@ describe('unwrapYandexMail', () => {
     expect(unwrapYandexMail(url)).toBeUndefined()
   })
 
-  it('should return undefined for a subdomain of the mail host', () => {
+  it('should extract target on a subdomain of the mail host', () => {
     const url = new URL(
       'https://user.mail.yandex.ru/re.jsx?h=a,xyz&l=aHR0cDovL3d3dy5leGFtcGxlLmNvbS8',
+    )
+
+    expect(unwrapYandexMail(url)).toBe('http://www.example.com/')
+  })
+
+  it('should return undefined for a lookalike host', () => {
+    const url = new URL(
+      'https://examplemail.yandex.ru/re.jsx?h=a,xyz&l=aHR0cDovL3d3dy5leGFtcGxlLmNvbS8',
     )
 
     expect(unwrapYandexMail(url)).toBeUndefined()

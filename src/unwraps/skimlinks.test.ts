@@ -27,4 +27,32 @@ describe('unwrapSkimlinks', () => {
 
     expect(unwrapSkimlinks(url)).toBeUndefined()
   })
+
+  it('should extract target on a subdomain no specimen shows', () => {
+    const url = new URL('https://click.skimlinks.com/?url=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapSkimlinks(url)).toBe('https://example.com/page')
+  })
+
+  it('should return undefined for another path on the host', () => {
+    const url = new URL(
+      'https://go.skimresources.com/redirect?url=https%3A%2F%2Fexample.com%2Fpage',
+    )
+
+    expect(unwrapSkimlinks(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a host that only contains the domain name', () => {
+    const url = new URL(
+      'https://go.skimresources.com.example.com/?url=https%3A%2F%2Fexample.com%2Fpage',
+    )
+
+    expect(unwrapSkimlinks(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a host that only ends in the domain name', () => {
+    const url = new URL('https://exampleskimlinks.com/?url=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapSkimlinks(url)).toBeUndefined()
+  })
 })

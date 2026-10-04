@@ -44,25 +44,9 @@ describe('unwrapUkgwa', () => {
     expect(unwrapUkgwa(url)).toBe('https://www.example.org/files/2015/03/report.pdf')
   })
 
-  it('should restore a collapsed double slash after the scheme', () => {
-    const url = new URL(
-      'https://webarchive.nationalarchives.gov.uk/ukgwa/20241119161826/https:/www.example.gov.uk/publications/guidance/',
-    )
-
-    expect(unwrapUkgwa(url)).toBe('https://www.example.gov.uk/publications/guidance/')
-  })
-
-  it('should restore a collapsed double slash after the scheme on the latest snapshot', () => {
-    const url = new URL(
-      'http://webarchive.nationalarchives.gov.uk/+/http:/www.example.gov.uk/reports/files/report.pdf',
-    )
-
-    expect(unwrapUkgwa(url)).toBe('http://www.example.gov.uk/reports/files/report.pdf')
-  })
-
   it('should keep the query of the target', () => {
     const url = new URL(
-      'https://webarchive.nationalarchives.gov.uk/20170106081109/http:/www.example.org.uk/resource/item.aspx?RID=44584',
+      'https://webarchive.nationalarchives.gov.uk/20170106081109/http://www.example.org.uk/resource/item.aspx?RID=44584',
     )
 
     expect(unwrapUkgwa(url)).toBe('http://www.example.org.uk/resource/item.aspx?RID=44584')

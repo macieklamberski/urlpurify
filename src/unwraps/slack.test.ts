@@ -25,4 +25,16 @@ describe('unwrapSlack', () => {
 
     expect(unwrapSlack(url)).toBeUndefined()
   })
+
+  it('should extract target on a subdomain no specimen shows', () => {
+    const url = new URL('https://go.slack-redir.net/link?url=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapSlack(url)).toBe('https://example.com/page')
+  })
+
+  it('should return undefined for a lookalike host', () => {
+    const url = new URL('https://exampleslack-redir.net/link?url=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapSlack(url)).toBeUndefined()
+  })
 })

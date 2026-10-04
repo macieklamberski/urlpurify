@@ -25,4 +25,22 @@ describe('unwrapVkAway', () => {
 
     expect(unwrapVkAway(url)).toBeUndefined()
   })
+
+  it('should extract target on vk.ru', () => {
+    const url = new URL('https://vk.ru/away.php?to=https%3A%2F%2Fexample.com%2Fpage&utf=1')
+
+    expect(unwrapVkAway(url)).toBe('https://example.com/page')
+  })
+
+  it('should extract target on a subdomain no specimen shows', () => {
+    const url = new URL('https://m.vk.com/away.php?to=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapVkAway(url)).toBe('https://example.com/page')
+  })
+
+  it('should return undefined for a lookalike host', () => {
+    const url = new URL('https://examplevk.ru/away.php?to=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapVkAway(url)).toBeUndefined()
+  })
 })

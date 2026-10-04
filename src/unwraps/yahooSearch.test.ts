@@ -57,4 +57,28 @@ describe('unwrapYahooSearch', () => {
 
     expect(unwrapYahooSearch(url)).toBeUndefined()
   })
+
+  it('should extract target on the ri host', () => {
+    const url = new URL(
+      'https://ri.search.yahoo.com/_ylt=AAA/RV=2/RE=1/RO=10/RU=https%3A%2F%2Fexample.com%2Fpage/RK=2/RS=BBB-',
+    )
+
+    expect(unwrapYahooSearch(url)).toBe('https://example.com/page')
+  })
+
+  it('should extract target on a subdomain no specimen shows', () => {
+    const url = new URL(
+      'https://uk.search.yahoo.com/_ylt=AAA/RU=https%3A%2F%2Fexample.com%2Fpage/RK=2/RS=BBB-',
+    )
+
+    expect(unwrapYahooSearch(url)).toBe('https://example.com/page')
+  })
+
+  it('should return undefined for a lookalike host', () => {
+    const url = new URL(
+      'https://examplesearch.yahoo.com/_ylt=AAA/RU=https%3A%2F%2Fexample.com%2Fpage/RK=2/RS=BBB-',
+    )
+
+    expect(unwrapYahooSearch(url)).toBeUndefined()
+  })
 })

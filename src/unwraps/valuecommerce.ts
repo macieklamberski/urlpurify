@@ -5,14 +5,14 @@ const dckPathRegex = /^\/dck\/[0-9a-f]+$/i
 
 // ck.jp.ap.valuecommerce.com/servlet/referral?vc_url=<target>
 const unwrapReferral = createParamExtractor({
-  hosts: 'ck.jp.ap.valuecommerce.com',
+  domains: 'valuecommerce.com',
   path: '/servlet/referral',
   params: ['vc_url'],
 })
 
 // atq.ck.valuecommerce.com/servlet/atq/referral?vc_url=<target>
 const unwrapAtqReferral = createParamExtractor({
-  hosts: 'atq.ck.valuecommerce.com',
+  domains: 'valuecommerce.com',
   path: '/servlet/atq/referral',
   params: ['vc_url'],
 })
@@ -20,11 +20,12 @@ const unwrapAtqReferral = createParamExtractor({
 // dalr.valuecommerce.com/dck/<id>?vcurl=<target>
 // `ckref` is the publisher's page that carried the link, not the target.
 const unwrapDck = createParamExtractor({
-  hosts: 'dalr.valuecommerce.com',
+  domains: 'valuecommerce.com',
   params: ['vcurl'],
 })
 
-// ValueCommerce affiliate redirect, in the three shapes above.
+// ValueCommerce affiliate redirect, in the three shapes above, on every valuecommerce.com
+// subdomain.
 export const unwrapValuecommerce: UrlUnwrapper = (url) => {
   if (dckPathRegex.test(url.pathname)) {
     return unwrapDck(url)

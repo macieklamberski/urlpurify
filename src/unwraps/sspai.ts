@@ -1,8 +1,8 @@
 import { createParamExtractor } from '../utils.js'
 
-// Sspai external link redirect (sspai.com/link?target=<target>).
+// Sspai external link redirect (sspai.com/link?target=<target>), on every subdomain.
 export const unwrapSspai = createParamExtractor({
-  hosts: 'sspai.com',
+  domains: 'sspai.com',
   path: '/link',
   params: ['target'],
 })

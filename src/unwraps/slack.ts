@@ -1,8 +1,8 @@
 import { createParamExtractor } from '../utils.js'
 
-// Slack link redirect (slack-redir.net/link?url=<target>).
+// Slack link redirect (slack-redir.net/link?url=<target>), on every subdomain.
 export const unwrapSlack = createParamExtractor({
-  hosts: 'slack-redir.net',
+  domains: 'slack-redir.net',
   path: '/link',
   params: ['url'],
 })

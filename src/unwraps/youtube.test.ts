@@ -27,4 +27,16 @@ describe('unwrapYouTube', () => {
 
     expect(unwrapYouTube(url)).toBeUndefined()
   })
+
+  it('should extract target on a subdomain no specimen shows', () => {
+    const url = new URL('https://m.youtube.com/redirect?q=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapYouTube(url)).toBe('https://example.com/page')
+  })
+
+  it('should return undefined for a lookalike host', () => {
+    const url = new URL('https://exampleyoutube.com/redirect?q=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapYouTube(url)).toBeUndefined()
+  })
 })

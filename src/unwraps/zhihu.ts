@@ -1,7 +1,8 @@
 import { createParamExtractor } from '../utils.js'
 
-// Zhihu external redirect (link.zhihu.com/?target=<target>).
+// Zhihu external redirect (link.zhihu.com/?target=<target>), on every subdomain.
 export const unwrapZhihu = createParamExtractor({
-  hosts: 'link.zhihu.com',
+  domains: 'zhihu.com',
+  path: '/',
   params: ['target'],
 })

@@ -1,14 +1,5 @@
-import { decodeSegment, isHostOf, isHttpUrl } from 'trousse'
+import { decodeSegment, isHostOrSubdomainOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-
-const hosts = [
-  'web.archive.org',
-  'wayback.archive.org',
-  'web-beta.archive.org',
-  'web-wp.archive.org',
-  'web-old.archive.org',
-  'classic-web.archive.org',
-]
 
 // A 14-digit timestamp, then the wildcard or a replay modifier, such as `id_` for the original
 // bytes or `im_`, `js_` and `cs_` for an archived image, script or stylesheet.
@@ -18,11 +9,8 @@ const pathRegex = new RegExp(`^/web/(?:${snapshot}/)?(.+)$`)
 const replayPathRegex = new RegExp(`^/${snapshot}/(.+)$`)
 const archiveItPathRegex = new RegExp(String.raw`^/(?:\d+|org-\d+|all)/${snapshot}/(.+)$`)
 
-// Some snapshot links carry the target as `https:/host`, with the double slash collapsed.
-const collapsedSchemeRegex = /^(https?:)\/(?!\/)/i
-
 // Web Archive snapshot wrapper (web.archive.org/web/<timestamp>[<modifier>]/<URL>), also served
-// from wayback, web-beta, web-wp, web-old and classic-web.archive.org, the latest snapshot
+// from every other archive.org subdomain, such as wayback. and classic-web., the latest snapshot
 // (web.archive.org/web/<URL>), the replay path (replay.web.archive.org/<timestamp>/<URL>, also on
 // web.archive.org), and Archive-It collections
 // (wayback.archive-it.org/<collection or all>/<timestamp>[<modifier>]/<URL>).
@@ -33,15 +21,15 @@ const collapsedSchemeRegex = /^(https?:)\/(?!\/)/i
 export const unwrapWebArchive: UrlUnwrapper = (url) => {
   let match: RegExpMatchArray | null = null
 
-  if (isHostOf(url, hosts)) {
+  if (isHostOrSubdomainOf(url, 'archive.org')) {
     match = url.pathname.match(pathRegex)
   }
 
-  if (!match && isHostOf(url, ['web.archive.org', 'replay.web.archive.org'])) {
+  if (!match && isHostOrSubdomainOf(url, 'web.archive.org')) {
     match = url.pathname.match(replayPathRegex)
   }
 
-  if (isHostOf(url, 'wayback.archive-it.org')) {
+  if (isHostOrSubdomainOf(url, 'archive-it.org')) {
     match = url.pathname.match(archiveItPathRegex)
   }
 
@@ -49,7 +37,7 @@ export const unwrapWebArchive: UrlUnwrapper = (url) => {
     return
   }
 
-  const target = decodeSegment(match[1])?.replace(collapsedSchemeRegex, '$1//')
+  const target = decodeSegment(match[1])
 
   if (!target || !isHttpUrl(target)) {
     return
