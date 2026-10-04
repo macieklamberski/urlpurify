@@ -1,11 +1,12 @@
+import { isHostOrSubdomainOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
-const mimecastHostRegex = /\.mimecast\.com$/
+const mimecastPathRegex = /^\/s\/[^/]+$/
 
-// Mimecast email link protection (<region>.mimecast.com/...?url=<target> or
-// ?domain=<host>). The `domain` form lacks a scheme, so we synthesise https.
+// Mimecast email link protection (<region>.mimecast.com/s/<id>?url=<target> or ?domain=<host>),
+// on mimecast.com and every subdomain. The `domain` form lacks a scheme, so we synthesise https.
 export const unwrapMimecast: UrlUnwrapper = (url) => {
-  if (!mimecastHostRegex.test(url.hostname)) {
+  if (!isHostOrSubdomainOf(url, 'mimecast.com') || !mimecastPathRegex.test(url.pathname)) {
     return
   }
 

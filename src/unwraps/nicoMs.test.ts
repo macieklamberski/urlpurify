@@ -37,4 +37,16 @@ describe('unwrapNicoMs', () => {
 
     expect(unwrapNicoMs(url)).toBeUndefined()
   })
+
+  it('should rewrite on a subdomain no specimen shows', () => {
+    const url = new URL('https://www.nico.ms/sm12345678')
+
+    expect(unwrapNicoMs(url)).toBe('https://www.nicovideo.jp/watch/sm12345678')
+  })
+
+  it('should return undefined for a lookalike domain', () => {
+    const url = new URL('https://examplenico.ms/sm12345678')
+
+    expect(unwrapNicoMs(url)).toBeUndefined()
+  })
 })

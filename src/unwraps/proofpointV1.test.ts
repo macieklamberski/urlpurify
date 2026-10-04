@@ -42,4 +42,18 @@ describe('unwrapProofpointV1', () => {
 
     expect(unwrapProofpointV1(url)).toBeUndefined()
   })
+
+  it('should decode on urldefense.us', () => {
+    const url = new URL('https://urldefense.us/v1/url?u=https://example.com_path_to_article&k=key')
+
+    expect(unwrapProofpointV1(url)).toBe('https://example.com/path/to/article')
+  })
+
+  it('should return undefined for a lookalike domain', () => {
+    const url = new URL(
+      'https://exampleurldefense.com/v1/url?u=https://example.com_path_to_article',
+    )
+
+    expect(unwrapProofpointV1(url)).toBeUndefined()
+  })
 })

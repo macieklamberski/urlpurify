@@ -1,12 +1,12 @@
-import { isHostOf } from 'trousse'
+import { isHostOrSubdomainOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
 const nicoMsRegex = /^\/((?:sm|nm|so|im)\w+)$/
 
-// nico.ms short link rewrite. `/sm`, `/nm`, `/so` prefixes route to the
-// nicovideo watch page; `/im` routes to the seiga illustration page.
+// nico.ms short link, on nico.ms and its subdomains. `/sm`, `/nm` and `/so` route to the watch
+// page, `/im` to the seiga illustration page.
 export const unwrapNicoMs: UrlUnwrapper = (url) => {
-  if (!isHostOf(url, 'nico.ms')) {
+  if (!isHostOrSubdomainOf(url, 'nico.ms')) {
     return
   }
 

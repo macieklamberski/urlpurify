@@ -1,8 +1,8 @@
 import { createParamExtractor } from '../utils.js'
 
-// Pocket redirect (getpocket.com/redirect?url=<target>).
+// Pocket redirect (getpocket.com/redirect?url=<target>), on getpocket.com and its subdomains.
 export const unwrapPocket = createParamExtractor({
-  hosts: 'getpocket.com',
+  domains: 'getpocket.com',
   path: '/redirect',
   params: ['url'],
 })

@@ -74,4 +74,26 @@ describe('unwrapProofpointV3', () => {
 
     expect(unwrapProofpointV3(url)).toBe('http://x.test/ãx€y')
   })
+
+  it('should decode on a subdomain no specimen shows', () => {
+    const url = new URL(
+      'https://www.urldefense.com/v3/__https://www.example.com/article__;!!abc!def$',
+    )
+
+    expect(unwrapProofpointV3(url)).toBe('https://www.example.com/article')
+  })
+
+  it('should return undefined for a lookalike domain', () => {
+    const url = new URL(
+      'https://exampleurldefense.com/v3/__https://www.example.com/article__;!!abc!def$',
+    )
+
+    expect(unwrapProofpointV3(url)).toBeUndefined()
+  })
+
+  it('should return undefined for another path on the host', () => {
+    const url = new URL('https://urldefense.com/v4/__https://www.example.com/article__;!!abc!def$')
+
+    expect(unwrapProofpointV3(url)).toBeUndefined()
+  })
 })

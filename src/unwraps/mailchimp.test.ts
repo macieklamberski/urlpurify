@@ -55,4 +55,18 @@ describe('unwrapMailchimp', () => {
 
     expect(unwrapMailchimp(url)).toBeUndefined()
   })
+
+  it('should extract target on the bare domain', () => {
+    const url = new URL('https://mailchimp.com/mctx/clicks?url=https%3A%2F%2Fexample.com%2Fpost')
+
+    expect(unwrapMailchimp(url)).toBe('https://example.com/post')
+  })
+
+  it('should return undefined for a lookalike domain', () => {
+    const url = new URL(
+      'https://examplemailchimp.com/mctx/clicks?url=https%3A%2F%2Fexample.com%2Fpost',
+    )
+
+    expect(unwrapMailchimp(url)).toBeUndefined()
+  })
 })

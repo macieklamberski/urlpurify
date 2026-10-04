@@ -29,4 +29,36 @@ describe('unwrapNarrativ', () => {
 
     expect(unwrapNarrativ(url)).toBeUndefined()
   })
+
+  it('should extract target from the redirect path', () => {
+    const url = new URL(
+      'https://events.release.narrativ.com/api/v0/redirect/?url=https%3A%2F%2Fexample.com%2Fpost&a=1750175743820128851',
+    )
+
+    expect(unwrapNarrativ(url)).toBe('https://example.com/post')
+  })
+
+  it('should extract target on a subdomain no specimen shows', () => {
+    const url = new URL(
+      'https://eu.narrativ.com/api/v0/redirect/?url=https%3A%2F%2Fexample.com%2Fpost',
+    )
+
+    expect(unwrapNarrativ(url)).toBe('https://example.com/post')
+  })
+
+  it('should return undefined for a lookalike domain', () => {
+    const url = new URL(
+      'https://examplenarrativ.com/api/v0/redirect/?url=https%3A%2F%2Fexample.com%2Fpost',
+    )
+
+    expect(unwrapNarrativ(url)).toBeUndefined()
+  })
+
+  it('should return undefined for another path on the host', () => {
+    const url = new URL(
+      'https://api.narrativ.com/api/v0/other?url=https%3A%2F%2Fexample.com%2Fpost',
+    )
+
+    expect(unwrapNarrativ(url)).toBeUndefined()
+  })
 })
