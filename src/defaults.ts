@@ -91,6 +91,7 @@ import { unwrapSegmentfault } from './unwraps/segmentfault.js'
 // import { unwrapSmartredirect } from './unwraps/smartredirect.js'
 import { unwrapSoundcloud } from './unwraps/soundcloud.js'
 import { unwrapSspai } from './unwraps/sspai.js'
+// import { unwrapStay22 } from './unwraps/stay22.js'
 import { unwrapSteamLinkfilter } from './unwraps/steamLinkfilter.js'
 // import { unwrapStreak } from './unwraps/streak.js'
 // import { unwrapValuecommerce } from './unwraps/valuecommerce.js'
@@ -178,6 +179,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapRecruitics,
   // unwrapGeoriot,
   // unwrapFirebaseDynamicLinks,
+  // unwrapStay22,
   // unwrapAvantlink,
   // unwrapA8Net,
   // Rakuten Japan's own program, separate from the LinkSynergy network in unwrapLinksynergy.
