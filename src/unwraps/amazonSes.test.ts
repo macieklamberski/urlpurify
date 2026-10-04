@@ -189,4 +189,156 @@ describe('unwrapAmazonSes', () => {
 
     expect(unwrapAmazonSes(url)).toBeUndefined()
   })
+
+  it('should extract target on a custom domain', () => {
+    const url = new URL(`https://ses.example.de/CL0/https:%2F%2Fwww.example.com%2Fnews${tail}`)
+
+    expect(unwrapAmazonSes(url)).toBe('https://www.example.com/news')
+  })
+
+  it('should extract an http target on a custom domain', () => {
+    const url = new URL(`http://trail.example.org/CL0/http:%2F%2Fexample.com${tail}`)
+
+    expect(unwrapAmazonSes(url)).toBe('http://example.com')
+  })
+
+  it('should extract a target with literal slashes on a custom domain', () => {
+    const url = new URL(`https://ses.example.de/CL0/https://example.com/a/b${tail}`)
+
+    expect(unwrapAmazonSes(url)).toBe('https://example.com/a/b')
+  })
+
+  it('should keep the query of the target on a custom domain', () => {
+    const url = new URL(
+      `https://track.example.com/CL0/https:%2F%2Fexample.com%2Fp%3Futm_source=newsletter%26utm_medium=email${tail}`,
+    )
+
+    expect(unwrapAmazonSes(url)).toBe(
+      'https://example.com/p?utm_source=newsletter&utm_medium=email',
+    )
+  })
+
+  it('should ignore a query the feed provider appended on a custom domain', () => {
+    const url = new URL(
+      `https://t.example.com/CL0/https:%2F%2Fexample.com%2F${tail}?ref=example.org`,
+    )
+
+    expect(unwrapAmazonSes(url)).toBe('https://example.com/')
+  })
+
+  it('should extract target on a custom domain that is a bare domain', () => {
+    const url = new URL(`https://example.com/CL0/https:%2F%2Fexample.org%2F${tail}`)
+
+    expect(unwrapAmazonSes(url)).toBe('https://example.org/')
+  })
+
+  it('should return undefined on a custom domain when the message id does not end in -000000', () => {
+    const url = new URL(
+      'https://ses.example.de/CL0/https:%2F%2Fexample.com%2F/1/0100019819a7eb85-8577ee14-6ff8-44f5-9af0-008f7ce611bd-000001/c2ln',
+    )
+
+    expect(unwrapAmazonSes(url)).toBeUndefined()
+  })
+
+  it('should return undefined on a custom domain when the message id has no -000000', () => {
+    const url = new URL(
+      'https://ses.example.de/CL0/https:%2F%2Fexample.com%2F/1/0100019819a7eb85/c2ln',
+    )
+
+    expect(unwrapAmazonSes(url)).toBeUndefined()
+  })
+
+  it('should return undefined on a custom domain when the message id ends in more zeros', () => {
+    const url = new URL(
+      'https://ses.example.de/CL0/https:%2F%2Fexample.com%2F/1/0100019819a7eb85-0000000/c2ln',
+    )
+
+    expect(unwrapAmazonSes(url)).toBeUndefined()
+  })
+
+  it('should return undefined on a custom domain when the message id is only -000000', () => {
+    const url = new URL('https://ses.example.de/CL0/https:%2F%2Fexample.com%2F/1/-000000/c2ln')
+
+    expect(unwrapAmazonSes(url)).toBeUndefined()
+  })
+
+  it('should return undefined on a custom domain when the link number is empty', () => {
+    const url = new URL(
+      'https://ses.example.de/CL0/https:%2F%2Fexample.com%2F//0100019819a7eb85-000000/c2ln',
+    )
+
+    expect(unwrapAmazonSes(url)).toBeUndefined()
+  })
+
+  it('should return undefined on a custom domain for a path with another letter before L0', () => {
+    const url = new URL(`https://ses.example.de/XL0/https:%2F%2Fexample.com%2F${tail}`)
+
+    expect(unwrapAmazonSes(url)).toBeUndefined()
+  })
+
+  it('should return undefined on a custom domain when the signature is missing', () => {
+    const url = new URL(
+      'https://ses.example.de/CL0/https:%2F%2Fexample.com%2F/1/0100019819a7eb85-8577ee14-000000',
+    )
+
+    expect(unwrapAmazonSes(url)).toBeUndefined()
+  })
+
+  it('should return undefined on a custom domain when the link number is missing', () => {
+    const url = new URL(
+      'https://ses.example.de/CL0/https:%2F%2Fexample.com%2F/0100019819a7eb85-8577ee14-000000/c2ln',
+    )
+
+    expect(unwrapAmazonSes(url)).toBeUndefined()
+  })
+
+  it('should return undefined on a custom domain when the link number is not a number', () => {
+    const url = new URL(
+      'https://ses.example.de/CL0/https:%2F%2Fexample.com%2F/first/0100019819a7eb85-000000/c2ln',
+    )
+
+    expect(unwrapAmazonSes(url)).toBeUndefined()
+  })
+
+  it('should return undefined on a custom domain when the path has a segment after the signature', () => {
+    const url = new URL(`https://ses.example.de/CL0/https:%2F%2Fexample.com%2F${tail}/extra`)
+
+    expect(unwrapAmazonSes(url)).toBeUndefined()
+  })
+
+  it('should return undefined on a custom domain when the path has a segment before the tracking path', () => {
+    const url = new URL(`https://ses.example.de/x/CL0/https:%2F%2Fexample.com%2F${tail}`)
+
+    expect(unwrapAmazonSes(url)).toBeUndefined()
+  })
+
+  it('should return undefined on a custom domain when the target segment is empty', () => {
+    const url = new URL('https://ses.example.de/CL0//1/0100019819a7eb85-000000/c2ln')
+
+    expect(unwrapAmazonSes(url)).toBeUndefined()
+  })
+
+  it('should return undefined on a custom domain for a target that is not http', () => {
+    const url = new URL(`https://ses.example.de/CL0/mailto:%2F%2Fexample.com${tail}`)
+
+    expect(unwrapAmazonSes(url)).toBeUndefined()
+  })
+
+  it('should return undefined on a custom domain for a malformed percent escape in the target', () => {
+    const url = new URL(`https://ses.example.de/CL0/https:%2F%2Fexample.com%2F%E0%A4%A${tail}`)
+
+    expect(unwrapAmazonSes(url)).toBeUndefined()
+  })
+
+  it('should return undefined on a custom domain for the root', () => {
+    const url = new URL('https://ses.example.de/')
+
+    expect(unwrapAmazonSes(url)).toBeUndefined()
+  })
+
+  it('should return undefined on a custom domain for the awstrack path', () => {
+    const url = new URL(`https://ses.example.de/L0/https:%2F%2Fexample.com%2F${tail}`)
+
+    expect(unwrapAmazonSes(url)).toBeUndefined()
+  })
 })
