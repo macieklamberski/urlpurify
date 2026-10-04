@@ -1,8 +1,12 @@
-import { isAnyOf } from 'trousse'
+import { isAnyOf, isHostOrSubdomainOf } from 'trousse'
 import type { UrlUnwrapper } from './types.js'
 
-export type ParamExtractorConfig = {
-  hosts: string | Array<string> | RegExp
+// `domains` also matches every subdomain. `hosts` matches a host exactly, or by regex, for a domain
+// where a third party can get a subdomain, such as a blog host.
+export type ParamExtractorConfig = (
+  | { domains: string | Array<string>; hosts?: never }
+  | { hosts: string | Array<string> | RegExp; domains?: never }
+) & {
   path?: string
   params: Array<string>
 }
@@ -25,7 +29,12 @@ const decodeEncodedScheme = (value: string): string => {
 
 export const createParamExtractor = (config: ParamExtractorConfig): UrlUnwrapper => {
   return (url) => {
-    if (!isAnyOf(url.hostname, config.hosts)) {
+    const isHostMatch =
+      config.domains !== undefined
+        ? isHostOrSubdomainOf(url, config.domains)
+        : isAnyOf(url.hostname, config.hosts)
+
+    if (!isHostMatch) {
       return
     }
 
