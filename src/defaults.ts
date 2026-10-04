@@ -59,6 +59,7 @@ import { unwrapMozillaOutgoing } from './unwraps/mozillaOutgoing.js'
 // import { unwrapProofpointV2 } from './unwraps/proofpointV2.js'
 // import { unwrapProofpointV3 } from './unwraps/proofpointV3.js'
 // import { unwrapPxf } from './unwraps/pxf.js'
+// import { unwrapRakutenAffiliate } from './unwraps/rakutenAffiliate.js'
 // import { unwrapRecruitics } from './unwraps/recruitics.js'
 import { unwrapNaverOutgoing } from './unwraps/naverOutgoing.js'
 // import { unwrapNicoMs } from './unwraps/nicoMs.js'
@@ -150,6 +151,9 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapFirebaseDynamicLinks,
   // unwrapAvantlink,
   // unwrapA8Net,
+  // Rakuten Japan's own program, separate from the LinkSynergy network in unwrapLinksynergy.
+  // Opt-in like the rest of the group: unwrapping drops the publisher's commission.
+  // unwrapRakutenAffiliate,
 
   // Ad networks.
   // unwrapGoogleAds,
