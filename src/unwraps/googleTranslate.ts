@@ -1,13 +1,30 @@
-import { createParamExtractor } from '../utils.js'
+import { isAnyOf, isHostOf } from 'trousse'
+import type { UrlUnwrapper } from '../types.js'
 
-const googleTranslateHostRegex = /^translate\.google\.(?:com|[a-z]{2,3}(?:\.[a-z]{2,3})?)$/
+// translate.google.<TLD> and every subdomain.
+const googleTranslateHostRegex = /(?:^|\.)translate\.google\.(?:com|[a-z]{2,3}(?:\.[a-z]{2,3})?)$/
 
-// Google Translate (translate.google.<TLD>/translate?u=<target>).
-// Not included in defaultUnwrappers: translate.google.com renders the
-// target translated, so unwrapping discards the translation the user wanted.
-// Opt in by passing a custom unwrappers array.
-export const unwrapGoogleTranslate = createParamExtractor({
-  hosts: googleTranslateHostRegex,
-  path: '/translate',
-  params: ['u'],
-})
+const googleTranslatePaths = ['/translate', '/website']
+
+// Google Translate ([*.]translate.google.<TLD>/translate?u=<target> and /website?u=<target>),
+// and its translated frame (translate.googleusercontent.com/translate_c?u=<target>). Opt-in:
+// it renders the target translated, so unwrapping discards the translation the user wanted.
+export const unwrapGoogleTranslate: UrlUnwrapper = (url) => {
+  const isTranslatePage =
+    isAnyOf(url.hostname, googleTranslateHostRegex) && googleTranslatePaths.includes(url.pathname)
+  // googleusercontent.com gives third parties subdomains, such as Apps Script web apps.
+  const isTranslateFrame =
+    isHostOf(url, 'translate.googleusercontent.com') && url.pathname === '/translate_c'
+
+  if (!isTranslatePage && !isTranslateFrame) {
+    return
+  }
+
+  const target = url.searchParams.get('u')
+
+  if (!target) {
+    return
+  }
+
+  return target
+}
