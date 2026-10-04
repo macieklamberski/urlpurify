@@ -449,6 +449,21 @@ describe('cleanUrl with a mis-decoded target', () => {
     expect(cleanUrl(value, { unwrappers: [legacyUnwrapper] })).toBe(value)
   })
 
+  it('should leave the tracking params of the broken target alone', () => {
+    const value =
+      'https://redirect.example.com/?target=https%3A%2F%2Fexample.com%2F%A4%3Futm_source%3Dfeed'
+
+    expect(cleanUrl(value, { unwrappers: [legacyUnwrapper] })).toBe(value)
+  })
+
+  it('should strip the tracking params of the wrapper it falls back to', () => {
+    const value =
+      'https://redirect.example.com/?utm_source=feed&target=https%3A%2F%2Fexample.com%2F%A4'
+    const expected = 'https://redirect.example.com/?target=https%3A%2F%2Fexample.com%2F%A4'
+
+    expect(cleanUrl(value, { unwrappers: [legacyUnwrapper] })).toBe(expected)
+  })
+
   it('should return the final target when an inner hop holds U+FFFD', () => {
     const value =
       'https://redirect.example.com/?target=https://defense.example.net/v3/__https:/example.org/news/__;tail%%EDITOR'

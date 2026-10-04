@@ -140,6 +140,13 @@ describe('createParamExtractor', () => {
       expect(extract(value)).toBe(expected)
     })
 
+    it('should decode a twice-encoded scheme with a lowercase colon escape', () => {
+      const value = new URL('https://redirect.example.com/?url=http%253a%252f%252fexample.com%252f')
+      const expected = 'http://example.com/'
+
+      expect(extract(value)).toBe(expected)
+    })
+
     it('should leave a target encoded once as it is', () => {
       const value = new URL(
         'https://redirect.example.com/?url=https%3A%2F%2Fexample.com%2Fpost%253Fid%253D1',

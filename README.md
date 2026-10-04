@@ -27,7 +27,7 @@ cleanUrl('https://www.google.com/url?q=https%3A%2F%2Fexample.com%2Fpost%3Futm_so
 
 ### `cleanUrl(url, options?)`
 
-Unwraps redirect wrappers (repeatedly, since wrappers can nest), then strips tracking parameters. When the input cannot be parsed as a URL or nothing applies, the input string is returned unchanged, so the result is always safe to display.
+Unwraps redirect wrappers (repeatedly, since wrappers can nest), then strips tracking parameters. When the input cannot be parsed as a URL or nothing applies, the input string is returned unchanged, so the result is always safe to display. A target that decodes to U+FFFD, such as one percent-encoded in EUC-JP or Shift_JIS, is not returned: the last hop without one is.
 
 ```typescript
 import { cleanUrl, defaultUnwrappers, unwrapWebArchive } from 'urlpurify'
@@ -69,6 +69,8 @@ const unwrapExample = createParamExtractor({
 
 cleanUrl(url, { unwrappers: [...defaultUnwrappers, unwrapExample] })
 ```
+
+A value that is still percent-encoded after one decode and starts with `http%3A` or `https%3A` is decoded once more.
 
 For wrappers that encode the target (base64 path segments, custom escaping), write a plain function of type `UrlUnwrapper`: it receives a `URL` and returns the target string or `undefined`.
 
