@@ -23,6 +23,7 @@ import { unwrapDisqus } from './unwraps/disqus.js'
 // import { unwrapDmmAffiliate } from './unwraps/dmmAffiliate.js'
 import { unwrapDouban } from './unwraps/douban.js'
 // import { unwrapDuckduckgo } from './unwraps/duckduckgo.js'
+import { unwrapDzen } from './unwraps/dzen.js'
 // import { unwrapEbayRover } from './unwraps/ebayRover.js'
 // import { unwrapEffiliation } from './unwraps/effiliation.js'
 // import { unwrapEmbedly } from './unwraps/embedly.js'
@@ -173,6 +174,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   unwrapTumblr,
   unwrapHrefLi,
   unwrapVkAway,
+  unwrapDzen,
   unwrapRedditOut,
   unwrapBlueskyRedirect,
   unwrapDisqus,
