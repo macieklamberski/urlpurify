@@ -125,4 +125,12 @@ describe('unwrapGoogleTranslate', () => {
 
     expect(unwrapGoogleTranslate(url)).toBeUndefined()
   })
+
+  it('should return undefined for a repeated www label', () => {
+    const url = new URL(
+      'https://www.www.translate.google.com/translate?u=https%3A%2F%2Fexample.com%2F',
+    )
+
+    expect(unwrapGoogleTranslate(url)).toBeUndefined()
+  })
 })

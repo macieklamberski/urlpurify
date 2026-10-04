@@ -51,4 +51,10 @@ describe('unwrapEmbedly', () => {
 
     expect(unwrapEmbedly(url)).toBeUndefined()
   })
+
+  it('should return undefined for the image proxy host', () => {
+    const url = new URL('https://i.embed.ly/widgets/media.html?src=https%3A%2F%2Fexample.com%2F')
+
+    expect(unwrapEmbedly(url)).toBeUndefined()
+  })
 })

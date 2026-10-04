@@ -69,4 +69,12 @@ describe('unwrapEffiliation', () => {
 
     expect(unwrapEffiliation(url)).toBeUndefined()
   })
+
+  it('should return undefined for a host that only starts with effiliation.com', () => {
+    const url = new URL(
+      'https://track.effiliation.com.example.net/servlet/effi.redir?url=https%3A%2F%2Fexample.com%2F',
+    )
+
+    expect(unwrapEffiliation(url)).toBeUndefined()
+  })
 })

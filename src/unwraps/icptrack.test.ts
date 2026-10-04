@@ -129,4 +129,28 @@ describe('unwrapIcptrack', () => {
 
     expect(unwrapIcptrack(url)).toBeUndefined()
   })
+
+  it('should return undefined for a host that only starts with an account host', () => {
+    const url = new URL(
+      'https://click.icptrack.com.example.net/icp/relay.php?destination=https%3A%2F%2Fexample.com%2F',
+    )
+
+    expect(unwrapIcptrack(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a sibling of ic1', () => {
+    const url = new URL(
+      'https://ic2.icptrack.com/icp/relay.php?destination=https%3A%2F%2Fexample.com%2F',
+    )
+
+    expect(unwrapIcptrack(url)).toBeUndefined()
+  })
+
+  it('should return undefined for an account host with no digits', () => {
+    const url = new URL(
+      'https://click-.icptrack.com/icp/relay.php?destination=https%3A%2F%2Fexample.com%2F',
+    )
+
+    expect(unwrapIcptrack(url)).toBeUndefined()
+  })
 })

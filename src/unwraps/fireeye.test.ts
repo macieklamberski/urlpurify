@@ -36,12 +36,12 @@ describe('unwrapFireeye', () => {
     expect(unwrapFireeye(url)).toBe('https://example.com/page')
   })
 
-  it('should extract target on a host no specimen shows', () => {
+  it('should return undefined for another protect host', () => {
     const url = new URL(
-      'https://protect4.fireeye.com/v1/url?k=31323334-501d2dca&q=1&u=https%3A%2F%2Fexample.com%2Fpage',
+      'https://protect3.fireeye.com/v1/url?k=31323334-501d2dca&q=1&u=https%3A%2F%2Fexample.com%2Fpage',
     )
 
-    expect(unwrapFireeye(url)).toBe('https://example.com/page')
+    expect(unwrapFireeye(url)).toBeUndefined()
   })
 
   it('should extract a target that is another wrapper', () => {
