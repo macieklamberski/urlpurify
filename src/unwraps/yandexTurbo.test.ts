@@ -38,6 +38,18 @@ describe('unwrapYandexTurbo', () => {
     expect(unwrapYandexTurbo(url)).toBe('https://example.com/blok/pered_sudom/')
   })
 
+  it('should extract target from text param on yandex.com', () => {
+    const url = new URL('https://yandex.com/turbo?text=https%3A%2F%2Fexample.com%2Fnews%2F')
+
+    expect(unwrapYandexTurbo(url)).toBe('https://example.com/news/')
+  })
+
+  it('should extract target from text param on yandex.com.tr', () => {
+    const url = new URL('https://yandex.com.tr/turbo?text=https%3A%2F%2Fexample.com%2Fhaber%2F')
+
+    expect(unwrapYandexTurbo(url)).toBe('https://example.com/haber/')
+  })
+
   it('should keep the target query when text param holds it encoded', () => {
     const url = new URL(
       'https://yandex.ru/turbo?text=http%3A%2F%2Fexample.com%2F%3Fp%3D42&from=webmaster',
@@ -78,6 +90,12 @@ describe('unwrapYandexTurbo', () => {
 
   it('should return undefined for non-turbopages hosts', () => {
     const url = new URL('https://example.com/host/s/path')
+
+    expect(unwrapYandexTurbo(url)).toBeUndefined()
+  })
+
+  it('should return undefined for the Turbo view on a top-level domain longer than three letters', () => {
+    const url = new URL('https://yandex.abcd/turbo?text=https%3A%2F%2Fexample.com%2F')
 
     expect(unwrapYandexTurbo(url)).toBeUndefined()
   })

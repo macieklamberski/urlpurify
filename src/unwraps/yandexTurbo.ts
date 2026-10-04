@@ -6,7 +6,7 @@ const turbopagesHostRegex = /\.turbopages\.org$/
 // turbopages.org answers 404 for both shapes as of 2026-09-27, so only archived feeds carry them.
 const turbopagesPathRegex = /^\/[^/]+\/s\/(.+)$/
 const dashRegex = /-/g
-const yandexHostRegex = /(?:^|\.)yandex\.(?:ru|by)$/
+const yandexHostRegex = /(?:^|\.)yandex\.(?:com\.tr|[a-z]{2,3})$/
 
 const extractTurboTarget = createParamExtractor({
   hosts: yandexHostRegex,
