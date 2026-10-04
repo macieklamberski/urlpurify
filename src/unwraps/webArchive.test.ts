@@ -7,6 +7,9 @@ const modifierUrls = [
   'https://web.archive.org/web/20240101120000mp_/https://example.com/page',
   'https://web.archive.org/web/20240101120000fw_/https://example.com/page',
   'https://web.archive.org/web/20240101120000oe_/https://example.com/page',
+  'https://web.archive.org/web/20240101120000im_/https://example.com/page',
+  'https://web.archive.org/web/20240101120000js_/https://example.com/page',
+  'https://web.archive.org/web/20240101120000cs_/https://example.com/page',
 ]
 
 const hostUrls = [
@@ -117,24 +120,6 @@ describe('unwrapWebArchive', () => {
     const value = new URL('https://web.archive.org/web/20240101120000/HTTP:/example.com/page')
 
     expect(unwrapWebArchive(value)).toBe('HTTP://example.com/page')
-  })
-
-  it('should return undefined for the image modifier', () => {
-    const value = new URL('https://web.archive.org/web/20240101120000im_/https://example.com/a.png')
-
-    expect(unwrapWebArchive(value)).toBeUndefined()
-  })
-
-  it('should return undefined for the script modifier', () => {
-    const value = new URL('https://web.archive.org/web/20240101120000js_/https://example.com/a.js')
-
-    expect(unwrapWebArchive(value)).toBeUndefined()
-  })
-
-  it('should return undefined for the stylesheet modifier', () => {
-    const value = new URL('https://web.archive.org/web/20240101120000cs_/https://example.com/a.css')
-
-    expect(unwrapWebArchive(value)).toBeUndefined()
   })
 
   it('should return undefined for the calendar wildcard', () => {
