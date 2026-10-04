@@ -11,6 +11,22 @@ export type ParamExtractorConfig = (
   params: Array<string>
 }
 
+const encodedSchemeRegex = /^https?%3A/i
+
+// A value already decoded once still holds an encoded scheme (`https%3A%2F%2F`) when the
+// carrier encoded its target twice.
+const decodeEncodedScheme = (value: string): string => {
+  if (!encodedSchemeRegex.test(value)) {
+    return value
+  }
+
+  try {
+    return decodeURIComponent(value)
+  } catch {
+    return value
+  }
+}
+
 export const createParamExtractor = (config: ParamExtractorConfig): UrlUnwrapper => {
   return (url) => {
     const isHostMatch =
@@ -30,7 +46,7 @@ export const createParamExtractor = (config: ParamExtractorConfig): UrlUnwrapper
       const value = url.searchParams.get(param)
 
       if (value) {
-        return value
+        return decodeEncodedScheme(value)
       }
     }
   }
