@@ -61,6 +61,32 @@ describe('unwrapUrl', () => {
     expect(unwrapUrl('not a url', [exampleUnwrapper])).toBeUndefined()
   })
 
+  it('should repair a target with a single slash after the scheme', () => {
+    const value = 'https://redirect.example.com/?target=https%3A%2Fexample.com%2Fpost'
+    const expected = 'https://example.com/post'
+
+    expect(unwrapUrl(value, [exampleUnwrapper])).toBe(expected)
+  })
+
+  it('should trim whitespace around the target', () => {
+    const value = 'https://redirect.example.com/?target=%20https%3A%2F%2Fexample.com%2Fpost%0A'
+    const expected = 'https://example.com/post'
+
+    expect(unwrapUrl(value, [exampleUnwrapper])).toBe(expected)
+  })
+
+  it('should return undefined for a target with a control character', () => {
+    const value = 'https://redirect.example.com/?target=https%3A%2F%2Fexample.com%2Fa%0D%0Ab'
+
+    expect(unwrapUrl(value, [exampleUnwrapper])).toBeUndefined()
+  })
+
+  it('should return undefined for a target that decodes to U+FFFD', () => {
+    const value = 'https://redirect.example.com/?target=https%3A%2F%2Fexample.com%2F%A4%A2'
+
+    expect(unwrapUrl(value, [exampleUnwrapper])).toBeUndefined()
+  })
+
   it('should skip a javascript: target', () => {
     const value = 'https://l.facebook.com/l.php?u=javascript:alert(1)'
 
