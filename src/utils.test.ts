@@ -108,6 +108,61 @@ describe('createParamExtractor', () => {
 
     expect(extract(value)).toBeUndefined()
   })
+
+  describe('twice-encoded target', () => {
+    const extract = createParamExtractor({
+      hosts: 'redirect.example.com',
+      params: ['url'],
+    })
+
+    it('should decode a twice-encoded http target', () => {
+      const value = new URL('https://redirect.example.com/?url=http%253A%252F%252Fexample.com%252F')
+      const expected = 'http://example.com/'
+
+      expect(extract(value)).toBe(expected)
+    })
+
+    it('should decode a twice-encoded https target', () => {
+      const value = new URL(
+        'https://redirect.example.com/?url=https%253A%252F%252Fexample.com%252Fpost%253Fid%253D1',
+      )
+      const expected = 'https://example.com/post?id=1'
+
+      expect(extract(value)).toBe(expected)
+    })
+
+    it('should decode a twice-encoded scheme in uppercase', () => {
+      const value = new URL(
+        'https://redirect.example.com/?url=HTTPS%253A%252F%252Fexample.com%252F',
+      )
+      const expected = 'HTTPS://example.com/'
+
+      expect(extract(value)).toBe(expected)
+    })
+
+    it('should leave a target encoded once as it is', () => {
+      const value = new URL(
+        'https://redirect.example.com/?url=https%3A%2F%2Fexample.com%2Fpost%253Fid%253D1',
+      )
+      const expected = 'https://example.com/post%3Fid%3D1'
+
+      expect(extract(value)).toBe(expected)
+    })
+
+    it('should not decode a value that only holds an encoded scheme later on', () => {
+      const value = new URL('https://redirect.example.com/?url=go-https%253A%252F%252Fexample.com')
+      const expected = 'go-https%3A%2F%2Fexample.com'
+
+      expect(extract(value)).toBe(expected)
+    })
+
+    it('should return the once-decoded value when the second decode throws', () => {
+      const value = new URL('https://redirect.example.com/?url=https%253A%252F%252Fexample.com%25')
+      const expected = 'https%3A%2F%2Fexample.com%'
+
+      expect(extract(value)).toBe(expected)
+    })
+  })
 })
 
 describe('decodeBase64Binary', () => {

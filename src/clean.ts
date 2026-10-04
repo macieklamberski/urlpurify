@@ -7,6 +7,8 @@ type TrackingMatcher = {
   patterns: Array<RegExp>
 }
 
+const replacementCharacter = '\uFFFD'
+
 const trackingMatcherCache = new WeakMap<Array<TrackingParam>, TrackingMatcher>()
 
 const getTrackingMatcher = (params: Array<TrackingParam>): TrackingMatcher => {
@@ -138,6 +140,8 @@ export const cleanUrl = (url: string, options?: CleanUrlOptions): string => {
 
   let currentUrl = url
   let currentParsed = parsed
+  let intactUrl = url
+  let intactParsed = parsed
 
   // Wrappers can nest (an email gateway wrapping a search redirect), so
   // unwrap repeatedly up to the depth limit.
@@ -156,6 +160,18 @@ export const cleanUrl = (url: string, options?: CleanUrlOptions): string => {
 
     currentUrl = target
     currentParsed = targetParsed
+
+    if (!target.includes(replacementCharacter)) {
+      intactUrl = target
+      intactParsed = targetParsed
+    }
+  }
+
+  // A target percent-encoded in a legacy charset such as EUC-JP or Shift_JIS decodes to U+FFFD.
+  // Fall back to the last hop without one, so a later hop that drops the damaged part still wins.
+  if (currentUrl.includes(replacementCharacter)) {
+    currentUrl = intactUrl
+    currentParsed = intactParsed
   }
 
   if (deleteTrackingParams(currentParsed, trackingParams)) {

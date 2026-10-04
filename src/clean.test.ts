@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'bun:test'
 import { cleanUrl, stripTrackingParams, unwrapUrl } from './clean.js'
+import type { UrlUnwrapper } from './types.js'
 import { createParamExtractor } from './utils.js'
 
 const exampleUnwrapper = createParamExtractor({
@@ -17,6 +18,7 @@ const nestedUnwrapper = createParamExtractor({
   params: ['url'],
 })
 
+const definitionPathRegex = /^\/v3\/__(https?):\/(.+?)__;/
 const sessionParamRegex = /^session_[a-z]$/
 const utmFamilyRegex = /^utm_[a-z0-9_-]+$/
 
@@ -421,6 +423,55 @@ describe('cleanUrl', () => {
 
   it('should handle empty strings', () => {
     expect(cleanUrl('')).toBe('')
+  })
+})
+
+describe('cleanUrl with a mis-decoded target', () => {
+  const definitionUnwrapper: UrlUnwrapper = (url) => {
+    if (url.hostname !== 'defense.example.net') {
+      return
+    }
+
+    const match = url.pathname.match(definitionPathRegex)
+
+    if (match) {
+      return `${match[1]}://${match[2]}`
+    }
+  }
+  const legacyUnwrapper = createParamExtractor({
+    hosts: 'redirect.example.com',
+    params: ['target'],
+  })
+
+  it('should keep the wrapper when the target decodes to U+FFFD', () => {
+    const value = 'https://redirect.example.com/?target=https%3A%2F%2Fexample.com%2F%A4%A2'
+
+    expect(cleanUrl(value, { unwrappers: [legacyUnwrapper] })).toBe(value)
+  })
+
+  it('should return the final target when an inner hop holds U+FFFD', () => {
+    const value =
+      'https://redirect.example.com/?target=https://defense.example.net/v3/__https:/example.org/news/__;tail%%EDITOR'
+    const expected = 'https://example.org/news/'
+
+    expect(cleanUrl(value, { unwrappers: [legacyUnwrapper, definitionUnwrapper] })).toBe(expected)
+  })
+
+  it('should fall back to the last intact hop when a later hop decodes to U+FFFD', () => {
+    const value =
+      'https://outer.example.com/?url=https%3A%2F%2Fredirect.example.com%2F%3Ftarget%3Dhttps%253A%252F%252Fexample.com%252F%25A4'
+    const expected = 'https://redirect.example.com/?target=https%3A%2F%2Fexample.com%2F%A4'
+
+    expect(cleanUrl(value, { unwrappers: [nestedUnwrapper, legacyUnwrapper] })).toBe(expected)
+  })
+
+  it('should fall back to the last hop without U+FFFD', () => {
+    const value =
+      'https://redirect.example.com/?target=https://defense.example.net/v3/__https:/example.org/news/__;tail%%EDITOR'
+    const expected =
+      'https://redirect.example.com/?target=https://defense.example.net/v3/__https:/example.org/news/__;tail%%EDITOR'
+
+    expect(cleanUrl(value, { unwrappers: [legacyUnwrapper] })).toBe(expected)
   })
 })
 
