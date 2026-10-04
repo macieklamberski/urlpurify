@@ -59,4 +59,20 @@ describe('unwrapEbayRover', () => {
 
     expect(unwrapEbayRover(url)).toBeUndefined()
   })
+
+  it('should return undefined for a rover path with a prefix', () => {
+    const url = new URL(
+      'https://rover.ebay.com/x/rover/1/711-53200-19255-0/1?mpre=https%3A%2F%2Fexample.com%2F',
+    )
+
+    expect(unwrapEbayRover(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a rover path with a trailing segment', () => {
+    const url = new URL(
+      'https://rover.ebay.com/rover/1/711-53200-19255-0/1/extra?mpre=https%3A%2F%2Fexample.com%2F',
+    )
+
+    expect(unwrapEbayRover(url)).toBeUndefined()
+  })
 })

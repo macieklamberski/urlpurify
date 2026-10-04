@@ -53,4 +53,20 @@ describe('unwrapEffiliation', () => {
 
     expect(unwrapEffiliation(url)).toBeUndefined()
   })
+
+  it('should return undefined for a servlet path with a prefix', () => {
+    const url = new URL(
+      'https://track.effiliation.com/x/servlet/effi.redir?url=https%3A%2F%2Fexample.com%2F',
+    )
+
+    expect(unwrapEffiliation(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a servlet path with a suffix', () => {
+    const url = new URL(
+      'https://track.effiliation.com/servlet/effi.redir.php?url=https%3A%2F%2Fexample.com%2F',
+    )
+
+    expect(unwrapEffiliation(url)).toBeUndefined()
+  })
 })

@@ -89,4 +89,12 @@ describe('unwrapIcptrack', () => {
 
     expect(unwrapIcptrack(url)).toBeUndefined()
   })
+
+  it('should return undefined for the root path of an account host', () => {
+    const url = new URL(
+      'https://click-1346310.icptrack.com/?destination=https%3A%2F%2Fexample.com%2F',
+    )
+
+    expect(unwrapIcptrack(url)).toBeUndefined()
+  })
 })

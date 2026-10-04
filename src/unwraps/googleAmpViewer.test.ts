@@ -61,4 +61,10 @@ describe('unwrapGoogleAmpViewer', () => {
 
     expect(unwrapGoogleAmpViewer(url)).toBeUndefined()
   })
+
+  it('should return undefined for a host that only starts with a google domain', () => {
+    const url = new URL('https://www.google.com.example.net/amp/s/example.com/page')
+
+    expect(unwrapGoogleAmpViewer(url)).toBeUndefined()
+  })
 })

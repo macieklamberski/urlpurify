@@ -220,6 +220,14 @@ describe('unwrapGoogleAds', () => {
       expect(unwrapGoogleAds(url)).toBe('https://example.com/landing/')
     })
 
+    it('should extract a target from a subdomain of googleadservices.com no specimen shows', () => {
+      const url = new URL(
+        'https://imageads.googleadservices.com/pagead/aclk?adurl=https://example.com/landing/',
+      )
+
+      expect(unwrapGoogleAds(url)).toBe('https://example.com/landing/')
+    })
+
     it('should return undefined for a lookalike host', () => {
       const url = new URL('https://exampledoubleclick.net/aclk?sa=L&adurl=https://example.org/')
 
