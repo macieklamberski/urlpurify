@@ -9,8 +9,8 @@ const extractTarget = createParamExtractor({
 })
 
 // Narrativ affiliate redirect (api.narrativ.com/api/v0/{client_redirect,redirect}/?url=<target>)
-// on narrativ.com, api.narrativ.com and events.release.narrativ.com. Not in defaultUnwrappers: real-time auction bidding routes
-// the click, so `url` may not be where it lands.
+// on narrativ.com, api.narrativ.com and events.release.narrativ.com. Not in defaultUnwrappers:
+// real-time auction bidding routes the click, so `url` may not be where it lands.
 export const unwrapNarrativ: UrlUnwrapper = (url) => {
   if (!redirectPathRegex.test(url.pathname)) {
     return

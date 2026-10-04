@@ -96,8 +96,8 @@ const positionInChars = (source: string, codeUnitIndex: number): number => {
   return charIndex
 }
 
-// Proofpoint URLDefense v3 (urldefense.com/v3/__<mangled>__;<b64>!!<sig>$). `*` and `**X` runs in the mangled URL are
-// restored from the base64 segment.
+// Proofpoint URLDefense v3 (urldefense.com/v3/__<mangled>__;<b64>!!<sig>$).
+// `*` and `**X` runs in the mangled URL are restored from the base64 segment.
 export const unwrapProofpointV3: UrlUnwrapper = (url) => {
   if (!isHostOf(url, v3Hosts)) {
     return
