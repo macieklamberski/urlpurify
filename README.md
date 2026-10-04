@@ -100,8 +100,8 @@ Enabled by default:
 | `unwrapCalendly` | Calendly outbound link (calendly.com/url?q=\<target\>) |
 | `unwrapCsdn` | CSDN external link redirect (link.csdn.net/?target=\<target\>) |
 | `unwrapDerefMail` | GMX, WEB.DE and mail.com webmail dereferrer (deref-gmx.net/mail/client/dereferrer/?redirectUrl=\<target\>) |
-| `unwrapDeviantartOutgoing` | DeviantArt outbound link shim (deviantart.com/\<user\>/outgoing?\<target\>) |
-| `unwrapDisqus` | Disqus outbound link redirect (disq.us/?url=\<target\>) |
+| `unwrapDeviantartOutgoing` | DeviantArt outbound link shim (www.deviantart.com/\<user\>/outgoing?\<target\>) |
+| `unwrapDisqus` | Disqus outbound link redirect (disq.us/url?url=\<target\> and disq.us/?url=\<target\>) |
 | `unwrapDouban` | Douban external link redirect (www.douban.com/link2/?url=\<target\>) |
 | `unwrapDzen` | Dzen away redirect (dzen.ru/away?to=\<target\>) |
 | `unwrapEvernote` | Evernote outbound link redirect (www.evernote.com/OutboundRedirect.action?dest=\<target\>) |
