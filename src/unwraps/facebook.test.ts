@@ -59,4 +59,58 @@ describe('unwrapFacebookShim', () => {
 
     expect(unwrapFacebookShim(url)).toBeUndefined()
   })
+
+  it('should return undefined for a lookalike host', () => {
+    const url = new URL('https://examplefacebook.com/l.php?u=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapFacebookShim(url)).toBeUndefined()
+  })
+
+  it('should extract target from m.facebook.com', () => {
+    const url = new URL('https://m.facebook.com/l.php?u=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapFacebookShim(url)).toBe('https://example.com/page')
+  })
+
+  it('should extract target from web.facebook.com', () => {
+    const url = new URL('https://web.facebook.com/l.php?u=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapFacebookShim(url)).toBe('https://example.com/page')
+  })
+
+  it('should extract target from pt-br.facebook.com', () => {
+    const url = new URL('https://pt-br.facebook.com/l.php?u=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapFacebookShim(url)).toBe('https://example.com/page')
+  })
+
+  it('should extract target from free.facebook.com', () => {
+    const url = new URL('https://free.facebook.com/l.php?u=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapFacebookShim(url)).toBe('https://example.com/page')
+  })
+
+  it('should extract target from business.facebook.com', () => {
+    const url = new URL('https://business.facebook.com/l.php?u=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapFacebookShim(url)).toBe('https://example.com/page')
+  })
+
+  it('should extract target from 0.facebook.com', () => {
+    const url = new URL('https://0.facebook.com/l.php?u=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapFacebookShim(url)).toBe('https://example.com/page')
+  })
+
+  it('should extract target from facebook.com', () => {
+    const url = new URL('https://facebook.com/l.php?u=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapFacebookShim(url)).toBe('https://example.com/page')
+  })
+
+  it('should return undefined for an unlisted subdomain of facebook.com', () => {
+    const url = new URL('https://mobile.facebook.com/l.php?u=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapFacebookShim(url)).toBeUndefined()
+  })
 })

@@ -1,8 +1,9 @@
 import { createParamExtractor } from '../utils.js'
 
-// Index.hu and Dex.hu outbound link counter (index.hu/x.php?id=<id>&url=<target>).
+// Index.hu and Dex.hu outbound link counter (index.hu/x.php?id=<id>&url=<target>), on both
+// domains and their subdomains.
 export const unwrapIndexHu = createParamExtractor({
-  hosts: /(^|\.)(index|dex)\.hu$/,
+  domains: ['index.hu', 'dex.hu'],
   path: '/x.php',
   params: ['url'],
 })

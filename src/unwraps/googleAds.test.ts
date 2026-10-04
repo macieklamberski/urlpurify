@@ -202,4 +202,42 @@ describe('unwrapGoogleAds', () => {
       expect(unwrapGoogleAds(url)).toBeUndefined()
     })
   })
+
+  describe('domains', () => {
+    it('should return undefined for an unlisted subdomain of doubleclick.net', () => {
+      const url = new URL(
+        'https://ads.doubleclick.net/aclk?sa=L&adurl=https://example.com/landing/',
+      )
+
+      expect(unwrapGoogleAds(url)).toBeUndefined()
+    })
+
+    it('should return undefined for an unlisted subdomain of googlesyndication.com', () => {
+      const url = new URL(
+        'https://pagead3.googlesyndication.com/pagead/iclk?sa=L&adurl=https://example.com/landing/',
+      )
+
+      expect(unwrapGoogleAds(url)).toBeUndefined()
+    })
+
+    it('should return undefined for an unlisted subdomain of googleadservices.com', () => {
+      const url = new URL(
+        'https://imageads.googleadservices.com/pagead/aclk?adurl=https://example.com/landing/',
+      )
+
+      expect(unwrapGoogleAds(url)).toBeUndefined()
+    })
+
+    it('should return undefined for a lookalike host', () => {
+      const url = new URL('https://exampledoubleclick.net/aclk?sa=L&adurl=https://example.org/')
+
+      expect(unwrapGoogleAds(url)).toBeUndefined()
+    })
+
+    it('should return undefined for another path on doubleclick.net', () => {
+      const url = new URL('https://ad.doubleclick.net/ddm/clk?adurl=https://example.org/')
+
+      expect(unwrapGoogleAds(url)).toBeUndefined()
+    })
+  })
 })

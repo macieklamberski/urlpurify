@@ -37,4 +37,22 @@ describe('unwrapHrefLi', () => {
 
     expect(unwrapHrefLi(url)).toBeUndefined()
   })
+
+  it('should return undefined for an unlisted subdomain', () => {
+    const url = new URL('https://m.href.li/?https://example.com/post')
+
+    expect(unwrapHrefLi(url)).toBeUndefined()
+  })
+
+  it('should return undefined for another path on the host', () => {
+    const url = new URL('https://href.li/go/?https://example.com/post')
+
+    expect(unwrapHrefLi(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a lookalike host', () => {
+    const url = new URL('https://examplehref.li/?https://example.com/post')
+
+    expect(unwrapHrefLi(url)).toBeUndefined()
+  })
 })

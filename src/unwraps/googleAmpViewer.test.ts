@@ -49,4 +49,22 @@ describe('unwrapGoogleAmpViewer', () => {
 
     expect(unwrapGoogleAmpViewer(url)).toBeUndefined()
   })
+
+  it('should return undefined for an unlisted subdomain', () => {
+    const url = new URL('https://m.google.co.uk/amp/s/example.com/article')
+
+    expect(unwrapGoogleAmpViewer(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a lookalike host', () => {
+    const url = new URL('https://examplegoogle.com/amp/s/example.com/article')
+
+    expect(unwrapGoogleAmpViewer(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a host that only starts with a google domain', () => {
+    const url = new URL('https://www.google.com.example.net/amp/s/example.com/page')
+
+    expect(unwrapGoogleAmpViewer(url)).toBeUndefined()
+  })
 })

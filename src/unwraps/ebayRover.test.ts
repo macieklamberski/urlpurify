@@ -29,4 +29,66 @@ describe('unwrapEbayRover', () => {
 
     expect(unwrapEbayRover(url)).toBeUndefined()
   })
+
+  it('should return undefined for an unlisted subdomain', () => {
+    const url = new URL(
+      'https://m.rover.ebay.de/rover/1/707-53477-19255-0/1?mpre=https%3A%2F%2Fexample.com%2Fpage',
+    )
+
+    expect(unwrapEbayRover(url)).toBeUndefined()
+  })
+
+  it('should return undefined for another path on rover', () => {
+    const url = new URL('https://rover.ebay.com/other?mpre=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapEbayRover(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a lookalike host', () => {
+    const url = new URL(
+      'https://examplerover.ebay.com/rover/1/711-53200-19255-0/1?mpre=https%3A%2F%2Fexample.com%2Fpage',
+    )
+
+    expect(unwrapEbayRover(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a host that only contains the rover host', () => {
+    const url = new URL(
+      'https://rover.ebay.com.example.org/rover/1/711-53200-19255-0/1?mpre=https%3A%2F%2Fexample.com%2Fpage',
+    )
+
+    expect(unwrapEbayRover(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a rover path with a prefix', () => {
+    const url = new URL(
+      'https://rover.ebay.com/x/rover/1/711-53200-19255-0/1?mpre=https%3A%2F%2Fexample.com%2F',
+    )
+
+    expect(unwrapEbayRover(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a rover path with a trailing segment', () => {
+    const url = new URL(
+      'https://rover.ebay.com/rover/1/711-53200-19255-0/1/extra?mpre=https%3A%2F%2Fexample.com%2F',
+    )
+
+    expect(unwrapEbayRover(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a rover path with a letter in the first segment', () => {
+    const url = new URL(
+      'https://rover.ebay.com/rover/x/711-53200-19255-0/1?mpre=https%3A%2F%2Fexample.com%2F',
+    )
+
+    expect(unwrapEbayRover(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a rover path with an empty last segment', () => {
+    const url = new URL(
+      'https://rover.ebay.com/rover/1/711-53200-19255-0/?mpre=https%3A%2F%2Fexample.com%2F',
+    )
+
+    expect(unwrapEbayRover(url)).toBeUndefined()
+  })
 })

@@ -25,4 +25,22 @@ describe('unwrapInstagramShim', () => {
 
     expect(unwrapInstagramShim(url)).toBeUndefined()
   })
+
+  it('should return undefined for an unlisted subdomain', () => {
+    const url = new URL('https://l2.instagram.com/?u=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapInstagramShim(url)).toBeUndefined()
+  })
+
+  it('should return undefined for another path on the host', () => {
+    const url = new URL('https://l.instagram.com/accounts/?u=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapInstagramShim(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a lookalike host', () => {
+    const url = new URL('https://exampleinstagram.com/?u=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapInstagramShim(url)).toBeUndefined()
+  })
 })

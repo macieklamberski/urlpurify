@@ -73,4 +73,84 @@ describe('unwrapIcptrack', () => {
 
     expect(unwrapIcptrack(url)).toBeUndefined()
   })
+
+  it('should extract target from an account host', () => {
+    const url = new URL(
+      'https://click-1346310.icptrack.com/icp/relay.php?destination=https%3A%2F%2Fexample.com%2Fpage',
+    )
+
+    expect(unwrapIcptrack(url)).toBe('https://example.com/page')
+  })
+
+  it('should return undefined for a lookalike host', () => {
+    const url = new URL(
+      'https://exampleicptrack.com/icp/relay.php?destination=https%3A%2F%2Fexample.com%2Fpage',
+    )
+
+    expect(unwrapIcptrack(url)).toBeUndefined()
+  })
+
+  it('should return undefined for the root path of an account host', () => {
+    const url = new URL(
+      'https://click-1346310.icptrack.com/?destination=https%3A%2F%2Fexample.com%2F',
+    )
+
+    expect(unwrapIcptrack(url)).toBeUndefined()
+  })
+
+  it('should extract target from ic1.icptrack.com', () => {
+    const url = new URL(
+      'https://ic1.icptrack.com/icp/relay.php?destination=https%3A%2F%2Fexample.com%2Fpage',
+    )
+
+    expect(unwrapIcptrack(url)).toBe('https://example.com/page')
+  })
+
+  it('should return undefined for an unlisted subdomain', () => {
+    const url = new URL(
+      'https://track.icptrack.com/icp/relay.php?destination=https%3A%2F%2Fexample.com%2Fpage',
+    )
+
+    expect(unwrapIcptrack(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a click host without a numeric account', () => {
+    const url = new URL(
+      'https://click-abc.icptrack.com/icp/relay.php?destination=https%3A%2F%2Fexample.com%2Fpage',
+    )
+
+    expect(unwrapIcptrack(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a lookalike click host', () => {
+    const url = new URL(
+      'https://exampleclick.icptrack.com/icp/relay.php?destination=https%3A%2F%2Fexample.com%2Fpage',
+    )
+
+    expect(unwrapIcptrack(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a host that only starts with an account host', () => {
+    const url = new URL(
+      'https://click.icptrack.com.example.net/icp/relay.php?destination=https%3A%2F%2Fexample.com%2F',
+    )
+
+    expect(unwrapIcptrack(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a sibling of ic1', () => {
+    const url = new URL(
+      'https://ic2.icptrack.com/icp/relay.php?destination=https%3A%2F%2Fexample.com%2F',
+    )
+
+    expect(unwrapIcptrack(url)).toBeUndefined()
+  })
+
+  it('should return undefined for an account host with no digits', () => {
+    const url = new URL(
+      'https://click-.icptrack.com/icp/relay.php?destination=https%3A%2F%2Fexample.com%2F',
+    )
+
+    expect(unwrapIcptrack(url)).toBeUndefined()
+  })
 })

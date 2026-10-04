@@ -1,12 +1,13 @@
 import { isAnyOf, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
-// translate.google.<TLD> and every subdomain.
-const googleTranslateHostRegex = /(?:^|\.)translate\.google\.(?:com|[a-z]{2,3}(?:\.[a-z]{2,3})?)$/
+// translate.google.<TLD> and its www. host, the hosts the walk shows on the translate paths.
+const googleTranslateHostRegex =
+  /^(?:www\.)?translate\.google\.(?:com|[a-z]{2,3}(?:\.[a-z]{2,3})?)$/
 
 const googleTranslatePaths = ['/translate', '/website']
 
-// Google Translate ([*.]translate.google.<TLD>/translate?u=<target> and /website?u=<target>),
+// Google Translate ([www.]translate.google.<TLD>/translate?u=<target> and /website?u=<target>),
 // and its translated frame (translate.googleusercontent.com/translate_c?u=<target>). Opt-in:
 // it renders the target translated, so unwrapping discards the translation the user wanted.
 export const unwrapGoogleTranslate: UrlUnwrapper = (url) => {

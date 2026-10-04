@@ -43,4 +43,26 @@ describe('unwrapGoogleScholar', () => {
 
     expect(unwrapGoogleScholar(url)).toBeUndefined()
   })
+
+  it('should return undefined for an unlisted subdomain', () => {
+    const url = new URL(
+      'https://www.scholar.google.com/scholar_url?url=https%3A%2F%2Fexample.com%2Fpage',
+    )
+
+    expect(unwrapGoogleScholar(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a lookalike host', () => {
+    const url = new URL(
+      'https://notscholar.google.com/scholar_url?url=https%3A%2F%2Fexample.com%2Fpage',
+    )
+
+    expect(unwrapGoogleScholar(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a sibling path with the carrier param', () => {
+    const url = new URL('https://scholar.google.com/scholar?url=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapGoogleScholar(url)).toBeUndefined()
+  })
 })
