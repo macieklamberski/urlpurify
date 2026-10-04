@@ -1,13 +1,14 @@
 import { decodeSegment, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
-const yahooPathRegex = /\/RU=([^/]+)\/RK=/
-const unencodedTargetRegex = /\/RU=(https?:\/\/.+?)\/RK=/
+const hosts = ['r.search.yahoo.com', 'ri.search.yahoo.com', 'chicagotribune.search.yahoo.com']
+const yahooPathRegex = /^(?:\/[^/]+)*\/RU=([^/]+)\/RK=/
+const unencodedTargetRegex = /^(?:\/[^/]+)*\/RU=(https?:\/\/.+?)\/RK=/
 
 // Yahoo Search redirect (r.search.yahoo.com/.../RU=<URL-encoded-target>/RK=...), also with the
 // target unencoded (.../RU=<target>/RK=...).
 export const unwrapYahooSearch: UrlUnwrapper = (url) => {
-  if (!isHostOf(url, 'r.search.yahoo.com')) {
+  if (!isHostOf(url, hosts)) {
     return
   }
 

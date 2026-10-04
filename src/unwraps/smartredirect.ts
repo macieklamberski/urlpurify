@@ -1,7 +1,19 @@
+import type { UrlUnwrapper } from '../types.js'
 import { createParamExtractor } from '../utils.js'
 
-// smartredirect.de affiliate redirect (?url=<target>).
-export const unwrapSmartredirect = createParamExtractor({
-  hosts: 'smartredirect.de',
+const pathRegex = /^\/(?:redir\/clickGate\.php|api_v2\/ClickGate\.php)?$/
+
+const extractTarget = createParamExtractor({
+  hosts: ['smartredirect.de', 'www.smartredirect.de', 'api.smartredirect.de'],
   params: ['url'],
 })
+
+// smartredirect.de affiliate redirect (?url=<target> on /, /redir/clickGate.php and
+// /api_v2/ClickGate.php).
+export const unwrapSmartredirect: UrlUnwrapper = (url) => {
+  if (!pathRegex.test(url.pathname)) {
+    return
+  }
+
+  return extractTarget(url)
+}

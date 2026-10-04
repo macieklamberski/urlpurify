@@ -25,4 +25,22 @@ describe('unwrapThreadsShim', () => {
 
     expect(unwrapThreadsShim(url)).toBeUndefined()
   })
+
+  it('should return undefined for an unlisted subdomain', () => {
+    const url = new URL('https://x.threads.net/?u=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapThreadsShim(url)).toBeUndefined()
+  })
+
+  it('should return undefined for another path on the host', () => {
+    const url = new URL('https://l.threads.com/intent?u=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapThreadsShim(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a lookalike host', () => {
+    const url = new URL('https://examplethreads.com/?u=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapThreadsShim(url)).toBeUndefined()
+  })
 })

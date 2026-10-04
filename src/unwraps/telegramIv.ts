@@ -5,7 +5,7 @@ import { createParamExtractor } from '../utils.js'
 // Telegram's Instant View reader (a reformatted, lightweight rendering), not
 // a redirect to the source. Opt in by passing a custom unwrappers array.
 export const unwrapTelegramIv = createParamExtractor({
-  hosts: 't.me',
+  hosts: ['t.me', 'www.t.me'],
   path: '/iv',
   params: ['url'],
 })

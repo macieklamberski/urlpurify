@@ -4,5 +4,6 @@ import { createParamExtractor } from '../utils.js'
 // go.skimlinks.com/?url=<target>).
 export const unwrapSkimlinks = createParamExtractor({
   hosts: ['go.skimresources.com', 'go.skimlinks.com'],
+  path: '/',
   params: ['url'],
 })

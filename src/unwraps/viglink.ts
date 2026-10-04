@@ -1,8 +1,10 @@
 import type { UrlUnwrapper } from '../types.js'
 import { createParamExtractor } from '../utils.js'
 
+// An exact host: i.viglink.com serves the same root path as an impression beacon.
 const unwrapRedirect = createParamExtractor({
   hosts: 'redirect.viglink.com',
+  path: '/',
   params: ['u', 'out'],
 })
 

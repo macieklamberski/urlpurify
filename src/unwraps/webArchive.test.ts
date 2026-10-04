@@ -110,18 +110,6 @@ describe('unwrapWebArchive', () => {
     expect(unwrapWebArchive(value)).toBe('https://example.com/a?id=5#section')
   })
 
-  it('should restore the double slash of a collapsed target scheme', () => {
-    const value = new URL('https://web.archive.org/web/20240101120000/https:/example.com/page')
-
-    expect(unwrapWebArchive(value)).toBe('https://example.com/page')
-  })
-
-  it('should restore the double slash of an uppercase collapsed target scheme', () => {
-    const value = new URL('https://web.archive.org/web/20240101120000/HTTP:/example.com/page')
-
-    expect(unwrapWebArchive(value)).toBe('HTTP://example.com/page')
-  })
-
   it('should return undefined for the calendar wildcard', () => {
     const value = new URL('https://web.archive.org/web/*/https://example.com/page')
 
@@ -158,4 +146,50 @@ describe('unwrapWebArchive', () => {
       expect(unwrapWebArchive(new URL(value))).toBeUndefined()
     },
   )
+
+  it('should return undefined for an unlisted subdomain', () => {
+    const url = new URL('https://web-x.archive.org/web/20240101120000/https://example.com/page')
+
+    expect(unwrapWebArchive(url)).toBeUndefined()
+  })
+
+  it('should return undefined for an unlisted Archive-It subdomain', () => {
+    const url = new URL(
+      'https://replay.archive-it.org/23504/20240101120000/https://example.com/page',
+    )
+
+    expect(unwrapWebArchive(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a lookalike host', () => {
+    const url = new URL('https://examplearchive.org/web/20240101120000/https://example.com/page')
+
+    expect(unwrapWebArchive(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a lookalike Archive-It host', () => {
+    const url = new URL(
+      'https://examplearchive-it.org/23504/20240101120000/https://example.com/page',
+    )
+
+    expect(unwrapWebArchive(url)).toBeUndefined()
+  })
+
+  it('should return undefined for the replay path on a host that only ends in the replay host', () => {
+    const url = new URL('https://exampleweb.archive.org/20240101120000/https://example.com/page')
+
+    expect(unwrapWebArchive(url)).toBeUndefined()
+  })
+
+  it('should return undefined for the save path', () => {
+    const url = new URL('https://web.archive.org/save/https://example.com/page')
+
+    expect(unwrapWebArchive(url)).toBeUndefined()
+  })
+
+  it('should extract target on archive.org', () => {
+    const url = new URL('https://archive.org/web/20240101120000/https://example.com/page')
+
+    expect(unwrapWebArchive(url)).toBe('https://example.com/page')
+  })
 })

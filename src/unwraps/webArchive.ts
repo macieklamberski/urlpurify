@@ -8,6 +8,7 @@ const hosts = [
   'web-wp.archive.org',
   'web-old.archive.org',
   'classic-web.archive.org',
+  'archive.org',
 ]
 
 // A 14-digit timestamp, then the wildcard or a replay modifier, such as `id_` for the original
@@ -18,13 +19,10 @@ const pathRegex = new RegExp(`^/web/(?:${snapshot}/)?(.+)$`)
 const replayPathRegex = new RegExp(`^/${snapshot}/(.+)$`)
 const archiveItPathRegex = new RegExp(String.raw`^/(?:\d+|org-\d+|all)/${snapshot}/(.+)$`)
 
-// Some snapshot links carry the target as `https:/host`, with the double slash collapsed.
-const collapsedSchemeRegex = /^(https?:)\/(?!\/)/i
-
 // Web Archive snapshot wrapper (web.archive.org/web/<timestamp>[<modifier>]/<URL>), also served
-// from wayback, web-beta, web-wp, web-old and classic-web.archive.org, the latest snapshot
-// (web.archive.org/web/<URL>), the replay path (replay.web.archive.org/<timestamp>/<URL>, also on
-// web.archive.org), and Archive-It collections
+// from wayback, web-beta, web-wp, web-old and classic-web.archive.org and from archive.org
+// itself, the latest snapshot (web.archive.org/web/<URL>), the replay path
+// (replay.web.archive.org/<timestamp>/<URL>, also on web.archive.org), and Archive-It collections
 // (wayback.archive-it.org/<collection or all>/<timestamp>[<modifier>]/<URL>).
 // Not included in defaultUnwrappers: an archive URL is a historical
 // snapshot at a specific point in time, not a redirect; unwrapping returns
@@ -49,7 +47,7 @@ export const unwrapWebArchive: UrlUnwrapper = (url) => {
     return
   }
 
-  const target = decodeSegment(match[1])?.replace(collapsedSchemeRegex, '$1//')
+  const target = decodeSegment(match[1])
 
   if (!target || !isHttpUrl(target)) {
     return

@@ -118,6 +118,14 @@ describe('unwrapYandexMail', () => {
     expect(unwrapYandexMail(url)).toBeUndefined()
   })
 
+  it('should return undefined for a lookalike host', () => {
+    const url = new URL(
+      'https://examplemail.yandex.ru/re.jsx?h=a,xyz&l=aHR0cDovL3d3dy5leGFtcGxlLmNvbS8',
+    )
+
+    expect(unwrapYandexMail(url)).toBeUndefined()
+  })
+
   it('should return undefined for a top-level domain longer than three letters', () => {
     const url = new URL('https://mail.yandex.abcd/re.jsx?h=a,xyz&l=aHR0cDovL3d3dy5leGFtcGxlLmNvbS8')
 

@@ -44,14 +44,6 @@ describe('unwrapValuecommerce', () => {
     expect(unwrapValuecommerce(url)).toBe('http://example.com/item.html')
   })
 
-  it('should return undefined for the referral path on the atq host', () => {
-    const url = new URL(
-      'http://atq.ck.valuecommerce.com/servlet/referral?vc_url=http%3A%2F%2Fexample.com%2Fitem.html',
-    )
-
-    expect(unwrapValuecommerce(url)).toBeUndefined()
-  })
-
   it('should extract target from vcurl param on the dck path', () => {
     const url = new URL(
       'https://dalr.valuecommerce.com/dck/f46a15718a?pid=887709230&sid=3641646&aid=2797472&mid=3366797&isec=664ecf1b&vcurl=https%3A%2F%2Fexample.com%2Fshop%2F&ckref=https%3A%2F%2Fexample.org%2Fpost.html',
@@ -111,6 +103,38 @@ describe('unwrapValuecommerce', () => {
   it('should return undefined for the dck path without an id', () => {
     const url = new URL(
       'https://dalr.valuecommerce.com/dck/?vcurl=https%3A%2F%2Fexample.com%2Fshop%2F',
+    )
+
+    expect(unwrapValuecommerce(url)).toBeUndefined()
+  })
+
+  it('should return undefined for an unlisted referral subdomain', () => {
+    const url = new URL(
+      'https://ck.us.ap.valuecommerce.com/servlet/referral?vc_url=https%3A%2F%2Fexample.com%2Fpage',
+    )
+
+    expect(unwrapValuecommerce(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a lookalike host', () => {
+    const url = new URL(
+      'https://examplevaluecommerce.com/servlet/referral?vc_url=https%3A%2F%2Fexample.com%2Fpage',
+    )
+
+    expect(unwrapValuecommerce(url)).toBeUndefined()
+  })
+
+  it('should return undefined for an unlisted atq subdomain', () => {
+    const url = new URL(
+      'https://atq.ck.us.valuecommerce.com/servlet/atq/referral?vc_url=https%3A%2F%2Fexample.com%2Fpage',
+    )
+
+    expect(unwrapValuecommerce(url)).toBeUndefined()
+  })
+
+  it('should return undefined for an unlisted dck subdomain', () => {
+    const url = new URL(
+      'https://dalr2.valuecommerce.com/dck/ab12?vcurl=https%3A%2F%2Fexample.com%2Fpage',
     )
 
     expect(unwrapValuecommerce(url)).toBeUndefined()

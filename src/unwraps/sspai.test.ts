@@ -25,4 +25,22 @@ describe('unwrapSspai', () => {
 
     expect(unwrapSspai(url)).toBeUndefined()
   })
+
+  it('should return undefined for an unlisted subdomain', () => {
+    const url = new URL('https://cdn.sspai.com/link?target=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapSspai(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a lookalike host', () => {
+    const url = new URL('https://examplesspai.com/link?target=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapSspai(url)).toBeUndefined()
+  })
+
+  it('should extract target on the client host', () => {
+    const url = new URL('https://client.sspai.com/link?target=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapSspai(url)).toBe('https://example.com/page')
+  })
 })
