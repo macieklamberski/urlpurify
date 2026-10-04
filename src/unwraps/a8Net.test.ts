@@ -104,25 +104,25 @@ describe('unwrapA8Net', () => {
     expect(unwrapA8Net(url)).toBeUndefined()
   })
 
-  it('should extract target from a subdomain no specimen shows', () => {
+  it('should return undefined for a lookalike host', () => {
+    const url = new URL(
+      'https://examplea8.net/svt/ejp?a8ejpredirect=https%3A%2F%2Fexample.com%2Fpage',
+    )
+
+    expect(unwrapA8Net(url)).toBeUndefined()
+  })
+
+  it('should return undefined for an unlisted subdomain', () => {
     const url = new URL(
       'https://sub.px.a8.net/svt/ejp?a8ejpredirect=https%3A%2F%2Fexample.com%2Fpage',
     )
 
-    expect(unwrapA8Net(url)).toBe('https://example.com/page')
+    expect(unwrapA8Net(url)).toBeUndefined()
   })
 
-  it('should extract target of the deep link on another A8.net host', () => {
+  it('should return undefined for the deep link path on another A8.net host', () => {
     const url = new URL(
       'https://px.a8.net/s00000014283002/redirect_v2.php?url=https%3A%2F%2Fexample.com%2Fpage',
-    )
-
-    expect(unwrapA8Net(url)).toBe('https://example.com/page')
-  })
-
-  it('should return undefined for a lookalike host', () => {
-    const url = new URL(
-      'https://examplea8.net/svt/ejp?a8ejpredirect=https%3A%2F%2Fexample.com%2Fpage',
     )
 
     expect(unwrapA8Net(url)).toBeUndefined()

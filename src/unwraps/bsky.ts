@@ -1,8 +1,8 @@
 import { createParamExtractor } from '../utils.js'
 
-// Bluesky outbound link redirect (go.bsky.app/redirect?u=<target>), on bsky.app and its subdomains.
+// Bluesky outbound link redirect (go.bsky.app/redirect?u=<target>).
 export const unwrapBlueskyRedirect = createParamExtractor({
-  domains: 'bsky.app',
+  hosts: 'go.bsky.app',
   path: '/redirect',
   params: ['u'],
 })

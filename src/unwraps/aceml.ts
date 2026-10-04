@@ -3,13 +3,13 @@ import type { UrlUnwrapper } from '../types.js'
 import { createParamExtractor, decodeBase64 } from '../utils.js'
 
 const baseExtractor = createParamExtractor({
-  domains: ['acemlna.com', 'acemlnb.com', 'acemlnc.com', 'acemlnd.com'],
+  hosts: /\.acemln[a-d]\.com$/,
   path: '/Prod/link-tracker',
   params: ['redirectUrl'],
 })
 
 // ActiveCampaign ACEML link tracker (<host>.acemln[a-d].com/Prod/link-tracker
-// ?redirectUrl=<base64>), on each domain and every subdomain. The redirectUrl param is base64.
+// ?redirectUrl=<base64>). The redirectUrl param is base64-encoded.
 export const unwrapAceml: UrlUnwrapper = (url) => {
   const raw = baseExtractor(url)
 

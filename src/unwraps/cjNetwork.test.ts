@@ -148,22 +148,6 @@ describe('unwrapCjNetwork', () => {
     expect(unwrapCjNetwork(url)).toBeUndefined()
   })
 
-  it('should extract target from a bare domain no specimen shows', () => {
-    const url = new URL(
-      'https://dpbolvw.net/click-12345-67890?url=https%3A%2F%2Fexample.com%2Fpage',
-    )
-
-    expect(unwrapCjNetwork(url)).toBe('https://example.com/page')
-  })
-
-  it('should extract target from a subdomain no specimen shows', () => {
-    const url = new URL(
-      'https://ad.kqzyfj.com/click-12345-67890?url=https%3A%2F%2Fexample.com%2Fpage',
-    )
-
-    expect(unwrapCjNetwork(url)).toBe('https://example.com/page')
-  })
-
   it('should extract target from a click link with a timestamp', () => {
     const url = new URL(
       'https://www.jdoqocy.com/click-12345-67890-1438649470000?url=https%3A%2F%2Fexample.com%2Fpage',
@@ -225,6 +209,30 @@ describe('unwrapCjNetwork', () => {
   it('should return undefined for the deep link path on a lookalike host', () => {
     const url = new URL(
       'https://www.exampleanrdoezrs.net/links/8946794/type/dlg/https://example.org/item',
+    )
+
+    expect(unwrapCjNetwork(url)).toBeUndefined()
+  })
+
+  it('should extract target from the bare domain of a host the walk shows', () => {
+    const url = new URL(
+      'https://anrdoezrs.net/click-12345-67890?url=https%3A%2F%2Fexample.com%2Fpage',
+    )
+
+    expect(unwrapCjNetwork(url)).toBe('https://example.com/page')
+  })
+
+  it('should return undefined for the bare domain of an unlisted host', () => {
+    const url = new URL(
+      'https://dpbolvw.net/click-12345-67890?url=https%3A%2F%2Fexample.com%2Fpage',
+    )
+
+    expect(unwrapCjNetwork(url)).toBeUndefined()
+  })
+
+  it('should return undefined for an unlisted subdomain', () => {
+    const url = new URL(
+      'https://ad.kqzyfj.com/click-12345-67890?url=https%3A%2F%2Fexample.com%2Fpage',
     )
 
     expect(unwrapCjNetwork(url)).toBeUndefined()

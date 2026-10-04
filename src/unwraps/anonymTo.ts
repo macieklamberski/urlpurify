@@ -1,10 +1,10 @@
-import { isHostOrSubdomainOf } from 'trousse'
+import { isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
-// anonym.to referrer anonymizer (anonym.to/?<target>) on the domain and its subdomains. The target
-// is the whole query string, not a named parameter, and it is not encoded, so it is taken verbatim.
+// anonym.to referrer anonymizer (anonym.to/?<target>). The target is the whole query string
+// rather than a named parameter, and it is not encoded, so it is taken verbatim.
 export const unwrapAnonymTo: UrlUnwrapper = (url) => {
-  if (!isHostOrSubdomainOf(url, 'anonym.to') || url.pathname !== '/') {
+  if (!isHostOf(url, ['anonym.to', 'www.anonym.to']) || url.pathname !== '/') {
     return
   }
 

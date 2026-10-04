@@ -52,16 +52,16 @@ describe('unwrapBarracudaLinkProtect', () => {
     expect(unwrapBarracudaLinkProtect(url)).toBeUndefined()
   })
 
-  it('should extract target from a subdomain no specimen shows', () => {
+  it('should return undefined for a lookalike host', () => {
+    const url = new URL('https://examplecudasvc.com/url?a=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapBarracudaLinkProtect(url)).toBeUndefined()
+  })
+
+  it('should return undefined for an unlisted subdomain', () => {
     const url = new URL(
       'https://emea.linkprotect.cudasvc.com/url?a=https%3A%2F%2Fexample.com%2Fpage',
     )
-
-    expect(unwrapBarracudaLinkProtect(url)).toBe('https://example.com/page')
-  })
-
-  it('should return undefined for a lookalike host', () => {
-    const url = new URL('https://examplecudasvc.com/url?a=https%3A%2F%2Fexample.com%2Fpage')
 
     expect(unwrapBarracudaLinkProtect(url)).toBeUndefined()
   })

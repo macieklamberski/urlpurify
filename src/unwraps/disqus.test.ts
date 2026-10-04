@@ -26,12 +26,6 @@ describe('unwrapDisqus', () => {
     expect(unwrapDisqus(url)).toBe('https://example.com/page')
   })
 
-  it('should extract target from a subdomain no specimen shows', () => {
-    const url = new URL('https://www.disq.us/url?url=https%3A%2F%2Fexample.com%2Fpage')
-
-    expect(unwrapDisqus(url)).toBe('https://example.com/page')
-  })
-
   it('should return undefined for a sibling path on the host', () => {
     const url = new URL('https://disq.us/embed?url=https%3A%2F%2Fexample.com%2Fpage')
 
@@ -40,6 +34,12 @@ describe('unwrapDisqus', () => {
 
   it('should return undefined for a lookalike host', () => {
     const url = new URL('https://exampledisq.us/url?url=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapDisqus(url)).toBeUndefined()
+  })
+
+  it('should return undefined for an unlisted subdomain', () => {
+    const url = new URL('https://www.disq.us/url?url=https%3A%2F%2Fexample.com%2Fpage')
 
     expect(unwrapDisqus(url)).toBeUndefined()
   })

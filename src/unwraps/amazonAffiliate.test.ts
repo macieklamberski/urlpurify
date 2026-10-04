@@ -175,32 +175,38 @@ describe('unwrapAmazonAffiliate', () => {
     expect(unwrapAmazonAffiliate(url)).toBeUndefined()
   })
 
-  it('should extract the location param on a bare Amazon domain', () => {
-    const url = new URL(
-      'https://amazon.co.uk/gp/redirect.html?location=https%3A%2F%2Fexample.com%2Fpage',
-    )
-
-    expect(unwrapAmazonAffiliate(url)).toBe('https://example.com/page')
-  })
-
-  it('should extract the location param on a subdomain no specimen shows', () => {
-    const url = new URL(
-      'https://sellercentral.amazon.com/gp/redirect.html?location=https%3A%2F%2Fexample.com%2Fpage',
-    )
-
-    expect(unwrapAmazonAffiliate(url)).toBe('https://example.com/page')
-  })
-
-  it('should extract the target of the click tracker on the bare domain', () => {
-    const url = new URL('https://amazon-adsystem.com/x/c/abc123/https://example.com/page')
-
-    expect(unwrapAmazonAffiliate(url)).toBe('https://example.com/page')
-  })
-
   it('should return undefined for a lookalike host', () => {
     const url = new URL(
       'https://exampleamazon.com/gp/redirect.html?location=https%3A%2F%2Fexample.com%2Fpage',
     )
+
+    expect(unwrapAmazonAffiliate(url)).toBeUndefined()
+  })
+
+  it('should extract the target of the click tracker on aax-us-iad.amazon.com', () => {
+    const url = new URL('https://aax-us-iad.amazon.com/x/c/abc123/https://example.com/page')
+
+    expect(unwrapAmazonAffiliate(url)).toBe('https://example.com/page')
+  })
+
+  it('should return undefined for a store redirect on a bare Amazon domain', () => {
+    const url = new URL(
+      'https://amazon.co.uk/gp/redirect.html?location=https%3A%2F%2Fexample.com%2Fpage',
+    )
+
+    expect(unwrapAmazonAffiliate(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a store redirect on another Amazon subdomain', () => {
+    const url = new URL(
+      'https://sellercentral.amazon.com/gp/redirect.html?location=https%3A%2F%2Fexample.com%2Fpage',
+    )
+
+    expect(unwrapAmazonAffiliate(url)).toBeUndefined()
+  })
+
+  it('should return undefined for the click tracker on the bare adsystem domain', () => {
+    const url = new URL('https://amazon-adsystem.com/x/c/abc123/https://example.com/page')
 
     expect(unwrapAmazonAffiliate(url)).toBeUndefined()
   })

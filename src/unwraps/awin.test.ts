@@ -68,20 +68,20 @@ describe('unwrapAwin', () => {
     expect(unwrapAwin(url)).toBeUndefined()
   })
 
-  it('should extract target from ued param on a subdomain no specimen shows', () => {
-    const url = new URL('https://ui.awin1.com/cread.php?ued=https%3A%2F%2Fexample.com%2Fpage')
-
-    expect(unwrapAwin(url)).toBe('https://example.com/page')
-  })
-
-  it('should extract target from p param on awclick.php on the bare host', () => {
-    const url = new URL('https://awin1.com/awclick.php?p=https%3A%2F%2Fexample.com%2Fpage')
-
-    expect(unwrapAwin(url)).toBe('https://example.com/page')
-  })
-
   it('should return undefined for a lookalike host', () => {
     const url = new URL('https://exampleawin1.com/cread.php?ued=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapAwin(url)).toBeUndefined()
+  })
+
+  it('should return undefined for an unlisted subdomain', () => {
+    const url = new URL('https://ui.awin1.com/cread.php?ued=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapAwin(url)).toBeUndefined()
+  })
+
+  it('should return undefined for awclick.php on the bare host', () => {
+    const url = new URL('https://awin1.com/awclick.php?p=https%3A%2F%2Fexample.com%2Fpage')
 
     expect(unwrapAwin(url)).toBeUndefined()
   })

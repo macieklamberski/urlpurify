@@ -1,16 +1,19 @@
-import { isHostOrSubdomainOf } from 'trousse'
+import { isAnyOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createParamExtractor } from '../utils.js'
 
-const domains = [
-  'dpbolvw.net',
-  'tkqlhce.com',
+const hosts = [
+  'www.dpbolvw.net',
+  'www.tkqlhce.com',
+  'www.anrdoezrs.net',
+  'www.jdoqocy.com',
+  'www.kqzyfj.com',
+  'www.pntrac.com',
+  'www.pjtra.com',
+  'www.pntrs.com',
   'anrdoezrs.net',
-  'jdoqocy.com',
   'kqzyfj.com',
-  'pntrac.com',
   'pjtra.com',
-  'pntrs.com',
 ]
 
 // A click link is /click-<id>-<id>[-<timestamp>], /t/<token> or a single opaque token.
@@ -31,7 +34,7 @@ const decodeFragment = (value: string): string => {
 }
 
 const extractUrlParam = createParamExtractor({
-  domains,
+  hosts,
   params: ['url'],
 })
 
@@ -49,7 +52,7 @@ export const unwrapCjNetwork: UrlUnwrapper = (url) => {
     return extractUrlParam(url)
   }
 
-  if (!isHostOrSubdomainOf(url, domains)) {
+  if (!isAnyOf(url.hostname, hosts)) {
     return
   }
 

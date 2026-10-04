@@ -4,12 +4,12 @@ import { createParamExtractor } from '../utils.js'
 const paths = ['/visit', '/v1/redirect']
 
 const extractTarget = createParamExtractor({
-  domains: 'digidip.net',
+  hosts: /\.digidip\.net$/,
   params: ['url'],
 })
 
 // digidip affiliate redirect (<publisher>.digidip.net/visit?url=<target> and
-// tracking.r.digidip.net/v1/redirect?url=<target>), on the domain and its subdomains.
+// tracking.r.digidip.net/v1/redirect?url=<target>).
 export const unwrapDigidip: UrlUnwrapper = (url) => {
   if (!paths.includes(url.pathname)) {
     return

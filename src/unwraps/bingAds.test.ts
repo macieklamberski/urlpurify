@@ -88,14 +88,6 @@ describe('unwrapBingAds', () => {
     expect(unwrapBingAds(url)).toBe('https://www.example.com/booking/12345')
   })
 
-  it('should extract the target from a country domain', () => {
-    const url = new URL(
-      'https://www.bing.co.uk/aclk?ld=e8v53HweaYYJO4-AI3B9EQTjVUCUw_PMEVmStLE-Ak7-miCUGacAv4rlEWkyDU3pP48rH2hc&u=aHR0cHMlM2ElMmYlMmZ3d3cuZXhhbXBsZS5jb20lMmZib29raW5nJTJmMTIzNDU=&rlid=d9a7f0c1b2e44d5a8c3b6e1f0a2d4c7b&ntb=1',
-    )
-
-    expect(unwrapBingAds(url)).toBe('https://www.example.com/booking/12345')
-  })
-
   it('should return undefined when the u param is missing', () => {
     const url = new URL(
       'https://www.bing.com/aclk?ld=e8v53HweaYYJO4-AI3B9EQTjVUCUw_PMEVmStLE-Ak7-miCUGacAv4rlEWkyDU3pP48rH2hc&rlid=d9a7f0c1b2e44d5a8c3b6e1f0a2d4c7b',
@@ -203,6 +195,14 @@ describe('unwrapBingAds', () => {
   it('should return undefined for a long label between bing and the tld', () => {
     const url = new URL(
       'https://bing.example.com/aclk?ld=e8v53HweaYYJO4&u=aHR0cHMlM2ElMmYlMmZ3d3cuZXhhbXBsZS5jb20lMmZib29raW5nJTJmMTIzNDU=',
+    )
+
+    expect(unwrapBingAds(url)).toBeUndefined()
+  })
+
+  it('should return undefined for an unlisted country domain', () => {
+    const url = new URL(
+      'https://www.bing.co.uk/aclk?u=aHR0cHMlM2ElMmYlMmZ3d3cuZXhhbXBsZS5jb20lMmZib29raW5nJTJmMTIzNDU=',
     )
 
     expect(unwrapBingAds(url)).toBeUndefined()

@@ -154,12 +154,6 @@ describe('unwrapArchiveToday', () => {
     expect(unwrapArchiveToday(url)).toBeUndefined()
   })
 
-  it('should extract the target from a subdomain no specimen shows', () => {
-    const url = new URL('https://sub.archive.ph/20240814014001/https://example.com/page')
-
-    expect(unwrapArchiveToday(url)).toBe('https://example.com/page')
-  })
-
   it('should return undefined for a lookalike host', () => {
     const url = new URL('https://examplearchive.ph/20240814014001/https://example.com/page')
 
@@ -200,5 +194,11 @@ describe('unwrapArchiveToday', () => {
     expect(cleanUrl(value, { unwrappers: [unwrapArchiveToday] })).toBe(
       'https://www.example.com/us/story',
     )
+  })
+
+  it('should return undefined for an unlisted subdomain of a mirror host', () => {
+    const url = new URL('https://sub.archive.ph/20240814014001/https://example.com/page')
+
+    expect(unwrapArchiveToday(url)).toBeUndefined()
   })
 })

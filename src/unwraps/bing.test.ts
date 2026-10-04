@@ -70,20 +70,6 @@ describe('unwrapBing', () => {
     expect(unwrapBing(url)).toBe('https://example.com/')
   })
 
-  it('should accept news apiclick on any bing.com subdomain', () => {
-    const url = new URL('https://edge.bing.com/news/apiclick.aspx?url=https%3A%2F%2Fexample.com%2F')
-
-    expect(unwrapBing(url)).toBe('https://example.com/')
-  })
-
-  it('should accept news apiclick on a Bing country domain', () => {
-    const url = new URL(
-      'https://www.bing.co.uk/news/apiclick.aspx?url=https%3A%2F%2Fexample.com%2F',
-    )
-
-    expect(unwrapBing(url)).toBe('https://example.com/')
-  })
-
   it('should accept search-result redirect on ssl.bing.com', () => {
     const url = new URL('https://ssl.bing.com/ck/a?u=a1aHR0cHM6Ly9leGFtcGxlLmNvbS9wYWdl')
 
@@ -145,6 +131,28 @@ describe('unwrapBing', () => {
   it('should return undefined for a bing subdomain of another domain', () => {
     const url = new URL(
       'https://bing.example.com/news/apiclick.aspx?url=https%3A%2F%2Fexample.com%2F',
+    )
+
+    expect(unwrapBing(url)).toBeUndefined()
+  })
+
+  it('should accept search-result redirect on www.bing.de', () => {
+    const url = new URL('https://www.bing.de/ck/a?u=a1aHR0cHM6Ly9leGFtcGxlLmNvbS9wYWdl')
+
+    expect(unwrapBing(url)).toBe('https://example.com/page')
+  })
+
+  it('should return undefined for news apiclick on an unlisted subdomain', () => {
+    const url = new URL(
+      'https://edge.bing.com/news/apiclick.aspx?url=https%3A%2F%2Fexample.com%2Fpage',
+    )
+
+    expect(unwrapBing(url)).toBeUndefined()
+  })
+
+  it('should return undefined for news apiclick on an unlisted country domain', () => {
+    const url = new URL(
+      'https://www.bing.co.uk/news/apiclick.aspx?url=https%3A%2F%2Fexample.com%2Fpage',
     )
 
     expect(unwrapBing(url)).toBeUndefined()

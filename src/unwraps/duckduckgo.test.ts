@@ -72,12 +72,6 @@ describe('unwrapDuckduckgo', () => {
     expect(unwrapDuckduckgo(url)).toBe('https://example.com/page')
   })
 
-  it('should extract target from the ad click on a subdomain no specimen shows', () => {
-    const url = new URL('https://r.duckduckgo.com/y.js?u3=https%3A%2F%2Fexample.com%2Fpage')
-
-    expect(unwrapDuckduckgo(url)).toBe('https://example.com/page')
-  })
-
   it('should return undefined for the image proxy', () => {
     const url = new URL(
       'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fexample.com%2Fpage',
@@ -88,6 +82,12 @@ describe('unwrapDuckduckgo', () => {
 
   it('should return undefined for the search redirect on a lookalike host', () => {
     const url = new URL('https://exampleduckduckgo.com/l/?uddg=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapDuckduckgo(url)).toBeUndefined()
+  })
+
+  it('should return undefined for the ad click on r.duckduckgo.com', () => {
+    const url = new URL('https://r.duckduckgo.com/y.js?u3=https%3A%2F%2Fexample.com%2Fpage')
 
     expect(unwrapDuckduckgo(url)).toBeUndefined()
   })

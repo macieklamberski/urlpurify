@@ -1,15 +1,7 @@
-import { decodeSegment, isHostOrSubdomainOf, isHttpUrl } from 'trousse'
+import { decodeSegment, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
-const domains = [
-  'archive.is',
-  'archive.ph',
-  'archive.today',
-  'archive.md',
-  'archive.fo',
-  'archive.vn',
-  'archive.li',
-]
+const hostRegex = /^(?:www\.)?archive\.(?:is|ph|today|md|fo|vn|li)$/
 const pathRegex = /^\/(?:\d{14}|\d{4}\.\d{2}\.\d{2}-\d{6}|o\/[^/]+|newest)\/(.+)$/
 const encodedSchemeRegex = /^https?%3A/i
 const schemeRegex = /^[a-z][a-z\d+.-]*:/i
@@ -17,11 +9,11 @@ const escapedQueryRegex = /%3F/i
 const selectionHashRegex = /^#selection-\d+\.\d+-\d+\.\d+$/
 
 // archive.today snapshot (archive.ph/<timestamp>/<URL>, archive.ph/o/<id>/<URL> and
-// archive.ph/newest/<URL>), on every mirror domain and its subdomains.
+// archive.ph/newest/<URL>, on every archive.today mirror domain).
 // Not included in defaultUnwrappers: a snapshot is a page at a point in time, and unwrapping
 // returns the live page, which may have changed or gone.
 export const unwrapArchiveToday: UrlUnwrapper = (url) => {
-  if (!isHostOrSubdomainOf(url, domains)) {
+  if (!hostRegex.test(url.hostname)) {
     return
   }
 

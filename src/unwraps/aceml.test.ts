@@ -61,12 +61,11 @@ describe('unwrapAceml', () => {
     expect(unwrapAceml(url)).toBeUndefined()
   })
 
-  it('should decode the redirectUrl of the bare domain', () => {
-    const encoded = Buffer.from('https://example.com/page').toString('base64')
+  it('should return undefined for the bare domain', () => {
     const url = new URL(
-      `https://acemlnb.com/Prod/link-tracker?redirectUrl=${encodeURIComponent(encoded)}`,
+      'https://acemlnb.com/Prod/link-tracker?redirectUrl=aHR0cHM6Ly9leGFtcGxlLmNvbS8%3D',
     )
 
-    expect(unwrapAceml(url)).toBe('https://example.com/page')
+    expect(unwrapAceml(url)).toBeUndefined()
   })
 })
