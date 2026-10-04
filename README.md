@@ -45,7 +45,7 @@ const cleaned = cleanUrl(url, {
 
 ### `unwrapUrl(url, unwrappers?)`
 
-Applies the unwrappers in order (one pass) and returns the first extracted target, or `undefined` when none match or the input cannot be parsed.
+Applies the unwrappers in order (one pass) and returns the first extracted target, or `undefined` when none match or the input cannot be parsed. The target is cleaned as in `cleanUrl`: trimmed, `https:/host` repaired, and dropped when it has no host, holds a control character or decodes to U+FFFD.
 
 ### `stripTrackingParams(url, trackingParams?)`
 

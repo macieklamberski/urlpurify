@@ -104,7 +104,7 @@ const applyUnwrappers = (url: URL, unwrappers: Array<UrlUnwrapper>): string | un
   }
 }
 
-// Apply unwrappers in order and return the first extracted target URL, or
+// Apply unwrappers in order and return the first extracted target URL, cleaned as in cleanUrl, or
 // undefined when none match or the input cannot be parsed.
 export const unwrapUrl = (
   url: string,
@@ -116,7 +116,14 @@ export const unwrapUrl = (
     return
   }
 
-  return applyUnwrappers(parsed, unwrappers)
+  const target = cleanTarget(applyUnwrappers(parsed, unwrappers))
+
+  // With one hop there is no later hop to drop a part mis-decoded to U+FFFD, so the wrapper stays.
+  if (target?.includes(replacementCharacter)) {
+    return
+  }
+
+  return target
 }
 
 // Remove tracking parameters, matching names case-insensitively, and return
