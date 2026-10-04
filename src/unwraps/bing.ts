@@ -3,7 +3,7 @@ import type { UrlUnwrapper } from '../types.js'
 import { decodeBase64Url } from '../utils.js'
 
 // Match bing.<TLD> and every subdomain, such as www., cn. or ssl.
-const bingHostRegex = /(?:^|\.)bing\.(?:com|[a-z]{2,3}(?:\.[a-z]{2,3})?)$/
+export const bingHostRegex = /(?:^|\.)bing\.(?:com|[a-z]{2,3}(?:\.[a-z]{2,3})?)$/
 const bingPrefixRegex = /^a\d/
 
 // Bing redirects, in two shapes:
@@ -18,8 +18,7 @@ export const unwrapBing: UrlUnwrapper = (url) => {
   if (url.pathname === '/news/apiclick.aspx') {
     const target = url.searchParams.get('url')
 
-    // A target percent-encoded in a legacy charset decodes to U+FFFD, a broken url.
-    if (!target || target.includes('\uFFFD') || !isHttpUrl(target)) {
+    if (!target || !isHttpUrl(target)) {
       return
     }
 

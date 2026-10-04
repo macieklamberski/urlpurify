@@ -1,8 +1,9 @@
 import { createParamExtractor } from '../utils.js'
 
-// Douban external link redirect (www.douban.com/link2/?url=<target>).
+// Douban external link redirect (www.douban.com/link2/?url=<target>), on the domain and every
+// subdomain.
 export const unwrapDouban = createParamExtractor({
-  hosts: 'www.douban.com',
+  domains: 'douban.com',
   path: '/link2/',
   params: ['url'],
 })

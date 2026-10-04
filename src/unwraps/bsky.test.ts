@@ -25,4 +25,22 @@ describe('unwrapBlueskyRedirect', () => {
 
     expect(unwrapBlueskyRedirect(url)).toBeUndefined()
   })
+
+  it('should extract target from bsky.app, a host no specimen shows', () => {
+    const url = new URL('https://bsky.app/redirect?u=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapBlueskyRedirect(url)).toBe('https://example.com/page')
+  })
+
+  it('should return undefined for a lookalike host', () => {
+    const url = new URL('https://examplebsky.app/redirect?u=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapBlueskyRedirect(url)).toBeUndefined()
+  })
+
+  it('should return undefined for the compose intent', () => {
+    const url = new URL('https://bsky.app/intent/compose?u=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapBlueskyRedirect(url)).toBeUndefined()
+  })
 })

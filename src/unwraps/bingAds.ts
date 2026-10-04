@@ -1,8 +1,8 @@
 import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { decodeBase64Url } from '../utils.js'
+import { bingHostRegex } from './bing.js'
 
-const bingHostRegex = /(?:^|\.)bing\.(?:com|[a-z]{2,3}(?:\.[a-z]{2,3})?)$/
 const adPaths = ['/aclk', '/aclick']
 
 // Bing Ads click redirect (www.bing.com/{aclk,aclick}?u=<base64 of the percent-encoded target>).

@@ -48,4 +48,19 @@ describe('unwrapAceml', () => {
 
     expect(unwrapAceml(url)).toBeUndefined()
   })
+
+  it('should return undefined for a lookalike host', () => {
+    const url = new URL('https://exampleacemlna.com/Prod/link-tracker?redirectUrl=abc')
+
+    expect(unwrapAceml(url)).toBeUndefined()
+  })
+
+  it('should decode the redirectUrl of the bare domain', () => {
+    const encoded = Buffer.from('https://example.com/page').toString('base64')
+    const url = new URL(
+      `https://acemlnb.com/Prod/link-tracker?redirectUrl=${encodeURIComponent(encoded)}`,
+    )
+
+    expect(unwrapAceml(url)).toBe('https://example.com/page')
+  })
 })

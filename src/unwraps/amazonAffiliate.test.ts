@@ -151,14 +151,6 @@ describe('unwrapAmazonAffiliate', () => {
     expect(unwrapAmazonAffiliate(url)).toBeUndefined()
   })
 
-  it('should return undefined for a store redirect on another Amazon subdomain', () => {
-    const url = new URL(
-      'https://sellercentral.amazon.com/gp/redirect.html?location=https%3A%2F%2Fexample.com%2F',
-    )
-
-    expect(unwrapAmazonAffiliate(url)).toBeUndefined()
-  })
-
   it('should return undefined for a store redirect on a lookalike host', () => {
     const url = new URL(
       'https://www.amazon.example.com/gp/redirect.html?location=https%3A%2F%2Fexample.com%2F',
@@ -178,6 +170,36 @@ describe('unwrapAmazonAffiliate', () => {
   it('should return undefined for the url param on a store path that is not a redirect', () => {
     const url = new URL(
       'https://www.amazon.com/gp/bit/apps/web/SIA/scraper?url=https%3A%2F%2Fexample.com%2F',
+    )
+
+    expect(unwrapAmazonAffiliate(url)).toBeUndefined()
+  })
+
+  it('should extract the location param on a bare Amazon domain', () => {
+    const url = new URL(
+      'https://amazon.co.uk/gp/redirect.html?location=https%3A%2F%2Fexample.com%2Fpage',
+    )
+
+    expect(unwrapAmazonAffiliate(url)).toBe('https://example.com/page')
+  })
+
+  it('should extract the location param on a subdomain no specimen shows', () => {
+    const url = new URL(
+      'https://sellercentral.amazon.com/gp/redirect.html?location=https%3A%2F%2Fexample.com%2Fpage',
+    )
+
+    expect(unwrapAmazonAffiliate(url)).toBe('https://example.com/page')
+  })
+
+  it('should extract the target of the click tracker on the bare domain', () => {
+    const url = new URL('https://amazon-adsystem.com/x/c/abc123/https://example.com/page')
+
+    expect(unwrapAmazonAffiliate(url)).toBe('https://example.com/page')
+  })
+
+  it('should return undefined for a lookalike host', () => {
+    const url = new URL(
+      'https://exampleamazon.com/gp/redirect.html?location=https%3A%2F%2Fexample.com%2Fpage',
     )
 
     expect(unwrapAmazonAffiliate(url)).toBeUndefined()

@@ -1,8 +1,8 @@
 import { createParamExtractor } from '../utils.js'
 
-// Calendly outbound link (calendly.com/url?q=<target>).
+// Calendly outbound link (calendly.com/url?q=<target>), on the domain and every subdomain.
 export const unwrapCalendly = createParamExtractor({
-  hosts: /(^|\.)calendly\.com$/,
+  domains: 'calendly.com',
   path: '/url',
   params: ['q'],
 })

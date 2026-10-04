@@ -147,4 +147,86 @@ describe('unwrapCjNetwork', () => {
 
     expect(unwrapCjNetwork(url)).toBeUndefined()
   })
+
+  it('should extract target from a bare domain no specimen shows', () => {
+    const url = new URL(
+      'https://dpbolvw.net/click-12345-67890?url=https%3A%2F%2Fexample.com%2Fpage',
+    )
+
+    expect(unwrapCjNetwork(url)).toBe('https://example.com/page')
+  })
+
+  it('should extract target from a subdomain no specimen shows', () => {
+    const url = new URL(
+      'https://ad.kqzyfj.com/click-12345-67890?url=https%3A%2F%2Fexample.com%2Fpage',
+    )
+
+    expect(unwrapCjNetwork(url)).toBe('https://example.com/page')
+  })
+
+  it('should extract target from a click link with a timestamp', () => {
+    const url = new URL(
+      'https://www.jdoqocy.com/click-12345-67890-1438649470000?url=https%3A%2F%2Fexample.com%2Fpage',
+    )
+
+    expect(unwrapCjNetwork(url)).toBe('https://example.com/page')
+  })
+
+  it('should extract target from a t path', () => {
+    const url = new URL(
+      'https://www.pntrs.com/t/8-11214-150797-146971?url=https%3A%2F%2Fexample.com%2Fpage',
+    )
+
+    expect(unwrapCjNetwork(url)).toBe('https://example.com/page')
+  })
+
+  it('should extract target from an opaque token path', () => {
+    const url = new URL(
+      'https://www.tkqlhce.com/8998xdmjdl02118A6572?url=https%3A%2F%2Fexample.com%2Fpage',
+    )
+
+    expect(unwrapCjNetwork(url)).toBe('https://example.com/page')
+  })
+
+  it('should return undefined for the url param on the root of a CJ host', () => {
+    const url = new URL('https://www.dpbolvw.net/?url=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapCjNetwork(url)).toBeUndefined()
+  })
+
+  it('should return undefined for the url param on a deeper path of a CJ host', () => {
+    const url = new URL('https://www.dpbolvw.net/help/faq?url=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapCjNetwork(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a lookalike host', () => {
+    const url = new URL(
+      'https://exampledpbolvw.net/click-12345-67890?url=https%3A%2F%2Fexample.com%2Fpage',
+    )
+
+    expect(unwrapCjNetwork(url)).toBeUndefined()
+  })
+
+  it('should extract target from a click link with an unfilled publisher placeholder', () => {
+    const url = new URL(
+      'http://www.dpbolvw.net/click-{CJ_PID}-13223184?url=https://example.com/page',
+    )
+
+    expect(unwrapCjNetwork(url)).toBe('https://example.com/page')
+  })
+
+  it('should extract the deep link target on a bare domain no specimen shows', () => {
+    const url = new URL('https://anrdoezrs.net/links/8946794/type/dlg/https://example.com/item')
+
+    expect(unwrapCjNetwork(url)).toBe('https://example.com/item')
+  })
+
+  it('should return undefined for the deep link path on a lookalike host', () => {
+    const url = new URL(
+      'https://www.exampleanrdoezrs.net/links/8946794/type/dlg/https://example.org/item',
+    )
+
+    expect(unwrapCjNetwork(url)).toBeUndefined()
+  })
 })

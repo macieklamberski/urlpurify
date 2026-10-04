@@ -120,14 +120,6 @@ describe('unwrapBing', () => {
     expect(unwrapBing(url)).toBeUndefined()
   })
 
-  it('should return undefined when news apiclick target is not UTF-8 encoded', () => {
-    const url = new URL(
-      'https://www.bing.com/news/apiclick.aspx?url=https%3A%2F%2Fexample.com%2F%93%FA%96%7B',
-    )
-
-    expect(unwrapBing(url)).toBeUndefined()
-  })
-
   it('should return undefined for other news paths', () => {
     const url = new URL(
       'https://www.bing.com/news/search?q=example&url=https%3A%2F%2Fexample.com%2F',

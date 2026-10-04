@@ -4,5 +4,6 @@ import { createParamExtractor } from '../utils.js'
 // Chinese dev-platform shims (Juejin, Sspai, Gitee).
 export const unwrapCsdn = createParamExtractor({
   hosts: 'link.csdn.net',
+  path: '/',
   params: ['target'],
 })
