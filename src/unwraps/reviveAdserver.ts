@@ -6,10 +6,9 @@ const clickPathRegex = /^(?:\/[^/]+)*\/ck\.php$/
 const legacyClickPathRegex = /^(?:\/[^/]+)*\/adclick\.php$/
 const destinationMarker = 'oadest='
 
-// Revive Adserver and OpenX ad click on any host
-// (<host>/www/delivery/ck.php?oaparams=2__bannerid=<id>__zoneid=<id>__oadest=<target>), and the
-// older phpAdsNew click (<host>/adclick.php?bannerid=<id>&zoneid=<id>&dest=<target>).
-// Opt-in: unwrapping removes the click count the advertiser pays for. Sites self-host the server.
+// Revive Adserver ad click on any host (<host>/www/delivery/ck.php?oaparams=...__oadest=<target>)
+// and the phpAdsNew click (<host>/adclick.php?bannerid=<id>&dest=<target>). Sites self-host it.
+// Opt-in: unwrapping removes the click count the advertiser pays for.
 export const unwrapReviveAdserver: UrlUnwrapper = (url) => {
   if (clickPathRegex.test(url.pathname)) {
     // The server reads everything after `oadest=` in the raw query as the target, so the target
