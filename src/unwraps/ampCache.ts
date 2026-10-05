@@ -1,24 +1,33 @@
 import { isHostOrSubdomainOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
-const httpsPathRegex = /^\/c\/s\/(.+)$/
-const httpPathRegex = /^\/c\/(?!s\/)(.+)$/
+const pathRegex = /^\/([cv])\/(s\/)?(.+)$/
+const viewerParams = ['amp_gsa', 'amp_js_v', 'usqp']
 
-// AMP cache (cdn.ampproject.org/c/[s/]<hostname>/<path>). The optional
-// publisher subdomain is a hint; the path always carries the canonical
-// hostname.
+// AMP cache (cdn.ampproject.org/{c,v}/[s/]<hostname>/<path>), `/c/` serving the document alone
+// and `/v/` inside the AMP viewer. The `s/` segment marks an https target. The optional
+// publisher subdomain is a hint; the path always carries the canonical hostname. The viewer's
+// own query params are dropped, and on `/v/` so is the fragment, which holds the viewer's init
+// params rather than the target's.
 export const unwrapAmpCache: UrlUnwrapper = (url) => {
   if (!isHostOrSubdomainOf(url, 'cdn.ampproject.org')) {
     return
   }
 
-  const httpsMatch = url.pathname.match(httpsPathRegex)
-  if (httpsMatch) {
-    return `https://${httpsMatch[1]}${url.search}${url.hash}`
+  const match = url.pathname.match(pathRegex)
+
+  if (!match) {
+    return
   }
 
-  const httpMatch = url.pathname.match(httpPathRegex)
-  if (httpMatch) {
-    return `http://${httpMatch[1]}${url.search}${url.hash}`
-  }
+  const [, type, secure, target] = match
+  const scheme = secure ? 'https' : 'http'
+  const params = url.search
+    .slice(1)
+    .split('&')
+    .filter((pair) => pair && !viewerParams.includes(pair.split('=')[0]))
+  const search = params.length ? `?${params.join('&')}` : ''
+  const hash = type === 'v' ? '' : url.hash
+
+  return `${scheme}://${target}${search}${hash}`
 }
