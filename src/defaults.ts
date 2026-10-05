@@ -79,6 +79,7 @@ import { unwrapNaverOutgoing } from './unwraps/naverOutgoing.js'
 import { unwrapPocket } from './unwraps/pocket.js'
 // import { unwrapPostmark } from './unwraps/postmark.js'
 import { unwrapPrNewswire } from './unwraps/prNewswire.js'
+// import { unwrapProofpointIsolation } from './unwraps/proofpointIsolation.js'
 // import { unwrapProofpointV1 } from './unwraps/proofpointV1.js'
 // import { unwrapProofpointV2 } from './unwraps/proofpointV2.js'
 // import { unwrapProofpointV3 } from './unwraps/proofpointV3.js'
@@ -103,7 +104,6 @@ import { unwrapThreadsShim } from './unwraps/threads.js'
 // import { unwrapTravelpayouts } from './unwraps/travelpayouts.js'
 import { unwrapTumblr } from './unwraps/tumblr.js'
 // import { unwrapUkgwa } from './unwraps/ukgwa.js'
-// import { unwrapUrlIsolation } from './unwraps/urlIsolation.js'
 // import { unwrapValuecommerce } from './unwraps/valuecommerce.js'
 // import { unwrapViglink } from './unwraps/viglink.js'
 import { unwrapVkAway } from './unwraps/vkAway.js'
@@ -153,12 +153,12 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapMimecast,
   // unwrapOutlookSafelinks,
   // unwrapPostmark,
+  // unwrapProofpointIsolation,
   // unwrapProofpointV1,
   // unwrapProofpointV2,
   // unwrapProofpointV3,
   // unwrapSlack,
   // unwrapStreak,
-  // unwrapUrlIsolation,
   // unwrapWordpressEmail,
 
   // Affiliate networks.
