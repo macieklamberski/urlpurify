@@ -23,6 +23,7 @@ import { unwrapBusinessWire } from './unwraps/businessWire.js'
 import { unwrapCalendly } from './unwraps/calendly.js'
 // import { unwrapCiscoSecureWeb } from './unwraps/ciscoSecureWeb.js'
 // import { unwrapCjNetwork } from './unwraps/cjNetwork.js'
+// import { unwrapCleverbridge } from './unwraps/cleverbridge.js'
 import { unwrapCsdn } from './unwraps/csdn.js'
 import { unwrapDerefMail } from './unwraps/derefMail.js'
 import { unwrapDeviantartOutgoing } from './unwraps/deviantartOutgoing.js'
@@ -169,6 +170,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapBizrate,
   // unwrapBolPartner,
   // unwrapCjNetwork,
+  // unwrapCleverbridge,
   // unwrapDigidip,
   // unwrapDmmAffiliate,
   // unwrapEbayRover,
