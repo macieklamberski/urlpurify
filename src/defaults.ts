@@ -188,6 +188,7 @@ import { unwrapThreadsShim } from './unwraps/threads.js'
 // import { unwrapTradetracker } from './unwraps/tradetracker.js'
 // import { unwrapTravelpayouts } from './unwraps/travelpayouts.js'
 // import { unwrapTrendMicro } from './unwraps/trendMicro.js'
+// import { unwrapTriplelift } from './unwraps/triplelift.js'
 // import { unwrapTrustwaveScanmail } from './unwraps/trustwaveScanmail.js'
 import { unwrapTumblr } from './unwraps/tumblr.js'
 // import { unwrapTwoCheckout } from './unwraps/twoCheckout.js'
@@ -373,6 +374,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapBingAds,
   // unwrapGoogleAds,
   // unwrapReviveAdserver,
+  // unwrapTriplelift,
 
   // Podcast analytics prefixes.
   // unwrapOp3,
