@@ -173,6 +173,7 @@ import { unwrapSegmentfault } from './unwraps/segmentfault.js'
 // import { unwrapShareasale } from './unwraps/shareasale.js'
 // import { unwrapSkimlinks } from './unwraps/skimlinks.js'
 // import { unwrapSlack } from './unwraps/slack.js'
+// import { unwrapSlickdeals } from './unwraps/slickdeals.js'
 // import { unwrapSmartredirect } from './unwraps/smartredirect.js'
 // import { unwrapSophos } from './unwraps/sophos.js'
 import { unwrapSoundcloud } from './unwraps/soundcloud.js'
@@ -359,6 +360,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapRedirectingat,
   // unwrapShareasale,
   // unwrapSkimlinks,
+  // unwrapSlickdeals,
   // unwrapSmartredirect,
   // unwrapStay22,
   // unwrapTradedoubler,
