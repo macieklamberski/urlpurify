@@ -12,6 +12,8 @@ const hosts = [
   'www.pjtra.com',
   'www.pntrs.com',
   'www.pntra.com',
+  'www.gopjn.com',
+  'www.pjatr.com',
   'www.qksrv.net',
   'anrdoezrs.net',
   'kqzyfj.com',
