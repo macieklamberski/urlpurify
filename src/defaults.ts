@@ -97,6 +97,7 @@ import { unwrapSspai } from './unwraps/sspai.js'
 import { unwrapSteamLinkfilter } from './unwraps/steamLinkfilter.js'
 // import { unwrapStreak } from './unwraps/streak.js'
 import { unwrapThreadsShim } from './unwraps/threads.js'
+// import { unwrapTitanhqLinklock } from './unwraps/titanhqLinklock.js'
 // import { unwrapTradedoubler } from './unwraps/tradedoubler.js'
 // import { unwrapTravelpayouts } from './unwraps/travelpayouts.js'
 import { unwrapTumblr } from './unwraps/tumblr.js'
@@ -155,6 +156,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapProofpointV3,
   // unwrapSlack,
   // unwrapStreak,
+  // unwrapTitanhqLinklock,
   // unwrapWordpressEmail,
 
   // Affiliate networks.
