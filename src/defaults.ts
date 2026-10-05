@@ -117,6 +117,7 @@ import { unwrapGoogleNews } from './unwraps/googleNews.js'
 import { unwrapGoogleNewsModern } from './unwraps/googleNewsModern.js'
 import { unwrapGoogleScholar } from './unwraps/googleScholar.js'
 // import { unwrapGroupon } from './unwraps/groupon.js'
+// import { unwrapGurunavi } from './unwraps/gurunavi.js'
 import { unwrapHackerone } from './unwraps/hackerone.js'
 import { unwrapHashnode } from './unwraps/hashnode.js'
 // import { unwrapHasoffers } from './unwraps/hasoffers.js'
@@ -425,6 +426,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapGateSc,
   // unwrapGeoriot,
   // unwrapGroupon,
+  // unwrapGurunavi,
   // unwrapHasoffers,
   // unwrapImpact,
   // unwrapInsiderAffiliate,
