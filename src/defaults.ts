@@ -14,6 +14,7 @@ import type { TrackingParam, UrlUnwrapper } from './types.js'
 // import { unwrapAffilae } from './unwraps/affilae.js'
 // import { unwrapAffiliateFuture } from './unwraps/affiliateFuture.js'
 // import { unwrapAffiliatesOne } from './unwraps/affiliatesOne.js'
+// import { unwrapAliexpress } from './unwraps/aliexpress.js'
 // import { unwrapAmazonAffiliate } from './unwraps/amazonAffiliate.js'
 // import { unwrapAmazonSes } from './unwraps/amazonSes.js'
 // import { unwrapAmpCache } from './unwraps/ampCache.js'
@@ -299,6 +300,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapAffilae,
   // unwrapAffiliateFuture,
   // unwrapAffiliatesOne,
+  // unwrapAliexpress,
   // unwrapAmazonAffiliate,
   // unwrapAppsflyerOnelink,
   // unwrapApptrkr,
