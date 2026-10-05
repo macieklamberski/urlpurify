@@ -199,6 +199,7 @@ import { unwrapOsnova } from './unwraps/osnova.js'
 // import { unwrapPagefreezer } from './unwraps/pagefreezer.js'
 // import { unwrapPartnerAds } from './unwraps/partnerAds.js'
 import { unwrapPhilpapers } from './unwraps/philpapers.js'
+import { unwrapPinterest } from './unwraps/pinterest.js'
 // import { unwrapPipedrive } from './unwraps/pipedrive.js'
 import { unwrapPocket } from './unwraps/pocket.js'
 // import { unwrapPodcorn } from './unwraps/podcorn.js'
@@ -548,6 +549,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   unwrapNodeseek,
   unwrapOkRu,
   unwrapOsnova,
+  unwrapPinterest,
   unwrapPocket,
   unwrapRamblerMail,
   unwrapRedditOut,
