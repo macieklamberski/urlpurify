@@ -26,6 +26,14 @@ describe('unwrapHubspotSidekick', () => {
     expect(unwrapHubspotSidekick(url)).toBe('https://www.example.com/Dear-Universe')
   })
 
+  it('should extract target from t param on a Signals host', () => {
+    const url = new URL(
+      'http://t.signauxdeux.com/e1t/c/5/f18dQhb0SmZ58dDMPbW2n0x6l2B9nMJW7sM9dn7dK_MMdBzM2-04?t=https%3A%2F%2Fexample.com%2Fb%2Fku6aGkKi%2Falc-annual-report&si=5000000000000000',
+    )
+
+    expect(unwrapHubspotSidekick(url)).toBe('https://example.com/b/ku6aGkKi/alc-annual-report')
+  })
+
   it('should keep the query of the target', () => {
     const url = new URL(
       'http://t.sidekickopen04.com/e1t/c/5/f18dQhb0S7lC8dDMPbW2n0x6l2B9nMJW7t5XX43M2w8vW7fR_6z63Bt1-VcVQQM56dT2wdD3ZBY02?t=https%3A%2F%2Fexample.com%2Fsearch%3Fq%3Dfeeds%26page%3D2&si=5211409303470080',
@@ -60,7 +68,7 @@ describe('unwrapHubspotSidekick', () => {
 
   it('should return undefined for a host that ends with the family name', () => {
     const url = new URL(
-      'http://t.notsidekickopen69.com/e1t/c/5/f18dQhb0S7lM8dDMPbW2n0x6l2B9nMJN7t5X?t=http%3A%2F%2Fexample.com%2F',
+      'http://nott.sidekickopen69.com/e1t/c/5/f18dQhb0S7lM8dDMPbW2n0x6l2B9nMJN7t5X?t=http%3A%2F%2Fexample.com%2F',
     )
 
     expect(unwrapHubspotSidekick(url)).toBeUndefined()
@@ -77,6 +85,22 @@ describe('unwrapHubspotSidekick', () => {
   it('should return undefined for another subdomain of a family host', () => {
     const url = new URL(
       'http://www.sidekickopen69.com/e1t/c/5/f18dQhb0S7lM8dDMPbW2n0x6l2B9nMJN7t5X?t=http%3A%2F%2Fexample.com%2F',
+    )
+
+    expect(unwrapHubspotSidekick(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a path with a segment before the click path', () => {
+    const url = new URL(
+      'http://t.sidekickopen69.com/report/e1t/c/5/f18dQhb0S7lM8dDMPbW2n0x6l2B9nMJN7t5X?t=http%3A%2F%2Fexample.com%2F',
+    )
+
+    expect(unwrapHubspotSidekick(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a path with a segment after the click path', () => {
+    const url = new URL(
+      'http://t.sidekickopen69.com/e1t/c/5/f18dQhb0S7lM8dDMPbW2n0x6l2B9nMJN7t5X/report?t=http%3A%2F%2Fexample.com%2F',
     )
 
     expect(unwrapHubspotSidekick(url)).toBeUndefined()
