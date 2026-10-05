@@ -98,6 +98,7 @@ import { unwrapSspai } from './unwraps/sspai.js'
 // import { unwrapStay22 } from './unwraps/stay22.js'
 import { unwrapSteamLinkfilter } from './unwraps/steamLinkfilter.js'
 // import { unwrapStreak } from './unwraps/streak.js'
+// import { unwrapStreamsend } from './unwraps/streamsend.js'
 import { unwrapThreadsShim } from './unwraps/threads.js'
 // import { unwrapTradedoubler } from './unwraps/tradedoubler.js'
 // import { unwrapTravelpayouts } from './unwraps/travelpayouts.js'
@@ -157,6 +158,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapProofpointV3,
   // unwrapSlack,
   // unwrapStreak,
+  // unwrapStreamsend,
   // unwrapWordpressEmail,
 
   // Affiliate networks.
