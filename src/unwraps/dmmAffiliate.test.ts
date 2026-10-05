@@ -44,12 +44,12 @@ describe('unwrapDmmAffiliate', () => {
     expect(unwrapDmmAffiliate(url)).toBe('https://example.com/av/list/?actress=1050737')
   })
 
-  it('should extract target on a subdomain no specimen shows', () => {
+  it('should return undefined for a subdomain no specimen shows', () => {
     const url = new URL(
       'https://www.fanza.co.jp/?lurl=https%3A%2F%2Fexample.com%2F&af_id=pjtmmmm-038',
     )
 
-    expect(unwrapDmmAffiliate(url)).toBe('https://example.com/')
+    expect(unwrapDmmAffiliate(url)).toBeUndefined()
   })
 
   it('should return undefined when lurl param is missing', () => {

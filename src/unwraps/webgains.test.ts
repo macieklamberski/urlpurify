@@ -34,20 +34,20 @@ describe('unwrapWebgains', () => {
     expect(unwrapWebgains(url)).toBe('https://www.example.com')
   })
 
-  it('should extract target on the tnforack typo host', () => {
+  it('should return undefined for the tnforack typo host', () => {
     const url = new URL(
       'https://tnforack.webgains.com/click.html?wgcampaignid=159293&wgtarget=https://www.example.com/',
     )
 
-    expect(unwrapWebgains(url)).toBe('https://www.example.com/')
+    expect(unwrapWebgains(url)).toBeUndefined()
   })
 
-  it('should extract target on a subdomain no specimen shows', () => {
+  it('should return undefined for a subdomain no specimen shows', () => {
     const url = new URL(
       'https://www.webgains.com/click.html?wgcampaignid=159293&wgtarget=https://www.example.com/',
     )
 
-    expect(unwrapWebgains(url)).toBe('https://www.example.com/')
+    expect(unwrapWebgains(url)).toBeUndefined()
   })
 
   it('should return undefined when wgtarget param is missing', () => {

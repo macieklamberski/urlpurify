@@ -46,12 +46,12 @@ describe('unwrapKlook', () => {
     expect(unwrapKlook(url)).toBe('https://www.example.com/')
   })
 
-  it('should extract target from a subdomain no specimen shows', () => {
+  it('should return undefined for a subdomain no specimen shows', () => {
     const url = new URL(
       'https://affiliate.eu.klook.com/redirect?aid=1&k_site=https%3A%2F%2Fwww.example.com%2F',
     )
 
-    expect(unwrapKlook(url)).toBe('https://www.example.com/')
+    expect(unwrapKlook(url)).toBeUndefined()
   })
 
   it('should extract the last target when the link is pasted into another one', () => {

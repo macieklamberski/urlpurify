@@ -1,8 +1,8 @@
 import { createParamExtractor } from '../utils.js'
 
-// SoundCloud exit link (exit.sc/?url=<target>), on every subdomain.
+// SoundCloud exit link (exit.sc/?url=<target>).
 export const unwrapSoundcloud = createParamExtractor({
-  domains: 'exit.sc',
+  hosts: 'exit.sc',
   path: '/',
   params: ['url'],
 })

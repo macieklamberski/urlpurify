@@ -70,6 +70,12 @@ describe('unwrapYandexTurbo', () => {
     expect(unwrapYandexTurbo(url)).toBeUndefined()
   })
 
+  it('should return undefined for the Turbo view on another Yandex subdomain', () => {
+    const url = new URL('https://mail.yandex.ru/turbo?text=https%3A%2F%2Fexample.com%2F')
+
+    expect(unwrapYandexTurbo(url)).toBeUndefined()
+  })
+
   it('should return undefined for text param on the yandex.ru search path', () => {
     const url = new URL('https://yandex.ru/search/?text=https%3A%2F%2Fexample.com%2F')
 

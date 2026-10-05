@@ -65,12 +65,12 @@ describe('unwrapDerefMail', () => {
     expect(unwrapDerefMail(url)).toBe('http://www.example.com')
   })
 
-  it('should extract target on a subdomain of a dereferrer domain', () => {
+  it('should return undefined for a subdomain of a dereferrer domain', () => {
     const url = new URL(
       'https://www.deref-gmx.net/mail/client/dereferrer/?redirectUrl=https%3A%2F%2Fexample.com%2F',
     )
 
-    expect(unwrapDerefMail(url)).toBe('https://example.com/')
+    expect(unwrapDerefMail(url)).toBeUndefined()
   })
 
   it('should extract a target encoded twice', () => {

@@ -58,10 +58,10 @@ describe('unwrapTravelpayouts', () => {
     expect(unwrapTravelpayouts(url)).toBe('https://www.example.com/hotels/')
   })
 
-  it('should extract the target from a subdomain no specimen shows', () => {
+  it('should return undefined for a subdomain no specimen shows', () => {
     const url = new URL('https://www.tp.media/r?marker=100001&u=https%3A%2F%2Fwww.example.com%2F')
 
-    expect(unwrapTravelpayouts(url)).toBe('https://www.example.com/')
+    expect(unwrapTravelpayouts(url)).toBeUndefined()
   })
 
   it('should return undefined when the u param is missing', () => {

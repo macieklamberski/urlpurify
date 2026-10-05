@@ -60,12 +60,12 @@ describe('unwrapCiscoSecureWeb', () => {
     expect(unwrapCiscoSecureWeb(url)).toBe('https://example.com/recall.pdf')
   })
 
-  it('should extract a target on a subdomain no specimen shows', () => {
+  it('should return undefined for a subdomain no specimen shows', () => {
     const url = new URL(
       'https://secure-web-eu.cisco.com/1FUSlj3K3QVkKY875RHGJXaTEmxvyRjzy/https%3A%2F%2Fexample.com%2F',
     )
 
-    expect(unwrapCiscoSecureWeb(url)).toBe('https://example.com/')
+    expect(unwrapCiscoSecureWeb(url)).toBeUndefined()
   })
 
   it('should return undefined when the target segment is missing', () => {

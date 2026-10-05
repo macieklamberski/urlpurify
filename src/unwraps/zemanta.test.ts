@@ -36,10 +36,10 @@ describe('unwrapZemanta', () => {
     )
   })
 
-  it('should extract target on a subdomain no specimen shows', () => {
+  it('should return undefined for a subdomain no specimen shows', () => {
     const url = new URL('https://x.zemanta.com/?u=https%3A%2F%2Fexample.com%2F&a=1&rid=2&e=3')
 
-    expect(unwrapZemanta(url)).toBe('https://example.com/')
+    expect(unwrapZemanta(url)).toBeUndefined()
   })
 
   it('should return undefined for another path on the domain', () => {

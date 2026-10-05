@@ -36,10 +36,10 @@ describe('unwrapBizrate', () => {
     expect(unwrapBizrate(url)).toBe('http://www.example.com/')
   })
 
-  it('should extract target from a subdomain no specimen shows', () => {
+  it('should return undefined for a subdomain no specimen shows', () => {
     const url = new URL('http://rd2.bizrate.com/rd?t=http%3A%2F%2Fwww.example.com%2F&mid=1')
 
-    expect(unwrapBizrate(url)).toBe('http://www.example.com/')
+    expect(unwrapBizrate(url)).toBeUndefined()
   })
 
   it('should return undefined when the t param is missing', () => {

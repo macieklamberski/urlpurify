@@ -22,10 +22,10 @@ describe('unwrapDzen', () => {
     expect(unwrapDzen(url)).toBe('https://example.com/')
   })
 
-  it('should extract target on a subdomain no specimen shows', () => {
+  it('should return undefined for a subdomain no specimen shows', () => {
     const url = new URL('https://www.dzen.ru/away?to=https%3A%2F%2Fexample.com%2F')
 
-    expect(unwrapDzen(url)).toBe('https://example.com/')
+    expect(unwrapDzen(url)).toBeUndefined()
   })
 
   it('should return undefined when to param is missing', () => {

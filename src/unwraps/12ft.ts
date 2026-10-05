@@ -1,9 +1,9 @@
 import { createParamExtractor } from '../utils.js'
 
-// 12ft paywall proxy (12ft.io/proxy?q=<target>), on the domain and every subdomain.
+// 12ft paywall proxy (12ft.io/proxy?q=<target>).
 // Not included in defaultUnwrappers: the proxy serves a page the reader may not otherwise see.
 export const unwrap12ft = createParamExtractor({
-  domains: '12ft.io',
+  hosts: '12ft.io',
   path: '/proxy',
   params: ['q'],
 })

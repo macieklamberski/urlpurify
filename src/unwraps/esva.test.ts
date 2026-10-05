@@ -42,12 +42,12 @@ describe('unwrapEsva', () => {
     expect(unwrapEsva(url)).toBe('https://example.com/')
   })
 
-  it('should extract target on a subdomain no specimen shows', () => {
+  it('should return undefined for a subdomain no specimen shows', () => {
     const url = new URL(
       'https://urlsand2.esvalabs.com/?u=https%3A%2F%2Fexample.com%2F&e=4935d002&h=2f2f90a5&f=n&p=y',
     )
 
-    expect(unwrapEsva(url)).toBe('https://example.com/')
+    expect(unwrapEsva(url)).toBeUndefined()
   })
 
   it('should return undefined when the u param is missing', () => {

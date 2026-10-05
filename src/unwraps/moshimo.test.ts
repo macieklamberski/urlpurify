@@ -18,6 +18,14 @@ describe('unwrapMoshimo', () => {
     expect(unwrapMoshimo(url)).toBe('http://example.com/rb/12937554/')
   })
 
+  it('should extract target from url param on f.moshimo.com', () => {
+    const url = new URL(
+      'https://f.moshimo.com/af/c/click?a_id=1&p_id=54&pc_id=54&pl_id=616&url=https%3A%2F%2Fexample.com%2F',
+    )
+
+    expect(unwrapMoshimo(url)).toBe('https://example.com/')
+  })
+
   it('should keep the query of the target', () => {
     const url = new URL(
       'https://af.moshimo.com/af/c/click?a_id=992881&p_id=1225&pc_id=1925&pl_id=18502&url=https%3A%2F%2Fexample.com%2Fsearch%3Fp%3DTOEIC%26grp%3Dproduct',
@@ -42,12 +50,12 @@ describe('unwrapMoshimo', () => {
     expect(unwrapMoshimo(url)).toBe('http://example.com/dp/1429600950')
   })
 
-  it('should extract target on a subdomain no specimen shows', () => {
+  it('should return undefined for a subdomain no specimen shows', () => {
     const url = new URL(
       'https://www.moshimo.com/af/c/click?a_id=1&p_id=54&pc_id=54&pl_id=616&url=https%3A%2F%2Fexample.com%2F',
     )
 
-    expect(unwrapMoshimo(url)).toBe('https://example.com/')
+    expect(unwrapMoshimo(url)).toBeUndefined()
   })
 
   it('should return undefined when url param is missing', () => {
@@ -84,11 +92,11 @@ describe('unwrapMoshimo', () => {
     expect(unwrapMoshimo(url)).toBeUndefined()
   })
 
-  it('should extract target on the bare domain', () => {
+  it('should return undefined for the bare domain', () => {
     const url = new URL(
       'https://moshimo.com/af/c/click?a_id=1&p_id=54&pc_id=54&pl_id=616&url=https%3A%2F%2Fexample.com%2F',
     )
 
-    expect(unwrapMoshimo(url)).toBe('https://example.com/')
+    expect(unwrapMoshimo(url)).toBeUndefined()
   })
 })

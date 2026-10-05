@@ -1,9 +1,8 @@
 import { createParamExtractor } from '../utils.js'
 
-// Zemanta related-article redirect (r.zemanta.com/?u=<target>&a=<id>&rid=<uuid>&e=<hash>), on
-// every subdomain.
+// Zemanta related-article redirect (r.zemanta.com/?u=<target>&a=<id>&rid=<uuid>&e=<hash>).
 export const unwrapZemanta = createParamExtractor({
-  domains: 'zemanta.com',
+  hosts: 'r.zemanta.com',
   path: '/',
   params: ['u'],
 })

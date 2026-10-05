@@ -1,7 +1,7 @@
-import { isHostOrSubdomainOf, isHttpUrl } from 'trousse'
+import { isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
-const domains = [
+const hosts = [
   'deref-1und1.de',
   'deref-1und1-02.de',
   'deref-gmx.co.uk',
@@ -21,7 +21,7 @@ const encodedSchemeRegex = /^https?%3A/i
 // GMX, WEB.DE, mail.com and 1&1 webmail dereferrer
 // (deref-gmx.net/mail/client/[<token>/]dereferrer/?redirectUrl=<target>).
 export const unwrapDerefMail: UrlUnwrapper = (url) => {
-  if (!isHostOrSubdomainOf(url, domains) || !pathRegex.test(url.pathname)) {
+  if (!isHostOf(url, hosts) || !pathRegex.test(url.pathname)) {
     return
   }
 

@@ -42,20 +42,20 @@ describe('unwrapEvernote', () => {
     expect(unwrapEvernote(url)).toBe('https://www.example.com/')
   })
 
-  it('should extract the target from a subdomain no specimen shows', () => {
+  it('should return undefined for a subdomain no specimen shows', () => {
     const url = new URL(
       'https://app.evernote.com/OutboundRedirect.action?dest=https%3A%2F%2Fwww.example.com%2F',
     )
 
-    expect(unwrapEvernote(url)).toBe('https://www.example.com/')
+    expect(unwrapEvernote(url)).toBeUndefined()
   })
 
-  it('should extract the target from the bare domain', () => {
+  it('should return undefined for the bare domain', () => {
     const url = new URL(
       'https://evernote.com/OutboundRedirect.action?dest=https%3A%2F%2Fwww.example.com%2F',
     )
 
-    expect(unwrapEvernote(url)).toBe('https://www.example.com/')
+    expect(unwrapEvernote(url)).toBeUndefined()
   })
 
   it('should return undefined when the dest param is missing', () => {

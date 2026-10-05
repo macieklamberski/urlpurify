@@ -30,10 +30,10 @@ describe('unwrapSoundcloud', () => {
     expect(unwrapSoundcloud(url)).toBe('http://example.com/')
   })
 
-  it('should extract target on a subdomain of exit.sc', () => {
+  it('should return undefined for a subdomain of exit.sc', () => {
     const url = new URL('https://www.exit.sc/?url=https%3A%2F%2Fexample.com%2F')
 
-    expect(unwrapSoundcloud(url)).toBe('https://example.com/')
+    expect(unwrapSoundcloud(url)).toBeUndefined()
   })
 
   it('should return undefined when url param is missing', () => {

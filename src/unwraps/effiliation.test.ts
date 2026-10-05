@@ -30,12 +30,12 @@ describe('unwrapEffiliation', () => {
     expect(unwrapEffiliation(url)).toBe('https://example.com/page')
   })
 
-  it('should extract target from a subdomain no specimen shows', () => {
+  it('should return undefined for a subdomain no specimen shows', () => {
     const url = new URL(
       'https://click.effiliation.com/servlet/effi.redir?url=https%3A%2F%2Fexample.com%2Fpage',
     )
 
-    expect(unwrapEffiliation(url)).toBe('https://example.com/page')
+    expect(unwrapEffiliation(url)).toBeUndefined()
   })
 
   it('should return undefined for another path on the host', () => {

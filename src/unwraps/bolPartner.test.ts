@@ -20,6 +20,14 @@ describe('unwrapBolPartner', () => {
     )
   })
 
+  it('should extract target from url param on tracking.bol.com', () => {
+    const url = new URL(
+      'https://tracking.bol.com/click/click?p=1&t=url&s=1&url=https%3A%2F%2Fexample.com%2F',
+    )
+
+    expect(unwrapBolPartner(url)).toBe('https://example.com/')
+  })
+
   it('should keep the query of the target', () => {
     const url = new URL(
       'https://partner.bol.com/click/click?p=1&t=url&s=33477&f=TXL&url=https%3A%2F%2Fexample.com%2Fnl%2Fp%2F1001004002597176%2F%3FsuggestionType%3Dsearchhistory&name=SoV',
@@ -40,12 +48,12 @@ describe('unwrapBolPartner', () => {
     )
   })
 
-  it('should extract target on a subdomain no specimen shows', () => {
+  it('should return undefined for a subdomain no specimen shows', () => {
     const url = new URL(
       'https://affiliate.bol.com/click/click?p=1&t=url&s=1&url=https%3A%2F%2Fexample.com%2F',
     )
 
-    expect(unwrapBolPartner(url)).toBe('https://example.com/')
+    expect(unwrapBolPartner(url)).toBeUndefined()
   })
 
   it('should return undefined when url param is missing', () => {

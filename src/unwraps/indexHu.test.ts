@@ -18,7 +18,7 @@ describe('unwrapIndexHu', () => {
     expect(unwrapIndexHu(url)).toBe('http://example.org/index2/#bloghu/example/2014/08/10/cikk')
   })
 
-  it('should extract target from a subdomain of index.hu', () => {
+  it('should extract target from vakbarat.index.hu', () => {
     const url = new URL('http://vakbarat.index.hu/x.php?id=inxtc&url=https://www.example.com/')
 
     expect(unwrapIndexHu(url)).toBe('https://www.example.com/')
@@ -40,12 +40,20 @@ describe('unwrapIndexHu', () => {
     expect(unwrapIndexHu(url)).toBe('https://example.com/')
   })
 
-  it('should extract target on a subdomain no specimen shows', () => {
+  it('should return undefined for another subdomain of dex.hu', () => {
     const url = new URL(
       'https://m.dex.hu/x.php?id=index_tech_cikklink&url=https%3A%2F%2Fexample.com%2F',
     )
 
-    expect(unwrapIndexHu(url)).toBe('https://example.com/')
+    expect(unwrapIndexHu(url)).toBeUndefined()
+  })
+
+  it('should return undefined for another subdomain of index.hu', () => {
+    const url = new URL(
+      'https://tech.index.hu/x.php?id=index_tech_cikklink&url=https%3A%2F%2Fexample.com%2F',
+    )
+
+    expect(unwrapIndexHu(url)).toBeUndefined()
   })
 
   it('should return undefined when the url param is missing', () => {

@@ -44,12 +44,64 @@ describe('unwrapMimecast', () => {
     expect(unwrapMimecast(url)).toBeUndefined()
   })
 
-  it('should extract target on a region no specimen shows', () => {
+  it('should extract target on the Australian region', () => {
     const url = new URL(
       'https://protect-au.mimecast.com/s/abc123?url=https%3A%2F%2Fexample.com%2Fpost',
     )
 
     expect(unwrapMimecast(url)).toBe('https://example.com/post')
+  })
+
+  it('should extract target on the three-letter usb region', () => {
+    const url = new URL(
+      'https://protect-usb.mimecast.com/s/abc123?url=https%3A%2F%2Fexample.com%2Fpost',
+    )
+
+    expect(unwrapMimecast(url)).toBe('https://example.com/post')
+  })
+
+  it('should extract target on a region no specimen shows', () => {
+    const url = new URL(
+      'https://protect-za.mimecast.com/s/abc123?url=https%3A%2F%2Fexample.com%2Fpost',
+    )
+
+    expect(unwrapMimecast(url)).toBe('https://example.com/post')
+  })
+
+  it('should return undefined for a Mimecast host that is not a protect region', () => {
+    const url = new URL('https://login.mimecast.com/s/abc123?url=https%3A%2F%2Fexample.com%2Fpost')
+
+    expect(unwrapMimecast(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a protect host with a longer region name', () => {
+    const url = new URL(
+      'https://protect-usab.mimecast.com/s/abc123?url=https%3A%2F%2Fexample.com%2Fpost',
+    )
+
+    expect(unwrapMimecast(url)).toBeUndefined()
+  })
+
+  it('should return undefined for the bare Mimecast domain', () => {
+    const url = new URL('https://mimecast.com/s/abc123?url=https%3A%2F%2Fexample.com%2Fpost')
+
+    expect(unwrapMimecast(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a host that ends with a protect region name', () => {
+    const url = new URL(
+      'https://notprotect-us.mimecast.com/s/abc123?url=https%3A%2F%2Fexample.com%2Fpost',
+    )
+
+    expect(unwrapMimecast(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a host that only starts with a protect region', () => {
+    const url = new URL(
+      'https://protect-us.mimecast.com.example.net/s/abc123?url=https%3A%2F%2Fexample.com%2Fpost',
+    )
+
+    expect(unwrapMimecast(url)).toBeUndefined()
   })
 
   it('should return undefined for a lookalike domain', () => {

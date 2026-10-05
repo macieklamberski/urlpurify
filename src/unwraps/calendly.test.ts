@@ -30,10 +30,10 @@ describe('unwrapCalendly', () => {
     expect(unwrapCalendly(url)).toBe('https://www.example.com/jane/')
   })
 
-  it('should extract target on a subdomain no specimen shows', () => {
+  it('should return undefined for a subdomain no specimen shows', () => {
     const url = new URL('https://www.calendly.com/url?q=https%3A%2F%2Fexample.com%2F')
 
-    expect(unwrapCalendly(url)).toBe('https://example.com/')
+    expect(unwrapCalendly(url)).toBeUndefined()
   })
 
   it('should return undefined when q param is missing', () => {

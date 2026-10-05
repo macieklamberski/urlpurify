@@ -1,4 +1,4 @@
-import { isHostOrSubdomainOf, isHttpUrl } from 'trousse'
+import { isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
 const pathRegex = /^\/[\w-]+\/(https?(?:%3A|%253A)(?:%2F|%252F){2}[^/]*)$/i
@@ -7,7 +7,7 @@ const pathRegex = /^\/[\w-]+\/(https?(?:%3A|%253A)(?:%2F|%252F){2}[^/]*)$/i
 // Not included in defaultUnwrappers: the gateway checks the target when the link is clicked,
 // so unwrapping skips the check the recipient's organization put in place.
 export const unwrapCiscoSecureWeb: UrlUnwrapper = (url) => {
-  if (!isHostOrSubdomainOf(url, 'cisco.com')) {
+  if (!isHostOf(url, 'secure-web.cisco.com')) {
     return
   }
 
