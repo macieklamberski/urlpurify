@@ -11,6 +11,7 @@ import type { TrackingParam, UrlUnwrapper } from './types.js'
 // import { unwrapAmpCache } from './unwraps/ampCache.js'
 import { unwrapAnonymTo } from './unwraps/anonymTo.js'
 // import { unwrapArchiveToday } from './unwraps/archiveToday.js'
+import { unwrapArxiv } from './unwraps/arxiv.js'
 // import { unwrapAvantlink } from './unwraps/avantlink.js'
 // import { unwrapAwin } from './unwraps/awin.js'
 // import { unwrapBarracudaLinkProtect } from './unwraps/barracudaLinkProtect.js'
@@ -232,6 +233,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   unwrapYandexMail,
 
   // Developer and publishing platforms.
+  unwrapArxiv,
   unwrapCsdn,
   unwrapEvernote,
   unwrapGitee,
