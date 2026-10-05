@@ -61,6 +61,7 @@ import { unwrapFacebookShim } from './unwraps/facebook.js'
 // import { unwrapFireeye } from './unwraps/fireeye.js'
 // import { unwrapFiverr } from './unwraps/fiverr.js'
 import { unwrapFlipboard } from './unwraps/flipboard.js'
+// import { unwrapFortimail } from './unwraps/fortimail.js'
 // import { unwrapGateSc } from './unwraps/gateSc.js'
 // import { unwrapGeoriot } from './unwraps/georiot.js'
 import { unwrapGitee } from './unwraps/gitee.js'
@@ -209,6 +210,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapEsva,
   // unwrapFanbridge,
   // unwrapFireeye,
+  // unwrapFortimail,
   // unwrapHornetsecurity,
   // unwrapHubspotSidekick,
   // unwrapIcptrack,
