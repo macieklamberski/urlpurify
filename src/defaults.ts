@@ -124,6 +124,7 @@ import { unwrapPrNewswire } from './unwraps/prNewswire.js'
 import { unwrapRedditOut } from './unwraps/redditOut.js'
 // import { unwrapRedirectingat } from './unwraps/redirectingat.js'
 import { unwrapResearchgate } from './unwraps/researchgate.js'
+// import { unwrapReviveAdserver } from './unwraps/reviveAdserver.js'
 import { unwrapSegmentfault } from './unwraps/segmentfault.js'
 // import { unwrapShareasale } from './unwraps/shareasale.js'
 // import { unwrapSkimlinks } from './unwraps/skimlinks.js'
@@ -286,6 +287,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // Ad networks.
   // unwrapBingAds,
   // unwrapGoogleAds,
+  // unwrapReviveAdserver,
 
   // Podcast analytics prefixes.
   // unwrapOp3,
