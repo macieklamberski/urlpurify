@@ -94,7 +94,7 @@ Enabled by default:
 | Unwrapper | Description |
 | --- | --- |
 | `unwrapBing` | Bing search-result redirect (www.bing.com/ck/a?u=a1\<base64url\>) and news click (www.bing.com/news/apiclick.aspx?url=\<target\>) |
-| `unwrapAliyun` | Alibaba Cloud developer community outbound link redirect (yq.aliyun.com/go/articleRenderRedirect?url=<target>) |
+| `unwrapAliyun` | Alibaba Cloud developer community outbound link redirect (yq.aliyun.com/go/articleRenderRedirect?url=\<target\>) |
 | `unwrapAnonymTo` | anonym.to referrer anonymizer (anonym.to/?\<target\>) |
 | `unwrapBlueskyRedirect` | Bluesky outbound link redirect (go.bsky.app/redirect?u=\<target\>) |
 | `unwrapBusinessWire` | Business Wire release click tracker (cts.businesswire.com/ct/CT?url=\<target\>) |
