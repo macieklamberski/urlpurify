@@ -93,6 +93,7 @@ import { unwrapSegmentfault } from './unwraps/segmentfault.js'
 // import { unwrapSkimlinks } from './unwraps/skimlinks.js'
 // import { unwrapSlack } from './unwraps/slack.js'
 // import { unwrapSmartredirect } from './unwraps/smartredirect.js'
+// import { unwrapSmry } from './unwraps/smry.js'
 import { unwrapSoundcloud } from './unwraps/soundcloud.js'
 import { unwrapSspai } from './unwraps/sspai.js'
 // import { unwrapStay22 } from './unwraps/stay22.js'
@@ -252,6 +253,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapArchiveToday, // Snapshot of a page at a point in time, not a redirect
   // unwrapEmbedly,
   unwrapMozillaOutgoing,
+  // unwrapSmry,
   // unwrapUkgwa,
 
   // Legacy aggregators.
