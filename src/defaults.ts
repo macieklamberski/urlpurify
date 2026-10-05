@@ -11,6 +11,7 @@ import type { TrackingParam, UrlUnwrapper } from './types.js'
 // import { unwrapAmpCache } from './unwraps/ampCache.js'
 import { unwrapAnonymTo } from './unwraps/anonymTo.js'
 // import { unwrapArchiveToday } from './unwraps/archiveToday.js'
+import { unwrapAsk } from './unwraps/ask.js'
 // import { unwrapAvantlink } from './unwraps/avantlink.js'
 // import { unwrapAwin } from './unwraps/awin.js'
 // import { unwrapBarracudaLinkProtect } from './unwraps/barracudaLinkProtect.js'
@@ -126,6 +127,7 @@ export const defaultTrackingParams: Array<TrackingParam> = [
 
 export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // Search engines.
+  unwrapAsk,
   unwrapBing,
   // unwrapDuckduckgo,
   unwrapGoogle,
