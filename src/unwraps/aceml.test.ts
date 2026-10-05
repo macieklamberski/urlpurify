@@ -12,6 +12,23 @@ describe('unwrapAceml', () => {
     expect(unwrapAceml(url)).toBe(target)
   })
 
+  it('should decode a base64 redirectUrl param holding a percent-encoded target', () => {
+    const url = new URL(
+      'https://example.lt.acemlnc.com/Prod/link-tracker?redirectUrl=aHR0cHMlM0ElMkYlMkZleGFtcGxlLmNvbSUyRmVkaXRvJTNGaWQlM0Qx&sig=25aVrhcnNbnaNWYVHMVds7Q6enE',
+    )
+
+    expect(unwrapAceml(url)).toBe('https://example.com/edito?id=1')
+  })
+
+  it('should return undefined when the percent-encoded target is malformed', () => {
+    const encoded = Buffer.from('https%3A%2F%2Fexample.com%2F%E0%A4%A').toString('base64')
+    const url = new URL(
+      `https://abc.acemlnc.com/Prod/link-tracker?redirectUrl=${encodeURIComponent(encoded)}`,
+    )
+
+    expect(unwrapAceml(url)).toBeUndefined()
+  })
+
   it('should match other ACEML host suffixes', () => {
     const target = 'https://example.com/page'
     const encoded = Buffer.from(target).toString('base64')
