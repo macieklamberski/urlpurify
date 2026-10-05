@@ -100,6 +100,7 @@ Enabled by default:
 | `unwrapBlueskyRedirect` | Bluesky outbound link redirect (go.bsky.app/redirect?u=\<target\>) |
 | `unwrapBridgyFed` | Bridgy Fed redirect for a bridged post or profile (fed.brid.gy/r/\<target\>, also bsky.brid.gy and web.brid.gy) |
 | `unwrapBusinessWire` | Business Wire release click tracker (cts.businesswire.com/ct/CT?url=\<target\>) |
+| `unwrapBytedance` | ByteDance outbound link redirect (link.wtturl.cn/?target=\<target\>) |
 | `unwrapCalendly` | Calendly outbound link (calendly.com/url?q=\<target\>) |
 | `unwrapCanva` | Canva outbound link in published designs (www.canva.com/link?target=\<target\>) |
 | `unwrapCsdn` | CSDN external link redirect (link.csdn.net/?target=\<target\>) |

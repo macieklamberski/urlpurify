@@ -31,6 +31,7 @@ import { unwrapBridgyFed } from './unwraps/bridgyFed.js'
 import { unwrapBlueskyRedirect } from './unwraps/bsky.js'
 import { unwrapBusinessWire } from './unwraps/businessWire.js'
 // import { unwrapButton } from './unwraps/button.js'
+import { unwrapBytedance } from './unwraps/bytedance.js'
 // import { unwrapCake } from './unwraps/cake.js'
 import { unwrapCalendly } from './unwraps/calendly.js'
 import { unwrapCanva } from './unwraps/canva.js'
@@ -355,6 +356,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   unwrapAnonymTo,
   unwrapBlueskyRedirect,
   unwrapBridgyFed,
+  unwrapBytedance,
   unwrapCalendly,
   unwrapCanva,
   unwrapDerefMail,
