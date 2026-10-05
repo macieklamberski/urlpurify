@@ -75,6 +75,7 @@ import { unwrapMozillaOutgoing } from './unwraps/mozillaOutgoing.js'
 import { unwrapNaverOutgoing } from './unwraps/naverOutgoing.js'
 // import { unwrapNicoMs } from './unwraps/nicoMs.js'
 // import { unwrapOutlookSafelinks } from './unwraps/outlookSafelinks.js'
+// import { unwrapPagefreezer } from './unwraps/pagefreezer.js'
 // import { unwrapPartnerAds } from './unwraps/partnerAds.js'
 import { unwrapPocket } from './unwraps/pocket.js'
 // import { unwrapPostmark } from './unwraps/postmark.js'
@@ -252,6 +253,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapArchiveToday, // Snapshot of a page at a point in time, not a redirect
   // unwrapEmbedly,
   unwrapMozillaOutgoing,
+  // unwrapPagefreezer,
   // unwrapUkgwa,
 
   // Legacy aggregators.
