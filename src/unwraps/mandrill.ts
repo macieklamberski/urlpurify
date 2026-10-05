@@ -1,11 +1,12 @@
-import { isHttpUrl } from 'trousse'
+import { isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createParamExtractor, decodeBase64Url } from '../utils.js'
 
+const hosts = ['go.mnsvc.com', 'mandrillapp.com']
 const clickPathRegex = /^\/track\/click\/\d+\/[^/]+$/
 
 const extractClickPhp = createParamExtractor({
-  hosts: 'mandrillapp.com',
+  hosts,
   path: '/track/click.php',
   params: ['url'],
 })
@@ -22,8 +23,8 @@ const decodePayload = (value: string): string | undefined => {
 }
 
 // Mandrill, Mailchimp Transactional, click tracker (mandrillapp.com/track/click.php?url=<target>,
-// also /track/click/<account>/<target host>?p=<base64url JSON>). Opt-in: unwrapping removes the
-// sender's click count.
+// also /track/click/<account>/<target host>?p=<base64url JSON>), also a sender's custom tracking
+// domain such as go.mnsvc.com. Opt-in: unwrapping removes the sender's click count.
 export const unwrapMandrill: UrlUnwrapper = (url) => {
   const target = extractClickPhp(url)
 
@@ -31,7 +32,7 @@ export const unwrapMandrill: UrlUnwrapper = (url) => {
     return target
   }
 
-  if (url.hostname !== 'mandrillapp.com' || !clickPathRegex.test(url.pathname)) {
+  if (!isHostOf(url, hosts) || !clickPathRegex.test(url.pathname)) {
     return
   }
 

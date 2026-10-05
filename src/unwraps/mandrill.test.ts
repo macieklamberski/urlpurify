@@ -52,6 +52,14 @@ describe('unwrapMandrill', () => {
     expect(unwrapMandrill(url)).toBeUndefined()
   })
 
+  it('should return undefined for click.php on another host', () => {
+    const url = new URL(
+      'https://example.com/track/click.php?u=3541274&id=acd0abe879a1&url=http%3A%2F%2Fexample.org%2F',
+    )
+
+    expect(unwrapMandrill(url)).toBeUndefined()
+  })
+
   it('should return undefined for the click path below another segment', () => {
     const url = new URL(
       'https://mandrillapp.com/x/track/click/30295795/example.com?p=eyJzIjoiTGYyREg3SmljYjZYVDJxMGZfZ2tuWS1GNmxVIiwidiI6MSwicCI6IntcInVcIjozMDI5NTc5NSxcInZcIjoxLFwidXJsXCI6XCJodHRwczovL2V4YW1wbGUuY29tL1wiLFwiaWRcIjpcImNjNTgxZGNhMGJiMDRlZTBiYTNkOTkwYzg1OWJlMTE0XCIsXCJ1cmxfaWRzXCI6W1wiNWMzYTcyNjNkMDgzODdmNzMxOTE2NTRmNzI1ZTVjMGJjZDRlZjhjY1wiXX0ifQ',
@@ -63,6 +71,14 @@ describe('unwrapMandrill', () => {
   it('should return undefined for the click path without the target host', () => {
     const url = new URL(
       'https://mandrillapp.com/track/click/30295795?p=eyJzIjoiTGYyREg3SmljYjZYVDJxMGZfZ2tuWS1GNmxVIiwidiI6MSwicCI6IntcInVcIjozMDI5NTc5NSxcInZcIjoxLFwidXJsXCI6XCJodHRwczovL2V4YW1wbGUuY29tL1wiLFwiaWRcIjpcImNjNTgxZGNhMGJiMDRlZTBiYTNkOTkwYzg1OWJlMTE0XCIsXCJ1cmxfaWRzXCI6W1wiNWMzYTcyNjNkMDgzODdmNzMxOTE2NTRmNzI1ZTVjMGJjZDRlZjhjY1wiXX0ifQ',
+    )
+
+    expect(unwrapMandrill(url)).toBeUndefined()
+  })
+
+  it('should return undefined for the click path with a segment after the target host', () => {
+    const url = new URL(
+      'https://mandrillapp.com/track/click/30295795/example.com/x?p=eyJzIjoiTGYyREg3SmljYjZYVDJxMGZfZ2tuWS1GNmxVIiwidiI6MSwicCI6IntcInVcIjozMDI5NTc5NSxcInZcIjoxLFwidXJsXCI6XCJodHRwczovL2V4YW1wbGUuY29tL1wiLFwiaWRcIjpcImNjNTgxZGNhMGJiMDRlZTBiYTNkOTkwYzg1OWJlMTE0XCIsXCJ1cmxfaWRzXCI6W1wiNWMzYTcyNjNkMDgzODdmNzMxOTE2NTRmNzI1ZTVjMGJjZDRlZjhjY1wiXX0ifQ',
     )
 
     expect(unwrapMandrill(url)).toBeUndefined()
