@@ -9,6 +9,7 @@ import type { TrackingParam, UrlUnwrapper } from './types.js'
 // import { unwrapAdcell } from './unwraps/adcell.js'
 // import { unwrapAdjust } from './unwraps/adjust.js'
 // import { unwrapAdmitad } from './unwraps/admitad.js'
+// import { unwrapAdrecord } from './unwraps/adrecord.js'
 // import { unwrapAdtraction } from './unwraps/adtraction.js'
 // import { unwrapAffilae } from './unwraps/affilae.js'
 // import { unwrapAffiliateFuture } from './unwraps/affiliateFuture.js'
@@ -275,6 +276,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapAdcell,
   // unwrapAdjust,
   // unwrapAdmitad,
+  // unwrapAdrecord,
   // unwrapAdtraction,
   // unwrapAffilae,
   // unwrapAffiliateFuture,
