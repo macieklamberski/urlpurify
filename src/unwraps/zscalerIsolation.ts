@@ -9,8 +9,8 @@ const extractTarget = createParamExtractor({
 })
 
 // Zscaler cloud browser isolation
-// (<hex>.isolation.zscaler.com/profile/<uuid>/zia-session/?original_url=<target>&key=&hmac=).
-// Opt-in: a security proxy whose session needs the tenant's sign-in, so unwrapping skips it.
+// (<hex>.isolation.zscaler.com/profile/<uuid>/zia-session/?original_url=<target>&key=&hmac=), a
+// page that asks to confirm the redirect to the target. Opt-in, as a security proxy.
 export const unwrapZscalerIsolation: UrlUnwrapper = (url) => {
   if (!sessionPathRegex.test(url.pathname)) {
     return
