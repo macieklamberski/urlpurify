@@ -10,6 +10,14 @@ describe('unwrapShareit', () => {
     expect(unwrapShareit(url)).toBe('http://www.example.com/?q=themes')
   })
 
+  it('should extract the target from the secure affiliate link', () => {
+    const url = new URL(
+      'https://secure.shareit.com/shareit/affiliate.html?publisherid=26239&affiliateid=200120544&target=http://www.example.com',
+    )
+
+    expect(unwrapShareit(url)).toBe('http://www.example.com')
+  })
+
   it('should return undefined when the target param is missing', () => {
     const url = new URL('http://www.shareit.com/affiliate.html?affiliateid=200238388')
 
