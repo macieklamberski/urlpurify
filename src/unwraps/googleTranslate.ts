@@ -1,5 +1,6 @@
 import { isAnyOf, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
+import { getParamValues } from '../utils.js'
 
 // translate.google.<TLD> and its www. host, the hosts the walk shows on the translate paths.
 const googleTranslateHostRegex =
@@ -75,7 +76,7 @@ export const unwrapGoogleTranslate: UrlUnwrapper = (url) => {
     return
   }
 
-  const target = url.searchParams.get('u')
+  const target = getParamValues(url, 'u').at(0)
 
   if (!target) {
     return

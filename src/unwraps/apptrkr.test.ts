@@ -26,6 +26,14 @@ describe('unwrapApptrkr', () => {
     expect(unwrapApptrkr(url)).toBe('http://www.example.edu/')
   })
 
+  it('should keep a plus in an unencoded target', () => {
+    const url = new URL(
+      'https://apptrkr.com/get_redirect.php?id=7214040&targetURL=https://www.example.com/?term=Aherrahrou+R&sort=date',
+    )
+
+    expect(unwrapApptrkr(url)).toBe('https://www.example.com/?term=Aherrahrou+R')
+  })
+
   it('should extract target encoded twice', () => {
     const url = new URL(
       'https://apptrkr.com/get_redirect.php?id=9757952&targetURL=http%253A%252F%252Fpathology.example.edu%252F',

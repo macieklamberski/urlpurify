@@ -11,6 +11,14 @@ describe('unwrapLinksynergy', () => {
       expect(unwrapLinksynergy(url)).toBe('https://example.com/product')
     })
 
+    it('should keep a plus in an unencoded target', () => {
+      const url = new URL(
+        'https://click.linksynergy.com/deeplink?id=8ZOaQuHdH9M&mid=44583&murl=https://www.example.com/p/pl?d=Corsair+MP700+Pro+XT',
+      )
+
+      expect(unwrapLinksynergy(url)).toBe('https://www.example.com/p/pl?d=Corsair+MP700+Pro+XT')
+    })
+
     it('should return undefined when murl param is missing', () => {
       const url = new URL('https://click.linksynergy.com/deeplink?id=abc&mid=12345')
 

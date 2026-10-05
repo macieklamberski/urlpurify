@@ -1,5 +1,6 @@
 import { isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
+import { getParamValues } from '../utils.js'
 
 // linksynergy.jrs5.com and linksynergy.walmart.com sit on a merchant's own domain.
 const linksynergyHosts = [
@@ -29,7 +30,7 @@ export const unwrapLinksynergy: UrlUnwrapper = (url) => {
     return
   }
 
-  const target = url.searchParams.get(param)
+  const target = getParamValues(url, param).at(0)
 
   if (!target) {
     return

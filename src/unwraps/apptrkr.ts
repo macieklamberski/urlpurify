@@ -1,5 +1,6 @@
 import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
+import { getParamValues } from '../utils.js'
 
 const encodedSchemeRegex = /^https?%3A/i
 
@@ -12,7 +13,7 @@ export const unwrapApptrkr: UrlUnwrapper = (url) => {
 
   // An Apptrkr link nested unencoded in `targetURL` spills its own `targetURL` into this query,
   // so the last one holds the target.
-  let target = url.searchParams.getAll('targetURL').at(-1)
+  let target = getParamValues(url, 'targetURL').at(-1)
 
   if (!target) {
     return

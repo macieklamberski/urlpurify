@@ -32,6 +32,14 @@ describe('unwrapNetaffiliation', () => {
     expect(unwrapNetaffiliation(url)).toBe('https://www.example.com/kit-dembrayage-audi-a4')
   })
 
+  it('should keep a plus in an unencoded target on a merchant tracking host', () => {
+    const url = new URL(
+      'https://lzm.boulanger.com/?P513B9956B0382111&redir=https://www.example.com/resultats?tr=S26+FE',
+    )
+
+    expect(unwrapNetaffiliation(url)).toBe('https://www.example.com/resultats?tr=S26+FE')
+  })
+
   it('should extract a percent-encoded target from a merchant tracking host', () => {
     const url = new URL(
       'https://fsx.i-run.fr/?P4572B563A3F191&redir=https%3A%2F%2Fwww.example.com%2Fcardio-gps%2Fpolar-vantage-m2.html',

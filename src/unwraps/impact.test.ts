@@ -148,6 +148,14 @@ describe('unwrapImpact', () => {
     expect(unwrapImpact(url)).toBe('https://example.com/p?srsltid=abc')
   })
 
+  it('should keep a plus in an unencoded target', () => {
+    const url = new URL(
+      'http://adorama.evyy.net/c/60434/51926/1036?u=https://www.example.com/l/?searchinfo=canon+rf+adapter',
+    )
+
+    expect(unwrapImpact(url)).toBe('https://www.example.com/l/?searchinfo=canon+rf+adapter')
+  })
+
   it('should extract a target that is another wrapper', () => {
     const url = new URL(
       'https://goto.example.com/c/1/2/3?u=https%3A%2F%2Fexample.com%2Fr%3Fu%3Dhttps%253A%252F%252Fexample.org%252F',

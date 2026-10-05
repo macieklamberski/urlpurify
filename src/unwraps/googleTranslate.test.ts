@@ -10,6 +10,16 @@ describe('unwrapGoogleTranslate', () => {
     expect(unwrapGoogleTranslate(url)).toBe('https://example.com/page')
   })
 
+  it('should keep a plus in an unencoded target', () => {
+    const url = new URL(
+      'http://translate.google.com/translate?hl=fr&sl=en&u=http://www.example.com/berbie/Tutorials_1.5/Nike+iPod.Tutorial.html',
+    )
+
+    expect(unwrapGoogleTranslate(url)).toBe(
+      'http://www.example.com/berbie/Tutorials_1.5/Nike+iPod.Tutorial.html',
+    )
+  })
+
   it('should return undefined for non-redirect Translate URLs', () => {
     const url = new URL('https://translate.google.com/about')
 
