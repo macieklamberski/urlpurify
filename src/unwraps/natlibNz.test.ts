@@ -32,6 +32,14 @@ describe('unwrapNatlibNz', () => {
     expect(unwrapNatlibNz(url)).toBeUndefined()
   })
 
+  it('should return undefined for a partial timestamp', () => {
+    const url = new URL(
+      'https://ndhadeliver.natlib.govt.nz/webarchive/2014/http://www.example.govt.nz/',
+    )
+
+    expect(unwrapNatlibNz(url)).toBeUndefined()
+  })
+
   it('should return undefined for the frame viewer', () => {
     const url = new URL(
       'http://ndhadeliver.natlib.govt.nz/ArcAggregator/arcView/frameView/IE12126512/http://www.example.govt.nz/',
