@@ -230,6 +230,7 @@ import { unwrapTiktok } from './unwraps/tiktok.js'
 // import { unwrapTrustwaveScanmail } from './unwraps/trustwaveScanmail.js'
 // import { unwrapTrxHub } from './unwraps/trxHub.js'
 import { unwrapTumblr } from './unwraps/tumblr.js'
+// import { unwrapTwitterRedirect } from './unwraps/twitterRedirect.js'
 // import { unwrapTwoCheckout } from './unwraps/twoCheckout.js'
 // import { unwrapUkgwa } from './unwraps/ukgwa.js'
 // import { unwrapUkWebArchive } from './unwraps/ukWebArchive.js'
@@ -343,6 +344,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapTopsec,
   // unwrapTrendMicro,
   // unwrapTrustwaveScanmail,
+  // unwrapTwitterRedirect,
   // unwrapUnisender,
   // unwrapVadeSecure,
   // unwrapVuture,
