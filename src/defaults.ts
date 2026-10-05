@@ -33,6 +33,7 @@ import { unwrapAsk } from './unwraps/ask.js'
 // import { unwrapAugure } from './unwraps/augure.js'
 // import { unwrapAvantlink } from './unwraps/avantlink.js'
 // import { unwrapAwin } from './unwraps/awin.js'
+// import { unwrapAxigen } from './unwraps/axigen.js'
 // import { unwrapBacLacWebArchive } from './unwraps/bacLacWebArchive.js'
 import { unwrapBale } from './unwraps/bale.js'
 // import { unwrapBananatag } from './unwraps/bananatag.js'
@@ -326,6 +327,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapAceml,
   // unwrapAmazonSes,
   // unwrapAugure,
+  // unwrapAxigen,
   // unwrapBananatag,
   // unwrapBarracudaLinkProtect,
   // unwrapBuzzstream,
