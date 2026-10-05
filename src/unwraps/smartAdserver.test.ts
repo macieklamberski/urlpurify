@@ -53,4 +53,10 @@ describe('unwrapSmartAdserver', () => {
 
     expect(unwrapSmartAdserver(url)).toBeUndefined()
   })
+
+  it('should return undefined for a host that only ends with a numbered prefix', () => {
+    const url = new URL('https://xwww5.smartadserver.com/click?go=https%3a%2f%2fwww.example.org%2f')
+
+    expect(unwrapSmartAdserver(url)).toBeUndefined()
+  })
 })
