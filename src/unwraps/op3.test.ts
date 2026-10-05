@@ -34,6 +34,16 @@ describe('unwrapOp3', () => {
     expect(unwrapOp3(url)).toBe('https://example.com/download/57-KDE_Express.mp3')
   })
 
+  it('should skip an empty segment after the prefix', () => {
+    const url = new URL(
+      'https://op3.dev/e//example.com/episode/jasomfunradio/fun-in-slovakia/audio.mp3',
+    )
+
+    expect(unwrapOp3(url)).toBe(
+      'https://example.com/episode/jasomfunradio/fun-in-slovakia/audio.mp3',
+    )
+  })
+
   it('should leave the next prefix in a chain for the next pass', () => {
     const url = new URL(
       'https://op3.dev/e/dts.podtrac.com/redirect.mp3/example.com/hpm-newscast/newscast-2025-07-21-06.mp3',
