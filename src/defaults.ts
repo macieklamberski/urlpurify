@@ -44,6 +44,7 @@ import { unwrapCanva } from './unwraps/canva.js'
 // import { unwrapCjNetwork } from './unwraps/cjNetwork.js'
 // import { unwrapCleverbridge } from './unwraps/cleverbridge.js'
 // import { unwrapCommissionFactory } from './unwraps/commissionFactory.js'
+// import { unwrapCommunicationads } from './unwraps/communicationads.js'
 // import { unwrapConstantContact } from './unwraps/constantContact.js'
 // import { unwrapConvertiser } from './unwraps/convertiser.js'
 import { unwrapCsdn } from './unwraps/csdn.js'
@@ -319,6 +320,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapCjNetwork,
   // unwrapCleverbridge,
   // unwrapCommissionFactory,
+  // unwrapCommunicationads,
   // unwrapConvertiser,
   // unwrapCuelinks,
   // unwrapDigidip,
