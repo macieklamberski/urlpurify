@@ -153,6 +153,7 @@ import { unwrapRedditOut } from './unwraps/redditOut.js'
 // import { unwrapRedirectingat } from './unwraps/redirectingat.js'
 import { unwrapResearchgate } from './unwraps/researchgate.js'
 // import { unwrapReviveAdserver } from './unwraps/reviveAdserver.js'
+import { unwrapSapHelp } from './unwraps/sapHelp.js'
 import { unwrapSegmentfault } from './unwraps/segmentfault.js'
 // import { unwrapShareasale } from './unwraps/shareasale.js'
 // import { unwrapSkimlinks } from './unwraps/skimlinks.js'
@@ -405,6 +406,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   unwrapLd246,
   unwrapPhilpapers,
   unwrapResearchgate,
+  unwrapSapHelp,
   unwrapSegmentfault,
   unwrapSspai,
   unwrapZhihu,
