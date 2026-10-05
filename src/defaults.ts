@@ -243,6 +243,7 @@ import { unwrapSteamLinkfilter } from './unwraps/steamLinkfilter.js'
 // import { unwrapSurugaya } from './unwraps/surugaya.js'
 // import { unwrapSymantecClicktime } from './unwraps/symantecClicktime.js'
 // import { unwrapSymplicity } from './unwraps/symplicity.js'
+// import { unwrapTargetCircle } from './unwraps/targetCircle.js'
 import { unwrapThreadsShim } from './unwraps/threads.js'
 import { unwrapTiktok } from './unwraps/tiktok.js'
 // import { unwrapTitanhqLinklock } from './unwraps/titanhqLinklock.js'
@@ -468,6 +469,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapSmartredirect,
   // unwrapStay22,
   // unwrapSurugaya,
+  // unwrapTargetCircle,
   // unwrapToucharcade,
   // unwrapTracdelight,
   // unwrapTradedoubler,
