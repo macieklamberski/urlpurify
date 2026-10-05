@@ -46,6 +46,18 @@ describe('unwrapVefsafn', () => {
     expect(unwrapVefsafn(url)).toBeUndefined()
   })
 
+  it('should return undefined for a partial timestamp on the wayback host', () => {
+    const url = new URL('http://wayback.vefsafn.is/wayback/2005/http://www.example.is/')
+
+    expect(unwrapVefsafn(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a partial timestamp on the current host', () => {
+    const url = new URL('https://vefsafn.is/is/2020/http://www.example.is/')
+
+    expect(unwrapVefsafn(url)).toBeUndefined()
+  })
+
   it('should return undefined for the legacy path on the current host', () => {
     const url = new URL('https://vefsafn.is/wayback/20050622161649/http://www.example.is/')
 
