@@ -41,6 +41,7 @@ import { unwrapFacebookShim } from './unwraps/facebook.js'
 // import { unwrapFeedsportal } from './unwraps/feedsportal.js'
 // import { unwrapFirebaseDynamicLinks } from './unwraps/firebaseDynamicLinks.js'
 // import { unwrapFireeye } from './unwraps/fireeye.js'
+// import { unwrapFiverr } from './unwraps/fiverr.js'
 import { unwrapFlipboard } from './unwraps/flipboard.js'
 // import { unwrapGateSc } from './unwraps/gateSc.js'
 // import { unwrapGeoriot } from './unwraps/georiot.js'
@@ -174,6 +175,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapEbayRover,
   // unwrapEffiliation,
   // unwrapFirebaseDynamicLinks,
+  // unwrapFiverr,
   // unwrapGateSc,
   // unwrapGeoriot,
   // unwrapImpact,
