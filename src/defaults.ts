@@ -89,6 +89,7 @@ import { unwrapLinkedin } from './unwraps/linkedin.js'
 // import { unwrapLinksynergy } from './unwraps/linksynergy.js'
 import { unwrapLivejournal } from './unwraps/livejournal.js'
 // import { unwrapMagnetmail } from './unwraps/magnetmail.js'
+// import { unwrapMail2easy } from './unwraps/mail2easy.js'
 // import { unwrapMailchimp } from './unwraps/mailchimp.js'
 // import { unwrapMailinblack } from './unwraps/mailinblack.js'
 // import { unwrapMailpanion } from './unwraps/mailpanion.js'
@@ -213,6 +214,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapIntranetQuorum,
   // unwrapLeverAnalytics,
   // unwrapMagnetmail,
+  // unwrapMail2easy,
   // unwrapMailchimp,
   // unwrapMailinblack,
   // unwrapMailpanion,
