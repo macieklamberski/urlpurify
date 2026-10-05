@@ -70,6 +70,7 @@ import { unwrapLinkedin } from './unwraps/linkedin.js'
 // import { unwrapMailtrack } from './unwraps/mailtrack.js'
 import { unwrapMedium } from './unwraps/medium.js'
 // import { unwrapMimecast } from './unwraps/mimecast.js'
+// import { unwrapMintDownloads } from './unwraps/mintDownloads.js'
 // import { unwrapMoshimo } from './unwraps/moshimo.js'
 import { unwrapMozillaOutgoing } from './unwraps/mozillaOutgoing.js'
 import { unwrapNaverOutgoing } from './unwraps/naverOutgoing.js'
@@ -238,6 +239,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   unwrapHashnode,
   unwrapJianshuGo,
   unwrapJuejin,
+  // unwrapMintDownloads,
   unwrapSegmentfault,
   unwrapSspai,
   unwrapZhihu,
