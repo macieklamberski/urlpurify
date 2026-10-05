@@ -37,7 +37,7 @@ describe('unwrapOsnova', () => {
   })
 
   it('should return undefined for other hosts', () => {
-    const url = new URL('https://vc.ru/v2.8/redirect?to=https%3A%2F%2Fwww.example.com%2F')
+    const url = new URL('https://example.com/v2.8/redirect?to=https%3A%2F%2Fwww.example.com%2F')
 
     expect(unwrapOsnova(url)).toBeUndefined()
   })
