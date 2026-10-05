@@ -44,6 +44,16 @@ describe('unwrapCheckPointHarmony', () => {
     expect(unwrapCheckPointHarmony(url)).toBe('https://www.example.org/criminal-defense/')
   })
 
+  it('should keep a fragment written after the v2 signature', () => {
+    const url = new URL(
+      'https://protect.checkpoint.com/v2/r01/___https://www.example.org/news-releases/new-flavors-302420491.html___.YzJ1OmNhcmxidWRkaWdjb21wYW55OmM6b2ZmaWNlMzY1X2VtYWlsc19#financial-modal',
+    )
+
+    expect(unwrapCheckPointHarmony(url)).toBe(
+      'https://www.example.org/news-releases/new-flavors-302420491.html#financial-modal',
+    )
+  })
+
   it('should restore the star escapes in a v2 target path', () => {
     const url = new URL(
       'https://protect.checkpoint.com/v2/r01/___https://links.example.com/CL0/https:*2F*2Fexample.org*2Ftravel/1/0100019f___.YzJ1OnN0YXRlOmM6bzo5NzYzODYxMWI2ZjM5NTRhZjBmNDViZDFm',
