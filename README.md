@@ -128,6 +128,7 @@ Enabled by default:
 | `unwrapPrNewswire` | PR Newswire release click tracker (c212.net / edge.prnewswire.com /c/link/?u=\<target\>) |
 | `unwrapRedditOut` | Reddit outbound click tracker (out.reddit.com/?url=\<target\>) |
 | `unwrapSegmentfault` | Segmentfault external link redirect (link.segmentfault.com/?enc=\<base64\>) |
+| `unwrapSkyrock` | Skyrock blog outbound link redirect (www.skyrock.com/r?url=\<target\>) |
 | `unwrapSoundcloud` | SoundCloud exit link (exit.sc/?url=\<target\>) |
 | `unwrapSspai` | Sspai external link redirect (sspai.com/link?target=\<target\>) |
 | `unwrapSteamLinkfilter` | Steam outbound link filter (steamcommunity.com/linkfilter/?url=\<target\> or ?u=\<target\>) |

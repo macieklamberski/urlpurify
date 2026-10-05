@@ -91,6 +91,7 @@ import { unwrapSegmentfault } from './unwraps/segmentfault.js'
 // import { unwrapShareasale } from './unwraps/shareasale.js'
 // import { unwrapSjv } from './unwraps/sjv.js'
 // import { unwrapSkimlinks } from './unwraps/skimlinks.js'
+import { unwrapSkyrock } from './unwraps/skyrock.js'
 // import { unwrapSlack } from './unwraps/slack.js'
 // import { unwrapSmartredirect } from './unwraps/smartredirect.js'
 import { unwrapSoundcloud } from './unwraps/soundcloud.js'
@@ -224,6 +225,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapNicoMs,
   unwrapPocket,
   unwrapRedditOut,
+  unwrapSkyrock,
   unwrapSoundcloud,
   unwrapSteamLinkfilter,
   unwrapThreadsShim,
