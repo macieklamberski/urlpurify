@@ -46,6 +46,22 @@ describe('unwrapHirkereso', () => {
     expect(unwrapHirkereso(url)).toBeUndefined()
   })
 
+  it('should return undefined for a longer path under the redirect', () => {
+    const url = new URL(
+      'https://rd.hirkereso.hu/rd/54253312/preview?partner=rss&url=https%3A%2F%2Fexample.com%2F',
+    )
+
+    expect(unwrapHirkereso(url)).toBeUndefined()
+  })
+
+  it('should return undefined for the redirect path under another prefix', () => {
+    const url = new URL(
+      'https://rd.hirkereso.hu/go/rd/54253312?partner=rss&url=https%3A%2F%2Fexample.com%2F',
+    )
+
+    expect(unwrapHirkereso(url)).toBeUndefined()
+  })
+
   it('should return undefined for other hosts', () => {
     const url = new URL(
       'https://example.com/rd/54253312?partner=rss&url=https%3A%2F%2Fexample.org%2F',
