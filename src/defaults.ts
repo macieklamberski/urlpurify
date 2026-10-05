@@ -38,6 +38,7 @@ import { unwrapDzen } from './unwraps/dzen.js'
 // import { unwrapEsva } from './unwraps/esva.js'
 import { unwrapEvernote } from './unwraps/evernote.js'
 import { unwrapFacebookShim } from './unwraps/facebook.js'
+// import { unwrapFanbridge } from './unwraps/fanbridge.js'
 // import { unwrapFeedsportal } from './unwraps/feedsportal.js'
 // import { unwrapFirebaseDynamicLinks } from './unwraps/firebaseDynamicLinks.js'
 // import { unwrapFireeye } from './unwraps/fireeye.js'
@@ -142,6 +143,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapBarracudaLinkProtect,
   // unwrapCiscoSecureWeb,
   // unwrapEsva,
+  // unwrapFanbridge,
   // unwrapFireeye,
   // unwrapIcptrack,
   // unwrapLeverAnalytics,
