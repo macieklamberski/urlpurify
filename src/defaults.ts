@@ -216,6 +216,7 @@ import { unwrapSegmentfault } from './unwraps/segmentfault.js'
 import { unwrapSkyrock } from './unwraps/skyrock.js'
 // import { unwrapSlack } from './unwraps/slack.js'
 // import { unwrapSlickdeals } from './unwraps/slickdeals.js'
+// import { unwrapSmartAdserver } from './unwraps/smartAdserver.js'
 // import { unwrapSmartredirect } from './unwraps/smartredirect.js'
 // import { unwrapSmry } from './unwraps/smry.js'
 // import { unwrapSophos } from './unwraps/sophos.js'
@@ -458,6 +459,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapBingAds,
   // unwrapGoogleAds,
   // unwrapReviveAdserver,
+  // unwrapSmartAdserver,
   // unwrapTriplelift,
 
   // Podcast analytics prefixes.
