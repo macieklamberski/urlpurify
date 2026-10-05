@@ -130,6 +130,7 @@ import { unwrapMedium } from './unwraps/medium.js'
 // import { unwrapMimecast } from './unwraps/mimecast.js'
 // import { unwrapMoshimo } from './unwraps/moshimo.js'
 import { unwrapMozillaOutgoing } from './unwraps/mozillaOutgoing.js'
+// import { unwrapMyNewsletterBuilder } from './unwraps/myNewsletterBuilder.js'
 import { unwrapNaverOutgoing } from './unwraps/naverOutgoing.js'
 // import { unwrapNetaffiliation } from './unwraps/netaffiliation.js'
 import { unwrapNewswire } from './unwraps/newswire.js'
@@ -261,6 +262,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapMandrill,
   // unwrapMcas,
   // unwrapMimecast,
+  // unwrapMyNewsletterBuilder,
   // unwrapOutlookSafelinks,
   // unwrapPipedrive,
   // unwrapPostmark,
