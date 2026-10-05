@@ -120,6 +120,7 @@ Enabled by default:
 | `unwrapGoogleNewsModern` | Google News modern article URLs (news.google.com/articles/\<base64\>) |
 | `unwrapGoogleScholar` | Google Scholar search-result redirect (scholar.google.\<TLD\>/scholar_url?url=\<target\>) |
 | `unwrapHashnode` | Hashnode outbound redirect (hashnode.com/util/redirect?url=\<target\>) |
+| `unwrapHirkereso` | Hírkereső news aggregator click redirect (rd.hirkereso.hu/rd/\<id\>?url=\<target\>) |
 | `unwrapHrefLi` | href.li referrer stripper (href.li/?\<target\>), used by Tumblr |
 | `unwrapIndexHu` | Index.hu and Dex.hu outbound link counter (index.hu/x.php?id=\<id\>&url=\<target\>) |
 | `unwrapInstagramShim` | Instagram outbound link shim (l.instagram.com with ?u=\<target\>) |
