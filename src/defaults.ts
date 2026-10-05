@@ -70,6 +70,7 @@ import { unwrapJuejin } from './unwraps/juejin.js'
 // import { unwrapLeverAnalytics } from './unwraps/leverAnalytics.js'
 import { unwrapLinkedin } from './unwraps/linkedin.js'
 // import { unwrapLinksynergy } from './unwraps/linksynergy.js'
+import { unwrapLivejournal } from './unwraps/livejournal.js'
 // import { unwrapMailchimp } from './unwraps/mailchimp.js'
 // import { unwrapMailpanion } from './unwraps/mailpanion.js'
 // import { unwrapMailpgn } from './unwraps/mailpgn.js'
@@ -236,6 +237,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   unwrapInstagramShim,
   unwrapJive,
   unwrapLinkedin,
+  unwrapLivejournal,
   unwrapMedium,
   unwrapNaverOutgoing,
   // unwrapNicoMs,
