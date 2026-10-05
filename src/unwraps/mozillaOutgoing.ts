@@ -4,6 +4,7 @@ import type { UrlUnwrapper } from '../types.js'
 const pathRegex = /^\/v1\/[0-9a-f]{64}\/(.+)$/
 
 const mozillaOutgoingHosts = [
+  'outgoing.mozilla.org',
   'outgoing.prod.mozaws.net',
   'prod.outgoing.prod.webservices.mozgcp.net',
 ]
