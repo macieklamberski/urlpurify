@@ -20,6 +20,14 @@ describe('unwrapFeedblitz', () => {
     )
   })
 
+  it('should keep a tilde path in the target', () => {
+    const url = new URL(
+      'https://feeds.feedblitz.com/~/t/0/0/markmcguinnesspoetry/~https://www.example.edu/~user/page',
+    )
+
+    expect(unwrapFeedblitz(url)).toBe('https://www.example.edu/~user/page')
+  })
+
   it('should extract target from the underscore path', () => {
     const url = new URL(
       'https://feeds.feedblitz.com/~/t/0/_/inversecondemnation/~https://www.example.com/article',
@@ -57,6 +65,14 @@ describe('unwrapFeedblitz', () => {
   it('should return undefined for another tracker number', () => {
     const url = new URL(
       'https://feeds.feedblitz.com/~/t/0/1/markmcguinnesspoetry/~https://example.fm',
+    )
+
+    expect(unwrapFeedblitz(url)).toBeUndefined()
+  })
+
+  it('should return undefined for another tracker version', () => {
+    const url = new URL(
+      'https://feeds.feedblitz.com/~/t/1/0/markmcguinnesspoetry/~https://example.fm',
     )
 
     expect(unwrapFeedblitz(url)).toBeUndefined()
