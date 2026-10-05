@@ -157,6 +157,7 @@ import { unwrapPrNewswire } from './unwraps/prNewswire.js'
 import { unwrapRedditOut } from './unwraps/redditOut.js'
 // import { unwrapRedirectingat } from './unwraps/redirectingat.js'
 import { unwrapResearchgate } from './unwraps/researchgate.js'
+// import { unwrapReverbnation } from './unwraps/reverbnation.js'
 // import { unwrapReviveAdserver } from './unwraps/reviveAdserver.js'
 import { unwrapSapHelp } from './unwraps/sapHelp.js'
 import { unwrapSegmentfault } from './unwraps/segmentfault.js'
@@ -266,6 +267,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapProofpointV1,
   // unwrapProofpointV2,
   // unwrapProofpointV3,
+  // unwrapReverbnation,
   // unwrapSlack,
   // unwrapSophos,
   // unwrapSquarespaceEmail,
