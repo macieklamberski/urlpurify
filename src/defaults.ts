@@ -39,6 +39,7 @@ import { unwrapDzen } from './unwraps/dzen.js'
 import { unwrapEvernote } from './unwraps/evernote.js'
 import { unwrapFacebookShim } from './unwraps/facebook.js'
 // import { unwrapFeedsportal } from './unwraps/feedsportal.js'
+import { unwrapFinalsite } from './unwraps/finalsite.js'
 // import { unwrapFirebaseDynamicLinks } from './unwraps/firebaseDynamicLinks.js'
 // import { unwrapFireeye } from './unwraps/fireeye.js'
 import { unwrapFlipboard } from './unwraps/flipboard.js'
@@ -234,6 +235,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // Developer and publishing platforms.
   unwrapCsdn,
   unwrapEvernote,
+  unwrapFinalsite,
   unwrapGitee,
   unwrapHashnode,
   unwrapJianshuGo,
