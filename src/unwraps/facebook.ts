@@ -1,8 +1,7 @@
+import type { UrlUnwrapper } from '../types.js'
 import { createParamExtractor } from '../utils.js'
 
-// Meta link shim (l.facebook.com/l.php?u=<target>, also lm., www., upload., m., web., pt-br.,
-// free., business., 0. and bare facebook.com, and l.messenger.com).
-export const unwrapFacebookShim = createParamExtractor({
+const unwrapLinkPhp = createParamExtractor({
   hosts: [
     'l.facebook.com',
     'lm.facebook.com',
@@ -20,3 +19,23 @@ export const unwrapFacebookShim = createParamExtractor({
   path: '/l.php',
   params: ['u'],
 })
+
+const unwrapRoot = createParamExtractor({
+  hosts: 'l.facebook.com',
+  path: '/',
+  params: ['u'],
+})
+
+const unwrapLsr = createParamExtractor({
+  hosts: 'l.facebook.com',
+  path: '/lsr.php',
+  params: ['u'],
+})
+
+// Meta link shim (l.facebook.com/l.php?u=<target>, also lm., www., upload., m., web., pt-br.,
+// free., business., 0. and bare facebook.com, and l.messenger.com), and the same shim on the root
+// path (l.facebook.com/?u=<target>) and on /lsr.php (l.facebook.com/lsr.php?u=<target>), both
+// only on l.facebook.com.
+export const unwrapFacebookShim: UrlUnwrapper = (url) => {
+  return unwrapLinkPhp(url) ?? unwrapRoot(url) ?? unwrapLsr(url)
+}
