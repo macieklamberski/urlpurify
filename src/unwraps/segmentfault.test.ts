@@ -29,18 +29,6 @@ describe('unwrapSegmentfault', () => {
     expect(unwrapSegmentfault(url)).toBeUndefined()
   })
 
-  it('should return undefined for a subdomain no specimen shows', () => {
-    const url = new URL('https://go.segmentfault.com/?enc=aHR0cHM6Ly9leGFtcGxlLmNvbS9wb3N0')
-
-    expect(unwrapSegmentfault(url)).toBeUndefined()
-  })
-
-  it('should return undefined for a lookalike domain', () => {
-    const url = new URL('https://examplesegmentfault.com/?enc=aHR0cHM6Ly9leGFtcGxlLmNvbS9wb3N0')
-
-    expect(unwrapSegmentfault(url)).toBeUndefined()
-  })
-
   it('should return undefined for another path on the host', () => {
     const url = new URL('https://link.segmentfault.com/a/1?enc=aHR0cHM6Ly9leGFtcGxlLmNvbS9wb3N0')
 

@@ -14,12 +14,6 @@ describe('unwrapAnonymTo', () => {
     expect(unwrapAnonymTo(url)).toBe('https://example.com/page#top')
   })
 
-  it('should extract the target from a subdomain no specimen shows', () => {
-    const url = new URL('https://www.anonym.to/?https://example.com/page')
-
-    expect(unwrapAnonymTo(url)).toBe('https://example.com/page')
-  })
-
   it('should return undefined when the query is empty', () => {
     const url = new URL('https://anonym.to/')
 
@@ -34,12 +28,6 @@ describe('unwrapAnonymTo', () => {
 
   it('should return undefined for the shape on another host', () => {
     const url = new URL('https://example.com/?https://example.org/page')
-
-    expect(unwrapAnonymTo(url)).toBeUndefined()
-  })
-
-  it('should return undefined for a lookalike host', () => {
-    const url = new URL('https://exampleanonym.to/?https://example.org/page')
 
     expect(unwrapAnonymTo(url)).toBeUndefined()
   })

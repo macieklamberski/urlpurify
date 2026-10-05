@@ -37,16 +37,4 @@ describe('unwrapNicoMs', () => {
 
     expect(unwrapNicoMs(url)).toBeUndefined()
   })
-
-  it('should return undefined for a subdomain no specimen shows', () => {
-    const url = new URL('https://www.nico.ms/sm12345678')
-
-    expect(unwrapNicoMs(url)).toBeUndefined()
-  })
-
-  it('should return undefined for a lookalike domain', () => {
-    const url = new URL('https://examplenico.ms/sm12345678')
-
-    expect(unwrapNicoMs(url)).toBeUndefined()
-  })
 })

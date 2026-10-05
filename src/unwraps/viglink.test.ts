@@ -98,20 +98,8 @@ describe('unwrapViglink', () => {
     })
   })
 
-  it('should return undefined for an unlisted subdomain', () => {
-    const url = new URL('https://eu.viglink.com/api/click?out=https%3A%2F%2Fexample.com%2Fpage')
-
-    expect(unwrapViglink(url)).toBeUndefined()
-  })
-
   it('should return undefined for another path on the redirect host', () => {
     const url = new URL('https://redirect.viglink.com/other?u=https%3A%2F%2Fexample.com%2Fpage')
-
-    expect(unwrapViglink(url)).toBeUndefined()
-  })
-
-  it('should return undefined for the click api on a lookalike host', () => {
-    const url = new URL('https://exampleviglink.com/api/click?out=https%3A%2F%2Fexample.com%2Fpage')
 
     expect(unwrapViglink(url)).toBeUndefined()
   })

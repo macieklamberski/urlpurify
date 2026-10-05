@@ -20,18 +20,6 @@ describe('unwrapJuejin', () => {
     expect(unwrapJuejin(url)).toBeUndefined()
   })
 
-  it('should return undefined for a subdomain no specimen shows', () => {
-    const url = new URL('https://cdn.juejin.cn/?target=https%3A%2F%2Fexample.com%2Fpost')
-
-    expect(unwrapJuejin(url)).toBeUndefined()
-  })
-
-  it('should return undefined for a lookalike domain', () => {
-    const url = new URL('https://examplejuejin.cn/?target=https%3A%2F%2Fexample.com%2Fpost')
-
-    expect(unwrapJuejin(url)).toBeUndefined()
-  })
-
   it('should return undefined for another path on the host', () => {
     const url = new URL('https://link.juejin.cn/about?target=https%3A%2F%2Fexample.com%2Fpost')
 

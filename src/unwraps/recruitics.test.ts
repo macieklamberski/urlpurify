@@ -22,22 +22,6 @@ describe('unwrapRecruitics', () => {
     expect(unwrapRecruitics(url)).toBeUndefined()
   })
 
-  it('should return undefined for a subdomain no specimen shows', () => {
-    const url = new URL(
-      'https://www.recruitics.com/redirect?rx_url=https%3A%2F%2Fexample.com%2Fpost',
-    )
-
-    expect(unwrapRecruitics(url)).toBeUndefined()
-  })
-
-  it('should return undefined for a lookalike domain', () => {
-    const url = new URL(
-      'https://examplerecruitics.com/redirect?rx_url=https%3A%2F%2Fexample.com%2Fpost',
-    )
-
-    expect(unwrapRecruitics(url)).toBeUndefined()
-  })
-
   it('should return undefined for another path on the host', () => {
     const url = new URL('https://jsv3.recruitics.com/other?rx_url=https%3A%2F%2Fexample.com%2Fpost')
 

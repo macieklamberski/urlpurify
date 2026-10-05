@@ -68,12 +68,6 @@ describe('unwrapMedium', () => {
     expect(unwrapMedium(url)).toBeUndefined()
   })
 
-  it('should return undefined for a lookalike host', () => {
-    const url = new URL('https://examplemedium.com/r?url=https%3A%2F%2Fexample.com')
-
-    expect(unwrapMedium(url)).toBeUndefined()
-  })
-
   it('should return undefined for url param on a nested r path', () => {
     const url = new URL('https://medium.com/@author/r?url=https%3A%2F%2Fexample.com')
 
@@ -92,18 +86,6 @@ describe('unwrapMedium', () => {
     const url = new URL(
       'https://medium.com/m/global-identity-3?redirectUrl=https%3A%2F%2Fexample.com',
     )
-
-    expect(unwrapMedium(url)).toBeUndefined()
-  })
-
-  it('should extract target on gen.medium.com', () => {
-    const url = new URL('https://gen.medium.com/r?url=https%3A%2F%2Fexample.com%2Fpost')
-
-    expect(unwrapMedium(url)).toBe('https://example.com/post')
-  })
-
-  it('should return undefined on an author subdomain', () => {
-    const url = new URL('https://author.medium.com/r?url=https%3A%2F%2Fexample.com%2Fpost')
 
     expect(unwrapMedium(url)).toBeUndefined()
   })

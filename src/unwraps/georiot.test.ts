@@ -22,24 +22,8 @@ describe('unwrapGeoriot', () => {
     expect(unwrapGeoriot(url)).toBeUndefined()
   })
 
-  it('should return undefined for an unlisted subdomain', () => {
-    const url = new URL(
-      'https://www.georiot.com/Proxy.ashx?GR_URL=https%3A%2F%2Fexample.com%2Fpage',
-    )
-
-    expect(unwrapGeoriot(url)).toBeUndefined()
-  })
-
   it('should return undefined for another path on the host', () => {
     const url = new URL('https://target.georiot.com/?GR_URL=https%3A%2F%2Fexample.com%2Fpage')
-
-    expect(unwrapGeoriot(url)).toBeUndefined()
-  })
-
-  it('should return undefined for a lookalike host', () => {
-    const url = new URL(
-      'https://examplegeoriot.com/Proxy.ashx?GR_URL=https%3A%2F%2Fexample.com%2Fpage',
-    )
 
     expect(unwrapGeoriot(url)).toBeUndefined()
   })

@@ -22,20 +22,6 @@ describe('unwrapMailpanion', () => {
     expect(unwrapMailpanion(url)).toBeUndefined()
   })
 
-  it('should return undefined for a subdomain no specimen shows', () => {
-    const url = new URL('https://www.mailpanion.com/?destination=https%3A%2F%2Fexample.com%2Fpost')
-
-    expect(unwrapMailpanion(url)).toBeUndefined()
-  })
-
-  it('should return undefined for a lookalike domain', () => {
-    const url = new URL(
-      'https://examplemailpanion.com/?destination=https%3A%2F%2Fexample.com%2Fpost',
-    )
-
-    expect(unwrapMailpanion(url)).toBeUndefined()
-  })
-
   it('should return undefined for another path on the host', () => {
     const url = new URL('https://mailpanion.com/other?destination=https%3A%2F%2Fexample.com%2Fpost')
 

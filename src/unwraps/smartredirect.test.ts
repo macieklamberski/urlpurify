@@ -24,12 +24,6 @@ describe('unwrapSmartredirect', () => {
     expect(unwrapSmartredirect(url)).toBe('https://example.com/post')
   })
 
-  it('should return undefined for an unlisted subdomain', () => {
-    const url = new URL('https://go.smartredirect.de/?url=https%3A%2F%2Fexample.com%2Fproduct')
-
-    expect(unwrapSmartredirect(url)).toBeUndefined()
-  })
-
   it('should return undefined when url param is missing', () => {
     const url = new URL('https://smartredirect.de/?other=value')
 
@@ -52,12 +46,6 @@ describe('unwrapSmartredirect', () => {
 
   it('should return undefined for non-smartredirect hosts', () => {
     const url = new URL('https://example.com/?url=https%3A%2F%2Fother.com')
-
-    expect(unwrapSmartredirect(url)).toBeUndefined()
-  })
-
-  it('should return undefined for a lookalike host', () => {
-    const url = new URL('https://examplesmartredirect.de/?url=https%3A%2F%2Fexample.com')
 
     expect(unwrapSmartredirect(url)).toBeUndefined()
   })

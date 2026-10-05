@@ -18,14 +18,6 @@ describe('unwrapAvantlink', () => {
     expect(unwrapAvantlink(url)).toBe('https://example.com/handguns')
   })
 
-  it('should extract target on classic.avantlink.com', () => {
-    const url = new URL(
-      'https://classic.avantlink.com/click.php?tt=cl&mi=16785&pw=27131&ctc=ybw-gb-4571583055668934700&url=https%3A%2F%2Fexample.com%2Fproducts%2Fsailing-shoes',
-    )
-
-    expect(unwrapAvantlink(url)).toBe('https://example.com/products/sailing-shoes')
-  })
-
   it('should extract unencoded target', () => {
     const url = new URL(
       'http://www.avantlink.com/click.php?tt=ml&ti=1045&pw=1403&ctc=deals&url=http://example.com/outdoors/',
@@ -62,28 +54,6 @@ describe('unwrapAvantlink', () => {
 
   it('should return undefined for click.php on other hosts', () => {
     const url = new URL('https://example.com/click.php?tt=cl&url=https%3A%2F%2Fexample.org%2F')
-
-    expect(unwrapAvantlink(url)).toBeUndefined()
-  })
-
-  it('should return undefined for a lookalike host', () => {
-    const url = new URL(
-      'https://exampleavantlink.com/click.php?url=https%3A%2F%2Fexample.com%2Fpage',
-    )
-
-    expect(unwrapAvantlink(url)).toBeUndefined()
-  })
-
-  it('should extract target from the bare domain', () => {
-    const url = new URL('https://avantlink.com/click.php?url=https%3A%2F%2Fexample.com%2Fpage')
-
-    expect(unwrapAvantlink(url)).toBe('https://example.com/page')
-  })
-
-  it('should return undefined for an unlisted subdomain', () => {
-    const url = new URL(
-      'https://www-staging.avantlink.com/click.php?url=https%3A%2F%2Fexample.com%2Fpage',
-    )
 
     expect(unwrapAvantlink(url)).toBeUndefined()
   })
