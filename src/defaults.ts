@@ -157,6 +157,7 @@ import { unwrapMedium } from './unwraps/medium.js'
 // import { unwrapMoshimo } from './unwraps/moshimo.js'
 import { unwrapMozillaOutgoing } from './unwraps/mozillaOutgoing.js'
 // import { unwrapMyNewsletterBuilder } from './unwraps/myNewsletterBuilder.js'
+// import { unwrapNatlibNz } from './unwraps/natlibNz.js'
 import { unwrapNaverOutgoing } from './unwraps/naverOutgoing.js'
 // import { unwrapNetaffiliation } from './unwraps/netaffiliation.js'
 import { unwrapNetcentrum } from './unwraps/netcentrum.js'
@@ -514,6 +515,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapLocWebArchive,
   // unwrapMegalodon,
   unwrapMozillaOutgoing,
+  // unwrapNatlibNz,
   // unwrapNlaWebarchive,
   // unwrapSmry,
   // unwrapUkgwa,
