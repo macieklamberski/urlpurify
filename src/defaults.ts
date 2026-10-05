@@ -13,6 +13,7 @@ import { unwrapAnonymTo } from './unwraps/anonymTo.js'
 // import { unwrapArchiveToday } from './unwraps/archiveToday.js'
 // import { unwrapAvantlink } from './unwraps/avantlink.js'
 // import { unwrapAwin } from './unwraps/awin.js'
+import { unwrapBale } from './unwraps/bale.js'
 // import { unwrapBarracudaLinkProtect } from './unwraps/barracudaLinkProtect.js'
 import { unwrapBing } from './unwraps/bing.js'
 // import { unwrapBingAds } from './unwraps/bingAds.js'
@@ -205,6 +206,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
 
   // Social and community platforms.
   unwrapAnonymTo,
+  unwrapBale,
   unwrapBlueskyRedirect,
   unwrapCalendly,
   unwrapDerefMail,
