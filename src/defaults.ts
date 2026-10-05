@@ -52,6 +52,7 @@ import { unwrapDzen } from './unwraps/dzen.js'
 // import { unwrapEffiliation } from './unwraps/effiliation.js'
 // import { unwrapEmbedly } from './unwraps/embedly.js'
 // import { unwrapEsva } from './unwraps/esva.js'
+// import { unwrapEulerian } from './unwraps/eulerian.js'
 import { unwrapEvernote } from './unwraps/evernote.js'
 import { unwrapFacebookShim } from './unwraps/facebook.js'
 // import { unwrapFanbridge } from './unwraps/fanbridge.js'
@@ -262,6 +263,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapDmmAffiliate,
   // unwrapEbayRover,
   // unwrapEffiliation,
+  // unwrapEulerian,
   // unwrapFirebaseDynamicLinks,
   // unwrapFiverr,
   // unwrapGateSc,
