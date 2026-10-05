@@ -81,6 +81,7 @@ import { unwrapDisqus } from './unwraps/disqus.js'
 // import { unwrapDognet } from './unwraps/dognet.js'
 import { unwrapDouban } from './unwraps/douban.js'
 import { unwrapDropbox } from './unwraps/dropbox.js'
+// import { unwrapDstats } from './unwraps/dstats.js'
 // import { unwrapDuckduckgo } from './unwraps/duckduckgo.js'
 // import { unwrapDuomai } from './unwraps/duomai.js'
 // import { unwrapDyn } from './unwraps/dyn.js'
@@ -573,6 +574,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   unwrapDasBlog,
   unwrapDatalifeEngine,
   unwrapDropbox,
+  // unwrapDstats,
   unwrapEvernote,
   unwrapFeedStatistics,
   unwrapFinalsite,
