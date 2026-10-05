@@ -30,6 +30,12 @@ describe('unwrapArquivo', () => {
     expect(unwrapArquivo(url)).toBeUndefined()
   })
 
+  it('should return undefined for a partial timestamp', () => {
+    const url = new URL('https://arquivo.pt/wayback/2009/http://www.example.com/')
+
+    expect(unwrapArquivo(url)).toBeUndefined()
+  })
+
   it('should return undefined for a doubled replay prefix', () => {
     const url = new URL(
       'http://arquivo.pt/wayback/wayback/20080208193937/http://www.example.pt/page',
