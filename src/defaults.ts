@@ -181,6 +181,7 @@ import { unwrapPocket } from './unwraps/pocket.js'
 // import { unwrapPodtrac } from './unwraps/podtrac.js'
 // import { unwrapPostmark } from './unwraps/postmark.js'
 import { unwrapPrNewswire } from './unwraps/prNewswire.js'
+// import { unwrapProofpointIsolation } from './unwraps/proofpointIsolation.js'
 // import { unwrapProofpointV1 } from './unwraps/proofpointV1.js'
 // import { unwrapProofpointV2 } from './unwraps/proofpointV2.js'
 // import { unwrapProofpointV3 } from './unwraps/proofpointV3.js'
@@ -318,6 +319,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapOutlookSafelinks,
   // unwrapPipedrive,
   // unwrapPostmark,
+  // unwrapProofpointIsolation,
   // unwrapProofpointV1,
   // unwrapProofpointV2,
   // unwrapProofpointV3,
