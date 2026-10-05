@@ -248,6 +248,7 @@ import { unwrapTiktok } from './unwraps/tiktok.js'
 import { unwrapTumblr } from './unwraps/tumblr.js'
 // import { unwrapTwitterRedirect } from './unwraps/twitterRedirect.js'
 // import { unwrapTwoCheckout } from './unwraps/twoCheckout.js'
+// import { unwrapUinterbox } from './unwraps/uinterbox.js'
 // import { unwrapUkgwa } from './unwraps/ukgwa.js'
 // import { unwrapUkWebArchive } from './unwraps/ukWebArchive.js'
 // import { unwrapUnescoWebArchive } from './unwraps/unescoWebArchive.js'
@@ -454,6 +455,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapTravelpayouts,
   // unwrapTrxHub,
   // unwrapTwoCheckout,
+  // unwrapUinterbox,
   // unwrapValuecommerce,
   // unwrapViglink,
   // unwrapWebgains,
