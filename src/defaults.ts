@@ -109,9 +109,9 @@ import { unwrapVkAway } from './unwraps/vkAway.js'
 // import { unwrapWebgains } from './unwraps/webgains.js'
 // import { unwrapWordpressEmail } from './unwraps/wordpressEmail.js'
 // import { unwrapWordpressGo2 } from './unwraps/wordpressGo2.js'
+import { unwrapXengentr } from './unwraps/xengentr.js'
 import { unwrapYahooSearch } from './unwraps/yahooSearch.js'
 import { unwrapYandexMail } from './unwraps/yandexMail.js'
-import { unwrapYonlendirme } from './unwraps/yonlendirme.js'
 import { unwrapYouTube } from './unwraps/youtube.js'
 import { unwrapZemanta } from './unwraps/zemanta.js'
 import { unwrapZhihu } from './unwraps/zhihu.js'
@@ -230,8 +230,8 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   unwrapThreadsShim,
   unwrapTumblr,
   unwrapVkAway,
+  unwrapXengentr,
   unwrapYandexMail,
-  unwrapYonlendirme,
 
   // Developer and publishing platforms.
   unwrapCsdn,

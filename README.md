@@ -134,9 +134,9 @@ Enabled by default:
 | `unwrapThreadsShim` | Threads outbound link shim (l.threads.com / l.threads.net with ?u=\<target\>) |
 | `unwrapTumblr` | Tumblr outbound redirect (t.umblr.com/redirect?z=\<target\>) |
 | `unwrapVkAway` | VK away redirect (vk.com/away.php?to=\<target\>) |
+| `unwrapXengentr` | XenGenTr external link redirect add-on for XenForo (\<any host\>/yonlendirme?to=\<base64\>) |
 | `unwrapYahooSearch` | Yahoo Search redirect (r.search.yahoo.com/.../RU=\<target\>/RK=...) |
 | `unwrapYandexMail` | Yandex Mail link redirect (mail.yandex.\<TLD\>/re.jsx?l=\<base64url\>) |
-| `unwrapYonlendirme` | Turkish forum leaving redirect (<any host>/yonlendirme?to=<base64>) |
 | `unwrapYouTube` | YouTube external redirect (www.youtube.com/redirect?q=\<target\>) |
 | `unwrapZemanta` | Zemanta related-article redirect (r.zemanta.com/?u=\<target\>) |
 | `unwrapZhihu` | Zhihu external redirect (link.zhihu.com/?target=\<target\>) |

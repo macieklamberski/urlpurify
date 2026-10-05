@@ -2,9 +2,9 @@ import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { decodeBase64 } from '../utils.js'
 
-// Turkish forum leaving redirect, on each forum's own host (<host>/yonlendirme?to=<base64>). The
-// to param is a base64-encoded target URL.
-export const unwrapYonlendirme: UrlUnwrapper = (url) => {
+// XenGenTr external link redirect add-on for XenForo, on each forum's own host
+// (<host>/yonlendirme?to=<base64>). The to param is a base64-encoded target URL.
+export const unwrapXengentr: UrlUnwrapper = (url) => {
   if (url.pathname !== '/yonlendirme') {
     return
   }
