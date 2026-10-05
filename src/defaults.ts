@@ -180,6 +180,7 @@ import { unwrapRedditOut } from './unwraps/redditOut.js'
 import { unwrapResearchgate } from './unwraps/researchgate.js'
 // import { unwrapReverbnation } from './unwraps/reverbnation.js'
 // import { unwrapReviveAdserver } from './unwraps/reviveAdserver.js'
+// import { unwrapSalesforceiq } from './unwraps/salesforceiq.js'
 import { unwrapSapHelp } from './unwraps/sapHelp.js'
 import { unwrapSegmentfault } from './unwraps/segmentfault.js'
 // import { unwrapShareasale } from './unwraps/shareasale.js'
@@ -300,6 +301,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapProofpointV2,
   // unwrapProofpointV3,
   // unwrapReverbnation,
+  // unwrapSalesforceiq,
   // unwrapSlack,
   // unwrapSophos,
   // unwrapSquarespaceEmail,
