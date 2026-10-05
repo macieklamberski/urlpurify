@@ -85,6 +85,8 @@ For wrappers that encode the target (base64 path segments, custom escaping), wri
 
 **Off by default:** affiliate and referral wrappers (`unwrapSkimlinks`, `unwrapAwin`, `unwrapShareasale`, `unwrapAmazonAffiliate`, `unwrapViglink`, and the rest). The reader lands on the same page either way — unwrapping only removes the writer's commission, which for a small blog is the money paying for the work. Opt in explicitly if you want them.
 
+**Also off by default:** podcast analytics prefixes, such as `unwrapPodtrac`. The listener gets the same audio file either way. Unwrapping removes the podcaster's download counts.
+
 Prevalence is not the test: affiliate wrappers are more common than tracking shims.
 
 ## Unwrappers
