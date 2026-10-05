@@ -135,6 +135,7 @@ import { unwrapLinkedin } from './unwraps/linkedin.js'
 // import { unwrapLinktrust } from './unwraps/linktrust.js'
 // import { unwrapLinkwise } from './unwraps/linkwise.js'
 import { unwrapLivejournal } from './unwraps/livejournal.js'
+// import { unwrapLocWebArchive } from './unwraps/locWebArchive.js'
 // import { unwrapMagnetmail } from './unwraps/magnetmail.js'
 // import { unwrapMail2easy } from './unwraps/mail2easy.js'
 // import { unwrapMailchimp } from './unwraps/mailchimp.js'
@@ -497,6 +498,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapAnonymouse,
   // unwrapArchiveToday, // Snapshot of a page at a point in time, not a redirect
   // unwrapEmbedly,
+  // unwrapLocWebArchive,
   // unwrapMegalodon,
   unwrapMozillaOutgoing,
   // unwrapNlaWebarchive,
