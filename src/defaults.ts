@@ -70,6 +70,7 @@ import { unwrapDatalifeEngine } from './unwraps/datalifeEngine.js'
 import { unwrapDerefMail } from './unwraps/derefMail.js'
 import { unwrapDeviantartOutgoing } from './unwraps/deviantartOutgoing.js'
 // import { unwrapDigidip } from './unwraps/digidip.js'
+// import { unwrapDigikala } from './unwraps/digikala.js'
 // import { unwrapDirectMail } from './unwraps/directMail.js'
 import { unwrapDisqus } from './unwraps/disqus.js'
 // import { unwrapDmmAffiliate } from './unwraps/dmmAffiliate.js'
@@ -403,6 +404,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapConvertiser,
   // unwrapCuelinks,
   // unwrapDigidip,
+  // unwrapDigikala,
   // unwrapDmmAffiliate,
   // unwrapDognet,
   // unwrapEbayRover,
