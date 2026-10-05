@@ -103,6 +103,7 @@ Enabled by default:
 | `unwrapDeviantartOutgoing` | DeviantArt outbound link shim (www.deviantart.com/\<user\>/outgoing?\<target\>) |
 | `unwrapDisqus` | Disqus outbound link redirect (disq.us/url?url=\<target\> and disq.us/?url=\<target\>) |
 | `unwrapDouban` | Douban external link redirect (www.douban.com/link2/?url=\<target\>) |
+| `unwrapDropbox` | Dropbox outbound link redirect (www.dropbox.com/referrer_cleansing_redirect?url=\<target\>) and Paper external link (www.dropbox.com/paper/ep/redirect/external-link?url=\<target\>, also on paper.dropbox.com) |
 | `unwrapDzen` | Dzen away redirect (dzen.ru/away?to=\<target\>) |
 | `unwrapEvernote` | Evernote outbound link redirect (www.evernote.com/OutboundRedirect.action?dest=\<target\>) |
 | `unwrapFacebookShim` | Meta link shim (l.facebook.com/l.php?u=\<target\>, also lm., www., upload., m., web., pt-br., free., business., 0. and bare facebook.com, and l.messenger.com, plus l.facebook.com/?u=\<target\> and l.facebook.com/lsr.php?u=\<target\>) |

@@ -32,6 +32,7 @@ import { unwrapDeviantartOutgoing } from './unwraps/deviantartOutgoing.js'
 import { unwrapDisqus } from './unwraps/disqus.js'
 // import { unwrapDmmAffiliate } from './unwraps/dmmAffiliate.js'
 import { unwrapDouban } from './unwraps/douban.js'
+import { unwrapDropbox } from './unwraps/dropbox.js'
 // import { unwrapDuckduckgo } from './unwraps/duckduckgo.js'
 import { unwrapDzen } from './unwraps/dzen.js'
 // import { unwrapEbayRover } from './unwraps/ebayRover.js'
@@ -247,6 +248,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
 
   // Developer and publishing platforms.
   unwrapCsdn,
+  unwrapDropbox,
   unwrapEvernote,
   unwrapGitee,
   unwrapHashnode,
