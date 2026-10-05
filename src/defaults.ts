@@ -114,6 +114,7 @@ import { unwrapThreadsShim } from './unwraps/threads.js'
 // import { unwrapTradedoubler } from './unwraps/tradedoubler.js'
 // import { unwrapTradetracker } from './unwraps/tradetracker.js'
 // import { unwrapTravelpayouts } from './unwraps/travelpayouts.js'
+// import { unwrapTrendMicro } from './unwraps/trendMicro.js'
 // import { unwrapTrustwaveScanmail } from './unwraps/trustwaveScanmail.js'
 import { unwrapTumblr } from './unwraps/tumblr.js'
 // import { unwrapUkgwa } from './unwraps/ukgwa.js'
@@ -180,6 +181,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapSquarespaceEmail,
   // unwrapStreak,
   // unwrapTitanhqLinklock,
+  // unwrapTrendMicro,
   // unwrapTrustwaveScanmail,
   // unwrapVuture,
   // unwrapWordpressEmail,
