@@ -146,6 +146,7 @@ Enabled by default:
 | `unwrapPhilpapers` | PhilPapers outbound link to a work's source (philpapers.org/go.pl?u=\<target\>) |
 | `unwrapPocket` | Pocket redirect (getpocket.com/redirect?url=\<target\>) |
 | `unwrapPrNewswire` | PR Newswire release click tracker (c212.net / edge.prnewswire.com /c/link/?u=\<target\>) |
+| `unwrapPrweb` | PRWeb release click tracker (www.prweb.net/Redirect.aspx?id=\<base64\>) |
 | `unwrapRedditOut` | Reddit outbound click tracker (out.reddit.com/?url=\<target\>) |
 | `unwrapResearchgate` | ResearchGate dereferrer (www.researchgate.net/deref/\<target\> and go.Deref.html?url=\<target\>) |
 | `unwrapSapHelp` | SAP Help Portal leaving-site page (help.sap.com/docs/link-disclaimer?site=\<target\>) |

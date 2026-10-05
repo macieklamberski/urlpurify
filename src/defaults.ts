@@ -164,6 +164,7 @@ import { unwrapPrNewswire } from './unwraps/prNewswire.js'
 // import { unwrapProofpointV1 } from './unwraps/proofpointV1.js'
 // import { unwrapProofpointV2 } from './unwraps/proofpointV2.js'
 // import { unwrapProofpointV3 } from './unwraps/proofpointV3.js'
+import { unwrapPrweb } from './unwraps/prweb.js'
 // import { unwrapRakutenAffiliate } from './unwraps/rakutenAffiliate.js'
 // import { unwrapRecruitics } from './unwraps/recruitics.js'
 import { unwrapRedditOut } from './unwraps/redditOut.js'
@@ -457,6 +458,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   unwrapMarketwire,
   unwrapNewswire,
   unwrapPrNewswire,
+  unwrapPrweb,
 
   // Government sites.
   unwrapFtc,
