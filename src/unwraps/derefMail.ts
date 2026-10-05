@@ -31,24 +31,28 @@ const pathRegex = /^\/mail\/client\/(?:[\w-]+\/)?dereferrer\/$/
 const lightmailerPathRegex = /^\/[\w-]+\/deref\/$/
 const encodedSchemeRegex = /^https?%3A/i
 
+// The older GMX dereferrer (service.gmx.net/de/cgi/derefer?TYPE=3&DEST=<target>).
 const extractLegacy = createParamExtractor({
   hosts: 'service.gmx.net',
   path: '/de/cgi/derefer',
   params: ['DEST'],
 })
 
+// The leaving page on mail.com and GMX (service.mail.com/dereferrer/?target=<target>).
 const extractLeaving = createParamExtractor({
   hosts: ['service.mail.com', 'www.gmx.com', 'www.gmx.es'],
   path: '/dereferrer/',
   params: ['target'],
 })
 
+// The United Internet leaving page (www.ui-deref.de/r/?to=<target>).
 const extractUiDeref = createParamExtractor({
   hosts: 'www.ui-deref.de',
   path: '/r/',
   params: ['to'],
 })
 
+// The old WEB.DE FreeMail jump (freemailng<n>.web.de/jump.htm?goto=<target>).
 const extractFreemailJump = createParamExtractor({
   hosts: /^freemailng\d+\.web\.de$/,
   path: '/jump.htm',
@@ -56,12 +60,8 @@ const extractFreemailJump = createParamExtractor({
 })
 
 // GMX, WEB.DE, mail.com and 1&1 webmail dereferrer (deref-gmx.net/mail/client/[<token>/]
-// dereferrer/?redirectUrl=<target>, slashless on the 3c client hosts), the light mailer's
-// (lightmailer.mail.com/<token>/deref/?redirectUrl=<target>), the older GMX dereferrer
-// (service.gmx.net/de/cgi/derefer?TYPE=3&DEST=<target>), the leaving page on mail.com and GMX
-// (service.mail.com/dereferrer/?target=<target>), the United Internet leaving page
-// (www.ui-deref.de/r/?to=<target>), and the old WEB.DE FreeMail jump
-// (freemailng<n>.web.de/jump.htm?goto=<target>).
+// dereferrer/?redirectUrl=<target>, slashless on the 3c client hosts, and
+// lightmailer.mail.com/<token>/deref/?redirectUrl=<target>), plus the older shapes above.
 export const unwrapDerefMail: UrlUnwrapper = (url) => {
   const isDerefHost = isHostOf(url, hosts) && pathRegex.test(url.pathname)
   const isClientHost = isHostOf(url, clientHosts) && url.pathname === '/mail/client/dereferrer'
