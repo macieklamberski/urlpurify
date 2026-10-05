@@ -52,6 +52,7 @@ import { unwrapGoogleNews } from './unwraps/googleNews.js'
 import { unwrapGoogleNewsModern } from './unwraps/googleNewsModern.js'
 import { unwrapGoogleScholar } from './unwraps/googleScholar.js'
 import { unwrapHashnode } from './unwraps/hashnode.js'
+import { unwrapHirkereso } from './unwraps/hirkereso.js'
 import { unwrapHrefLi } from './unwraps/hrefLi.js'
 // import { unwrapIcptrack } from './unwraps/icptrack.js'
 // import { unwrapImpact } from './unwraps/impact.js'
@@ -133,6 +134,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   unwrapGoogleNews,
   unwrapGoogleNewsModern,
   unwrapGoogleScholar,
+  unwrapHirkereso,
   unwrapYahooSearch,
   unwrapYouTube,
 
