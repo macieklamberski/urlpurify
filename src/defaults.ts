@@ -87,6 +87,7 @@ import { unwrapMedium } from './unwraps/medium.js'
 // import { unwrapMoshimo } from './unwraps/moshimo.js'
 import { unwrapMozillaOutgoing } from './unwraps/mozillaOutgoing.js'
 import { unwrapNaverOutgoing } from './unwraps/naverOutgoing.js'
+import { unwrapNewswire } from './unwraps/newswire.js'
 // import { unwrapNicoMs } from './unwraps/nicoMs.js'
 import { unwrapOkRu } from './unwraps/okRu.js'
 // import { unwrapOutlookSafelinks } from './unwraps/outlookSafelinks.js'
@@ -299,6 +300,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
 
   // Press release wires.
   unwrapBusinessWire,
+  unwrapNewswire,
   unwrapPrNewswire,
 
   // Cache and proxy services.
