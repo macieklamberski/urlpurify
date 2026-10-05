@@ -4,8 +4,9 @@ import type { UrlUnwrapper } from '../types.js'
 // A forum root prefix, such as /forum/ or /boards/.
 const pathRegex = /^(?:\/[^/]+)?\/redirect-to\/$/
 
-// vBulletin external link redirect (<forum host>/redirect-to/?redirect=<target>). Each forum runs
-// on its own host, so the exact path and an http `redirect` are the guard, not the host.
+// vBulletin SEO add-on external link redirect, vBSEO and DragonByte SEO
+// (<forum host>/redirect-to/?redirect=<target>). Each forum runs on its own host, so the exact
+// path and an http `redirect` are the guard, not the host.
 export const unwrapVbulletin: UrlUnwrapper = (url) => {
   if (!pathRegex.test(url.pathname)) {
     return
