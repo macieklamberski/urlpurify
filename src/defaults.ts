@@ -50,6 +50,7 @@ import { unwrapDzen } from './unwraps/dzen.js'
 // import { unwrapEbayRover } from './unwraps/ebayRover.js'
 // import { unwrapEdgepilot } from './unwraps/edgepilot.js'
 // import { unwrapEffiliation } from './unwraps/effiliation.js'
+// import { unwrapElasticEmail } from './unwraps/elasticEmail.js'
 // import { unwrapEmbedly } from './unwraps/embedly.js'
 // import { unwrapEsva } from './unwraps/esva.js'
 // import { unwrapEulerian } from './unwraps/eulerian.js'
@@ -212,6 +213,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapConstantContact,
   // unwrapDirectMail,
   // unwrapEdgepilot,
+  // unwrapElasticEmail,
   // unwrapEsva,
   // unwrapFanbridge,
   // unwrapFireeye,
