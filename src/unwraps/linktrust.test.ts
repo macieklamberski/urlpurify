@@ -26,6 +26,14 @@ describe('unwrapLinktrust', () => {
     expect(unwrapLinktrust(url)).toBe('https://example.com/collections/watches')
   })
 
+  it('should extract the last nonencodedurl of a nested tracking link', () => {
+    const url = new URL(
+      'https://partner.logosbible.com/click.track?CID=432198&AFID=464105&nonencodedurl=https://partner.logosbible.com/click.track?CID=432198&AFID=464105&nonencodedurl=https://www.example.com/',
+    )
+
+    expect(unwrapLinktrust(url)).toBe('https://www.example.com/')
+  })
+
   it('should return undefined without CID param', () => {
     const url = new URL(
       'https://example.com/click.track?AFID=301496&url=https%3A%2F%2Fexample.org%2F',
