@@ -37,6 +37,7 @@ import { unwrapDatalifeEngine } from './unwraps/datalifeEngine.js'
 import { unwrapDerefMail } from './unwraps/derefMail.js'
 import { unwrapDeviantartOutgoing } from './unwraps/deviantartOutgoing.js'
 // import { unwrapDigidip } from './unwraps/digidip.js'
+// import { unwrapDirectMail } from './unwraps/directMail.js'
 import { unwrapDisqus } from './unwraps/disqus.js'
 // import { unwrapDmmAffiliate } from './unwraps/dmmAffiliate.js'
 import { unwrapDouban } from './unwraps/douban.js'
@@ -182,6 +183,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapBarracudaLinkProtect,
   // unwrapCiscoSecureWeb,
   // unwrapConstantContact,
+  // unwrapDirectMail,
   // unwrapEdgepilot,
   // unwrapEsva,
   // unwrapFanbridge,
