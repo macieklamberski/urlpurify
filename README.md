@@ -99,6 +99,7 @@ Enabled by default:
 | `unwrapBusinessWire` | Business Wire release click tracker (cts.businesswire.com/ct/CT?url=\<target\>) |
 | `unwrapCalendly` | Calendly outbound link (calendly.com/url?q=\<target\>) |
 | `unwrapCsdn` | CSDN external link redirect (link.csdn.net/?target=\<target\>) |
+| `unwrapDatalifeEngine` | DataLife Engine leaving redirect (\<any host\>/engine/go.php?url=\<base64 target\>) |
 | `unwrapDerefMail` | GMX, WEB.DE and mail.com webmail dereferrer (deref-gmx.net/mail/client/dereferrer/?redirectUrl=\<target\>) |
 | `unwrapDeviantartOutgoing` | DeviantArt outbound link shim (www.deviantart.com/\<user\>/outgoing?\<target\>) |
 | `unwrapDisqus` | Disqus outbound link redirect (disq.us/url?url=\<target\> and disq.us/?url=\<target\>) |
