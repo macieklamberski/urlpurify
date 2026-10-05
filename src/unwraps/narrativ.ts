@@ -10,14 +10,15 @@ const extractTarget = createParamExtractor({
 })
 
 const extractLinkTarget = createParamExtractor({
-  hosts: ['howl.link', 'shop-links.co'],
+  hosts: ['howl.link', 'howl.me', 'shop-links.co'],
   params: ['url'],
 })
 
 // Narrativ affiliate redirect (api.narrativ.com/api/v0/{client_redirect,redirect}/?url=<target>)
 // on narrativ.com, api.narrativ.com and events.release.narrativ.com, and its Howl commerce link
-// (howl.link/link?url=<target>, also /link/ and shop-links.co). Not in defaultUnwrappers:
-// real-time auction bidding routes the click, so `url` may not be where it lands.
+// (howl.link/link?url=<target>, also /link/, howl.me and shop-links.co). Not in
+// defaultUnwrappers: real-time auction bidding routes the click, so `url` may not be where it
+// lands.
 export const unwrapNarrativ: UrlUnwrapper = (url) => {
   if (linkPaths.includes(url.pathname)) {
     return extractLinkTarget(url)
