@@ -120,6 +120,7 @@ import { unwrapLd246 } from './unwraps/ld246.js'
 import { unwrapLinkedin } from './unwraps/linkedin.js'
 // import { unwrapLinksynergy } from './unwraps/linksynergy.js'
 // import { unwrapLinktrust } from './unwraps/linktrust.js'
+// import { unwrapLinkwise } from './unwraps/linkwise.js'
 import { unwrapLivejournal } from './unwraps/livejournal.js'
 // import { unwrapMagnetmail } from './unwraps/magnetmail.js'
 // import { unwrapMail2easy } from './unwraps/mail2easy.js'
@@ -347,6 +348,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapLinkconnector,
   // unwrapLinksynergy,
   // unwrapLinktrust,
+  // unwrapLinkwise,
   // unwrapMoshimo,
   // unwrapNetaffiliation,
   // unwrapPartnerAds,
