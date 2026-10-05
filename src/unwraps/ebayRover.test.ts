@@ -28,9 +28,9 @@ describe('unwrapEbayRover', () => {
     )
   })
 
-  it('should read mpre param when loc param holds an id', () => {
+  it('should read mpre param before loc param', () => {
     const url = new URL(
-      'https://rover.ebay.com/rover/1/711-53200-19255-0/1?loc=1006567&mpre=https%3A%2F%2Fwww.example.com%2Fitm%2F123',
+      'https://rover.ebay.com/rover/1/711-53200-19255-0/1?loc=https%3A%2F%2Fwww.example.com%2Fitm%2F456&mpre=https%3A%2F%2Fwww.example.com%2Fitm%2F123',
     )
 
     expect(unwrapEbayRover(url)).toBe('https://www.example.com/itm/123')
