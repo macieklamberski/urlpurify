@@ -18,6 +18,24 @@ describe('unwrapEbayRover', () => {
     expect(unwrapEbayRover(url)).toBe('https://www.ebay.co.uk/itm/456')
   })
 
+  it('should extract target from loc param', () => {
+    const url = new URL(
+      'http://rover.ebay.com/rover/1/711-37018-2978-0/1?AID=10420677&PID=1987912&loc=http%3A%2F%2Fcgi.example.com%2FCALIFORNIA-15-ACRES-CORNER-LOT_W0QQitemZ301288441580QQcmdZViewItem',
+    )
+
+    expect(unwrapEbayRover(url)).toBe(
+      'http://cgi.example.com/CALIFORNIA-15-ACRES-CORNER-LOT_W0QQitemZ301288441580QQcmdZViewItem',
+    )
+  })
+
+  it('should read mpre param before loc param', () => {
+    const url = new URL(
+      'https://rover.ebay.com/rover/1/711-53200-19255-0/1?loc=https%3A%2F%2Fwww.example.com%2Fitm%2F456&mpre=https%3A%2F%2Fwww.example.com%2Fitm%2F123',
+    )
+
+    expect(unwrapEbayRover(url)).toBe('https://www.example.com/itm/123')
+  })
+
   it('should return undefined when mpre param is missing', () => {
     const url = new URL('https://rover.ebay.com/rover/1/711-53200-19255-0/1?campid=12345')
 
