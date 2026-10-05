@@ -74,6 +74,7 @@ import { unwrapGoogleScholar } from './unwraps/googleScholar.js'
 import { unwrapHashnode } from './unwraps/hashnode.js'
 // import { unwrapHasoffers } from './unwraps/hasoffers.js'
 import { unwrapHirkereso } from './unwraps/hirkereso.js'
+import { unwrapHorde } from './unwraps/horde.js'
 // import { unwrapHornetsecurity } from './unwraps/hornetsecurity.js'
 import { unwrapHrefLi } from './unwraps/hrefLi.js'
 // import { unwrapHubspotSidekick } from './unwraps/hubspotSidekick.js'
@@ -319,6 +320,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   unwrapDzen,
   unwrapFacebookShim,
   unwrapFlipboard,
+  unwrapHorde,
   unwrapHrefLi,
   unwrapIndexHu,
   unwrapInstagramShim,
