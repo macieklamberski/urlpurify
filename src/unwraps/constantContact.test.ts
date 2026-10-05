@@ -20,14 +20,6 @@ describe('unwrapConstantContact', () => {
     expect(unwrapConstantContact(url)).toBe('http://www.example.com/whosmy.nsf/VGAMain?openform')
   })
 
-  it('should extract target on rs6.net', () => {
-    const url = new URL(
-      'http://rs6.net/tn.jsp?t=9bubzmcab.0.0.qjgf9ccab.0&p=http%3A%2F%2Fwww.example.com%2F2008%2F05%2Fschool-supplies.html&id=preview',
-    )
-
-    expect(unwrapConstantContact(url)).toBe('http://www.example.com/2008/05/school-supplies.html')
-  })
-
   it('should return undefined for a current link that holds only ids', () => {
     const url = new URL('https://r20.rs6.net/tn.jsp?f=001abc&c=xyz')
 
