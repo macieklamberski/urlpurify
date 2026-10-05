@@ -32,6 +32,14 @@ describe('unwrapBacLacWebArchive', () => {
     expect(unwrapBacLacWebArchive(url)).toBeUndefined()
   })
 
+  it('should return undefined for a partial timestamp', () => {
+    const url = new URL(
+      'https://webarchiveweb.wayback.bac-lac.canada.ca/web/2022/https://www.example.ca/',
+    )
+
+    expect(unwrapBacLacWebArchive(url)).toBeUndefined()
+  })
+
   it('should return undefined for another path on the host', () => {
     const url = new URL(
       'https://webarchiveweb.wayback.bac-lac.canada.ca/search/20240119052245/http://www.example.ca/',
