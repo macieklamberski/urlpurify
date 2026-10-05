@@ -61,6 +61,7 @@ import { unwrapDzen } from './unwraps/dzen.js'
 import { unwrapEvernote } from './unwraps/evernote.js'
 import { unwrapFacebookShim } from './unwraps/facebook.js'
 // import { unwrapFanbridge } from './unwraps/fanbridge.js'
+// import { unwrapFeedblitz } from './unwraps/feedblitz.js'
 // import { unwrapFeedsportal } from './unwraps/feedsportal.js'
 import { unwrapFeedStatistics } from './unwraps/feedStatistics.js'
 import { unwrapFinalsite } from './unwraps/finalsite.js'
@@ -409,6 +410,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapWikiwix,
 
   // Legacy aggregators.
+  // unwrapFeedblitz,
   // unwrapFeedsportal,
   unwrapZemanta,
 ]
