@@ -92,6 +92,7 @@ import { unwrapSegmentfault } from './unwraps/segmentfault.js'
 // import { unwrapSjv } from './unwraps/sjv.js'
 // import { unwrapSkimlinks } from './unwraps/skimlinks.js'
 // import { unwrapSlack } from './unwraps/slack.js'
+// import { unwrapSmartAdserver } from './unwraps/smartAdserver.js'
 // import { unwrapSmartredirect } from './unwraps/smartredirect.js'
 import { unwrapSoundcloud } from './unwraps/soundcloud.js'
 import { unwrapSspai } from './unwraps/sspai.js'
@@ -202,6 +203,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // Ad networks.
   // unwrapBingAds,
   // unwrapGoogleAds,
+  // unwrapSmartAdserver,
 
   // Social and community platforms.
   unwrapAnonymTo,
