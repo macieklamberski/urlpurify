@@ -62,6 +62,14 @@ describe('unwrapResearchgate', () => {
     expect(unwrapResearchgate(url)).toBeUndefined()
   })
 
+  it('should return undefined for a deref segment deeper in the path', () => {
+    const url = new URL(
+      'https://www.researchgate.net/publication/deref/https%3A%2F%2Fwww.example.com%2F',
+    )
+
+    expect(unwrapResearchgate(url)).toBeUndefined()
+  })
+
   it('should return undefined for a deref path that holds no url', () => {
     const url = new URL('https://www.researchgate.net/deref/publication%2F123')
 
