@@ -42,6 +42,14 @@ describe('unwrapMail2easy', () => {
     expect(unwrapMail2easy(url)).toBeUndefined()
   })
 
+  it('should return undefined for the path under a prefix', () => {
+    const url = new URL(
+      'http://d-click.spcbrasil.com.br/x/u/3971/2429/177699/4935_0/ca4da/?url=http%3A%2F%2Fwww.example.com%2F',
+    )
+
+    expect(unwrapMail2easy(url)).toBeUndefined()
+  })
+
   it('should return undefined for the path on a host without the d-click label', () => {
     const url = new URL(
       'http://click.example.com.br/u/3971/2429/177699/4935_0/ca4da/?url=http%3A%2F%2Fwww.example.com%2F',
