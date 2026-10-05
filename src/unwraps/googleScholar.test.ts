@@ -36,6 +36,14 @@ describe('unwrapGoogleScholar', () => {
     )
   })
 
+  it('should prefer url over q', () => {
+    const url = new URL(
+      'https://scholar.google.com/scholar_url?url=https%3A%2F%2Fcite.com%2Fpaper.pdf&q=https%3A%2F%2Fexample.org%2F',
+    )
+
+    expect(unwrapGoogleScholar(url)).toBe('https://cite.com/paper.pdf')
+  })
+
   it('should return undefined when url and q params are missing', () => {
     const url = new URL('https://scholar.google.com/scholar_url?hl=en')
 
