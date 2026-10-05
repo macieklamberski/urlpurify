@@ -5,6 +5,7 @@ import type { TrackingParam, UrlUnwrapper } from './types.js'
 // import { unwrap2performant } from './unwraps/2performant.js'
 import { unwrap4pda } from './unwraps/4pda.js'
 // import { unwrapA8Net } from './unwraps/a8Net.js'
+import { unwrapAboutCom } from './unwraps/aboutCom.js'
 // import { unwrapAcast } from './unwraps/acast.js'
 // import { unwrapAccesstrade } from './unwraps/accesstrade.js'
 // import { unwrapAceml } from './unwraps/aceml.js'
@@ -518,6 +519,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
 
   // Social and community platforms.
   unwrap4pda,
+  unwrapAboutCom,
   unwrapAnonymTo,
   unwrapBale,
   unwrapBlueskyRedirect,
