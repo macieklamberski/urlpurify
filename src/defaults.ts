@@ -65,6 +65,7 @@ import { unwrapJuejin } from './unwraps/juejin.js'
 import { unwrapLinkedin } from './unwraps/linkedin.js'
 // import { unwrapLinksynergy } from './unwraps/linksynergy.js'
 // import { unwrapMailchimp } from './unwraps/mailchimp.js'
+// import { unwrapMailinblack } from './unwraps/mailinblack.js'
 // import { unwrapMailpanion } from './unwraps/mailpanion.js'
 // import { unwrapMailpgn } from './unwraps/mailpgn.js'
 // import { unwrapMailtrack } from './unwraps/mailtrack.js'
@@ -146,6 +147,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapIcptrack,
   // unwrapLeverAnalytics,
   // unwrapMailchimp,
+  // unwrapMailinblack,
   // unwrapMailpanion,
   // unwrapMailpgn,
   // unwrapMailtrack,
