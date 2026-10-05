@@ -60,14 +60,6 @@ describe('unwrapYahooJapan', () => {
     expect(unwrapYahooJapan(url)).toBe('https://news.example.jp/byline/konnoharuki/')
   })
 
-  it('should extract target from ord.yahoo.co.jp', () => {
-    const url = new URL(
-      'http://ord.yahoo.co.jp/o/image/RV=1/RE=1480397157/RH=b3JkLnlhaG9vLmNvLmpw/RB=/RU=aHR0cHM6Ly93d3cuZXhhbXBsZS5qcC9waG90by9pbWFnZXMvMjAxNi8wOS8wOS93MzQyLmpwZw--/RS=%5EADBm0ZQ8',
-    )
-
-    expect(unwrapYahooJapan(url)).toBe('https://www.example.jp/photo/images/2016/09/09/w342.jpg')
-  })
-
   it('should return undefined for a feed path without RU', () => {
     const url = new URL('https://rdsig.yahoo.co.jp/rss/l/headlines/')
 
