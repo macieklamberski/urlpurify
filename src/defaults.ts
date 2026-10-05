@@ -114,6 +114,7 @@ import { unwrapGoogleScholar } from './unwraps/googleScholar.js'
 import { unwrapHackerone } from './unwraps/hackerone.js'
 import { unwrapHashnode } from './unwraps/hashnode.js'
 // import { unwrapHasoffers } from './unwraps/hasoffers.js'
+// import { unwrapHellohq } from './unwraps/hellohq.js'
 import { unwrapHirkereso } from './unwraps/hirkereso.js'
 import { unwrapHorde } from './unwraps/horde.js'
 // import { unwrapHornetsecurity } from './unwraps/hornetsecurity.js'
@@ -310,6 +311,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapFireeye,
   // unwrapFortimail,
   // unwrapGlueUp,
+  // unwrapHellohq,
   // unwrapHornetsecurity,
   // unwrapHubspotSidekick,
   // unwrapIcptrack,
