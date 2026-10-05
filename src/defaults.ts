@@ -83,6 +83,7 @@ import { unwrapFeedStatistics } from './unwraps/feedStatistics.js'
 import { unwrapFinalsite } from './unwraps/finalsite.js'
 // import { unwrapFirebaseDynamicLinks } from './unwraps/firebaseDynamicLinks.js'
 // import { unwrapFireeye } from './unwraps/fireeye.js'
+// import { unwrapFirstory } from './unwraps/firstory.js'
 // import { unwrapFiverr } from './unwraps/fiverr.js'
 // import { unwrapFlexoffers } from './unwraps/flexoffers.js'
 import { unwrapFlipboard } from './unwraps/flipboard.js'
@@ -391,6 +392,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // Podcast analytics prefixes.
   // unwrapAnchor,
   // unwrapBlubrry,
+  // unwrapFirstory,
   // unwrapOp3,
   // unwrapPodcorn,
   // unwrapPodscribe,
