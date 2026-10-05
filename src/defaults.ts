@@ -18,6 +18,7 @@ import type { TrackingParam, UrlUnwrapper } from './types.js'
 // import { unwrapAmazonAffiliate } from './unwraps/amazonAffiliate.js'
 // import { unwrapAmazonSes } from './unwraps/amazonSes.js'
 // import { unwrapAmpCache } from './unwraps/ampCache.js'
+// import { unwrapAnchor } from './unwraps/anchor.js'
 // import { unwrapAnonymouse } from './unwraps/anonymouse.js'
 import { unwrapAnonymTo } from './unwraps/anonymTo.js'
 // import { unwrapAppsflyerOnelink } from './unwraps/appsflyerOnelink.js'
@@ -384,6 +385,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapTriplelift,
 
   // Podcast analytics prefixes.
+  // unwrapAnchor,
   // unwrapOp3,
   // unwrapPodcorn,
   // unwrapPodscribe,
