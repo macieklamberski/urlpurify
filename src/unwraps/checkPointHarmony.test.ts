@@ -26,6 +26,62 @@ describe('unwrapCheckPointHarmony', () => {
     expect(unwrapCheckPointHarmony(url)).toBe('https://example.org/page?q=a%20b&id=7')
   })
 
+  it('should extract a v2 target that carries its own query', () => {
+    const url = new URL(
+      'https://protect.checkpoint.com/v2/r01/___https:/example.org/v1/url?k=31323334&u=https%3A%2F%2Fexample.org%2Fletter.pdf___.YzJ1OnN0YXRlOmM6bzo5NzYzODYxMWI2ZjM5NTRhZjBmNDViZDFm',
+    )
+
+    expect(unwrapCheckPointHarmony(url)).toBe(
+      'https:/example.org/v1/url?k=31323334&u=https%3A%2F%2Fexample.org%2Fletter.pdf',
+    )
+  })
+
+  it('should extract a v2 target without a region segment', () => {
+    const url = new URL(
+      'https://protect.checkpoint.com/v2/___https://www.example.org/criminal-defense/___.YzJ1OnN0YXRlOmM6bzo5NzYzODYxMWI2ZjM5NTRhZjBmNDViZDFm',
+    )
+
+    expect(unwrapCheckPointHarmony(url)).toBe('https://www.example.org/criminal-defense/')
+  })
+
+  it('should restore the star escapes in a v2 target path', () => {
+    const url = new URL(
+      'https://protect.checkpoint.com/v2/r01/___https://links.example.com/CL0/https:*2F*2Fexample.org*2Ftravel/1/0100019f___.YzJ1OnN0YXRlOmM6bzo5NzYzODYxMWI2ZjM5NTRhZjBmNDViZDFm',
+    )
+
+    expect(unwrapCheckPointHarmony(url)).toBe(
+      'https://links.example.com/CL0/https:%2F%2Fexample.org%2Ftravel/1/0100019f',
+    )
+  })
+
+  it('should return undefined for a v2 link without the signature', () => {
+    const url = new URL('https://protect.checkpoint.com/v2/r01/___https://example.org/page___')
+
+    expect(unwrapCheckPointHarmony(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a v2 path under a prefix', () => {
+    const url = new URL(
+      'https://protect.checkpoint.com/x/v2/___https://example.org/page___.YzJ1OnN0YXRlOmM6bzo5NzYzODYxMWI2ZjM5NTRhZjBmNDViZDFm',
+    )
+
+    expect(unwrapCheckPointHarmony(url)).toBeUndefined()
+  })
+
+  it('should return undefined for the v1 path on the v2 host', () => {
+    const url = new URL('https://protect.checkpoint.com/v1/url?o=https%3A//example.org/')
+
+    expect(unwrapCheckPointHarmony(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a v2 non-http target', () => {
+    const url = new URL(
+      'https://protect.checkpoint.com/v2/___javascript:alert(1)___.YzJ1OnN0YXRlOmM6bzo5NzYzODYxMWI2ZjM5NTRhZjBmNDViZDFm',
+    )
+
+    expect(unwrapCheckPointHarmony(url)).toBeUndefined()
+  })
+
   it('should return undefined for another path on the same host', () => {
     const url = new URL('https://checkpoint.url-protection.com/v1/report?o=https%3A//example.org/')
 
