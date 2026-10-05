@@ -105,6 +105,7 @@ import { unwrapInstagramShim } from './unwraps/instagram.js'
 import { unwrapJianshuGo } from './unwraps/jianshuGo.js'
 import { unwrapJive } from './unwraps/jive.js'
 import { unwrapJuejin } from './unwraps/juejin.js'
+// import { unwrapJustwatch } from './unwraps/justwatch.js'
 // import { unwrapKlook } from './unwraps/klook.js'
 // import { unwrapLazada } from './unwraps/lazada.js'
 import { unwrapLd246 } from './unwraps/ld246.js'
@@ -322,6 +323,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapHasoffers,
   // unwrapImpact,
   // unwrapInsiderAffiliate,
+  // unwrapJustwatch,
   // unwrapKlook,
   // unwrapLazada,
   // unwrapLinksynergy,
