@@ -29,6 +29,7 @@ import { unwrapDeviantartOutgoing } from './unwraps/deviantartOutgoing.js'
 // import { unwrapDigidip } from './unwraps/digidip.js'
 import { unwrapDisqus } from './unwraps/disqus.js'
 // import { unwrapDmmAffiliate } from './unwraps/dmmAffiliate.js'
+// import { unwrapDognet } from './unwraps/dognet.js'
 import { unwrapDouban } from './unwraps/douban.js'
 // import { unwrapDuckduckgo } from './unwraps/duckduckgo.js'
 import { unwrapDzen } from './unwraps/dzen.js'
@@ -171,6 +172,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapCjNetwork,
   // unwrapDigidip,
   // unwrapDmmAffiliate,
+  // unwrapDognet,
   // unwrapEbayRover,
   // unwrapEffiliation,
   // unwrapFirebaseDynamicLinks,
