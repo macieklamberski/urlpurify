@@ -86,6 +86,16 @@ describe('unwrapOutlookSafelinks', () => {
     expect(unwrapOutlookSafelinks(url)).toBe('https://www.example.com/2023/12/26/article/')
   })
 
+  it('should extract an encoded target from the Outlook on the web Safe Links page', () => {
+    const url = new URL(
+      'https://outlook.office.com/mail/safelink.html?url=https%3A%2F%2Flearn.example.com%2Fen-us%2Flicensing%23obtaining-packages&locale=en-GB&corid=31b28bee-5f99-7cd5-fcdd-4c0b88a961cb',
+    )
+
+    expect(unwrapOutlookSafelinks(url)).toBe(
+      'https://learn.example.com/en-us/licensing#obtaining-packages',
+    )
+  })
+
   it('should return undefined for another mail path on outlook.office.com', () => {
     const url = new URL('https://outlook.office.com/mail/inbox?url=https%3A%2F%2Fexample.com%2F')
 
