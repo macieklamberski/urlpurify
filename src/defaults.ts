@@ -199,6 +199,7 @@ import { unwrapRediffmail } from './unwraps/rediffmail.js'
 import { unwrapResearchgate } from './unwraps/researchgate.js'
 // import { unwrapReverbnation } from './unwraps/reverbnation.js'
 // import { unwrapReviveAdserver } from './unwraps/reviveAdserver.js'
+// import { unwrapSalesflare } from './unwraps/salesflare.js'
 // import { unwrapSalesforceiq } from './unwraps/salesforceiq.js'
 import { unwrapSapHelp } from './unwraps/sapHelp.js'
 import { unwrapSegmentfault } from './unwraps/segmentfault.js'
@@ -334,6 +335,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapProofpointV2,
   // unwrapProofpointV3,
   // unwrapReverbnation,
+  // unwrapSalesflare,
   // unwrapSalesforceiq,
   // unwrapSlack,
   // unwrapSophos,
