@@ -1,5 +1,6 @@
 import { isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
+import { createParamExtractor } from '../utils.js'
 
 const hosts = [
   'deref-1und1.de',
@@ -18,11 +19,22 @@ const hosts = [
 const pathRegex = /^\/mail\/client\/(?:[\w-]+\/)?dereferrer\/$/
 const encodedSchemeRegex = /^https?%3A/i
 
+const extractLegacy = createParamExtractor({
+  hosts: 'service.gmx.net',
+  path: '/de/cgi/derefer',
+  params: ['DEST'],
+})
+
 // GMX, WEB.DE, mail.com and 1&1 webmail dereferrer
-// (deref-gmx.net/mail/client/[<token>/]dereferrer/?redirectUrl=<target>).
+// (deref-gmx.net/mail/client/[<token>/]dereferrer/?redirectUrl=<target>, also
+// 3c.gmx.net/mail/client/dereferrer?redirectUrl=<target> without the trailing slash), and the
+// older GMX dereferrer (service.gmx.net/de/cgi/derefer?TYPE=3&DEST=<target>).
 export const unwrapDerefMail: UrlUnwrapper = (url) => {
-  if (!isHostOf(url, hosts) || !pathRegex.test(url.pathname)) {
-    return
+  const isDerefHost = isHostOf(url, hosts) && pathRegex.test(url.pathname)
+  const isGmxClient = isHostOf(url, '3c.gmx.net') && url.pathname === '/mail/client/dereferrer'
+
+  if (!isDerefHost && !isGmxClient) {
+    return extractLegacy(url)
   }
 
   let target = url.searchParams.get('redirectUrl')
