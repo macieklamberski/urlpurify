@@ -42,6 +42,7 @@ import { unwrapFacebookShim } from './unwraps/facebook.js'
 // import { unwrapFirebaseDynamicLinks } from './unwraps/firebaseDynamicLinks.js'
 // import { unwrapFireeye } from './unwraps/fireeye.js'
 import { unwrapFlipboard } from './unwraps/flipboard.js'
+import { unwrapFtc } from './unwraps/ftc.js'
 // import { unwrapGateSc } from './unwraps/gateSc.js'
 // import { unwrapGeoriot } from './unwraps/georiot.js'
 import { unwrapGitee } from './unwraps/gitee.js'
@@ -245,6 +246,9 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // Press release wires.
   unwrapBusinessWire,
   unwrapPrNewswire,
+
+  // Government sites.
+  unwrapFtc,
 
   // Cache and proxy services.
   // unwrap12ft,
