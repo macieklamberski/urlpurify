@@ -5,10 +5,10 @@ const trackPrefixRegex = /^\/track\/[^/]+\/[^/]+\//
 const playPathRegex = /^\/play\.[a-z0-9]+$/i
 
 // Firstory download measurement prefix (m.cdn.firstory.me/track/<show>/<episode>/<target>, with the
-// target percent-encoded, and m.cdn.firstory.me/play.<ext>?url=<target>).
+// target percent-encoded, and m.cdn.firstory.me/play.<ext>?url=<target>), also on v1.firstory.me.
 // Not included in defaultUnwrappers: unwrapping removes the podcaster's download counts.
 export const unwrapFirstory: UrlUnwrapper = (url) => {
-  if (!isHostOf(url, 'm.cdn.firstory.me')) {
+  if (!isHostOf(url, ['m.cdn.firstory.me', 'v1.firstory.me'])) {
     return
   }
 
