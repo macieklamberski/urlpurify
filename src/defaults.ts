@@ -86,6 +86,7 @@ import { unwrapPrNewswire } from './unwraps/prNewswire.js'
 // import { unwrapRakutenAffiliate } from './unwraps/rakutenAffiliate.js'
 // import { unwrapRecruitics } from './unwraps/recruitics.js'
 import { unwrapRedditOut } from './unwraps/redditOut.js'
+import { unwrapRediffmail } from './unwraps/rediffmail.js'
 // import { unwrapRedirectingat } from './unwraps/redirectingat.js'
 import { unwrapSegmentfault } from './unwraps/segmentfault.js'
 // import { unwrapShareasale } from './unwraps/shareasale.js'
@@ -224,6 +225,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapNicoMs,
   unwrapPocket,
   unwrapRedditOut,
+  unwrapRediffmail,
   unwrapSoundcloud,
   unwrapSteamLinkfilter,
   unwrapThreadsShim,
