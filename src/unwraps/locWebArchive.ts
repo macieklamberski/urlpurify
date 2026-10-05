@@ -2,11 +2,11 @@ import { isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
 // The collection name, then a 14-digit timestamp.
-const pathRegex = /^\/(?:all|legacy|congressional-record|lcwa\d+)\/\d{14}\/(.+)$/
+const pathRegex = /^\/(?:all|legacy|congressional-record)\/\d{14}\/(.+)$/
 
 // Library of Congress Web Archives snapshot (webarchive.loc.gov/<collection>/<timestamp>/<target>,
-// in the all, legacy, congressional-record and lcwa<n> collections). Opt-in: unwrapping returns
-// the live page, which may have changed or be gone.
+// in the all, legacy and congressional-record collections). Opt-in: unwrapping returns the live
+// page, which may have changed or be gone.
 export const unwrapLocWebArchive: UrlUnwrapper = (url) => {
   if (!isHostOf(url, 'webarchive.loc.gov')) {
     return

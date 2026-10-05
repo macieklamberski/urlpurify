@@ -50,12 +50,12 @@ describe('unwrapLocWebArchive', () => {
     expect(unwrapLocWebArchive(url)).toBeUndefined()
   })
 
-  it('should extract the target from a snapshot in a numbered lcwa collection', () => {
+  it('should return undefined for a numbered lcwa collection', () => {
     const url = new URL(
       'http://webarchive.loc.gov/lcwa0006/20230515014734/https://www.example.co.uk/',
     )
 
-    expect(unwrapLocWebArchive(url)).toBe('https://www.example.co.uk/')
+    expect(unwrapLocWebArchive(url)).toBeUndefined()
   })
 
   it('should return undefined for a path outside the collections', () => {
