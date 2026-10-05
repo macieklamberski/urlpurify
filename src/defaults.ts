@@ -74,6 +74,7 @@ import { unwrapMedium } from './unwraps/medium.js'
 import { unwrapMozillaOutgoing } from './unwraps/mozillaOutgoing.js'
 import { unwrapNaverOutgoing } from './unwraps/naverOutgoing.js'
 // import { unwrapNicoMs } from './unwraps/nicoMs.js'
+// import { unwrapNlaWebarchive } from './unwraps/nlaWebarchive.js'
 // import { unwrapOutlookSafelinks } from './unwraps/outlookSafelinks.js'
 // import { unwrapPartnerAds } from './unwraps/partnerAds.js'
 import { unwrapPocket } from './unwraps/pocket.js'
@@ -252,6 +253,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapArchiveToday, // Snapshot of a page at a point in time, not a redirect
   // unwrapEmbedly,
   unwrapMozillaOutgoing,
+  // unwrapNlaWebarchive,
   // unwrapUkgwa,
 
   // Legacy aggregators.
