@@ -101,6 +101,7 @@ import { unwrapSteamLinkfilter } from './unwraps/steamLinkfilter.js'
 import { unwrapThreadsShim } from './unwraps/threads.js'
 // import { unwrapTradedoubler } from './unwraps/tradedoubler.js'
 // import { unwrapTravelpayouts } from './unwraps/travelpayouts.js'
+// import { unwrapTrendMicro } from './unwraps/trendMicro.js'
 import { unwrapTumblr } from './unwraps/tumblr.js'
 // import { unwrapUkgwa } from './unwraps/ukgwa.js'
 // import { unwrapValuecommerce } from './unwraps/valuecommerce.js'
@@ -157,6 +158,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapProofpointV3,
   // unwrapSlack,
   // unwrapStreak,
+  // unwrapTrendMicro,
   // unwrapWordpressEmail,
 
   // Affiliate networks.
