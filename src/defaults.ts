@@ -111,6 +111,7 @@ import { unwrapVkAway } from './unwraps/vkAway.js'
 // import { unwrapWordpressGo2 } from './unwraps/wordpressGo2.js'
 import { unwrapYahooSearch } from './unwraps/yahooSearch.js'
 import { unwrapYandexMail } from './unwraps/yandexMail.js'
+import { unwrapYelp } from './unwraps/yelp.js'
 import { unwrapYouTube } from './unwraps/youtube.js'
 import { unwrapZemanta } from './unwraps/zemanta.js'
 import { unwrapZhihu } from './unwraps/zhihu.js'
@@ -230,6 +231,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   unwrapTumblr,
   unwrapVkAway,
   unwrapYandexMail,
+  unwrapYelp,
 
   // Developer and publishing platforms.
   unwrapCsdn,
