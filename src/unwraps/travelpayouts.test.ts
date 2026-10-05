@@ -58,6 +58,54 @@ describe('unwrapTravelpayouts', () => {
     expect(unwrapTravelpayouts(url)).toBe('https://www.example.com/hotels/')
   })
 
+  it('should extract the target from the custom_url param', () => {
+    const url = new URL(
+      'http://c11.travelpayouts.com/click?shmarker=12446&promo_id=652&source_type=customlink&type=click&custom_url=https%3A%2F%2Fexperience.example.com%2Ftours%2F9431%3Fcurr%3DEUR',
+    )
+
+    expect(unwrapTravelpayouts(url)).toBe('https://experience.example.com/tours/9431?curr=EUR')
+  })
+
+  it('should return undefined for the click path when custom_url is missing', () => {
+    const url = new URL(
+      'https://c11.travelpayouts.com/click?shmarker=12446&promo_id=652&source_type=customlink&type=click',
+    )
+
+    expect(unwrapTravelpayouts(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a sibling path on a click host', () => {
+    const url = new URL(
+      'https://c11.travelpayouts.com/banner?custom_url=https%3A%2F%2Fwww.example.com%2F',
+    )
+
+    expect(unwrapTravelpayouts(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a travelpayouts.com host outside the click family', () => {
+    const url = new URL(
+      'https://www.travelpayouts.com/click?custom_url=https%3A%2F%2Fwww.example.com%2F',
+    )
+
+    expect(unwrapTravelpayouts(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a host that only ends with a click host', () => {
+    const url = new URL(
+      'https://a.c11.travelpayouts.com/click?custom_url=https%3A%2F%2Fwww.example.com%2F',
+    )
+
+    expect(unwrapTravelpayouts(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a host that only starts with a click host', () => {
+    const url = new URL(
+      'https://c11.travelpayouts.com.example.com/click?custom_url=https%3A%2F%2Fwww.example.com%2F',
+    )
+
+    expect(unwrapTravelpayouts(url)).toBeUndefined()
+  })
+
   it('should return undefined when the u param is missing', () => {
     const url = new URL('https://tp.media/r?marker=100001')
 
