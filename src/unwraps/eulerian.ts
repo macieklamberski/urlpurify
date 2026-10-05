@@ -5,8 +5,7 @@ const pathRegex = /^\/dynclick\/[^/]+\/$/
 
 // Eulerian click redirect on any host
 // (<advertiser host>/dynclick/<site>/?ept-publisher=<name>&eurl=<target>).
-// Opt-in: unwrapping removes the advertiser's click attribution. Advertisers run it on their own
-// subdomains.
+// Opt-in: unwrapping removes the click attribution. Advertisers run it on their own subdomains.
 export const unwrapEulerian: UrlUnwrapper = (url) => {
   if (!pathRegex.test(url.pathname)) {
     return
