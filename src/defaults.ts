@@ -18,6 +18,7 @@ import type { TrackingParam, UrlUnwrapper } from './types.js'
 // import { unwrapAmazonAffiliate } from './unwraps/amazonAffiliate.js'
 // import { unwrapAmazonSes } from './unwraps/amazonSes.js'
 // import { unwrapAmpCache } from './unwraps/ampCache.js'
+// import { unwrapAnonymouse } from './unwraps/anonymouse.js'
 import { unwrapAnonymTo } from './unwraps/anonymTo.js'
 // import { unwrapAppsflyerOnelink } from './unwraps/appsflyerOnelink.js'
 // import { unwrapApptrkr } from './unwraps/apptrkr.js'
@@ -457,6 +458,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // Cache and proxy services.
   // unwrap12ft,
   // unwrapAmpCache,
+  // unwrapAnonymouse,
   // unwrapArchiveToday, // Snapshot of a page at a point in time, not a redirect
   // unwrapEmbedly,
   // unwrapMegalodon,
