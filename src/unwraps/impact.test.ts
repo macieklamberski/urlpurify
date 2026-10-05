@@ -49,9 +49,9 @@ describe('unwrapImpact', () => {
   })
 
   it('should extract target from a short code on sjv.io', () => {
-    const url = new URL('https://square.sjv.io/Y6oeO?u=https%3A%2F%2Fsquareup.com%2Fus%2Fen')
+    const url = new URL('https://square.sjv.io/Y6oeO?u=https%3A%2F%2Fexample.com%2Fus%2Fen')
 
-    expect(unwrapImpact(url)).toBe('https://squareup.com/us/en')
+    expect(unwrapImpact(url)).toBe('https://example.com/us/en')
   })
 
   it('should extract target from a short code on pxf.io', () => {
