@@ -48,6 +48,12 @@ describe('unwrapBridgyFed', () => {
     expect(unwrapBridgyFed(url)).toBeUndefined()
   })
 
+  it('should return undefined when the redirect path is not at the root', () => {
+    const url = new URL('https://fed.brid.gy/convert/r/https://example.org/')
+
+    expect(unwrapBridgyFed(url)).toBeUndefined()
+  })
+
   it('should return undefined for other hosts', () => {
     const url = new URL('https://example.com/r/https://example.org/')
 
