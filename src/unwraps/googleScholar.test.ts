@@ -26,7 +26,25 @@ describe('unwrapGoogleScholar', () => {
     expect(unwrapGoogleScholar(url)).toBe('https://cite.com/paper.pdf')
   })
 
-  it('should return undefined when url param is missing', () => {
+  it('should extract target from q param of an alert link', () => {
+    const url = new URL(
+      'http://scholar.google.pl/scholar_url?hl=en&q=http://www.example.net/publication/222709598_Social_preferences/file/72e7e525597be36d26.pdf&sa=X&scisig=AAGBfm0i53lprbIxEDWm4ZHkhVhOIIOh5w&oi=scholarr&ei=PGVGVPPFNonraL2mgegN&ved=0CB4QgAMoADAA',
+    )
+
+    expect(unwrapGoogleScholar(url)).toBe(
+      'http://www.example.net/publication/222709598_Social_preferences/file/72e7e525597be36d26.pdf',
+    )
+  })
+
+  it('should prefer url over q', () => {
+    const url = new URL(
+      'https://scholar.google.com/scholar_url?url=https%3A%2F%2Fcite.com%2Fpaper.pdf&q=https%3A%2F%2Fexample.org%2F',
+    )
+
+    expect(unwrapGoogleScholar(url)).toBe('https://cite.com/paper.pdf')
+  })
+
+  it('should return undefined when url and q params are missing', () => {
     const url = new URL('https://scholar.google.com/scholar_url?hl=en')
 
     expect(unwrapGoogleScholar(url)).toBeUndefined()
