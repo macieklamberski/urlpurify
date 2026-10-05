@@ -105,6 +105,7 @@ import { unwrapNewswire } from './unwraps/newswire.js'
 // import { unwrapNicoMs } from './unwraps/nicoMs.js'
 // import { unwrapNlaWebarchive } from './unwraps/nlaWebarchive.js'
 import { unwrapOkRu } from './unwraps/okRu.js'
+// import { unwrapOp3 } from './unwraps/op3.js'
 // import { unwrapOutlookSafelinks } from './unwraps/outlookSafelinks.js'
 // import { unwrapPartnerAds } from './unwraps/partnerAds.js'
 import { unwrapPhilpapers } from './unwraps/philpapers.js'
@@ -284,6 +285,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapGoogleAds,
 
   // Podcast analytics prefixes.
+  // unwrapOp3,
   // unwrapPodtrac,
 
   // Social and community platforms.
