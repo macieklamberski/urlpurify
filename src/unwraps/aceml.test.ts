@@ -20,6 +20,14 @@ describe('unwrapAceml', () => {
     expect(unwrapAceml(url)).toBe('https://example.com/edito?id=1')
   })
 
+  it('should return a plain redirectUrl param', () => {
+    const url = new URL(
+      'https://example.lt.acemlnb.com/Prod/link-tracker?redirectUrl=https://example.com/terms/a/annualized-rate.asp&a=90105704&s=192ad911b220e2320a3c7e3da8b45b6e&i=77A73A1A506',
+    )
+
+    expect(unwrapAceml(url)).toBe('https://example.com/terms/a/annualized-rate.asp')
+  })
+
   it('should return undefined when the percent-encoded target is malformed', () => {
     const encoded = Buffer.from('https%3A%2F%2Fexample.com%2F%E0%A4%A').toString('base64')
     const url = new URL(
