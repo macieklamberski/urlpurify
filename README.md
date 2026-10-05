@@ -98,6 +98,7 @@ Enabled by default:
 | `unwrapBing` | Bing search-result redirect (www.bing.com/ck/a?u=a1\<base64url\>) and news click (www.bing.com/news/apiclick.aspx?url=\<target\>) |
 | `unwrap4pda` | 4PDA forum outbound link redirect (4pda.ru/pages/go/?u=\<target\>) |
 | `unwrapAliyun` | Alibaba Cloud developer community outbound link redirect (yq.aliyun.com/go/articleRenderRedirect?url=\<target\>) |
+| `unwrapAllblog` | Allblog metablog outbound link (link.allblog.net/\<post id\>/\<target\>) |
 | `unwrapAnonymTo` | anonym.to referrer anonymizer (anonym.to/?\<target\>) |
 | `unwrapArxiv` | arXiv outbound link redirect (arxiv.org/ct?url=\<target\>) |
 | `unwrapAsk` | Ask.com search result click redirect (wzus.ask.com/r?u=\<target\>) |

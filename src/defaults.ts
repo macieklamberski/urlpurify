@@ -18,6 +18,7 @@ import { unwrap4pda } from './unwraps/4pda.js'
 // import { unwrapAffiliatesOne } from './unwraps/affiliatesOne.js'
 // import { unwrapAliexpress } from './unwraps/aliexpress.js'
 import { unwrapAliyun } from './unwraps/aliyun.js'
+import { unwrapAllblog } from './unwraps/allblog.js'
 // import { unwrapAmazonAffiliate } from './unwraps/amazonAffiliate.js'
 // import { unwrapAmazonSes } from './unwraps/amazonSes.js'
 // import { unwrapAmpCache } from './unwraps/ampCache.js'
@@ -630,6 +631,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapWikizero,
 
   // Legacy aggregators.
+  unwrapAllblog,
   // unwrapFeedblitz,
   // unwrapFeedsportal,
   unwrapZemanta,
