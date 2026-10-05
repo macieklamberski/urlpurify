@@ -148,6 +148,14 @@ describe('unwrapCjNetwork', () => {
     )
   })
 
+  it('should read the url param before loc', () => {
+    const url = new URL(
+      'https://www.anrdoezrs.net/click-100577550-15073808?url=https%3A%2F%2Fwww.example.com%2Fproducts%2Fcoat%3Fcountry%3DGB&curr=GBP&loc=GB',
+    )
+
+    expect(unwrapCjNetwork(url)).toBe('https://www.example.com/products/coat?country=GB')
+  })
+
   it('should return undefined when url param is missing', () => {
     const url = new URL('https://www.tkqlhce.com/click-12345-67890')
 
