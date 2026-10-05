@@ -33,6 +33,7 @@ import { unwrapCanva } from './unwraps/canva.js'
 // import { unwrapCheckPointHarmony } from './unwraps/checkPointHarmony.js'
 // import { unwrapCiscoSecureWeb } from './unwraps/ciscoSecureWeb.js'
 // import { unwrapCjNetwork } from './unwraps/cjNetwork.js'
+// import { unwrapCleverbridge } from './unwraps/cleverbridge.js'
 // import { unwrapConstantContact } from './unwraps/constantContact.js'
 import { unwrapCsdn } from './unwraps/csdn.js'
 import { unwrapDatalifeEngine } from './unwraps/datalifeEngine.js'
@@ -254,6 +255,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapCake,
   // unwrapCcbill,
   // unwrapCjNetwork,
+  // unwrapCleverbridge,
   // unwrapDigidip,
   // unwrapDmmAffiliate,
   // unwrapEbayRover,
