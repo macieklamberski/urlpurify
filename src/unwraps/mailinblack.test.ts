@@ -12,7 +12,7 @@ describe('unwrapMailinblack', () => {
     )
   })
 
-  it('should extract the full target on the numerian.fr host', () => {
+  it('should extract the full target on a partner host', () => {
     const url = new URL(
       'https://mib.numerian.fr/securelink/?url=https://www.example.com&key=eyJsYW5nIjoiRlIiLCJ1cmwiOiJodHRwczovL3d3dy5leGFtcGxlLmNvbS9ldmVuZW1lbnQvdGhlYXRyZS1ldC1ib3R0ZXMtZGUtcGFpbGxlLyIsInRva2VuIjoiZ0FBQUFBQm5VMkhhUEVsLUNMV01xZldCd1pZaEFWQzFYQU1mSzNpaSJ9',
     )
@@ -70,41 +70,23 @@ describe('unwrapMailinblack', () => {
     expect(unwrapMailinblack(url)).toBeUndefined()
   })
 
+  it('should return undefined for the path on another host without a valid key', () => {
+    const url = new URL('https://example.com/securelink/?url=https://example.org&key=bm90IGpzb24=')
+
+    expect(unwrapMailinblack(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a longer path', () => {
+    const url = new URL(
+      'https://mibc-fr-11.mailinblack.com/securelink/x?key=eyJsYW5nIjoiRlIiLCJ1cmwiOiJodHRwczovL2V4YW1wbGUuY29tL3NlYXJjaD9xPWZlZWRzJnBhZ2U9MiIsInRva2VuIjoiZ0FBQUFBQm5VMkhhUEVsIn0=',
+    )
+
+    expect(unwrapMailinblack(url)).toBeUndefined()
+  })
+
   it('should return undefined for another path on the host', () => {
     const url = new URL(
       'https://mibc-fr-11.mailinblack.com/?key=eyJsYW5nIjoiRlIiLCJ1cmwiOiJodHRwczovL2V4YW1wbGUuY29tL3NlYXJjaD9xPWZlZWRzJnBhZ2U9MiIsInRva2VuIjoiZ0FBQUFBQm5VMkhhUEVsIn0=',
-    )
-
-    expect(unwrapMailinblack(url)).toBeUndefined()
-  })
-
-  it('should return undefined for other hosts', () => {
-    const url = new URL(
-      'https://example.com/securelink/?key=eyJsYW5nIjoiRlIiLCJ1cmwiOiJodHRwczovL2V4YW1wbGUuY29tL3NlYXJjaD9xPWZlZWRzJnBhZ2U9MiIsInRva2VuIjoiZ0FBQUFBQm5VMkhhUEVsIn0=',
-    )
-
-    expect(unwrapMailinblack(url)).toBeUndefined()
-  })
-
-  it('should return undefined for a host outside the numbered family', () => {
-    const url = new URL(
-      'https://www.mailinblack.com/securelink/?key=eyJsYW5nIjoiRlIiLCJ1cmwiOiJodHRwczovL2V4YW1wbGUuY29tL3NlYXJjaD9xPWZlZWRzJnBhZ2U9MiIsInRva2VuIjoiZ0FBQUFBQm5VMkhhUEVsIn0=',
-    )
-
-    expect(unwrapMailinblack(url)).toBeUndefined()
-  })
-
-  it('should return undefined for a host that only ends with the domain', () => {
-    const url = new URL(
-      'https://www.mibc-fr-11.mailinblack.com/securelink/?key=eyJsYW5nIjoiRlIiLCJ1cmwiOiJodHRwczovL2V4YW1wbGUuY29tL3NlYXJjaD9xPWZlZWRzJnBhZ2U9MiIsInRva2VuIjoiZ0FBQUFBQm5VMkhhUEVsIn0=',
-    )
-
-    expect(unwrapMailinblack(url)).toBeUndefined()
-  })
-
-  it('should return undefined for a host that only starts with the domain', () => {
-    const url = new URL(
-      'https://mibc-fr-11.mailinblack.com.example.com/securelink/?key=eyJsYW5nIjoiRlIiLCJ1cmwiOiJodHRwczovL2V4YW1wbGUuY29tL3NlYXJjaD9xPWZlZWRzJnBhZ2U9MiIsInRva2VuIjoiZ0FBQUFBQm5VMkhhUEVsIn0=',
     )
 
     expect(unwrapMailinblack(url)).toBeUndefined()
