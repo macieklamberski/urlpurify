@@ -26,6 +26,14 @@ describe('unwrapFinalsite', () => {
     expect(unwrapFinalsite(url)).toBe('https://docs.example.com/document/d/1JqLb8/edit?usp=sharing')
   })
 
+  it('should extract the last dest when an email link is nested unencoded', () => {
+    const url = new URL(
+      'https://www.lejardinacademy.org/cf_news/forward.cfm?dest=https://www.lejardinacademy.org/cf_enotify/linkforward.cfm?mailgun=1&n=4527&u=0&e=0&dest=https%3A%2F%2Fwww%2Eexample%2Eorg%2F&destkey=DD2F4B44561DD18E2FC166DD5FB47BC9AB6CC1D11A79CDF8B6E55BE9B4E0B425',
+    )
+
+    expect(unwrapFinalsite(url)).toBe('https://www.example.org/')
+  })
+
   it('should return undefined for another path on the host', () => {
     const url = new URL(
       'https://www.mtlsd.org/cf_enotify/linkforward.cfm?dest=https%3A%2F%2Fwww.example.org%2F&destkey=081A35EA',

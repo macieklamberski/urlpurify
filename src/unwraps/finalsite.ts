@@ -11,7 +11,9 @@ export const unwrapFinalsite: UrlUnwrapper = (url) => {
     return
   }
 
-  const target = url.searchParams.get('dest')
+  // A Finalsite email link nested unencoded in `dest` spills its own `dest` into this query, so
+  // the last one holds the target.
+  const target = url.searchParams.getAll('dest').at(-1)
 
   if (!target || !isHttpUrl(target)) {
     return
