@@ -105,6 +105,7 @@ import { unwrapTumblr } from './unwraps/tumblr.js'
 // import { unwrapUkgwa } from './unwraps/ukgwa.js'
 // import { unwrapValuecommerce } from './unwraps/valuecommerce.js'
 // import { unwrapViglink } from './unwraps/viglink.js'
+import { unwrapVirgool } from './unwraps/virgool.js'
 import { unwrapVkAway } from './unwraps/vkAway.js'
 // import { unwrapWebgains } from './unwraps/webgains.js'
 // import { unwrapWordpressEmail } from './unwraps/wordpressEmail.js'
@@ -240,6 +241,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   unwrapJuejin,
   unwrapSegmentfault,
   unwrapSspai,
+  unwrapVirgool,
   unwrapZhihu,
 
   // Press release wires.
