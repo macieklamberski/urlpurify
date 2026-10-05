@@ -104,8 +104,14 @@ describe('unwrapImpact', () => {
     expect(unwrapImpact(url)).toBeUndefined()
   })
 
-  it('should return undefined for a host that starts with an Impact domain', () => {
+  it('should return undefined for a host that starts with pxf.io', () => {
     const url = new URL('https://merchant.pxf.io.example.com/?u=https%3A%2F%2Fexample.com%2F')
+
+    expect(unwrapImpact(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a host that starts with sjv.io', () => {
+    const url = new URL('https://merchant.sjv.io.example.com/Y6oeO?u=https%3A%2F%2Fexample.com%2F')
 
     expect(unwrapImpact(url)).toBeUndefined()
   })
@@ -118,6 +124,12 @@ describe('unwrapImpact', () => {
 
   it('should return undefined for a 4 character code on sjv.io', () => {
     const url = new URL('https://merchant.sjv.io/aB3d?u=https%3A%2F%2Fexample.com%2F')
+
+    expect(unwrapImpact(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a short code under another segment on sjv.io', () => {
+    const url = new URL('https://merchant.sjv.io/c/Y6oeO?u=https%3A%2F%2Fexample.com%2F')
 
     expect(unwrapImpact(url)).toBeUndefined()
   })
