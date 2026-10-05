@@ -86,6 +86,7 @@ import { unwrapLivejournal } from './unwraps/livejournal.js'
 // import { unwrapMailtrack } from './unwraps/mailtrack.js'
 // import { unwrapMcas } from './unwraps/mcas.js'
 import { unwrapMedium } from './unwraps/medium.js'
+// import { unwrapMegalodon } from './unwraps/megalodon.js'
 // import { unwrapMimecast } from './unwraps/mimecast.js'
 // import { unwrapMoshimo } from './unwraps/moshimo.js'
 import { unwrapMozillaOutgoing } from './unwraps/mozillaOutgoing.js'
@@ -315,6 +316,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapAmpCache,
   // unwrapArchiveToday, // Snapshot of a page at a point in time, not a redirect
   // unwrapEmbedly,
+  // unwrapMegalodon,
   unwrapMozillaOutgoing,
   // unwrapUkgwa,
   // unwrapWebcitation,
