@@ -96,13 +96,17 @@ Enabled by default:
 | `unwrapBing` | Bing search-result redirect (www.bing.com/ck/a?u=a1\<base64url\>) and news click (www.bing.com/news/apiclick.aspx?url=\<target\>) |
 | `unwrapAnonymTo` | anonym.to referrer anonymizer (anonym.to/?\<target\>) |
 | `unwrapBlueskyRedirect` | Bluesky outbound link redirect (go.bsky.app/redirect?u=\<target\>) |
+| `unwrapBridgyFed` | Bridgy Fed redirect for a bridged post or profile (fed.brid.gy/r/\<target\>, also bsky.brid.gy and web.brid.gy) |
 | `unwrapBusinessWire` | Business Wire release click tracker (cts.businesswire.com/ct/CT?url=\<target\>) |
 | `unwrapCalendly` | Calendly outbound link (calendly.com/url?q=\<target\>) |
+| `unwrapCanva` | Canva outbound link in published designs (www.canva.com/link?target=\<target\>) |
 | `unwrapCsdn` | CSDN external link redirect (link.csdn.net/?target=\<target\>) |
+| `unwrapDatalifeEngine` | DataLife Engine leaving redirect (\<any host\>/engine/go.php?url=\<base64 target\>) |
 | `unwrapDerefMail` | GMX, WEB.DE and mail.com webmail dereferrer (deref-gmx.net/mail/client/dereferrer/?redirectUrl=\<target\>) |
 | `unwrapDeviantartOutgoing` | DeviantArt outbound link shim (www.deviantart.com/\<user\>/outgoing?\<target\>) |
 | `unwrapDisqus` | Disqus outbound link redirect (disq.us/url?url=\<target\> and disq.us/?url=\<target\>) |
 | `unwrapDouban` | Douban external link redirect (www.douban.com/link2/?url=\<target\>) |
+| `unwrapDropbox` | Dropbox outbound link redirect (www.dropbox.com/referrer_cleansing_redirect?url=\<target\>) and Paper external link (www.dropbox.com/paper/ep/redirect/external-link?url=\<target\>, also on paper.dropbox.com) |
 | `unwrapDzen` | Dzen away redirect (dzen.ru/away?to=\<target\>) |
 | `unwrapEvernote` | Evernote outbound link redirect (www.evernote.com/OutboundRedirect.action?dest=\<target\>) |
 | `unwrapFacebookShim` | Meta link shim (l.facebook.com/l.php?u=\<target\>, also lm., www., upload., m., web., pt-br., free., business., 0. and bare facebook.com, and l.messenger.com, plus l.facebook.com/?u=\<target\> and l.facebook.com/lsr.php?u=\<target\>) |
@@ -121,21 +125,31 @@ Enabled by default:
 | `unwrapJive` | Jive community external link redirect (\<any host\>/external-link.jspa?url=\<target\>) |
 | `unwrapJuejin` | Juejin external link redirect (link.juejin.cn/?target=\<target\>) |
 | `unwrapLinkedin` | LinkedIn outbound link shims and click trackers (www.linkedin.com/safety/go?url=\<target\>, /redir/redirect, /redirect, /nhome/nus-redirect, /nus-trk, /e/v2, /company/\<id\>/redirect) |
+| `unwrapLivejournal` | LiveJournal outbound link redirect (www.livejournal.com/away?to=\<target\>) |
+| `unwrapMailRu` | Mail.ru webmail link checker (checklink.mail.ru/proxy?url=\<target\>) and click redirect (click.mail.ru/redir?u=\<target\>, also click.my.mail.ru) |
+| `unwrapMarketwire` | Marketwire release click tracker (ctt.marketwire.com/?url=\<target\>) |
 | `unwrapMedium` | Medium outbound link redirect (medium.com/r/?url=\<target\>) and sign-in hop (medium.com/m/global-identity?redirectUrl=\<target\>) |
 | `unwrapMozillaOutgoing` | Mozilla outgoing-link redirector (outgoing.prod.mozaws.net/v1/\<hash\>/\<target\>) |
-| `unwrapNaverOutgoing` | Naver outbound link redirect (cc.loginfra.com/...?u=\<target\>) |
+| `unwrapNaverOutgoing` | Naver outbound link redirect (cc.loginfra.com/...?u=\<target\>) and search result click (search.naver.com/p/crd/rd?u=\<target\>, also m.search.naver.com) |
+| `unwrapNewswire` | Newswire release and email click tracker (stats.newswire.com/x/html?final=\<base64url\>, also stats.nwe.io and stats.mediadboutreach.com) |
+| `unwrapOkRu` | OK.ru outbound link and leaving-site page (ok.ru/dk?cmd=logExternal&st.link=\<target\>, m.ok.ru/dk?st.cmd=outLinkWarning&st.rfn=\<target\>) |
 | `unwrapPocket` | Pocket redirect (getpocket.com/redirect?url=\<target\>) |
 | `unwrapPrNewswire` | PR Newswire release click tracker (c212.net / edge.prnewswire.com /c/link/?u=\<target\>) |
 | `unwrapRedditOut` | Reddit outbound click tracker (out.reddit.com/?url=\<target\>) |
+| `unwrapResearchgate` | ResearchGate dereferrer (www.researchgate.net/deref/\<target\> and go.Deref.html?url=\<target\>) |
 | `unwrapSegmentfault` | Segmentfault external link redirect (link.segmentfault.com/?enc=\<base64\>) |
 | `unwrapSoundcloud` | SoundCloud exit link (exit.sc/?url=\<target\>) |
 | `unwrapSspai` | Sspai external link redirect (sspai.com/link?target=\<target\>) |
 | `unwrapSteamLinkfilter` | Steam outbound link filter (steamcommunity.com/linkfilter/?url=\<target\> or ?u=\<target\>) |
 | `unwrapThreadsShim` | Threads outbound link shim (l.threads.com / l.threads.net with ?u=\<target\>) |
 | `unwrapTumblr` | Tumblr outbound redirect (t.umblr.com/redirect?z=\<target\>) |
+| `unwrapVanilla` | Vanilla Forums leaving page (\<any host\>/home/leaving?target=\<target\>) |
+| `unwrapVbulletin` | vBulletin SEO add-on external link redirect (\<any host\>/redirect-to/?redirect=\<target\>) |
 | `unwrapVkAway` | VK away redirect (vk.com/away.php?to=\<target\>) |
+| `unwrapYahooJapan` | Yahoo! JAPAN click redirect (rdsig.yahoo.co.jp/.../RU=\<base64url\>/RS=...) |
 | `unwrapYahooSearch` | Yahoo Search redirect (r.search.yahoo.com/.../RU=\<target\>/RK=...) |
 | `unwrapYandexMail` | Yandex Mail link redirect (mail.yandex.\<TLD\>/re.jsx?l=\<base64url\>) |
+| `unwrapYelp` | Yelp outbound link redirect (www.yelp.com/biz_redir?url=\<target\>, /redir) |
 | `unwrapYouTube` | YouTube external redirect (www.youtube.com/redirect?q=\<target\>) |
 | `unwrapZemanta` | Zemanta related-article redirect (r.zemanta.com/?u=\<target\>) |
 | `unwrapZhihu` | Zhihu external redirect (link.zhihu.com/?target=\<target\>) |
