@@ -64,6 +64,7 @@ import { unwrapJuejin } from './unwraps/juejin.js'
 // import { unwrapLeverAnalytics } from './unwraps/leverAnalytics.js'
 import { unwrapLinkedin } from './unwraps/linkedin.js'
 // import { unwrapLinksynergy } from './unwraps/linksynergy.js'
+// import { unwrapMagellan } from './unwraps/magellan.js'
 // import { unwrapMailchimp } from './unwraps/mailchimp.js'
 // import { unwrapMailpanion } from './unwraps/mailpanion.js'
 // import { unwrapMailpgn } from './unwraps/mailpgn.js'
@@ -202,6 +203,9 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // Ad networks.
   // unwrapBingAds,
   // unwrapGoogleAds,
+
+  // Podcast analytics prefixes.
+  // unwrapMagellan,
 
   // Social and community platforms.
   unwrapAnonymTo,
