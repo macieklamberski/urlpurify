@@ -3,6 +3,7 @@ import { trackingParamsPatterns } from './tracking/patterns.js'
 import type { TrackingParam, UrlUnwrapper } from './types.js'
 // import { unwrap12ft } from './unwraps/12ft.js'
 // import { unwrapA8Net } from './unwraps/a8Net.js'
+// import { unwrapAcast } from './unwraps/acast.js'
 // import { unwrapAccesstrade } from './unwraps/accesstrade.js'
 // import { unwrapAceml } from './unwraps/aceml.js'
 // import { unwrapAdjust } from './unwraps/adjust.js'
@@ -202,6 +203,9 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // Ad networks.
   // unwrapBingAds,
   // unwrapGoogleAds,
+
+  // Podcast analytics prefixes.
+  // unwrapAcast,
 
   // Social and community platforms.
   unwrapAnonymTo,
