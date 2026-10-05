@@ -13,6 +13,7 @@ import { unwrapAnonymTo } from './unwraps/anonymTo.js'
 // import { unwrapArchiveToday } from './unwraps/archiveToday.js'
 // import { unwrapAvantlink } from './unwraps/avantlink.js'
 // import { unwrapAwin } from './unwraps/awin.js'
+// import { unwrapBacLacWebArchive } from './unwraps/bacLacWebArchive.js'
 // import { unwrapBarracudaLinkProtect } from './unwraps/barracudaLinkProtect.js'
 import { unwrapBing } from './unwraps/bing.js'
 // import { unwrapBingAds } from './unwraps/bingAds.js'
@@ -250,6 +251,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrap12ft,
   // unwrapAmpCache,
   // unwrapArchiveToday, // Snapshot of a page at a point in time, not a redirect
+  // unwrapBacLacWebArchive,
   // unwrapEmbedly,
   unwrapMozillaOutgoing,
   // unwrapUkgwa,
