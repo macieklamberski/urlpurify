@@ -41,4 +41,106 @@ describe('unwrapAdjust', () => {
 
     expect(unwrapAdjust(url)).toBeUndefined()
   })
+
+  it('should extract target from the tracker fallback', () => {
+    const url = new URL(
+      'https://app.adjust.com/1vsbb5d1?adgroup=Influencer_piepsein_lovinn+launch&fallback=https%3A%2F%2Fwww.example.com%2F&redirect_macos=https%3A%2F%2Fwww.example.com%2F',
+    )
+
+    expect(unwrapAdjust(url)).toBe('https://www.example.com/')
+  })
+
+  it('should extract target from the tracker macOS redirect', () => {
+    const url = new URL(
+      'https://app.adjust.com/vkqj7re?campaign=podcast&adgroup=broker&redirect_ios=https%3A%2F%2Fexample.org%2Fapp%2Fid1&redirect_macos=https%3A%2F%2Fexample.com%2Ftrading%2F',
+    )
+
+    expect(unwrapAdjust(url)).toBe('https://example.com/trading/')
+  })
+
+  it('should prefer the tracker redirect over the fallback', () => {
+    const url = new URL(
+      'https://app.adjust.com/abc123?fallback=https%3A%2F%2Fexample.com%2Ffallback&redirect=https%3A%2F%2Fexample.com%2Fredirect',
+    )
+
+    expect(unwrapAdjust(url)).toBe('https://example.com/redirect')
+  })
+
+  it('should skip a custom-scheme redirect for the tracker fallback', () => {
+    const url = new URL(
+      'https://app.adjust.com/abc123?redirect=myapp%3A%2F%2Fopen&fallback=https%3A%2F%2Fexample.com%2Fpost',
+    )
+
+    expect(unwrapAdjust(url)).toBe('https://example.com/post')
+  })
+
+  it('should extract target from a universal link fallback', () => {
+    const url = new URL(
+      'https://8xws.adj.st/?utm_source=news&utm_medium=in_article_banner&adj_t=1m4i69ak_1mazzg55&adj_fallback=https%3A%2F%2Fexample.com%2F%3Fintent%3Dregister%26lan%3Dnl',
+    )
+
+    expect(unwrapAdjust(url)).toBe('https://example.com/?intent=register&lan=nl')
+  })
+
+  it('should extract target from a universal link redirect on a deep-link path', () => {
+    const url = new URL(
+      'https://3kmh.adj.st/competition/13?seasonId=41850&view=fixtures&adj_t=1m32kzju_1mgyncle&adj_campaign=Podcast&adj_redirect=https%3A%2F%2Fexample.com%2Fen%2Flive-matches',
+    )
+
+    expect(unwrapAdjust(url)).toBe('https://example.com/en/live-matches')
+  })
+
+  it('should extract target from a universal link macOS redirect', () => {
+    const url = new URL(
+      'https://vml8.adj.st/main?productId=515b205a&showcaseType=MINIMARKET&adj_t=zzwvyv8&adj_redirect_macos=https%3A%2F%2Fexample.com%2F&adj_redirect_windows=https%3A%2F%2Fexample.com%2F',
+    )
+
+    expect(unwrapAdjust(url)).toBe('https://example.com/')
+  })
+
+  it('should extract target from a universal link older fallback', () => {
+    const url = new URL(
+      'https://a64p.adj.st/feed?incid=01_16436_2012&adjust_t=w4z9z2g_klpcai2&adjust_deeplink=pbmobilit://feed?incid=01_16436_2012&adjust_fallback=https://example.com/',
+    )
+
+    expect(unwrapAdjust(url)).toBe('https://example.com/')
+  })
+
+  it('should extract target from a universal link on the tr host', () => {
+    const url = new URL(
+      'https://meds.tr.adj.st/?adj_t=173p8vem&adj_fallback=https%3A%2F%2Fexample.com%2Fon-bilgilendirme%2F1411',
+    )
+
+    expect(unwrapAdjust(url)).toBe('https://example.com/on-bilgilendirme/1411')
+  })
+
+  it('should prefer the universal link redirect over the fallback', () => {
+    const url = new URL(
+      'https://nquw.adj.st/special?adj_t=2bpsx8m&adj_fallback=https%3A%2F%2Fexample.com%2Ffallback&adj_redirect=https%3A%2F%2Fexample.com%2Fredirect',
+    )
+
+    expect(unwrapAdjust(url)).toBe('https://example.com/redirect')
+  })
+
+  it('should return undefined for a universal link with only a deep link', () => {
+    const url = new URL(
+      'https://v5um.adj.st/?adj_t=10iqlug2&adj_deep_link=franceinfo%3A%2F%2Ftitles',
+    )
+
+    expect(unwrapAdjust(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a host that only ends with the universal link host', () => {
+    const url = new URL('https://x8xws.adj.st/?adj_fallback=https%3A%2F%2Fexample.com%2F')
+
+    expect(unwrapAdjust(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a host that only starts with the universal link host', () => {
+    const url = new URL(
+      'https://8xws.adj.st.example.com/?adj_fallback=https%3A%2F%2Fexample.com%2F',
+    )
+
+    expect(unwrapAdjust(url)).toBeUndefined()
+  })
 })
