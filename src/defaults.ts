@@ -84,6 +84,7 @@ import { unwrapPrNewswire } from './unwraps/prNewswire.js'
 // import { unwrapProofpointV3 } from './unwraps/proofpointV3.js'
 // import { unwrapPxf } from './unwraps/pxf.js'
 // import { unwrapRakutenAffiliate } from './unwraps/rakutenAffiliate.js'
+import { unwrapRamblerMail } from './unwraps/ramblerMail.js'
 // import { unwrapRecruitics } from './unwraps/recruitics.js'
 import { unwrapRedditOut } from './unwraps/redditOut.js'
 // import { unwrapRedirectingat } from './unwraps/redirectingat.js'
@@ -223,6 +224,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   unwrapNaverOutgoing,
   // unwrapNicoMs,
   unwrapPocket,
+  unwrapRamblerMail,
   unwrapRedditOut,
   unwrapSoundcloud,
   unwrapSteamLinkfilter,
