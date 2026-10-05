@@ -61,4 +61,20 @@ describe('unwrapEdgepilot', () => {
 
     expect(unwrapEdgepilot(url)).toBeUndefined()
   })
+
+  it('should return undefined for a path with a segment before the shape', () => {
+    const url = new URL(
+      'https://link.edgepilot.com/report/x/zy7CWSADUoi2O9ZELfWL3hk?u=https://example.com/page',
+    )
+
+    expect(unwrapEdgepilot(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a path with a segment after the shape', () => {
+    const url = new URL(
+      'https://link.edgepilot.com/x/zy7CWSADUoi2O9ZELfWL3hk/report?u=https://example.com/page',
+    )
+
+    expect(unwrapEdgepilot(url)).toBeUndefined()
+  })
 })
