@@ -33,6 +33,7 @@ import { unwrapDouban } from './unwraps/douban.js'
 // import { unwrapDuckduckgo } from './unwraps/duckduckgo.js'
 import { unwrapDzen } from './unwraps/dzen.js'
 // import { unwrapEbayRover } from './unwraps/ebayRover.js'
+// import { unwrapEClick } from './unwraps/eClick.js'
 // import { unwrapEffiliation } from './unwraps/effiliation.js'
 // import { unwrapEmbedly } from './unwraps/embedly.js'
 // import { unwrapEsva } from './unwraps/esva.js'
@@ -172,6 +173,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapDigidip,
   // unwrapDmmAffiliate,
   // unwrapEbayRover,
+  // unwrapEClick,
   // unwrapEffiliation,
   // unwrapFirebaseDynamicLinks,
   // unwrapGateSc,
