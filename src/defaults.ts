@@ -52,6 +52,7 @@ import { unwrapGoogleNews } from './unwraps/googleNews.js'
 import { unwrapGoogleNewsModern } from './unwraps/googleNewsModern.js'
 import { unwrapGoogleScholar } from './unwraps/googleScholar.js'
 import { unwrapHashnode } from './unwraps/hashnode.js'
+import { unwrapHorde } from './unwraps/horde.js'
 import { unwrapHrefLi } from './unwraps/hrefLi.js'
 // import { unwrapIcptrack } from './unwraps/icptrack.js'
 // import { unwrapImpact } from './unwraps/impact.js'
@@ -214,6 +215,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   unwrapDzen,
   unwrapFacebookShim,
   unwrapFlipboard,
+  unwrapHorde,
   unwrapHrefLi,
   unwrapIndexHu,
   unwrapInstagramShim,
