@@ -68,6 +68,46 @@ describe('unwrapMimecast', () => {
     expect(unwrapMimecast(url)).toBe('https://example.com/post')
   })
 
+  it('should synthesise https URL from domain param on a mimecastprotect.com host', () => {
+    const url = new URL(
+      'https://url.us.m.mimecastprotect.com/s/E1dLCDkD3Rto6WnuAizSjIfXT?domain=example.org/',
+    )
+
+    expect(unwrapMimecast(url)).toBe('https://example.org/')
+  })
+
+  it('should return undefined for a mimecastprotect.com lookalike domain', () => {
+    const url = new URL(
+      'https://url.us.m.examplemimecastprotect.com/s/E1dLCDkD3Rto6WnuAizSjIfXT?domain=example.org/',
+    )
+
+    expect(unwrapMimecast(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a host that ends with a mimecastprotect.com region host', () => {
+    const url = new URL(
+      'https://myurl.us.m.mimecastprotect.com/s/E1dLCDkD3Rto6WnuAizSjIfXT?domain=example.org/',
+    )
+
+    expect(unwrapMimecast(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a host that only starts with a mimecastprotect.com region host', () => {
+    const url = new URL(
+      'https://url.us.m.mimecastprotect.com.example.net/s/E1dLCDkD3Rto6WnuAizSjIfXT?domain=example.org/',
+    )
+
+    expect(unwrapMimecast(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a mimecastprotect.com host with another product label', () => {
+    const url = new URL(
+      'https://url.us.x.mimecastprotect.com/s/E1dLCDkD3Rto6WnuAizSjIfXT?domain=example.org/',
+    )
+
+    expect(unwrapMimecast(url)).toBeUndefined()
+  })
+
   it('should return undefined for a Mimecast host that is not a protect region', () => {
     const url = new URL('https://login.mimecast.com/s/abc123?url=https%3A%2F%2Fexample.com%2Fpost')
 
