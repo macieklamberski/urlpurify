@@ -32,6 +32,12 @@ describe('unwrapNdlWarp', () => {
     expect(unwrapNdlWarp(url)).toBeUndefined()
   })
 
+  it('should return undefined for a partial timestamp', () => {
+    const url = new URL('https://warp.ndl.go.jp/web/2022/https://www.example.jp/')
+
+    expect(unwrapNdlWarp(url)).toBeUndefined()
+  })
+
   it('should return undefined for the archive search', () => {
     const url = new URL(
       'https://warp.ndl.go.jp/search/ArchiveSearch/WE11.jsp?collectDate=20220308&originalUrl=https://www.example.jp/',
