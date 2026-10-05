@@ -243,6 +243,7 @@ import { unwrapSoundcloud } from './unwraps/soundcloud.js'
 import { unwrapSspai } from './unwraps/sspai.js'
 // import { unwrapStay22 } from './unwraps/stay22.js'
 import { unwrapSteamLinkfilter } from './unwraps/steamLinkfilter.js'
+import { unwrapStorify } from './unwraps/storify.js'
 // import { unwrapStreak } from './unwraps/streak.js'
 // import { unwrapStreamsend } from './unwraps/streamsend.js'
 // import { unwrapSurugaya } from './unwraps/surugaya.js'
@@ -555,6 +556,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   unwrapSkyrock,
   unwrapSoundcloud,
   unwrapSteamLinkfilter,
+  unwrapStorify,
   unwrapThreadsShim,
   unwrapTiktok,
   unwrapTumblr,
