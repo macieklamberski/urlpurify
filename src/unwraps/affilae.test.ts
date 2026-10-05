@@ -18,6 +18,14 @@ describe('unwrapAffilae', () => {
     expect(unwrapAffilae(url)).toBe('https://www.example.com/box-enfants-7-11')
   })
 
+  it('should extract the last lp when an Affilae click is nested unencoded', () => {
+    const url = new URL(
+      'https://lb.affilae.com/r/?p=636a7d6342a98646600f93cc&af=8&lp=https://lb.affilae.com/r/?p=636a7d6342a98646600f93cc&af=8&lp=https://www.example.com/lk-samyang-af-60-180mm.html%3Fref%3D48392',
+    )
+
+    expect(unwrapAffilae(url)).toBe('https://www.example.com/lk-samyang-af-60-180mm.html?ref=48392')
+  })
+
   it('should return undefined when lp param is missing', () => {
     const url = new URL('https://lb.affilae.com/r/?p=61b9aae6d4b9873f6d45ef3d&af=117')
 
