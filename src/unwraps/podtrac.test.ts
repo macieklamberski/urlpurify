@@ -82,12 +82,38 @@ describe('unwrapPodtrac', () => {
     expect(unwrapPodtrac(url)).toBeUndefined()
   })
 
-  it('should return undefined when the slash after the extension is missing', () => {
+  it('should extract a target with a scheme when the slash after the extension is missing', () => {
+    const url = new URL(
+      'https://dts.podtrac.com/redirect.mp3https://example.com/dd/7c/2c/4b98cd420f.mp3',
+    )
+
+    expect(unwrapPodtrac(url)).toBe('https://example.com/dd/7c/2c/4b98cd420f.mp3')
+  })
+
+  it('should extract a single-slash target when the slash after the www extension is missing', () => {
     const url = new URL(
       'http://www.podtrac.com/pts/redirect.mp3https:/example.com/episodes/Hopinions144.mp3',
     )
 
-    expect(unwrapPodtrac(url)).toBeUndefined()
+    expect(unwrapPodtrac(url)).toBe('https:/example.com/episodes/Hopinions144.mp3')
+  })
+
+  it('should extract a target after a stray dot following the extension', () => {
+    const url = new URL(
+      'http://www.podtrac.com/pts/redirect.mp3./example.com/stream/2329399343-interview.mp3',
+    )
+
+    expect(unwrapPodtrac(url)).toBe('https://example.com/stream/2329399343-interview.mp3')
+  })
+
+  it('should extract a target after the show segment on the play host', () => {
+    const url = new URL(
+      'http://play.podtrac.com/APM-SplendidTable/example.com/itunes/d/podcast/splendidtable_20161028_64.mp3',
+    )
+
+    expect(unwrapPodtrac(url)).toBe(
+      'https://example.com/itunes/d/podcast/splendidtable_20161028_64.mp3',
+    )
   })
 
   it('should return undefined for a query that holds no http url', () => {
