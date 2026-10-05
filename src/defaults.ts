@@ -37,6 +37,7 @@ import { unwrapDzen } from './unwraps/dzen.js'
 // import { unwrapEmbedly } from './unwraps/embedly.js'
 // import { unwrapEsva } from './unwraps/esva.js'
 import { unwrapEvernote } from './unwraps/evernote.js'
+// import { unwrapExpediaAffiliate } from './unwraps/expediaAffiliate.js'
 import { unwrapFacebookShim } from './unwraps/facebook.js'
 // import { unwrapFeedsportal } from './unwraps/feedsportal.js'
 // import { unwrapFirebaseDynamicLinks } from './unwraps/firebaseDynamicLinks.js'
@@ -173,6 +174,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapDmmAffiliate,
   // unwrapEbayRover,
   // unwrapEffiliation,
+  // unwrapExpediaAffiliate,
   // unwrapFirebaseDynamicLinks,
   // unwrapGateSc,
   // unwrapGeoriot,
