@@ -1,7 +1,8 @@
 import { isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
-// The collection, an end-of-term harvest such as peth04 or a congressional one such as congress117th, then a 14-digit timestamp.
+// The collection, an end-of-term harvest such as peth04 or a congressional one such as
+// congress117th, then a 14-digit timestamp.
 const pathRegex = /^\/(?:peth\d{2}|congress\d+th)\/\d{14}\/(.+)$/
 
 // NARA web harvest snapshot (webharvest.gov/<collection>/<timestamp>/<target>). Opt-in: unwrapping
