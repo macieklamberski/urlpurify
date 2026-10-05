@@ -54,6 +54,20 @@ describe('unwrapAdcell', () => {
     expect(unwrapAdcell(url)).toBeUndefined()
   })
 
+  it('should return undefined for a click path under a prefix', () => {
+    const url = new URL('https://t.adcell.com/x/p/click?param0=https%3A%2F%2Fwww.example.com%2F')
+
+    expect(unwrapAdcell(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a path below the click path', () => {
+    const url = new URL(
+      'https://t.adcell.com/p/click/extra?param0=https%3A%2F%2Fwww.example.com%2F',
+    )
+
+    expect(unwrapAdcell(url)).toBeUndefined()
+  })
+
   it('should return undefined for other hosts', () => {
     const url = new URL('https://example.com/p/click?param0=https%3A%2F%2Fwww.example.org%2F')
 
