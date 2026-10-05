@@ -82,6 +82,7 @@ import { unwrapPrNewswire } from './unwraps/prNewswire.js'
 // import { unwrapProofpointV1 } from './unwraps/proofpointV1.js'
 // import { unwrapProofpointV2 } from './unwraps/proofpointV2.js'
 // import { unwrapProofpointV3 } from './unwraps/proofpointV3.js'
+import { unwrapPrweb } from './unwraps/prweb.js'
 // import { unwrapPxf } from './unwraps/pxf.js'
 // import { unwrapRakutenAffiliate } from './unwraps/rakutenAffiliate.js'
 // import { unwrapRecruitics } from './unwraps/recruitics.js'
@@ -245,6 +246,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // Press release wires.
   unwrapBusinessWire,
   unwrapPrNewswire,
+  unwrapPrweb,
 
   // Cache and proxy services.
   // unwrap12ft,
