@@ -54,6 +54,7 @@ import { unwrapGoogleScholar } from './unwraps/googleScholar.js'
 import { unwrapHashnode } from './unwraps/hashnode.js'
 import { unwrapHrefLi } from './unwraps/hrefLi.js'
 // import { unwrapIcptrack } from './unwraps/icptrack.js'
+// import { unwrapIgafnl } from './unwraps/igafnl.js'
 // import { unwrapImpact } from './unwraps/impact.js'
 import { unwrapIndexHu } from './unwraps/indexHu.js'
 import { unwrapInstagramShim } from './unwraps/instagram.js'
@@ -144,6 +145,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapEsva,
   // unwrapFireeye,
   // unwrapIcptrack,
+  // unwrapIgafnl,
   // unwrapLeverAnalytics,
   // unwrapMailchimp,
   // unwrapMailpanion,
