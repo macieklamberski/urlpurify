@@ -172,6 +172,7 @@ import { unwrapVkAway } from './unwraps/vkAway.js'
 // import { unwrapWordpressGo2 } from './unwraps/wordpressGo2.js'
 import { unwrapYahooJapan } from './unwraps/yahooJapan.js'
 import { unwrapYahooSearch } from './unwraps/yahooSearch.js'
+// import { unwrapYamm } from './unwraps/yamm.js'
 import { unwrapYandexMail } from './unwraps/yandexMail.js'
 import { unwrapYelp } from './unwraps/yelp.js'
 import { unwrapYouTube } from './unwraps/youtube.js'
@@ -245,6 +246,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapVadeSecure,
   // unwrapVuture,
   // unwrapWordpressEmail,
+  // unwrapYamm,
 
   // Affiliate networks.
   // unwrap2performant,
