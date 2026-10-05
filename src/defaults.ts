@@ -9,6 +9,7 @@ import type { TrackingParam, UrlUnwrapper } from './types.js'
 // import { unwrapAmazonAffiliate } from './unwraps/amazonAffiliate.js'
 // import { unwrapAmazonSes } from './unwraps/amazonSes.js'
 // import { unwrapAmpCache } from './unwraps/ampCache.js'
+// import { unwrapAnchor } from './unwraps/anchor.js'
 import { unwrapAnonymTo } from './unwraps/anonymTo.js'
 // import { unwrapArchiveToday } from './unwraps/archiveToday.js'
 // import { unwrapAvantlink } from './unwraps/avantlink.js'
@@ -202,6 +203,9 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // Ad networks.
   // unwrapBingAds,
   // unwrapGoogleAds,
+
+  // Podcast analytics prefixes.
+  // unwrapAnchor,
 
   // Social and community platforms.
   unwrapAnonymTo,
