@@ -19,9 +19,8 @@ const extractForward = createParamExtractor({
 })
 
 // DStats download and hit counter (dstats.net/download/<target>, /download.php?file=<target> and
-// /fwd.php?url=<target>), with the target unencoded. The host answers 503 today, and captures up
-// to 2023 show each shape forwarding. Not included in defaultUnwrappers: unwrapping removes the
-// publisher's download count.
+// /fwd.php?url=<target>), the target unencoded. Opt-in: unwrapping removes the publisher's
+// download count.
 export const unwrapDstats: UrlUnwrapper = (url) => {
   if (!isHostOf(url, 'dstats.net')) {
     return

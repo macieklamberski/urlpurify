@@ -38,6 +38,12 @@ describe('unwrapDstats', () => {
     expect(unwrapDstats(url)).toBeUndefined()
   })
 
+  it('should return undefined for a download segment deeper in the path', () => {
+    const url = new URL('http://dstats.net/show/download/http://example.org/file.pdf')
+
+    expect(unwrapDstats(url)).toBeUndefined()
+  })
+
   it('should return undefined for another path on the host', () => {
     const url = new URL(
       'http://dstats.net/sitetracker.php?file=https://example.de/a.pdf&url=https://example.de',
