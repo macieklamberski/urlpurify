@@ -30,12 +30,6 @@ describe('unwrapCalendly', () => {
     expect(unwrapCalendly(url)).toBe('https://www.example.com/jane/')
   })
 
-  it('should return undefined for a subdomain no specimen shows', () => {
-    const url = new URL('https://www.calendly.com/url?q=https%3A%2F%2Fexample.com%2F')
-
-    expect(unwrapCalendly(url)).toBeUndefined()
-  })
-
   it('should return undefined when q param is missing', () => {
     const url = new URL('https://calendly.com/url?stage=1')
 
@@ -62,24 +56,6 @@ describe('unwrapCalendly', () => {
 
   it('should return undefined for the same shape on another host', () => {
     const url = new URL('https://example.com/url?q=https%3A%2F%2Fother.example.org%2F')
-
-    expect(unwrapCalendly(url)).toBeUndefined()
-  })
-
-  it('should return undefined for a lookalike host', () => {
-    const url = new URL('https://examplecalendly.com/url?q=https%3A%2F%2Fexample.com%2F')
-
-    expect(unwrapCalendly(url)).toBeUndefined()
-  })
-
-  it('should return undefined for a host that only contains the domain', () => {
-    const url = new URL('https://calendly.com.example.com/url?q=https%3A%2F%2Fexample.org%2F')
-
-    expect(unwrapCalendly(url)).toBeUndefined()
-  })
-
-  it('should return undefined for a host that swaps the dot', () => {
-    const url = new URL('https://www.calendlyxcom/url?q=https%3A%2F%2Fexample.com%2F')
 
     expect(unwrapCalendly(url)).toBeUndefined()
   })

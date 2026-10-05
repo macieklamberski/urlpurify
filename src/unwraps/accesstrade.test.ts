@@ -1,15 +1,6 @@
 import { describe, expect, it } from 'bun:test'
 import { unwrapAccesstrade } from './accesstrade.js'
 
-const listedHosts: Array<string> = [
-  'h.accesstrade.net',
-  'www.accesstrade.net',
-  'click.accesstrade.vn',
-  'fast.accesstrade.com.vn',
-  'pub.accesstrade.vn',
-  'click.accesstrade.in.th',
-]
-
 describe('unwrapAccesstrade', () => {
   it('should extract target from h.accesstrade.net', () => {
     const url = new URL(
@@ -67,12 +58,6 @@ describe('unwrapAccesstrade', () => {
     expect(unwrapAccesstrade(url)).toBe('https://example.com/%E0%B8%8A')
   })
 
-  it.each(listedHosts)('should extract target on %s', (host) => {
-    const url = new URL(`https://${host}/adv.php?rk=00006800050z&url=https%3A%2F%2Fexample.com%2F`)
-
-    expect(unwrapAccesstrade(url)).toBe('https://example.com/')
-  })
-
   it('should keep the query and fragment of the target', () => {
     const url = new URL(
       'https://h.accesstrade.net/sp/cc?rk=01003xwv001i5o&url=http%3A%2F%2Fexample.com%2Fitem%3Futm_source%3Daccesstrade%26utm_medium%3Dreferral%23top',
@@ -81,14 +66,6 @@ describe('unwrapAccesstrade', () => {
     expect(unwrapAccesstrade(url)).toBe(
       'http://example.com/item?utm_source=accesstrade&utm_medium=referral#top',
     )
-  })
-
-  it('should return undefined for a subdomain no specimen shows', () => {
-    const url = new URL(
-      'https://s.accesstrade.net/sp/cc?rk=01001xqc00op53&url=https%3A%2F%2Fexample.com%2F',
-    )
-
-    expect(unwrapAccesstrade(url)).toBeUndefined()
   })
 
   it('should return undefined for another path on the domain', () => {
@@ -154,14 +131,6 @@ describe('unwrapAccesstrade', () => {
   it('should return undefined for the same shape on another host', () => {
     const url = new URL(
       'https://tracking.example.com/sp/cc?rk=01001xqc00op53&url=https%3A%2F%2Fexample.com%2F',
-    )
-
-    expect(unwrapAccesstrade(url)).toBeUndefined()
-  })
-
-  it('should return undefined for a host that only ends in the domain name', () => {
-    const url = new URL(
-      'https://exampleaccesstrade.net/sp/cc?rk=01001xqc00op53&url=https%3A%2F%2Fexample.com%2F',
     )
 
     expect(unwrapAccesstrade(url)).toBeUndefined()

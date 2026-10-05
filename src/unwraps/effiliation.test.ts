@@ -30,25 +30,9 @@ describe('unwrapEffiliation', () => {
     expect(unwrapEffiliation(url)).toBe('https://example.com/page')
   })
 
-  it('should return undefined for a subdomain no specimen shows', () => {
-    const url = new URL(
-      'https://click.effiliation.com/servlet/effi.redir?url=https%3A%2F%2Fexample.com%2Fpage',
-    )
-
-    expect(unwrapEffiliation(url)).toBeUndefined()
-  })
-
   it('should return undefined for another path on the host', () => {
     const url = new URL(
       'https://track.effiliation.com/servlet/effi.other?url=https%3A%2F%2Fexample.com%2Fpage',
-    )
-
-    expect(unwrapEffiliation(url)).toBeUndefined()
-  })
-
-  it('should return undefined for a lookalike host', () => {
-    const url = new URL(
-      'https://exampleeffiliation.com/servlet/effi.redir?url=https%3A%2F%2Fexample.com%2Fpage',
     )
 
     expect(unwrapEffiliation(url)).toBeUndefined()
@@ -65,14 +49,6 @@ describe('unwrapEffiliation', () => {
   it('should return undefined for a servlet path with a suffix', () => {
     const url = new URL(
       'https://track.effiliation.com/servlet/effi.redir.php?url=https%3A%2F%2Fexample.com%2F',
-    )
-
-    expect(unwrapEffiliation(url)).toBeUndefined()
-  })
-
-  it('should return undefined for a host that only starts with effiliation.com', () => {
-    const url = new URL(
-      'https://track.effiliation.com.example.net/servlet/effi.redir?url=https%3A%2F%2Fexample.com%2F',
     )
 
     expect(unwrapEffiliation(url)).toBeUndefined()

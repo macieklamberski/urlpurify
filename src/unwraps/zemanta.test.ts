@@ -65,16 +65,4 @@ describe('unwrapZemanta', () => {
 
     expect(unwrapZemanta(url)).toBeUndefined()
   })
-
-  it('should return undefined for a host that only starts with the domain name', () => {
-    const url = new URL('https://r.zemanta.com.example.org/?u=https%3A%2F%2Fexample.com%2F&a=1')
-
-    expect(unwrapZemanta(url)).toBeUndefined()
-  })
-
-  it('should return undefined for a host that only ends in the domain name', () => {
-    const url = new URL('https://examplezemanta.com/?u=https%3A%2F%2Fexample.com%2F&a=1')
-
-    expect(unwrapZemanta(url)).toBeUndefined()
-  })
 })

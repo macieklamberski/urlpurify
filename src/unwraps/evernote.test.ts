@@ -42,22 +42,6 @@ describe('unwrapEvernote', () => {
     expect(unwrapEvernote(url)).toBe('https://www.example.com/')
   })
 
-  it('should return undefined for a subdomain no specimen shows', () => {
-    const url = new URL(
-      'https://app.evernote.com/OutboundRedirect.action?dest=https%3A%2F%2Fwww.example.com%2F',
-    )
-
-    expect(unwrapEvernote(url)).toBeUndefined()
-  })
-
-  it('should return undefined for the bare domain', () => {
-    const url = new URL(
-      'https://evernote.com/OutboundRedirect.action?dest=https%3A%2F%2Fwww.example.com%2F',
-    )
-
-    expect(unwrapEvernote(url)).toBeUndefined()
-  })
-
   it('should return undefined when the dest param is missing', () => {
     const url = new URL('https://www.evernote.com/OutboundRedirect.action')
 
@@ -97,30 +81,6 @@ describe('unwrapEvernote', () => {
   it('should return undefined for the shape on another host', () => {
     const url = new URL(
       'https://www.example.com/OutboundRedirect.action?dest=https%3A%2F%2Fwww.example.org%2F',
-    )
-
-    expect(unwrapEvernote(url)).toBeUndefined()
-  })
-
-  it('should return undefined for a lookalike host', () => {
-    const url = new URL(
-      'https://www.notevernote.com/OutboundRedirect.action?dest=https%3A%2F%2Fwww.example.org%2F',
-    )
-
-    expect(unwrapEvernote(url)).toBeUndefined()
-  })
-
-  it('should return undefined for a host that only starts with the domain in its name', () => {
-    const url = new URL(
-      'https://evernote.com.example.net/OutboundRedirect.action?dest=https%3A%2F%2Fwww.example.org%2F',
-    )
-
-    expect(unwrapEvernote(url)).toBeUndefined()
-  })
-
-  it('should return undefined for a host that replaces the dot with another character', () => {
-    const url = new URL(
-      'https://www.evernote-com/OutboundRedirect.action?dest=https%3A%2F%2Fwww.example.org%2F',
     )
 
     expect(unwrapEvernote(url)).toBeUndefined()

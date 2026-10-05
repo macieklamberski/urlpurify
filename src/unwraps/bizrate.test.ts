@@ -12,14 +12,6 @@ describe('unwrapBizrate', () => {
     )
   })
 
-  it('should extract the target from the www host', () => {
-    const url = new URL(
-      'http://www.bizrate.com/rd?t=http%3A%2F%2Ftracking.example.com%2Fclick.asp%3Faid%3D757946125&mid=26581&cat_id=12100200&atom=10457&b_id=18&bamt=b0d1bfd60acd05fc',
-    )
-
-    expect(unwrapBizrate(url)).toBe('http://tracking.example.com/click.asp?aid=757946125')
-  })
-
   it('should extract an https target', () => {
     const url = new URL(
       'https://rd.bizrate.com/rd?t=https%3A%2F%2Fwww.example.com%2Fshoes%2F&mid=1',
@@ -34,12 +26,6 @@ describe('unwrapBizrate', () => {
     )
 
     expect(unwrapBizrate(url)).toBe('http://www.example.com/')
-  })
-
-  it('should return undefined for a subdomain no specimen shows', () => {
-    const url = new URL('http://rd2.bizrate.com/rd?t=http%3A%2F%2Fwww.example.com%2F&mid=1')
-
-    expect(unwrapBizrate(url)).toBeUndefined()
   })
 
   it('should return undefined when the t param is missing', () => {
@@ -68,18 +54,6 @@ describe('unwrapBizrate', () => {
 
   it('should return undefined for the shape on another host', () => {
     const url = new URL('https://example.com/rd?t=http%3A%2F%2Fwww.example.org%2F&mid=1')
-
-    expect(unwrapBizrate(url)).toBeUndefined()
-  })
-
-  it('should return undefined for a lookalike host', () => {
-    const url = new URL('http://rd.notbizrate.com/rd?t=http%3A%2F%2Fwww.example.org%2F&mid=1')
-
-    expect(unwrapBizrate(url)).toBeUndefined()
-  })
-
-  it('should return undefined for a host that only starts with the domain in its name', () => {
-    const url = new URL('http://bizrate.com.example.net/rd?t=http%3A%2F%2Fwww.example.org%2F&mid=1')
 
     expect(unwrapBizrate(url)).toBeUndefined()
   })

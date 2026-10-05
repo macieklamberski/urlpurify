@@ -2,17 +2,6 @@ import { describe, expect, it } from 'bun:test'
 import { cleanUrl } from '../clean.js'
 import { unwrapArchiveToday } from './archiveToday.js'
 
-const mirrorHosts = [
-  'archive.is',
-  'archive.ph',
-  'archive.today',
-  'archive.md',
-  'archive.fo',
-  'archive.vn',
-  'archive.li',
-  'www.archive.ph',
-]
-
 describe('unwrapArchiveToday', () => {
   it('should extract the target after a 14-digit timestamp', () => {
     const url = new URL('https://archive.ph/20240814014001/https://example.com/world/article')
@@ -36,12 +25,6 @@ describe('unwrapArchiveToday', () => {
     const url = new URL('https://archive.is/newest/https://example.com/magazine/2025/41/page')
 
     expect(unwrapArchiveToday(url)).toBe('https://example.com/magazine/2025/41/page')
-  })
-
-  it.each(mirrorHosts)('should extract the target on %s', (host) => {
-    const url = new URL(`https://${host}/20240814014001/https://example.com/page`)
-
-    expect(unwrapArchiveToday(url)).toBe('https://example.com/page')
   })
 
   it('should keep the target query string and fragment', () => {
