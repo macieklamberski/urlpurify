@@ -53,4 +53,10 @@ describe('unwrapBananatag', () => {
 
     expect(unwrapBananatag(url)).toBeUndefined()
   })
+
+  it('should return undefined for the shape below another path', () => {
+    const url = new URL('http://s.bl-1.com/x/h/FdRKFcd?url=http://example.com/')
+
+    expect(unwrapBananatag(url)).toBeUndefined()
+  })
 })
