@@ -37,6 +37,25 @@ describe('unwrapAceml', () => {
     expect(unwrapAceml(url)).toBeUndefined()
   })
 
+  it('should keep percent escapes in a base64 redirectUrl param holding a plain target', () => {
+    const target = 'https://example.com/search?q=a%2Bb'
+    const encoded = Buffer.from(target).toString('base64')
+    const url = new URL(
+      `https://abc.acemlnc.com/Prod/link-tracker?redirectUrl=${encodeURIComponent(encoded)}`,
+    )
+
+    expect(unwrapAceml(url)).toBe(target)
+  })
+
+  it('should decode a percent-encoded target with lowercase escapes', () => {
+    const encoded = Buffer.from('https%3a%2f%2fexample.com%2fpage').toString('base64')
+    const url = new URL(
+      `https://abc.acemlnc.com/Prod/link-tracker?redirectUrl=${encodeURIComponent(encoded)}`,
+    )
+
+    expect(unwrapAceml(url)).toBe('https://example.com/page')
+  })
+
   it('should match other ACEML host suffixes', () => {
     const target = 'https://example.com/page'
     const encoded = Buffer.from(target).toString('base64')
