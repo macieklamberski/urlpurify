@@ -48,6 +48,22 @@ describe('unwrapPagefreezer', () => {
     expect(unwrapPagefreezer(url)).toBeUndefined()
   })
 
+  it('should return undefined for a path with a year instead of the capture time', () => {
+    const url = new URL(
+      'https://public3.pagefreezer.com/browse/HHS.gov/2020/https://www.example.gov/',
+    )
+
+    expect(unwrapPagefreezer(url)).toBeUndefined()
+  })
+
+  it('should return undefined for the web archive browser path on another host', () => {
+    const url = new URL(
+      'https://example.com/en-US/wa/browse/0a7f82bb-be6e-448a-ae11-373d22c37842?url=https%3A%2F%2Fwww.example.gov%2F',
+    )
+
+    expect(unwrapPagefreezer(url)).toBeUndefined()
+  })
+
   it('should return undefined for a path without the capture time', () => {
     const url = new URL('https://public3.pagefreezer.com/browse/HHS.gov/https://www.example.gov/')
 
