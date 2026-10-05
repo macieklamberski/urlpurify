@@ -29,5 +29,5 @@ export const unwrapAnchor: UrlUnwrapper = (url) => {
     return
   }
 
-  return `${target}${url.search}${url.hash}`
+  return `${target}${url.hash}`
 }

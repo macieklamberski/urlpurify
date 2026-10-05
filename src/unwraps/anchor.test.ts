@@ -44,12 +44,12 @@ describe('unwrapAnchor', () => {
     expect(unwrapAnchor(url)).toBe('https://example.com/episode.mp3?updated=1')
   })
 
-  it('should keep the query that follows the prefix', () => {
+  it('should drop the query that follows the prefix', () => {
     const url = new URL(
       'https://anchor.fm/s/102d2c870/podcast/play/100291057/https%3A%2F%2Fexample.com%2Fepisode.mp3?source=audiofictionreleases',
     )
 
-    expect(unwrapAnchor(url)).toBe('https://example.com/episode.mp3?source=audiofictionreleases')
+    expect(unwrapAnchor(url)).toBe('https://example.com/episode.mp3')
   })
 
   it('should return undefined for a target cut short inside an escape', () => {
