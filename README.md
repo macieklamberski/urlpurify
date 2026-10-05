@@ -130,6 +130,7 @@ Enabled by default:
 | `unwrapJianshuGo` | Jianshu external link redirect (links.jianshu.com/go?to=\<target\> and link.jianshu.com/?t=\<target\>) |
 | `unwrapJive` | Jive community external link redirect (\<any host\>/external-link.jspa?url=\<target\>) |
 | `unwrapJuejin` | Juejin external link redirect (link.juejin.cn/?target=\<target\>) |
+| `unwrapLd246` | LianDi community outbound link redirect (ld246.com/forward?goto=\<target\>) |
 | `unwrapLinkedin` | LinkedIn outbound link shims and click trackers (www.linkedin.com/safety/go?url=\<target\>, /redir/redirect, /redirect, /nhome/nus-redirect, /nus-trk, /e/v2, /company/\<id\>/redirect) |
 | `unwrapLivejournal` | LiveJournal outbound link redirect (www.livejournal.com/away?to=\<target\>) |
 | `unwrapMailRu` | Mail.ru webmail link checker (checklink.mail.ru/proxy?url=\<target\>) and click redirect (click.mail.ru/redir?u=\<target\>, also click.my.mail.ru) |
