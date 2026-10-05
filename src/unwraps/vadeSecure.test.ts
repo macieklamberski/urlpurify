@@ -86,6 +86,12 @@ describe('unwrapVadeSecure', () => {
     expect(unwrapVadeSecure(url)).toBeUndefined()
   })
 
+  it('should return undefined for the antiphishing path on a safeproxy host', () => {
+    const url = new URL('https://m365.eu.vadesecure.com/v4?u=https%3A%2F%2Fexample.com%2Fpage')
+
+    expect(unwrapVadeSecure(url)).toBeUndefined()
+  })
+
   it('should return undefined for the safeproxy path on the antiphishing host', () => {
     const url = new URL(
       'https://antiphishing.vadesecure.com/safeproxy/v4?u=https%3A%2F%2Fexample.com%2Fpage',
