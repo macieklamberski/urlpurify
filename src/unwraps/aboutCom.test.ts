@@ -22,6 +22,14 @@ describe('unwrapAboutCom', () => {
     )
   })
 
+  it('should extract the target from the leaving page', () => {
+    const url = new URL(
+      'http://pcsupport.about.com/gi/o.htm?zi=1/XJ&zTi=1&sdn=pcsupport&zu=http%3A//www.example.com/download/en/details.aspx%3Fid%3D7264',
+    )
+
+    expect(unwrapAboutCom(url)).toBe('http://www.example.com/download/en/details.aspx?id=7264')
+  })
+
   it('should return undefined for another path on a topic host', () => {
     const url = new URL(
       'http://freebies.about.com/gi/pages/shareurl.htm?zu=http%3A%2F%2Fexample.com%2F',
