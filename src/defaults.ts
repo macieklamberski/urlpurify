@@ -23,6 +23,7 @@ import { unwrapBing } from './unwraps/bing.js'
 // import { unwrapBingAds } from './unwraps/bingAds.js'
 // import { unwrapBizrate } from './unwraps/bizrate.js'
 // import { unwrapBolPartner } from './unwraps/bolPartner.js'
+import { unwrapBridgyFed } from './unwraps/bridgyFed.js'
 import { unwrapBlueskyRedirect } from './unwraps/bsky.js'
 import { unwrapBusinessWire } from './unwraps/businessWire.js'
 import { unwrapCalendly } from './unwraps/calendly.js'
@@ -266,6 +267,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // Social and community platforms.
   unwrapAnonymTo,
   unwrapBlueskyRedirect,
+  unwrapBridgyFed,
   unwrapCalendly,
   unwrapCanva,
   unwrapDerefMail,
