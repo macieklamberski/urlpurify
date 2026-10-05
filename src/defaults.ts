@@ -45,6 +45,7 @@ import { unwrapFlipboard } from './unwraps/flipboard.js'
 // import { unwrapGateSc } from './unwraps/gateSc.js'
 // import { unwrapGeoriot } from './unwraps/georiot.js'
 import { unwrapGitee } from './unwraps/gitee.js'
+// import { unwrapGlueUp } from './unwraps/glueUp.js'
 import { unwrapGoogle } from './unwraps/google.js'
 // import { unwrapGoogleAds } from './unwraps/googleAds.js'
 import { unwrapGoogleAmpViewer } from './unwraps/googleAmpViewer.js'
@@ -143,6 +144,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapCiscoSecureWeb,
   // unwrapEsva,
   // unwrapFireeye,
+  // unwrapGlueUp,
   // unwrapIcptrack,
   // unwrapLeverAnalytics,
   // unwrapMailchimp,
