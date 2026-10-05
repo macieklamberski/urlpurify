@@ -31,4 +31,12 @@ describe('unwrapExciteTranslate', () => {
 
     expect(unwrapExciteTranslate(url)).toBeUndefined()
   })
+
+  it('should return undefined for a frame path under the translation page', () => {
+    const url = new URL(
+      'http://www.excite.co.jp/world/english/web/header/?wb_url=http%3A%2F%2Fwww.example.jp%2F&wb_lp=JAEN',
+    )
+
+    expect(unwrapExciteTranslate(url)).toBeUndefined()
+  })
 })
