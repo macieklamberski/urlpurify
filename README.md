@@ -138,6 +138,7 @@ Enabled by default:
 | `unwrapThreadsShim` | Threads outbound link shim (l.threads.com / l.threads.net with ?u=\<target\>) |
 | `unwrapTumblr` | Tumblr outbound redirect (t.umblr.com/redirect?z=\<target\>) |
 | `unwrapVkAway` | VK away redirect (vk.com/away.php?to=\<target\>) |
+| `unwrapYahooJapan` | Yahoo! JAPAN click redirect (rdsig.yahoo.co.jp/.../RU=\<base64url\>/RS=...) |
 | `unwrapYahooSearch` | Yahoo Search redirect (r.search.yahoo.com/.../RU=\<target\>/RK=...) |
 | `unwrapYandexMail` | Yandex Mail link redirect (mail.yandex.\<TLD\>/re.jsx?l=\<base64url\>) |
 | `unwrapYouTube` | YouTube external redirect (www.youtube.com/redirect?q=\<target\>) |
