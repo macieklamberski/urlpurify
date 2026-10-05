@@ -115,6 +115,7 @@ import { unwrapSteamLinkfilter } from './unwraps/steamLinkfilter.js'
 // import { unwrapStreak } from './unwraps/streak.js'
 import { unwrapThreadsShim } from './unwraps/threads.js'
 // import { unwrapTitanhqLinklock } from './unwraps/titanhqLinklock.js'
+// import { unwrapTopsec } from './unwraps/topsec.js'
 // import { unwrapTradedoubler } from './unwraps/tradedoubler.js'
 // import { unwrapTradetracker } from './unwraps/tradetracker.js'
 // import { unwrapTravelpayouts } from './unwraps/travelpayouts.js'
@@ -190,6 +191,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapSquarespaceEmail,
   // unwrapStreak,
   // unwrapTitanhqLinklock,
+  // unwrapTopsec,
   // unwrapTrendMicro,
   // unwrapTrustwaveScanmail,
   // unwrapVadeSecure,
