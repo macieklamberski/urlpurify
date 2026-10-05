@@ -122,6 +122,7 @@ import { unwrapGoogleScholar } from './unwraps/googleScholar.js'
 import { unwrapHackerone } from './unwraps/hackerone.js'
 import { unwrapHashnode } from './unwraps/hashnode.js'
 // import { unwrapHasoffers } from './unwraps/hasoffers.js'
+import { unwrapHearthis } from './unwraps/hearthis.js'
 // import { unwrapHellohq } from './unwraps/hellohq.js'
 import { unwrapHirkereso } from './unwraps/hirkereso.js'
 import { unwrapHorde } from './unwraps/horde.js'
@@ -515,6 +516,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   unwrapDzen,
   unwrapFacebookShim,
   unwrapFlipboard,
+  unwrapHearthis,
   unwrapHorde,
   unwrapHrefLi,
   unwrapIndexHu,

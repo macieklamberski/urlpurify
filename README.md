@@ -130,6 +130,7 @@ Enabled by default:
 | `unwrapGoogleScholar` | Google Scholar search-result redirect (scholar.google.\<TLD\>/scholar_url?url=\<target\>) |
 | `unwrapHackerone` | HackerOne external link warning on reports (hackerone.com/redirect?url=\<target\>) |
 | `unwrapHashnode` | Hashnode outbound redirect (hashnode.com/util/redirect?url=\<target\>) |
+| `unwrapHearthis` | hearthis.at outbound link shim (hearthis.at/l.php?url=\<target\>) |
 | `unwrapHirkereso` | Hírkereső news aggregator click redirect (rd.hirkereso.hu/rd/\<id\>?url=\<target\>) |
 | `unwrapHorde` | Horde webmail link dereferrer (\<any host\>/horde/services/go.php?url=\<target\>, also /util/go.php) |
 | `unwrapHrefLi` | href.li referrer stripper (href.li/?\<target\>), used by Tumblr |
