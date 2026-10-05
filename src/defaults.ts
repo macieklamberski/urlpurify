@@ -225,6 +225,7 @@ import { unwrapSteamLinkfilter } from './unwraps/steamLinkfilter.js'
 // import { unwrapStreak } from './unwraps/streak.js'
 // import { unwrapSurugaya } from './unwraps/surugaya.js'
 // import { unwrapSymantecClicktime } from './unwraps/symantecClicktime.js'
+// import { unwrapSymplicity } from './unwraps/symplicity.js'
 import { unwrapThreadsShim } from './unwraps/threads.js'
 import { unwrapTiktok } from './unwraps/tiktok.js'
 // import { unwrapTitanhqLinklock } from './unwraps/titanhqLinklock.js'
@@ -353,6 +354,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapSquarespaceEmail,
   // unwrapStreak,
   // unwrapSymantecClicktime,
+  // unwrapSymplicity,
   // unwrapTitanhqLinklock,
   // unwrapTopsec,
   // unwrapTrendMicro,
