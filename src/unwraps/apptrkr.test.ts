@@ -34,6 +34,22 @@ describe('unwrapApptrkr', () => {
     expect(unwrapApptrkr(url)).toBe('http://pathology.example.edu/')
   })
 
+  it('should extract target encoded twice with an uppercase scheme', () => {
+    const url = new URL(
+      'https://apptrkr.com/get_redirect.php?id=9757952&targetURL=HTTP%253A%252F%252Fpathology.example.edu%252F',
+    )
+
+    expect(unwrapApptrkr(url)).toBe('HTTP://pathology.example.edu/')
+  })
+
+  it('should return undefined when the twice-encoded target holds a malformed escape', () => {
+    const url = new URL(
+      'https://apptrkr.com/get_redirect.php?id=9757952&targetURL=http%253A%252F%252Fpathology.example.edu%252F%25E0%25A4%25A',
+    )
+
+    expect(unwrapApptrkr(url)).toBeUndefined()
+  })
+
   it('should return undefined for a non-http target', () => {
     const url = new URL(
       'https://apptrkr.com/get_redirect.php?id=1&targetURL=mailto:jobs@example.edu',
