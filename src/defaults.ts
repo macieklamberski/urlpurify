@@ -78,6 +78,7 @@ import { unwrapNaverOutgoing } from './unwraps/naverOutgoing.js'
 // import { unwrapPartnerAds } from './unwraps/partnerAds.js'
 import { unwrapPocket } from './unwraps/pocket.js'
 // import { unwrapPostmark } from './unwraps/postmark.js'
+// import { unwrapPrezly } from './unwraps/prezly.js'
 import { unwrapPrNewswire } from './unwraps/prNewswire.js'
 // import { unwrapProofpointV1 } from './unwraps/proofpointV1.js'
 // import { unwrapProofpointV2 } from './unwraps/proofpointV2.js'
@@ -152,6 +153,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapMimecast,
   // unwrapOutlookSafelinks,
   // unwrapPostmark,
+  // unwrapPrezly,
   // unwrapProofpointV1,
   // unwrapProofpointV2,
   // unwrapProofpointV3,
