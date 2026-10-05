@@ -93,6 +93,7 @@ import { unwrapSegmentfault } from './unwraps/segmentfault.js'
 // import { unwrapSkimlinks } from './unwraps/skimlinks.js'
 // import { unwrapSlack } from './unwraps/slack.js'
 // import { unwrapSmartredirect } from './unwraps/smartredirect.js'
+// import { unwrapSmore } from './unwraps/smore.js'
 import { unwrapSoundcloud } from './unwraps/soundcloud.js'
 import { unwrapSspai } from './unwraps/sspai.js'
 // import { unwrapStay22 } from './unwraps/stay22.js'
@@ -156,6 +157,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapProofpointV2,
   // unwrapProofpointV3,
   // unwrapSlack,
+  // unwrapSmore,
   // unwrapStreak,
   // unwrapWordpressEmail,
 
