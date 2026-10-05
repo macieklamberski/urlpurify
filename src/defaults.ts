@@ -102,6 +102,7 @@ import { unwrapThreadsShim } from './unwraps/threads.js'
 // import { unwrapTradedoubler } from './unwraps/tradedoubler.js'
 // import { unwrapTravelpayouts } from './unwraps/travelpayouts.js'
 import { unwrapTumblr } from './unwraps/tumblr.js'
+// import { unwrapTwoCheckout } from './unwraps/twoCheckout.js'
 // import { unwrapUkgwa } from './unwraps/ukgwa.js'
 // import { unwrapValuecommerce } from './unwraps/valuecommerce.js'
 // import { unwrapViglink } from './unwraps/viglink.js'
@@ -194,6 +195,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapStay22,
   // unwrapTradedoubler,
   // unwrapTravelpayouts,
+  // unwrapTwoCheckout,
   // unwrapValuecommerce,
   // unwrapViglink,
   // unwrapWebgains,
