@@ -176,6 +176,7 @@ import { unwrapMarketwire } from './unwraps/marketwire.js'
 import { unwrapMedium } from './unwraps/medium.js'
 // import { unwrapMegalodon } from './unwraps/megalodon.js'
 // import { unwrapMimecast } from './unwraps/mimecast.js'
+// import { unwrapMintDownloads } from './unwraps/mintDownloads.js'
 // import { unwrapMoshimo } from './unwraps/moshimo.js'
 import { unwrapMozillaOutgoing } from './unwraps/mozillaOutgoing.js'
 // import { unwrapMyNewsletterBuilder } from './unwraps/myNewsletterBuilder.js'
@@ -579,6 +580,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   unwrapJianshuGo,
   unwrapJuejin,
   unwrapLd246,
+  // unwrapMintDownloads,
   unwrapPhilpapers,
   unwrapResearchgate,
   unwrapSapHelp,
