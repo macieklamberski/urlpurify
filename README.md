@@ -136,6 +136,7 @@ Enabled by default:
 | `unwrapVkAway` | VK away redirect (vk.com/away.php?to=\<target\>) |
 | `unwrapYahooSearch` | Yahoo Search redirect (r.search.yahoo.com/.../RU=\<target\>/RK=...) |
 | `unwrapYandexMail` | Yandex Mail link redirect (mail.yandex.\<TLD\>/re.jsx?l=\<base64url\>) |
+| `unwrapYonlendirme` | Turkish forum leaving redirect (<any host>/yonlendirme?to=<base64>) |
 | `unwrapYouTube` | YouTube external redirect (www.youtube.com/redirect?q=\<target\>) |
 | `unwrapZemanta` | Zemanta related-article redirect (r.zemanta.com/?u=\<target\>) |
 | `unwrapZhihu` | Zhihu external redirect (link.zhihu.com/?target=\<target\>) |
