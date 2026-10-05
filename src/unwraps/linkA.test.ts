@@ -54,6 +54,12 @@ describe('unwrapLinkA', () => {
     expect(unwrapLinkA(url)).toBeUndefined()
   })
 
+  it('should return undefined for the gate shape on another host', () => {
+    const url = new URL('https://example.com/gate.php?mallurl1=https%3A%2F%2Fwww.example.org%2F')
+
+    expect(unwrapLinkA(url)).toBeUndefined()
+  })
+
   it('should return undefined for other hosts', () => {
     const url = new URL(
       'https://example.com/click_product_link/b6239d/fa5bcb60?redirect_url=https%3A%2F%2Fwww.example.org%2F',
