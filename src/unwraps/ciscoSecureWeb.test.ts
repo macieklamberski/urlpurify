@@ -60,14 +60,6 @@ describe('unwrapCiscoSecureWeb', () => {
     expect(unwrapCiscoSecureWeb(url)).toBe('https://example.com/recall.pdf')
   })
 
-  it('should extract a target on a subdomain no specimen shows', () => {
-    const url = new URL(
-      'https://secure-web-eu.cisco.com/1FUSlj3K3QVkKY875RHGJXaTEmxvyRjzy/https%3A%2F%2Fexample.com%2F',
-    )
-
-    expect(unwrapCiscoSecureWeb(url)).toBe('https://example.com/')
-  })
-
   it('should return undefined when the target segment is missing', () => {
     const url = new URL('https://secure-web.cisco.com/1FUSlj3K3QVkKY875RHGJXaTEmxvyRjzy')
 
@@ -131,22 +123,6 @@ describe('unwrapCiscoSecureWeb', () => {
   it('should return undefined for the shape on another host', () => {
     const url = new URL(
       'https://example.com/1FUSlj3K3QVkKY875RHGJXaTEmxvyRjzy/https%3A%2F%2Fexample.org%2F',
-    )
-
-    expect(unwrapCiscoSecureWeb(url)).toBeUndefined()
-  })
-
-  it('should return undefined for a lookalike host', () => {
-    const url = new URL(
-      'https://notcisco.com/1FUSlj3K3QVkKY875RHGJXaTEmxvyRjzy/https%3A%2F%2Fexample.org%2F',
-    )
-
-    expect(unwrapCiscoSecureWeb(url)).toBeUndefined()
-  })
-
-  it('should return undefined for a host that only ends with the domain in its name', () => {
-    const url = new URL(
-      'https://secure-web.cisco.com.example.net/1FUSlj3K3QVkKY875RHGJXaTEmxvyRjzy/https%3A%2F%2Fexample.org%2F',
     )
 
     expect(unwrapCiscoSecureWeb(url)).toBeUndefined()

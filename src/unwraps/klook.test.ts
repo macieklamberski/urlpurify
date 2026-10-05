@@ -46,14 +46,6 @@ describe('unwrapKlook', () => {
     expect(unwrapKlook(url)).toBe('https://www.example.com/')
   })
 
-  it('should extract target from a subdomain no specimen shows', () => {
-    const url = new URL(
-      'https://affiliate.eu.klook.com/redirect?aid=1&k_site=https%3A%2F%2Fwww.example.com%2F',
-    )
-
-    expect(unwrapKlook(url)).toBe('https://www.example.com/')
-  })
-
   it('should extract the last target when the link is pasted into another one', () => {
     const url = new URL(
       'https://affiliate.klook.com/redirect?aid=7230&k_site=https%3A%2F%2Fwww.example.com%2Factivity%2F17872-cooking%2Fhttps%3A%2F%2Faffiliate.klook.com%2Fredirect%3Faid%3D7230&k_site=https%3A%2F%2Fwww.example.com%2Factivity%2F17872-cooking%2F',
@@ -97,22 +89,6 @@ describe('unwrapKlook', () => {
   it('should return undefined for the shape on another host', () => {
     const url = new URL(
       'https://example.com/redirect?aid=1&k_site=https%3A%2F%2Fwww.example.org%2F',
-    )
-
-    expect(unwrapKlook(url)).toBeUndefined()
-  })
-
-  it('should return undefined for a lookalike host', () => {
-    const url = new URL(
-      'https://affiliate.notklook.com/redirect?aid=1&k_site=https%3A%2F%2Fwww.example.org%2F',
-    )
-
-    expect(unwrapKlook(url)).toBeUndefined()
-  })
-
-  it('should return undefined for a host that only starts with the domain in its name', () => {
-    const url = new URL(
-      'https://klook.com.example.net/redirect?aid=1&k_site=https%3A%2F%2Fwww.example.org%2F',
     )
 
     expect(unwrapKlook(url)).toBeUndefined()

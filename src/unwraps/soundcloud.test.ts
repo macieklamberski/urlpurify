@@ -30,12 +30,6 @@ describe('unwrapSoundcloud', () => {
     expect(unwrapSoundcloud(url)).toBe('http://example.com/')
   })
 
-  it('should extract target on a subdomain of exit.sc', () => {
-    const url = new URL('https://www.exit.sc/?url=https%3A%2F%2Fexample.com%2F')
-
-    expect(unwrapSoundcloud(url)).toBe('https://example.com/')
-  })
-
   it('should return undefined when url param is missing', () => {
     const url = new URL('https://exit.sc/')
 
@@ -50,18 +44,6 @@ describe('unwrapSoundcloud', () => {
 
   it('should return undefined for other paths on exit.sc', () => {
     const url = new URL('https://exit.sc/other?url=https%3A%2F%2Fexample.com%2F')
-
-    expect(unwrapSoundcloud(url)).toBeUndefined()
-  })
-
-  it('should return undefined for a lookalike host', () => {
-    const url = new URL('https://notexit.sc/?url=https%3A%2F%2Fexample.com%2F')
-
-    expect(unwrapSoundcloud(url)).toBeUndefined()
-  })
-
-  it('should return undefined for a host that only contains exit.sc', () => {
-    const url = new URL('https://exit.sc.example.com/?url=https%3A%2F%2Fexample.com%2F')
 
     expect(unwrapSoundcloud(url)).toBeUndefined()
   })

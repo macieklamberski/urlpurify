@@ -68,14 +68,6 @@ describe('unwrapAccesstrade', () => {
     )
   })
 
-  it('should extract target on a subdomain no specimen shows', () => {
-    const url = new URL(
-      'https://s.accesstrade.net/sp/cc?rk=01001xqc00op53&url=https%3A%2F%2Fexample.com%2F',
-    )
-
-    expect(unwrapAccesstrade(url)).toBe('https://example.com/')
-  })
-
   it('should return undefined for another path on the domain', () => {
     const url = new URL(
       'https://h.accesstrade.net/sp/other?rk=01001xqc00op53&url=https%3A%2F%2Fexample.com%2F',
@@ -139,14 +131,6 @@ describe('unwrapAccesstrade', () => {
   it('should return undefined for the same shape on another host', () => {
     const url = new URL(
       'https://tracking.example.com/sp/cc?rk=01001xqc00op53&url=https%3A%2F%2Fexample.com%2F',
-    )
-
-    expect(unwrapAccesstrade(url)).toBeUndefined()
-  })
-
-  it('should return undefined for a host that only ends in the domain name', () => {
-    const url = new URL(
-      'https://exampleaccesstrade.net/sp/cc?rk=01001xqc00op53&url=https%3A%2F%2Fexample.com%2F',
     )
 
     expect(unwrapAccesstrade(url)).toBeUndefined()

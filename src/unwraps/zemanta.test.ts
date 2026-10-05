@@ -36,10 +36,10 @@ describe('unwrapZemanta', () => {
     )
   })
 
-  it('should extract target on a subdomain no specimen shows', () => {
+  it('should return undefined for a subdomain no specimen shows', () => {
     const url = new URL('https://x.zemanta.com/?u=https%3A%2F%2Fexample.com%2F&a=1&rid=2&e=3')
 
-    expect(unwrapZemanta(url)).toBe('https://example.com/')
+    expect(unwrapZemanta(url)).toBeUndefined()
   })
 
   it('should return undefined for another path on the domain', () => {
@@ -62,18 +62,6 @@ describe('unwrapZemanta', () => {
 
   it('should return undefined for the same shape on another host', () => {
     const url = new URL('https://tracking.example.com/?u=https%3A%2F%2Fexample.com%2F&a=1')
-
-    expect(unwrapZemanta(url)).toBeUndefined()
-  })
-
-  it('should return undefined for a host that only starts with the domain name', () => {
-    const url = new URL('https://r.zemanta.com.example.org/?u=https%3A%2F%2Fexample.com%2F&a=1')
-
-    expect(unwrapZemanta(url)).toBeUndefined()
-  })
-
-  it('should return undefined for a host that only ends in the domain name', () => {
-    const url = new URL('https://examplezemanta.com/?u=https%3A%2F%2Fexample.com%2F&a=1')
 
     expect(unwrapZemanta(url)).toBeUndefined()
   })

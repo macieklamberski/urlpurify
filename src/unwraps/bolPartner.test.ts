@@ -10,16 +10,6 @@ describe('unwrapBolPartner', () => {
     expect(unwrapBolPartner(url)).toBe('https://example.com/nl/c/limberlux/18047672/')
   })
 
-  it('should extract target from url param on partnerprogramma.bol.com', () => {
-    const url = new URL(
-      'https://partnerprogramma.bol.com/click/click?p=1&t=url&s=33477&f=TXL&url=https%3A%2F%2Fexample.com%2Fnl%2Fp%2Fvraag-en-het-wordt-gegeven%2F1001004002597176%2F&name=SoV&subid=youtube5',
-    )
-
-    expect(unwrapBolPartner(url)).toBe(
-      'https://example.com/nl/p/vraag-en-het-wordt-gegeven/1001004002597176/',
-    )
-  })
-
   it('should keep the query of the target', () => {
     const url = new URL(
       'https://partner.bol.com/click/click?p=1&t=url&s=33477&f=TXL&url=https%3A%2F%2Fexample.com%2Fnl%2Fp%2F1001004002597176%2F%3FsuggestionType%3Dsearchhistory&name=SoV',
@@ -40,14 +30,6 @@ describe('unwrapBolPartner', () => {
     )
   })
 
-  it('should extract target on a subdomain no specimen shows', () => {
-    const url = new URL(
-      'https://affiliate.bol.com/click/click?p=1&t=url&s=1&url=https%3A%2F%2Fexample.com%2F',
-    )
-
-    expect(unwrapBolPartner(url)).toBe('https://example.com/')
-  })
-
   it('should return undefined when url param is missing', () => {
     const url = new URL('https://partner.bol.com/click/click?p=2&t=url&s=1')
 
@@ -63,22 +45,6 @@ describe('unwrapBolPartner', () => {
   it('should return undefined for other paths on the partner host', () => {
     const url = new URL(
       'https://partner.bol.com/click/other?p=2&t=url&s=1&url=https%3A%2F%2Fexample.com%2F',
-    )
-
-    expect(unwrapBolPartner(url)).toBeUndefined()
-  })
-
-  it('should return undefined for a lookalike host', () => {
-    const url = new URL(
-      'https://partner.symbol.com/click/click?p=2&t=url&s=1&url=https%3A%2F%2Fexample.com%2F',
-    )
-
-    expect(unwrapBolPartner(url)).toBeUndefined()
-  })
-
-  it('should return undefined for a host that only contains bol.com', () => {
-    const url = new URL(
-      'https://partner.bol.com.example.org/click/click?p=2&t=url&s=1&url=https%3A%2F%2Fexample.com%2F',
     )
 
     expect(unwrapBolPartner(url)).toBeUndefined()

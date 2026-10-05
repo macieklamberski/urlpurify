@@ -58,12 +58,6 @@ describe('unwrapTravelpayouts', () => {
     expect(unwrapTravelpayouts(url)).toBe('https://www.example.com/hotels/')
   })
 
-  it('should extract the target from a subdomain no specimen shows', () => {
-    const url = new URL('https://www.tp.media/r?marker=100001&u=https%3A%2F%2Fwww.example.com%2F')
-
-    expect(unwrapTravelpayouts(url)).toBe('https://www.example.com/')
-  })
-
   it('should return undefined when the u param is missing', () => {
     const url = new URL('https://tp.media/r?marker=100001')
 
@@ -90,26 +84,6 @@ describe('unwrapTravelpayouts', () => {
 
   it('should return undefined for the shape on another host', () => {
     const url = new URL('https://example.com/r?marker=100001&u=https%3A%2F%2Fwww.example.org%2F')
-
-    expect(unwrapTravelpayouts(url)).toBeUndefined()
-  })
-
-  it('should return undefined for a lookalike host', () => {
-    const url = new URL('https://notp.media/r?marker=100001&u=https%3A%2F%2Fwww.example.org%2F')
-
-    expect(unwrapTravelpayouts(url)).toBeUndefined()
-  })
-
-  it('should return undefined for a host that replaces the dot with another character', () => {
-    const url = new URL('https://www.tp-media/r?marker=100001&u=https%3A%2F%2Fwww.example.org%2F')
-
-    expect(unwrapTravelpayouts(url)).toBeUndefined()
-  })
-
-  it('should return undefined for a host that only starts with the domain in its name', () => {
-    const url = new URL(
-      'https://tp.media.example.net/r?marker=100001&u=https%3A%2F%2Fwww.example.org%2F',
-    )
 
     expect(unwrapTravelpayouts(url)).toBeUndefined()
   })

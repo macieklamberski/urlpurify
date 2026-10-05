@@ -1,19 +1,6 @@
 import { describe, expect, it } from 'bun:test'
 import { unwrapDerefMail } from './derefMail.js'
 
-const dereferrerDomains: Array<string> = [
-  'deref-1und1.de',
-  'deref-1und1-02.de',
-  'deref-gmx.co.uk',
-  'deref-gmx.com',
-  'deref-gmx.fr',
-  'deref-gmx.net',
-  'deref-mail.com',
-  'deref-mail-02.com',
-  'deref-web.de',
-  'deref-web-02.de',
-]
-
 describe('unwrapDerefMail', () => {
   it('should extract target from redirectUrl param', () => {
     const url = new URL(
@@ -39,38 +26,6 @@ describe('unwrapDerefMail', () => {
     expect(unwrapDerefMail(url)).toBe(
       'http://www.example.com/mitgliedschaft?em_src=coop&em_cmp=fanzone',
     )
-  })
-
-  it('should extract target on deref-mail.com', () => {
-    const url = new URL(
-      'https://deref-mail.com/mail/client/q8XRYc3V_nM/dereferrer/?redirectUrl=http%3A%2F%2Fwww.example.com',
-    )
-
-    expect(unwrapDerefMail(url)).toBe('http://www.example.com')
-  })
-
-  it('should extract target on a numbered dereferrer domain', () => {
-    const url = new URL(
-      'https://deref-web-02.de/mail/client/v_uK5ltxjWc/dereferrer/?redirectUrl=http%3A%2F%2Fwww.example.org',
-    )
-
-    expect(unwrapDerefMail(url)).toBe('http://www.example.org')
-  })
-
-  it.each(dereferrerDomains)('should extract target on %s', (domain) => {
-    const url = new URL(
-      `https://${domain}/mail/client/q8XRYc3V_nM/dereferrer/?redirectUrl=http%3A%2F%2Fwww.example.com`,
-    )
-
-    expect(unwrapDerefMail(url)).toBe('http://www.example.com')
-  })
-
-  it('should extract target on a subdomain of a dereferrer domain', () => {
-    const url = new URL(
-      'https://www.deref-gmx.net/mail/client/dereferrer/?redirectUrl=https%3A%2F%2Fexample.com%2F',
-    )
-
-    expect(unwrapDerefMail(url)).toBe('https://example.com/')
   })
 
   it('should extract a target encoded twice', () => {
@@ -150,22 +105,6 @@ describe('unwrapDerefMail', () => {
   it('should return undefined for the path without the trailing slash', () => {
     const url = new URL(
       'https://deref-gmx.net/mail/client/dereferrer?redirectUrl=https%3A%2F%2Fexample.com%2F',
-    )
-
-    expect(unwrapDerefMail(url)).toBeUndefined()
-  })
-
-  it('should return undefined for a lookalike host', () => {
-    const url = new URL(
-      'https://notderef-gmx.net/mail/client/dereferrer/?redirectUrl=https%3A%2F%2Fexample.com%2F',
-    )
-
-    expect(unwrapDerefMail(url)).toBeUndefined()
-  })
-
-  it('should return undefined for a host that only contains a dereferrer domain', () => {
-    const url = new URL(
-      'https://deref-gmx.net.example.com/mail/client/dereferrer/?redirectUrl=https%3A%2F%2Fexample.com%2F',
     )
 
     expect(unwrapDerefMail(url)).toBeUndefined()

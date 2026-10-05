@@ -211,6 +211,34 @@ describe('unwrapAmazonAffiliate', () => {
     expect(unwrapAmazonAffiliate(url)).toBeUndefined()
   })
 
+  it('should return undefined for the click tracker on an adsystem host that is not aax', () => {
+    const url = new URL('https://ads.amazon-adsystem.com/x/c/abc123/https://example.com/page')
+
+    expect(unwrapAmazonAffiliate(url)).toBeUndefined()
+  })
+
+  it('should return undefined for the click tracker on a subdomain of an aax host', () => {
+    const url = new URL(
+      'https://sub.aax-us-east.amazon-adsystem.com/x/c/abc123/https://example.com/page',
+    )
+
+    expect(unwrapAmazonAffiliate(url)).toBeUndefined()
+  })
+
+  it('should return undefined for the click tracker on a host that only ends in aax', () => {
+    const url = new URL('https://xaax-eu.amazon-adsystem.com/x/c/abc123/https://example.com/page')
+
+    expect(unwrapAmazonAffiliate(url)).toBeUndefined()
+  })
+
+  it('should return undefined for the click tracker on a host that only starts with aax', () => {
+    const url = new URL(
+      'https://aax-eu.amazon-adsystem.com.example.net/x/c/abc123/https://example.com/page',
+    )
+
+    expect(unwrapAmazonAffiliate(url)).toBeUndefined()
+  })
+
   it('should return undefined for a store redirect on a host that nests www', () => {
     const url = new URL(
       'https://evil.www.amazon.com/gp/redirect.html?location=https%3A%2F%2Fexample.com%2F',
