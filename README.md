@@ -101,6 +101,7 @@ Enabled by default:
 | `unwrapAnonymTo` | anonym.to referrer anonymizer (anonym.to/?\<target\>) |
 | `unwrapArxiv` | arXiv outbound link redirect (arxiv.org/ct?url=\<target\>) |
 | `unwrapAsk` | Ask.com search result click redirect (wzus.ask.com/r?u=\<target\>) |
+| `unwrapBabyblog` | Babyblog outbound link shim (www.babyblog.ru/redirect.php?l=\<target\>) |
 | `unwrapBale` | Bale messenger outbound link redirect (l.ble.ir/?l=\<target\>) |
 | `unwrapBlueskyRedirect` | Bluesky outbound link redirect (go.bsky.app/redirect?u=\<target\>) |
 | `unwrapBridgyFed` | Bridgy Fed redirect for a bridged post or profile (fed.brid.gy/r/\<target\>, also bsky.brid.gy and web.brid.gy) |
