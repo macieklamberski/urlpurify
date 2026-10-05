@@ -33,6 +33,7 @@ import { unwrapDouban } from './unwraps/douban.js'
 // import { unwrapDuckduckgo } from './unwraps/duckduckgo.js'
 import { unwrapDzen } from './unwraps/dzen.js'
 // import { unwrapEbayRover } from './unwraps/ebayRover.js'
+// import { unwrapEdgepilot } from './unwraps/edgepilot.js'
 // import { unwrapEffiliation } from './unwraps/effiliation.js'
 // import { unwrapEmbedly } from './unwraps/embedly.js'
 // import { unwrapEsva } from './unwraps/esva.js'
@@ -141,6 +142,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapAmazonSes,
   // unwrapBarracudaLinkProtect,
   // unwrapCiscoSecureWeb,
+  // unwrapEdgepilot,
   // unwrapEsva,
   // unwrapFireeye,
   // unwrapIcptrack,
