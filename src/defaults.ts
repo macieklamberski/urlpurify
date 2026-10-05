@@ -94,6 +94,7 @@ import { unwrapSegmentfault } from './unwraps/segmentfault.js'
 // import { unwrapSlack } from './unwraps/slack.js'
 // import { unwrapSmartredirect } from './unwraps/smartredirect.js'
 import { unwrapSoundcloud } from './unwraps/soundcloud.js'
+// import { unwrapSpotifyPrefix } from './unwraps/spotifyPrefix.js'
 import { unwrapSspai } from './unwraps/sspai.js'
 // import { unwrapStay22 } from './unwraps/stay22.js'
 import { unwrapSteamLinkfilter } from './unwraps/steamLinkfilter.js'
@@ -202,6 +203,9 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // Ad networks.
   // unwrapBingAds,
   // unwrapGoogleAds,
+
+  // Podcast analytics prefixes.
+  // unwrapSpotifyPrefix,
 
   // Social and community platforms.
   unwrapAnonymTo,
