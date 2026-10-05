@@ -2,6 +2,7 @@ import { trackingParamsLiterals } from './tracking/literals.js'
 import { trackingParamsPatterns } from './tracking/patterns.js'
 import type { TrackingParam, UrlUnwrapper } from './types.js'
 // import { unwrap12ft } from './unwraps/12ft.js'
+import { unwrap4pda } from './unwraps/4pda.js'
 // import { unwrapA8Net } from './unwraps/a8Net.js'
 // import { unwrapAccesstrade } from './unwraps/accesstrade.js'
 // import { unwrapAceml } from './unwraps/aceml.js'
@@ -204,6 +205,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapGoogleAds,
 
   // Social and community platforms.
+  unwrap4pda,
   unwrapAnonymTo,
   unwrapBlueskyRedirect,
   unwrapCalendly,
