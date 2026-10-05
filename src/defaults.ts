@@ -112,6 +112,7 @@ import { unwrapPhilpapers } from './unwraps/philpapers.js'
 import { unwrapPocket } from './unwraps/pocket.js'
 // import { unwrapPodcorn } from './unwraps/podcorn.js'
 // import { unwrapPodscribe } from './unwraps/podscribe.js'
+// import { unwrapPodsights } from './unwraps/podsights.js'
 // import { unwrapPodtrac } from './unwraps/podtrac.js'
 // import { unwrapPostmark } from './unwraps/postmark.js'
 import { unwrapPrNewswire } from './unwraps/prNewswire.js'
@@ -290,6 +291,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapOp3,
   // unwrapPodcorn,
   // unwrapPodscribe,
+  // unwrapPodsights,
   // unwrapPodtrac,
 
   // Social and community platforms.
