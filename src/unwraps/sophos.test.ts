@@ -68,6 +68,12 @@ describe('unwrapSophos', () => {
     expect(unwrapSophos(url)).toBeUndefined()
   })
 
+  it('should return undefined for a host outside the regional family', () => {
+    const url = new URL('https://www.protection.sophos.com/?u=aHR0cHM6Ly9leGFtcGxlLmNvbS9h')
+
+    expect(unwrapSophos(url)).toBeUndefined()
+  })
+
   it('should return undefined for a host that only ends with the domain', () => {
     const url = new URL(
       'https://mail.eu-west-1.protection.sophos.com/?u=aHR0cHM6Ly9leGFtcGxlLmNvbS9h',
