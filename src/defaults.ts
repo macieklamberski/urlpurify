@@ -57,6 +57,7 @@ import { unwrapHrefLi } from './unwraps/hrefLi.js'
 // import { unwrapImpact } from './unwraps/impact.js'
 import { unwrapIndexHu } from './unwraps/indexHu.js'
 import { unwrapInstagramShim } from './unwraps/instagram.js'
+import { unwrapIrs } from './unwraps/irs.js'
 import { unwrapJianshuGo } from './unwraps/jianshuGo.js'
 import { unwrapJive } from './unwraps/jive.js'
 import { unwrapJuejin } from './unwraps/juejin.js'
@@ -245,6 +246,9 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // Press release wires.
   unwrapBusinessWire,
   unwrapPrNewswire,
+
+  // Government sites.
+  unwrapIrs,
 
   // Cache and proxy services.
   // unwrap12ft,
