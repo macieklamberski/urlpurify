@@ -78,6 +78,20 @@ describe('unwrapOutlookSafelinks', () => {
     expect(unwrapOutlookSafelinks(url)).toBeUndefined()
   })
 
+  it('should extract target from the Outlook on the web Safe Links page', () => {
+    const url = new URL(
+      'https://outlook.office.com/mail/safelink.html?url=https://www.example.com/2023/12/26/article/&corid=31b28bee-5f99-7cd5-fcdd-4c0b88a961cb',
+    )
+
+    expect(unwrapOutlookSafelinks(url)).toBe('https://www.example.com/2023/12/26/article/')
+  })
+
+  it('should return undefined for another mail path on outlook.office.com', () => {
+    const url = new URL('https://outlook.office.com/mail/inbox?url=https%3A%2F%2Fexample.com%2F')
+
+    expect(unwrapOutlookSafelinks(url)).toBeUndefined()
+  })
+
   it('should extract target from an app link path', () => {
     const url = new URL(
       'https://eur01.safelinks.protection.outlook.com/ap/t-59584e83/?url=https%3A%2F%2Fexample.com%2Fmeet%2F33196825028634%3Fp%3DzPtq&data=05',
