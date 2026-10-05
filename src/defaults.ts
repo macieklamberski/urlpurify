@@ -193,6 +193,7 @@ import { unwrapOkRu } from './unwraps/okRu.js'
 // import { unwrapOp3 } from './unwraps/op3.js'
 import { unwrapOsnova } from './unwraps/osnova.js'
 // import { unwrapOutlookSafelinks } from './unwraps/outlookSafelinks.js'
+// import { unwrapOutlookWebAccess } from './unwraps/outlookWebAccess.js'
 // import { unwrapPagefreezer } from './unwraps/pagefreezer.js'
 // import { unwrapPartnerAds } from './unwraps/partnerAds.js'
 import { unwrapPhilpapers } from './unwraps/philpapers.js'
@@ -364,6 +365,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapMyNewsletterBuilder,
   // unwrapNimble,
   // unwrapOutlookSafelinks,
+  // unwrapOutlookWebAccess,
   // unwrapPipedrive,
   // unwrapPostmark,
   // unwrapPrezly,
