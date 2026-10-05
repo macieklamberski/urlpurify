@@ -26,6 +26,14 @@ describe('unwrapChartable', () => {
     expect(unwrapChartable(url)).toBe('http://example.com/574473/audio--418670.mp3?v=1657042933')
   })
 
+  it('should skip an empty segment after the id', () => {
+    const url = new URL(
+      'https://chtbl.com/track/6538//example.com/forcedn/bordersofsleep/SBS_EP0049.mp3',
+    )
+
+    expect(unwrapChartable(url)).toBe('https://example.com/forcedn/bordersofsleep/SBS_EP0049.mp3')
+  })
+
   it('should leave the next prefix in a chain for the next pass', () => {
     const url = new URL(
       'https://chtbl.com/track/3G835/podtrac.com/pts/redirect.mp3/example.com/d/clips/audio.mp3?utm_source=Podcast',
