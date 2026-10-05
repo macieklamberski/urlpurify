@@ -42,6 +42,38 @@ describe('unwrapAdjust', () => {
     expect(unwrapAdjust(url)).toBeUndefined()
   })
 
+  it('should extract target from the tracker fallback', () => {
+    const url = new URL(
+      'https://app.adjust.com/1vsbb5d1?adgroup=Influencer_piepsein_lovinn+launch&fallback=https%3A%2F%2Fwww.lovinn.de%2F&redirect_macos=https%3A%2F%2Fwww.lovinn.de%2F',
+    )
+
+    expect(unwrapAdjust(url)).toBe('https://www.lovinn.de/')
+  })
+
+  it('should extract target from the tracker macOS redirect', () => {
+    const url = new URL(
+      'https://app.adjust.com/vkqj7re?campaign=podcast&adgroup=broker&redirect_ios=https%3A%2F%2Fapps.apple.com%2Fapp%2Fid1&redirect_macos=https%3A%2F%2Fde.scalable.capital%2Ftrading%2F',
+    )
+
+    expect(unwrapAdjust(url)).toBe('https://de.scalable.capital/trading/')
+  })
+
+  it('should prefer the tracker redirect over the fallback', () => {
+    const url = new URL(
+      'https://app.adjust.com/abc123?fallback=https%3A%2F%2Fexample.com%2Ffallback&redirect=https%3A%2F%2Fexample.com%2Fredirect',
+    )
+
+    expect(unwrapAdjust(url)).toBe('https://example.com/redirect')
+  })
+
+  it('should skip a custom-scheme redirect for the tracker fallback', () => {
+    const url = new URL(
+      'https://app.adjust.com/abc123?redirect=myapp%3A%2F%2Fopen&fallback=https%3A%2F%2Fexample.com%2Fpost',
+    )
+
+    expect(unwrapAdjust(url)).toBe('https://example.com/post')
+  })
+
   it('should extract target from a universal link fallback', () => {
     const url = new URL(
       'https://8xws.adj.st/?utm_source=news&utm_medium=in_article_banner&adj_t=1m4i69ak_1mazzg55&adj_fallback=https%3A%2F%2Fapp.weareblox.com%2F%3Fintent%3Dregister%26lan%3Dnl',
