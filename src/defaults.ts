@@ -187,6 +187,7 @@ import { unwrapSapHelp } from './unwraps/sapHelp.js'
 import { unwrapSegmentfault } from './unwraps/segmentfault.js'
 // import { unwrapShareasale } from './unwraps/shareasale.js'
 // import { unwrapSkimlinks } from './unwraps/skimlinks.js'
+import { unwrapSkyrock } from './unwraps/skyrock.js'
 // import { unwrapSlack } from './unwraps/slack.js'
 // import { unwrapSlickdeals } from './unwraps/slickdeals.js'
 // import { unwrapSmartredirect } from './unwraps/smartredirect.js'
@@ -448,6 +449,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   unwrapOkRu,
   unwrapPocket,
   unwrapRedditOut,
+  unwrapSkyrock,
   unwrapSoundcloud,
   unwrapSteamLinkfilter,
   unwrapThreadsShim,
