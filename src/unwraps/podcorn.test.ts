@@ -18,6 +18,12 @@ describe('unwrapPodcorn', () => {
     expect(unwrapPodcorn(url)).toBe('http://example.com/ep/yDo40T3sg/media/z1pjSfE4a.mp3')
   })
 
+  it('should skip an empty segment after the prefix', () => {
+    const url = new URL('https://pdcn.co/e//example.com/datingwomenradioshow/DWP556.mp3')
+
+    expect(unwrapPodcorn(url)).toBe('https://example.com/datingwomenradioshow/DWP556.mp3')
+  })
+
   it('should leave the next prefix in a chain for the next pass', () => {
     const url = new URL(
       'https://pdcn.co/e/dts.podtrac.com/redirect.mp3/example.com/broadway/20260628-br-twob.mp3',
