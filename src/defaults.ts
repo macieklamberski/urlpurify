@@ -173,6 +173,7 @@ import { unwrapNaverOutgoing } from './unwraps/naverOutgoing.js'
 import { unwrapNetcentrum } from './unwraps/netcentrum.js'
 import { unwrapNewswire } from './unwraps/newswire.js'
 // import { unwrapNicoMs } from './unwraps/nicoMs.js'
+// import { unwrapNimble } from './unwraps/nimble.js'
 // import { unwrapNlaWebarchive } from './unwraps/nlaWebarchive.js'
 import { unwrapNodeseek } from './unwraps/nodeseek.js'
 import { unwrapOkRu } from './unwraps/okRu.js'
@@ -339,6 +340,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapMcas,
   // unwrapMimecast,
   // unwrapMyNewsletterBuilder,
+  // unwrapNimble,
   // unwrapOutlookSafelinks,
   // unwrapPipedrive,
   // unwrapPostmark,
