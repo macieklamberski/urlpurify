@@ -18,6 +18,14 @@ describe('unwrapDasBlog', () => {
     expect(unwrapDasBlog(url)).toBe('http://www.example.com/')
   })
 
+  it('should extract the last target from a nested unencoded counter', () => {
+    const url = new URL(
+      'http://www.example.net/ct.ashx?id=68b7e248-b9f5-4d07-bdfe-eb037bcf2cbb&url=http://www.example.org/ct.ashx?id=c6ead234-901e-4642-aa46-3c86301d2e71&url=http://www.example.com/',
+    )
+
+    expect(unwrapDasBlog(url)).toBe('http://www.example.com/')
+  })
+
   it('should return undefined for a non-http target', () => {
     const url = new URL(
       'http://www.example.net/ct.ashx?id=68b7e248-b9f5-4d07-bdfe-eb037bcf2cbb&url=mailto%3aname%40example.com',

@@ -11,7 +11,8 @@ export const unwrapDasBlog: UrlUnwrapper = (url) => {
     return
   }
 
-  const target = url.searchParams.get('url')
+  // A nested unencoded counter repeats `url`, and the first value is the inner counter cut short.
+  const target = url.searchParams.getAll('url').at(-1)
 
   if (target && isHttpUrl(target)) {
     return target
