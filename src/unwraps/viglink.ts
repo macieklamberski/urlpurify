@@ -9,13 +9,14 @@ const unwrapRedirect = createParamExtractor({
 })
 
 const unwrapClickApi = createParamExtractor({
-  hosts: ['api.viglink.com', 'apicdn.viglink.com'],
+  hosts: ['api.viglink.com', 'apicdn.viglink.com', 'lwlink3.linkwithin.com'],
   path: '/api/click',
   params: ['out'],
 })
 
 // VigLink affiliate redirect (redirect.viglink.com/?u=<target> or ?out=<target>) and click api
-// (api.viglink.com/api/click?out=<target>, also on apicdn.viglink.com).
+// (api.viglink.com/api/click?out=<target>, also on apicdn.viglink.com and, through the LinkWithin
+// widget, on lwlink3.linkwithin.com).
 // The click query also carries `loc`, the page the link sat on, which is never the target.
 export const unwrapViglink: UrlUnwrapper = (url) => {
   return unwrapRedirect(url) ?? unwrapClickApi(url)
