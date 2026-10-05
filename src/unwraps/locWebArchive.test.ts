@@ -50,6 +50,12 @@ describe('unwrapLocWebArchive', () => {
     expect(unwrapLocWebArchive(url)).toBeUndefined()
   })
 
+  it('should return undefined for a partial timestamp', () => {
+    const url = new URL('https://webarchive.loc.gov/all/2010/http://www.example.org/')
+
+    expect(unwrapLocWebArchive(url)).toBeUndefined()
+  })
+
   it('should return undefined for a numbered lcwa collection', () => {
     const url = new URL(
       'http://webarchive.loc.gov/lcwa0006/20230515014734/https://www.example.co.uk/',
