@@ -27,6 +27,7 @@ import { unwrapCsdn } from './unwraps/csdn.js'
 import { unwrapDerefMail } from './unwraps/derefMail.js'
 import { unwrapDeviantartOutgoing } from './unwraps/deviantartOutgoing.js'
 // import { unwrapDigidip } from './unwraps/digidip.js'
+// import { unwrapDigikala } from './unwraps/digikala.js'
 import { unwrapDisqus } from './unwraps/disqus.js'
 // import { unwrapDmmAffiliate } from './unwraps/dmmAffiliate.js'
 import { unwrapDouban } from './unwraps/douban.js'
@@ -170,6 +171,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapBolPartner,
   // unwrapCjNetwork,
   // unwrapDigidip,
+  // unwrapDigikala,
   // unwrapDmmAffiliate,
   // unwrapEbayRover,
   // unwrapEffiliation,
