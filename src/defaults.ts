@@ -230,6 +230,7 @@ import { unwrapTumblr } from './unwraps/tumblr.js'
 // import { unwrapValuecommerce } from './unwraps/valuecommerce.js'
 import { unwrapVanilla } from './unwraps/vanilla.js'
 import { unwrapVbulletin } from './unwraps/vbulletin.js'
+// import { unwrapVefsafn } from './unwraps/vefsafn.js'
 // import { unwrapViglink } from './unwraps/viglink.js'
 import { unwrapVkAway } from './unwraps/vkAway.js'
 // import { unwrapVuture } from './unwraps/vuture.js'
@@ -523,6 +524,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapUkgwa,
   // unwrapUkWebArchive,
   // unwrapUnhcrWebArchive,
+  // unwrapVefsafn,
   // unwrapWebcitation,
   // unwrapWikiwix,
   // unwrapWikizero,
