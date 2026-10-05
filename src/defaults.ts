@@ -123,6 +123,7 @@ import { unwrapJuejin } from './unwraps/juejin.js'
 // import { unwrapLazada } from './unwraps/lazada.js'
 import { unwrapLd246 } from './unwraps/ld246.js'
 // import { unwrapLeverAnalytics } from './unwraps/leverAnalytics.js'
+// import { unwrapLinkA } from './unwraps/linkA.js'
 // import { unwrapLinkconnector } from './unwraps/linkconnector.js'
 import { unwrapLinkedin } from './unwraps/linkedin.js'
 // import { unwrapLinksynergy } from './unwraps/linksynergy.js'
@@ -358,6 +359,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapJustwatch,
   // unwrapKlook,
   // unwrapLazada,
+  // unwrapLinkA,
   // unwrapLinkconnector,
   // unwrapLinksynergy,
   // unwrapLinktrust,
