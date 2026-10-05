@@ -30,6 +30,7 @@ import { unwrapAnonymTo } from './unwraps/anonymTo.js'
 // import { unwrapAugure } from './unwraps/augure.js'
 // import { unwrapAvantlink } from './unwraps/avantlink.js'
 // import { unwrapAwin } from './unwraps/awin.js'
+// import { unwrapBacLacWebArchive } from './unwraps/bacLacWebArchive.js'
 import { unwrapBale } from './unwraps/bale.js'
 // import { unwrapBananatag } from './unwraps/bananatag.js'
 // import { unwrapBarracudaLinkProtect } from './unwraps/barracudaLinkProtect.js'
@@ -513,6 +514,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapAnonymouse,
   // unwrapArchiveToday, // Snapshot of a page at a point in time, not a redirect
   // unwrapArquivo,
+  // unwrapBacLacWebArchive,
   // unwrapEmbedly,
   // unwrapLocWebArchive,
   // unwrapMegalodon,
