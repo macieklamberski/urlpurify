@@ -44,6 +44,62 @@ describe('unwrapIndexHu', () => {
     expect(unwrapIndexHu(url)).toBeUndefined()
   })
 
+  it('should extract target from a section counter link', () => {
+    const url = new URL(
+      'http://index.hu/x?index_gazdasag_cikklink=http%3A%2F%2Fwww.vg.hu%2Fgazdasag%2Fadozas%2Fa-szappant-es-a-sampont-is-megadoztatja-a-kormany-438374',
+    )
+
+    expect(unwrapIndexHu(url)).toBe(
+      'http://www.vg.hu/gazdasag/adozas/a-szappant-es-a-sampont-is-megadoztatja-a-kormany-438374',
+    )
+  })
+
+  it('should extract a twice-encoded target from a section counter link', () => {
+    const url = new URL(
+      'http://index.hu/x?index_tech_cikklink=https%253A%252F%252Fexample.com%252Fpost',
+    )
+
+    expect(unwrapIndexHu(url)).toBe('https://example.com/post')
+  })
+
+  it('should keep a twice-encoded target that fails the second decode', () => {
+    const url = new URL(
+      'http://index.hu/x?index_tech_cikklink=https%253A%252F%252Fexample.com%252F%25E0%25A4%25A',
+    )
+
+    expect(unwrapIndexHu(url)).toBe('https%3A%2F%2Fexample.com%2F%E0%A4%A')
+  })
+
+  it('should return undefined when the section counter param is empty', () => {
+    const url = new URL('http://index.hu/x?index_tech_cikklink=')
+
+    expect(unwrapIndexHu(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a counter param not named after a section', () => {
+    const url = new URL('http://index.hu/x?cbl=2&c0_412=http://index.hu/kultur/eletmod/rom0511/')
+
+    expect(unwrapIndexHu(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a param that only starts with the section counter name', () => {
+    const url = new URL('http://index.hu/x?index_tech_cikklinks=https%3A%2F%2Fexample.com%2F')
+
+    expect(unwrapIndexHu(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a param that only ends with the section counter name', () => {
+    const url = new URL('http://index.hu/x?xindex_tech_cikklink=https%3A%2F%2Fexample.com%2F')
+
+    expect(unwrapIndexHu(url)).toBeUndefined()
+  })
+
+  it('should return undefined for the section counter on another path', () => {
+    const url = new URL('http://index.hu/y?index_tech_cikklink=https%3A%2F%2Fexample.com%2F')
+
+    expect(unwrapIndexHu(url)).toBeUndefined()
+  })
+
   it('should return undefined for the counter on another path', () => {
     const url = new URL('https://dex.hu/x?index_tech_cikklink=https%3A%2F%2Fexample.com%2F')
 
