@@ -18,6 +18,16 @@ describe('unwrapPodsights', () => {
     )
   })
 
+  it('should extract a target from the Spotify prefix host', () => {
+    const url = new URL(
+      'https://prfx.byspotify.com/e/example.com/secure/birthhour/ashlie_holladay_-_7126_5.18PM.mp3',
+    )
+
+    expect(unwrapPodsights(url)).toBe(
+      'https://example.com/secure/birthhour/ashlie_holladay_-_7126_5.18PM.mp3',
+    )
+  })
+
   it('should leave the next prefix in a chain for the next pass', () => {
     const url = new URL(
       'http://pdst.fm/e/dts.podtrac.com/redirect.mp3/example.com/Podcasts/Gardenerd_06-18-20.mp3',
