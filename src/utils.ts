@@ -27,6 +27,34 @@ const decodeEncodedScheme = (value: string): string => {
   }
 }
 
+const unencodedTargetRegex = /^https?:\/\//i
+
+// Every value of a query param, in order, as `URLSearchParams.getAll` reads them, except a `+` in
+// a target the carrier left unencoded, as in `wgtarget=https://example.com/search/a+b/`. There the
+// `+` is the target's own and stays, where `URLSearchParams` reads it as a space.
+export const getParamValues = (url: URL, name: string): Array<string> => {
+  const values: Array<string> = []
+
+  for (const pair of url.search.slice(1).split('&')) {
+    const entry = new URLSearchParams(pair).entries().next().value
+
+    if (!entry || entry[0] !== name) {
+      continue
+    }
+
+    const raw = pair.slice(pair.indexOf('=') + 1)
+
+    if (!unencodedTargetRegex.test(raw)) {
+      values.push(entry[1])
+      continue
+    }
+
+    values.push(new URLSearchParams(`value=${raw.replaceAll('+', '%2B')}`).get('value') ?? '')
+  }
+
+  return values
+}
+
 export const createParamExtractor = (config: ParamExtractorConfig): UrlUnwrapper => {
   return (url) => {
     const isHostMatch =
@@ -43,7 +71,7 @@ export const createParamExtractor = (config: ParamExtractorConfig): UrlUnwrapper
     }
 
     for (const param of config.params) {
-      const value = url.searchParams.get(param)
+      const value = getParamValues(url, param).at(0)
 
       if (value) {
         return decodeEncodedScheme(value)

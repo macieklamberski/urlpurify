@@ -243,6 +243,56 @@ describe('createParamExtractor', () => {
       expect(extract(value)).toBe(expected)
     })
   })
+
+  describe('plus in the target', () => {
+    const extract = createParamExtractor({
+      hosts: 'redirect.example.com',
+      params: ['wgtarget'],
+    })
+
+    it('should keep a plus in the path and query of an unencoded target', () => {
+      const value = new URL(
+        'https://redirect.example.com/click.html?wgcampaignid=1647790&wgprogramid=294680&clickref=fitness&wgtarget=https://www.example.com/search/Freet+Tanga/?q=Freet+Tanga',
+      )
+      const expected = 'https://www.example.com/search/Freet+Tanga/?q=Freet+Tanga'
+
+      expect(extract(value)).toBe(expected)
+    })
+
+    it('should keep a plus in an unencoded target with an uppercase scheme', () => {
+      const value = new URL('https://redirect.example.com/?wgtarget=HTTPS://www.example.com/a+b')
+      const expected = 'HTTPS://www.example.com/a+b'
+
+      expect(extract(value)).toBe(expected)
+    })
+
+    it('should still decode percent escapes in an unencoded target', () => {
+      const value = new URL(
+        'https://redirect.example.com/?wgtarget=https://www.example.com/a+b/?q=%C3%A9t%C3%A9',
+      )
+      const expected = 'https://www.example.com/a+b/?q=été'
+
+      expect(extract(value)).toBe(expected)
+    })
+
+    it('should read a plus in an encoded target as a space', () => {
+      const value = new URL(
+        'https://redirect.example.com/?wgtarget=https%3A%2F%2Fwww.example.com%2Fsearch%3Fq%3DFreet+Tanga',
+      )
+      const expected = 'https://www.example.com/search?q=Freet Tanga'
+
+      expect(extract(value)).toBe(expected)
+    })
+
+    it('should read the first copy of the param', () => {
+      const value = new URL(
+        'https://redirect.example.com/?wgtarget=https://www.example.com/a+b&wgtarget=https://www.example.com/c',
+      )
+      const expected = 'https://www.example.com/a+b'
+
+      expect(extract(value)).toBe(expected)
+    })
+  })
 })
 
 describe('decodeBase64Binary', () => {
