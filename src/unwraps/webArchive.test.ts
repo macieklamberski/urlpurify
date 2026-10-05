@@ -152,12 +152,12 @@ describe('unwrapWebArchive', () => {
     )
   })
 
-  it('should return undefined for a Scholar access link with a percent-encoded target', () => {
+  it('should extract a percent-encoded target of a Scholar access link', () => {
     const url = new URL(
       'https://scholar.archive.org/work/3vyjt2wj2ndp5egy72xkudeeey/access/wayback/https%3A%2F%2Fwww.example.com%2Fdownload%2F4cc417',
     )
 
-    expect(unwrapWebArchive(url)).toBeUndefined()
+    expect(unwrapWebArchive(url)).toBe('https://www.example.com/download/4cc417')
   })
 
   it('should return undefined for the Scholar work page', () => {

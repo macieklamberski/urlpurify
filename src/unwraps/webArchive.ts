@@ -22,8 +22,7 @@ const snapshot = String.raw`\d{14}(?:\*|(?:id|if|mp|fw|oe|im|js|cs)_)?`
 const pathRegex = new RegExp(`^/web/(?:${snapshot}/)?(.+)$`)
 const replayPathRegex = new RegExp(`^/${snapshot}/(.+)$`)
 const archiveItPathRegex = new RegExp(String.raw`^/(?:\d+|org-\d+|all)/${snapshot}/(.+)$`)
-// Scholar answers 404 to a percent-encoded target, so the target keeps its scheme as written.
-const scholarPathRegex = /^\/work\/[a-z0-9]+\/access\/wayback\/(https?:\/.*)$/
+const scholarPathRegex = /^\/work\/[a-z0-9]+\/access\/wayback\/(.+)$/
 
 // Web Archive snapshot wrapper (web.archive.org/web/<timestamp>[<modifier>]/<URL>), also served
 // from wayback, web-beta, web-wp, web-old and classic-web.archive.org, from archive.org itself and
