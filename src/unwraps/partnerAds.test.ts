@@ -51,4 +51,40 @@ describe('unwrapPartnerAds', () => {
 
     expect(unwrapPartnerAds(url)).toBeUndefined()
   })
+
+  it('should extract target from a deep link path', () => {
+    const url = new URL(
+      'https://www.partner-ads.com/dk/c/p/51339/b/38484/https://www.denintelligentekrop.dk/gronne-mini-bolde-2-stk',
+    )
+
+    expect(unwrapPartnerAds(url)).toBe('https://www.denintelligentekrop.dk/gronne-mini-bolde-2-stk')
+  })
+
+  it('should keep the query and fragment of a deep link target', () => {
+    const url = new URL(
+      'https://www.partner-ads.com/dk/c/p/15999/b/17685/https://www.coolstuff.dk/search?q=chili#top',
+    )
+
+    expect(unwrapPartnerAds(url)).toBe('https://www.coolstuff.dk/search?q=chili#top')
+  })
+
+  it('should extract target from a deep link with sub ids', () => {
+    const url = new URL(
+      'https://www.partner-ads.com/dk/c/p/41996/b/68419/u1/zink/u2/ramme/https://www.weightworld.dk/zinc-tablets.html',
+    )
+
+    expect(unwrapPartnerAds(url)).toBe('https://www.weightworld.dk/zinc-tablets.html')
+  })
+
+  it('should return undefined for a deep link without a target', () => {
+    const url = new URL('https://www.partner-ads.com/dk/c/p/51339/b/38484/')
+
+    expect(unwrapPartnerAds(url)).toBeUndefined()
+  })
+
+  it('should return undefined for the deep link shape on another host', () => {
+    const url = new URL('https://example.com/dk/c/p/51339/b/38484/https://www.example.org/post')
+
+    expect(unwrapPartnerAds(url)).toBeUndefined()
+  })
 })
