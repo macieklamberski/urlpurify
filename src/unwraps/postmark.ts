@@ -1,11 +1,11 @@
 import { decodeSegment, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
-const postmarkPathRegex = /^\/[23](s?)\/([^/]+)\//
+const postmarkPathRegex = /^\/[23][mt]?(s?)\/([^/]+)\//
 
-// Postmark click tracker ({click,track}.pstmrk.it/{2,3}[s]/<encoded>/...). The segment after
-// the version prefix carries the URL-encoded target without its scheme. The `s` suffix marks an
-// https target, and a bare version an http one.
+// Postmark click tracker ({click,track}.pstmrk.it/{2,3}[m,t][s]/<encoded>/...). The segment
+// after the version prefix carries the URL-encoded target without its scheme. An `s` in the
+// prefix marks an https target, and any other prefix an http one.
 export const unwrapPostmark: UrlUnwrapper = (url) => {
   if (!isHostOf(url, ['click.pstmrk.it', 'track.pstmrk.it'])) {
     return

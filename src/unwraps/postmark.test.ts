@@ -24,12 +24,12 @@ describe('unwrapPostmark', () => {
     expect(unwrapPostmark(url)).toBe('https://example.com')
   })
 
-  it('should extract a target from the track host', () => {
+  it('should extract an https target from a 3ts path', () => {
     const url = new URL(
-      'https://track.pstmrk.it/3s/www.example.com%2F%40channel/xQnE/eBjEAQ/AQ/a0a74f67-4c03-4c49-bef4-6a78b998a091/1/bjrj_XP6yA',
+      'https://click.pstmrk.it/3ts/example.com%2Fstartups%2Fdashy/sDxB/7R5wAQ/AQ/62c98070-1b4f-4d4c-a7e6-1f2d3c4b5a69/1/Hq4kcZpX3R',
     )
 
-    expect(unwrapPostmark(url)).toBe('https://www.example.com/@channel')
+    expect(unwrapPostmark(url)).toBe('https://example.com/startups/dashy')
   })
 
   it('should keep the encoded query of the target', () => {
