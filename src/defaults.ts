@@ -76,6 +76,7 @@ import { unwrapFinalsite } from './unwraps/finalsite.js'
 // import { unwrapFlexoffers } from './unwraps/flexoffers.js'
 import { unwrapFlipboard } from './unwraps/flipboard.js'
 // import { unwrapFortimail } from './unwraps/fortimail.js'
+import { unwrapFtc } from './unwraps/ftc.js'
 // import { unwrapGateSc } from './unwraps/gateSc.js'
 // import { unwrapGeoriot } from './unwraps/georiot.js'
 import { unwrapGitee } from './unwraps/gitee.js'
@@ -413,6 +414,9 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   unwrapMarketwire,
   unwrapNewswire,
   unwrapPrNewswire,
+
+  // Government sites.
+  unwrapFtc,
 
   // Cache and proxy services.
   // unwrap12ft,
