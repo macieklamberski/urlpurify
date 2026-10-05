@@ -65,6 +65,7 @@ import { unwrapFinalsite } from './unwraps/finalsite.js'
 // import { unwrapFirebaseDynamicLinks } from './unwraps/firebaseDynamicLinks.js'
 // import { unwrapFireeye } from './unwraps/fireeye.js'
 // import { unwrapFiverr } from './unwraps/fiverr.js'
+// import { unwrapFlexoffers } from './unwraps/flexoffers.js'
 import { unwrapFlipboard } from './unwraps/flipboard.js'
 // import { unwrapFortimail } from './unwraps/fortimail.js'
 // import { unwrapGateSc } from './unwraps/gateSc.js'
@@ -288,6 +289,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapEulerian,
   // unwrapFirebaseDynamicLinks,
   // unwrapFiverr,
+  // unwrapFlexoffers,
   // unwrapGateSc,
   // unwrapGeoriot,
   // unwrapHasoffers,
