@@ -28,6 +28,14 @@ describe('unwrapMcas', () => {
     expect(unwrapMcas(url)).toBe('http://www.example.com/?McasTsid=20892')
   })
 
+  it('should strip the government cloud suffix from the host of the target', () => {
+    const url = new URL(
+      'https://mcas-proxyweb.mcas-gov.us/certificate-checker?login=false&originalUrl=https%3A%2F%2Fwww.example.com.mcas-gov.us%2Fen%2Fcompany%2F%3FMcasTsid%3D20892&McasCSRF=a18bd2b920dd470de7491f92d4309acf87e6313f706da3999f3d556a4f535bcf',
+    )
+
+    expect(unwrapMcas(url)).toBe('https://www.example.com/en/company/?McasTsid=20892')
+  })
+
   it('should keep the host of a target without the proxy suffix', () => {
     const url = new URL(
       'https://mcas-proxyweb.mcas.ms/certificate-checker?login=false&originalUrl=https%3A%2F%2Fexample.com%2Fpage',
@@ -42,6 +50,14 @@ describe('unwrapMcas', () => {
     )
 
     expect(unwrapMcas(url)).toBe('https://examplemcas.ms/page')
+  })
+
+  it('should return undefined when originalUrl is not a url', () => {
+    const url = new URL(
+      'https://mcas-proxyweb.mcas.ms/certificate-checker?login=false&originalUrl=example.com.mcas.ms',
+    )
+
+    expect(unwrapMcas(url)).toBeUndefined()
   })
 
   it('should return undefined when originalUrl param is missing', () => {
