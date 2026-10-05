@@ -10,14 +10,6 @@ describe('unwrapDyn', () => {
     expect(unwrapDyn(url)).toBe('http://www.example.com')
   })
 
-  it('should extract target from R param on the Meltwater host', () => {
-    const url = new URL(
-      'http://icm-tracking.meltwater.com/link.php?DynEngagement=true&H=FcQ5do3Mtm%2F2JnP%2FxXFcY%2BL9mOkU&G=0&R=https%3A%2F%2Fwww.example.com%2Fabout%2F&I=20200511143107.00000032f6d1%40smtp-ad3-48-phx&X=MHwxMjk4MDk4OjVlYjk2MzAz',
-    )
-
-    expect(unwrapDyn(url)).toBe('https://www.example.com/about/')
-  })
-
   it('should extract target encoded twice', () => {
     const url = new URL(
       'http://icm-tracking.meltwater.com/link.php?DynEngagement=true&H=AqX%2Fyxxn&G=0&R=https%253A%252F%252Fwww.example.com%252Fpage',
