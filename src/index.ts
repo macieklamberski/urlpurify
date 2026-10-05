@@ -7,6 +7,7 @@ export {
 } from './defaults.js'
 export type { CleanUrlOptions, TrackingParam, UrlUnwrapper } from './types.js'
 export { unwrap2performant } from './unwraps/2performant.js'
+export { unwrap4pda } from './unwraps/4pda.js'
 export { unwrap12ft } from './unwraps/12ft.js'
 export { unwrapA8Net } from './unwraps/a8Net.js'
 export { unwrapAcast } from './unwraps/acast.js'
