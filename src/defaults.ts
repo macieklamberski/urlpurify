@@ -93,6 +93,7 @@ import { unwrapHrefLi } from './unwraps/hrefLi.js'
 // import { unwrapIcptrack } from './unwraps/icptrack.js'
 // import { unwrapImpact } from './unwraps/impact.js'
 import { unwrapIndexHu } from './unwraps/indexHu.js'
+// import { unwrapInsiderAffiliate } from './unwraps/insiderAffiliate.js'
 import { unwrapInstagramShim } from './unwraps/instagram.js'
 // import { unwrapIntranetQuorum } from './unwraps/intranetQuorum.js'
 import { unwrapJianshuGo } from './unwraps/jianshuGo.js'
@@ -306,6 +307,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapGeoriot,
   // unwrapHasoffers,
   // unwrapImpact,
+  // unwrapInsiderAffiliate,
   // unwrapKlook,
   // unwrapLazada,
   // unwrapLinksynergy,
