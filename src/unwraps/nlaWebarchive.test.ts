@@ -44,6 +44,12 @@ describe('unwrapNlaWebarchive', () => {
     expect(unwrapNlaWebarchive(url)).toBe('http://www.example.edu.au/Articles/dec00/hase2.htm')
   })
 
+  it('should return undefined for a Pandora replay timestamp shorter than 14 digits', () => {
+    const url = new URL('http://pandora.nla.gov.au/nph-wb/200102201300/http://www.example.edu.au/')
+
+    expect(unwrapNlaWebarchive(url)).toBeUndefined()
+  })
+
   it('should return undefined for an archive collection on Pandora', () => {
     const url = new URL(
       'http://pandora.nla.gov.au/awa/20010220130000/http://www.example.edu.au/Articles/hase2.htm',
