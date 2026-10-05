@@ -134,6 +134,7 @@ import { unwrapVbulletin } from './unwraps/vbulletin.js'
 // import { unwrapViglink } from './unwraps/viglink.js'
 import { unwrapVkAway } from './unwraps/vkAway.js'
 // import { unwrapVuture } from './unwraps/vuture.js'
+// import { unwrapWebcitation } from './unwraps/webcitation.js'
 // import { unwrapWebgains } from './unwraps/webgains.js'
 // import { unwrapWikiwix } from './unwraps/wikiwix.js'
 // import { unwrapWordpressEmail } from './unwraps/wordpressEmail.js'
@@ -314,6 +315,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapEmbedly,
   unwrapMozillaOutgoing,
   // unwrapUkgwa,
+  // unwrapWebcitation,
   // unwrapWikiwix,
 
   // Legacy aggregators.
