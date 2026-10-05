@@ -57,6 +57,7 @@ import { unwrapEvernote } from './unwraps/evernote.js'
 import { unwrapFacebookShim } from './unwraps/facebook.js'
 // import { unwrapFanbridge } from './unwraps/fanbridge.js'
 // import { unwrapFeedsportal } from './unwraps/feedsportal.js'
+import { unwrapFeedStatistics } from './unwraps/feedStatistics.js'
 // import { unwrapFirebaseDynamicLinks } from './unwraps/firebaseDynamicLinks.js'
 // import { unwrapFireeye } from './unwraps/fireeye.js'
 // import { unwrapFiverr } from './unwraps/fiverr.js'
@@ -349,6 +350,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   unwrapDatalifeEngine,
   unwrapDropbox,
   unwrapEvernote,
+  unwrapFeedStatistics,
   unwrapGitee,
   unwrapHashnode,
   unwrapJianshuGo,
