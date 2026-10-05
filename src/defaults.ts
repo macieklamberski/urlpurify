@@ -60,6 +60,7 @@ import { unwrapInstagramShim } from './unwraps/instagram.js'
 import { unwrapJianshuGo } from './unwraps/jianshuGo.js'
 import { unwrapJive } from './unwraps/jive.js'
 import { unwrapJuejin } from './unwraps/juejin.js'
+// import { unwrapJustwatch } from './unwraps/justwatch.js'
 // import { unwrapKlook } from './unwraps/klook.js'
 // import { unwrapLeverAnalytics } from './unwraps/leverAnalytics.js'
 import { unwrapLinkedin } from './unwraps/linkedin.js'
@@ -177,6 +178,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapGateSc,
   // unwrapGeoriot,
   // unwrapImpact,
+  // unwrapJustwatch,
   // unwrapKlook,
   // unwrapLinksynergy,
   // unwrapMoshimo,
