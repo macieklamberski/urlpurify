@@ -48,6 +48,20 @@ describe('unwrapInvolveAsia', () => {
     expect(unwrapInvolveAsia(url)).toBeUndefined()
   })
 
+  it('should return undefined for a deep link path without an id', () => {
+    const url = new URL('https://go.isclix.com/deep_link/?url=https%3A%2F%2Fwww.example.com%2F')
+
+    expect(unwrapInvolveAsia(url)).toBeUndefined()
+  })
+
+  it('should return undefined for the aff_m path on go.isclix.com', () => {
+    const url = new URL(
+      'https://go.isclix.com/aff_m?offer_id=407&aff_id=2517&url=https%3A%2F%2Fwww.example.com%2F',
+    )
+
+    expect(unwrapInvolveAsia(url)).toBeUndefined()
+  })
+
   it('should return undefined for other hosts', () => {
     const url = new URL(
       'https://example.com/deep_link/4637228581288136910?url=https%3A%2F%2Fwww.example.org%2F',
