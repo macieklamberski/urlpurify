@@ -65,6 +65,7 @@ import { unwrapDisqus } from './unwraps/disqus.js'
 import { unwrapDouban } from './unwraps/douban.js'
 import { unwrapDropbox } from './unwraps/dropbox.js'
 // import { unwrapDuckduckgo } from './unwraps/duckduckgo.js'
+// import { unwrapDyn } from './unwraps/dyn.js'
 import { unwrapDzen } from './unwraps/dzen.js'
 // import { unwrapEbayRover } from './unwraps/ebayRover.js'
 // import { unwrapEClick } from './unwraps/eClick.js'
@@ -261,6 +262,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapCiscoSecureWeb,
   // unwrapConstantContact,
   // unwrapDirectMail,
+  // unwrapDyn,
   // unwrapEdgepilot,
   // unwrapElasticEmail,
   // unwrapEsva,
