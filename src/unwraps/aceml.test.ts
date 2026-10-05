@@ -12,6 +12,50 @@ describe('unwrapAceml', () => {
     expect(unwrapAceml(url)).toBe(target)
   })
 
+  it('should decode a base64 redirectUrl param holding a percent-encoded target', () => {
+    const url = new URL(
+      'https://example.lt.acemlnc.com/Prod/link-tracker?redirectUrl=aHR0cHMlM0ElMkYlMkZleGFtcGxlLmNvbSUyRmVkaXRvJTNGaWQlM0Qx&sig=25aVrhcnNbnaNWYVHMVds7Q6enE',
+    )
+
+    expect(unwrapAceml(url)).toBe('https://example.com/edito?id=1')
+  })
+
+  it('should return a plain redirectUrl param', () => {
+    const url = new URL(
+      'https://example.lt.acemlnb.com/Prod/link-tracker?redirectUrl=https://example.com/terms/a/annualized-rate.asp&a=90105704&s=192ad911b220e2320a3c7e3da8b45b6e&i=77A73A1A506',
+    )
+
+    expect(unwrapAceml(url)).toBe('https://example.com/terms/a/annualized-rate.asp')
+  })
+
+  it('should return undefined when the percent-encoded target is malformed', () => {
+    const encoded = Buffer.from('https%3A%2F%2Fexample.com%2F%E0%A4%A').toString('base64')
+    const url = new URL(
+      `https://abc.acemlnc.com/Prod/link-tracker?redirectUrl=${encodeURIComponent(encoded)}`,
+    )
+
+    expect(unwrapAceml(url)).toBeUndefined()
+  })
+
+  it('should keep percent escapes in a base64 redirectUrl param holding a plain target', () => {
+    const target = 'https://example.com/search?q=a%2Bb'
+    const encoded = Buffer.from(target).toString('base64')
+    const url = new URL(
+      `https://abc.acemlnc.com/Prod/link-tracker?redirectUrl=${encodeURIComponent(encoded)}`,
+    )
+
+    expect(unwrapAceml(url)).toBe(target)
+  })
+
+  it('should decode a percent-encoded target with lowercase escapes', () => {
+    const encoded = Buffer.from('https%3a%2f%2fexample.com%2fpage').toString('base64')
+    const url = new URL(
+      `https://abc.acemlnc.com/Prod/link-tracker?redirectUrl=${encodeURIComponent(encoded)}`,
+    )
+
+    expect(unwrapAceml(url)).toBe('https://example.com/page')
+  })
+
   it('should match other ACEML host suffixes', () => {
     const target = 'https://example.com/page'
     const encoded = Buffer.from(target).toString('base64')
