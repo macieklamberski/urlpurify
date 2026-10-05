@@ -106,6 +106,7 @@ import { unwrapTumblr } from './unwraps/tumblr.js'
 // import { unwrapValuecommerce } from './unwraps/valuecommerce.js'
 // import { unwrapViglink } from './unwraps/viglink.js'
 import { unwrapVkAway } from './unwraps/vkAway.js'
+// import { unwrapVuture } from './unwraps/vuture.js'
 // import { unwrapWebgains } from './unwraps/webgains.js'
 // import { unwrapWordpressEmail } from './unwraps/wordpressEmail.js'
 // import { unwrapWordpressGo2 } from './unwraps/wordpressGo2.js'
@@ -157,6 +158,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapProofpointV3,
   // unwrapSlack,
   // unwrapStreak,
+  // unwrapVuture,
   // unwrapWordpressEmail,
 
   // Affiliate networks.
