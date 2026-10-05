@@ -276,6 +276,7 @@ import { unwrapTumblr } from './unwraps/tumblr.js'
 import { unwrapVanilla } from './unwraps/vanilla.js'
 import { unwrapVbulletin } from './unwraps/vbulletin.js'
 // import { unwrapVefsafn } from './unwraps/vefsafn.js'
+// import { unwrapVgWort } from './unwraps/vgWort.js'
 // import { unwrapViglink } from './unwraps/viglink.js'
 import { unwrapVirgool } from './unwraps/virgool.js'
 import { unwrapVkAway } from './unwraps/vkAway.js'
@@ -488,6 +489,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapTwoCheckout,
   // unwrapUinterbox,
   // unwrapValuecommerce,
+  // unwrapVgWort,
   // unwrapViglink,
   // unwrapWebgains,
   // unwrapWordpressGo2,
