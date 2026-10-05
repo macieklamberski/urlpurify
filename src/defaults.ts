@@ -24,6 +24,7 @@ import { unwrapAnonymTo } from './unwraps/anonymTo.js'
 // import { unwrapAppsflyerOnelink } from './unwraps/appsflyerOnelink.js'
 // import { unwrapApptrkr } from './unwraps/apptrkr.js'
 // import { unwrapArchiveToday } from './unwraps/archiveToday.js'
+// import { unwrapAugure } from './unwraps/augure.js'
 // import { unwrapAvantlink } from './unwraps/avantlink.js'
 // import { unwrapAwin } from './unwraps/awin.js'
 // import { unwrapBarracudaLinkProtect } from './unwraps/barracudaLinkProtect.js'
@@ -252,6 +253,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // Email and security gateways.
   // unwrapAceml,
   // unwrapAmazonSes,
+  // unwrapAugure,
   // unwrapBarracudaLinkProtect,
   // unwrapCheckPointHarmony,
   // unwrapCiscoSecureWeb,
