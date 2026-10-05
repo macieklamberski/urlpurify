@@ -96,6 +96,7 @@ Enabled by default:
 | `unwrapBing` | Bing search-result redirect (www.bing.com/ck/a?u=a1\<base64url\>) and news click (www.bing.com/news/apiclick.aspx?url=\<target\>) |
 | `unwrapAnonymTo` | anonym.to referrer anonymizer (anonym.to/?\<target\>) |
 | `unwrapBlueskyRedirect` | Bluesky outbound link redirect (go.bsky.app/redirect?u=\<target\>) |
+| `unwrapBridgyFed` | Bridgy Fed redirect for a bridged post or profile (fed.brid.gy/r/\<target\>, also bsky.brid.gy and web.brid.gy) |
 | `unwrapBusinessWire` | Business Wire release click tracker (cts.businesswire.com/ct/CT?url=\<target\>) |
 | `unwrapCalendly` | Calendly outbound link (calendly.com/url?q=\<target\>) |
 | `unwrapCsdn` | CSDN external link redirect (link.csdn.net/?target=\<target\>) |
