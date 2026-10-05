@@ -46,6 +46,7 @@ import { unwrapBridgyFed } from './unwraps/bridgyFed.js'
 import { unwrapBlueskyRedirect } from './unwraps/bsky.js'
 import { unwrapBusinessWire } from './unwraps/businessWire.js'
 // import { unwrapButton } from './unwraps/button.js'
+// import { unwrapBuyAt } from './unwraps/buyAt.js'
 // import { unwrapBuybox } from './unwraps/buybox.js'
 // import { unwrapBuzzstream } from './unwraps/buzzstream.js'
 import { unwrapBytedance } from './unwraps/bytedance.js'
@@ -412,6 +413,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapBizrate,
   // unwrapBolPartner,
   // unwrapButton,
+  // unwrapBuyAt,
   // unwrapBuybox,
   // unwrapCake,
   // unwrapCcbill,
