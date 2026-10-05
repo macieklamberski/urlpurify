@@ -6,6 +6,7 @@ import type { TrackingParam, UrlUnwrapper } from './types.js'
 // import { unwrapAccesstrade } from './unwraps/accesstrade.js'
 // import { unwrapAceml } from './unwraps/aceml.js'
 // import { unwrapAdjust } from './unwraps/adjust.js'
+import { unwrapAliyun } from './unwraps/aliyun.js'
 // import { unwrapAmazonAffiliate } from './unwraps/amazonAffiliate.js'
 // import { unwrapAmazonSes } from './unwraps/amazonSes.js'
 // import { unwrapAmpCache } from './unwraps/ampCache.js'
@@ -232,6 +233,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   unwrapYandexMail,
 
   // Developer and publishing platforms.
+  unwrapAliyun,
   unwrapCsdn,
   unwrapEvernote,
   unwrapGitee,
