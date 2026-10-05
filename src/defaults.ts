@@ -104,6 +104,7 @@ import { unwrapThreadsShim } from './unwraps/threads.js'
 import { unwrapTumblr } from './unwraps/tumblr.js'
 // import { unwrapUkgwa } from './unwraps/ukgwa.js'
 // import { unwrapValuecommerce } from './unwraps/valuecommerce.js'
+// import { unwrapVefsafn } from './unwraps/vefsafn.js'
 // import { unwrapViglink } from './unwraps/viglink.js'
 import { unwrapVkAway } from './unwraps/vkAway.js'
 // import { unwrapWebgains } from './unwraps/webgains.js'
@@ -253,6 +254,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapEmbedly,
   unwrapMozillaOutgoing,
   // unwrapUkgwa,
+  // unwrapVefsafn,
 
   // Legacy aggregators.
   // unwrapFeedsportal,
