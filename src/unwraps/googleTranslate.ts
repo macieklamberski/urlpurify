@@ -15,7 +15,9 @@ const hashedLabelRegex = /^[a-z2-7]{26}-[a-z0-9]{15}-/
 const proxyParamPrefix = '_x_tr_'
 
 // The website proxy names the target host in its own subdomain, `.` as `-` and `-` as `--`, so
-// every subdomain of translate.goog is a proxied site.
+// every subdomain of translate.goog is a proxied site. A long host moves its start into the
+// _x_tr_hp param, and _x_tr_enc marks a `1-` prefix to drop or a `0-` prefix that stands for
+// the `xn--` of an IDN host.
 const unwrapWebsiteProxy: UrlUnwrapper = (url) => {
   if (!url.hostname.endsWith(proxyHostSuffix)) {
     return
@@ -27,10 +29,20 @@ const unwrapWebsiteProxy: UrlUnwrapper = (url) => {
     return
   }
 
-  const host = label
-    .split('--')
-    .map((part) => part.replaceAll('-', '.'))
-    .join('-')
+  const encodings = url.searchParams.get(`${proxyParamPrefix}enc`)?.split(',') ?? []
+  let prefix = `${url.searchParams.get(`${proxyParamPrefix}hp`) ?? ''}${label}`
+
+  if (encodings.includes('1') && prefix.startsWith('1-')) {
+    prefix = prefix.slice(2)
+  }
+
+  const isIdn = encodings.includes('0') && prefix.startsWith('0-')
+
+  if (isIdn) {
+    prefix = prefix.slice(2)
+  }
+
+  const host = `${isIdn ? 'xn--' : ''}${prefix.replaceAll(/\b-\b/g, '.').replaceAll('--', '-')}`
   const scheme = url.searchParams.get(`${proxyParamPrefix}sch`) === 'http' ? 'http' : 'https'
   const query = url.search
     .slice(1)
