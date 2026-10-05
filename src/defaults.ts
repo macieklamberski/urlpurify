@@ -55,6 +55,7 @@ import { unwrapDzen } from './unwraps/dzen.js'
 // import { unwrapEbayRover } from './unwraps/ebayRover.js'
 // import { unwrapEdgepilot } from './unwraps/edgepilot.js'
 // import { unwrapEffiliation } from './unwraps/effiliation.js'
+// import { unwrapEhub } from './unwraps/ehub.js'
 // import { unwrapElasticEmail } from './unwraps/elasticEmail.js'
 // import { unwrapEmbedly } from './unwraps/embedly.js'
 // import { unwrapEsva } from './unwraps/esva.js'
@@ -294,6 +295,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapDmmAffiliate,
   // unwrapEbayRover,
   // unwrapEffiliation,
+  // unwrapEhub,
   // unwrapEulerian,
   // unwrapFirebaseDynamicLinks,
   // unwrapFiverr,
