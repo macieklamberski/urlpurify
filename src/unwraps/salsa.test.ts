@@ -18,6 +18,14 @@ describe('unwrapSalsa', () => {
     expect(unwrapSalsa(url)).toBe('https://www.example.com/watch?v=Sn0pNK')
   })
 
+  it('should keep a plus in an unencoded target', () => {
+    const url = new URL(
+      'http://action.example.org/salsa/track.jsp?key=-1&url=https://www.example.com/search/a+b',
+    )
+
+    expect(unwrapSalsa(url)).toBe('https://www.example.com/search/a+b')
+  })
+
   it('should return undefined for a non-http target', () => {
     const url = new URL('https://org.salsalabs.com/dia/track.jsp?key=-1&url=javascript%3Aalert(1)')
 
