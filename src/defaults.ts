@@ -27,6 +27,7 @@ import { unwrapBing } from './unwraps/bing.js'
 import { unwrapBridgyFed } from './unwraps/bridgyFed.js'
 import { unwrapBlueskyRedirect } from './unwraps/bsky.js'
 import { unwrapBusinessWire } from './unwraps/businessWire.js'
+// import { unwrapButton } from './unwraps/button.js'
 // import { unwrapCake } from './unwraps/cake.js'
 import { unwrapCalendly } from './unwraps/calendly.js'
 import { unwrapCanva } from './unwraps/canva.js'
@@ -277,6 +278,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapAwin,
   // unwrapBizrate,
   // unwrapBolPartner,
+  // unwrapButton,
   // unwrapCake,
   // unwrapCcbill,
   // unwrapCjNetwork,
