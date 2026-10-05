@@ -18,6 +18,14 @@ describe('unwrapWorldNomads', () => {
     expect(unwrapWorldNomads(url)).toBe('http://www.example.com/insurance.aspx')
   })
 
+  it('should extract the last path when a Turnstile link is nested unencoded', () => {
+    const url = new URL(
+      'https://www.worldnomads.com/Turnstile/AffiliateLink?partnerCode=2hw900&utm_source=2hw900&source=weblink&utm_content=weblink&path=https://www.worldnomads.com/Turnstile/AffiliateLink?partnerCode=2hw900&source=link&utm_source=2hw900&utm_content=link&path=https://www.example.com/travel-insurance/',
+    )
+
+    expect(unwrapWorldNomads(url)).toBe('https://www.example.com/travel-insurance/')
+  })
+
   it('should return undefined when path param is missing', () => {
     const url = new URL(
       'https://www.worldnomads.com/Turnstile/AffiliateLink?partnerCode=lifeseasia&source=',
