@@ -238,6 +238,7 @@ import { unwrapVkAway } from './unwraps/vkAway.js'
 // import { unwrapVuture } from './unwraps/vuture.js'
 // import { unwrapWebcitation } from './unwraps/webcitation.js'
 // import { unwrapWebgains } from './unwraps/webgains.js'
+// import { unwrapWebharvest } from './unwraps/webharvest.js'
 // import { unwrapWikiwix } from './unwraps/wikiwix.js'
 // import { unwrapWikizero } from './unwraps/wikizero.js'
 // import { unwrapWordpressEmail } from './unwraps/wordpressEmail.js'
@@ -530,6 +531,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapUnhcrWebArchive,
   // unwrapVefsafn,
   // unwrapWebcitation,
+  // unwrapWebharvest,
   // unwrapWikiwix,
   // unwrapWikizero,
 
