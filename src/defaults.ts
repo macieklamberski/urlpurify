@@ -31,6 +31,7 @@ import { unwrapDisqus } from './unwraps/disqus.js'
 // import { unwrapDmmAffiliate } from './unwraps/dmmAffiliate.js'
 import { unwrapDouban } from './unwraps/douban.js'
 // import { unwrapDuckduckgo } from './unwraps/duckduckgo.js'
+// import { unwrapDyn } from './unwraps/dyn.js'
 import { unwrapDzen } from './unwraps/dzen.js'
 // import { unwrapEbayRover } from './unwraps/ebayRover.js'
 // import { unwrapEffiliation } from './unwraps/effiliation.js'
@@ -141,6 +142,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapAmazonSes,
   // unwrapBarracudaLinkProtect,
   // unwrapCiscoSecureWeb,
+  // unwrapDyn,
   // unwrapEsva,
   // unwrapFireeye,
   // unwrapIcptrack,
