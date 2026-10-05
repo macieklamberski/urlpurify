@@ -55,4 +55,28 @@ describe('unwrapMailstat', () => {
 
     expect(unwrapMailstat(url)).toBeUndefined()
   })
+
+  it('should keep a target that holds another url in its path', () => {
+    const url = new URL(
+      'https://mailstat.us/tr/t/vl6g8n5iko528ta4/1m/https://web.archive.org/web/2020/https://example.com/',
+    )
+
+    expect(unwrapMailstat(url)).toBe('https://web.archive.org/web/2020/https://example.com/')
+  })
+
+  it('should return undefined for a t2 link with a non-numeric position', () => {
+    const url = new URL(
+      'https://mailstat.us/tr/t2/8f5fdda/qajqabnstfrbic/x3/https://example.com/join',
+    )
+
+    expect(unwrapMailstat(url)).toBeUndefined()
+  })
+
+  it('should return undefined for the shape below another path', () => {
+    const url = new URL(
+      'https://mailstat.us/x/tr/t/vl6g8n5iko528ta4/1m/https://www.example.com/page',
+    )
+
+    expect(unwrapMailstat(url)).toBeUndefined()
+  })
 })
