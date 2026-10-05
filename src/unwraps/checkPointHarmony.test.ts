@@ -44,6 +44,12 @@ describe('unwrapCheckPointHarmony', () => {
     expect(unwrapCheckPointHarmony(url)).toBeUndefined()
   })
 
+  it('should return undefined for the path under a prefix', () => {
+    const url = new URL('https://checkpoint.url-protection.com/x/v1/url?o=https%3A//example.org/')
+
+    expect(unwrapCheckPointHarmony(url)).toBeUndefined()
+  })
+
   it('should return undefined when o param is missing', () => {
     const url = new URL('https://checkpoint.url-protection.com/v1/url?g=NWQ3N2JlOTQwYmM3NDU0YQ==')
 
