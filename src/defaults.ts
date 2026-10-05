@@ -219,6 +219,7 @@ import { unwrapResearchgate } from './unwraps/researchgate.js'
 import { unwrapSapHelp } from './unwraps/sapHelp.js'
 // import { unwrapSbsAd } from './unwraps/sbsAd.js'
 import { unwrapSegmentfault } from './unwraps/segmentfault.js'
+import { unwrapSerendipity } from './unwraps/serendipity.js'
 // import { unwrapShareasale } from './unwraps/shareasale.js'
 // import { unwrapSkimlinks } from './unwraps/skimlinks.js'
 import { unwrapSkyrock } from './unwraps/skyrock.js'
@@ -562,6 +563,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   unwrapResearchgate,
   unwrapSapHelp,
   unwrapSegmentfault,
+  unwrapSerendipity,
   unwrapSspai,
   unwrapVirgool,
   unwrapZhihu,

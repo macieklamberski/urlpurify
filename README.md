@@ -162,6 +162,7 @@ Enabled by default:
 | `unwrapResearchgate` | ResearchGate dereferrer (www.researchgate.net/deref/\<target\> and go.Deref.html?url=\<target\>) |
 | `unwrapSapHelp` | SAP Help Portal leaving-site page (help.sap.com/docs/link-disclaimer?site=\<target\>) |
 | `unwrapSegmentfault` | Segmentfault external link redirect (link.segmentfault.com/?enc=\<base64\>) |
+| `unwrapSerendipity` | Serendipity blog exit tracker (\<any host\>/[\<blog\>/]exit.php?url=\<base64\>&entry_id=\<n\>) |
 | `unwrapSkyrock` | Skyrock blog outbound link redirect (www.skyrock.com/r?url=\<target\>) |
 | `unwrapSoundcloud` | SoundCloud exit link (exit.sc/?url=\<target\>) |
 | `unwrapSspai` | Sspai external link redirect (sspai.com/link?target=\<target\>) |
