@@ -121,6 +121,7 @@ import { unwrapOkRu } from './unwraps/okRu.js'
 // import { unwrapOutlookSafelinks } from './unwraps/outlookSafelinks.js'
 // import { unwrapPartnerAds } from './unwraps/partnerAds.js'
 import { unwrapPhilpapers } from './unwraps/philpapers.js'
+// import { unwrapPipedrive } from './unwraps/pipedrive.js'
 import { unwrapPocket } from './unwraps/pocket.js'
 // import { unwrapPodcorn } from './unwraps/podcorn.js'
 // import { unwrapPodscribe } from './unwraps/podscribe.js'
@@ -237,6 +238,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapMcas,
   // unwrapMimecast,
   // unwrapOutlookSafelinks,
+  // unwrapPipedrive,
   // unwrapPostmark,
   // unwrapProofpointV1,
   // unwrapProofpointV2,
