@@ -18,6 +18,22 @@ describe('unwrapOutlookWebAccess', () => {
     expect(unwrapOutlookWebAccess(url)).toBe('http://www.example.com/cms/s/2/141f425e.html')
   })
 
+  it('should extract target from the Exchange 2010 path with the build', () => {
+    const url = new URL(
+      'https://mail.example.ie/owa/14.1.355.2/scripts/premium/redir.aspx?C=be990771cf944550b1042c9664eca3e1&URL=http%3a%2f%2fwww.example.com%2fpdf%2f2013_07.pdf',
+    )
+
+    expect(unwrapOutlookWebAccess(url)).toBe('http://www.example.com/pdf/2013_07.pdf')
+  })
+
+  it('should extract target from the explicit logon path with the mailbox', () => {
+    const url = new URL(
+      'https://email.example.org/owa/jane@example.org/redir.aspx?C=cTPl2H6fZX_lGB7vHoIqjKw0gQKhTNEIP0cSLp1mySFRSPHED-7XCA..&URL=http%3a%2f%2fwww.example.com%2fmap',
+    )
+
+    expect(unwrapOutlookWebAccess(url)).toBe('http://www.example.com/map')
+  })
+
   it('should extract target from the exchweb redir.asp shim', () => {
     const url = new URL(
       'https://mail.example.com/exchweb/bin/redir.asp?URL=http://www.example.org/',
@@ -63,6 +79,14 @@ describe('unwrapOutlookWebAccess', () => {
   it('should return undefined for another path on the same host', () => {
     const url = new URL(
       'https://webmail.example.org/owa/auth/logon.aspx?URL=https%3a%2f%2fwww.example.com%2f',
+    )
+
+    expect(unwrapOutlookWebAccess(url)).toBeUndefined()
+  })
+
+  it('should return undefined for another page under the Exchange 2010 build path', () => {
+    const url = new URL(
+      'https://mail.example.ie/owa/14.1.355.2/scripts/premium/attach.aspx?URL=http%3a%2f%2fwww.example.com%2f',
     )
 
     expect(unwrapOutlookWebAccess(url)).toBeUndefined()

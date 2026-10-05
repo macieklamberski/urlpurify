@@ -1,7 +1,9 @@
 import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
-const owaPaths = ['/owa/redir.aspx', '/OWA/redir.aspx', '/exchweb/bin/redir.asp']
+// Exchange 2010 adds its build to the path, and explicit logon adds the mailbox address.
+const owaPathRegex =
+  /^\/(?:owa\/(?:[^/]+@[^/]+\/|\d+(?:\.\d+){3}\/scripts\/premium\/)?redir\.aspx|exchweb\/bin\/redir\.asp)$/i
 const encodedSchemeRegex = /^https?%3A/i
 
 // Outlook Web Access link shim on an organization's own Exchange server
@@ -10,7 +12,7 @@ const encodedSchemeRegex = /^https?%3A/i
 // path and an http `URL` are the guard, not the host. Opt-in: the click needs a signed-in mailbox,
 // and a reader without one lands on the server's login page.
 export const unwrapOutlookWebAccess: UrlUnwrapper = (url) => {
-  if (!owaPaths.includes(url.pathname)) {
+  if (!owaPathRegex.test(url.pathname)) {
     return
   }
 
