@@ -32,6 +32,12 @@ describe('unwrapUnhcrWebArchive', () => {
     expect(unwrapUnhcrWebArchive(url)).toBeUndefined()
   })
 
+  it('should return undefined for a partial timestamp', () => {
+    const url = new URL('https://webarchive.archive.unhcr.org/2023/https://www.example.org/')
+
+    expect(unwrapUnhcrWebArchive(url)).toBeUndefined()
+  })
+
   it('should return undefined for a path with another segment before the timestamp', () => {
     const url = new URL(
       'https://webarchive.archive.unhcr.org/web/20230529095740/https://www.example.org/',
