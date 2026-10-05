@@ -21,6 +21,7 @@ import { unwrapBing } from './unwraps/bing.js'
 import { unwrapBlueskyRedirect } from './unwraps/bsky.js'
 import { unwrapBusinessWire } from './unwraps/businessWire.js'
 import { unwrapCalendly } from './unwraps/calendly.js'
+import { unwrapCanva } from './unwraps/canva.js'
 // import { unwrapCiscoSecureWeb } from './unwraps/ciscoSecureWeb.js'
 // import { unwrapCjNetwork } from './unwraps/cjNetwork.js'
 import { unwrapCsdn } from './unwraps/csdn.js'
@@ -207,6 +208,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   unwrapAnonymTo,
   unwrapBlueskyRedirect,
   unwrapCalendly,
+  unwrapCanva,
   unwrapDerefMail,
   unwrapDeviantartOutgoing,
   unwrapDisqus,
