@@ -34,6 +34,22 @@ describe('unwrapVuture', () => {
     expect(unwrapVuture(url)).toBe('https://www.example.org/fact-sheets/17a-overtime')
   })
 
+  it('should return undefined when the twice-encoded target holds a malformed escape', () => {
+    const url = new URL(
+      'https://news.example.com/email_handler.aspx?sid=blankform&redirect=https%253a%252f%252fwww.example.org%252f%25E0%25A4%25A&checksum=3B87DDF7',
+    )
+
+    expect(unwrapVuture(url)).toBeUndefined()
+  })
+
+  it('should extract target from the api handler path', () => {
+    const url = new URL(
+      'https://communications.example.com/api/email/handler?sid=blankform&redirect=https%3a%2f%2fwww.example.org%2fservices%2fhealthcare%2f%23overview&checksum=D21FDD20',
+    )
+
+    expect(unwrapVuture(url)).toBe('https://www.example.org/services/healthcare/#overview')
+  })
+
   it('should extract a target with a slash-encoded scheme', () => {
     const url = new URL(
       'https://sites-example.vuturevx.com/email_handler.aspx?sid=blankform&redirect=https:%2F%2Fwww.example.org%2Fen%2Flawyers&checksum=81AB12CD',
@@ -53,6 +69,14 @@ describe('unwrapVuture', () => {
   it('should return undefined for another path on the same host', () => {
     const url = new URL(
       'https://connect.example.com/login.aspx?redirect=https%3a%2f%2fwww.example.org%2f',
+    )
+
+    expect(unwrapVuture(url)).toBeUndefined()
+  })
+
+  it('should return undefined for another path under the api handler', () => {
+    const url = new URL(
+      'https://communications.example.com/api/email/unsubscribe?sid=blankform&redirect=https%3a%2f%2fwww.example.org%2f',
     )
 
     expect(unwrapVuture(url)).toBeUndefined()
