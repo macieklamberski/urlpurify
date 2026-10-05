@@ -72,6 +72,7 @@ import { unwrapMedium } from './unwraps/medium.js'
 // import { unwrapMimecast } from './unwraps/mimecast.js'
 // import { unwrapMoshimo } from './unwraps/moshimo.js'
 import { unwrapMozillaOutgoing } from './unwraps/mozillaOutgoing.js'
+// import { unwrapMyNewsletterBuilder } from './unwraps/myNewsletterBuilder.js'
 import { unwrapNaverOutgoing } from './unwraps/naverOutgoing.js'
 // import { unwrapNicoMs } from './unwraps/nicoMs.js'
 // import { unwrapOutlookSafelinks } from './unwraps/outlookSafelinks.js'
@@ -150,6 +151,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapMailpgn,
   // unwrapMailtrack,
   // unwrapMimecast,
+  // unwrapMyNewsletterBuilder,
   // unwrapOutlookSafelinks,
   // unwrapPostmark,
   // unwrapProofpointV1,
