@@ -109,6 +109,7 @@ import { unwrapVkAway } from './unwraps/vkAway.js'
 // import { unwrapWebgains } from './unwraps/webgains.js'
 // import { unwrapWordpressEmail } from './unwraps/wordpressEmail.js'
 // import { unwrapWordpressGo2 } from './unwraps/wordpressGo2.js'
+// import { unwrapWorldNomads } from './unwraps/worldNomads.js'
 import { unwrapYahooSearch } from './unwraps/yahooSearch.js'
 import { unwrapYandexMail } from './unwraps/yandexMail.js'
 import { unwrapYouTube } from './unwraps/youtube.js'
@@ -198,6 +199,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapViglink,
   // unwrapWebgains,
   // unwrapWordpressGo2,
+  // unwrapWorldNomads,
 
   // Ad networks.
   // unwrapBingAds,
