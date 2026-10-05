@@ -33,6 +33,7 @@ import { unwrapBridgyFed } from './unwraps/bridgyFed.js'
 import { unwrapBlueskyRedirect } from './unwraps/bsky.js'
 import { unwrapBusinessWire } from './unwraps/businessWire.js'
 // import { unwrapButton } from './unwraps/button.js'
+// import { unwrapBuybox } from './unwraps/buybox.js'
 import { unwrapBytedance } from './unwraps/bytedance.js'
 // import { unwrapCake } from './unwraps/cake.js'
 import { unwrapCalendly } from './unwraps/calendly.js'
@@ -309,6 +310,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapBizrate,
   // unwrapBolPartner,
   // unwrapButton,
+  // unwrapBuybox,
   // unwrapCake,
   // unwrapCcbill,
   // unwrapCjNetwork,
