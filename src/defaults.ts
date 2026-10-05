@@ -4,6 +4,7 @@ import type { TrackingParam, UrlUnwrapper } from './types.js'
 // import { unwrap12ft } from './unwraps/12ft.js'
 // import { unwrap2performant } from './unwraps/2performant.js'
 // import { unwrapA8Net } from './unwraps/a8Net.js'
+// import { unwrapAcast } from './unwraps/acast.js'
 // import { unwrapAccesstrade } from './unwraps/accesstrade.js'
 // import { unwrapAceml } from './unwraps/aceml.js'
 // import { unwrapAdcell } from './unwraps/adcell.js'
@@ -390,6 +391,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapTriplelift,
 
   // Podcast analytics prefixes.
+  // unwrapAcast,
   // unwrapAnchor,
   // unwrapBlubrry,
   // unwrapFirstory,
