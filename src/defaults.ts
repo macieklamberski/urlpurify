@@ -121,6 +121,7 @@ import { unwrapHorde } from './unwraps/horde.js'
 import { unwrapHrefLi } from './unwraps/hrefLi.js'
 // import { unwrapHubspotSidekick } from './unwraps/hubspotSidekick.js'
 // import { unwrapIcptrack } from './unwraps/icptrack.js'
+// import { unwrapIgafnl } from './unwraps/igafnl.js'
 // import { unwrapImpact } from './unwraps/impact.js'
 import { unwrapIndexHu } from './unwraps/indexHu.js'
 // import { unwrapInsiderAffiliate } from './unwraps/insiderAffiliate.js'
@@ -316,6 +317,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapHornetsecurity,
   // unwrapHubspotSidekick,
   // unwrapIcptrack,
+  // unwrapIgafnl,
   // unwrapIntranetQuorum,
   // unwrapLeverAnalytics,
   // unwrapMagnetmail,
