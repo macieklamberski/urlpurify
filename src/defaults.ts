@@ -75,6 +75,7 @@ import { unwrapMozillaOutgoing } from './unwraps/mozillaOutgoing.js'
 import { unwrapNaverOutgoing } from './unwraps/naverOutgoing.js'
 // import { unwrapNicoMs } from './unwraps/nicoMs.js'
 // import { unwrapOutlookSafelinks } from './unwraps/outlookSafelinks.js'
+// import { unwrapOutlookWebAccess } from './unwraps/outlookWebAccess.js'
 // import { unwrapPartnerAds } from './unwraps/partnerAds.js'
 import { unwrapPocket } from './unwraps/pocket.js'
 // import { unwrapPostmark } from './unwraps/postmark.js'
@@ -151,6 +152,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapMailtrack,
   // unwrapMimecast,
   // unwrapOutlookSafelinks,
+  // unwrapOutlookWebAccess,
   // unwrapPostmark,
   // unwrapProofpointV1,
   // unwrapProofpointV2,
