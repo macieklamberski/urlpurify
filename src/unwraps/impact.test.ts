@@ -48,6 +48,86 @@ describe('unwrapImpact', () => {
     expect(unwrapImpact(url)).toBe('https://example.com/')
   })
 
+  it('should extract target from a short code on sjv.io', () => {
+    const url = new URL('https://square.sjv.io/Y6oeO?u=https%3A%2F%2Fsquareup.com%2Fus%2Fen')
+
+    expect(unwrapImpact(url)).toBe('https://squareup.com/us/en')
+  })
+
+  it('should extract target from a short code on pxf.io', () => {
+    const url = new URL('https://merchant.pxf.io/dOax33?u=https%3A%2F%2Fexample.com%2Fpost')
+
+    expect(unwrapImpact(url)).toBe('https://example.com/post')
+  })
+
+  it('should extract target from the root on pxf.io', () => {
+    const url = new URL('https://merchant.pxf.io/?subId1=abc&u=https%3A%2F%2Fexample.com%2Fproduct')
+
+    expect(unwrapImpact(url)).toBe('https://example.com/product')
+  })
+
+  it('should extract target from a longer click path on pxf.io', () => {
+    const url = new URL(
+      'https://merchant.pxf.io/c/381569/1https://merchant.pxf.io/c/381569/1448521/17195?u=https%3A%2F%2Fexample.com%2Fproduct',
+    )
+
+    expect(unwrapImpact(url)).toBe('https://example.com/product')
+  })
+
+  it('should return undefined for a short code on another host', () => {
+    const url = new URL('https://example.com/Y6oeO?u=https%3A%2F%2Fexample.org%2F')
+
+    expect(unwrapImpact(url)).toBeUndefined()
+  })
+
+  it('should return undefined for the root on another host', () => {
+    const url = new URL('https://example.com/?u=https%3A%2F%2Fexample.org%2F')
+
+    expect(unwrapImpact(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a longer click path on another host', () => {
+    const url = new URL('https://example.com/c/381569/1448521?u=https%3A%2F%2Fexample.org%2F')
+
+    expect(unwrapImpact(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a lookalike of sjv.io', () => {
+    const url = new URL('https://examplesjv.io/Y6oeO?u=https%3A%2F%2Fexample.com%2F')
+
+    expect(unwrapImpact(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a lookalike of pxf.io', () => {
+    const url = new URL('https://examplepxf.io/?u=https%3A%2F%2Fexample.com%2F')
+
+    expect(unwrapImpact(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a host that starts with an Impact domain', () => {
+    const url = new URL('https://merchant.pxf.io.example.com/?u=https%3A%2F%2Fexample.com%2F')
+
+    expect(unwrapImpact(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a 7 character code on sjv.io', () => {
+    const url = new URL('https://merchant.sjv.io/aB3dE9f?u=https%3A%2F%2Fexample.com%2F')
+
+    expect(unwrapImpact(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a 4 character code on sjv.io', () => {
+    const url = new URL('https://merchant.sjv.io/aB3d?u=https%3A%2F%2Fexample.com%2F')
+
+    expect(unwrapImpact(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a click path without a second numeric id on pxf.io', () => {
+    const url = new URL('https://merchant.pxf.io/c/123/about?u=https%3A%2F%2Fexample.com%2F')
+
+    expect(unwrapImpact(url)).toBeUndefined()
+  })
+
   it('should keep the target query when it is not the first param', () => {
     const url = new URL(
       'https://goto.example.com/c/1/2/3?subId1=BV&u=https%3A%2F%2Fexample.com%2Fp%3Fsrsltid%3Dabc',

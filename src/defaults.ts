@@ -82,14 +82,12 @@ import { unwrapPrNewswire } from './unwraps/prNewswire.js'
 // import { unwrapProofpointV1 } from './unwraps/proofpointV1.js'
 // import { unwrapProofpointV2 } from './unwraps/proofpointV2.js'
 // import { unwrapProofpointV3 } from './unwraps/proofpointV3.js'
-// import { unwrapPxf } from './unwraps/pxf.js'
 // import { unwrapRakutenAffiliate } from './unwraps/rakutenAffiliate.js'
 // import { unwrapRecruitics } from './unwraps/recruitics.js'
 import { unwrapRedditOut } from './unwraps/redditOut.js'
 // import { unwrapRedirectingat } from './unwraps/redirectingat.js'
 import { unwrapSegmentfault } from './unwraps/segmentfault.js'
 // import { unwrapShareasale } from './unwraps/shareasale.js'
-// import { unwrapSjv } from './unwraps/sjv.js'
 // import { unwrapSkimlinks } from './unwraps/skimlinks.js'
 // import { unwrapSlack } from './unwraps/slack.js'
 // import { unwrapSmartredirect } from './unwraps/smartredirect.js'
@@ -181,14 +179,12 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapLinksynergy,
   // unwrapMoshimo,
   // unwrapPartnerAds,
-  // unwrapPxf,
   // Rakuten Japan's own program, separate from the LinkSynergy network in unwrapLinksynergy.
   // Opt-in like the rest of the group: unwrapping drops the publisher's commission.
   // unwrapRakutenAffiliate,
   // unwrapRecruitics,
   // unwrapRedirectingat,
   // unwrapShareasale,
-  // unwrapSjv,
   // unwrapSkimlinks,
   // unwrapSmartredirect,
   // unwrapStay22,
