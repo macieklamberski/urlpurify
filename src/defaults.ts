@@ -151,6 +151,7 @@ import { unwrapLinkedin } from './unwraps/linkedin.js'
 // import { unwrapLinktrust } from './unwraps/linktrust.js'
 // import { unwrapLinkwise } from './unwraps/linkwise.js'
 import { unwrapLivejournal } from './unwraps/livejournal.js'
+// import { unwrapLnkam } from './unwraps/lnkam.js'
 // import { unwrapLocWebArchive } from './unwraps/locWebArchive.js'
 // import { unwrapMagellan } from './unwraps/magellan.js'
 // import { unwrapMagnetmail } from './unwraps/magnetmail.js'
@@ -439,6 +440,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapLinksynergy,
   // unwrapLinktrust,
   // unwrapLinkwise,
+  // unwrapLnkam,
   // unwrapMoshimo,
   // unwrapNcls,
   // unwrapNetaffiliation,
