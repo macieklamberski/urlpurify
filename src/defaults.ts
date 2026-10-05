@@ -216,6 +216,7 @@ import { unwrapSspai } from './unwraps/sspai.js'
 // import { unwrapStay22 } from './unwraps/stay22.js'
 import { unwrapSteamLinkfilter } from './unwraps/steamLinkfilter.js'
 // import { unwrapStreak } from './unwraps/streak.js'
+// import { unwrapSurugaya } from './unwraps/surugaya.js'
 // import { unwrapSymantecClicktime } from './unwraps/symantecClicktime.js'
 import { unwrapThreadsShim } from './unwraps/threads.js'
 import { unwrapTiktok } from './unwraps/tiktok.js'
@@ -415,6 +416,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapSlickdeals,
   // unwrapSmartredirect,
   // unwrapStay22,
+  // unwrapSurugaya,
   // unwrapTradedoubler,
   // unwrapTradetracker,
   // unwrapTravelpayouts,
