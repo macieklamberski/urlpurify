@@ -1,0 +1,36 @@
+import { describe, expect, it } from 'bun:test'
+import { unwrapHellohq } from './hellohq.js'
+
+describe('unwrapHellohq', () => {
+  it('should extract target from href param', () => {
+    const url = new URL(
+      'https://f3.hqlabs.de/Helper/LinkHelper.aspx?mailingId=3702060&key=a3da936aa0975ded54474203da4d109d255f9043&href=http%3A%2F%2Fwww.example.com%2F',
+    )
+
+    expect(unwrapHellohq(url)).toBe('http://www.example.com/')
+  })
+
+  it('should return undefined when href param is missing', () => {
+    const url = new URL(
+      'https://f3.hqlabs.de/Helper/LinkHelper.aspx?mailingId=3702060&key=a3da936aa0975ded54474203da4d109d255f9043',
+    )
+
+    expect(unwrapHellohq(url)).toBeUndefined()
+  })
+
+  it('should return undefined for another path', () => {
+    const url = new URL(
+      'https://f3.hqlabs.de/Helper/OpenHelper.aspx?href=http%3A%2F%2Fwww.example.com%2F',
+    )
+
+    expect(unwrapHellohq(url)).toBeUndefined()
+  })
+
+  it('should return undefined for the path on another host', () => {
+    const url = new URL(
+      'https://example.com/Helper/LinkHelper.aspx?href=http%3A%2F%2Fwww.example.org%2F',
+    )
+
+    expect(unwrapHellohq(url)).toBeUndefined()
+  })
+})
