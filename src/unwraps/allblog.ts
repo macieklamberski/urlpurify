@@ -6,7 +6,7 @@ import type { UrlUnwrapper } from '../types.js'
 const linkPrefixRegex = /^\/\d+\/(?=https?:\/)/
 
 // Allblog metablog outbound link (link.allblog.net/<post id>/<target>), a toolbar page that framed
-// the target. The service is closed, and captures up to 2009 show the page loading the target.
+// the target.
 export const unwrapAllblog: UrlUnwrapper = (url) => {
   if (!isHostOf(url, 'link.allblog.net')) {
     return
