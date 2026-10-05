@@ -100,6 +100,14 @@ describe('unwrapMimecast', () => {
     expect(unwrapMimecast(url)).toBeUndefined()
   })
 
+  it('should return undefined for a mimecastprotect.com host with another product label', () => {
+    const url = new URL(
+      'https://url.us.x.mimecastprotect.com/s/E1dLCDkD3Rto6WnuAizSjIfXT?domain=example.org/',
+    )
+
+    expect(unwrapMimecast(url)).toBeUndefined()
+  })
+
   it('should return undefined for a Mimecast host that is not a protect region', () => {
     const url = new URL('https://login.mimecast.com/s/abc123?url=https%3A%2F%2Fexample.com%2Fpost')
 
