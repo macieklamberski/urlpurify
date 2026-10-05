@@ -61,6 +61,7 @@ import { unwrapGoogleNews } from './unwraps/googleNews.js'
 import { unwrapGoogleNewsModern } from './unwraps/googleNewsModern.js'
 import { unwrapGoogleScholar } from './unwraps/googleScholar.js'
 import { unwrapHashnode } from './unwraps/hashnode.js'
+// import { unwrapHornetsecurity } from './unwraps/hornetsecurity.js'
 import { unwrapHrefLi } from './unwraps/hrefLi.js'
 // import { unwrapHubspotSidekick } from './unwraps/hubspotSidekick.js'
 // import { unwrapIcptrack } from './unwraps/icptrack.js'
@@ -171,6 +172,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapEdgepilot,
   // unwrapEsva,
   // unwrapFireeye,
+  // unwrapHornetsecurity,
   // unwrapHubspotSidekick,
   // unwrapIcptrack,
   // unwrapLeverAnalytics,
