@@ -41,6 +41,7 @@ import { unwrapFacebookShim } from './unwraps/facebook.js'
 // import { unwrapFeedsportal } from './unwraps/feedsportal.js'
 // import { unwrapFirebaseDynamicLinks } from './unwraps/firebaseDynamicLinks.js'
 // import { unwrapFireeye } from './unwraps/fireeye.js'
+// import { unwrapFirstory } from './unwraps/firstory.js'
 import { unwrapFlipboard } from './unwraps/flipboard.js'
 // import { unwrapGateSc } from './unwraps/gateSc.js'
 // import { unwrapGeoriot } from './unwraps/georiot.js'
@@ -202,6 +203,9 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // Ad networks.
   // unwrapBingAds,
   // unwrapGoogleAds,
+
+  // Podcast analytics prefixes.
+  // unwrapFirstory,
 
   // Social and community platforms.
   unwrapAnonymTo,
