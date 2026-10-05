@@ -34,6 +34,14 @@ describe('unwrapTwoCheckout', () => {
     expect(unwrapTwoCheckout(url)).toBe('http://www.example.com/PhotoToMesh/Default.htm')
   })
 
+  it('should extract a twice-encoded target', () => {
+    const url = new URL(
+      'https://secure.2checkout.com/affiliate.php?ACCOUNT=EXLEVEL&AFFILIATE=99982&PATH=http%253A%252F%252Fexample.com%252Fpage',
+    )
+
+    expect(unwrapTwoCheckout(url)).toBe('http://example.com/page')
+  })
+
   it('should extract the target before AFFSRC', () => {
     const url = new URL(
       'https://secure.2checkout.com/affiliate.php?ACCOUNT=ALLAVSOF&AFFILIATE=147187&PATH=http%3A%2F%2Fwww.example.com%3FAFFILIATE%3D147187&AFFSRC=http%3A%2F%2Fexample.org%2F',

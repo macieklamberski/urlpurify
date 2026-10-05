@@ -1,6 +1,8 @@
 import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
+const encodedSchemeRegex = /^https?%3A/i
+
 // 2Checkout affiliate redirect (secure.2checkout.com/affiliate.php?ACCOUNT=<merchant>&AFFILIATE=<id>
 // &PATH=<target>), also on the former secure.avangate.com and on merchants' own store hosts, such as
 // store.<merchant>.com. Each merchant runs it on its own domain, so the exact path, both ids and an
@@ -14,7 +16,14 @@ export const unwrapTwoCheckout: UrlUnwrapper = (url) => {
     return
   }
 
-  const target = url.searchParams.get('PATH')
+  let target = url.searchParams.get('PATH')
+
+  // A carrier that encoded its target twice still holds an encoded scheme after one decode.
+  if (target && encodedSchemeRegex.test(target)) {
+    try {
+      target = decodeURIComponent(target)
+    } catch {}
+  }
 
   if (!target || !isHttpUrl(target)) {
     return
