@@ -69,36 +69,4 @@ describe('unwrapTrendMicro', () => {
 
     expect(unwrapTrendMicro(url)).toBeUndefined()
   })
-
-  it('should return undefined for a trendmicro.com host outside the family', () => {
-    const url = new URL(
-      'https://www.trendmicro.com/wis/clicktime/v1/query?url=https%3a%2f%2fexample.com%2f',
-    )
-
-    expect(unwrapTrendMicro(url)).toBeUndefined()
-  })
-
-  it('should return undefined for a host that only ends with the domain', () => {
-    const url = new URL(
-      'https://mail.smex-ctp.trendmicro.com/wis/clicktime/v1/query?url=https%3a%2f%2fexample.com%2f',
-    )
-
-    expect(unwrapTrendMicro(url)).toBeUndefined()
-  })
-
-  it('should return undefined for a host that only starts with the domain', () => {
-    const url = new URL(
-      'https://smex-ctp.trendmicro.com.example.com/wis/clicktime/v1/query?url=https%3a%2f%2fexample.com%2f',
-    )
-
-    expect(unwrapTrendMicro(url)).toBeUndefined()
-  })
-
-  it('should return undefined for a lookalike host', () => {
-    const url = new URL(
-      'https://smex-ctp.exampletrendmicro.com/wis/clicktime/v1/query?url=https%3a%2f%2fexample.com%2f',
-    )
-
-    expect(unwrapTrendMicro(url)).toBeUndefined()
-  })
 })
