@@ -208,6 +208,7 @@ import { unwrapRediffmail } from './unwraps/rediffmail.js'
 import { unwrapResearchgate } from './unwraps/researchgate.js'
 // import { unwrapReverbnation } from './unwraps/reverbnation.js'
 // import { unwrapReviveAdserver } from './unwraps/reviveAdserver.js'
+// import { unwrapSalesdoubler } from './unwraps/salesdoubler.js'
 // import { unwrapSalesflare } from './unwraps/salesflare.js'
 // import { unwrapSalesforceiq } from './unwraps/salesforceiq.js'
 import { unwrapSapHelp } from './unwraps/sapHelp.js'
@@ -438,6 +439,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapRakutenAffiliate,
   // unwrapRecruitics,
   // unwrapRedirectingat,
+  // unwrapSalesdoubler,
   // unwrapShareasale,
   // unwrapSkimlinks,
   // unwrapSlickdeals,
