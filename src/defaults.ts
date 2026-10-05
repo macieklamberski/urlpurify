@@ -29,6 +29,7 @@ import { unwrapBusinessWire } from './unwraps/businessWire.js'
 import { unwrapCalendly } from './unwraps/calendly.js'
 import { unwrapCanva } from './unwraps/canva.js'
 // import { unwrapCcbill } from './unwraps/ccbill.js'
+// import { unwrapCheckPointHarmony } from './unwraps/checkPointHarmony.js'
 // import { unwrapCiscoSecureWeb } from './unwraps/ciscoSecureWeb.js'
 // import { unwrapCjNetwork } from './unwraps/cjNetwork.js'
 // import { unwrapConstantContact } from './unwraps/constantContact.js'
@@ -182,6 +183,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapAceml,
   // unwrapAmazonSes,
   // unwrapBarracudaLinkProtect,
+  // unwrapCheckPointHarmony,
   // unwrapCiscoSecureWeb,
   // unwrapConstantContact,
   // unwrapDirectMail,
