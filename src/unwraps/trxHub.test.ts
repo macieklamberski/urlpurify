@@ -55,4 +55,12 @@ describe('unwrapTrxHub', () => {
 
     expect(unwrapTrxHub(url)).toBeUndefined()
   })
+
+  it('should return undefined for the shape below another path', () => {
+    const url = new URL(
+      'https://clicks.trx-hub.com/x/xid/pmc_0aaa4_rollingstone?q=https%3A%2F%2Fwww.example.com%2F',
+    )
+
+    expect(unwrapTrxHub(url)).toBeUndefined()
+  })
 })
