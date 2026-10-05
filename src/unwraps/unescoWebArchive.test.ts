@@ -32,6 +32,18 @@ describe('unwrapUnescoWebArchive', () => {
     expect(unwrapUnescoWebArchive(url)).toBeUndefined()
   })
 
+  it('should return undefined for a timestamp at the root', () => {
+    const url = new URL('https://webarchive.unesco.org/20151221131410/https://www.example.com/')
+
+    expect(unwrapUnescoWebArchive(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a partial timestamp', () => {
+    const url = new URL('https://webarchive.unesco.org/web/2023/https://en.example.org/')
+
+    expect(unwrapUnescoWebArchive(url)).toBeUndefined()
+  })
+
   it('should return undefined for another path on the host', () => {
     const url = new URL(
       'https://webarchive.unesco.org/search/20230926050719/https://en.example.org/',
