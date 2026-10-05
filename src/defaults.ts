@@ -139,6 +139,7 @@ import { unwrapThreadsShim } from './unwraps/threads.js'
 // import { unwrapTrustwaveScanmail } from './unwraps/trustwaveScanmail.js'
 import { unwrapTumblr } from './unwraps/tumblr.js'
 // import { unwrapUkgwa } from './unwraps/ukgwa.js'
+// import { unwrapUkWebArchive } from './unwraps/ukWebArchive.js'
 // import { unwrapUnisender } from './unwraps/unisender.js'
 // import { unwrapVadeSecure } from './unwraps/vadeSecure.js'
 // import { unwrapValuecommerce } from './unwraps/valuecommerce.js'
@@ -343,6 +344,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   unwrapMozillaOutgoing,
   // unwrapNlaWebarchive,
   // unwrapUkgwa,
+  // unwrapUkWebArchive,
   // unwrapWebcitation,
   // unwrapWikiwix,
 
