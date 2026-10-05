@@ -145,6 +145,7 @@ import { unwrapSspai } from './unwraps/sspai.js'
 // import { unwrapStay22 } from './unwraps/stay22.js'
 import { unwrapSteamLinkfilter } from './unwraps/steamLinkfilter.js'
 // import { unwrapStreak } from './unwraps/streak.js'
+// import { unwrapSymantecClicktime } from './unwraps/symantecClicktime.js'
 import { unwrapThreadsShim } from './unwraps/threads.js'
 // import { unwrapTitanhqLinklock } from './unwraps/titanhqLinklock.js'
 // import { unwrapTopsec } from './unwraps/topsec.js'
@@ -238,6 +239,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapSophos,
   // unwrapSquarespaceEmail,
   // unwrapStreak,
+  // unwrapSymantecClicktime,
   // unwrapTitanhqLinklock,
   // unwrapTopsec,
   // unwrapTrendMicro,
