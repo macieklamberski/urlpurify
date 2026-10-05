@@ -93,6 +93,7 @@ import { unwrapJuejin } from './unwraps/juejin.js'
 // import { unwrapLeverAnalytics } from './unwraps/leverAnalytics.js'
 import { unwrapLinkedin } from './unwraps/linkedin.js'
 // import { unwrapLinksynergy } from './unwraps/linksynergy.js'
+// import { unwrapLinktrust } from './unwraps/linktrust.js'
 import { unwrapLivejournal } from './unwraps/livejournal.js'
 // import { unwrapMagnetmail } from './unwraps/magnetmail.js'
 // import { unwrapMail2easy } from './unwraps/mail2easy.js'
@@ -283,6 +284,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapImpact,
   // unwrapKlook,
   // unwrapLinksynergy,
+  // unwrapLinktrust,
   // unwrapMoshimo,
   // unwrapPartnerAds,
   // Rakuten Japan's own program, separate from the LinkSynergy network in unwrapLinksynergy.
