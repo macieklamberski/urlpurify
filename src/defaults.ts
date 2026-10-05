@@ -21,6 +21,7 @@ import { unwrapBing } from './unwraps/bing.js'
 import { unwrapBlueskyRedirect } from './unwraps/bsky.js'
 import { unwrapBusinessWire } from './unwraps/businessWire.js'
 import { unwrapCalendly } from './unwraps/calendly.js'
+// import { unwrapChartable } from './unwraps/chartable.js'
 // import { unwrapCiscoSecureWeb } from './unwraps/ciscoSecureWeb.js'
 // import { unwrapCjNetwork } from './unwraps/cjNetwork.js'
 import { unwrapCsdn } from './unwraps/csdn.js'
@@ -202,6 +203,9 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // Ad networks.
   // unwrapBingAds,
   // unwrapGoogleAds,
+
+  // Podcast analytics prefixes.
+  // unwrapChartable,
 
   // Social and community platforms.
   unwrapAnonymTo,
