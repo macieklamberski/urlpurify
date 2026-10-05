@@ -82,6 +82,7 @@ import { unwrapDropbox } from './unwraps/dropbox.js'
 // import { unwrapDuomai } from './unwraps/duomai.js'
 // import { unwrapDyn } from './unwraps/dyn.js'
 import { unwrapDzen } from './unwraps/dzen.js'
+// import { unwrapEasyMarketing } from './unwraps/easyMarketing.js'
 // import { unwrapEbayRover } from './unwraps/ebayRover.js'
 // import { unwrapEClick } from './unwraps/eClick.js'
 // import { unwrapEdgepilot } from './unwraps/edgepilot.js'
@@ -422,6 +423,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapDmmAffiliate,
   // unwrapDognet,
   // unwrapDuomai,
+  // unwrapEasyMarketing,
   // unwrapEbayRover,
   // unwrapEClick,
   // unwrapEffiliation,
