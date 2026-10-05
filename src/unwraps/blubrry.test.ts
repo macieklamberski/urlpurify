@@ -74,20 +74,12 @@ describe('unwrapBlubrry', () => {
     expect(unwrapBlubrry(url)).toBe('https://media.blubrry.com/svegot2/example.com/episode.mp3')
   })
 
-  it('should return undefined for a file on Blubrry storage', () => {
+  it('should extract a file on Blubrry storage', () => {
     const url = new URL(
       'https://media.blubrry.com/leadership/content.blubrry.com/leadership/LTLEp46_PepedelRio.mp3',
     )
 
-    expect(unwrapBlubrry(url)).toBeUndefined()
-  })
-
-  it('should return undefined for a file on Blubrry storage after the b segment', () => {
-    const url = new URL(
-      'http://media.blubrry.com/truth_about_fx/b/content.blubrry.com/truth_about_fx/CP_-_Alex.mp3',
-    )
-
-    expect(unwrapBlubrry(url)).toBeUndefined()
+    expect(unwrapBlubrry(url)).toBe('https://content.blubrry.com/leadership/LTLEp46_PepedelRio.mp3')
   })
 
   it('should return undefined when no host follows the show', () => {
