@@ -102,7 +102,7 @@ import { unwrapThreadsShim } from './unwraps/threads.js'
 // import { unwrapTradedoubler } from './unwraps/tradedoubler.js'
 // import { unwrapTravelpayouts } from './unwraps/travelpayouts.js'
 import { unwrapTumblr } from './unwraps/tumblr.js'
-import { unwrapTwitterRedirect } from './unwraps/twitterRedirect.js'
+// import { unwrapTwitterRedirect } from './unwraps/twitterRedirect.js'
 // import { unwrapUkgwa } from './unwraps/ukgwa.js'
 // import { unwrapValuecommerce } from './unwraps/valuecommerce.js'
 // import { unwrapViglink } from './unwraps/viglink.js'
@@ -158,6 +158,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapProofpointV3,
   // unwrapSlack,
   // unwrapStreak,
+  // unwrapTwitterRedirect,
   // unwrapWordpressEmail,
 
   // Affiliate networks.
@@ -229,7 +230,6 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   unwrapSteamLinkfilter,
   unwrapThreadsShim,
   unwrapTumblr,
-  unwrapTwitterRedirect,
   unwrapVkAway,
   unwrapYandexMail,
 
