@@ -230,6 +230,7 @@ import { unwrapSapHelp } from './unwraps/sapHelp.js'
 import { unwrapSegmentfault } from './unwraps/segmentfault.js'
 import { unwrapSerendipity } from './unwraps/serendipity.js'
 // import { unwrapShareasale } from './unwraps/shareasale.js'
+// import { unwrapShareit } from './unwraps/shareit.js'
 // import { unwrapSkimlinks } from './unwraps/skimlinks.js'
 import { unwrapSkyrock } from './unwraps/skyrock.js'
 // import { unwrapSlack } from './unwraps/slack.js'
@@ -474,6 +475,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapSalesdoubler,
   // unwrapSbsAd,
   // unwrapShareasale,
+  // unwrapShareit,
   // unwrapSkimlinks,
   // unwrapSlickdeals,
   // unwrapSmartredirect,
