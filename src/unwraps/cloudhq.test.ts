@@ -65,4 +65,12 @@ describe('unwrapCloudhq', () => {
 
     expect(unwrapCloudhq(url)).toBeUndefined()
   })
+
+  it('should return undefined for a path below a link', () => {
+    const url = new URL(
+      'https://cloudhq-mkt1.net/mail_track/link/e53e5ea68cf36da807487a3e43ba11e4/extra?uid=665487&url=http%3A%2F%2Fexample.org',
+    )
+
+    expect(unwrapCloudhq(url)).toBeUndefined()
+  })
 })
