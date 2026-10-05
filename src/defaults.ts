@@ -5,6 +5,7 @@ import type { TrackingParam, UrlUnwrapper } from './types.js'
 // import { unwrapA8Net } from './unwraps/a8Net.js'
 // import { unwrapAccesstrade } from './unwraps/accesstrade.js'
 // import { unwrapAceml } from './unwraps/aceml.js'
+// import { unwrapAdcell } from './unwraps/adcell.js'
 // import { unwrapAdjust } from './unwraps/adjust.js'
 // import { unwrapAmazonAffiliate } from './unwraps/amazonAffiliate.js'
 // import { unwrapAmazonSes } from './unwraps/amazonSes.js'
@@ -162,6 +163,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // Affiliate networks.
   // unwrapA8Net,
   // unwrapAccesstrade,
+  // unwrapAdcell,
   // unwrapAdjust,
   // unwrapAmazonAffiliate,
   // unwrapAvantlink,
