@@ -104,6 +104,7 @@ import { unwrapThreadsShim } from './unwraps/threads.js'
 import { unwrapTumblr } from './unwraps/tumblr.js'
 // import { unwrapUkgwa } from './unwraps/ukgwa.js'
 // import { unwrapValuecommerce } from './unwraps/valuecommerce.js'
+import { unwrapVanilla } from './unwraps/vanilla.js'
 // import { unwrapViglink } from './unwraps/viglink.js'
 import { unwrapVkAway } from './unwraps/vkAway.js'
 // import { unwrapWebgains } from './unwraps/webgains.js'
@@ -228,6 +229,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   unwrapSteamLinkfilter,
   unwrapThreadsShim,
   unwrapTumblr,
+  unwrapVanilla,
   unwrapVkAway,
   unwrapYandexMail,
 
