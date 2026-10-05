@@ -259,6 +259,13 @@ describe('createParamExtractor', () => {
       expect(extract(value)).toBe(expected)
     })
 
+    it('should keep a plus in an unencoded target with an uppercase scheme', () => {
+      const value = new URL('https://redirect.example.com/?wgtarget=HTTPS://www.example.com/a+b')
+      const expected = 'HTTPS://www.example.com/a+b'
+
+      expect(extract(value)).toBe(expected)
+    })
+
     it('should still decode percent escapes in an unencoded target', () => {
       const value = new URL(
         'https://redirect.example.com/?wgtarget=https://www.example.com/a+b/?q=%C3%A9t%C3%A9',

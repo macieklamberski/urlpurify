@@ -156,6 +156,14 @@ describe('unwrapImpact', () => {
     expect(unwrapImpact(url)).toBe('https://www.example.com/l/?searchinfo=canon+rf+adapter')
   })
 
+  it('should read the first copy of u', () => {
+    const url = new URL(
+      'https://goto.example.com/c/1/2/3?u=https://www.example.com/a+b&u=https://www.example.com/c',
+    )
+
+    expect(unwrapImpact(url)).toBe('https://www.example.com/a+b')
+  })
+
   it('should extract a target that is another wrapper', () => {
     const url = new URL(
       'https://goto.example.com/c/1/2/3?u=https%3A%2F%2Fexample.com%2Fr%3Fu%3Dhttps%253A%252F%252Fexample.org%252F',

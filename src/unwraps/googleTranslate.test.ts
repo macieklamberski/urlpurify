@@ -20,6 +20,14 @@ describe('unwrapGoogleTranslate', () => {
     )
   })
 
+  it('should read the first copy of u', () => {
+    const url = new URL(
+      'https://translate.google.com/translate?u=https://www.example.com/a+b&u=https://www.example.com/c',
+    )
+
+    expect(unwrapGoogleTranslate(url)).toBe('https://www.example.com/a+b')
+  })
+
   it('should return undefined for non-redirect Translate URLs', () => {
     const url = new URL('https://translate.google.com/about')
 

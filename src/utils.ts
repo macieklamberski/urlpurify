@@ -29,9 +29,9 @@ const decodeEncodedScheme = (value: string): string => {
 
 const unencodedTargetRegex = /^https?:\/\//i
 
-// Every value of a query param, in order, as `URLSearchParams.getAll` reads them, except that
-// `URLSearchParams` reads `+` as a space. In a target the carrier left unencoded, as in
-// `wgtarget=https://example.com/search/a+b/`, the `+` is the target's own and stays.
+// Every value of a query param, in order, as `URLSearchParams.getAll` reads them, except a `+` in
+// a target the carrier left unencoded, as in `wgtarget=https://example.com/search/a+b/`. There the
+// `+` is the target's own and stays, where `URLSearchParams` reads it as a space.
 export const getParamValues = (url: URL, name: string): Array<string> => {
   const values: Array<string> = []
 
