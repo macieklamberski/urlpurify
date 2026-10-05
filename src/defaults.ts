@@ -76,6 +76,7 @@ import { unwrapNaverOutgoing } from './unwraps/naverOutgoing.js'
 // import { unwrapNicoMs } from './unwraps/nicoMs.js'
 // import { unwrapOutlookSafelinks } from './unwraps/outlookSafelinks.js'
 // import { unwrapPartnerAds } from './unwraps/partnerAds.js'
+import { unwrapPhilpapers } from './unwraps/philpapers.js'
 import { unwrapPocket } from './unwraps/pocket.js'
 // import { unwrapPostmark } from './unwraps/postmark.js'
 import { unwrapPrNewswire } from './unwraps/prNewswire.js'
@@ -238,6 +239,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   unwrapHashnode,
   unwrapJianshuGo,
   unwrapJuejin,
+  unwrapPhilpapers,
   unwrapSegmentfault,
   unwrapSspai,
   unwrapZhihu,
