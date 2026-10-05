@@ -55,6 +55,7 @@ import { unwrapDeviantartOutgoing } from './unwraps/deviantartOutgoing.js'
 // import { unwrapDirectMail } from './unwraps/directMail.js'
 import { unwrapDisqus } from './unwraps/disqus.js'
 // import { unwrapDmmAffiliate } from './unwraps/dmmAffiliate.js'
+// import { unwrapDognet } from './unwraps/dognet.js'
 import { unwrapDouban } from './unwraps/douban.js'
 import { unwrapDropbox } from './unwraps/dropbox.js'
 // import { unwrapDuckduckgo } from './unwraps/duckduckgo.js'
@@ -320,6 +321,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapCuelinks,
   // unwrapDigidip,
   // unwrapDmmAffiliate,
+  // unwrapDognet,
   // unwrapEbayRover,
   // unwrapEClick,
   // unwrapEffiliation,
