@@ -48,6 +48,12 @@ describe('unwrapNetaffiliation', () => {
     expect(unwrapNetaffiliation(url)).toBeUndefined()
   })
 
+  it('should return undefined when the bare key is too short for a click id', () => {
+    const url = new URL('https://www.example.com/?P123&redir=https%3A%2F%2Fwww.example.org%2F')
+
+    expect(unwrapNetaffiliation(url)).toBeUndefined()
+  })
+
   it('should return undefined for a merchant click id on another path', () => {
     const url = new URL(
       'https://irh.oscaro.com/search?P5139555780512191&redir=https%3A%2F%2Fwww.example.com%2F',
