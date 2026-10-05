@@ -97,6 +97,7 @@ import { unwrapDzen } from './unwraps/dzen.js'
 // import { unwrapEsva } from './unwraps/esva.js'
 // import { unwrapEulerian } from './unwraps/eulerian.js'
 import { unwrapEvernote } from './unwraps/evernote.js'
+// import { unwrapExciteTranslate } from './unwraps/exciteTranslate.js'
 // import { unwrapExpediaAffiliate } from './unwraps/expediaAffiliate.js'
 import { unwrapFacebookShim } from './unwraps/facebook.js'
 // import { unwrapFanbridge } from './unwraps/fanbridge.js'
@@ -611,6 +612,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapArquivo,
   // unwrapBacLacWebArchive,
   // unwrapEmbedly,
+  // unwrapExciteTranslate,
   // unwrapLocWebArchive,
   // unwrapMegalodon,
   unwrapMozillaOutgoing,
