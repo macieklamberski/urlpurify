@@ -23,6 +23,7 @@ import { unwrapBusinessWire } from './unwraps/businessWire.js'
 import { unwrapCalendly } from './unwraps/calendly.js'
 // import { unwrapCiscoSecureWeb } from './unwraps/ciscoSecureWeb.js'
 // import { unwrapCjNetwork } from './unwraps/cjNetwork.js'
+// import { unwrapCloudhq } from './unwraps/cloudhq.js'
 import { unwrapCsdn } from './unwraps/csdn.js'
 import { unwrapDerefMail } from './unwraps/derefMail.js'
 import { unwrapDeviantartOutgoing } from './unwraps/deviantartOutgoing.js'
@@ -141,6 +142,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapAmazonSes,
   // unwrapBarracudaLinkProtect,
   // unwrapCiscoSecureWeb,
+  // unwrapCloudhq,
   // unwrapEsva,
   // unwrapFireeye,
   // unwrapIcptrack,
