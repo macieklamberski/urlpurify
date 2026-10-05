@@ -217,6 +217,7 @@ import { unwrapResearchgate } from './unwraps/researchgate.js'
 // import { unwrapSalesflare } from './unwraps/salesflare.js'
 // import { unwrapSalesforceiq } from './unwraps/salesforceiq.js'
 import { unwrapSapHelp } from './unwraps/sapHelp.js'
+// import { unwrapSbsAd } from './unwraps/sbsAd.js'
 import { unwrapSegmentfault } from './unwraps/segmentfault.js'
 // import { unwrapShareasale } from './unwraps/shareasale.js'
 // import { unwrapSkimlinks } from './unwraps/skimlinks.js'
@@ -452,6 +453,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapRecruitics,
   // unwrapRedirectingat,
   // unwrapSalesdoubler,
+  // unwrapSbsAd,
   // unwrapShareasale,
   // unwrapSkimlinks,
   // unwrapSlickdeals,
