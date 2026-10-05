@@ -3,8 +3,8 @@ import type { UrlUnwrapper } from '../types.js'
 
 const pathRegex = /^\/link\/(.+)$/
 
-// TouchArcade outbound link (toucharcade.com/link/<target>). Opt-in: the redirect probably adds
-// TouchArcade's App Store affiliate token.
+// TouchArcade outbound link (toucharcade.com/link/<target>). Opt-in: the redirect goes
+// through TouchArcade's Georiot affiliate link.
 export const unwrapToucharcade: UrlUnwrapper = (url) => {
   if (!isHostOf(url, 'toucharcade.com')) {
     return
