@@ -125,6 +125,7 @@ Enabled by default:
 | `unwrapGoogleNews` | Google News legacy redirect (news.google.\<TLD\>/news/url?url=\<target\>) |
 | `unwrapGoogleNewsModern` | Google News modern article URLs (news.google.com/articles/\<base64\>) |
 | `unwrapGoogleScholar` | Google Scholar search-result redirect (scholar.google.\<TLD\>/scholar_url?url=\<target\>) |
+| `unwrapHackerone` | HackerOne external link warning on reports (hackerone.com/redirect?url=\<target\>) |
 | `unwrapHashnode` | Hashnode outbound redirect (hashnode.com/util/redirect?url=\<target\>) |
 | `unwrapHirkereso` | Hírkereső news aggregator click redirect (rd.hirkereso.hu/rd/\<id\>?url=\<target\>) |
 | `unwrapHorde` | Horde webmail link dereferrer (\<any host\>/horde/services/go.php?url=\<target\>, also /util/go.php) |
