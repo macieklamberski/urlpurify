@@ -179,6 +179,7 @@ import { unwrapYahooSearch } from './unwraps/yahooSearch.js'
 import { unwrapYandexMail } from './unwraps/yandexMail.js'
 import { unwrapYelp } from './unwraps/yelp.js'
 import { unwrapYouTube } from './unwraps/youtube.js'
+// import { unwrapZanox } from './unwraps/zanox.js'
 import { unwrapZemanta } from './unwraps/zemanta.js'
 import { unwrapZhihu } from './unwraps/zhihu.js'
 
@@ -304,6 +305,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapViglink,
   // unwrapWebgains,
   // unwrapWordpressGo2,
+  // unwrapZanox,
 
   // Ad networks.
   // unwrapBingAds,
