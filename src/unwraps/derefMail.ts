@@ -15,6 +15,15 @@ const hosts = [
   'deref-web-02.de',
 ]
 
+const clientHosts = [
+  '3c.gmx.net',
+  '3c-bs.gmx.com',
+  '3c-bs.gmx.es',
+  '3c.web.de',
+  '3c-bap.web.de',
+  '3c-lxa.mail.com',
+]
+
 // The optional segment is a session token, such as `12XJ9x8ZdSA`.
 const pathRegex = /^\/mail\/client\/(?:[\w-]+\/)?dereferrer\/$/
 const encodedSchemeRegex = /^https?%3A/i
@@ -25,15 +34,14 @@ const extractLegacy = createParamExtractor({
   params: ['DEST'],
 })
 
-// GMX, WEB.DE, mail.com and 1&1 webmail dereferrer
-// (deref-gmx.net/mail/client/[<token>/]dereferrer/?redirectUrl=<target>, also
-// 3c.gmx.net/mail/client/dereferrer?redirectUrl=<target> without the trailing slash), and the
-// older GMX dereferrer (service.gmx.net/de/cgi/derefer?TYPE=3&DEST=<target>).
+// GMX, WEB.DE, mail.com and 1&1 webmail dereferrer (deref-gmx.net/mail/client/[<token>/]
+// dereferrer/?redirectUrl=<target>, slashless on the 3c client hosts), and the older GMX
+// dereferrer (service.gmx.net/de/cgi/derefer?TYPE=3&DEST=<target>).
 export const unwrapDerefMail: UrlUnwrapper = (url) => {
   const isDerefHost = isHostOf(url, hosts) && pathRegex.test(url.pathname)
-  const isGmxClient = isHostOf(url, '3c.gmx.net') && url.pathname === '/mail/client/dereferrer'
+  const isClientHost = isHostOf(url, clientHosts) && url.pathname === '/mail/client/dereferrer'
 
-  if (!isDerefHost && !isGmxClient) {
+  if (!isDerefHost && !isClientHost) {
     return extractLegacy(url)
   }
 
