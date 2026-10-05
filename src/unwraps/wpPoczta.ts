@@ -1,6 +1,6 @@
 import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor, decodeBase64 } from '../utils.js'
+import { createParamExtractor, decodeBase64Url } from '../utils.js'
 
 const baseExtractor = createParamExtractor({
   hosts: 'zasobygwp.pl',
@@ -9,7 +9,7 @@ const baseExtractor = createParamExtractor({
 })
 
 // WP Poczta and o2 webmail dereferrer (zasobygwp.pl/redirect?sig=<sig>&url=<base64>). The url
-// param is a base64-encoded target URL.
+// param is a base64url-encoded target URL.
 export const unwrapWpPoczta: UrlUnwrapper = (url) => {
   const raw = baseExtractor(url)
 
@@ -17,7 +17,7 @@ export const unwrapWpPoczta: UrlUnwrapper = (url) => {
     return
   }
 
-  const decoded = decodeBase64(raw)
+  const decoded = decodeBase64Url(raw)
 
   if (decoded && isHttpUrl(decoded)) {
     return decoded
