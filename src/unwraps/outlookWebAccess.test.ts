@@ -100,6 +100,14 @@ describe('unwrapOutlookWebAccess', () => {
     expect(unwrapOutlookWebAccess(url)).toBeUndefined()
   })
 
+  it('should return undefined for the premium scripts path under a folder that is not a build', () => {
+    const url = new URL(
+      'https://webmail.example.org/owa/auth/scripts/premium/redir.aspx?URL=http%3a%2f%2fwww.example.com%2f',
+    )
+
+    expect(unwrapOutlookWebAccess(url)).toBeUndefined()
+  })
+
   it('should return undefined for a path that only starts with the exchweb shim', () => {
     const url = new URL(
       'https://mail.example.com/exchweb/bin/redir.aspx?URL=http://www.example.com/',
