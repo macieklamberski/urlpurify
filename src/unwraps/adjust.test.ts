@@ -44,18 +44,18 @@ describe('unwrapAdjust', () => {
 
   it('should extract target from the tracker fallback', () => {
     const url = new URL(
-      'https://app.adjust.com/1vsbb5d1?adgroup=Influencer_piepsein_lovinn+launch&fallback=https%3A%2F%2Fwww.lovinn.de%2F&redirect_macos=https%3A%2F%2Fwww.lovinn.de%2F',
+      'https://app.adjust.com/1vsbb5d1?adgroup=Influencer_piepsein_lovinn+launch&fallback=https%3A%2F%2Fwww.example.com%2F&redirect_macos=https%3A%2F%2Fwww.example.com%2F',
     )
 
-    expect(unwrapAdjust(url)).toBe('https://www.lovinn.de/')
+    expect(unwrapAdjust(url)).toBe('https://www.example.com/')
   })
 
   it('should extract target from the tracker macOS redirect', () => {
     const url = new URL(
-      'https://app.adjust.com/vkqj7re?campaign=podcast&adgroup=broker&redirect_ios=https%3A%2F%2Fapps.apple.com%2Fapp%2Fid1&redirect_macos=https%3A%2F%2Fde.scalable.capital%2Ftrading%2F',
+      'https://app.adjust.com/vkqj7re?campaign=podcast&adgroup=broker&redirect_ios=https%3A%2F%2Fexample.org%2Fapp%2Fid1&redirect_macos=https%3A%2F%2Fexample.com%2Ftrading%2F',
     )
 
-    expect(unwrapAdjust(url)).toBe('https://de.scalable.capital/trading/')
+    expect(unwrapAdjust(url)).toBe('https://example.com/trading/')
   })
 
   it('should prefer the tracker redirect over the fallback', () => {
@@ -76,42 +76,42 @@ describe('unwrapAdjust', () => {
 
   it('should extract target from a universal link fallback', () => {
     const url = new URL(
-      'https://8xws.adj.st/?utm_source=news&utm_medium=in_article_banner&adj_t=1m4i69ak_1mazzg55&adj_fallback=https%3A%2F%2Fapp.weareblox.com%2F%3Fintent%3Dregister%26lan%3Dnl',
+      'https://8xws.adj.st/?utm_source=news&utm_medium=in_article_banner&adj_t=1m4i69ak_1mazzg55&adj_fallback=https%3A%2F%2Fexample.com%2F%3Fintent%3Dregister%26lan%3Dnl',
     )
 
-    expect(unwrapAdjust(url)).toBe('https://app.weareblox.com/?intent=register&lan=nl')
+    expect(unwrapAdjust(url)).toBe('https://example.com/?intent=register&lan=nl')
   })
 
   it('should extract target from a universal link redirect on a deep-link path', () => {
     const url = new URL(
-      'https://3kmh.adj.st/competition/13?seasonId=41850&view=fixtures&adj_t=1m32kzju_1mgyncle&adj_campaign=Podcast&adj_redirect=https%3A%2F%2Ftv.onefootball.com%2Fen%2Flive-matches',
+      'https://3kmh.adj.st/competition/13?seasonId=41850&view=fixtures&adj_t=1m32kzju_1mgyncle&adj_campaign=Podcast&adj_redirect=https%3A%2F%2Fexample.com%2Fen%2Flive-matches',
     )
 
-    expect(unwrapAdjust(url)).toBe('https://tv.onefootball.com/en/live-matches')
+    expect(unwrapAdjust(url)).toBe('https://example.com/en/live-matches')
   })
 
   it('should extract target from a universal link macOS redirect', () => {
     const url = new URL(
-      'https://vml8.adj.st/main?productId=515b205a&showcaseType=MINIMARKET&adj_t=zzwvyv8&adj_redirect_macos=https%3A%2F%2Fsamokat.ru%2F&adj_redirect_windows=https%3A%2F%2Fsamokat.ru%2F',
+      'https://vml8.adj.st/main?productId=515b205a&showcaseType=MINIMARKET&adj_t=zzwvyv8&adj_redirect_macos=https%3A%2F%2Fexample.com%2F&adj_redirect_windows=https%3A%2F%2Fexample.com%2F',
     )
 
-    expect(unwrapAdjust(url)).toBe('https://samokat.ru/')
+    expect(unwrapAdjust(url)).toBe('https://example.com/')
   })
 
   it('should extract target from a universal link older fallback', () => {
     const url = new URL(
-      'https://a64p.adj.st/feed?incid=01_16436_2012&adjust_t=w4z9z2g_klpcai2&adjust_deeplink=pbmobilit://feed?incid=01_16436_2012&adjust_fallback=https://autobazar24.rs/',
+      'https://a64p.adj.st/feed?incid=01_16436_2012&adjust_t=w4z9z2g_klpcai2&adjust_deeplink=pbmobilit://feed?incid=01_16436_2012&adjust_fallback=https://example.com/',
     )
 
-    expect(unwrapAdjust(url)).toBe('https://autobazar24.rs/')
+    expect(unwrapAdjust(url)).toBe('https://example.com/')
   })
 
   it('should extract target from a universal link on the tr host', () => {
     const url = new URL(
-      'https://meds.tr.adj.st/?adj_t=173p8vem&adj_fallback=https%3A%2F%2Fon.com.tr%2Fon-bilgilendirme%2F1411',
+      'https://meds.tr.adj.st/?adj_t=173p8vem&adj_fallback=https%3A%2F%2Fexample.com%2Fon-bilgilendirme%2F1411',
     )
 
-    expect(unwrapAdjust(url)).toBe('https://on.com.tr/on-bilgilendirme/1411')
+    expect(unwrapAdjust(url)).toBe('https://example.com/on-bilgilendirme/1411')
   })
 
   it('should prefer the universal link redirect over the fallback', () => {
