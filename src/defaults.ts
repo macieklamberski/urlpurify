@@ -26,6 +26,7 @@ import { unwrapAnonymTo } from './unwraps/anonymTo.js'
 // import { unwrapAppsflyerOnelink } from './unwraps/appsflyerOnelink.js'
 // import { unwrapApptrkr } from './unwraps/apptrkr.js'
 // import { unwrapArchiveToday } from './unwraps/archiveToday.js'
+// import { unwrapArquivo } from './unwraps/arquivo.js'
 // import { unwrapAugure } from './unwraps/augure.js'
 // import { unwrapAvantlink } from './unwraps/avantlink.js'
 // import { unwrapAwin } from './unwraps/awin.js'
@@ -507,6 +508,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapAmpCache,
   // unwrapAnonymouse,
   // unwrapArchiveToday, // Snapshot of a page at a point in time, not a redirect
+  // unwrapArquivo,
   // unwrapEmbedly,
   // unwrapLocWebArchive,
   // unwrapMegalodon,
