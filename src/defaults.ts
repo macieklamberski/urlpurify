@@ -64,6 +64,7 @@ import { unwrapJuejin } from './unwraps/juejin.js'
 // import { unwrapLeverAnalytics } from './unwraps/leverAnalytics.js'
 import { unwrapLinkedin } from './unwraps/linkedin.js'
 // import { unwrapLinksynergy } from './unwraps/linksynergy.js'
+// import { unwrapLnkam } from './unwraps/lnkam.js'
 // import { unwrapMailchimp } from './unwraps/mailchimp.js'
 // import { unwrapMailpanion } from './unwraps/mailpanion.js'
 // import { unwrapMailpgn } from './unwraps/mailpgn.js'
@@ -179,6 +180,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapImpact,
   // unwrapKlook,
   // unwrapLinksynergy,
+  // unwrapLnkam,
   // unwrapMoshimo,
   // unwrapPartnerAds,
   // unwrapPxf,
