@@ -1,6 +1,13 @@
 import { describe, expect, it } from 'bun:test'
 import { unwrapLocaweb } from './locaweb.js'
 
+const unclaimedIds: Array<string> = [
+  '12345',
+  'XH%7C871925%7C266422%7C21109',
+  'H%7C871925%7C266422%7C21109%7C1',
+  'H%7Cabc%7C266422%7C21109',
+]
+
 describe('unwrapLocaweb', () => {
   it('should extract target from url param', () => {
     const url = new URL(
@@ -50,14 +57,6 @@ describe('unwrapLocaweb', () => {
     expect(unwrapLocaweb(url)).toBeUndefined()
   })
 
-  it('should return undefined for a non-http url', () => {
-    const url = new URL(
-      'http://sinait.example.net/registra_clique.php?id=H%7C871925%7C266422%7C21109&url=mailto%3Ainfo%40example.org',
-    )
-
-    expect(unwrapLocaweb(url)).toBeUndefined()
-  })
-
   it('should return undefined without id', () => {
     const url = new URL(
       'http://sinait.example.net/registra_clique.php?url=https%3A%2F%2Fwww.example.org%2F',
@@ -66,9 +65,9 @@ describe('unwrapLocaweb', () => {
     expect(unwrapLocaweb(url)).toBeUndefined()
   })
 
-  it('should return undefined for another id shape', () => {
+  it.each(unclaimedIds)('should return undefined for id %s', (id) => {
     const url = new URL(
-      'http://sinait.example.net/registra_clique.php?id=12345&url=https%3A%2F%2Fwww.example.org%2F',
+      `http://sinait.example.net/registra_clique.php?id=${id}&url=https%3A%2F%2Fwww.example.org%2F`,
     )
 
     expect(unwrapLocaweb(url)).toBeUndefined()

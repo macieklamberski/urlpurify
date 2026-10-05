@@ -1,4 +1,3 @@
-import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { getParamValues } from '../utils.js'
 
@@ -13,9 +12,5 @@ export const unwrapLocaweb: UrlUnwrapper = (url) => {
     return
   }
 
-  const target = getParamValues(url, 'url').at(0)
-
-  if (target && isHttpUrl(target)) {
-    return target
-  }
+  return getParamValues(url, 'url').at(0)
 }
