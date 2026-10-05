@@ -88,6 +88,7 @@ import { unwrapLivejournal } from './unwraps/livejournal.js'
 // import { unwrapMailpanion } from './unwraps/mailpanion.js'
 // import { unwrapMailpgn } from './unwraps/mailpgn.js'
 // import { unwrapMailtrack } from './unwraps/mailtrack.js'
+import { unwrapMarketwire } from './unwraps/marketwire.js'
 // import { unwrapMcas } from './unwraps/mcas.js'
 import { unwrapMedium } from './unwraps/medium.js'
 // import { unwrapMegalodon } from './unwraps/megalodon.js'
@@ -319,6 +320,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
 
   // Press release wires.
   unwrapBusinessWire,
+  unwrapMarketwire,
   unwrapNewswire,
   unwrapPrNewswire,
 

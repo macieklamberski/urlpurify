@@ -126,6 +126,7 @@ Enabled by default:
 | `unwrapJuejin` | Juejin external link redirect (link.juejin.cn/?target=\<target\>) |
 | `unwrapLinkedin` | LinkedIn outbound link shims and click trackers (www.linkedin.com/safety/go?url=\<target\>, /redir/redirect, /redirect, /nhome/nus-redirect, /nus-trk, /e/v2, /company/\<id\>/redirect) |
 | `unwrapLivejournal` | LiveJournal outbound link redirect (www.livejournal.com/away?to=\<target\>) |
+| `unwrapMarketwire` | Marketwire release click tracker (ctt.marketwire.com/?url=\<target\>) |
 | `unwrapMedium` | Medium outbound link redirect (medium.com/r/?url=\<target\>) and sign-in hop (medium.com/m/global-identity?redirectUrl=\<target\>) |
 | `unwrapMozillaOutgoing` | Mozilla outgoing-link redirector (outgoing.prod.mozaws.net/v1/\<hash\>/\<target\>) |
 | `unwrapNaverOutgoing` | Naver outbound link redirect (cc.loginfra.com/...?u=\<target\>) and search result click (search.naver.com/p/crd/rd?u=\<target\>, also m.search.naver.com) |
