@@ -126,6 +126,7 @@ import { unwrapTumblr } from './unwraps/tumblr.js'
 // import { unwrapUkgwa } from './unwraps/ukgwa.js'
 // import { unwrapVadeSecure } from './unwraps/vadeSecure.js'
 // import { unwrapValuecommerce } from './unwraps/valuecommerce.js'
+import { unwrapVanilla } from './unwraps/vanilla.js'
 // import { unwrapViglink } from './unwraps/viglink.js'
 import { unwrapVkAway } from './unwraps/vkAway.js'
 // import { unwrapVuture } from './unwraps/vuture.js'
@@ -276,6 +277,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   unwrapSteamLinkfilter,
   unwrapThreadsShim,
   unwrapTumblr,
+  unwrapVanilla,
   unwrapVkAway,
   unwrapYandexMail,
   unwrapYelp,
