@@ -82,6 +82,14 @@ describe('unwrapMimecast', () => {
     expect(unwrapMimecast(url)).toBeUndefined()
   })
 
+  it('should return undefined for a protect host with a shorter region name', () => {
+    const url = new URL(
+      'https://protect-u.mimecast.com/s/abc123?url=https%3A%2F%2Fexample.com%2Fpost',
+    )
+
+    expect(unwrapMimecast(url)).toBeUndefined()
+  })
+
   it('should return undefined for the bare Mimecast domain', () => {
     const url = new URL('https://mimecast.com/s/abc123?url=https%3A%2F%2Fexample.com%2Fpost')
 
