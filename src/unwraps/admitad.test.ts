@@ -18,6 +18,14 @@ describe('unwrapAdmitad', () => {
     expect(unwrapAdmitad(url)).toBe('http://www.example.com/item/c092e6-kurtka-savage')
   })
 
+  it('should extract target from ulp param on alitems.com', () => {
+    const url = new URL(
+      'https://alitems.com/g/9vijc7ptzd8e7c791e807a660ebfae/?ulp=https%3A%2F%2Fwww.example.com%2Fitem%2F1005002225432995.html',
+    )
+
+    expect(unwrapAdmitad(url)).toBe('https://www.example.com/item/1005002225432995.html')
+  })
+
   it('should return undefined when ulp param is missing', () => {
     const url = new URL('https://ad.admitad.com/g/26qh23putc505d70264a53b922955a/?subid=novosti')
 
