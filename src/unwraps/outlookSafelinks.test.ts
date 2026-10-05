@@ -18,17 +18,15 @@ describe('unwrapOutlookSafelinks', () => {
     expect(unwrapOutlookSafelinks(url)).toBe('https://example.com/story')
   })
 
-  it('should extract target from a GCC High host', () => {
+  it('should extract target from a US Government host', () => {
     const url = new URL(
-      'https://usg02.safelinks.protection.office365.us/?url=https%3A%2F%2Fohiofrn.org%2Fprojects%2Foptical-radar-sensor-fusion-uav-onboard-detect-and-avoid&data=04%7C01%7C&sdata=foo&reserved=0',
+      'https://usg02.safelinks.protection.office365.us/?url=https%3A%2F%2Fexample.com%2Fprojects%2Fsensor-fusion&data=04%7C01%7C&sdata=foo&reserved=0',
     )
 
-    expect(unwrapOutlookSafelinks(url)).toBe(
-      'https://ohiofrn.org/projects/optical-radar-sensor-fusion-uav-onboard-detect-and-avoid',
-    )
+    expect(unwrapOutlookSafelinks(url)).toBe('https://example.com/projects/sensor-fusion')
   })
 
-  it('should return undefined for a host that only ends with the GCC High host', () => {
+  it('should return undefined for a host that only ends with the US Government host', () => {
     const url = new URL(
       'https://xusg02.safelinks.protection.office365.us/?url=https%3A%2F%2Fexample.com%2Fpost',
     )
@@ -36,9 +34,17 @@ describe('unwrapOutlookSafelinks', () => {
     expect(unwrapOutlookSafelinks(url)).toBeUndefined()
   })
 
-  it('should return undefined for a host that only starts with the GCC High host', () => {
+  it('should return undefined for a host that only starts with the US Government host', () => {
     const url = new URL(
       'https://usg02.safelinks.protection.office365.us.example.com/?url=https%3A%2F%2Fexample.com%2Fpost',
+    )
+
+    expect(unwrapOutlookSafelinks(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a US Government host with one digit', () => {
+    const url = new URL(
+      'https://usg1.safelinks.protection.office365.us/?url=https%3A%2F%2Fexample.com%2Fpost',
     )
 
     expect(unwrapOutlookSafelinks(url)).toBeUndefined()

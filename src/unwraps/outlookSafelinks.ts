@@ -10,7 +10,7 @@ const extractTarget = createParamExtractor({
 })
 
 // Outlook SafeLinks (<tenant>.safelinks.protection.outlook.com/?url=<target>, also
-// /ap/<kind>-<id>/ for Teams and OneDrive links), and the US Government GCC High cloud on
+// /ap/<kind>-<id>/ for Teams and OneDrive links), and the US Government GCC High and DoD clouds on
 // usg<nn>.safelinks.protection.office365.us.
 export const unwrapOutlookSafelinks: UrlUnwrapper = (url) => {
   if (!linkPathRegex.test(url.pathname)) {
