@@ -54,7 +54,6 @@ import { unwrapGoogleScholar } from './unwraps/googleScholar.js'
 import { unwrapHashnode } from './unwraps/hashnode.js'
 import { unwrapHrefLi } from './unwraps/hrefLi.js'
 // import { unwrapIcptrack } from './unwraps/icptrack.js'
-// import { unwrapIdealoPartner } from './unwraps/idealoPartner.js'
 // import { unwrapImpact } from './unwraps/impact.js'
 import { unwrapIndexHu } from './unwraps/indexHu.js'
 import { unwrapInstagramShim } from './unwraps/instagram.js'
@@ -177,7 +176,6 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapFirebaseDynamicLinks,
   // unwrapGateSc,
   // unwrapGeoriot,
-  // unwrapIdealoPartner,
   // unwrapImpact,
   // unwrapKlook,
   // unwrapLinksynergy,
