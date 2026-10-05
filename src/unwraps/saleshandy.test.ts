@@ -22,6 +22,12 @@ describe('unwrapSaleshandy', () => {
     expect(unwrapSaleshandy(url)).toBe('https://www.example.org/donate/robert')
   })
 
+  it('should extract target on a shetrk.com host', () => {
+    const url = new URL('https://lc3.shetrk.com/r/e/BbKXaSAJap4SlGElP?r=https://www.example.org/')
+
+    expect(unwrapSaleshandy(url)).toBe('https://www.example.org/')
+  })
+
   it('should return undefined when r param is missing', () => {
     const url = new URL('https://go.shztrk.com/r/e/e4zRlTbR7QxSmOMAA')
 
