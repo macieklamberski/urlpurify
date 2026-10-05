@@ -8,9 +8,9 @@ const extractTarget = createParamExtractor({
   params: ['DURL'],
 })
 
-// ticketsus.at Ticketmaster affiliate redirect (ticketsus.at/<affiliate>?CTY=<id>&DURL=<target>).
+// buy.at affiliate redirect on a vanity domain (ticketsus.at/<affiliate>?CTY=<id>&DURL=<target>).
 // Not included in defaultUnwrappers: unwrapping drops the publisher's commission.
-export const unwrapTicketsus: UrlUnwrapper = (url) => {
+export const unwrapBuyAt: UrlUnwrapper = (url) => {
   if (!pathRegex.test(url.pathname)) {
     return
   }
