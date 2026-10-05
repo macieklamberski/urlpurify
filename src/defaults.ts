@@ -103,6 +103,7 @@ import { unwrapThreadsShim } from './unwraps/threads.js'
 // import { unwrapTravelpayouts } from './unwraps/travelpayouts.js'
 import { unwrapTumblr } from './unwraps/tumblr.js'
 // import { unwrapUkgwa } from './unwraps/ukgwa.js'
+// import { unwrapUkWebArchive } from './unwraps/ukWebArchive.js'
 // import { unwrapValuecommerce } from './unwraps/valuecommerce.js'
 // import { unwrapViglink } from './unwraps/viglink.js'
 import { unwrapVkAway } from './unwraps/vkAway.js'
@@ -253,6 +254,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapEmbedly,
   unwrapMozillaOutgoing,
   // unwrapUkgwa,
+  // unwrapUkWebArchive,
 
   // Legacy aggregators.
   // unwrapFeedsportal,
