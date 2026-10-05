@@ -44,6 +44,42 @@ describe('unwrapDerefMail', () => {
     expect(unwrapDerefMail(url)).toBe('https://www.example.com/Bienenkiller')
   })
 
+  it('should extract target on 3c.gmx.net without the trailing slash', () => {
+    const url = new URL(
+      'https://3c.gmx.net/mail/client/dereferrer?redirectUrl=http%3A%2F%2Fwww.example.com%2FMartin-Wehrle%2Fe%2FB0043BX5TU',
+    )
+
+    expect(unwrapDerefMail(url)).toBe('http://www.example.com/Martin-Wehrle/e/B0043BX5TU')
+  })
+
+  it('should extract target from the DEST param of the older dereferrer', () => {
+    const url = new URL(
+      'https://service.gmx.net/de/cgi/derefer?TYPE=3&DEST=http%3A%2F%2Fwww.example.com%2Fmarken%2Fbench%2F',
+    )
+
+    expect(unwrapDerefMail(url)).toBe('http://www.example.com/marken/bench/')
+  })
+
+  it('should return undefined when DEST param is missing', () => {
+    const url = new URL('https://service.gmx.net/de/cgi/derefer?TYPE=3')
+
+    expect(unwrapDerefMail(url)).toBeUndefined()
+  })
+
+  it('should return undefined for another path on service.gmx.net', () => {
+    const url = new URL('https://service.gmx.net/de/cgi/other?DEST=http%3A%2F%2Fwww.example.com%2F')
+
+    expect(unwrapDerefMail(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a 3c.gmx.net path below dereferrer', () => {
+    const url = new URL(
+      'https://3c.gmx.net/mail/client/dereferrer/x?redirectUrl=http%3A%2F%2Fwww.example.com%2F',
+    )
+
+    expect(unwrapDerefMail(url)).toBeUndefined()
+  })
+
   it('should return undefined when redirectUrl param is missing', () => {
     const url = new URL('https://deref-gmx.net/mail/client/dereferrer/')
 
