@@ -31,6 +31,7 @@ import { unwrapCanva } from './unwraps/canva.js'
 // import { unwrapCjNetwork } from './unwraps/cjNetwork.js'
 // import { unwrapConstantContact } from './unwraps/constantContact.js'
 import { unwrapCsdn } from './unwraps/csdn.js'
+import { unwrapDatalifeEngine } from './unwraps/datalifeEngine.js'
 import { unwrapDerefMail } from './unwraps/derefMail.js'
 import { unwrapDeviantartOutgoing } from './unwraps/deviantartOutgoing.js'
 // import { unwrapDigidip } from './unwraps/digidip.js'
@@ -287,6 +288,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
 
   // Developer and publishing platforms.
   unwrapCsdn,
+  unwrapDatalifeEngine,
   unwrapDropbox,
   unwrapEvernote,
   unwrapGitee,
