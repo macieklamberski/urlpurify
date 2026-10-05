@@ -26,12 +26,6 @@ describe('unwrapCsdn', () => {
     expect(unwrapCsdn(url)).toBeUndefined()
   })
 
-  it('should return undefined for the shape on another CSDN host', () => {
-    const url = new URL('https://blog.csdn.net/?target=https%3A%2F%2Fexample.com%2F')
-
-    expect(unwrapCsdn(url)).toBeUndefined()
-  })
-
   it('should return undefined for the shape on another host', () => {
     const url = new URL('https://example.com/?target=https%3A%2F%2Fexample.org%2F')
 

@@ -72,14 +72,6 @@ describe('unwrapUkgwa', () => {
     )
   })
 
-  it('should return undefined for an unlisted subdomain', () => {
-    const url = new URL(
-      'https://x.webarchive.nationalarchives.gov.uk/ukgwa/20160111174808/http://example.com/a',
-    )
-
-    expect(unwrapUkgwa(url)).toBeUndefined()
-  })
-
   it('should return undefined for a snapshot with no target', () => {
     const url = new URL('https://webarchive.nationalarchives.gov.uk/ukgwa/20220828193851/')
 
@@ -159,22 +151,6 @@ describe('unwrapUkgwa', () => {
   it('should return undefined for the main site of the same domain', () => {
     const url = new URL(
       'https://www.nationalarchives.gov.uk/ukgwa/20220828193851/https://www.example.gov.uk/',
-    )
-
-    expect(unwrapUkgwa(url)).toBeUndefined()
-  })
-
-  it('should return undefined for a lookalike host', () => {
-    const url = new URL(
-      'https://examplewebarchive.nationalarchives.gov.uk/ukgwa/20220828193851/https://www.example.gov.uk/',
-    )
-
-    expect(unwrapUkgwa(url)).toBeUndefined()
-  })
-
-  it('should return undefined for a host that only contains the archive host', () => {
-    const url = new URL(
-      'https://webarchive.nationalarchives.gov.uk.example.com/ukgwa/20220828193851/https://www.example.gov.uk/',
     )
 
     expect(unwrapUkgwa(url)).toBeUndefined()

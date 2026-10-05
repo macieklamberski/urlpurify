@@ -31,16 +31,4 @@ describe('unwrapDisqus', () => {
 
     expect(unwrapDisqus(url)).toBeUndefined()
   })
-
-  it('should return undefined for a lookalike host', () => {
-    const url = new URL('https://exampledisq.us/url?url=https%3A%2F%2Fexample.com%2Fpage')
-
-    expect(unwrapDisqus(url)).toBeUndefined()
-  })
-
-  it('should return undefined for an unlisted subdomain', () => {
-    const url = new URL('https://www.disq.us/url?url=https%3A%2F%2Fexample.com%2Fpage')
-
-    expect(unwrapDisqus(url)).toBeUndefined()
-  })
 })

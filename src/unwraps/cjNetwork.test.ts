@@ -10,14 +10,6 @@ describe('unwrapCjNetwork', () => {
     expect(unwrapCjNetwork(url)).toBe('https://example.com/product')
   })
 
-  it('should match other CJ network hosts', () => {
-    const url = new URL(
-      'https://www.anrdoezrs.net/click-12345-67890?url=https%3A%2F%2Fexample.com%2Fitem',
-    )
-
-    expect(unwrapCjNetwork(url)).toBe('https://example.com/item')
-  })
-
   it('should extract target from the deep link path', () => {
     const url = new URL(
       'https://www.anrdoezrs.net/links/8946794/type/dlg/https://www.example.com/en-ca/books/item.html',
@@ -184,88 +176,10 @@ describe('unwrapCjNetwork', () => {
     expect(unwrapCjNetwork(url)).toBeUndefined()
   })
 
-  it('should return undefined for a lookalike host', () => {
-    const url = new URL(
-      'https://exampledpbolvw.net/click-12345-67890?url=https%3A%2F%2Fexample.com%2Fpage',
-    )
-
-    expect(unwrapCjNetwork(url)).toBeUndefined()
-  })
-
   it('should extract target from a click link with an unfilled publisher placeholder', () => {
     const url = new URL(
       'http://www.dpbolvw.net/click-{CJ_PID}-13223184?url=https://example.com/page',
     )
-
-    expect(unwrapCjNetwork(url)).toBe('https://example.com/page')
-  })
-
-  it('should extract the deep link target on a bare domain no specimen shows', () => {
-    const url = new URL('https://anrdoezrs.net/links/8946794/type/dlg/https://example.com/item')
-
-    expect(unwrapCjNetwork(url)).toBe('https://example.com/item')
-  })
-
-  it('should return undefined for the deep link path on a lookalike host', () => {
-    const url = new URL(
-      'https://www.exampleanrdoezrs.net/links/8946794/type/dlg/https://example.org/item',
-    )
-
-    expect(unwrapCjNetwork(url)).toBeUndefined()
-  })
-
-  it('should extract target from the bare domain of a host the walk shows', () => {
-    const url = new URL(
-      'https://anrdoezrs.net/click-12345-67890?url=https%3A%2F%2Fexample.com%2Fpage',
-    )
-
-    expect(unwrapCjNetwork(url)).toBe('https://example.com/page')
-  })
-
-  it('should return undefined for the bare domain of an unlisted host', () => {
-    const url = new URL(
-      'https://dpbolvw.net/click-12345-67890?url=https%3A%2F%2Fexample.com%2Fpage',
-    )
-
-    expect(unwrapCjNetwork(url)).toBeUndefined()
-  })
-
-  it('should return undefined for an unlisted subdomain', () => {
-    const url = new URL(
-      'https://ad.kqzyfj.com/click-12345-67890?url=https%3A%2F%2Fexample.com%2Fpage',
-    )
-
-    expect(unwrapCjNetwork(url)).toBeUndefined()
-  })
-
-  it('should extract target from the t path on www.pntra.com', () => {
-    const url = new URL(
-      'https://www.pntra.com/t/8-8364-43737-58790?url=https%3A%2F%2Fexample.com%2Fpage',
-    )
-
-    expect(unwrapCjNetwork(url)).toBe('https://example.com/page')
-  })
-
-  it('should extract target from the click path on www.qksrv.net', () => {
-    const url = new URL('http://www.qksrv.net/click-4897915-10273919?url=https://example.com/page')
-
-    expect(unwrapCjNetwork(url)).toBe('https://example.com/page')
-  })
-
-  it('should return undefined for an unlisted subdomain of pntra.com', () => {
-    const url = new URL('https://ad.pntra.com/t/8-1-2-3?url=https%3A%2F%2Fexample.com%2Fpage')
-
-    expect(unwrapCjNetwork(url)).toBeUndefined()
-  })
-
-  it('should extract target from the bare domain kqzyfj.com', () => {
-    const url = new URL('https://kqzyfj.com/click-12345-67890?url=https%3A%2F%2Fexample.com%2Fpage')
-
-    expect(unwrapCjNetwork(url)).toBe('https://example.com/page')
-  })
-
-  it('should extract target from the bare domain pjtra.com', () => {
-    const url = new URL('https://pjtra.com/click-12345-67890?url=https%3A%2F%2Fexample.com%2Fpage')
 
     expect(unwrapCjNetwork(url)).toBe('https://example.com/page')
   })

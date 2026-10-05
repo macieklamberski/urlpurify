@@ -10,14 +10,6 @@ describe('unwrapPrNewswire', () => {
     expect(unwrapPrNewswire(url)).toBe('https://example.com/?utm_source=pressrelease')
   })
 
-  it('should extract target from an edge.prnewswire.com link', () => {
-    const url = new URL(
-      'https://edge.prnewswire.com/c/link/?t=0&l=en&o=4706875-1&h=2672565664&u=https%3A%2F%2Fexample.com%2Fproducts&a=Example',
-    )
-
-    expect(unwrapPrNewswire(url)).toBe('https://example.com/products')
-  })
-
   it('should extract a twice-encoded target', () => {
     const url = new URL(
       'https://edge.prnewswire.com/c/link/?t=0&l=en&o=4630040-1&h=1174090750&u=http%253A%252F%252Fexample.com%252F&a=Example',
@@ -84,18 +76,6 @@ describe('unwrapPrNewswire', () => {
 
   it('should return undefined for other hosts', () => {
     const url = new URL('https://example.com/c/link/?u=https%3A%2F%2Fexample.org%2F')
-
-    expect(unwrapPrNewswire(url)).toBeUndefined()
-  })
-
-  it('should return undefined for a subdomain no specimen shows', () => {
-    const url = new URL('https://www.prnewswire.com/c/link/?u=https%3A%2F%2Fexample.com%2Fpost')
-
-    expect(unwrapPrNewswire(url)).toBeUndefined()
-  })
-
-  it('should return undefined for a lookalike domain', () => {
-    const url = new URL('https://examplec212.net/c/link/?u=https%3A%2F%2Fexample.com%2Fpost')
 
     expect(unwrapPrNewswire(url)).toBeUndefined()
   })

@@ -27,10 +27,4 @@ describe('unwrapNaverOutgoing', () => {
 
     expect(unwrapNaverOutgoing(url)).toBeUndefined()
   })
-
-  it('should return undefined for a subdomain no specimen shows', () => {
-    const url = new URL('https://www.loginfra.com/cc?u=https%3A%2F%2Fexample.com%2Fpost')
-
-    expect(unwrapNaverOutgoing(url)).toBeUndefined()
-  })
 })

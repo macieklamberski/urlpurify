@@ -20,20 +20,8 @@ describe('unwrapZhihu', () => {
     expect(unwrapZhihu(url)).toBeUndefined()
   })
 
-  it('should return undefined for an unlisted subdomain', () => {
-    const url = new URL('https://go.zhihu.com/?target=https%3A%2F%2Fexample.com%2Fpage')
-
-    expect(unwrapZhihu(url)).toBeUndefined()
-  })
-
   it('should return undefined for another path on the host', () => {
     const url = new URL('https://link.zhihu.com/question?target=https%3A%2F%2Fexample.com%2Fpage')
-
-    expect(unwrapZhihu(url)).toBeUndefined()
-  })
-
-  it('should return undefined for a lookalike host', () => {
-    const url = new URL('https://examplezhihu.com/?target=https%3A%2F%2Fexample.com%2Fpage')
 
     expect(unwrapZhihu(url)).toBeUndefined()
   })

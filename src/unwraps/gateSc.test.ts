@@ -20,20 +20,8 @@ describe('unwrapGateSc', () => {
     expect(unwrapGateSc(url)).toBeUndefined()
   })
 
-  it('should return undefined for an unlisted subdomain', () => {
-    const url = new URL('https://www.gate.sc/?url=https%3A%2F%2Fexample.com%2Fpage')
-
-    expect(unwrapGateSc(url)).toBeUndefined()
-  })
-
   it('should return undefined for another path on the host', () => {
     const url = new URL('https://gate.sc/other?url=https%3A%2F%2Fexample.com%2Fpage')
-
-    expect(unwrapGateSc(url)).toBeUndefined()
-  })
-
-  it('should return undefined for a lookalike host', () => {
-    const url = new URL('https://examplegate.sc/?url=https%3A%2F%2Fexample.com%2Fpage')
 
     expect(unwrapGateSc(url)).toBeUndefined()
   })

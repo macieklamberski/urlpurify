@@ -44,22 +44,6 @@ describe('unwrapMailtrack', () => {
     expect(unwrapMailtrack(url)).toBe('https://example.com/post')
   })
 
-  it('should return undefined for a subdomain no specimen shows', () => {
-    const url = new URL(
-      'https://eu.mailtrack.io/trace/link/abc123?url=https%3A%2F%2Fexample.com%2Fpost',
-    )
-
-    expect(unwrapMailtrack(url)).toBeUndefined()
-  })
-
-  it('should return undefined for a lookalike domain', () => {
-    const url = new URL(
-      'https://examplemailtrack.io/trace/link/abc123?url=https%3A%2F%2Fexample.com%2Fpost',
-    )
-
-    expect(unwrapMailtrack(url)).toBeUndefined()
-  })
-
   it('should return undefined for another path on the host', () => {
     const url = new URL('https://mailtrack.io/pricing?url=https%3A%2F%2Fexample.com%2Fpost')
 

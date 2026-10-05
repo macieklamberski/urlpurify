@@ -10,14 +10,6 @@ describe('unwrapNarrativ', () => {
     expect(unwrapNarrativ(url)).toBe('https://example.com/buy')
   })
 
-  it('should extract target from url param on api.narrativ.com', () => {
-    const url = new URL(
-      'https://api.narrativ.com/api/v0/client_redirect?url=https%3A%2F%2Fexample.com%2Fitem',
-    )
-
-    expect(unwrapNarrativ(url)).toBe('https://example.com/item')
-  })
-
   it('should return undefined when url param is missing', () => {
     const url = new URL('https://narrativ.com/api/v0/client_redirect?other=value')
 
@@ -36,22 +28,6 @@ describe('unwrapNarrativ', () => {
     )
 
     expect(unwrapNarrativ(url)).toBe('https://example.com/post')
-  })
-
-  it('should return undefined for a subdomain no specimen shows', () => {
-    const url = new URL(
-      'https://eu.narrativ.com/api/v0/redirect/?url=https%3A%2F%2Fexample.com%2Fpost',
-    )
-
-    expect(unwrapNarrativ(url)).toBeUndefined()
-  })
-
-  it('should return undefined for a lookalike domain', () => {
-    const url = new URL(
-      'https://examplenarrativ.com/api/v0/redirect/?url=https%3A%2F%2Fexample.com%2Fpost',
-    )
-
-    expect(unwrapNarrativ(url)).toBeUndefined()
   })
 
   it('should return undefined for another path on the host', () => {

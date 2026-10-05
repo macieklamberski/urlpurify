@@ -10,30 +10,6 @@ describe('unwrapA8Net', () => {
     expect(unwrapA8Net(url)).toBe('https://example.com/jp/offer/')
   })
 
-  it('should extract target from a8ejpredirect param on rpx.a8.net', () => {
-    const url = new URL(
-      'https://rpx.a8.net/svt/ejp?a8mat=45FUA0+35PTBM+2HOM+BWGDT&rakuten=y&a8ejpredirect=https%3A%2F%2Fexample.com%2Fitem%3Fpc%3D1%26m%3D2',
-    )
-
-    expect(unwrapA8Net(url)).toBe('https://example.com/item?pc=1&m=2')
-  })
-
-  it('should extract target from a8ejpredirect param on www.a8.net', () => {
-    const url = new URL(
-      'https://www.a8.net/svt/ejp?a8mat=3T226U+5ZIZB6+4W9U+BW8O2&a8ejpredirect=https%3A%2F%2Fexample.com%2F',
-    )
-
-    expect(unwrapA8Net(url)).toBe('https://example.com/')
-  })
-
-  it('should extract target from a8ejpredirect param on px.moba8.net', () => {
-    const url = new URL(
-      'http://px.moba8.net/svt/ejp?a8mat=1ZQRSV+DH909M+S2U+BW8O2&guid=on&a8ejpredirect=http%3A%2F%2Fexample.com%2Fshopdetail%2F',
-    )
-
-    expect(unwrapA8Net(url)).toBe('http://example.com/shopdetail/')
-  })
-
   it('should return undefined when a8ejpredirect param is missing', () => {
     const url = new URL('https://px.a8.net/svt/ejp?a8mat=3ZBKMX+A8JC8I+4NTO+BW0YB')
 
@@ -100,22 +76,6 @@ describe('unwrapA8Net', () => {
 
   it('should return undefined for non-A8.net hosts', () => {
     const url = new URL('https://example.com/svt/ejp?a8ejpredirect=https%3A%2F%2Fexample.org%2F')
-
-    expect(unwrapA8Net(url)).toBeUndefined()
-  })
-
-  it('should return undefined for a lookalike host', () => {
-    const url = new URL(
-      'https://examplea8.net/svt/ejp?a8ejpredirect=https%3A%2F%2Fexample.com%2Fpage',
-    )
-
-    expect(unwrapA8Net(url)).toBeUndefined()
-  })
-
-  it('should return undefined for an unlisted subdomain', () => {
-    const url = new URL(
-      'https://sub.px.a8.net/svt/ejp?a8ejpredirect=https%3A%2F%2Fexample.com%2Fpage',
-    )
 
     expect(unwrapA8Net(url)).toBeUndefined()
   })

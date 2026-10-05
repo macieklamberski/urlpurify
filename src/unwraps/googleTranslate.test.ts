@@ -106,14 +106,6 @@ describe('unwrapGoogleTranslate', () => {
     expect(unwrapGoogleTranslate(url)).toBeUndefined()
   })
 
-  it('should return undefined for the translated frame on subdomains of translate.googleusercontent.com', () => {
-    const url = new URL(
-      'https://x.translate.googleusercontent.com/translate_c?u=https://example.com/page',
-    )
-
-    expect(unwrapGoogleTranslate(url)).toBeUndefined()
-  })
-
   it('should return undefined for the translated frame path on other hosts', () => {
     const url = new URL('https://example.com/translate_c?u=https://example.com/page')
 

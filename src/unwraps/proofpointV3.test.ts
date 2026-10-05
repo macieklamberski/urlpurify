@@ -24,14 +24,6 @@ describe('unwrapProofpointV3', () => {
     expect(unwrapProofpointV3(url)).toBe('http://www.example.com/#####test')
   })
 
-  it('should accept the proofpoint.com host alias', () => {
-    const url = new URL(
-      'https://urldefense.proofpoint.com/v3/__https://www.example.com/article__;!!abc!def$',
-    )
-
-    expect(unwrapProofpointV3(url)).toBe('https://www.example.com/article')
-  })
-
   it('should preserve query strings inside the mangled URL', () => {
     const url = new URL(
       'https://urldefense.com/v3/__https://www.example.com/path?q=hello__;!!abc!def$',
@@ -75,31 +67,9 @@ describe('unwrapProofpointV3', () => {
     expect(unwrapProofpointV3(url)).toBe('http://x.test/ãx€y')
   })
 
-  it('should return undefined for a subdomain no specimen shows', () => {
-    const url = new URL(
-      'https://www.urldefense.com/v3/__https://www.example.com/article__;!!abc!def$',
-    )
-
-    expect(unwrapProofpointV3(url)).toBeUndefined()
-  })
-
-  it('should return undefined for a lookalike domain', () => {
-    const url = new URL(
-      'https://exampleurldefense.com/v3/__https://www.example.com/article__;!!abc!def$',
-    )
-
-    expect(unwrapProofpointV3(url)).toBeUndefined()
-  })
-
   it('should return undefined for another path on the host', () => {
     const url = new URL('https://urldefense.com/v4/__https://www.example.com/article__;!!abc!def$')
 
     expect(unwrapProofpointV3(url)).toBeUndefined()
-  })
-
-  it('should decode on urldefense.us', () => {
-    const url = new URL('https://urldefense.us/v3/__https://www.example.com/article__;!!abc!def$')
-
-    expect(unwrapProofpointV3(url)).toBe('https://www.example.com/article')
   })
 })

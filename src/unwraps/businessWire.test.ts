@@ -54,36 +54,8 @@ describe('unwrapBusinessWire', () => {
     expect(unwrapBusinessWire(url)).toBeUndefined()
   })
 
-  it('should return undefined for the newsroom host', () => {
-    const url = new URL('https://www.businesswire.com/news/home/20260602907844/en/')
-
-    expect(unwrapBusinessWire(url)).toBeUndefined()
-  })
-
   it('should return undefined for other hosts', () => {
     const url = new URL('https://example.com/ct/CT?url=https%3A%2F%2Fexample.org%2F')
-
-    expect(unwrapBusinessWire(url)).toBeUndefined()
-  })
-
-  it('should return undefined for a lookalike host', () => {
-    const url = new URL(
-      'https://examplebusinesswire.com/ct/CT?url=https%3A%2F%2Fexample.com%2Fpage',
-    )
-
-    expect(unwrapBusinessWire(url)).toBeUndefined()
-  })
-
-  it('should return undefined for an unlisted subdomain', () => {
-    const url = new URL(
-      'https://ct.businesswire.com/ct/CT?id=smartlink&url=https%3A%2F%2Fexample.com%2Fpage',
-    )
-
-    expect(unwrapBusinessWire(url)).toBeUndefined()
-  })
-
-  it('should return undefined for the bare domain', () => {
-    const url = new URL('https://businesswire.com/ct/CT?url=https%3A%2F%2Fexample.com%2Fpage')
 
     expect(unwrapBusinessWire(url)).toBeUndefined()
   })

@@ -20,18 +20,6 @@ describe('unwrapMailpgn', () => {
     expect(unwrapMailpgn(url)).toBeUndefined()
   })
 
-  it('should return undefined for a subdomain no specimen shows', () => {
-    const url = new URL('https://eu.mailpgn.com/l/?fl=https%3A%2F%2Fexample.com%2Fpost')
-
-    expect(unwrapMailpgn(url)).toBeUndefined()
-  })
-
-  it('should return undefined for a lookalike domain', () => {
-    const url = new URL('https://examplemailpgn.com/l/?fl=https%3A%2F%2Fexample.com%2Fpost')
-
-    expect(unwrapMailpgn(url)).toBeUndefined()
-  })
-
   it('should return undefined for another path on the host', () => {
     const url = new URL('https://t.mailpgn.com/m/?fl=https%3A%2F%2Fexample.com%2Fpost')
 

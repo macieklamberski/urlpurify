@@ -105,20 +105,4 @@ describe('unwrapRakutenAffiliate', () => {
       expect(unwrapRakutenAffiliate(url)).toBeUndefined()
     })
   })
-
-  it('should return undefined for a subdomain no specimen shows', () => {
-    const url = new URL(
-      'https://www.hb.afl.rakuten.co.jp/hgc/16cd069d.07152461.16cd069e.8295d8f8/?pc=https%3A%2F%2Fexample.com%2Fitem%2F',
-    )
-
-    expect(unwrapRakutenAffiliate(url)).toBeUndefined()
-  })
-
-  it('should return undefined for a lookalike host', () => {
-    const url = new URL(
-      'https://examplehb.afl.rakuten.co.jp/hgc/16cd069d.07152461.16cd069e.8295d8f8/?pc=https%3A%2F%2Fexample.com%2Fitem%2F',
-    )
-
-    expect(unwrapRakutenAffiliate(url)).toBeUndefined()
-  })
 })

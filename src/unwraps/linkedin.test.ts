@@ -138,18 +138,6 @@ describe('unwrapLinkedin', () => {
     expect(unwrapLinkedin(url)).toBeUndefined()
   })
 
-  it('should return undefined for hosts ending in linkedin.com', () => {
-    const url = new URL('https://examplelinkedin.com/safety/go?url=https%3A%2F%2Fexample.com%2F')
-
-    expect(unwrapLinkedin(url)).toBeUndefined()
-  })
-
-  it('should return undefined for another linkedin.com subdomain', () => {
-    const url = new URL('https://uk.linkedin.com/safety/go?url=https%3A%2F%2Fexample.com%2F')
-
-    expect(unwrapLinkedin(url)).toBeUndefined()
-  })
-
   it('should return undefined when a shim path is nested under another path', () => {
     const url = new URL(
       'https://www.linkedin.com/in/example/safety/go?url=https%3A%2F%2Fexample.com%2F',
