@@ -44,6 +44,14 @@ describe('unwrapReviveAdserver', () => {
     expect(unwrapReviveAdserver(url)).toBe('https://www.example.com/stockists/')
   })
 
+  it('should extract target from a signed click on cl.php', () => {
+    const url = new URL(
+      'https://servedby.pinktriangle.ca/cl.php?bannerid=30237&zoneid=348&sig=3a2a6fdc3ded9af5da1c7f73ee804c3baf84b15477b4c873cffd158b1bed365c&oadest=https%3A%2F%2Fwww.example.com%2Fabout%2F',
+    )
+
+    expect(unwrapReviveAdserver(url)).toBe('https://www.example.com/about/')
+  })
+
   it('should extract target when the query separator is percent-encoded', () => {
     const url = new URL(
       'http://ads.example.net/baner/www/delivery/ck.php?ct=1%26oaparams=2__bannerid=7__zoneid=5__cb=4adf6a6bd2__oadest=https%3A%2F%2Fwww.example.com%2F',
@@ -78,10 +86,24 @@ describe('unwrapReviveAdserver', () => {
     expect(unwrapReviveAdserver(url)).toBeUndefined()
   })
 
-  it('should return undefined for a click without oadest', () => {
+  it('should extract target from dest when oadest is missing', () => {
     const url = new URL(
       'http://ads.example.net/www/delivery/ck.php?n=a1b2c3&cb=123&dest=https%3A%2F%2Fwww.example.com%2F',
     )
+
+    expect(unwrapReviveAdserver(url)).toBe('https://www.example.com/')
+  })
+
+  it('should extract target from the OpenX 2 maxdest', () => {
+    const url = new URL(
+      'http://us.openx.detik.com/delivery/ck.php?oaparams=2__bannerid=22117__zoneid=348__cb=0582b2efbd__maxdest=http%3A%2F%2Fwww.example.com%2Fpromo',
+    )
+
+    expect(unwrapReviveAdserver(url)).toBe('http://www.example.com/promo')
+  })
+
+  it('should return undefined for a click without a destination', () => {
+    const url = new URL('http://ads.example.net/www/delivery/ck.php?n=a1b2c3&cb=123')
 
     expect(unwrapReviveAdserver(url)).toBeUndefined()
   })
