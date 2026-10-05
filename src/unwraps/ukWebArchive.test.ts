@@ -74,6 +74,14 @@ describe('unwrapUkWebArchive', () => {
     expect(unwrapUkWebArchive(url)).toBeUndefined()
   })
 
+  it('should return undefined for the snapshot path under another prefix', () => {
+    const url = new URL(
+      'https://www.webarchive.org.uk/collection/wayback/archive/20150401120000/http://www.example.co.uk/about/',
+    )
+
+    expect(unwrapUkWebArchive(url)).toBeUndefined()
+  })
+
   it('should return undefined for other hosts', () => {
     const url = new URL(
       'https://example.com/wayback/archive/20150401120000/http://www.example.co.uk/about/',
