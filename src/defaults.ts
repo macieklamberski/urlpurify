@@ -67,6 +67,7 @@ import { unwrapLinkedin } from './unwraps/linkedin.js'
 // import { unwrapMailchimp } from './unwraps/mailchimp.js'
 // import { unwrapMailpanion } from './unwraps/mailpanion.js'
 // import { unwrapMailpgn } from './unwraps/mailpgn.js'
+import { unwrapMailRu } from './unwraps/mailRu.js'
 // import { unwrapMailtrack } from './unwraps/mailtrack.js'
 import { unwrapMedium } from './unwraps/medium.js'
 // import { unwrapMimecast } from './unwraps/mimecast.js'
@@ -219,6 +220,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   unwrapInstagramShim,
   unwrapJive,
   unwrapLinkedin,
+  unwrapMailRu,
   unwrapMedium,
   unwrapNaverOutgoing,
   // unwrapNicoMs,
