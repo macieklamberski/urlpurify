@@ -88,6 +88,7 @@ import { unwrapLivejournal } from './unwraps/livejournal.js'
 // import { unwrapMailinblack } from './unwraps/mailinblack.js'
 // import { unwrapMailpanion } from './unwraps/mailpanion.js'
 // import { unwrapMailpgn } from './unwraps/mailpgn.js'
+import { unwrapMailRu } from './unwraps/mailRu.js'
 // import { unwrapMailtrack } from './unwraps/mailtrack.js'
 import { unwrapMarketwire } from './unwraps/marketwire.js'
 // import { unwrapMcas } from './unwraps/mcas.js'
@@ -290,6 +291,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   unwrapJive,
   unwrapLinkedin,
   unwrapLivejournal,
+  unwrapMailRu,
   unwrapMedium,
   unwrapNaverOutgoing,
   // unwrapNicoMs,
