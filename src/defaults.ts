@@ -110,6 +110,7 @@ import { unwrapVkAway } from './unwraps/vkAway.js'
 // import { unwrapWordpressEmail } from './unwraps/wordpressEmail.js'
 // import { unwrapWordpressGo2 } from './unwraps/wordpressGo2.js'
 import { unwrapYahooSearch } from './unwraps/yahooSearch.js'
+// import { unwrapYamm } from './unwraps/yamm.js'
 import { unwrapYandexMail } from './unwraps/yandexMail.js'
 import { unwrapYouTube } from './unwraps/youtube.js'
 import { unwrapZemanta } from './unwraps/zemanta.js'
@@ -158,6 +159,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapSlack,
   // unwrapStreak,
   // unwrapWordpressEmail,
+  // unwrapYamm,
 
   // Affiliate networks.
   // unwrapA8Net,
