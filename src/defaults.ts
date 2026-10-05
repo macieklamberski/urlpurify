@@ -77,6 +77,7 @@ import { unwrapNaverOutgoing } from './unwraps/naverOutgoing.js'
 // import { unwrapOutlookSafelinks } from './unwraps/outlookSafelinks.js'
 // import { unwrapPartnerAds } from './unwraps/partnerAds.js'
 import { unwrapPocket } from './unwraps/pocket.js'
+// import { unwrapPodtrac } from './unwraps/podtrac.js'
 // import { unwrapPostmark } from './unwraps/postmark.js'
 import { unwrapPrNewswire } from './unwraps/prNewswire.js'
 // import { unwrapProofpointV1 } from './unwraps/proofpointV1.js'
@@ -202,6 +203,9 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // Ad networks.
   // unwrapBingAds,
   // unwrapGoogleAds,
+
+  // Podcast analytics prefixes.
+  // unwrapPodtrac,
 
   // Social and community platforms.
   unwrapAnonymTo,
