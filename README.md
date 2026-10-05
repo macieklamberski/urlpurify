@@ -175,6 +175,7 @@ Enabled by default:
 | `unwrapVanilla` | Vanilla Forums leaving page (\<any host\>/home/leaving?target=\<target\>) |
 | `unwrapVbulletin` | vBulletin SEO add-on external link redirect (\<any host\>/redirect-to/?redirect=\<target\>) |
 | `unwrapVirgool` | Virgool outbound link redirect (l.vrgl.ir/r?l=\<target\>) |
+| `unwrapVisibli` | Visibli framed share link (\<user\>.visibli.com/\<id\>/?dst=\<target\>) |
 | `unwrapVkAway` | VK away redirect (vk.com/away.php?to=\<target\>) |
 | `unwrapWpPoczta` | WP Poczta and o2 webmail dereferrer (zasobygwp.pl/redirect?url=\<base64\>) |
 | `unwrapXengentr` | XenGenTr external link redirect add-on for XenForo (\<any host\>/yonlendirme?to=\<base64\>) |
