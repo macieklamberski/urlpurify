@@ -223,6 +223,7 @@ import { unwrapSspai } from './unwraps/sspai.js'
 // import { unwrapStay22 } from './unwraps/stay22.js'
 import { unwrapSteamLinkfilter } from './unwraps/steamLinkfilter.js'
 // import { unwrapStreak } from './unwraps/streak.js'
+// import { unwrapStreamsend } from './unwraps/streamsend.js'
 // import { unwrapSurugaya } from './unwraps/surugaya.js'
 // import { unwrapSymantecClicktime } from './unwraps/symantecClicktime.js'
 // import { unwrapSymplicity } from './unwraps/symplicity.js'
@@ -353,6 +354,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapSophos,
   // unwrapSquarespaceEmail,
   // unwrapStreak,
+  // unwrapStreamsend,
   // unwrapSymantecClicktime,
   // unwrapSymplicity,
   // unwrapTitanhqLinklock,
