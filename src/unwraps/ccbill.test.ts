@@ -34,7 +34,7 @@ describe('unwrapCcbill', () => {
     expect(unwrapCcbill(url)).toBeUndefined()
   })
 
-  it('should return undefined for the target appended to the script path', () => {
+  it('should return undefined for a stray segment after the script path', () => {
     const url = new URL(
       'https://refer.ccbill.com/cgi-bin/clicks.cgi/http:/?CA=928498&PA=1458253&HTML=http%3A%2F%2Fwww.example.com',
     )
