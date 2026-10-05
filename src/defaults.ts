@@ -13,6 +13,7 @@ import { unwrapAnonymTo } from './unwraps/anonymTo.js'
 // import { unwrapArchiveToday } from './unwraps/archiveToday.js'
 // import { unwrapAvantlink } from './unwraps/avantlink.js'
 // import { unwrapAwin } from './unwraps/awin.js'
+// import { unwrapBananatag } from './unwraps/bananatag.js'
 // import { unwrapBarracudaLinkProtect } from './unwraps/barracudaLinkProtect.js'
 import { unwrapBing } from './unwraps/bing.js'
 // import { unwrapBingAds } from './unwraps/bingAds.js'
@@ -139,6 +140,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // Email and security gateways.
   // unwrapAceml,
   // unwrapAmazonSes,
+  // unwrapBananatag,
   // unwrapBarracudaLinkProtect,
   // unwrapCiscoSecureWeb,
   // unwrapEsva,
