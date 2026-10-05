@@ -87,6 +87,7 @@ import { unwrapPrNewswire } from './unwraps/prNewswire.js'
 // import { unwrapRecruitics } from './unwraps/recruitics.js'
 import { unwrapRedditOut } from './unwraps/redditOut.js'
 // import { unwrapRedirectingat } from './unwraps/redirectingat.js'
+import { unwrapSapHelp } from './unwraps/sapHelp.js'
 import { unwrapSegmentfault } from './unwraps/segmentfault.js'
 // import { unwrapShareasale } from './unwraps/shareasale.js'
 // import { unwrapSjv } from './unwraps/sjv.js'
@@ -238,6 +239,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   unwrapHashnode,
   unwrapJianshuGo,
   unwrapJuejin,
+  unwrapSapHelp,
   unwrapSegmentfault,
   unwrapSspai,
   unwrapZhihu,
