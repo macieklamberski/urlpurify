@@ -28,6 +28,7 @@ import { unwrapAnonymTo } from './unwraps/anonymTo.js'
 // import { unwrapApptrkr } from './unwraps/apptrkr.js'
 // import { unwrapArchiveToday } from './unwraps/archiveToday.js'
 // import { unwrapArquivo } from './unwraps/arquivo.js'
+import { unwrapArxiv } from './unwraps/arxiv.js'
 // import { unwrapAugure } from './unwraps/augure.js'
 // import { unwrapAvantlink } from './unwraps/avantlink.js'
 // import { unwrapAwin } from './unwraps/awin.js'
@@ -508,6 +509,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
 
   // Developer and publishing platforms.
   unwrapAliyun,
+  unwrapArxiv,
   unwrapCsdn,
   unwrapDatalifeEngine,
   unwrapDropbox,
