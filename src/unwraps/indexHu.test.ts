@@ -46,12 +46,10 @@ describe('unwrapIndexHu', () => {
 
   it('should extract target from a section counter link', () => {
     const url = new URL(
-      'http://index.hu/x?index_gazdasag_cikklink=http%3A%2F%2Fwww.vg.hu%2Fgazdasag%2Fadozas%2Fa-szappant-es-a-sampont-is-megadoztatja-a-kormany-438374',
+      'http://index.hu/x?index_gazdasag_cikklink=http%3A%2F%2Fwww.example.com%2Fgazdasag%2Fadozas%2F438374',
     )
 
-    expect(unwrapIndexHu(url)).toBe(
-      'http://www.vg.hu/gazdasag/adozas/a-szappant-es-a-sampont-is-megadoztatja-a-kormany-438374',
-    )
+    expect(unwrapIndexHu(url)).toBe('http://www.example.com/gazdasag/adozas/438374')
   })
 
   it('should extract a twice-encoded target from a section counter link', () => {
@@ -77,7 +75,7 @@ describe('unwrapIndexHu', () => {
   })
 
   it('should return undefined for a counter param not named after a section', () => {
-    const url = new URL('http://index.hu/x?cbl=2&c0_412=http://index.hu/kultur/eletmod/rom0511/')
+    const url = new URL('http://index.hu/x?cbl=2&c0_412=http://example.com/kultur/eletmod/rom0511/')
 
     expect(unwrapIndexHu(url)).toBeUndefined()
   })
@@ -100,8 +98,14 @@ describe('unwrapIndexHu', () => {
     expect(unwrapIndexHu(url)).toBeUndefined()
   })
 
-  it('should return undefined for the counter on another path', () => {
-    const url = new URL('https://dex.hu/x?index_tech_cikklink=https%3A%2F%2Fexample.com%2F')
+  it('should extract target from a section counter link on dex.hu', () => {
+    const url = new URL('http://dex.hu/x?index_tech_cikklink=http%3A%2F%2Fexample.com%2Fpost')
+
+    expect(unwrapIndexHu(url)).toBe('http://example.com/post')
+  })
+
+  it('should return undefined for the section counter on another host', () => {
+    const url = new URL('https://example.com/x?index_tech_cikklink=https%3A%2F%2Fexample.org%2F')
 
     expect(unwrapIndexHu(url)).toBeUndefined()
   })

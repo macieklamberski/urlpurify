@@ -12,7 +12,7 @@ const unwrapCounter = createParamExtractor({
 })
 
 const unwrapSectionCounter: UrlUnwrapper = (url) => {
-  if (!isHostOf(url, 'index.hu') || url.pathname !== '/x') {
+  if (!isHostOf(url, ['dex.hu', 'index.hu']) || url.pathname !== '/x') {
     return
   }
 
@@ -34,8 +34,8 @@ const unwrapSectionCounter: UrlUnwrapper = (url) => {
 }
 
 // Index.hu and Dex.hu outbound link counter (index.hu/x.php?id=<id>&url=<target>), on dex.hu,
-// index.hu and vakbarat.index.hu, and the section counter on index.hu that names the param after
-// the section (index.hu/x?index_<section>_cikklink=<target>).
+// index.hu and vakbarat.index.hu, and the section counter on dex.hu and index.hu that names the
+// param after the section (index.hu/x?index_<section>_cikklink=<target>).
 export const unwrapIndexHu: UrlUnwrapper = (url) => {
   return unwrapCounter(url) ?? unwrapSectionCounter(url)
 }
