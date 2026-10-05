@@ -139,6 +139,7 @@ Enabled by default:
 | `unwrapThreadsShim` | Threads outbound link shim (l.threads.com / l.threads.net with ?u=\<target\>) |
 | `unwrapTumblr` | Tumblr outbound redirect (t.umblr.com/redirect?z=\<target\>) |
 | `unwrapVanilla` | Vanilla Forums leaving page (\<any host\>/home/leaving?target=\<target\>) |
+| `unwrapVbulletin` | vBulletin SEO add-on external link redirect (\<any host\>/redirect-to/?redirect=\<target\>) |
 | `unwrapVkAway` | VK away redirect (vk.com/away.php?to=\<target\>) |
 | `unwrapYahooJapan` | Yahoo! JAPAN click redirect (rdsig.yahoo.co.jp/.../RU=\<base64url\>/RS=...) |
 | `unwrapYahooSearch` | Yahoo Search redirect (r.search.yahoo.com/.../RU=\<target\>/RK=...) |
