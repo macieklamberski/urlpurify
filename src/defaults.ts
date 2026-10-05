@@ -2,6 +2,7 @@ import { trackingParamsLiterals } from './tracking/literals.js'
 import { trackingParamsPatterns } from './tracking/patterns.js'
 import type { TrackingParam, UrlUnwrapper } from './types.js'
 // import { unwrap12ft } from './unwraps/12ft.js'
+// import { unwrap2performant } from './unwraps/2performant.js'
 // import { unwrapA8Net } from './unwraps/a8Net.js'
 // import { unwrapAccesstrade } from './unwraps/accesstrade.js'
 // import { unwrapAceml } from './unwraps/aceml.js'
@@ -160,6 +161,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapWordpressEmail,
 
   // Affiliate networks.
+  // unwrap2performant,
   // unwrapA8Net,
   // unwrapAccesstrade,
   // unwrapAdjust,
