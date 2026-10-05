@@ -29,6 +29,7 @@ import { unwrapAnonymTo } from './unwraps/anonymTo.js'
 // import { unwrapArchiveToday } from './unwraps/archiveToday.js'
 // import { unwrapArquivo } from './unwraps/arquivo.js'
 import { unwrapArxiv } from './unwraps/arxiv.js'
+import { unwrapAsk } from './unwraps/ask.js'
 // import { unwrapAugure } from './unwraps/augure.js'
 // import { unwrapAvantlink } from './unwraps/avantlink.js'
 // import { unwrapAwin } from './unwraps/awin.js'
@@ -281,6 +282,7 @@ export const defaultTrackingParams: Array<TrackingParam> = [
 
 export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // Search engines.
+  unwrapAsk,
   unwrapBing,
   // unwrapDuckduckgo,
   unwrapGoogle,
