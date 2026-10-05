@@ -217,6 +217,7 @@ import { unwrapSteamLinkfilter } from './unwraps/steamLinkfilter.js'
 // import { unwrapStreak } from './unwraps/streak.js'
 // import { unwrapSymantecClicktime } from './unwraps/symantecClicktime.js'
 import { unwrapThreadsShim } from './unwraps/threads.js'
+import { unwrapTiktok } from './unwraps/tiktok.js'
 // import { unwrapTitanhqLinklock } from './unwraps/titanhqLinklock.js'
 // import { unwrapTopsec } from './unwraps/topsec.js'
 // import { unwrapTradedoubler } from './unwraps/tradedoubler.js'
@@ -482,6 +483,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   unwrapSoundcloud,
   unwrapSteamLinkfilter,
   unwrapThreadsShim,
+  unwrapTiktok,
   unwrapTumblr,
   unwrapVanilla,
   unwrapVbulletin,
