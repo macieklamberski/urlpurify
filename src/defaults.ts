@@ -156,6 +156,7 @@ import { unwrapMozillaOutgoing } from './unwraps/mozillaOutgoing.js'
 // import { unwrapMyNewsletterBuilder } from './unwraps/myNewsletterBuilder.js'
 import { unwrapNaverOutgoing } from './unwraps/naverOutgoing.js'
 // import { unwrapNetaffiliation } from './unwraps/netaffiliation.js'
+import { unwrapNetcentrum } from './unwraps/netcentrum.js'
 import { unwrapNewswire } from './unwraps/newswire.js'
 // import { unwrapNicoMs } from './unwraps/nicoMs.js'
 // import { unwrapNlaWebarchive } from './unwraps/nlaWebarchive.js'
@@ -447,6 +448,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   unwrapMailRu,
   unwrapMedium,
   unwrapNaverOutgoing,
+  unwrapNetcentrum,
   // unwrapNicoMs,
   unwrapNodeseek,
   unwrapOkRu,
