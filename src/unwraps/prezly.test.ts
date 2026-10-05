@@ -26,6 +26,22 @@ describe('unwrapPrezly', () => {
     expect(unwrapPrezly(url)).toBeUndefined()
   })
 
+  it('should return undefined for a campaign that is not a uuid', () => {
+    const url = new URL(
+      'https://prezlymail.com/c/spring-launch/4535aa6c/https%3A%2F%2Fwww.example.org%2F',
+    )
+
+    expect(unwrapPrezly(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a link hash that is not hex', () => {
+    const url = new URL(
+      'https://prezlymail.com/c/264cd01e-3f4c-475e-87a2-4d7f7c7ddc7d/zzzzzzzz/https%3A%2F%2Fwww.example.org%2F',
+    )
+
+    expect(unwrapPrezly(url)).toBeUndefined()
+  })
+
   it('should return undefined for a malformed escape in the target', () => {
     const url = new URL(
       'https://prezlymail.com/c/264cd01e-3f4c-475e-87a2-4d7f7c7ddc7d/4535aa6c/https%3A%2F%2Fwww.example.org%2F%E0%A4%A',
