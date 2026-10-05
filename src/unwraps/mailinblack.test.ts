@@ -12,6 +12,16 @@ describe('unwrapMailinblack', () => {
     )
   })
 
+  it('should extract the full target on the numerian.fr host', () => {
+    const url = new URL(
+      'https://mib.numerian.fr/securelink/?url=https://www.example.com&key=eyJsYW5nIjoiRlIiLCJ1cmwiOiJodHRwczovL3d3dy5leGFtcGxlLmNvbS9ldmVuZW1lbnQvdGhlYXRyZS1ldC1ib3R0ZXMtZGUtcGFpbGxlLyIsInRva2VuIjoiZ0FBQUFBQm5VMkhhUEVsLUNMV01xZldCd1pZaEFWQzFYQU1mSzNpaSJ9',
+    )
+
+    expect(unwrapMailinblack(url)).toBe(
+      'https://www.example.com/evenement/theatre-et-bottes-de-paille/',
+    )
+  })
+
   it('should decode a base64url key param', () => {
     const url = new URL(
       'https://mibc-fr-09.mailinblack.com/securelink/?url=https://example.com&key=eyJsYW5nIjoiRlIiLCJ1cmwiOiJodHRwczovL2V4YW1wbGUuY29tL3BhZ2U_aWQ9MSZsYW5nPWZyIiwidG9rZW4iOiJnQUFBQUFCblUySGEifQ==',

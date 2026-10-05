@@ -3,12 +3,13 @@ import type { UrlUnwrapper } from '../types.js'
 import { createParamExtractor, decodeBase64Url } from '../utils.js'
 
 const extractKey = createParamExtractor({
-  hosts: /^mibc-fr-\d+\.mailinblack\.com$/,
+  hosts: /^(?:mibc-fr-\d+\.mailinblack\.com|mib\.numerian\.fr)$/,
   path: '/securelink/',
   params: ['key'],
 })
 
-// Mailinblack link protection (mibc-fr-<n>.mailinblack.com/securelink/?url=<origin>&key=<blob>).
+// Mailinblack link protection (mibc-fr-<n>.mailinblack.com/securelink/?url=<origin>&key=<blob>,
+// also on the reseller host mib.numerian.fr).
 // The `url` param holds only the target's origin. The full target is the `url` field of `key`,
 // a base64url JSON object that also holds the language and a token.
 // Not included in defaultUnwrappers: the gateway checks the target when the link is clicked,
