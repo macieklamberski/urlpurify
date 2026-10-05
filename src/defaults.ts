@@ -170,6 +170,7 @@ import { unwrapNodeseek } from './unwraps/nodeseek.js'
 import { unwrapOkRu } from './unwraps/okRu.js'
 // import { unwrapOp3 } from './unwraps/op3.js'
 // import { unwrapOutlookSafelinks } from './unwraps/outlookSafelinks.js'
+// import { unwrapPagefreezer } from './unwraps/pagefreezer.js'
 // import { unwrapPartnerAds } from './unwraps/partnerAds.js'
 import { unwrapPhilpapers } from './unwraps/philpapers.js'
 // import { unwrapPipedrive } from './unwraps/pipedrive.js'
@@ -522,6 +523,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapNatlibNz,
   // unwrapNdlWarp,
   // unwrapNlaWebarchive,
+  // unwrapPagefreezer,
   // unwrapSmry,
   // unwrapUkgwa,
   // unwrapUkWebArchive,
