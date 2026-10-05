@@ -36,6 +36,22 @@ describe('unwrapNlaWebarchive', () => {
     )
   })
 
+  it('should extract target from a Pandora replay snapshot', () => {
+    const url = new URL(
+      'http://pandora.nla.gov.au/nph-wb/20010220130000/http://www.example.edu.au/Articles/dec00/hase2.htm',
+    )
+
+    expect(unwrapNlaWebarchive(url)).toBe('http://www.example.edu.au/Articles/dec00/hase2.htm')
+  })
+
+  it('should return undefined for an archive collection on Pandora', () => {
+    const url = new URL(
+      'http://pandora.nla.gov.au/awa/20010220130000/http://www.example.edu.au/Articles/hase2.htm',
+    )
+
+    expect(unwrapNlaWebarchive(url)).toBeUndefined()
+  })
+
   it('should keep the query and fragment of the target', () => {
     const url = new URL(
       'https://web.archive.org.au/awa/20220302235108mp_/https://www.example.gov.au/file/10668/download?token=V5AKd-29#page=2',
