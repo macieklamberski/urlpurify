@@ -58,6 +58,7 @@ import { unwrapDropbox } from './unwraps/dropbox.js'
 // import { unwrapDuckduckgo } from './unwraps/duckduckgo.js'
 import { unwrapDzen } from './unwraps/dzen.js'
 // import { unwrapEbayRover } from './unwraps/ebayRover.js'
+// import { unwrapEClick } from './unwraps/eClick.js'
 // import { unwrapEdgepilot } from './unwraps/edgepilot.js'
 // import { unwrapEffiliation } from './unwraps/effiliation.js'
 // import { unwrapEhub } from './unwraps/ehub.js'
@@ -309,6 +310,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapDigidip,
   // unwrapDmmAffiliate,
   // unwrapEbayRover,
+  // unwrapEClick,
   // unwrapEffiliation,
   // unwrapEhub,
   // unwrapEulerian,
