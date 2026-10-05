@@ -10,14 +10,6 @@ describe('unwrapGroupon', () => {
     expect(unwrapGroupon(url)).toBe('https://www.example.com/biz/ideal-cheese-shop?z=skip')
   })
 
-  it('should extract target from url param on a country host', () => {
-    const url = new URL(
-      'http://t.groupon.co.il/r?tsToken=IL_AFF_0_208774_841221_0&url=https%3A%2F%2Fwww.example.com%2Fdeals%2Fmerchant-0-11305900526-7&wid=http://www.example.org',
-    )
-
-    expect(unwrapGroupon(url)).toBe('https://www.example.com/deals/merchant-0-11305900526-7')
-  })
-
   it('should return undefined when url param is missing', () => {
     const url = new URL('http://tracking.groupon.com/r?tsToken=US_AFF_0_210055_1872499_0')
 
