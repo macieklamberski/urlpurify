@@ -18,6 +18,14 @@ describe('unwrapNcls', () => {
     expect(unwrapNcls(url)).toBe('http://www.example.com/iphone-18-pro/')
   })
 
+  it('should extract the last d param when a click is nested unencoded', () => {
+    const url = new URL(
+      'https://ncls1.com/irk?enk=bz10dXRoMjEmcz0yNTcyNTEmYj0xNTQ2OSZia2Q9YmVzdGJ1eS5jb20=&subid=pcworld.com&di=rss&d=https://ncls1.com/irk?enk=bz10dXRoMjEmcz0yNTcyNTEmYj0xNTQ2OSZia2Q9YmVzdGJ1eS5jb20=&subid=pcworld.com&di=2-0-550968-7-0-0-0-0&d=https://www.example.com/product/hp-omen-16/JJGH2L954G',
+    )
+
+    expect(unwrapNcls(url)).toBe('https://www.example.com/product/hp-omen-16/JJGH2L954G')
+  })
+
   it('should return undefined when d param is missing', () => {
     const url = new URL('https://ncls1.com/irk?enk=bz10dXRoMjE&subid=macworld.com&di=rss')
 
