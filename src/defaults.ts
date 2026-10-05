@@ -11,6 +11,7 @@ import type { TrackingParam, UrlUnwrapper } from './types.js'
 // import { unwrapAmpCache } from './unwraps/ampCache.js'
 import { unwrapAnonymTo } from './unwraps/anonymTo.js'
 // import { unwrapArchiveToday } from './unwraps/archiveToday.js'
+// import { unwrapArquivo } from './unwraps/arquivo.js'
 // import { unwrapAvantlink } from './unwraps/avantlink.js'
 // import { unwrapAwin } from './unwraps/awin.js'
 // import { unwrapBarracudaLinkProtect } from './unwraps/barracudaLinkProtect.js'
@@ -250,6 +251,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrap12ft,
   // unwrapAmpCache,
   // unwrapArchiveToday, // Snapshot of a page at a point in time, not a redirect
+  // unwrapArquivo,
   // unwrapEmbedly,
   unwrapMozillaOutgoing,
   // unwrapUkgwa,
