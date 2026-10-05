@@ -73,6 +73,7 @@ import { unwrapMedium } from './unwraps/medium.js'
 // import { unwrapMoshimo } from './unwraps/moshimo.js'
 import { unwrapMozillaOutgoing } from './unwraps/mozillaOutgoing.js'
 import { unwrapNaverOutgoing } from './unwraps/naverOutgoing.js'
+// import { unwrapNetaffiliation } from './unwraps/netaffiliation.js'
 // import { unwrapNicoMs } from './unwraps/nicoMs.js'
 // import { unwrapOutlookSafelinks } from './unwraps/outlookSafelinks.js'
 // import { unwrapPartnerAds } from './unwraps/partnerAds.js'
@@ -180,6 +181,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapKlook,
   // unwrapLinksynergy,
   // unwrapMoshimo,
+  // unwrapNetaffiliation,
   // unwrapPartnerAds,
   // unwrapPxf,
   // Rakuten Japan's own program, separate from the LinkSynergy network in unwrapLinksynergy.
