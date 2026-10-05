@@ -6,10 +6,10 @@ const pathRegex = /^\/trck\/eclick\/[0-9a-f]{32}$/
 
 const hosts = ['partnerprogramm.otto.de', 'pvn.mediamarkt.de', 'pvn.saturn.de']
 
-// Ingenious advertiser click on a retailer's tracking host (pvn.saturn.de/trck/eclick/<id>?url=
-// <target>, or ?url64fb=<base64 target>). Not included in defaultUnwrappers: unwrapping drops the
-// publisher's commission.
-export const unwrapIngenious: UrlUnwrapper = (url) => {
+// easy Marketing (easy.M) private affiliate network click on a retailer's tracking host
+// (pvn.saturn.de/trck/eclick/<id>?url=<target>, or ?url64fb=<base64 target>). Not included in
+// defaultUnwrappers: unwrapping drops the publisher's commission.
+export const unwrapEasyMarketing: UrlUnwrapper = (url) => {
   if (!isHostOf(url, hosts) || !pathRegex.test(url.pathname)) {
     return
   }

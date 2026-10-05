@@ -32,6 +32,7 @@ import { unwrapDisqus } from './unwraps/disqus.js'
 import { unwrapDouban } from './unwraps/douban.js'
 // import { unwrapDuckduckgo } from './unwraps/duckduckgo.js'
 import { unwrapDzen } from './unwraps/dzen.js'
+// import { unwrapEasyMarketing } from './unwraps/easyMarketing.js'
 // import { unwrapEbayRover } from './unwraps/ebayRover.js'
 // import { unwrapEffiliation } from './unwraps/effiliation.js'
 // import { unwrapEmbedly } from './unwraps/embedly.js'
@@ -56,7 +57,6 @@ import { unwrapHrefLi } from './unwraps/hrefLi.js'
 // import { unwrapIcptrack } from './unwraps/icptrack.js'
 // import { unwrapImpact } from './unwraps/impact.js'
 import { unwrapIndexHu } from './unwraps/indexHu.js'
-// import { unwrapIngenious } from './unwraps/ingenious.js'
 import { unwrapInstagramShim } from './unwraps/instagram.js'
 import { unwrapJianshuGo } from './unwraps/jianshuGo.js'
 import { unwrapJive } from './unwraps/jive.js'
@@ -172,13 +172,13 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapCjNetwork,
   // unwrapDigidip,
   // unwrapDmmAffiliate,
+  // unwrapEasyMarketing,
   // unwrapEbayRover,
   // unwrapEffiliation,
   // unwrapFirebaseDynamicLinks,
   // unwrapGateSc,
   // unwrapGeoriot,
   // unwrapImpact,
-  // unwrapIngenious,
   // unwrapKlook,
   // unwrapLinksynergy,
   // unwrapMoshimo,
