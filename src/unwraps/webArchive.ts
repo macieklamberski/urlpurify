@@ -22,13 +22,17 @@ const snapshot = String.raw`\d{14}(?:\*|(?:id|if|mp|fw|oe|im|js|cs)_)?`
 const pathRegex = new RegExp(`^/web/(?:${snapshot}/)?(.+)$`)
 const replayPathRegex = new RegExp(`^/${snapshot}/(.+)$`)
 const archiveItPathRegex = new RegExp(String.raw`^/(?:\d+|org-\d+|all)/${snapshot}/(.+)$`)
+// Scholar answers 404 to a percent-encoded target, so the target keeps its scheme as written.
+const scholarPathRegex = /^\/work\/[a-z0-9]+\/access\/wayback\/(https?:\/.*)$/
 
 // Web Archive snapshot wrapper (web.archive.org/web/<timestamp>[<modifier>]/<URL>), also served
 // from wayback, web-beta, web-wp, web-old and classic-web.archive.org, from archive.org itself and
 // from the old www and webcf.waybackmachine.org domain, the latest snapshot
 // (web.archive.org/web/<URL>), the replay path (replay.web.archive.org/<timestamp>/<URL>, also on
-// web.archive.org and replay.waybackmachine.org), and Archive-It collections
-// (wayback.archive-it.org/<collection or all>/<timestamp>[<modifier>]/<URL>).
+// web.archive.org and replay.waybackmachine.org), Archive-It collections
+// (wayback.archive-it.org/<collection or all>/<timestamp>[<modifier>]/<URL>), and the Scholar
+// access link (scholar.archive.org/work/<id>/access/wayback/<URL>), which redirects to a Wayback
+// snapshot.
 // Not included in defaultUnwrappers: an archive URL is a historical
 // snapshot at a specific point in time, not a redirect; unwrapping returns
 // the live page, which may have changed or 404'd. Opt in by passing a custom
@@ -46,6 +50,10 @@ export const unwrapWebArchive: UrlUnwrapper = (url) => {
 
   if (isHostOf(url, 'wayback.archive-it.org')) {
     match = url.pathname.match(archiveItPathRegex)
+  }
+
+  if (isHostOf(url, 'scholar.archive.org')) {
+    match = url.pathname.match(scholarPathRegex)
   }
 
   if (!match) {
