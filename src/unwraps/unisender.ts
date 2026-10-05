@@ -31,7 +31,9 @@ export const unwrapUnisender: UrlUnwrapper = (url) => {
     return
   }
 
-  const value = url.searchParams.get('url')
+  // An unencoded nested tracker repeats `url`, so the first value is a stub and the last one is
+  // the target.
+  const value = url.searchParams.getAll('url').at(-1)
 
   if (!value) {
     return

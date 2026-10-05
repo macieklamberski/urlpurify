@@ -42,6 +42,14 @@ describe('unwrapUnisender', () => {
     expect(unwrapUnisender(url)).toBe('https://example.org/nike-sb/?q=1')
   })
 
+  it('should extract the last target when a tracker is nested unencoded', () => {
+    const url = new URL(
+      'https://geteml.com/ru/mail_link_tracker?hash=6i41hzp3emkus5t1mheb7tmhpcrg1jn48en&url=https://geteml.com/ru/mail_link_tracker?hash=68kdgpowswrq7it1mheb7tmhpcrg1jn48en&url=aHR0cHM6Ly9leGFtcGxlLm9yZy9rdXN0by8_dXRtX3NvdXJjZT1uZXdzbGV0dGVyMQ~~',
+    )
+
+    expect(unwrapUnisender(url)).toBe('https://example.org/kusto/?utm_source=newsletter1')
+  })
+
   it('should extract the target from the eu1 tracker path on a numbered host', () => {
     const url = new URL(
       'https://us7-usndr.com/ru/eu1_link_tracker?hash=6dh4q41ohybo4myz4emnf1y6bpgch5k6547m1c&url=aHR0cHM6Ly9leGFtcGxlLm9yZy9uaWtlLXNiLz9xPTE~',
@@ -74,8 +82,40 @@ describe('unwrapUnisender', () => {
     expect(unwrapUnisender(url)).toBeUndefined()
   })
 
+  it('should return undefined for a non-numbered host', () => {
+    const url = new URL(
+      'https://usx-usndr.com/ru/mail_link_tracker?url=https%253A%252F%252Fexample.org%252F',
+    )
+
+    expect(unwrapUnisender(url)).toBeUndefined()
+  })
+
   it('should return undefined for another path on the same host', () => {
     const url = new URL('https://usndr.com/ru/subscribe?url=https%253A%252F%252Fexample.org%252F')
+
+    expect(unwrapUnisender(url)).toBeUndefined()
+  })
+
+  it('should return undefined for another tracker name', () => {
+    const url = new URL(
+      'https://usndr.com/ru/open_link_tracker?url=https%253A%252F%252Fexample.org%252F',
+    )
+
+    expect(unwrapUnisender(url)).toBeUndefined()
+  })
+
+  it('should return undefined for the tracker path under a prefix', () => {
+    const url = new URL(
+      'https://usndr.com/x/ru/mail_link_tracker?url=https%253A%252F%252Fexample.org%252F',
+    )
+
+    expect(unwrapUnisender(url)).toBeUndefined()
+  })
+
+  it('should return undefined for the tracker path with a trailing segment', () => {
+    const url = new URL(
+      'https://usndr.com/ru/mail_link_tracker/x?url=https%253A%252F%252Fexample.org%252F',
+    )
 
     expect(unwrapUnisender(url)).toBeUndefined()
   })
@@ -90,6 +130,14 @@ describe('unwrapUnisender', () => {
 
   it('should return undefined for a base64url non-http target', () => {
     const url = new URL('https://geteml.com/ru/mail_link_tracker?url=amF2YXNjcmlwdDphbGVydCgxKQ~~')
+
+    expect(unwrapUnisender(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a malformed twice-encoded target', () => {
+    const url = new URL(
+      'https://usndr.com/ru/mail_link_tracker?url=https%253A%252F%252Fexample.org%252F%25E0%25A4%25A',
+    )
 
     expect(unwrapUnisender(url)).toBeUndefined()
   })
