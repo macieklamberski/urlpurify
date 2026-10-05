@@ -135,6 +135,7 @@ Enabled by default:
 | `unwrapNaverOutgoing` | Naver outbound link redirect (cc.loginfra.com/...?u=\<target\>) and search result click (search.naver.com/p/crd/rd?u=\<target\>, also m.search.naver.com) |
 | `unwrapNewswire` | Newswire release and email click tracker (stats.newswire.com/x/html?final=\<base64url\>, also stats.nwe.io and stats.mediadboutreach.com) |
 | `unwrapOkRu` | OK.ru outbound link and leaving-site page (ok.ru/dk?cmd=logExternal&st.link=\<target\>, m.ok.ru/dk?st.cmd=outLinkWarning&st.rfn=\<target\>) |
+| `unwrapPhilpapers` | PhilPapers outbound link to a work's source (philpapers.org/go.pl?u=\<target\>) |
 | `unwrapPocket` | Pocket redirect (getpocket.com/redirect?url=\<target\>) |
 | `unwrapPrNewswire` | PR Newswire release click tracker (c212.net / edge.prnewswire.com /c/link/?u=\<target\>) |
 | `unwrapRedditOut` | Reddit outbound click tracker (out.reddit.com/?url=\<target\>) |

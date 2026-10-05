@@ -105,6 +105,7 @@ import { unwrapNewswire } from './unwraps/newswire.js'
 import { unwrapOkRu } from './unwraps/okRu.js'
 // import { unwrapOutlookSafelinks } from './unwraps/outlookSafelinks.js'
 // import { unwrapPartnerAds } from './unwraps/partnerAds.js'
+import { unwrapPhilpapers } from './unwraps/philpapers.js'
 import { unwrapPocket } from './unwraps/pocket.js'
 // import { unwrapPodtrac } from './unwraps/podtrac.js'
 // import { unwrapPostmark } from './unwraps/postmark.js'
@@ -324,6 +325,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   unwrapHashnode,
   unwrapJianshuGo,
   unwrapJuejin,
+  unwrapPhilpapers,
   unwrapResearchgate,
   unwrapSegmentfault,
   unwrapSspai,
