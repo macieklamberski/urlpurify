@@ -26,6 +26,20 @@ describe('unwrapOkRu', () => {
     expect(unwrapOkRu(url)).toBe('https://example.com/')
   })
 
+  it('should return undefined for st.link under another command', () => {
+    const url = new URL('https://ok.ru/dk?cmd=somethingElse&st.link=https%3A%2F%2Fexample.com%2F')
+
+    expect(unwrapOkRu(url)).toBeUndefined()
+  })
+
+  it('should return undefined for st.rfn under another command', () => {
+    const url = new URL(
+      'https://m.ok.ru/dk?st.cmd=somethingElse&st.rfn=https%3A%2F%2Fexample.com%2F',
+    )
+
+    expect(unwrapOkRu(url)).toBeUndefined()
+  })
+
   it('should return undefined for the addShare share intent on the same path', () => {
     const url = new URL(
       'http://www.odnoklassniki.ru/dk?st.cmd=addShare&st.s=1&st._surl=http://example.com/',
