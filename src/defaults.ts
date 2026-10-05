@@ -116,6 +116,7 @@ import { unwrapTumblr } from './unwraps/tumblr.js'
 import { unwrapVkAway } from './unwraps/vkAway.js'
 // import { unwrapVuture } from './unwraps/vuture.js'
 // import { unwrapWebgains } from './unwraps/webgains.js'
+// import { unwrapWikiwix } from './unwraps/wikiwix.js'
 // import { unwrapWordpressEmail } from './unwraps/wordpressEmail.js'
 // import { unwrapWordpressGo2 } from './unwraps/wordpressGo2.js'
 import { unwrapYahooSearch } from './unwraps/yahooSearch.js'
@@ -271,6 +272,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapEmbedly,
   unwrapMozillaOutgoing,
   // unwrapUkgwa,
+  // unwrapWikiwix,
 
   // Legacy aggregators.
   // unwrapFeedsportal,
