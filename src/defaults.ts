@@ -20,6 +20,7 @@ import { unwrapBing } from './unwraps/bing.js'
 // import { unwrapBolPartner } from './unwraps/bolPartner.js'
 import { unwrapBlueskyRedirect } from './unwraps/bsky.js'
 import { unwrapBusinessWire } from './unwraps/businessWire.js'
+// import { unwrapBuybox } from './unwraps/buybox.js'
 import { unwrapCalendly } from './unwraps/calendly.js'
 // import { unwrapCiscoSecureWeb } from './unwraps/ciscoSecureWeb.js'
 // import { unwrapCjNetwork } from './unwraps/cjNetwork.js'
@@ -168,6 +169,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapAwin,
   // unwrapBizrate,
   // unwrapBolPartner,
+  // unwrapBuybox,
   // unwrapCjNetwork,
   // unwrapDigidip,
   // unwrapDmmAffiliate,
