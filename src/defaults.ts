@@ -74,7 +74,6 @@ import { unwrapMedium } from './unwraps/medium.js'
 import { unwrapMozillaOutgoing } from './unwraps/mozillaOutgoing.js'
 import { unwrapNaverOutgoing } from './unwraps/naverOutgoing.js'
 // import { unwrapNicoMs } from './unwraps/nicoMs.js'
-// import { unwrapOo34 } from './unwraps/oo34.js'
 // import { unwrapOutlookSafelinks } from './unwraps/outlookSafelinks.js'
 // import { unwrapPartnerAds } from './unwraps/partnerAds.js'
 import { unwrapPocket } from './unwraps/pocket.js'
@@ -100,6 +99,7 @@ import { unwrapSspai } from './unwraps/sspai.js'
 import { unwrapSteamLinkfilter } from './unwraps/steamLinkfilter.js'
 // import { unwrapStreak } from './unwraps/streak.js'
 import { unwrapThreadsShim } from './unwraps/threads.js'
+// import { unwrapTracdelight } from './unwraps/tracdelight.js'
 // import { unwrapTradedoubler } from './unwraps/tradedoubler.js'
 // import { unwrapTravelpayouts } from './unwraps/travelpayouts.js'
 import { unwrapTumblr } from './unwraps/tumblr.js'
@@ -181,7 +181,6 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapKlook,
   // unwrapLinksynergy,
   // unwrapMoshimo,
-  // unwrapOo34,
   // unwrapPartnerAds,
   // unwrapPxf,
   // Rakuten Japan's own program, separate from the LinkSynergy network in unwrapLinksynergy.
@@ -194,6 +193,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapSkimlinks,
   // unwrapSmartredirect,
   // unwrapStay22,
+  // unwrapTracdelight,
   // unwrapTradedoubler,
   // unwrapTravelpayouts,
   // unwrapValuecommerce,
