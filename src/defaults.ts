@@ -252,6 +252,7 @@ import { unwrapVkAway } from './unwraps/vkAway.js'
 // import { unwrapWordpressEmail } from './unwraps/wordpressEmail.js'
 // import { unwrapWordpressGo2 } from './unwraps/wordpressGo2.js'
 // import { unwrapWorldNomads } from './unwraps/worldNomads.js'
+import { unwrapWpPoczta } from './unwraps/wpPoczta.js'
 import { unwrapYahooJapan } from './unwraps/yahooJapan.js'
 import { unwrapYahooSearch } from './unwraps/yahooSearch.js'
 // import { unwrapYamm } from './unwraps/yamm.js'
@@ -491,6 +492,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   unwrapVanilla,
   unwrapVbulletin,
   unwrapVkAway,
+  unwrapWpPoczta,
   unwrapYandexMail,
   unwrapYelp,
 

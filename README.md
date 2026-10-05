@@ -168,6 +168,7 @@ Enabled by default:
 | `unwrapVanilla` | Vanilla Forums leaving page (\<any host\>/home/leaving?target=\<target\>) |
 | `unwrapVbulletin` | vBulletin SEO add-on external link redirect (\<any host\>/redirect-to/?redirect=\<target\>) |
 | `unwrapVkAway` | VK away redirect (vk.com/away.php?to=\<target\>) |
+| `unwrapWpPoczta` | WP Poczta and o2 webmail dereferrer (zasobygwp.pl/redirect?url=\<base64\>) |
 | `unwrapYahooJapan` | Yahoo! JAPAN click redirect (rdsig.yahoo.co.jp/.../RU=\<base64url\>/RS=...) |
 | `unwrapYahooSearch` | Yahoo Search redirect (r.search.yahoo.com/.../RU=\<target\>/RK=...) |
 | `unwrapYandexMail` | Yandex Mail link redirect (mail.yandex.\<TLD\>/re.jsx?l=\<base64url\>) |
