@@ -280,6 +280,7 @@ import { unwrapVbulletin } from './unwraps/vbulletin.js'
 // import { unwrapViglink } from './unwraps/viglink.js'
 import { unwrapVirgool } from './unwraps/virgool.js'
 import { unwrapVkAway } from './unwraps/vkAway.js'
+// import { unwrapVocus } from './unwraps/vocus.js'
 // import { unwrapVuture } from './unwraps/vuture.js'
 // import { unwrapWebcitation } from './unwraps/webcitation.js'
 // import { unwrapWebgains } from './unwraps/webgains.js'
@@ -394,6 +395,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapTwitterRedirect,
   // unwrapUnisender,
   // unwrapVadeSecure,
+  // unwrapVocus,
   // unwrapVuture,
   // unwrapWordpressEmail,
   // unwrapYamm,

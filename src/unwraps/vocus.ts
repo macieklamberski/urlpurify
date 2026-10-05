@@ -1,0 +1,19 @@
+import type { UrlUnwrapper } from '../types.js'
+import { createParamExtractor } from '../utils.js'
+
+const linkPathRegex = /^\/m?link$/
+
+const extractTarget = createParamExtractor({
+  hosts: 'tracking.vocus.io',
+  params: ['url'],
+})
+
+// Vocus.io email click tracker (tracking.vocus.io/link?id=<id>&url=<target>, also /mlink).
+// Opt-in: unwrapping removes the sender's click count.
+export const unwrapVocus: UrlUnwrapper = (url) => {
+  if (!linkPathRegex.test(url.pathname)) {
+    return
+  }
+
+  return extractTarget(url)
+}
