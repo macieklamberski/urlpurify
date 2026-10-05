@@ -106,6 +106,7 @@ Enabled by default:
 | `unwrapDzen` | Dzen away redirect (dzen.ru/away?to=\<target\>) |
 | `unwrapEvernote` | Evernote outbound link redirect (www.evernote.com/OutboundRedirect.action?dest=\<target\>) |
 | `unwrapFacebookShim` | Meta link shim (l.facebook.com/l.php?u=\<target\>, also lm., www., upload., m., web., pt-br., free., business., 0. and bare facebook.com, and l.messenger.com, plus l.facebook.com/?u=\<target\> and l.facebook.com/lsr.php?u=\<target\>) |
+| `unwrapFeedStatistics` | Feed Statistics WordPress plugin click counter (\<any blog\>/?feed-stats-url=\<base64 target\>) |
 | `unwrapFlipboard` | Flipboard outbound redirect (flipboard.com/redirect?url=\<target\>) |
 | `unwrapGitee` | Gitee external link redirect (gitee.com/link?target=\<target\>) |
 | `unwrapGoogle` | Google redirect (google.\<TLD\>/url?url=\<target\> or ?q=\<target\>) |
