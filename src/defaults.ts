@@ -57,6 +57,7 @@ import { unwrapHrefLi } from './unwraps/hrefLi.js'
 // import { unwrapImpact } from './unwraps/impact.js'
 import { unwrapIndexHu } from './unwraps/indexHu.js'
 import { unwrapInstagramShim } from './unwraps/instagram.js'
+// import { unwrapInvolveAsia } from './unwraps/involveAsia.js'
 import { unwrapJianshuGo } from './unwraps/jianshuGo.js'
 import { unwrapJive } from './unwraps/jive.js'
 import { unwrapJuejin } from './unwraps/juejin.js'
@@ -177,6 +178,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapGateSc,
   // unwrapGeoriot,
   // unwrapImpact,
+  // unwrapInvolveAsia,
   // unwrapKlook,
   // unwrapLinksynergy,
   // unwrapMoshimo,
