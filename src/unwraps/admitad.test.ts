@@ -32,6 +32,22 @@ describe('unwrapAdmitad', () => {
     expect(unwrapAdmitad(url)).toBeUndefined()
   })
 
+  it('should return undefined for a click path under a prefix', () => {
+    const url = new URL(
+      'https://ad.admitad.com/x/g/26qh23putc505d70264a53b922955a/?ulp=https%3A%2F%2Fwww.example.com%2F',
+    )
+
+    expect(unwrapAdmitad(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a path below the click id', () => {
+    const url = new URL(
+      'https://ad.admitad.com/g/26qh23putc505d70264a53b922955a/extra?ulp=https%3A%2F%2Fwww.example.com%2F',
+    )
+
+    expect(unwrapAdmitad(url)).toBeUndefined()
+  })
+
   it('should return undefined for another path on the host', () => {
     const url = new URL(
       'https://ad.admitad.com/fbanner/5371e02f8d3f6132207f38da8cfb49/?ulp=https%3A%2F%2Fexample.com%2F',
