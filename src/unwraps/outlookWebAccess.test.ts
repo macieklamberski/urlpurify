@@ -92,6 +92,22 @@ describe('unwrapOutlookWebAccess', () => {
     expect(unwrapOutlookWebAccess(url)).toBeUndefined()
   })
 
+  it('should return undefined for redir.aspx under another owa folder', () => {
+    const url = new URL(
+      'https://webmail.example.org/owa/auth/redir.aspx?URL=http%3a%2f%2fwww.example.com%2f',
+    )
+
+    expect(unwrapOutlookWebAccess(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a path that only starts with the exchweb shim', () => {
+    const url = new URL(
+      'https://mail.example.com/exchweb/bin/redir.aspx?URL=http://www.example.com/',
+    )
+
+    expect(unwrapOutlookWebAccess(url)).toBeUndefined()
+  })
+
   it('should return undefined for the path under a context path', () => {
     const url = new URL(
       'https://www.example.org/news/exchweb/bin/redir.asp?URL=http://www.example.com/',
