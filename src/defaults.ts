@@ -90,6 +90,7 @@ import { unwrapJianshuGo } from './unwraps/jianshuGo.js'
 import { unwrapJive } from './unwraps/jive.js'
 import { unwrapJuejin } from './unwraps/juejin.js'
 // import { unwrapKlook } from './unwraps/klook.js'
+// import { unwrapLazada } from './unwraps/lazada.js'
 // import { unwrapLeverAnalytics } from './unwraps/leverAnalytics.js'
 import { unwrapLinkedin } from './unwraps/linkedin.js'
 // import { unwrapLinksynergy } from './unwraps/linksynergy.js'
@@ -284,6 +285,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapHasoffers,
   // unwrapImpact,
   // unwrapKlook,
+  // unwrapLazada,
   // unwrapLinksynergy,
   // unwrapLinktrust,
   // unwrapMoshimo,
