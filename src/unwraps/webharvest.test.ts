@@ -38,6 +38,12 @@ describe('unwrapWebharvest', () => {
     expect(unwrapWebharvest(url)).toBeUndefined()
   })
 
+  it('should return undefined for a partial timestamp', () => {
+    const url = new URL('https://webharvest.gov/peth04/2004/http://www.example.gov/')
+
+    expect(unwrapWebharvest(url)).toBeUndefined()
+  })
+
   it('should return undefined for another collection', () => {
     const url = new URL('https://webharvest.gov/search/20041020215226/http://www.example.gov/')
 
