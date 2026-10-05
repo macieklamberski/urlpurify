@@ -151,6 +151,7 @@ Enabled by default:
 | `unwrapPrNewswire` | PR Newswire release click tracker (c212.net / edge.prnewswire.com /c/link/?u=\<target\>) |
 | `unwrapPrweb` | PRWeb release click tracker (www.prweb.net/Redirect.aspx?id=\<base64\>) |
 | `unwrapRedditOut` | Reddit outbound click tracker (out.reddit.com/?url=\<target\>) |
+| `unwrapRediffmail` | Rediffmail webmail link redirect (www.rediffmail.com/cgi-bin/red.cgi?red=\<target\>) |
 | `unwrapResearchgate` | ResearchGate dereferrer (www.researchgate.net/deref/\<target\> and go.Deref.html?url=\<target\>) |
 | `unwrapSapHelp` | SAP Help Portal leaving-site page (help.sap.com/docs/link-disclaimer?site=\<target\>) |
 | `unwrapSegmentfault` | Segmentfault external link redirect (link.segmentfault.com/?enc=\<base64\>) |

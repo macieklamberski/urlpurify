@@ -182,6 +182,7 @@ import { unwrapPrweb } from './unwraps/prweb.js'
 // import { unwrapRakutenAffiliate } from './unwraps/rakutenAffiliate.js'
 // import { unwrapRecruitics } from './unwraps/recruitics.js'
 import { unwrapRedditOut } from './unwraps/redditOut.js'
+import { unwrapRediffmail } from './unwraps/rediffmail.js'
 // import { unwrapRedirectingat } from './unwraps/redirectingat.js'
 import { unwrapResearchgate } from './unwraps/researchgate.js'
 // import { unwrapReverbnation } from './unwraps/reverbnation.js'
@@ -456,6 +457,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   unwrapOkRu,
   unwrapPocket,
   unwrapRedditOut,
+  unwrapRediffmail,
   unwrapSkyrock,
   unwrapSoundcloud,
   unwrapSteamLinkfilter,
