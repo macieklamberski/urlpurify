@@ -246,6 +246,7 @@ import { unwrapVanilla } from './unwraps/vanilla.js'
 import { unwrapVbulletin } from './unwraps/vbulletin.js'
 // import { unwrapVefsafn } from './unwraps/vefsafn.js'
 // import { unwrapViglink } from './unwraps/viglink.js'
+import { unwrapVirgool } from './unwraps/virgool.js'
 import { unwrapVkAway } from './unwraps/vkAway.js'
 // import { unwrapVuture } from './unwraps/vuture.js'
 // import { unwrapWebcitation } from './unwraps/webcitation.js'
@@ -522,6 +523,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   unwrapSapHelp,
   unwrapSegmentfault,
   unwrapSspai,
+  unwrapVirgool,
   unwrapZhihu,
 
   // Press release wires.
