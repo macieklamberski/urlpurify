@@ -32,8 +32,8 @@ describe('unwrapBuzzstream', () => {
     expect(unwrapBuzzstream(url)).toBeUndefined()
   })
 
-  it('should return undefined for a link id that is not 32 hex characters', () => {
-    const url = new URL('https://tx.bz-mail-us1.com/1/l/about?rl=https%3A%2F%2Fexample.com%2F')
+  it('should return undefined for a short hex link id', () => {
+    const url = new URL('https://tx.bz-mail-us1.com/1/l/5df7b08c?rl=https%3A%2F%2Fexample.com%2F')
 
     expect(unwrapBuzzstream(url)).toBeUndefined()
   })
@@ -41,6 +41,14 @@ describe('unwrapBuzzstream', () => {
   it('should return undefined for the path on another host', () => {
     const url = new URL(
       'https://example.com/1/l/5df7b08c57ac4ef3befd0dc7885d55cd?rl=https%3A%2F%2Fexample.org%2F',
+    )
+
+    expect(unwrapBuzzstream(url)).toBeUndefined()
+  })
+
+  it('should return undefined for the shape below another path', () => {
+    const url = new URL(
+      'https://tx.bz-mail-us1.com/x/1/l/5df7b08c57ac4ef3befd0dc7885d55cd?rl=https%3A%2F%2Fexample.com%2F',
     )
 
     expect(unwrapBuzzstream(url)).toBeUndefined()
