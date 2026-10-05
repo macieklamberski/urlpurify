@@ -24,10 +24,16 @@ describe('unwrapCommissionFactory', () => {
     expect(unwrapCommissionFactory(url)).toBeUndefined()
   })
 
-  it('should return undefined for the banner path', () => {
+  it('should extract target from Url param on the banner click path', () => {
     const url = new URL(
       'https://t.cfjump.com/72403/b/187765?Url=https%3a%2f%2fwww.example.com%2fwork-light.html',
     )
+
+    expect(unwrapCommissionFactory(url)).toBe('https://www.example.com/work-light.html')
+  })
+
+  it('should return undefined for the banner impression path', () => {
+    const url = new URL('https://t.cfjump.com/72403/a/187765?Url=https%3a%2f%2fwww.example.com%2f')
 
     expect(unwrapCommissionFactory(url)).toBeUndefined()
   })
