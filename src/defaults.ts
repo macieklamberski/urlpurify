@@ -106,6 +106,7 @@ import { unwrapIndexHu } from './unwraps/indexHu.js'
 // import { unwrapInsiderAffiliate } from './unwraps/insiderAffiliate.js'
 import { unwrapInstagramShim } from './unwraps/instagram.js'
 // import { unwrapIntranetQuorum } from './unwraps/intranetQuorum.js'
+// import { unwrapInvolveAsia } from './unwraps/involveAsia.js'
 import { unwrapJianshuGo } from './unwraps/jianshuGo.js'
 import { unwrapJive } from './unwraps/jive.js'
 import { unwrapJuejin } from './unwraps/juejin.js'
@@ -335,6 +336,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapHasoffers,
   // unwrapImpact,
   // unwrapInsiderAffiliate,
+  // unwrapInvolveAsia,
   // unwrapJustwatch,
   // unwrapKlook,
   // unwrapLazada,
