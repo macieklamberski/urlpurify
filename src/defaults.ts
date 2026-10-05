@@ -242,6 +242,7 @@ import { unwrapTiktok } from './unwraps/tiktok.js'
 // import { unwrapTitanhqLinklock } from './unwraps/titanhqLinklock.js'
 // import { unwrapTopsec } from './unwraps/topsec.js'
 // import { unwrapToucharcade } from './unwraps/toucharcade.js'
+// import { unwrapTracdelight } from './unwraps/tracdelight.js'
 // import { unwrapTradedoubler } from './unwraps/tradedoubler.js'
 // import { unwrapTradetracker } from './unwraps/tradetracker.js'
 // import { unwrapTravelpayouts } from './unwraps/travelpayouts.js'
@@ -458,6 +459,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapStay22,
   // unwrapSurugaya,
   // unwrapToucharcade,
+  // unwrapTracdelight,
   // unwrapTradedoubler,
   // unwrapTradetracker,
   // unwrapTravelpayouts,
