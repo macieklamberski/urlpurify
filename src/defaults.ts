@@ -91,7 +91,8 @@ import { unwrapDisqus } from './unwraps/disqus.js'
 import { unwrapDouban } from './unwraps/douban.js'
 import { unwrapDropbox } from './unwraps/dropbox.js'
 // import { unwrapDstats } from './unwraps/dstats.js'
-// import { unwrapDuckduckgo } from './unwraps/duckduckgo.js'
+import { unwrapDuckduckgo } from './unwraps/duckduckgo.js'
+// import { unwrapDuckduckgoAds } from './unwraps/duckduckgoAds.js'
 // import { unwrapDuomai } from './unwraps/duomai.js'
 // import { unwrapDyn } from './unwraps/dyn.js'
 import { unwrapDzen } from './unwraps/dzen.js'
@@ -348,7 +349,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // Search engines.
   unwrapAsk,
   unwrapBing,
-  // unwrapDuckduckgo,
+  unwrapDuckduckgo,
   unwrapGoogle,
   unwrapGoogleAmpViewer,
   unwrapGoogleNews,
@@ -550,6 +551,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapBingAds,
   // unwrapBitrixBanner,
   // unwrapChitika,
+  // unwrapDuckduckgoAds,
   // unwrapFederatedMedia,
   // unwrapGoogleAds,
   // unwrapReviveAdserver,
