@@ -33,6 +33,7 @@ import { unwrapArquivo } from './unwraps/arquivo.js'
 import { unwrapArxiv } from './unwraps/arxiv.js'
 import { unwrapAsk } from './unwraps/ask.js'
 import { unwrapAugure } from './unwraps/augure.js'
+import { unwrapAusha } from './unwraps/ausha.js'
 import { unwrapAvantlink } from './unwraps/avantlink.js'
 import { unwrapAwesound } from './unwraps/awesound.js'
 import { unwrapAwin } from './unwraps/awin.js'
@@ -685,6 +686,7 @@ export const advertisingUnwrappers: Array<UrlUnwrapper> = [
 export const downloadMeasurementUnwrappers: Array<UrlUnwrapper> = [
   unwrapAcast,
   unwrapAnchor,
+  unwrapAusha,
   unwrapAwesound,
   unwrapBlubrry,
   unwrapChartable,
