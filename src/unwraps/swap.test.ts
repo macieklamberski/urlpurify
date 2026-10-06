@@ -22,6 +22,16 @@ describe('unwrapSwap', () => {
     )
   })
 
+  it('should extract a target from a staging host', () => {
+    const url = new URL(
+      'https://dev.swap.fm/track/966iG52chvJfjET9zmlc/staging.swap.fm/track/aTXXqoVB8c1nISJd2wpq/tracking-stage.swap.fm/track/gSUvXucPYh23u71igzxy/example.com/FPMN1074820307.mp3?updated=1753942550',
+    )
+
+    expect(unwrapSwap(url)).toBe(
+      'https://staging.swap.fm/track/aTXXqoVB8c1nISJd2wpq/tracking-stage.swap.fm/track/gSUvXucPYh23u71igzxy/example.com/FPMN1074820307.mp3?updated=1753942550',
+    )
+  })
+
   it('should return undefined when the prefix has no target', () => {
     const url = new URL('https://tracking.swap.fm/track/fxUKVg2nSMaPSHLeKNKH/')
 
