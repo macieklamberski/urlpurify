@@ -63,6 +63,7 @@ describe('defaultUnwrappers', () => {
       'unwrapFinalsite',
       'unwrapFlipboard',
       'unwrapFtc',
+      'unwrapGfnLinkProxy',
       'unwrapGitee',
       'unwrapGoogle',
       'unwrapGoogleAmpViewer',
