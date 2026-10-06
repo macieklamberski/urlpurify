@@ -61,6 +61,7 @@ import { unwrapCanva } from './unwraps/canva.js'
 // import { unwrapCcbill } from './unwraps/ccbill.js'
 // import { unwrapChartable } from './unwraps/chartable.js'
 // import { unwrapCheckPointHarmony } from './unwraps/checkPointHarmony.js'
+// import { unwrapChitika } from './unwraps/chitika.js'
 // import { unwrapCiscoSecureWeb } from './unwraps/ciscoSecureWeb.js'
 // import { unwrapCjNetwork } from './unwraps/cjNetwork.js'
 // import { unwrapCleverbridge } from './unwraps/cleverbridge.js'
@@ -529,6 +530,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // Ad networks.
   // unwrapBingAds,
   // unwrapBitrixBanner,
+  // unwrapChitika,
   // unwrapGoogleAds,
   // unwrapReviveAdserver,
   // unwrapSmartAdserver,
