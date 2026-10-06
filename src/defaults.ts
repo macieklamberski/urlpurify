@@ -71,6 +71,7 @@ import { unwrapCsdn } from './unwraps/csdn.js'
 // import { unwrapCuelinks } from './unwraps/cuelinks.js'
 import { unwrapDasBlog } from './unwraps/dasBlog.js'
 import { unwrapDatalifeEngine } from './unwraps/datalifeEngine.js'
+// import { unwrapDeployer } from './unwraps/deployer.js'
 import { unwrapDerefMail } from './unwraps/derefMail.js'
 import { unwrapDeviantartOutgoing } from './unwraps/deviantartOutgoing.js'
 // import { unwrapDigidip } from './unwraps/digidip.js'
@@ -342,6 +343,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapConstantContact,
   // unwrapContactMonkey,
   // unwrapCse360,
+  // unwrapDeployer,
   // unwrapDirectMail,
   // unwrapDyn,
   // unwrapEdgepilot,
