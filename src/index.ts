@@ -1,7 +1,17 @@
 export { cleanUrl, stripTrackingParams, unwrapUrl } from './clean.js'
 export {
+  advertisingUnwrappers,
+  affiliateUnwrappers,
+  archiveProxyUnwrappers,
   defaultTrackingParams,
   defaultUnwrappers,
+  downloadMeasurementUnwrappers,
+  emailTrackingUnwrappers,
+  linkShimUnwrappers,
+  pressReleaseUnwrappers,
+  searchClickUnwrappers,
+  securityGatewayUnwrappers,
+  signInShimUnwrappers,
   trackingParamsLiterals,
   trackingParamsPatterns,
 } from './defaults.js'

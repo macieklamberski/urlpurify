@@ -5,8 +5,7 @@ const pathRegex = /^\/~\/t\/0\/[0_]\/[^/]+(?:\/full)?\/~(.+)$/
 
 // FeedBlitz feed item click tracker (feeds.feedblitz.com/~/t/0/0/<feed>/~<target>, also /0/_/ and
 // /full/). The target runs to the end of the url. FeedBlitz answers a target without a scheme
-// with a redirect to its https url, so one is added. Opt-in: unwrapping removes the publisher's
-// click count.
+// with a redirect to its https url, so one is added.
 export const unwrapFeedblitz: UrlUnwrapper = (url) => {
   if (url.hostname !== 'feeds.feedblitz.com') {
     return
