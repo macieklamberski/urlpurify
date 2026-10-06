@@ -85,6 +85,7 @@ describe('defaultUnwrappers', () => {
       'unwrapLd246',
       'unwrapLinkedin',
       'unwrapLivejournal',
+      'unwrapLogicboard',
       'unwrapMailRu',
       'unwrapMarketwire',
       'unwrapMedium',

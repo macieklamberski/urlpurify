@@ -176,6 +176,7 @@ Enabled by default:
 | `unwrapLd246` | LianDi community outbound link redirect (ld246.com/forward?goto=\<target\>) |
 | `unwrapLinkedin` | LinkedIn outbound link shims and click trackers (www.linkedin.com/safety/go?url=\<target\>, /redir/redirect, /redirect, /nhome/nus-redirect, /nus-trk, /e/v2, /company/\<id\>/redirect) |
 | `unwrapLivejournal` | LiveJournal outbound link redirect (www.livejournal.com/away?to=\<target\>) |
+| `unwrapLogicboard` | LogicBoard forum external link page (\<any host\>/away.php?s=\<target\>) |
 | `unwrapMailRu` | Mail.ru webmail link checker (checklink.mail.ru/proxy?url=\<target\>) and click redirect (click.mail.ru/redir?u=\<target\>, also click.my.mail.ru) |
 | `unwrapMarketwire` | Marketwire release click tracker (ctt.marketwire.com/?url=\<target\>) |
 | `unwrapMedium` | Medium outbound link redirect (medium.com/r/?url=\<target\>) and sign-in hop (medium.com/m/global-identity?redirectUrl=\<target\>) |
