@@ -142,6 +142,38 @@ describe('unwrapWebArchive', () => {
     },
   )
 
+  it('should extract the target of a Scholar access link', () => {
+    const url = new URL(
+      'https://scholar.archive.org/work/pzg73yuesjdrlprgamoxvwkeum/access/wayback/https://www.example.com/load_pdf.php?ID_ARTICLE=TRAV_024_0021&download=1',
+    )
+
+    expect(unwrapWebArchive(url)).toBe(
+      'https://www.example.com/load_pdf.php?ID_ARTICLE=TRAV_024_0021&download=1',
+    )
+  })
+
+  it('should extract a percent-encoded target of a Scholar access link', () => {
+    const url = new URL(
+      'https://scholar.archive.org/work/3vyjt2wj2ndp5egy72xkudeeey/access/wayback/https%3A%2F%2Fwww.example.com%2Fdownload%2F4cc417',
+    )
+
+    expect(unwrapWebArchive(url)).toBe('https://www.example.com/download/4cc417')
+  })
+
+  it('should return undefined for the Scholar work page', () => {
+    const url = new URL('https://scholar.archive.org/work/pzg73yuesjdrlprgamoxvwkeum')
+
+    expect(unwrapWebArchive(url)).toBeUndefined()
+  })
+
+  it('should return undefined for the Scholar access path on another host', () => {
+    const url = new URL(
+      'https://web.archive.org/work/pzg73yuesjdrlprgamoxvwkeum/access/wayback/https://www.example.com/a.pdf',
+    )
+
+    expect(unwrapWebArchive(url)).toBeUndefined()
+  })
+
   it('should return undefined for the save path', () => {
     const url = new URL('https://web.archive.org/save/https://example.com/page')
 

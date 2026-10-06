@@ -27,7 +27,7 @@ const clickPathRegex = /^\/(?:t\/)?[^/]+$/
 // sometimes has its scheme collapsed to https:/. The fragment segment is the target's anchor,
 // percent-encoded once.
 const deepLinkPathRegex =
-  /^\/links\/\d+\/type\/dlg\/(?:sid\/[^/]*\/)?(?:fragment\/([^/]*)\/)?(https?):\/\/?(.+)$/
+  /^\/links\/\d+\/type\/(?:dlg|am)\/(?:sid\/[^/]*\/)?(?:fragment\/([^/]*)\/)?(https?):\/\/?(.+)$/
 
 const decodeFragment = (value: string): string => {
   try {
@@ -39,12 +39,12 @@ const decodeFragment = (value: string): string => {
 
 const extractUrlParam = createParamExtractor({
   hosts,
-  params: ['url'],
+  params: ['url', 'loc'],
 })
 
 // Commission Junction / CJ affiliate network redirects on rotating brand domains and their
-// subdomains (/click-<pid>-<aid>?url=<target>, and the deep link
-// /links/<pid>/type/dlg/[sid/<x>/][fragment/<x>/]<target>).
+// subdomains (/click-<pid>-<aid>?url=<target>, also the older loc=<target>, and the deep link
+// /links/<pid>/type/dlg/[sid/<x>/][fragment/<x>/]<target>, also type/am).
 export const unwrapCjNetwork: UrlUnwrapper = (url) => {
   const match = url.pathname.match(deepLinkPathRegex)
 
