@@ -111,6 +111,7 @@ import { unwrapEvernote } from './unwraps/evernote.js'
 // import { unwrapExpediaAffiliate } from './unwraps/expediaAffiliate.js'
 import { unwrapFacebookShim } from './unwraps/facebook.js'
 // import { unwrapFanbridge } from './unwraps/fanbridge.js'
+// import { unwrapFederatedMedia } from './unwraps/federatedMedia.js'
 // import { unwrapFeedblitz } from './unwraps/feedblitz.js'
 // import { unwrapFeedsportal } from './unwraps/feedsportal.js'
 import { unwrapFeedStatistics } from './unwraps/feedStatistics.js'
@@ -549,6 +550,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapBingAds,
   // unwrapBitrixBanner,
   // unwrapChitika,
+  // unwrapFederatedMedia,
   // unwrapGoogleAds,
   // unwrapReviveAdserver,
   // unwrapSmartAdserver,
