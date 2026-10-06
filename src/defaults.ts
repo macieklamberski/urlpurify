@@ -269,6 +269,7 @@ import { unwrapSmartredirect } from './unwraps/smartredirect.js'
 import { unwrapSmry } from './unwraps/smry.js'
 import { unwrapSophos } from './unwraps/sophos.js'
 import { unwrapSoundcloud } from './unwraps/soundcloud.js'
+import { unwrapSoundOn } from './unwraps/soundOn.js'
 import { unwrapSquarespaceEmail } from './unwraps/squarespaceEmail.js'
 import { unwrapSspai } from './unwraps/sspai.js'
 import { unwrapStay22 } from './unwraps/stay22.js'
@@ -701,6 +702,7 @@ export const downloadMeasurementUnwrappers: Array<UrlUnwrapper> = [
   unwrapPodscribe,
   unwrapPodsights,
   unwrapPodtrac,
+  unwrapSoundOn,
   unwrapVgWort,
 ]
 
