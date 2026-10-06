@@ -37,4 +37,22 @@ describe('unwrapAusha', () => {
 
     expect(unwrapAusha(url)).toBeUndefined()
   })
+
+  it('should return undefined for an id shorter than 12 characters', () => {
+    const url = new URL('https://tr.ausha.co/BDMmula5dZW/example.com/episode.mp3')
+
+    expect(unwrapAusha(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a target with no episode id', () => {
+    const url = new URL('https://tr.ausha.co/cdn.ausha.fm/episode.mp3')
+
+    expect(unwrapAusha(url)).toBeUndefined()
+  })
+
+  it('should return undefined for an id below another segment', () => {
+    const url = new URL('https://tr.ausha.co/a/BDMmula5dZWo/example.com/episode.mp3')
+
+    expect(unwrapAusha(url)).toBeUndefined()
+  })
 })
