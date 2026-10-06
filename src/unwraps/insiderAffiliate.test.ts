@@ -18,6 +18,22 @@ describe('unwrapInsiderAffiliate', () => {
     expect(unwrapInsiderAffiliate(url)).toBe('https://www.example.com/articles/glut-of-goods')
   })
 
+  it('should extract target from the reviews out redirect', () => {
+    const url = new URL(
+      'https://www.businessinsider.com/reviews/out?platform=browser&postSource=bi%7C61fc3233f4e84b33245b44e8&sc=false&type=LINK-WITH-REVIEW-SLASH-OUT&u=https%3A%2F%2Fwww.example.com%2Fresale%2F',
+    )
+
+    expect(unwrapInsiderAffiliate(url)).toBe('https://www.example.com/resale/')
+  })
+
+  it('should return undefined for another reviews path on the Insider site', () => {
+    const url = new URL(
+      'https://www.businessinsider.com/reviews/best-mixers?u=https%3A%2F%2Fwww.example.com%2F',
+    )
+
+    expect(unwrapInsiderAffiliate(url)).toBeUndefined()
+  })
+
   it('should return undefined when u param is missing', () => {
     const url = new URL('https://affiliate.insider.com/?h=d42bcad2&postID=6a4d2b5b70e21d8253fed7e9')
 

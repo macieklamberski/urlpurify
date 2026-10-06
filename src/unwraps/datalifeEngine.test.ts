@@ -26,6 +26,28 @@ describe('unwrapDatalifeEngine', () => {
     expect(unwrapDatalifeEngine(url)).toBe('https://example.org/search?q=a%20b&page=2')
   })
 
+  it('should extract target from the index.php go route', () => {
+    const url = new URL('https://www.example.com/index.php?do=go&url=aHR0cHM6Ly9leGFtcGxlLm9yZy8')
+
+    expect(unwrapDatalifeEngine(url)).toBe('https://example.org/')
+  })
+
+  it('should return undefined for index.php with another do value', () => {
+    const url = new URL(
+      'https://www.example.com/index.php?do=search&url=aHR0cHM6Ly9leGFtcGxlLm9yZy8',
+    )
+
+    expect(unwrapDatalifeEngine(url)).toBeUndefined()
+  })
+
+  it('should return undefined for the go route under a prefix', () => {
+    const url = new URL(
+      'https://www.example.com/forum/index.php?do=go&url=aHR0cHM6Ly9leGFtcGxlLm9yZy8',
+    )
+
+    expect(unwrapDatalifeEngine(url)).toBeUndefined()
+  })
+
   it('should return undefined for another path on the same host', () => {
     const url = new URL(
       'https://www.example.com/go.php?url=aHR0cHM6Ly93d3cuZXhhbXBsZS5vcmcvbC80NTkwMjg1MTM0ODQyMDgwLw%3D%3D',
