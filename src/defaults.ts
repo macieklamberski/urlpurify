@@ -145,6 +145,7 @@ import { unwrapHrefLi } from './unwraps/hrefLi.js'
 // import { unwrapIgafnl } from './unwraps/igafnl.js'
 // import { unwrapImpact } from './unwraps/impact.js'
 import { unwrapIndexHu } from './unwraps/indexHu.js'
+import { unwrapInfospace } from './unwraps/infospace.js'
 // import { unwrapInsiderAffiliate } from './unwraps/insiderAffiliate.js'
 import { unwrapInstagramShim } from './unwraps/instagram.js'
 // import { unwrapIntranetQuorum } from './unwraps/intranetQuorum.js'
@@ -340,6 +341,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   unwrapGoogleNewsModern,
   unwrapGoogleScholar,
   unwrapHirkereso,
+  unwrapInfospace,
   unwrapYahooJapan,
   unwrapYahooSearch,
   unwrapYouTube,

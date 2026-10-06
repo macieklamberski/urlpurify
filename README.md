@@ -138,6 +138,7 @@ Enabled by default:
 | `unwrapHorde` | Horde webmail link dereferrer (\<any host\>/horde/services/go.php?url=\<target\>, also /util/go.php) |
 | `unwrapHrefLi` | href.li referrer stripper (href.li/?\<target\>), used by Tumblr |
 | `unwrapIndexHu` | Index.hu and Dex.hu outbound link counter (index.hu/x.php?id=\<id\>&url=\<target\>) |
+| `unwrapInfospace` | InfoSpace metasearch result click (click.infospace.com/ClickHandler.ashx?ru=\<target\>) |
 | `unwrapInstagramShim` | Instagram outbound link shim (l.instagram.com with ?u=\<target\>) |
 | `unwrapIrs` | IRS leaving-site page (apps.irs.gov/app/scripts/exit.jsp?dest=\<target\>) |
 | `unwrapJianshuGo` | Jianshu external link redirect (links.jianshu.com/go?to=\<target\> and link.jianshu.com/?t=\<target\>) |
