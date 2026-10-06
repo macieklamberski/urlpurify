@@ -91,6 +91,40 @@ describe('unwrapWebArchive', () => {
     expect(unwrapWebArchive(value)).toBe('https://example.com/page')
   })
 
+  it('should add the http scheme to a latest snapshot target stored without one', () => {
+    const value = new URL('https://web.archive.org/web/www.example.com/article/865611356/')
+
+    expect(unwrapWebArchive(value)).toBe('http://www.example.com/article/865611356/')
+  })
+
+  it('should add the http scheme to a snapshot target stored without one', () => {
+    const value = new URL(
+      'https://web.archive.org/web/20160930144425/www.example.com/temp/chess.pov',
+    )
+
+    expect(unwrapWebArchive(value)).toBe('http://www.example.com/temp/chess.pov')
+  })
+
+  it('should add the http scheme to a replay target stored without one', () => {
+    const value = new URL(
+      'https://web.archive.org/20021217021438/www.example.com/arabic/history/history_uae.asp',
+    )
+
+    expect(unwrapWebArchive(value)).toBe('http://www.example.com/arabic/history/history_uae.asp')
+  })
+
+  it('should return undefined for a Wayback path with no dot in its first segment', () => {
+    const value = new URL('https://web.archive.org/web/sitemap/example.com/')
+
+    expect(unwrapWebArchive(value)).toBeUndefined()
+  })
+
+  it('should return undefined for a mailto target', () => {
+    const value = new URL('https://web.archive.org/web/20240101120000/mailto:info@example.com')
+
+    expect(unwrapWebArchive(value)).toBeUndefined()
+  })
+
   it('should return undefined for a partial timestamp before an unencoded target', () => {
     const value = new URL('https://web.archive.org/web/2024/https://example.com/page')
 
