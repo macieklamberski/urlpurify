@@ -245,6 +245,7 @@ import { unwrapProofpointV1 } from './unwraps/proofpointV1.js'
 import { unwrapProofpointV2 } from './unwraps/proofpointV2.js'
 import { unwrapProofpointV3 } from './unwraps/proofpointV3.js'
 import { unwrapPrweb } from './unwraps/prweb.js'
+import { unwrapQualityClick } from './unwraps/qualityClick.js'
 import { unwrapRakutenAffiliate } from './unwraps/rakutenAffiliate.js'
 import { unwrapRamblerMail } from './unwraps/ramblerMail.js'
 import { unwrapRecruitics } from './unwraps/recruitics.js'
@@ -644,6 +645,7 @@ export const affiliateUnwrappers: Array<UrlUnwrapper> = [
   unwrapNetaffiliation,
   unwrapPartnerAds,
   unwrapPriceGrabber,
+  unwrapQualityClick,
   // Rakuten Japan's own program, separate from the LinkSynergy network in unwrapLinksynergy.
   // Opt-in like the rest of the group: unwrapping drops the publisher's commission.
   unwrapRakutenAffiliate,
