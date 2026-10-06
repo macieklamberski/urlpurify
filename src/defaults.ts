@@ -128,6 +128,7 @@ import { unwrapGoogleAmpViewer } from './unwraps/googleAmpViewer.js'
 import { unwrapGoogleNews } from './unwraps/googleNews.js'
 import { unwrapGoogleNewsModern } from './unwraps/googleNewsModern.js'
 import { unwrapGoogleScholar } from './unwraps/googleScholar.js'
+// import { unwrapGoogleWebLight } from './unwraps/googleWebLight.js'
 // import { unwrapGroupMail } from './unwraps/groupMail.js'
 // import { unwrapGroupon } from './unwraps/groupon.js'
 // import { unwrapGurunavi } from './unwraps/gurunavi.js'
@@ -656,6 +657,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapArquivo,
   // unwrapBacLacWebArchive,
   // unwrapEmbedly,
+  // unwrapGoogleWebLight,
   // unwrapLocWebArchive,
   // unwrapMegalodon,
   unwrapMozillaOutgoing,
