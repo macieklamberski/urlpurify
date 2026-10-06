@@ -8,6 +8,12 @@ describe('unwrapPodroll', () => {
     expect(unwrapPodroll(url)).toBe('https://example.com/FGP7915113410.mp3')
   })
 
+  it('should extract a target on the rss host', () => {
+    const url = new URL('https://rss.pdrl.fm/ccb7c9/example.com/episode.mp3')
+
+    expect(unwrapPodroll(url)).toBe('https://example.com/episode.mp3')
+  })
+
   it('should keep the query string of the target', () => {
     const url = new URL(
       'https://pdrl.fm/37b23c/example.com/episodes/47001e9d-028e-4b92-9d0d-9ba23e90c63b.mp3?rss_browser=BAhJIgtDaHJvbWUGOgZFVA%3D%3D',
@@ -40,6 +46,24 @@ describe('unwrapPodroll', () => {
 
   it('should return undefined for other hosts', () => {
     const url = new URL('https://example.com/e800c2/example.org/episode.mp3')
+
+    expect(unwrapPodroll(url)).toBeUndefined()
+  })
+
+  it('should return undefined for an id longer than 6 characters', () => {
+    const url = new URL('https://pdrl.fm/e800c2a/example.com/episode.mp3')
+
+    expect(unwrapPodroll(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a target with no show id', () => {
+    const url = new URL('https://pdrl.fm/ab.cde/episode.mp3')
+
+    expect(unwrapPodroll(url)).toBeUndefined()
+  })
+
+  it('should return undefined for an id below another segment', () => {
+    const url = new URL('https://pdrl.fm/a/e800c2/example.com/episode.mp3')
 
     expect(unwrapPodroll(url)).toBeUndefined()
   })
