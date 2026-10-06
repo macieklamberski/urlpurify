@@ -32,6 +32,12 @@ describe('unwrapGumball', () => {
     expect(unwrapGumball(url)).toBeUndefined()
   })
 
+  it('should return undefined for a file at the root', () => {
+    const url = new URL('https://2.gum.fm/favicon.ico')
+
+    expect(unwrapGumball(url)).toBeUndefined()
+  })
+
   it('should return undefined when the show prefix has no target', () => {
     const url = new URL('https://s.gum.fm/s-611319b4bd3dc100237cd71c/')
 
@@ -40,6 +46,12 @@ describe('unwrapGumball', () => {
 
   it('should return undefined for other paths on the show host', () => {
     const url = new URL('https://s.gum.fm/r1/0123testrss/example.com/audio/episode4.mp3')
+
+    expect(unwrapGumball(url)).toBeUndefined()
+  })
+
+  it('should return undefined when the show id is not 24 hex characters', () => {
+    const url = new URL('https://s.gum.fm/s-feed/example.com/episode.mp3')
 
     expect(unwrapGumball(url)).toBeUndefined()
   })
