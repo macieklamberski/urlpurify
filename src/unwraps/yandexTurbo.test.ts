@@ -14,6 +14,28 @@ describe('unwrapYandexTurbo', () => {
     expect(unwrapYandexTurbo(url)).toBe('https://news.example.com/path')
   })
 
+  it('should extract the host from the path on yandex.ru', () => {
+    const url = new URL('https://yandex.ru/turbo/example.com/s/society/2020/12/21/1076391.html')
+
+    expect(unwrapYandexTurbo(url)).toBe('https://example.com/society/2020/12/21/1076391.html')
+  })
+
+  it('should extract the host from the path on turbopages.org', () => {
+    const url = new URL(
+      'https://example-com.turbopages.org/turbo/example.com/s/news/society/2020/alliance_id2020/',
+    )
+
+    expect(unwrapYandexTurbo(url)).toBe('https://example.com/news/society/2020/alliance_id2020/')
+  })
+
+  it('should drop the Turbo query when the host is in the path', () => {
+    const url = new URL(
+      'https://yandex.ru/turbo/example.com/s/world/2021/7/2/1106993.html?utm_source=yxnews&utm_medium=desktop',
+    )
+
+    expect(unwrapYandexTurbo(url)).toBe('https://example.com/world/2021/7/2/1106993.html')
+  })
+
   it('should extract target from text param on the yandex.ru Turbo view', () => {
     const url = new URL(
       'https://yandex.ru/turbo?text=https%3A%2F%2Fexample.com%2Fworld%2F2019%2F11%2F21%2F1009533.html&promo=navbar&utm_referrer=https%3A%2F%2Fzen.yandex.com%2F%3Ffrom%3Dspecial&utm_source=YandexZenSpecial',
@@ -64,8 +86,20 @@ describe('unwrapYandexTurbo', () => {
     expect(unwrapYandexTurbo(url)).toBeUndefined()
   })
 
-  it('should return undefined for the host-in-path shape on yandex.ru', () => {
-    const url = new URL('https://yandex.ru/turbo/example.com/s/2020-09-17/article?promo=navbar')
+  it('should return undefined for the host in the path without the /s/ marker', () => {
+    const url = new URL('https://yandex.ru/turbo/example.com/news/1106993.html')
+
+    expect(unwrapYandexTurbo(url)).toBeUndefined()
+  })
+
+  it('should return undefined for the host in the path with no source path', () => {
+    const url = new URL('https://yandex.ru/turbo/example.com/s/')
+
+    expect(unwrapYandexTurbo(url)).toBeUndefined()
+  })
+
+  it('should return undefined for the host in the path on a lookalike host', () => {
+    const url = new URL('https://exampleyandex.ru/turbo/example.com/s/news/1106993.html')
 
     expect(unwrapYandexTurbo(url)).toBeUndefined()
   })
