@@ -233,6 +233,7 @@ import { unwrapResearchgate } from './unwraps/researchgate.js'
 // import { unwrapSalesflare } from './unwraps/salesflare.js'
 // import { unwrapSalesforceiq } from './unwraps/salesforceiq.js'
 // import { unwrapSaleshandy } from './unwraps/saleshandy.js'
+// import { unwrapSalsa } from './unwraps/salsa.js'
 import { unwrapSapHelp } from './unwraps/sapHelp.js'
 // import { unwrapSbsAd } from './unwraps/sbsAd.js'
 import { unwrapSegmentfault } from './unwraps/segmentfault.js'
@@ -400,6 +401,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapSalesflare,
   // unwrapSalesforceiq,
   // unwrapSaleshandy,
+  // unwrapSalsa,
   // unwrapSlack,
   // unwrapSophos,
   // unwrapSquarespaceEmail,
