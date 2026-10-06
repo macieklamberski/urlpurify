@@ -97,6 +97,7 @@ Enabled by default:
 | --- | --- |
 | `unwrapBing` | Bing search-result redirect (www.bing.com/ck/a?u=a1\<base64url\>) and news click (www.bing.com/news/apiclick.aspx?url=\<target\>) |
 | `unwrap4pda` | 4PDA forum outbound link redirect (4pda.ru/pages/go/?u=\<target\>) |
+| `unwrapAboutCom` | About.com outbound link page (\<topic\>.about.com/gi/dynamic/offsite.htm?zu=\<target\>) and leaving page (/gi/o.htm?zu=\<target\>) |
 | `unwrapAliyun` | Alibaba Cloud developer community outbound link redirect (yq.aliyun.com/go/articleRenderRedirect?url=\<target\>) |
 | `unwrapAllblog` | Allblog metablog outbound link (link.allblog.net/\<post id\>/\<target\>) |
 | `unwrapAnonymTo` | anonym.to referrer anonymizer (anonym.to/?\<target\>) |
