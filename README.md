@@ -38,8 +38,8 @@ const cleaned = cleanUrl(url, {
   // Param names (matched case-insensitively) or anchored regexes tested against the
   // lowercased name (omit to use defaults).
   trackingParams: ['fbclid', /^utm_[a-z0-9_-]+$/],
-  // Maximum number of unwrap passes for nested wrappers. Defaults to 3.
-  maxUnwrapDepth: 3,
+  // Maximum number of unwrap passes for nested wrappers. Defaults to 6.
+  maxUnwrapDepth: 6,
 })
 ```
 
