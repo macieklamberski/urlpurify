@@ -70,6 +70,12 @@ describe('unwrapInvisionNoExternalLinks', () => {
     expect(unwrapInvisionNoExternalLinks(url)).toBeUndefined()
   })
 
+  it('should return undefined for a path that continues after redirect/', () => {
+    const url = new URL('https://www.example.com/redirect/x?to=https%3A%2F%2Fexample.org%2F')
+
+    expect(unwrapInvisionNoExternalLinks(url)).toBeUndefined()
+  })
+
   it('should return undefined for the path under two prefix segments', () => {
     const url = new URL('https://www.example.com/a/b/redirect/?to=https%3A%2F%2Fexample.org%2F')
 
