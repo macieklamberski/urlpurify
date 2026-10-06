@@ -171,6 +171,7 @@ import { unwrapLivejournal } from './unwraps/livejournal.js'
 // import { unwrapMailpanion } from './unwraps/mailpanion.js'
 // import { unwrapMailpgn } from './unwraps/mailpgn.js'
 import { unwrapMailRu } from './unwraps/mailRu.js'
+// import { unwrapMailRuLink } from './unwraps/mailRuLink.js'
 // import { unwrapMailstat } from './unwraps/mailstat.js'
 // import { unwrapMailtrack } from './unwraps/mailtrack.js'
 // import { unwrapMandrill } from './unwraps/mandrill.js'
@@ -370,6 +371,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapMailinblack,
   // unwrapMailpanion,
   // unwrapMailpgn,
+  // unwrapMailRuLink,
   // unwrapMailstat,
   // unwrapMailtrack,
   // unwrapMandrill,
