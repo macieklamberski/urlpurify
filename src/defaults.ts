@@ -288,6 +288,7 @@ import { unwrapSteamLinkfilter } from './unwraps/steamLinkfilter.js'
 import { unwrapStorify } from './unwraps/storify.js'
 import { unwrapStreak } from './unwraps/streak.js'
 import { unwrapStreamsend } from './unwraps/streamsend.js'
+import { unwrapStumbleupon } from './unwraps/stumbleupon.js'
 import { unwrapSubstack } from './unwraps/substack.js'
 import { unwrapSurugaya } from './unwraps/surugaya.js'
 import { unwrapSwap } from './unwraps/swap.js'
@@ -463,6 +464,7 @@ export const linkShimUnwrappers: Array<UrlUnwrapper> = [
   unwrapSspai,
   unwrapSteamLinkfilter,
   unwrapStorify,
+  unwrapStumbleupon,
   unwrapTeacup,
   unwrapThreadsShim,
   unwrapTiktok,
