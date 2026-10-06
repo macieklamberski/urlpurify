@@ -1,11 +1,11 @@
 import { isHostOf } from 'trousse'
-import { getPathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 import { createParamExtractor } from '../utils.js'
 
-const legacyPrefixRegex = /^\/l\/[\w-]+[/;]/
-const legacyEncodedTargetRegex = /^\/l\/[\w-]+[/;](https?%(?:25)?3A.*)$/i
+const legacyTargetRegex = /^\/l\/[\w-]+[/;]\/*([^/].*)$/
+const legacyEncodedSchemeRegex = /^https?%(?:25)?3A/i
 const encodedSchemeRegex = /^https?%3A/i
+const schemeRegex = /^https?:/i
 
 const unwrapLinkPhp = createParamExtractor({
   hosts: [
@@ -57,25 +57,32 @@ const unwrapLegacy: UrlUnwrapper = (url) => {
     return
   }
 
-  const encodedMatch = url.pathname.match(legacyEncodedTargetRegex)
+  const match = url.pathname.match(legacyTargetRegex)
 
-  if (!encodedMatch) {
-    return getPathTarget(url, legacyPrefixRegex)
-  }
-
-  const target = decodeLegacyTarget(encodedMatch[1])
-
-  if (!target) {
+  if (!match) {
     return
   }
 
-  return `${target}${url.search}${url.hash}`
+  const path = legacyEncodedSchemeRegex.test(match[1]) ? decodeLegacyTarget(match[1]) : match[1]
+
+  if (!path) {
+    return
+  }
+
+  const target = `${path}${url.search}${url.hash}`
+
+  if (schemeRegex.test(target)) {
+    return target
+  }
+
+  // Facebook's leaving page and its 302 into l.php both gave a target without a scheme `http://`.
+  return `http://${target}`
 }
 
 // Meta link shim (l.facebook.com/l.php?u=<target>, also lm., www., upload., m., web., pt-br.,
 // free., business., 0. and bare facebook.com, l.messenger.com and l.workplace.com), on / and
 // /lsr.php on l.facebook.com, and the legacy /l/<token>/<target> or /l/<token>;<target> on www.
-// and l.facebook.com, where a target without a scheme gets `https://`.
+// and l.facebook.com, where a target without a scheme gets `http://`.
 export const unwrapFacebookShim: UrlUnwrapper = (url) => {
   return unwrapLinkPhp(url) ?? unwrapRoot(url) ?? unwrapLsr(url) ?? unwrapLegacy(url)
 }

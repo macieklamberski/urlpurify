@@ -99,13 +99,13 @@ describe('unwrapFacebookShim', () => {
       'http://www.facebook.com/l/5AQHGK4rxAQGL-AEL93wViymSpBqLhKkJJR0sSF1hMP-V6w/rapidcityjournal.com/news/article_46a1b9aa',
     )
 
-    expect(unwrapFacebookShim(url)).toBe('https://rapidcityjournal.com/news/article_46a1b9aa')
+    expect(unwrapFacebookShim(url)).toBe('http://rapidcityjournal.com/news/article_46a1b9aa')
   })
 
   it('should keep the query of a target in the legacy path', () => {
     const url = new URL('http://www.facebook.com/l/mAQFYlx2o/www.youtube.com/watch?v=fZZhiF6z2sg')
 
-    expect(unwrapFacebookShim(url)).toBe('https://www.youtube.com/watch?v=fZZhiF6z2sg')
+    expect(unwrapFacebookShim(url)).toBe('http://www.youtube.com/watch?v=fZZhiF6z2sg')
   })
 
   it('should extract a target from the legacy path on l.facebook.com', () => {
@@ -113,7 +113,7 @@ describe('unwrapFacebookShim', () => {
       'http://l.facebook.com/l/2AQEUvcwIAQHqTXiT8B3usUbA2R3i2FYxgJfBJXaRReZzbA/example.blogspot.com/',
     )
 
-    expect(unwrapFacebookShim(url)).toBe('https://example.blogspot.com/')
+    expect(unwrapFacebookShim(url)).toBe('http://example.blogspot.com/')
   })
 
   it('should extract a target after a semicolon in the legacy path', () => {
