@@ -278,6 +278,7 @@ import { unwrapSmry } from './unwraps/smry.js'
 import { unwrapSophos } from './unwraps/sophos.js'
 import { unwrapSoundcloud } from './unwraps/soundcloud.js'
 import { unwrapSoundOn } from './unwraps/soundOn.js'
+import { unwrapSoundstack } from './unwraps/soundstack.js'
 import { unwrapSquarespaceEmail } from './unwraps/squarespaceEmail.js'
 import { unwrapSspai } from './unwraps/sspai.js'
 import { unwrapStay22 } from './unwraps/stay22.js'
@@ -721,6 +722,7 @@ export const downloadMeasurementUnwrappers: Array<UrlUnwrapper> = [
   unwrapPodsights,
   unwrapPodtrac,
   unwrapSoundOn,
+  unwrapSoundstack,
   unwrapSwap,
   unwrapVgWort,
   unwrapVoxnest,
