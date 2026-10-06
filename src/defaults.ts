@@ -32,14 +32,18 @@ import { unwrapArxiv } from './unwraps/arxiv.js'
 import { unwrapAsk } from './unwraps/ask.js'
 // import { unwrapAugure } from './unwraps/augure.js'
 // import { unwrapAvantlink } from './unwraps/avantlink.js'
+// import { unwrapAwesound } from './unwraps/awesound.js'
 // import { unwrapAwin } from './unwraps/awin.js'
 // import { unwrapAxigen } from './unwraps/axigen.js'
+import { unwrapBabyblog } from './unwraps/babyblog.js'
 // import { unwrapBacLacWebArchive } from './unwraps/bacLacWebArchive.js'
 import { unwrapBale } from './unwraps/bale.js'
 // import { unwrapBananatag } from './unwraps/bananatag.js'
 // import { unwrapBarracudaLinkProtect } from './unwraps/barracudaLinkProtect.js'
 import { unwrapBing } from './unwraps/bing.js'
 // import { unwrapBingAds } from './unwraps/bingAds.js'
+import { unwrapBitrix } from './unwraps/bitrix.js'
+// import { unwrapBitrixBanner } from './unwraps/bitrixBanner.js'
 // import { unwrapBizrate } from './unwraps/bizrate.js'
 // import { unwrapBlubrry } from './unwraps/blubrry.js'
 // import { unwrapBolPartner } from './unwraps/bolPartner.js'
@@ -57,6 +61,7 @@ import { unwrapCanva } from './unwraps/canva.js'
 // import { unwrapCcbill } from './unwraps/ccbill.js'
 // import { unwrapChartable } from './unwraps/chartable.js'
 // import { unwrapCheckPointHarmony } from './unwraps/checkPointHarmony.js'
+// import { unwrapChitika } from './unwraps/chitika.js'
 // import { unwrapCiscoSecureWeb } from './unwraps/ciscoSecureWeb.js'
 // import { unwrapCjNetwork } from './unwraps/cjNetwork.js'
 // import { unwrapCleverbridge } from './unwraps/cleverbridge.js'
@@ -71,6 +76,7 @@ import { unwrapCsdn } from './unwraps/csdn.js'
 // import { unwrapCuelinks } from './unwraps/cuelinks.js'
 import { unwrapDasBlog } from './unwraps/dasBlog.js'
 import { unwrapDatalifeEngine } from './unwraps/datalifeEngine.js'
+// import { unwrapDeployer } from './unwraps/deployer.js'
 import { unwrapDerefMail } from './unwraps/derefMail.js'
 import { unwrapDeviantartOutgoing } from './unwraps/deviantartOutgoing.js'
 // import { unwrapDigidip } from './unwraps/digidip.js'
@@ -123,6 +129,7 @@ import { unwrapGoogleNews } from './unwraps/googleNews.js'
 import { unwrapGoogleNewsModern } from './unwraps/googleNewsModern.js'
 import { unwrapGoogleScholar } from './unwraps/googleScholar.js'
 // import { unwrapGoogleWebLight } from './unwraps/googleWebLight.js'
+// import { unwrapGroupMail } from './unwraps/groupMail.js'
 // import { unwrapGroupon } from './unwraps/groupon.js'
 // import { unwrapGurunavi } from './unwraps/gurunavi.js'
 import { unwrapHackerone } from './unwraps/hackerone.js'
@@ -139,6 +146,7 @@ import { unwrapHrefLi } from './unwraps/hrefLi.js'
 // import { unwrapIgafnl } from './unwraps/igafnl.js'
 // import { unwrapImpact } from './unwraps/impact.js'
 import { unwrapIndexHu } from './unwraps/indexHu.js'
+import { unwrapInfospace } from './unwraps/infospace.js'
 // import { unwrapInsiderAffiliate } from './unwraps/insiderAffiliate.js'
 import { unwrapInstagramShim } from './unwraps/instagram.js'
 // import { unwrapIntranetQuorum } from './unwraps/intranetQuorum.js'
@@ -160,6 +168,7 @@ import { unwrapLinkedin } from './unwraps/linkedin.js'
 // import { unwrapLinkwise } from './unwraps/linkwise.js'
 import { unwrapLivejournal } from './unwraps/livejournal.js'
 // import { unwrapLnkam } from './unwraps/lnkam.js'
+// import { unwrapLocaweb } from './unwraps/locaweb.js'
 // import { unwrapLocWebArchive } from './unwraps/locWebArchive.js'
 // import { unwrapMagellan } from './unwraps/magellan.js'
 // import { unwrapMagnetmail } from './unwraps/magnetmail.js'
@@ -169,6 +178,7 @@ import { unwrapLivejournal } from './unwraps/livejournal.js'
 // import { unwrapMailpanion } from './unwraps/mailpanion.js'
 // import { unwrapMailpgn } from './unwraps/mailpgn.js'
 import { unwrapMailRu } from './unwraps/mailRu.js'
+// import { unwrapMailRuLink } from './unwraps/mailRuLink.js'
 // import { unwrapMailstat } from './unwraps/mailstat.js'
 // import { unwrapMailtrack } from './unwraps/mailtrack.js'
 // import { unwrapMandrill } from './unwraps/mandrill.js'
@@ -200,6 +210,7 @@ import { unwrapOsnova } from './unwraps/osnova.js'
 // import { unwrapPagefreezer } from './unwraps/pagefreezer.js'
 // import { unwrapPartnerAds } from './unwraps/partnerAds.js'
 import { unwrapPhilpapers } from './unwraps/philpapers.js'
+import { unwrapPinterest } from './unwraps/pinterest.js'
 // import { unwrapPipedrive } from './unwraps/pipedrive.js'
 import { unwrapPocket } from './unwraps/pocket.js'
 // import { unwrapPodcorn } from './unwraps/podcorn.js'
@@ -208,7 +219,9 @@ import { unwrapPocket } from './unwraps/pocket.js'
 // import { unwrapPodtrac } from './unwraps/podtrac.js'
 // import { unwrapPostmark } from './unwraps/postmark.js'
 // import { unwrapPrezly } from './unwraps/prezly.js'
+// import { unwrapPriceGrabber } from './unwraps/priceGrabber.js'
 import { unwrapPrNewswire } from './unwraps/prNewswire.js'
+// import { unwrapPromoJukebox } from './unwraps/promoJukebox.js'
 // import { unwrapProofpointIsolation } from './unwraps/proofpointIsolation.js'
 // import { unwrapProofpointV1 } from './unwraps/proofpointV1.js'
 // import { unwrapProofpointV2 } from './unwraps/proofpointV2.js'
@@ -226,6 +239,8 @@ import { unwrapResearchgate } from './unwraps/researchgate.js'
 // import { unwrapSalesdoubler } from './unwraps/salesdoubler.js'
 // import { unwrapSalesflare } from './unwraps/salesflare.js'
 // import { unwrapSalesforceiq } from './unwraps/salesforceiq.js'
+// import { unwrapSaleshandy } from './unwraps/saleshandy.js'
+// import { unwrapSalsa } from './unwraps/salsa.js'
 import { unwrapSapHelp } from './unwraps/sapHelp.js'
 // import { unwrapSbsAd } from './unwraps/sbsAd.js'
 import { unwrapSegmentfault } from './unwraps/segmentfault.js'
@@ -244,8 +259,10 @@ import { unwrapSoundcloud } from './unwraps/soundcloud.js'
 import { unwrapSspai } from './unwraps/sspai.js'
 // import { unwrapStay22 } from './unwraps/stay22.js'
 import { unwrapSteamLinkfilter } from './unwraps/steamLinkfilter.js'
+import { unwrapStorify } from './unwraps/storify.js'
 // import { unwrapStreak } from './unwraps/streak.js'
 // import { unwrapStreamsend } from './unwraps/streamsend.js'
+// import { unwrapSubstack } from './unwraps/substack.js'
 // import { unwrapSurugaya } from './unwraps/surugaya.js'
 // import { unwrapSymantecClicktime } from './unwraps/symantecClicktime.js'
 // import { unwrapSymplicity } from './unwraps/symplicity.js'
@@ -280,7 +297,9 @@ import { unwrapVbulletin } from './unwraps/vbulletin.js'
 // import { unwrapVgWort } from './unwraps/vgWort.js'
 // import { unwrapViglink } from './unwraps/viglink.js'
 import { unwrapVirgool } from './unwraps/virgool.js'
+import { unwrapVisibli } from './unwraps/visibli.js'
 import { unwrapVkAway } from './unwraps/vkAway.js'
+// import { unwrapVocus } from './unwraps/vocus.js'
 // import { unwrapVuture } from './unwraps/vuture.js'
 // import { unwrapWebcitation } from './unwraps/webcitation.js'
 // import { unwrapWebgains } from './unwraps/webgains.js'
@@ -297,10 +316,14 @@ import { unwrapYahooSearch } from './unwraps/yahooSearch.js'
 // import { unwrapYamm } from './unwraps/yamm.js'
 import { unwrapYandexMail } from './unwraps/yandexMail.js'
 import { unwrapYelp } from './unwraps/yelp.js'
+// import { unwrapYourMembership } from './unwraps/yourMembership.js'
 import { unwrapYouTube } from './unwraps/youtube.js'
 // import { unwrapZanox } from './unwraps/zanox.js'
 import { unwrapZemanta } from './unwraps/zemanta.js'
 import { unwrapZhihu } from './unwraps/zhihu.js'
+
+// import { unwrapZix } from './unwraps/zix.js'
+// import { unwrapZscalerIsolation } from './unwraps/zscalerIsolation.js'
 
 export { trackingParamsLiterals } from './tracking/literals.js'
 export { trackingParamsPatterns } from './tracking/patterns.js'
@@ -322,6 +345,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   unwrapGoogleNewsModern,
   unwrapGoogleScholar,
   unwrapHirkereso,
+  unwrapInfospace,
   unwrapYahooJapan,
   unwrapYahooSearch,
   unwrapYouTube,
@@ -340,6 +364,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapConstantContact,
   // unwrapContactMonkey,
   // unwrapCse360,
+  // unwrapDeployer,
   // unwrapDirectMail,
   // unwrapDyn,
   // unwrapEdgepilot,
@@ -349,6 +374,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapFireeye,
   // unwrapFortimail,
   // unwrapGlueUp,
+  // unwrapGroupMail,
   // unwrapHellohq,
   // unwrapHornetsecurity,
   // unwrapHubspotSidekick,
@@ -356,12 +382,14 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapIgafnl,
   // unwrapIntranetQuorum,
   // unwrapLeverAnalytics,
+  // unwrapLocaweb,
   // unwrapMagnetmail,
   // unwrapMail2easy,
   // unwrapMailchimp,
   // unwrapMailinblack,
   // unwrapMailpanion,
   // unwrapMailpgn,
+  // unwrapMailRuLink,
   // unwrapMailstat,
   // unwrapMailtrack,
   // unwrapMandrill,
@@ -374,6 +402,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapPipedrive,
   // unwrapPostmark,
   // unwrapPrezly,
+  // unwrapPromoJukebox,
   // unwrapProofpointIsolation,
   // unwrapProofpointV1,
   // unwrapProofpointV2,
@@ -381,11 +410,14 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapReverbnation,
   // unwrapSalesflare,
   // unwrapSalesforceiq,
+  // unwrapSaleshandy,
+  // unwrapSalsa,
   // unwrapSlack,
   // unwrapSophos,
   // unwrapSquarespaceEmail,
   // unwrapStreak,
   // unwrapStreamsend,
+  // unwrapSubstack,
   // unwrapSymantecClicktime,
   // unwrapSymplicity,
   // unwrapTitanhqLinklock,
@@ -395,9 +427,13 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapTwitterRedirect,
   // unwrapUnisender,
   // unwrapVadeSecure,
+  // unwrapVocus,
   // unwrapVuture,
   // unwrapWordpressEmail,
   // unwrapYamm,
+  // unwrapYourMembership,
+  // unwrapZix,
+  // unwrapZscalerIsolation,
 
   // Affiliate networks.
   // unwrap2performant,
@@ -467,6 +503,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapNcls,
   // unwrapNetaffiliation,
   // unwrapPartnerAds,
+  // unwrapPriceGrabber,
   // Rakuten Japan's own program, separate from the LinkSynergy network in unwrapLinksynergy.
   // Opt-in like the rest of the group: unwrapping drops the publisher's commission.
   // unwrapRakutenAffiliate,
@@ -499,6 +536,8 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
 
   // Ad networks.
   // unwrapBingAds,
+  // unwrapBitrixBanner,
+  // unwrapChitika,
   // unwrapGoogleAds,
   // unwrapReviveAdserver,
   // unwrapSmartAdserver,
@@ -507,6 +546,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // Podcast analytics prefixes.
   // unwrapAcast,
   // unwrapAnchor,
+  // unwrapAwesound,
   // unwrapBlubrry,
   // unwrapChartable,
   // unwrapFirstory,
@@ -520,6 +560,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // Social and community platforms.
   unwrap4pda,
   unwrapAnonymTo,
+  unwrapBabyblog,
   unwrapBale,
   unwrapBlueskyRedirect,
   unwrapBridgyFed,
@@ -549,6 +590,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   unwrapNodeseek,
   unwrapOkRu,
   unwrapOsnova,
+  unwrapPinterest,
   unwrapPocket,
   unwrapRamblerMail,
   unwrapRedditOut,
@@ -556,11 +598,13 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   unwrapSkyrock,
   unwrapSoundcloud,
   unwrapSteamLinkfilter,
+  unwrapStorify,
   unwrapThreadsShim,
   unwrapTiktok,
   unwrapTumblr,
   unwrapVanilla,
   unwrapVbulletin,
+  unwrapVisibli,
   unwrapVkAway,
   unwrapWpPoczta,
   unwrapXengentr,
@@ -570,6 +614,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // Developer and publishing platforms.
   unwrapAliyun,
   unwrapArxiv,
+  unwrapBitrix,
   unwrapCsdn,
   unwrapDasBlog,
   unwrapDatalifeEngine,
