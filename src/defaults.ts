@@ -271,6 +271,7 @@ import { unwrapStorify } from './unwraps/storify.js'
 // import { unwrapSymantecClicktime } from './unwraps/symantecClicktime.js'
 // import { unwrapSymplicity } from './unwraps/symplicity.js'
 // import { unwrapTargetCircle } from './unwraps/targetCircle.js'
+import { unwrapTeacup } from './unwraps/teacup.js'
 import { unwrapThreadsShim } from './unwraps/threads.js'
 import { unwrapTiktok } from './unwraps/tiktok.js'
 // import { unwrapTitanhqLinklock } from './unwraps/titanhqLinklock.js'
@@ -604,6 +605,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   unwrapSoundcloud,
   unwrapSteamLinkfilter,
   unwrapStorify,
+  unwrapTeacup,
   unwrapThreadsShim,
   unwrapTiktok,
   unwrapTumblr,
