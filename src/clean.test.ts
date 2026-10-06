@@ -526,9 +526,88 @@ describe('cleanUrl with a malformed target', () => {
   }
 
   it('should keep the wrapper when the target has no host', () => {
-    const value = 'https://redirect.example.com/?target=https:///example.com/x'
+    const value = 'https://redirect.example.com/?target=https://'
 
     expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
+  })
+
+  it('should keep the wrapper when the target is an s3 url behind an https scheme', () => {
+    const value =
+      'https://redirect.example.com/?target=https://s3://podcast.example.com/2026/6.8.26'
+
+    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
+  })
+
+  it('should keep the wrapper when the target host is a bare name', () => {
+    const value = 'https://redirect.example.com/?target=http://examplecinema&source=gmail'
+
+    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
+  })
+
+  it('should keep the wrapper when the target host is localhost', () => {
+    const value = 'https://redirect.example.com/?target=http://localhost:4000/'
+
+    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
+  })
+
+  it('should keep the wrapper when the target host is a bare www', () => {
+    const value = 'https://redirect.example.com/?target=http%3A%2F%2Fwww'
+
+    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
+  })
+
+  it('should keep the wrapper when the target is cut off after www', () => {
+    const value = 'https://redirect.example.com/?target=https%3A%2F%2Fwww.'
+
+    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
+  })
+
+  it('should keep the wrapper when the target host is an ellipsis', () => {
+    const value = 'https://redirect.example.com/?target=https://...'
+
+    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
+  })
+
+  it('should keep the wrapper when the target host has an empty label', () => {
+    const value = 'https://redirect.example.com/?target=http%3A%2F%2Fexample..com%2F'
+
+    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
+  })
+
+  it('should unwrap a target on an IPv4 address', () => {
+    const value = 'https://redirect.example.com/?target=http://192.0.2.1/x'
+
+    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe('http://192.0.2.1/x')
+  })
+
+  it('should unwrap a target on an IPv6 address', () => {
+    const value = 'https://redirect.example.com/?target=http://[2001:db8::1]/x'
+
+    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe('http://[2001:db8::1]/x')
+  })
+
+  it('should unwrap a target on a dotted host', () => {
+    const value = 'https://redirect.example.com/?target=https://news.example.com/x'
+
+    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe('https://news.example.com/x')
+  })
+
+  it('should repair a doubled scheme', () => {
+    const value = 'https://redirect.example.com/?target=https%3A%2F%2Fhttps://example.com%2Fx'
+
+    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe('https://example.com/x')
+  })
+
+  it('should repair a leading dot in the target host', () => {
+    const value = 'https://redirect.example.com/?target=http://.example.com/x&source=gmail'
+
+    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe('http://example.com/x')
+  })
+
+  it('should repair a third slash after the scheme', () => {
+    const value = 'https://redirect.example.com/?target=https:///example.com/x'
+
+    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe('https://example.com/x')
   })
 
   it('should keep the wrapper when the target holds a line break', () => {
@@ -582,7 +661,7 @@ describe('cleanUrl with a malformed target', () => {
   it('should repair a single slash after an uppercase scheme', () => {
     const value = 'https://redirect.example.com/?target=HTTPS:/example.com/x'
 
-    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe('HTTPS://example.com/x')
+    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe('https://example.com/x')
   })
 
   it('should resolve a chain whose inner target has a single slash', () => {
