@@ -178,6 +178,7 @@ import { unwrapLivejournal } from './unwraps/livejournal.js'
 import { unwrapLnkam } from './unwraps/lnkam.js'
 import { unwrapLocaweb } from './unwraps/locaweb.js'
 import { unwrapLocWebArchive } from './unwraps/locWebArchive.js'
+import { unwrapLogicboard } from './unwraps/logicboard.js'
 import { unwrapMagellan } from './unwraps/magellan.js'
 import { unwrapMagnetmail } from './unwraps/magnetmail.js'
 import { unwrapMail2easy } from './unwraps/mail2easy.js'
@@ -417,6 +418,7 @@ export const linkShimUnwrappers: Array<UrlUnwrapper> = [
   unwrapLd246,
   unwrapLinkedin,
   unwrapLivejournal,
+  unwrapLogicboard,
   unwrapMailRu,
   unwrapMedium,
   unwrapMintFeeder,
