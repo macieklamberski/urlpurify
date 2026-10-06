@@ -65,6 +65,7 @@ import { unwrapCanva } from './unwraps/canva.js'
 // import { unwrapCiscoSecureWeb } from './unwraps/ciscoSecureWeb.js'
 // import { unwrapCjNetwork } from './unwraps/cjNetwork.js'
 // import { unwrapCleverbridge } from './unwraps/cleverbridge.js'
+// import { unwrapClevercomm } from './unwraps/clevercomm.js'
 // import { unwrapCloudhq } from './unwraps/cloudhq.js'
 // import { unwrapCommissionFactory } from './unwraps/commissionFactory.js'
 // import { unwrapCommunicationads } from './unwraps/communicationads.js'
@@ -361,6 +362,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapBuzzstream,
   // unwrapCheckPointHarmony,
   // unwrapCiscoSecureWeb,
+  // unwrapClevercomm,
   // unwrapCloudhq,
   // unwrapConstantContact,
   // unwrapContactMonkey,
