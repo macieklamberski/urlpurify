@@ -323,6 +323,7 @@ import { unwrapVirgool } from './unwraps/virgool.js'
 import { unwrapVisibli } from './unwraps/visibli.js'
 import { unwrapVkAway } from './unwraps/vkAway.js'
 import { unwrapVocus } from './unwraps/vocus.js'
+import { unwrapVoxnest } from './unwraps/voxnest.js'
 import { unwrapVuture } from './unwraps/vuture.js'
 import { unwrapWebArchive } from './unwraps/webArchive.js'
 import { unwrapWebcitation } from './unwraps/webcitation.js'
@@ -714,6 +715,7 @@ export const downloadMeasurementUnwrappers: Array<UrlUnwrapper> = [
   unwrapSoundOn,
   unwrapSwap,
   unwrapVgWort,
+  unwrapVoxnest,
 ]
 
 // Archives, proxies and viewers: unwrapping returns the live page, not the copy.
