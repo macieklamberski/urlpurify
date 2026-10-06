@@ -311,6 +311,7 @@ import { unwrapZemanta } from './unwraps/zemanta.js'
 import { unwrapZhihu } from './unwraps/zhihu.js'
 
 // import { unwrapZix } from './unwraps/zix.js'
+// import { unwrapZscalerIsolation } from './unwraps/zscalerIsolation.js'
 
 export { trackingParamsLiterals } from './tracking/literals.js'
 export { trackingParamsPatterns } from './tracking/patterns.js'
@@ -418,6 +419,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapYamm,
   // unwrapYourMembership,
   // unwrapZix,
+  // unwrapZscalerIsolation,
 
   // Affiliate networks.
   // unwrap2performant,
