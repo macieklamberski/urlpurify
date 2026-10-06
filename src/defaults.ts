@@ -41,6 +41,8 @@ import { unwrapBale } from './unwraps/bale.js'
 // import { unwrapBarracudaLinkProtect } from './unwraps/barracudaLinkProtect.js'
 import { unwrapBing } from './unwraps/bing.js'
 // import { unwrapBingAds } from './unwraps/bingAds.js'
+import { unwrapBitrix } from './unwraps/bitrix.js'
+// import { unwrapBitrixBanner } from './unwraps/bitrixBanner.js'
 // import { unwrapBizrate } from './unwraps/bizrate.js'
 // import { unwrapBlubrry } from './unwraps/blubrry.js'
 // import { unwrapBolPartner } from './unwraps/bolPartner.js'
@@ -525,6 +527,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
 
   // Ad networks.
   // unwrapBingAds,
+  // unwrapBitrixBanner,
   // unwrapGoogleAds,
   // unwrapReviveAdserver,
   // unwrapSmartAdserver,
@@ -598,6 +601,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // Developer and publishing platforms.
   unwrapAliyun,
   unwrapArxiv,
+  unwrapBitrix,
   unwrapCsdn,
   unwrapDasBlog,
   unwrapDatalifeEngine,

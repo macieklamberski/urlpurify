@@ -102,6 +102,7 @@ Enabled by default:
 | `unwrapArxiv` | arXiv outbound link redirect (arxiv.org/ct?url=\<target\>) |
 | `unwrapAsk` | Ask.com search result click redirect (wzus.ask.com/r?u=\<target\>) |
 | `unwrapBale` | Bale messenger outbound link redirect (l.ble.ir/?l=\<target\>) |
+| `unwrapBitrix` | 1C-Bitrix outbound link counter (\<any host\>/bitrix/redirect.php?goto=\<target\>) |
 | `unwrapBlueskyRedirect` | Bluesky outbound link redirect (go.bsky.app/redirect?u=\<target\>) |
 | `unwrapBridgyFed` | Bridgy Fed redirect for a bridged post or profile (fed.brid.gy/r/\<target\>, also bsky.brid.gy and web.brid.gy) |
 | `unwrapBusinessWire` | Business Wire release click tracker (cts.businesswire.com/ct/CT?url=\<target\>) |
