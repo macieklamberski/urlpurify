@@ -228,6 +228,7 @@ import { unwrapPodcorn } from './unwraps/podcorn.js'
 import { unwrapPodscribe } from './unwraps/podscribe.js'
 import { unwrapPodsights } from './unwraps/podsights.js'
 import { unwrapPodtrac } from './unwraps/podtrac.js'
+import { unwrapPostAffiliatePro } from './unwraps/postAffiliatePro.js'
 import { unwrapPostmark } from './unwraps/postmark.js'
 import { unwrapPrezly } from './unwraps/prezly.js'
 import { unwrapPriceGrabber } from './unwraps/priceGrabber.js'
@@ -630,6 +631,7 @@ export const affiliateUnwrappers: Array<UrlUnwrapper> = [
   unwrapNcls,
   unwrapNetaffiliation,
   unwrapPartnerAds,
+  unwrapPostAffiliatePro,
   unwrapPriceGrabber,
   // Rakuten Japan's own program, separate from the LinkSynergy network in unwrapLinksynergy.
   // Opt-in like the rest of the group: unwrapping drops the publisher's commission.
