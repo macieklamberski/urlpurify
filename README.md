@@ -154,6 +154,7 @@ Enabled by default:
 | `unwrapFinalsite` | Finalsite school website link counter (\<any host\>/cf_news/forward.cfm?dest=\<target\>&destkey=\<signature\>) |
 | `unwrapFlipboard` | Flipboard outbound redirect (flipboard.com/redirect?url=\<target\>) |
 | `unwrapFtc` | FTC leaving-site page (www.ftc.gov/now-leaving?external_url=\<target\>) |
+| `unwrapGfnLinkProxy` | GoodForNothing Link Proxy add-on for XenForo (\<any host\>/redirect/?to=\<base64 target\>, also /redirect?to=) |
 | `unwrapGitee` | Gitee external link redirect (gitee.com/link?target=\<target\>) |
 | `unwrapGoogle` | Google redirect (google.\<TLD\>/url?url=\<target\> or ?q=\<target\>) |
 | `unwrapGoogleAmpViewer` | Google AMP viewer (www.google.\<TLD\>/amp/s/\<host\>/\<path\>) |
@@ -169,6 +170,7 @@ Enabled by default:
 | `unwrapIndexHu` | Index.hu and Dex.hu outbound link counter (index.hu/x.php?id=\<id\>&url=\<target\>) |
 | `unwrapInfospace` | InfoSpace metasearch result click (click.infospace.com/ClickHandler.ashx?ru=\<target\>) |
 | `unwrapInstagramShim` | Instagram outbound link shim (l.instagram.com with ?u=\<target\>) |
+| `unwrapInvisionNoExternalLinks` | No External Links plugin for Invision Community (\<any host\>/redirect/?to=\<target\>) |
 | `unwrapIrs` | IRS leaving-site page (apps.irs.gov/app/scripts/exit.jsp?dest=\<target\>) |
 | `unwrapJianshuGo` | Jianshu external link redirect (links.jianshu.com/go?to=\<target\> and link.jianshu.com/?t=\<target\>) |
 | `unwrapJive` | Jive community external link redirect (\<any host\>/external-link.jspa?url=\<target\>) |
@@ -176,6 +178,7 @@ Enabled by default:
 | `unwrapLd246` | LianDi community outbound link redirect (ld246.com/forward?goto=\<target\>) |
 | `unwrapLinkedin` | LinkedIn outbound link shims and click trackers (www.linkedin.com/safety/go?url=\<target\>, /redir/redirect, /redirect, /nhome/nus-redirect, /nus-trk, /e/v2, /company/\<id\>/redirect) |
 | `unwrapLivejournal` | LiveJournal outbound link redirect (www.livejournal.com/away?to=\<target\>) |
+| `unwrapLogicboard` | LogicBoard forum external link page (\<any host\>/away.php?s=\<target\>) |
 | `unwrapMailRu` | Mail.ru webmail link checker (checklink.mail.ru/proxy?url=\<target\>) and click redirect (click.mail.ru/redir?u=\<target\>, also click.my.mail.ru) |
 | `unwrapMarketwire` | Marketwire release click tracker (ctt.marketwire.com/?url=\<target\>) |
 | `unwrapMedium` | Medium outbound link redirect (medium.com/r/?url=\<target\>) and sign-in hop (medium.com/m/global-identity?redirectUrl=\<target\>) |

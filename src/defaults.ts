@@ -127,6 +127,7 @@ import { unwrapFortimail } from './unwraps/fortimail.js'
 import { unwrapFtc } from './unwraps/ftc.js'
 import { unwrapGateSc } from './unwraps/gateSc.js'
 import { unwrapGeoriot } from './unwraps/georiot.js'
+import { unwrapGfnLinkProxy } from './unwraps/gfnLinkProxy.js'
 import { unwrapGitee } from './unwraps/gitee.js'
 import { unwrapGlueUp } from './unwraps/glueUp.js'
 import { unwrapGoogle } from './unwraps/google.js'
@@ -139,6 +140,7 @@ import { unwrapGoogleTranslate } from './unwraps/googleTranslate.js'
 import { unwrapGoogleWebLight } from './unwraps/googleWebLight.js'
 import { unwrapGroupMail } from './unwraps/groupMail.js'
 import { unwrapGroupon } from './unwraps/groupon.js'
+import { unwrapGumball } from './unwraps/gumball.js'
 import { unwrapGurunavi } from './unwraps/gurunavi.js'
 import { unwrapHackerone } from './unwraps/hackerone.js'
 import { unwrapHashnode } from './unwraps/hashnode.js'
@@ -158,6 +160,7 @@ import { unwrapInfospace } from './unwraps/infospace.js'
 import { unwrapInsiderAffiliate } from './unwraps/insiderAffiliate.js'
 import { unwrapInstagramShim } from './unwraps/instagram.js'
 import { unwrapIntranetQuorum } from './unwraps/intranetQuorum.js'
+import { unwrapInvisionNoExternalLinks } from './unwraps/invisionNoExternalLinks.js'
 import { unwrapInvolveAsia } from './unwraps/involveAsia.js'
 import { unwrapIrs } from './unwraps/irs.js'
 import { unwrapJianshuGo } from './unwraps/jianshuGo.js'
@@ -178,6 +181,7 @@ import { unwrapLivejournal } from './unwraps/livejournal.js'
 import { unwrapLnkam } from './unwraps/lnkam.js'
 import { unwrapLocaweb } from './unwraps/locaweb.js'
 import { unwrapLocWebArchive } from './unwraps/locWebArchive.js'
+import { unwrapLogicboard } from './unwraps/logicboard.js'
 import { unwrapMagellan } from './unwraps/magellan.js'
 import { unwrapMagnetmail } from './unwraps/magnetmail.js'
 import { unwrapMail2easy } from './unwraps/mail2easy.js'
@@ -195,6 +199,7 @@ import { unwrapMcas } from './unwraps/mcas.js'
 import { unwrapMedium } from './unwraps/medium.js'
 import { unwrapMegalodon } from './unwraps/megalodon.js'
 import { unwrapMimecast } from './unwraps/mimecast.js'
+import { unwrapMinistryCloud } from './unwraps/ministryCloud.js'
 import { unwrapMintDownloads } from './unwraps/mintDownloads.js'
 import { unwrapMintFeeder } from './unwraps/mintFeeder.js'
 import { unwrapMoshimo } from './unwraps/moshimo.js'
@@ -225,6 +230,7 @@ import { unwrapPinterest } from './unwraps/pinterest.js'
 import { unwrapPipedrive } from './unwraps/pipedrive.js'
 import { unwrapPocket } from './unwraps/pocket.js'
 import { unwrapPodcorn } from './unwraps/podcorn.js'
+import { unwrapPodder } from './unwraps/podder.js'
 import { unwrapPodscribe } from './unwraps/podscribe.js'
 import { unwrapPodsights } from './unwraps/podsights.js'
 import { unwrapPodtrac } from './unwraps/podtrac.js'
@@ -267,6 +273,7 @@ import { unwrapSmartredirect } from './unwraps/smartredirect.js'
 import { unwrapSmry } from './unwraps/smry.js'
 import { unwrapSophos } from './unwraps/sophos.js'
 import { unwrapSoundcloud } from './unwraps/soundcloud.js'
+import { unwrapSoundOn } from './unwraps/soundOn.js'
 import { unwrapSquarespaceEmail } from './unwraps/squarespaceEmail.js'
 import { unwrapSspai } from './unwraps/sspai.js'
 import { unwrapStay22 } from './unwraps/stay22.js'
@@ -402,6 +409,7 @@ export const linkShimUnwrappers: Array<UrlUnwrapper> = [
   unwrapFeedStatistics,
   unwrapFinalsite,
   unwrapFtc,
+  unwrapGfnLinkProxy,
   unwrapGitee,
   unwrapGoogleAmpViewer,
   unwrapHackerone,
@@ -411,6 +419,7 @@ export const linkShimUnwrappers: Array<UrlUnwrapper> = [
   unwrapHrefLi,
   unwrapIndexHu,
   unwrapInstagramShim,
+  unwrapInvisionNoExternalLinks,
   unwrapIrs,
   unwrapJianshuGo,
   unwrapJive,
@@ -418,6 +427,7 @@ export const linkShimUnwrappers: Array<UrlUnwrapper> = [
   unwrapLd246,
   unwrapLinkedin,
   unwrapLivejournal,
+  unwrapLogicboard,
   unwrapMailRu,
   unwrapMedium,
   unwrapMintFeeder,
@@ -691,13 +701,17 @@ export const downloadMeasurementUnwrappers: Array<UrlUnwrapper> = [
   unwrapChartable,
   unwrapDstats,
   unwrapFirstory,
+  unwrapGumball,
   unwrapMagellan,
+  unwrapMinistryCloud,
   unwrapMintDownloads,
   unwrapOp3,
   unwrapPodcorn,
+  unwrapPodder,
   unwrapPodscribe,
   unwrapPodsights,
   unwrapPodtrac,
+  unwrapSoundOn,
   unwrapSwap,
   unwrapVgWort,
 ]
