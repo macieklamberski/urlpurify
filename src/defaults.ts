@@ -30,6 +30,7 @@ import { unwrapAppsflyerOnelink } from './unwraps/appsflyerOnelink.js'
 import { unwrapApptrkr } from './unwraps/apptrkr.js'
 import { unwrapArchiveToday } from './unwraps/archiveToday.js'
 import { unwrapArquivo } from './unwraps/arquivo.js'
+import { unwrapArttrack } from './unwraps/arttrack.js'
 import { unwrapArxiv } from './unwraps/arxiv.js'
 import { unwrapAsk } from './unwraps/ask.js'
 import { unwrapAugure } from './unwraps/augure.js'
@@ -685,6 +686,7 @@ export const advertisingUnwrappers: Array<UrlUnwrapper> = [
 export const downloadMeasurementUnwrappers: Array<UrlUnwrapper> = [
   unwrapAcast,
   unwrapAnchor,
+  unwrapArttrack,
   unwrapAwesound,
   unwrapBlubrry,
   unwrapChartable,
