@@ -41,4 +41,34 @@ describe('unwrapArttrack', () => {
 
     expect(unwrapArttrack(url)).toBeUndefined()
   })
+
+  it('should return undefined for an id longer than 5 characters', () => {
+    const url = new URL('https://arttrk.com/p/BZZPR1/example.com/episode.mp3')
+
+    expect(unwrapArttrack(url)).toBeUndefined()
+  })
+
+  it('should return undefined for an empty campaign id', () => {
+    const url = new URL('https://arttrk.com/p//example.com/episode.mp3')
+
+    expect(unwrapArttrack(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a target with no campaign id', () => {
+    const url = new URL('https://arttrk.com/p/a.com/episode.mp3')
+
+    expect(unwrapArttrack(url)).toBeUndefined()
+  })
+
+  it('should return undefined for another one-letter path', () => {
+    const url = new URL('https://arttrk.com/x/BZZPR/example.com/episode.mp3')
+
+    expect(unwrapArttrack(url)).toBeUndefined()
+  })
+
+  it('should return undefined for the prefix below another segment', () => {
+    const url = new URL('https://arttrk.com/a/p/BZZPR/example.com/episode.mp3')
+
+    expect(unwrapArttrack(url)).toBeUndefined()
+  })
 })
