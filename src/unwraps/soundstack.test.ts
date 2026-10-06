@@ -29,4 +29,16 @@ describe('unwrapSoundstack', () => {
 
     expect(unwrapSoundstack(url)).toBeUndefined()
   })
+
+  it('should return undefined for a target with no account id', () => {
+    const url = new URL('https://enrichment.soundstack.com/a.b.cd/episode.mp3')
+
+    expect(unwrapSoundstack(url)).toBeUndefined()
+  })
+
+  it('should return undefined for an id below another segment', () => {
+    const url = new URL('https://enrichment.soundstack.com/a/4vjqq8/example.com/episode.mp3')
+
+    expect(unwrapSoundstack(url)).toBeUndefined()
+  })
 })
