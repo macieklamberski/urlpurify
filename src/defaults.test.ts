@@ -119,6 +119,7 @@ describe('defaultUnwrappers', () => {
       'unwrapThreadsShim',
       'unwrapTiktok',
       'unwrapTumblr',
+      'unwrapValuePress',
       'unwrapVanilla',
       'unwrapVbulletin',
       'unwrapVirgool',

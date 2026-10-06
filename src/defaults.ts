@@ -305,6 +305,7 @@ import { unwrapUnhcrWebArchive } from './unwraps/unhcrWebArchive.js'
 import { unwrapUnisender } from './unwraps/unisender.js'
 import { unwrapVadeSecure } from './unwraps/vadeSecure.js'
 import { unwrapValuecommerce } from './unwraps/valuecommerce.js'
+import { unwrapValuePress } from './unwraps/valuePress.js'
 import { unwrapVanilla } from './unwraps/vanilla.js'
 import { unwrapVbulletin } from './unwraps/vbulletin.js'
 import { unwrapVefsafn } from './unwraps/vefsafn.js'
@@ -466,6 +467,7 @@ export const pressReleaseUnwrappers: Array<UrlUnwrapper> = [
   unwrapNewswire,
   unwrapPrNewswire,
   unwrapPrweb,
+  unwrapValuePress,
 ]
 
 // Link shims that answer only behind a sign-in: unwrapping removes nothing.
