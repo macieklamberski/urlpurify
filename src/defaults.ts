@@ -127,6 +127,7 @@ import { unwrapFortimail } from './unwraps/fortimail.js'
 import { unwrapFtc } from './unwraps/ftc.js'
 import { unwrapGateSc } from './unwraps/gateSc.js'
 import { unwrapGeoriot } from './unwraps/georiot.js'
+import { unwrapGfnLinkProxy } from './unwraps/gfnLinkProxy.js'
 import { unwrapGitee } from './unwraps/gitee.js'
 import { unwrapGlueUp } from './unwraps/glueUp.js'
 import { unwrapGoogle } from './unwraps/google.js'
@@ -405,6 +406,7 @@ export const linkShimUnwrappers: Array<UrlUnwrapper> = [
   unwrapFeedStatistics,
   unwrapFinalsite,
   unwrapFtc,
+  unwrapGfnLinkProxy,
   unwrapGitee,
   unwrapGoogleAmpViewer,
   unwrapHackerone,
