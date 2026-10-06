@@ -66,6 +66,7 @@ import { unwrapCheckPointHarmony } from './unwraps/checkPointHarmony.js'
 import { unwrapChitika } from './unwraps/chitika.js'
 import { unwrapCiscoSecureWeb } from './unwraps/ciscoSecureWeb.js'
 import { unwrapCjNetwork } from './unwraps/cjNetwork.js'
+import { unwrapClaritas } from './unwraps/claritas.js'
 import { unwrapCleverbridge } from './unwraps/cleverbridge.js'
 import { unwrapClevercomm } from './unwraps/clevercomm.js'
 import { unwrapCloudhq } from './unwraps/cloudhq.js'
@@ -700,6 +701,7 @@ export const downloadMeasurementUnwrappers: Array<UrlUnwrapper> = [
   unwrapAwesound,
   unwrapBlubrry,
   unwrapChartable,
+  unwrapClaritas,
   unwrapDstats,
   unwrapFirstory,
   unwrapGumball,
