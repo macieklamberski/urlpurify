@@ -288,6 +288,7 @@ import { unwrapSteamLinkfilter } from './unwraps/steamLinkfilter.js'
 import { unwrapStorify } from './unwraps/storify.js'
 import { unwrapStreak } from './unwraps/streak.js'
 import { unwrapStreamsend } from './unwraps/streamsend.js'
+import { unwrapSubscribeRu } from './unwraps/subscribeRu.js'
 import { unwrapSubstack } from './unwraps/substack.js'
 import { unwrapSurugaya } from './unwraps/surugaya.js'
 import { unwrapSwap } from './unwraps/swap.js'
@@ -575,6 +576,7 @@ export const emailTrackingUnwrappers: Array<UrlUnwrapper> = [
   unwrapSquarespaceEmail,
   unwrapStreak,
   unwrapStreamsend,
+  unwrapSubscribeRu,
   unwrapSubstack,
   unwrapSymplicity,
   unwrapTwitterRedirect,
