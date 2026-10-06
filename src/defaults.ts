@@ -208,6 +208,7 @@ import { unwrapNewswire } from './unwraps/newswire.js'
 import { unwrapNodeseek } from './unwraps/nodeseek.js'
 import { unwrapOkRu } from './unwraps/okRu.js'
 // import { unwrapOp3 } from './unwraps/op3.js'
+// import { unwrapOrkut } from './unwraps/orkut.js'
 import { unwrapOsnova } from './unwraps/osnova.js'
 // import { unwrapOutlookSafelinks } from './unwraps/outlookSafelinks.js'
 // import { unwrapOutlookWebAccess } from './unwraps/outlookWebAccess.js'
@@ -595,6 +596,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapNicoMs,
   unwrapNodeseek,
   unwrapOkRu,
+  // unwrapOrkut,
   unwrapOsnova,
   unwrapPinterest,
   unwrapPocket,
