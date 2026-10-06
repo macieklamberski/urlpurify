@@ -1,6 +1,12 @@
 import { describe, expect, it } from 'bun:test'
 import { unwrapDerefMail } from './derefMail.js'
 
+const unclaimedLightmailerPaths: Array<string> = [
+  '/deref/',
+  '/WJID20DIzrg/deref/below/',
+  '/mail/WJID20DIzrg/deref/',
+]
+
 describe('unwrapDerefMail', () => {
   it('should extract target from redirectUrl param', () => {
     const url = new URL(
@@ -58,6 +64,86 @@ describe('unwrapDerefMail', () => {
     )
 
     expect(unwrapDerefMail(url)).toBe('http://www.example.com/marken/bench/')
+  })
+
+  it('should extract target on the light mailer path with a session token', () => {
+    const url = new URL(
+      'https://lightmailer.mail.com/WJID20DIzrg/deref/?redirectUrl=https%3A%2F%2Fwww.example.com%2Fcartoon%3FsearchID%3DCS448172',
+    )
+
+    expect(unwrapDerefMail(url)).toBe('https://www.example.com/cartoon?searchID=CS448172')
+  })
+
+  it.each(unclaimedLightmailerPaths)('should return undefined for light mailer path %s', (path) => {
+    const url = new URL(
+      `https://lightmailer.mail.com${path}?redirectUrl=https%3A%2F%2Fwww.example.com%2F`,
+    )
+
+    expect(unwrapDerefMail(url)).toBeUndefined()
+  })
+
+  it('should return undefined for another path on service.mail.com', () => {
+    const url = new URL('https://service.mail.com/?target=http%3A%2F%2Fwww.example.com%2F')
+
+    expect(unwrapDerefMail(url)).toBeUndefined()
+  })
+
+  it('should return undefined for another path on a FreeMail host', () => {
+    const url = new URL('https://freemailng2504.web.de/?goto=http%3A%2F%2Fwww.example.com%2F')
+
+    expect(unwrapDerefMail(url)).toBeUndefined()
+  })
+
+  it('should extract target from the target param of the leaving page', () => {
+    const url = new URL(
+      'https://service.mail.com/dereferrer/?target=http%3A%2F%2Fwww.example.com%2Fpcasts%2Fep1.mp3&lang=en',
+    )
+
+    expect(unwrapDerefMail(url)).toBe('http://www.example.com/pcasts/ep1.mp3')
+  })
+
+  it('should extract target from the to param of the United Internet leaving page', () => {
+    const url = new URL(
+      'https://www.ui-deref.de/r/?to=https://www.example.com/watch%3Fv%3DVOFoSa1pMnA&tt1=iu17T-7t7XEMafXlAQd5Ku',
+    )
+
+    expect(unwrapDerefMail(url)).toBe('https://www.example.com/watch?v=VOFoSa1pMnA')
+  })
+
+  it('should return undefined for another path on www.ui-deref.de', () => {
+    const url = new URL('https://www.ui-deref.de/?to=https://www.example.com/')
+
+    expect(unwrapDerefMail(url)).toBeUndefined()
+  })
+
+  it('should extract target from the goto param of the FreeMail jump', () => {
+    const url = new URL(
+      'https://freemailng2504.web.de/jump.htm?goto=http%3A%2F%2Fwww.example.com%2Fwatch%3Fv%3DZlXhb9SAap0',
+    )
+
+    expect(unwrapDerefMail(url)).toBe('http://www.example.com/watch?v=ZlXhb9SAap0')
+  })
+
+  it('should return undefined for the FreeMail jump on a host without a number', () => {
+    const url = new URL('https://freemailng.web.de/jump.htm?goto=http%3A%2F%2Fwww.example.com%2F')
+
+    expect(unwrapDerefMail(url)).toBeUndefined()
+  })
+
+  it('should return undefined for the FreeMail jump on a host that only starts with it', () => {
+    const url = new URL(
+      'https://freemailng2504.web.de.example.com/jump.htm?goto=http%3A%2F%2Fwww.example.com%2F',
+    )
+
+    expect(unwrapDerefMail(url)).toBeUndefined()
+  })
+
+  it('should return undefined for the FreeMail jump on a host that only ends with it', () => {
+    const url = new URL(
+      'https://xfreemailng2504.web.de/jump.htm?goto=http%3A%2F%2Fwww.example.com%2F',
+    )
+
+    expect(unwrapDerefMail(url)).toBeUndefined()
   })
 
   it('should return undefined when DEST param is missing', () => {
