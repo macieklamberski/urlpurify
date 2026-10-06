@@ -44,10 +44,16 @@ describe('unwrapChartable', () => {
     )
   })
 
-  it('should return undefined when the id is missing', () => {
+  it('should extract a target with a scheme when the id is missing', () => {
     const url = new URL(
       'https://chtbl.com/track/http://example.com/stream/1075446052-free-picks.mp3',
     )
+
+    expect(unwrapChartable(url)).toBe('http://example.com/stream/1075446052-free-picks.mp3')
+  })
+
+  it('should return undefined for a target without a scheme when the id is missing', () => {
+    const url = new URL('https://chtbl.com/track/example.com/stream/1075446052-free-picks.mp3')
 
     expect(unwrapChartable(url)).toBeUndefined()
   })
