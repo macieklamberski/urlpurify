@@ -218,6 +218,7 @@ import { unwrapPocket } from './unwraps/pocket.js'
 // import { unwrapPodtrac } from './unwraps/podtrac.js'
 // import { unwrapPostmark } from './unwraps/postmark.js'
 // import { unwrapPrezly } from './unwraps/prezly.js'
+// import { unwrapPriceGrabber } from './unwraps/priceGrabber.js'
 import { unwrapPrNewswire } from './unwraps/prNewswire.js'
 // import { unwrapPromoJukebox } from './unwraps/promoJukebox.js'
 // import { unwrapProofpointIsolation } from './unwraps/proofpointIsolation.js'
@@ -499,6 +500,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapNcls,
   // unwrapNetaffiliation,
   // unwrapPartnerAds,
+  // unwrapPriceGrabber,
   // Rakuten Japan's own program, separate from the LinkSynergy network in unwrapLinksynergy.
   // Opt-in like the rest of the group: unwrapping drops the publisher's commission.
   // unwrapRakutenAffiliate,
