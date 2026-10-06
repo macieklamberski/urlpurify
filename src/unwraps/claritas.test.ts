@@ -38,14 +38,26 @@ describe('unwrapClaritas', () => {
     expect(unwrapClaritas(url)).toBeUndefined()
   })
 
-  it('should return undefined for the other host prefix', () => {
+  it('should return undefined for the short prefix on the long domain', () => {
     const url = new URL('https://claritaspod.com/m/example.com/episode.mp3')
+
+    expect(unwrapClaritas(url)).toBeUndefined()
+  })
+
+  it('should return undefined for the measure prefix on the short domain', () => {
+    const url = new URL('https://clrtpod.com/measure/example.com/episode.mp3')
 
     expect(unwrapClaritas(url)).toBeUndefined()
   })
 
   it('should return undefined for other hosts', () => {
     const url = new URL('https://example.com/measure/example.org/episode.mp3')
+
+    expect(unwrapClaritas(url)).toBeUndefined()
+  })
+
+  it('should return undefined for the short prefix on other hosts', () => {
+    const url = new URL('https://example.com/m/example.org/episode.mp3')
 
     expect(unwrapClaritas(url)).toBeUndefined()
   })
