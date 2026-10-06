@@ -292,6 +292,7 @@ import { unwrapStreamsend } from './unwraps/streamsend.js'
 import { unwrapStumbleupon } from './unwraps/stumbleupon.js'
 import { unwrapSubscribeRu } from './unwraps/subscribeRu.js'
 import { unwrapSubstack } from './unwraps/substack.js'
+import { unwrapSurly } from './unwraps/surly.js'
 import { unwrapSurugaya } from './unwraps/surugaya.js'
 import { unwrapSwap } from './unwraps/swap.js'
 import { unwrapSymantecClicktime } from './unwraps/symantecClicktime.js'
@@ -674,6 +675,7 @@ export const affiliateUnwrappers: Array<UrlUnwrapper> = [
   unwrapSlickdeals,
   unwrapSmartredirect,
   unwrapStay22,
+  unwrapSurly,
   unwrapSurugaya,
   unwrapTargetCircle,
   unwrapToucharcade,
