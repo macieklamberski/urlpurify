@@ -310,6 +310,8 @@ import { unwrapYouTube } from './unwraps/youtube.js'
 import { unwrapZemanta } from './unwraps/zemanta.js'
 import { unwrapZhihu } from './unwraps/zhihu.js'
 
+// import { unwrapZix } from './unwraps/zix.js'
+
 export { trackingParamsLiterals } from './tracking/literals.js'
 export { trackingParamsPatterns } from './tracking/patterns.js'
 
@@ -415,6 +417,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapWordpressEmail,
   // unwrapYamm,
   // unwrapYourMembership,
+  // unwrapZix,
 
   // Affiliate networks.
   // unwrap2performant,
