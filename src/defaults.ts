@@ -233,6 +233,7 @@ import { unwrapPipedrive } from './unwraps/pipedrive.js'
 import { unwrapPocket } from './unwraps/pocket.js'
 import { unwrapPodcorn } from './unwraps/podcorn.js'
 import { unwrapPodder } from './unwraps/podder.js'
+import { unwrapPodroll } from './unwraps/podroll.js'
 import { unwrapPodscribe } from './unwraps/podscribe.js'
 import { unwrapPodsights } from './unwraps/podsights.js'
 import { unwrapPodtrac } from './unwraps/podtrac.js'
@@ -718,6 +719,7 @@ export const downloadMeasurementUnwrappers: Array<UrlUnwrapper> = [
   unwrapOp3,
   unwrapPodcorn,
   unwrapPodder,
+  unwrapPodroll,
   unwrapPodscribe,
   unwrapPodsights,
   unwrapPodtrac,
