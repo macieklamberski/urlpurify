@@ -296,6 +296,7 @@ import { unwrapVbulletin } from './unwraps/vbulletin.js'
 // import { unwrapVgWort } from './unwraps/vgWort.js'
 // import { unwrapViglink } from './unwraps/viglink.js'
 import { unwrapVirgool } from './unwraps/virgool.js'
+import { unwrapVisibli } from './unwraps/visibli.js'
 import { unwrapVkAway } from './unwraps/vkAway.js'
 // import { unwrapVocus } from './unwraps/vocus.js'
 // import { unwrapVuture } from './unwraps/vuture.js'
@@ -602,6 +603,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   unwrapTumblr,
   unwrapVanilla,
   unwrapVbulletin,
+  unwrapVisibli,
   unwrapVkAway,
   unwrapWpPoczta,
   unwrapXengentr,
