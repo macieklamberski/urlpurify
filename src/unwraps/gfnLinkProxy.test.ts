@@ -48,14 +48,20 @@ describe('unwrapGfnLinkProxy', () => {
     expect(unwrapGfnLinkProxy(url)).toBeUndefined()
   })
 
-  it('should return undefined for the path without the trailing slash', () => {
-    const url = new URL('https://www.example.com/redirect?to=aHR0cHM6Ly9leGFtcGxlLm9yZy8%3D')
+  it('should extract target from the path without the trailing slash', () => {
+    const url = new URL('https://www.example.com/redirect?to=aHR0cHM6Ly93d3cuZXhhbXBsZS5vcmcv')
 
-    expect(unwrapGfnLinkProxy(url)).toBeUndefined()
+    expect(unwrapGfnLinkProxy(url)).toBe('https://www.example.org/')
   })
 
   it('should return undefined for another path on the same host', () => {
     const url = new URL('https://www.example.com/yonlendirme/?to=aHR0cHM6Ly9leGFtcGxlLm9yZy8%3D')
+
+    expect(unwrapGfnLinkProxy(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a path that continues after redirect', () => {
+    const url = new URL('https://www.example.com/redirect/x?to=aHR0cHM6Ly9leGFtcGxlLm9yZy8%3D')
 
     expect(unwrapGfnLinkProxy(url)).toBeUndefined()
   })
