@@ -108,9 +108,19 @@ describe('unwrapCjNetwork', () => {
     expect(unwrapCjNetwork(url)).toBeUndefined()
   })
 
-  it('should return undefined for a link type other than dlg', () => {
+  it('should extract target from the deep link path with the am link type', () => {
     const url = new URL(
-      'https://www.anrdoezrs.net/links/8900337/type/am/https://www.example.com/w/item',
+      'https://www.qksrv.net/links/7737731/type/am/https://www.example.com/w/the-cafe-of-dreams/1129512852?ean=2940164090227',
+    )
+
+    expect(unwrapCjNetwork(url)).toBe(
+      'https://www.example.com/w/the-cafe-of-dreams/1129512852?ean=2940164090227',
+    )
+  })
+
+  it('should return undefined for a link type other than dlg or am', () => {
+    const url = new URL(
+      'https://www.anrdoezrs.net/links/8900337/type/xyz/https://www.example.com/w/item',
     )
 
     expect(unwrapCjNetwork(url)).toBeUndefined()
@@ -126,6 +136,24 @@ describe('unwrapCjNetwork', () => {
     const url = new URL('https://example.com/links/8946794/type/dlg/https://example.org/item')
 
     expect(unwrapCjNetwork(url)).toBeUndefined()
+  })
+
+  it('should extract target from the loc param of a click link', () => {
+    const url = new URL(
+      'http://www.anrdoezrs.net/click-1759496-5463217?loc=http%3A//www.example.com/ws/eBayISAPI.dll%3FViewItem%26item%3D180000694940',
+    )
+
+    expect(unwrapCjNetwork(url)).toBe(
+      'http://www.example.com/ws/eBayISAPI.dll?ViewItem&item=180000694940',
+    )
+  })
+
+  it('should read the url param before loc', () => {
+    const url = new URL(
+      'https://www.anrdoezrs.net/click-100577550-15073808?url=https%3A%2F%2Fwww.example.com%2Fproducts%2Fcoat%3Fcountry%3DGB&curr=GBP&loc=GB',
+    )
+
+    expect(unwrapCjNetwork(url)).toBe('https://www.example.com/products/coat?country=GB')
   })
 
   it('should return undefined when url param is missing', () => {

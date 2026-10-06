@@ -26,6 +26,22 @@ describe('unwrapReverbnation', () => {
     expect(unwrapReverbnation(url)).toBe('https://example.rs/')
   })
 
+  it('should extract target from the older c path', () => {
+    const url = new URL(
+      'http://www.reverbnation.com/c/fan_reach/pt?eid=A158359_8181469_23223048&url=http%3A%2F%2Fexample.bandcamp.com%2Falbum%2F10x10',
+    )
+
+    expect(unwrapReverbnation(url)).toBe('http://example.bandcamp.com/album/10x10')
+  })
+
+  it('should extract target from the older controller path', () => {
+    const url = new URL(
+      'http://www.reverbnation.com/controller/fan_reach/pt?eid=2661548_18405082&url=http%3A%2F%2Fwww.example.com%2F',
+    )
+
+    expect(unwrapReverbnation(url)).toBe('http://www.example.com/')
+  })
+
   it('should return undefined when both carriers are missing', () => {
     const url = new URL('http://www.rvrb.me/fan_reach/pt?eid=V108089_21063999_21947530_lnk1001')
 
@@ -35,6 +51,14 @@ describe('unwrapReverbnation', () => {
   it('should return undefined for another path', () => {
     const url = new URL(
       'https://www.reverbnation.com/widgets/tune_widget/tuneWidget.swf?url=http%3A%2F%2Fwww.example.com',
+    )
+
+    expect(unwrapReverbnation(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a path that only ends with the click path', () => {
+    const url = new URL(
+      'https://www.reverbnation.com/other/fan_reach/pt?url=http%3A%2F%2Fwww.example.com',
     )
 
     expect(unwrapReverbnation(url)).toBeUndefined()
