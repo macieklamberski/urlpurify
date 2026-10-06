@@ -199,6 +199,7 @@ import { unwrapMcas } from './unwraps/mcas.js'
 import { unwrapMedium } from './unwraps/medium.js'
 import { unwrapMegalodon } from './unwraps/megalodon.js'
 import { unwrapMimecast } from './unwraps/mimecast.js'
+import { unwrapMinistryCloud } from './unwraps/ministryCloud.js'
 import { unwrapMintDownloads } from './unwraps/mintDownloads.js'
 import { unwrapMintFeeder } from './unwraps/mintFeeder.js'
 import { unwrapMoshimo } from './unwraps/moshimo.js'
@@ -700,6 +701,7 @@ export const downloadMeasurementUnwrappers: Array<UrlUnwrapper> = [
   unwrapFirstory,
   unwrapGumball,
   unwrapMagellan,
+  unwrapMinistryCloud,
   unwrapMintDownloads,
   unwrapOp3,
   unwrapPodcorn,
