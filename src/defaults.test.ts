@@ -78,6 +78,7 @@ describe('defaultUnwrappers', () => {
       'unwrapIndexHu',
       'unwrapInfospace',
       'unwrapInstagramShim',
+      'unwrapInvisionNoExternalLinks',
       'unwrapIrs',
       'unwrapJianshuGo',
       'unwrapJive',

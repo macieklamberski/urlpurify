@@ -159,6 +159,7 @@ import { unwrapInfospace } from './unwraps/infospace.js'
 import { unwrapInsiderAffiliate } from './unwraps/insiderAffiliate.js'
 import { unwrapInstagramShim } from './unwraps/instagram.js'
 import { unwrapIntranetQuorum } from './unwraps/intranetQuorum.js'
+import { unwrapInvisionNoExternalLinks } from './unwraps/invisionNoExternalLinks.js'
 import { unwrapInvolveAsia } from './unwraps/involveAsia.js'
 import { unwrapIrs } from './unwraps/irs.js'
 import { unwrapJianshuGo } from './unwraps/jianshuGo.js'
@@ -413,6 +414,7 @@ export const linkShimUnwrappers: Array<UrlUnwrapper> = [
   unwrapHrefLi,
   unwrapIndexHu,
   unwrapInstagramShim,
+  unwrapInvisionNoExternalLinks,
   unwrapIrs,
   unwrapJianshuGo,
   unwrapJive,
