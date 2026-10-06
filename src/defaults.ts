@@ -10,6 +10,7 @@ import { unwrapAcast } from './unwraps/acast.js'
 import { unwrapAccesstrade } from './unwraps/accesstrade.js'
 import { unwrapAceml } from './unwraps/aceml.js'
 import { unwrapAdcell } from './unwraps/adcell.js'
+import { unwrapAdfly } from './unwraps/adfly.js'
 import { unwrapAdjust } from './unwraps/adjust.js'
 import { unwrapAdmitad } from './unwraps/admitad.js'
 import { unwrapAdrecord } from './unwraps/adrecord.js'
@@ -601,6 +602,7 @@ export const affiliateUnwrappers: Array<UrlUnwrapper> = [
   unwrapA8Net,
   unwrapAccesstrade,
   unwrapAdcell,
+  unwrapAdfly,
   unwrapAdmitad,
   unwrapAdrecord,
   unwrapAdtraction,
