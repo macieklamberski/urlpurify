@@ -79,13 +79,36 @@ For wrappers that encode the target (base64 path segments, custom escaping), wri
 
 ### Defaults
 
-`defaultTrackingParams` is the combined default list for `cleanUrl` and `stripTrackingParams`: literal names plus family regexes like `/^utm_[a-z0-9_-]+$/` that cover vendor namespaces where new variants keep appearing. Its parts are exported separately as `trackingParamsLiterals` (strings only, for consumers that need a plain string list) and `trackingParamsPatterns`. `defaultUnwrappers` is exported alongside. `defaultUnwrappers` enables a conservative subset of the catalog; everything else is exported individually for explicit opt-in.
+`defaultTrackingParams` is the combined default list for `cleanUrl` and `stripTrackingParams`: literal names plus family regexes like `/^utm_[a-z0-9_-]+$/` that cover vendor namespaces where new variants keep appearing. Its parts are exported separately as `trackingParamsLiterals` (strings only, for consumers that need a plain string list) and `trackingParamsPatterns`. `defaultUnwrappers` is exported alongside. `defaultUnwrappers` enables the unwrappers whose removal costs nobody anything, and the rest are grouped into categories below.
 
-**On by default:** redirects that only track the click — search-engine redirects and platform shims. Unwrapping them costs the destination nothing.
+### Unwrapper categories
 
-**Off by default:** affiliate and referral wrappers (`unwrapSkimlinks`, `unwrapAwin`, `unwrapShareasale`, `unwrapAmazonAffiliate`, `unwrapViglink`, and the rest). The reader lands on the same page either way — unwrapping only removes the writer's commission, which for a small blog is the money paying for the work. Opt in explicitly if you want them.
+Every unwrapper belongs to one category, and each category is exported as an array. The categories split by what unwrapping takes away from someone, because that's what decides whether you want it.
 
-**Also off by default:** podcast analytics prefixes, such as `unwrapPodtrac`. The listener gets the same audio file either way. Unwrapping removes the podcaster's download counts.
+| Category | Unwrapping removes | Default |
+| --- | --- | --- |
+| `searchClickUnwrappers` | The search engine's or aggregator's click logging | Yes |
+| `linkShimUnwrappers` | Nothing, or at most the platform's or site's own click count | Yes |
+| `pressReleaseUnwrappers` | The wire's click stats | Yes |
+| `signInShimUnwrappers` | Nothing, but readers reach a page the shim opens only after a sign-in | No |
+| `securityGatewayUnwrappers` | The gateway's click-time check of the target | No |
+| `emailTrackingUnwrappers` | The sender's click stats | No |
+| `affiliateUnwrappers` | The publisher's commission | No |
+| `advertisingUnwrappers` | Ad click and app install attribution | No |
+| `downloadMeasurementUnwrappers` | The download or click counts of a podcaster or a site | No |
+| `archiveProxyUnwrappers` | The archived, translated or proxied copy: the result is the live page | No |
+
+`defaultUnwrappers` is the first three combined. The rest stay off because unwrapping either costs somebody something or changes the page the reader gets. An affiliate link is often the money paying for a small blog, a security gateway checks the target at click time for a reason, and an archive link points at a copy on purpose.
+
+To turn on more, spread the categories you want next to the defaults:
+
+```typescript
+import { archiveProxyUnwrappers, cleanUrl, defaultUnwrappers, emailTrackingUnwrappers } from 'urlpurify'
+
+cleanUrl(url, {
+  unwrappers: [...defaultUnwrappers, ...emailTrackingUnwrappers, ...archiveProxyUnwrappers],
+})
+```
 
 Prevalence is not the test: affiliate wrappers are more common than tracking shims.
 
@@ -100,6 +123,7 @@ Enabled by default:
 | `unwrapAboutCom` | About.com outbound link page (\<topic\>.about.com/gi/dynamic/offsite.htm?zu=\<target\>) and leaving page (/gi/o.htm?zu=\<target\>) |
 | `unwrapAliyun` | Alibaba Cloud developer community outbound link redirect (yq.aliyun.com/go/articleRenderRedirect?url=\<target\>) |
 | `unwrapAllblog` | Allblog metablog outbound link (link.allblog.net/\<post id\>/\<target\>) |
+| `unwrapAmpCache` | AMP cache (cdn.ampproject.org/{c,v}/[s/]\<host\>/\<path\>) |
 | `unwrapAnonymTo` | anonym.to referrer anonymizer (anonym.to/?\<target\>) |
 | `unwrapArxiv` | arXiv outbound link redirect (arxiv.org/ct?url=\<target\>) |
 | `unwrapAsk` | Ask.com search result click redirect (wzus.ask.com/r?u=\<target\>) |
@@ -124,6 +148,8 @@ Enabled by default:
 | `unwrapDzen` | Dzen away redirect (dzen.ru/away?to=\<target\>) |
 | `unwrapEvernote` | Evernote outbound link redirect (www.evernote.com/OutboundRedirect.action?dest=\<target\>) |
 | `unwrapFacebookShim` | Meta link shim (l.facebook.com/l.php?u=\<target\>, also lm., www., upload., m., web., pt-br., free., business., 0. and bare facebook.com, and l.messenger.com, plus l.facebook.com/?u=\<target\> and l.facebook.com/lsr.php?u=\<target\>) |
+| `unwrapFeedblitz` | FeedBlitz feed item click tracker (feeds.feedblitz.com/~/t/0/0/\<feed\>/~\<target\>) |
+| `unwrapFeedsportal` | FeedSportal article link with the target encoded in the path (\<host\>/\<encoded id\>/story01.htm) |
 | `unwrapFeedStatistics` | Feed Statistics WordPress plugin click counter (\<any blog\>/?feed-stats-url=\<base64 target\>) |
 | `unwrapFinalsite` | Finalsite school website link counter (\<any host\>/cf_news/forward.cfm?dest=\<target\>&destkey=\<signature\>) |
 | `unwrapFlipboard` | Flipboard outbound redirect (flipboard.com/redirect?url=\<target\>) |
@@ -153,10 +179,12 @@ Enabled by default:
 | `unwrapMailRu` | Mail.ru webmail link checker (checklink.mail.ru/proxy?url=\<target\>) and click redirect (click.mail.ru/redir?u=\<target\>, also click.my.mail.ru) |
 | `unwrapMarketwire` | Marketwire release click tracker (ctt.marketwire.com/?url=\<target\>) |
 | `unwrapMedium` | Medium outbound link redirect (medium.com/r/?url=\<target\>) and sign-in hop (medium.com/m/global-identity?redirectUrl=\<target\>) |
+| `unwrapMintFeeder` | Mint Feeder click counter on a site's own host (\<any host\>/feeder/?FeederAction=clicked&seed=\<target\>) |
 | `unwrapMozillaOutgoing` | Mozilla outgoing-link redirector (outgoing.prod.mozaws.net/v1/\<hash\>/\<target\>) |
 | `unwrapNaverOutgoing` | Naver outbound link redirect (cc.loginfra.com/...?u=\<target\>) and search result click (search.naver.com/p/crd/rd?u=\<target\>, also m.search.naver.com) |
 | `unwrapNetcentrum` | Centrum.cz and Atlas.cz webmail dereferrer (redir.netcentrum.cz/?noaudit&url=\<target\>) |
 | `unwrapNewswire` | Newswire release and email click tracker (stats.newswire.com/x/html?final=\<base64url\>, also stats.nwe.io and stats.mediadboutreach.com) |
+| `unwrapNicoMs` | nico.ms short link, expanded to the watch page (nico.ms/sm\<id\>, also /nm and /so) or the illustration page (nico.ms/im\<id\>) |
 | `unwrapNodeseek` | NodeSeek forum leaving-site page (www.nodeseek.com/jump?to=\<target\>) |
 | `unwrapOkRu` | OK.ru outbound link and leaving-site page (ok.ru/dk?cmd=logExternal&st.link=\<target\>, m.ok.ru/dk?st.cmd=outLinkWarning&st.rfn=\<target\>) |
 | `unwrapOsnova` | Osnova outbound link redirect on vc.ru and dtf.ru (api.vc.ru/v2.8/redirect?to=\<target\>) |
@@ -173,6 +201,7 @@ Enabled by default:
 | `unwrapSegmentfault` | Segmentfault external link redirect (link.segmentfault.com/?enc=\<base64\>) |
 | `unwrapSerendipity` | Serendipity blog exit tracker (\<any host\>/[\<blog\>/]exit.php?url=\<base64\>&entry_id=\<n\>) |
 | `unwrapSkyrock` | Skyrock blog outbound link redirect (www.skyrock.com/r?url=\<target\>) |
+| `unwrapSlack` | Slack link redirect (slack-redir.net/link?url=\<target\>) |
 | `unwrapSoundcloud` | SoundCloud exit link (exit.sc/?url=\<target\>) |
 | `unwrapSspai` | Sspai external link redirect (sspai.com/link?target=\<target\>) |
 | `unwrapSteamLinkfilter` | Steam outbound link filter (steamcommunity.com/linkfilter/?url=\<target\> or ?u=\<target\>) |
@@ -196,4 +225,4 @@ Enabled by default:
 | `unwrapZemanta` | Zemanta related-article redirect (r.zemanta.com/?u=\<target\>) |
 | `unwrapZhihu` | Zhihu external redirect (link.zhihu.com/?target=\<target\>) |
 
-Many more are available for explicit opt-in: email security gateways (Outlook SafeLinks, Proofpoint, Mimecast), affiliate networks (Awin, Skimlinks, Commission Junction), CJK platforms, AMP caches, and others. See [src/unwraps](src/unwraps) for the full catalog, each documented in its source file.
+Everything else is opt-in, through the categories above or one unwrapper at a time. See [src/unwraps](src/unwraps) for the full catalog, each documented in its source file.
