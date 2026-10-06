@@ -76,6 +76,12 @@ describe('unwrapLogicboard', () => {
     expect(unwrapLogicboard(url)).toBeUndefined()
   })
 
+  it('should return undefined for a path that continues after away.php', () => {
+    const url = new URL('https://www.example.com/away.php/x?s=https%3A%2F%2Fexample.org%2F')
+
+    expect(unwrapLogicboard(url)).toBeUndefined()
+  })
+
   it('should return undefined for the path under three prefix segments', () => {
     const url = new URL('https://www.example.com/a/b/c/away.php?s=https%3A%2F%2Fexample.org%2F')
 
