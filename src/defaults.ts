@@ -34,6 +34,7 @@ import { unwrapArttrack } from './unwraps/arttrack.js'
 import { unwrapArxiv } from './unwraps/arxiv.js'
 import { unwrapAsk } from './unwraps/ask.js'
 import { unwrapAugure } from './unwraps/augure.js'
+import { unwrapAusha } from './unwraps/ausha.js'
 import { unwrapAvantlink } from './unwraps/avantlink.js'
 import { unwrapAwesound } from './unwraps/awesound.js'
 import { unwrapAwin } from './unwraps/awin.js'
@@ -67,6 +68,7 @@ import { unwrapCheckPointHarmony } from './unwraps/checkPointHarmony.js'
 import { unwrapChitika } from './unwraps/chitika.js'
 import { unwrapCiscoSecureWeb } from './unwraps/ciscoSecureWeb.js'
 import { unwrapCjNetwork } from './unwraps/cjNetwork.js'
+import { unwrapClaritas } from './unwraps/claritas.js'
 import { unwrapCleverbridge } from './unwraps/cleverbridge.js'
 import { unwrapClevercomm } from './unwraps/clevercomm.js'
 import { unwrapCloudhq } from './unwraps/cloudhq.js'
@@ -128,6 +130,7 @@ import { unwrapFortimail } from './unwraps/fortimail.js'
 import { unwrapFtc } from './unwraps/ftc.js'
 import { unwrapGateSc } from './unwraps/gateSc.js'
 import { unwrapGeoriot } from './unwraps/georiot.js'
+import { unwrapGfnLinkProxy } from './unwraps/gfnLinkProxy.js'
 import { unwrapGitee } from './unwraps/gitee.js'
 import { unwrapGlueUp } from './unwraps/glueUp.js'
 import { unwrapGoogle } from './unwraps/google.js'
@@ -140,6 +143,7 @@ import { unwrapGoogleTranslate } from './unwraps/googleTranslate.js'
 import { unwrapGoogleWebLight } from './unwraps/googleWebLight.js'
 import { unwrapGroupMail } from './unwraps/groupMail.js'
 import { unwrapGroupon } from './unwraps/groupon.js'
+import { unwrapGumball } from './unwraps/gumball.js'
 import { unwrapGurunavi } from './unwraps/gurunavi.js'
 import { unwrapHackerone } from './unwraps/hackerone.js'
 import { unwrapHashnode } from './unwraps/hashnode.js'
@@ -159,6 +163,7 @@ import { unwrapInfospace } from './unwraps/infospace.js'
 import { unwrapInsiderAffiliate } from './unwraps/insiderAffiliate.js'
 import { unwrapInstagramShim } from './unwraps/instagram.js'
 import { unwrapIntranetQuorum } from './unwraps/intranetQuorum.js'
+import { unwrapInvisionNoExternalLinks } from './unwraps/invisionNoExternalLinks.js'
 import { unwrapInvolveAsia } from './unwraps/involveAsia.js'
 import { unwrapIrs } from './unwraps/irs.js'
 import { unwrapJianshuGo } from './unwraps/jianshuGo.js'
@@ -179,6 +184,7 @@ import { unwrapLivejournal } from './unwraps/livejournal.js'
 import { unwrapLnkam } from './unwraps/lnkam.js'
 import { unwrapLocaweb } from './unwraps/locaweb.js'
 import { unwrapLocWebArchive } from './unwraps/locWebArchive.js'
+import { unwrapLogicboard } from './unwraps/logicboard.js'
 import { unwrapMagellan } from './unwraps/magellan.js'
 import { unwrapMagnetmail } from './unwraps/magnetmail.js'
 import { unwrapMail2easy } from './unwraps/mail2easy.js'
@@ -196,6 +202,7 @@ import { unwrapMcas } from './unwraps/mcas.js'
 import { unwrapMedium } from './unwraps/medium.js'
 import { unwrapMegalodon } from './unwraps/megalodon.js'
 import { unwrapMimecast } from './unwraps/mimecast.js'
+import { unwrapMinistryCloud } from './unwraps/ministryCloud.js'
 import { unwrapMintDownloads } from './unwraps/mintDownloads.js'
 import { unwrapMintFeeder } from './unwraps/mintFeeder.js'
 import { unwrapMoshimo } from './unwraps/moshimo.js'
@@ -226,9 +233,12 @@ import { unwrapPinterest } from './unwraps/pinterest.js'
 import { unwrapPipedrive } from './unwraps/pipedrive.js'
 import { unwrapPocket } from './unwraps/pocket.js'
 import { unwrapPodcorn } from './unwraps/podcorn.js'
+import { unwrapPodder } from './unwraps/podder.js'
+import { unwrapPodroll } from './unwraps/podroll.js'
 import { unwrapPodscribe } from './unwraps/podscribe.js'
 import { unwrapPodsights } from './unwraps/podsights.js'
 import { unwrapPodtrac } from './unwraps/podtrac.js'
+import { unwrapPostAffiliatePro } from './unwraps/postAffiliatePro.js'
 import { unwrapPostmark } from './unwraps/postmark.js'
 import { unwrapPrezly } from './unwraps/prezly.js'
 import { unwrapPriceGrabber } from './unwraps/priceGrabber.js'
@@ -239,6 +249,7 @@ import { unwrapProofpointV1 } from './unwraps/proofpointV1.js'
 import { unwrapProofpointV2 } from './unwraps/proofpointV2.js'
 import { unwrapProofpointV3 } from './unwraps/proofpointV3.js'
 import { unwrapPrweb } from './unwraps/prweb.js'
+import { unwrapQualityClick } from './unwraps/qualityClick.js'
 import { unwrapRakutenAffiliate } from './unwraps/rakutenAffiliate.js'
 import { unwrapRamblerMail } from './unwraps/ramblerMail.js'
 import { unwrapRecruitics } from './unwraps/recruitics.js'
@@ -268,6 +279,8 @@ import { unwrapSmartredirect } from './unwraps/smartredirect.js'
 import { unwrapSmry } from './unwraps/smry.js'
 import { unwrapSophos } from './unwraps/sophos.js'
 import { unwrapSoundcloud } from './unwraps/soundcloud.js'
+import { unwrapSoundOn } from './unwraps/soundOn.js'
+import { unwrapSoundstack } from './unwraps/soundstack.js'
 import { unwrapSquarespaceEmail } from './unwraps/squarespaceEmail.js'
 import { unwrapSspai } from './unwraps/sspai.js'
 import { unwrapStay22 } from './unwraps/stay22.js'
@@ -277,6 +290,7 @@ import { unwrapStreak } from './unwraps/streak.js'
 import { unwrapStreamsend } from './unwraps/streamsend.js'
 import { unwrapSubstack } from './unwraps/substack.js'
 import { unwrapSurugaya } from './unwraps/surugaya.js'
+import { unwrapSwap } from './unwraps/swap.js'
 import { unwrapSymantecClicktime } from './unwraps/symantecClicktime.js'
 import { unwrapSymplicity } from './unwraps/symplicity.js'
 import { unwrapTargetCircle } from './unwraps/targetCircle.js'
@@ -304,6 +318,7 @@ import { unwrapUkWebArchive } from './unwraps/ukWebArchive.js'
 import { unwrapUnescoWebArchive } from './unwraps/unescoWebArchive.js'
 import { unwrapUnhcrWebArchive } from './unwraps/unhcrWebArchive.js'
 import { unwrapUnisender } from './unwraps/unisender.js'
+import { unwrapUpAudio } from './unwraps/upAudio.js'
 import { unwrapVadeSecure } from './unwraps/vadeSecure.js'
 import { unwrapValuecommerce } from './unwraps/valuecommerce.js'
 import { unwrapValuePress } from './unwraps/valuePress.js'
@@ -316,6 +331,7 @@ import { unwrapVirgool } from './unwraps/virgool.js'
 import { unwrapVisibli } from './unwraps/visibli.js'
 import { unwrapVkAway } from './unwraps/vkAway.js'
 import { unwrapVocus } from './unwraps/vocus.js'
+import { unwrapVoxnest } from './unwraps/voxnest.js'
 import { unwrapVuture } from './unwraps/vuture.js'
 import { unwrapWebArchive } from './unwraps/webArchive.js'
 import { unwrapWebcitation } from './unwraps/webcitation.js'
@@ -402,6 +418,7 @@ export const linkShimUnwrappers: Array<UrlUnwrapper> = [
   unwrapFeedStatistics,
   unwrapFinalsite,
   unwrapFtc,
+  unwrapGfnLinkProxy,
   unwrapGitee,
   unwrapGoogleAmpViewer,
   unwrapHackerone,
@@ -411,6 +428,7 @@ export const linkShimUnwrappers: Array<UrlUnwrapper> = [
   unwrapHrefLi,
   unwrapIndexHu,
   unwrapInstagramShim,
+  unwrapInvisionNoExternalLinks,
   unwrapIrs,
   unwrapJianshuGo,
   unwrapJive,
@@ -418,6 +436,7 @@ export const linkShimUnwrappers: Array<UrlUnwrapper> = [
   unwrapLd246,
   unwrapLinkedin,
   unwrapLivejournal,
+  unwrapLogicboard,
   unwrapMailRu,
   unwrapMedium,
   unwrapMintFeeder,
@@ -631,7 +650,9 @@ export const affiliateUnwrappers: Array<UrlUnwrapper> = [
   unwrapNcls,
   unwrapNetaffiliation,
   unwrapPartnerAds,
+  unwrapPostAffiliatePro,
   unwrapPriceGrabber,
+  unwrapQualityClick,
   // Rakuten Japan's own program, separate from the LinkSynergy network in unwrapLinksynergy.
   // Opt-in like the rest of the group: unwrapping drops the publisher's commission.
   unwrapRakutenAffiliate,
@@ -687,19 +708,30 @@ export const downloadMeasurementUnwrappers: Array<UrlUnwrapper> = [
   unwrapAcast,
   unwrapAnchor,
   unwrapArttrack,
+  unwrapAusha,
   unwrapAwesound,
   unwrapBlubrry,
   unwrapChartable,
+  unwrapClaritas,
   unwrapDstats,
   unwrapFirstory,
+  unwrapGumball,
   unwrapMagellan,
+  unwrapMinistryCloud,
   unwrapMintDownloads,
   unwrapOp3,
   unwrapPodcorn,
+  unwrapPodder,
+  unwrapPodroll,
   unwrapPodscribe,
   unwrapPodsights,
   unwrapPodtrac,
+  unwrapSoundOn,
+  unwrapSoundstack,
+  unwrapSwap,
+  unwrapUpAudio,
   unwrapVgWort,
+  unwrapVoxnest,
 ]
 
 // Archives, proxies and viewers: unwrapping returns the live page, not the copy.
