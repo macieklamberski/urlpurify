@@ -301,6 +301,7 @@ import { unwrapTumblr } from './unwraps/tumblr.js'
 // import { unwrapUnisender } from './unwraps/unisender.js'
 // import { unwrapVadeSecure } from './unwraps/vadeSecure.js'
 // import { unwrapValuecommerce } from './unwraps/valuecommerce.js'
+import { unwrapValuePress } from './unwraps/valuePress.js'
 import { unwrapVanilla } from './unwraps/vanilla.js'
 import { unwrapVbulletin } from './unwraps/vbulletin.js'
 // import { unwrapVefsafn } from './unwraps/vefsafn.js'
@@ -662,6 +663,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   unwrapNewswire,
   unwrapPrNewswire,
   unwrapPrweb,
+  unwrapValuePress,
 
   // Government sites.
   unwrapFtc,

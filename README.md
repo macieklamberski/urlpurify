@@ -180,6 +180,7 @@ Enabled by default:
 | `unwrapThreadsShim` | Threads outbound link shim (l.threads.com / l.threads.net with ?u=\<target\>) |
 | `unwrapTiktok` | TikTok outbound link shim for profile bio links (www.tiktok.com/link/v2?target=\<target\>) |
 | `unwrapTumblr` | Tumblr outbound redirect (t.umblr.com/redirect?z=\<target\>) |
+| `unwrapValuePress` | value press release click counter (www.value-press.com/bin/tools/link_counter?l=\<base64 of base64\>) |
 | `unwrapVanilla` | Vanilla Forums leaving page (\<any host\>/home/leaving?target=\<target\>) |
 | `unwrapVbulletin` | vBulletin SEO add-on external link redirect (\<any host\>/redirect-to/?redirect=\<target\>) |
 | `unwrapVirgool` | Virgool outbound link redirect (l.vrgl.ir/r?l=\<target\>) |
