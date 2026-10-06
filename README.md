@@ -110,7 +110,7 @@ Enabled by default:
 | `unwrapCanva` | Canva outbound link in published designs (www.canva.com/link?target=\<target\>) |
 | `unwrapCsdn` | CSDN external link redirect (link.csdn.net/?target=\<target\>) |
 | `unwrapDasBlog` | dasBlog click-through counter (\<any host\>/[\<blog\>/]ct.ashx?url=\<target\>) |
-| `unwrapDatalifeEngine` | DataLife Engine leaving redirect (\<any host\>/engine/go.php?url=\<base64 target\>) |
+| `unwrapDatalifeEngine` | DataLife Engine leaving redirect (\<any host\>/engine/go.php?url=\<base64 target\>, also /index.php?do=go&url=\<base64 target\>) |
 | `unwrapDerefMail` | GMX, WEB.DE and mail.com webmail dereferrer (deref-gmx.net/mail/client/dereferrer/?redirectUrl=\<target\>) |
 | `unwrapDeviantartOutgoing` | DeviantArt outbound link shim (www.deviantart.com/\<user\>/outgoing?\<target\>) |
 | `unwrapDisqus` | Disqus outbound link redirect (disq.us/url?url=\<target\> and disq.us/?url=\<target\>) |
@@ -155,6 +155,7 @@ Enabled by default:
 | `unwrapOkRu` | OK.ru outbound link and leaving-site page (ok.ru/dk?cmd=logExternal&st.link=\<target\>, m.ok.ru/dk?st.cmd=outLinkWarning&st.rfn=\<target\>) |
 | `unwrapOsnova` | Osnova outbound link redirect on vc.ru and dtf.ru (api.vc.ru/v2.8/redirect?to=\<target\>) |
 | `unwrapPhilpapers` | PhilPapers outbound link to a work's source (philpapers.org/go.pl?u=\<target\>) |
+| `unwrapPinterest` | Pinterest outbound link shim (www.pinterest.com/offsite/?url=\<target\>) |
 | `unwrapPocket` | Pocket redirect (getpocket.com/redirect?url=\<target\>) |
 | `unwrapPrNewswire` | PR Newswire release click tracker (c212.net / edge.prnewswire.com /c/link/?u=\<target\>) |
 | `unwrapPrweb` | PRWeb release click tracker (www.prweb.net/Redirect.aspx?id=\<base64\>) |
