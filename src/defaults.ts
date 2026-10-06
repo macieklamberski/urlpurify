@@ -276,6 +276,7 @@ import { unwrapStreak } from './unwraps/streak.js'
 import { unwrapStreamsend } from './unwraps/streamsend.js'
 import { unwrapSubstack } from './unwraps/substack.js'
 import { unwrapSurugaya } from './unwraps/surugaya.js'
+import { unwrapSwap } from './unwraps/swap.js'
 import { unwrapSymantecClicktime } from './unwraps/symantecClicktime.js'
 import { unwrapSymplicity } from './unwraps/symplicity.js'
 import { unwrapTargetCircle } from './unwraps/targetCircle.js'
@@ -697,6 +698,7 @@ export const downloadMeasurementUnwrappers: Array<UrlUnwrapper> = [
   unwrapPodscribe,
   unwrapPodsights,
   unwrapPodtrac,
+  unwrapSwap,
   unwrapVgWort,
 ]
 
