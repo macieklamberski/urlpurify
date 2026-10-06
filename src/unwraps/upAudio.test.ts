@@ -35,4 +35,10 @@ describe('unwrapUpAudio', () => {
 
     expect(unwrapUpAudio(url)).toBeUndefined()
   })
+
+  it('should return undefined for the prefix below another segment', () => {
+    const url = new URL('https://prefix.up.audio/a/s/example.com/episode.mp3')
+
+    expect(unwrapUpAudio(url)).toBeUndefined()
+  })
 })
