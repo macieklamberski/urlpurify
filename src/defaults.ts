@@ -35,6 +35,7 @@ import { unwrapAsk } from './unwraps/ask.js'
 // import { unwrapAwesound } from './unwraps/awesound.js'
 // import { unwrapAwin } from './unwraps/awin.js'
 // import { unwrapAxigen } from './unwraps/axigen.js'
+import { unwrapBabyblog } from './unwraps/babyblog.js'
 // import { unwrapBacLacWebArchive } from './unwraps/bacLacWebArchive.js'
 import { unwrapBale } from './unwraps/bale.js'
 // import { unwrapBananatag } from './unwraps/bananatag.js'
@@ -550,6 +551,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // Social and community platforms.
   unwrap4pda,
   unwrapAnonymTo,
+  unwrapBabyblog,
   unwrapBale,
   unwrapBlueskyRedirect,
   unwrapBridgyFed,
