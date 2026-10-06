@@ -139,6 +139,7 @@ import { unwrapGoogleTranslate } from './unwraps/googleTranslate.js'
 import { unwrapGoogleWebLight } from './unwraps/googleWebLight.js'
 import { unwrapGroupMail } from './unwraps/groupMail.js'
 import { unwrapGroupon } from './unwraps/groupon.js'
+import { unwrapGumball } from './unwraps/gumball.js'
 import { unwrapGurunavi } from './unwraps/gurunavi.js'
 import { unwrapHackerone } from './unwraps/hackerone.js'
 import { unwrapHashnode } from './unwraps/hashnode.js'
@@ -690,6 +691,7 @@ export const downloadMeasurementUnwrappers: Array<UrlUnwrapper> = [
   unwrapChartable,
   unwrapDstats,
   unwrapFirstory,
+  unwrapGumball,
   unwrapMagellan,
   unwrapMintDownloads,
   unwrapOp3,
