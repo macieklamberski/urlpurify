@@ -120,7 +120,7 @@ Enabled by default:
 | `unwrapDropbox` | Dropbox outbound link redirect (www.dropbox.com/referrer_cleansing_redirect?url=\<target\>) and Paper external link (www.dropbox.com/paper/ep/redirect/external-link?url=\<target\>, also on paper.dropbox.com) |
 | `unwrapDzen` | Dzen away redirect (dzen.ru/away?to=\<target\>) |
 | `unwrapEvernote` | Evernote outbound link redirect (www.evernote.com/OutboundRedirect.action?dest=\<target\>) |
-| `unwrapFacebookShim` | Meta link shim (l.facebook.com/l.php?u=\<target\>, also lm., www., upload., m., web., pt-br., free., business., 0. and bare facebook.com, and l.messenger.com, plus l.facebook.com/?u=\<target\> and l.facebook.com/lsr.php?u=\<target\>) |
+| `unwrapFacebookShim` | Meta link shim (l.facebook.com/l.php?u=\<target\>, also lm., www., upload., m., web., pt-br., free., business., 0. and bare facebook.com, and l.messenger.com, plus l.facebook.com/?u=\<target\>, l.facebook.com/lsr.php?u=\<target\> and the legacy www.facebook.com/l/\<token\>/\<target\> and l.facebook.com/l/\<token\>/\<target\>) |
 | `unwrapFeedStatistics` | Feed Statistics WordPress plugin click counter (\<any blog\>/?feed-stats-url=\<base64 target\>) |
 | `unwrapFinalsite` | Finalsite school website link counter (\<any host\>/cf_news/forward.cfm?dest=\<target\>&destkey=\<signature\>) |
 | `unwrapFlipboard` | Flipboard outbound redirect (flipboard.com/redirect?url=\<target\>) |
