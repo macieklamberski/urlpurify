@@ -159,6 +159,7 @@ import { unwrapLinkedin } from './unwraps/linkedin.js'
 // import { unwrapLinkwise } from './unwraps/linkwise.js'
 import { unwrapLivejournal } from './unwraps/livejournal.js'
 // import { unwrapLnkam } from './unwraps/lnkam.js'
+// import { unwrapLocaweb } from './unwraps/locaweb.js'
 // import { unwrapLocWebArchive } from './unwraps/locWebArchive.js'
 // import { unwrapMagellan } from './unwraps/magellan.js'
 // import { unwrapMagnetmail } from './unwraps/magnetmail.js'
@@ -356,6 +357,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // unwrapIgafnl,
   // unwrapIntranetQuorum,
   // unwrapLeverAnalytics,
+  // unwrapLocaweb,
   // unwrapMagnetmail,
   // unwrapMail2easy,
   // unwrapMailchimp,
