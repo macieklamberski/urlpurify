@@ -193,6 +193,7 @@ import { unwrapMedium } from './unwraps/medium.js'
 // import { unwrapMegalodon } from './unwraps/megalodon.js'
 // import { unwrapMimecast } from './unwraps/mimecast.js'
 // import { unwrapMintDownloads } from './unwraps/mintDownloads.js'
+// import { unwrapMintFeeder } from './unwraps/mintFeeder.js'
 // import { unwrapMoshimo } from './unwraps/moshimo.js'
 import { unwrapMozillaOutgoing } from './unwraps/mozillaOutgoing.js'
 // import { unwrapMyNewsletterBuilder } from './unwraps/myNewsletterBuilder.js'
@@ -641,6 +642,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   unwrapJuejin,
   unwrapLd246,
   // unwrapMintDownloads,
+  // unwrapMintFeeder,
   unwrapPhilpapers,
   unwrapResearchgate,
   unwrapSapHelp,
