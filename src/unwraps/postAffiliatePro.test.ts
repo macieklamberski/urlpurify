@@ -102,6 +102,14 @@ describe('unwrapPostAffiliatePro', () => {
     expect(unwrapPostAffiliatePro(url)).toBeUndefined()
   })
 
+  it('should return undefined for a path that continues after click.php', () => {
+    const url = new URL(
+      'https://affiliate.example.com/scripts/click.php/extra?a_aid=1&desturl=https%3A%2F%2Fwww.example.org%2F',
+    )
+
+    expect(unwrapPostAffiliatePro(url)).toBeUndefined()
+  })
+
   it('should return undefined for a non-http target', () => {
     const url = new URL(
       'https://affiliate.example.com/scripts/click.php?a_aid=1&desturl=javascript%3Aalert(1)',
