@@ -303,6 +303,7 @@ import { unwrapUkWebArchive } from './unwraps/ukWebArchive.js'
 import { unwrapUnescoWebArchive } from './unwraps/unescoWebArchive.js'
 import { unwrapUnhcrWebArchive } from './unwraps/unhcrWebArchive.js'
 import { unwrapUnisender } from './unwraps/unisender.js'
+import { unwrapUpAudio } from './unwraps/upAudio.js'
 import { unwrapVadeSecure } from './unwraps/vadeSecure.js'
 import { unwrapValuecommerce } from './unwraps/valuecommerce.js'
 import { unwrapValuePress } from './unwraps/valuePress.js'
@@ -697,6 +698,7 @@ export const downloadMeasurementUnwrappers: Array<UrlUnwrapper> = [
   unwrapPodscribe,
   unwrapPodsights,
   unwrapPodtrac,
+  unwrapUpAudio,
   unwrapVgWort,
 ]
 
