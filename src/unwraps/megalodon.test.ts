@@ -16,6 +16,30 @@ describe('unwrapMegalodon', () => {
     expect(unwrapMegalodon(url)).toBe('http://www.example.com/cache/page.html')
   })
 
+  it('should extract target from a snapshot on a numbered host', () => {
+    const url = new URL(
+      'http://s02.megalodon.jp/2008-0219-1451-14/www3.example.com/news/2008/02/19/d20080219000037.html',
+    )
+
+    expect(unwrapMegalodon(url)).toBe(
+      'http://www3.example.com/news/2008/02/19/d20080219000037.html',
+    )
+  })
+
+  it('should return undefined for a host that only ends with a numbered host', () => {
+    const url = new URL('http://xs02.megalodon.jp/2008-0219-1451-14/www3.example.com/news.html')
+
+    expect(unwrapMegalodon(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a host that only starts with a numbered host', () => {
+    const url = new URL(
+      'http://s02.megalodon.jp.example.com/2008-0219-1451-14/www3.example.com/news.html',
+    )
+
+    expect(unwrapMegalodon(url)).toBeUndefined()
+  })
+
   it('should keep the query and fragment of the target', () => {
     const url = new URL(
       'https://megalodon.jp/2024-1027-0030-50/https://example.com:443/status/1850194155626217909?t=rZTzLHtz&s=19#reply',

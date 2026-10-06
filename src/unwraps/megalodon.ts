@@ -1,15 +1,17 @@
-import { isHostOf, isHttpUrl } from 'trousse'
+import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
+// The main host and its numbered snapshot hosts, such as `s01.megalodon.jp`.
+const hostRegex = /^(?:s\d{2}\.)?megalodon\.jp$/
 // The snapshot is its capture time, `YYYY-MMDD-HHMM-SS`.
 const pathRegex = /^\/\d{4}-\d{4}-\d{4}-\d{2}\/(.+)$/
 const schemeRegex = /^[a-z][a-z\d+.-]*:/i
 
-// Megalodon archive snapshot (megalodon.jp/<YYYY-MMDD-HHMM-SS>/<target>, also
-// s03.megalodon.jp). Not included in defaultUnwrappers: unwrapping returns the live page, which
-// may have changed or be gone.
+// Megalodon archive snapshot (megalodon.jp/<YYYY-MMDD-HHMM-SS>/<target>, also on the numbered
+// hosts s01 to s04.megalodon.jp). Not included in defaultUnwrappers: unwrapping returns the live
+// page, which may have changed or be gone.
 export const unwrapMegalodon: UrlUnwrapper = (url) => {
-  if (!isHostOf(url, ['megalodon.jp', 's03.megalodon.jp'])) {
+  if (!hostRegex.test(url.hostname)) {
     return
   }
 
