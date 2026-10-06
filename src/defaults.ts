@@ -32,6 +32,7 @@ import { unwrapArxiv } from './unwraps/arxiv.js'
 import { unwrapAsk } from './unwraps/ask.js'
 // import { unwrapAugure } from './unwraps/augure.js'
 // import { unwrapAvantlink } from './unwraps/avantlink.js'
+// import { unwrapAwesound } from './unwraps/awesound.js'
 // import { unwrapAwin } from './unwraps/awin.js'
 // import { unwrapAxigen } from './unwraps/axigen.js'
 // import { unwrapBacLacWebArchive } from './unwraps/bacLacWebArchive.js'
@@ -529,6 +530,7 @@ export const defaultUnwrappers: Array<UrlUnwrapper> = [
   // Podcast analytics prefixes.
   // unwrapAcast,
   // unwrapAnchor,
+  // unwrapAwesound,
   // unwrapBlubrry,
   // unwrapChartable,
   // unwrapFirstory,
