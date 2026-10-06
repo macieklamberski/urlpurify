@@ -165,6 +165,7 @@ Enabled by default:
 | `unwrapRedditOut` | Reddit outbound click tracker (out.reddit.com/?url=\<target\>) |
 | `unwrapRediffmail` | Rediffmail webmail link redirect (www.rediffmail.com/cgi-bin/red.cgi?red=\<target\>) |
 | `unwrapResearchgate` | ResearchGate dereferrer (www.researchgate.net/deref/\<target\> and go.Deref.html?url=\<target\>) |
+| `unwrapRojadirecta` | Rojadirecta leaving-site page (www.rojadirecta.me/goto/\<target\>) |
 | `unwrapSapHelp` | SAP Help Portal leaving-site page (help.sap.com/docs/link-disclaimer?site=\<target\>) |
 | `unwrapSegmentfault` | Segmentfault external link redirect (link.segmentfault.com/?enc=\<base64\>) |
 | `unwrapSerendipity` | Serendipity blog exit tracker (\<any host\>/[\<blog\>/]exit.php?url=\<base64\>&entry_id=\<n\>) |
