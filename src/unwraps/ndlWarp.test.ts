@@ -50,10 +50,10 @@ describe('unwrapNdlWarp', () => {
 
   it('should keep the scheme of a target in the persistent-id form', () => {
     const url = new URL(
-      'https://warp.da.ndl.go.jp/info:ndljp/pid/286890/https://www.example.jp/press/20090206001/20090206001.html',
+      'https://warp.da.ndl.go.jp/info:ndljp/pid/286890/http://www.example.jp/press/20090206001/20090206001.html',
     )
 
-    expect(unwrapNdlWarp(url)).toBe('https://www.example.jp/press/20090206001/20090206001.html')
+    expect(unwrapNdlWarp(url)).toBe('http://www.example.jp/press/20090206001/20090206001.html')
   })
 
   it('should return undefined for a snapshot with no target', () => {

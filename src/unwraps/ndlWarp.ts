@@ -24,7 +24,8 @@ export const unwrapNdlWarp: UrlUnwrapper = (url) => {
     return
   }
 
-  // WARP's own redirect of a scheme-less snapshot names http, as in WE11.jsp?originalUrl=http://.
+  // WARP's redirect of a scheme-less persistent id names http, as in WE11.jsp?originalUrl=http://,
+  // and such an id now redirects to the scheme-less snapshot.
   const target = schemeRegex.test(path) ? path : `http://${path}`
 
   // An unencoded target's query and fragment land in the snapshot URL's own `search` and `hash`.
