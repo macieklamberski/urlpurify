@@ -89,7 +89,7 @@ There are more than 380 unwrappers, each in its own file in [src/unwraps](src/un
 | Category | Export | Unwrapping removes | Default |
 | --- | --- | --- | :---: |
 | Search clicks | `searchClickUnwrappers` | The search engine's or aggregator's click logging | ☑️ |
-| Link shims | `linkShimUnwrappers` | Nothing, or the platform's own click count | ☑️ |
+| Link shims | `linkShimUnwrappers` | Nothing, or a platform's click count or a site click counter | ☑️ |
 | Press releases | `pressReleaseUnwrappers` | The wire's click stats | ☑️ |
 | Sign-in shims | `signInShimUnwrappers` | Nothing, but the shim's page needs a sign-in | |
 | Security gateways | `securityGatewayUnwrappers` | The gateway's click-time check of the target | |
