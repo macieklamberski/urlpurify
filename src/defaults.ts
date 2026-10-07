@@ -64,6 +64,7 @@ import { unwrapBytedance } from './unwraps/bytedance.js'
 import { unwrapCake } from './unwraps/cake.js'
 import { unwrapCalendly } from './unwraps/calendly.js'
 import { unwrapCanva } from './unwraps/canva.js'
+import { unwrapCastPlus } from './unwraps/castPlus.js'
 import { unwrapCcbill } from './unwraps/ccbill.js'
 import { unwrapChartable } from './unwraps/chartable.js'
 import { unwrapCheckPointHarmony } from './unwraps/checkPointHarmony.js'
@@ -731,6 +732,7 @@ export const downloadMeasurementUnwrappers: Array<UrlUnwrapper> = [
   unwrapAusha,
   unwrapAwesound,
   unwrapBlubrry,
+  unwrapCastPlus,
   unwrapChartable,
   unwrapClaritas,
   unwrapDstats,
