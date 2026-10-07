@@ -178,6 +178,7 @@ import { unwrapJustwatch } from './unwraps/justwatch.js'
 import { unwrapKlook } from './unwraps/klook.js'
 import { unwrapLazada } from './unwraps/lazada.js'
 import { unwrapLd246 } from './unwraps/ld246.js'
+import { unwrapLetscast } from './unwraps/letscast.js'
 import { unwrapLeverAnalytics } from './unwraps/leverAnalytics.js'
 import { unwrapLinkA } from './unwraps/linkA.js'
 import { unwrapLinkconnector } from './unwraps/linkconnector.js'
@@ -737,6 +738,7 @@ export const downloadMeasurementUnwrappers: Array<UrlUnwrapper> = [
   unwrapFirstory,
   unwrapGodcaster,
   unwrapGumball,
+  unwrapLetscast,
   unwrapMagellan,
   unwrapMinistryCloud,
   unwrapMintDownloads,
