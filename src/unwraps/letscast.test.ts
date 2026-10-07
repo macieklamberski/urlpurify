@@ -29,7 +29,9 @@ describe('unwrapLetscast', () => {
   })
 
   it('should return undefined for other paths', () => {
-    const url = new URL('https://letscast.fm/podcasts/https://example.com/episode.mp3')
+    const url = new URL(
+      'https://letscast.fm/podcasts/example-show/track/https://example.com/episode.mp3',
+    )
 
     expect(unwrapLetscast(url)).toBeUndefined()
   })
