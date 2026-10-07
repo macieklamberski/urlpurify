@@ -50,6 +50,40 @@ describe('unwrapNlaWebarchive', () => {
     expect(unwrapNlaWebarchive(url)).toBeUndefined()
   })
 
+  it('should add the http scheme to a Pandora title snapshot target', () => {
+    const url = new URL(
+      'http://pandora.nla.gov.au/pan/21336/20031011-0000/www.example.gov.au/creative.nation/contents.html',
+    )
+
+    expect(unwrapNlaWebarchive(url)).toBe('http://www.example.gov.au/creative.nation/contents.html')
+  })
+
+  it('should add the http scheme to a Pandora title snapshot dated without a time', () => {
+    const url = new URL('http://pandora.nla.gov.au/pan/42197/20040527/www.example.com/acag.html')
+
+    expect(unwrapNlaWebarchive(url)).toBe('http://www.example.com/acag.html')
+  })
+
+  it('should return undefined for a Pandora title snapshot file outside a host folder', () => {
+    const url = new URL('http://pandora.nla.gov.au/pan/21336/20031011-0000/images/banner.gif')
+
+    expect(unwrapNlaWebarchive(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a Pandora title snapshot with a partial date', () => {
+    const url = new URL('http://pandora.nla.gov.au/pan/21336/2003/www.example.gov.au/contents.html')
+
+    expect(unwrapNlaWebarchive(url)).toBeUndefined()
+  })
+
+  it('should return undefined for the Pandora title snapshot path on another host', () => {
+    const url = new URL(
+      'http://webarchive.nla.gov.au/pan/21336/20031011-0000/www.example.gov.au/contents.html',
+    )
+
+    expect(unwrapNlaWebarchive(url)).toBeUndefined()
+  })
+
   it('should return undefined for an archive collection on Pandora', () => {
     const url = new URL(
       'http://pandora.nla.gov.au/awa/20010220130000/http://www.example.edu.au/Articles/hase2.htm',
@@ -89,14 +123,6 @@ describe('unwrapNlaWebarchive', () => {
   it('should return undefined for the url search', () => {
     const url = new URL(
       'http://webarchive.nla.gov.au/gov/search?mode=urlSearch&url=http://www.example.com/',
-    )
-
-    expect(unwrapNlaWebarchive(url)).toBeUndefined()
-  })
-
-  it('should return undefined for a Pandora title snapshot', () => {
-    const url = new URL(
-      'http://pandora.nla.gov.au/pan/42197/20060526/www.example.com/http://www.example.org/a.pdf',
     )
 
     expect(unwrapNlaWebarchive(url)).toBeUndefined()

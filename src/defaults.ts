@@ -101,6 +101,7 @@ import { unwrapDyn } from './unwraps/dyn.js'
 import { unwrapDzen } from './unwraps/dzen.js'
 import { unwrapEasyMarketing } from './unwraps/easyMarketing.js'
 import { unwrapEbayRover } from './unwraps/ebayRover.js'
+import { unwrapEbuzzing } from './unwraps/ebuzzing.js'
 import { unwrapEClick } from './unwraps/eClick.js'
 import { unwrapEdgepilot } from './unwraps/edgepilot.js'
 import { unwrapEffiliation } from './unwraps/effiliation.js'
@@ -288,6 +289,8 @@ import { unwrapSteamLinkfilter } from './unwraps/steamLinkfilter.js'
 import { unwrapStorify } from './unwraps/storify.js'
 import { unwrapStreak } from './unwraps/streak.js'
 import { unwrapStreamsend } from './unwraps/streamsend.js'
+import { unwrapStumbleupon } from './unwraps/stumbleupon.js'
+import { unwrapSubscribeRu } from './unwraps/subscribeRu.js'
 import { unwrapSubstack } from './unwraps/substack.js'
 import { unwrapSurugaya } from './unwraps/surugaya.js'
 import { unwrapSwap } from './unwraps/swap.js'
@@ -464,6 +467,7 @@ export const linkShimUnwrappers: Array<UrlUnwrapper> = [
   unwrapSspai,
   unwrapSteamLinkfilter,
   unwrapStorify,
+  unwrapStumbleupon,
   unwrapTeacup,
   unwrapTheRegister,
   unwrapThreadsShim,
@@ -577,6 +581,7 @@ export const emailTrackingUnwrappers: Array<UrlUnwrapper> = [
   unwrapSquarespaceEmail,
   unwrapStreak,
   unwrapStreamsend,
+  unwrapSubscribeRu,
   unwrapSubstack,
   unwrapSymplicity,
   unwrapTwitterRedirect,
@@ -694,6 +699,7 @@ export const advertisingUnwrappers: Array<UrlUnwrapper> = [
   unwrapBitrixBanner,
   unwrapChitika,
   unwrapDuckduckgoAds,
+  unwrapEbuzzing,
   unwrapEulerian,
   unwrapFederatedMedia,
   unwrapFirebaseDynamicLinks,
