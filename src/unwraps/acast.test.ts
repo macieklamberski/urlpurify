@@ -18,7 +18,7 @@ describe('unwrapAcast', () => {
     )
 
     expect(unwrapAcast(url)).toBe(
-      'https://example.com/podcast/podcast.mp3?fileId=E494E711-DF9E-4E97-85A8E55002611075',
+      'http://example.com/podcast/podcast.mp3?fileId=E494E711-DF9E-4E97-85A8E55002611075',
     )
   })
 

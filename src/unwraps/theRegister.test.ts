@@ -71,4 +71,14 @@ describe('unwrapTheRegister', () => {
 
     expect(unwrapTheRegister(url)).toBeUndefined()
   })
+
+  it('should give a target with no scheme https behind an http counter', () => {
+    const url = new URL(
+      'http://go.theregister.com/feed/www.theregister.com/2024/03/08/microsoft_confirms_russian_spies_stole/',
+    )
+
+    expect(unwrapTheRegister(url)).toBe(
+      'https://www.theregister.com/2024/03/08/microsoft_confirms_russian_spies_stole/',
+    )
+  })
 })

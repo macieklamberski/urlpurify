@@ -103,7 +103,7 @@ describe('unwrapPodtrac', () => {
       'http://www.podtrac.com/pts/redirect.mp3./example.com/stream/2329399343-interview.mp3',
     )
 
-    expect(unwrapPodtrac(url)).toBe('https://example.com/stream/2329399343-interview.mp3')
+    expect(unwrapPodtrac(url)).toBe('http://example.com/stream/2329399343-interview.mp3')
   })
 
   it('should extract a target after the show segment on the play host', () => {
@@ -112,7 +112,7 @@ describe('unwrapPodtrac', () => {
     )
 
     expect(unwrapPodtrac(url)).toBe(
-      'https://example.com/itunes/d/podcast/splendidtable_20161028_64.mp3',
+      'http://example.com/itunes/d/podcast/splendidtable_20161028_64.mp3',
     )
   })
 

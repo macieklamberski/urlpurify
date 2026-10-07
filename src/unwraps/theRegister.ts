@@ -15,5 +15,5 @@ export const unwrapTheRegister: UrlUnwrapper = (url) => {
     return
   }
 
-  return getPathTarget(url, prefixRegex)
+  return getPathTarget(url, prefixRegex, 'https:')
 }
