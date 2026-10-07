@@ -65,4 +65,10 @@ describe('unwrapTheRegister', () => {
       'https://www.theregister.com/2023/07/26/openai_ai_classifier/',
     )
   })
+
+  it('should return undefined for another counter path on the host', () => {
+    const url = new URL('https://go.theregister.com/i/x/www.theregister.com/2024/03/08/article/')
+
+    expect(unwrapTheRegister(url)).toBeUndefined()
+  })
 })
