@@ -26,6 +26,14 @@ describe('unwrapGodcaster', () => {
     expect(unwrapGodcaster(url)).toBe('https://example.com/secure/373.mp3?dest-id=2148587')
   })
 
+  it('should keep the fragment', () => {
+    const url = new URL(
+      'https://go.godcaster.fm/act/e/147/285278/59424742195/https%253A%252F%252Fexample.com%252Fepisode.mp3#t=10',
+    )
+
+    expect(unwrapGodcaster(url)).toBe('https://example.com/episode.mp3#t=10')
+  })
+
   it('should leave a target nested one level deeper encoded', () => {
     const url = new URL(
       'https://go.godcaster.fm/act/e/334/7168343/56953332435/https%253A%252F%252Fanchor.fm%252Fs%252F9f2d1794%252Fpodcast%252Fplay%252F121984296%252Fhttps%25253A%25252F%25252Fexample.com%25252Fepisode.m4a',
@@ -66,6 +74,14 @@ describe('unwrapGodcaster', () => {
 
   it('should return undefined for the episode link without the episode id', () => {
     const url = new URL('https://go.godcaster.fm/act/fr/645?d=https%3A%2F%2Fexample.com%2Fgive')
+
+    expect(unwrapGodcaster(url)).toBeUndefined()
+  })
+
+  it('should return undefined for the show link with a trailing path segment', () => {
+    const url = new URL(
+      'https://go.godcaster.fm/act/sr/109/extra?d=https%3A%2F%2Fexample.com%2Fgive',
+    )
 
     expect(unwrapGodcaster(url)).toBeUndefined()
   })
