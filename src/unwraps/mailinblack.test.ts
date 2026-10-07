@@ -62,6 +62,14 @@ describe('unwrapMailinblack', () => {
     expect(unwrapMailinblack(url)).toBeUndefined()
   })
 
+  it('should return undefined when the key is truncated mid-base64', () => {
+    const url = new URL(
+      'https://mibc-fr-11.mailinblack.com/securelink/?url=https://www.example.com&key=eyJsYW5nIjoiRlIiLCJ1cmwiOiJodHRwczovL3d3dy5leGFtcGxlLmNvbS9ldmVuZW1lbnQvdGhlYXRyZS1ldC1ib3R0ZXMtZGUtcGFpbGxlLyIsInRva2VuIjoiZ0FBQUFBQm5VMkhhUEVsLUNMV01xZldCd1pZaEFWQzFYQU1mSzNpa',
+    )
+
+    expect(unwrapMailinblack(url)).toBeUndefined()
+  })
+
   it('should return undefined when the key param is empty', () => {
     const url = new URL(
       'https://mibc-fr-05.mailinblack.com/securelink/?url=http://example.com&key=',

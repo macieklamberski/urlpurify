@@ -34,12 +34,12 @@ describe('unwrapYamm', () => {
     expect(unwrapYamm(url)).toBe('https://www.example.es/portal/site/universidades/')
   })
 
-  it('should return undefined for a malformed twice-encoded target', () => {
+  it('should keep a stray percent sign in a twice-encoded target', () => {
     const url = new URL(
-      'https://scribemedia-dot-yamm-track.appspot.com/Redirect?key=YAMMID-97877214&link=https%253A%252F%252Fwww.example.com%252F%25E0%25A4%25A',
+      'https://scribemedia-dot-yamm-track.appspot.com/Redirect?key=YAMMID-97877214&link=https%253A%252F%252Fwww.example.com%252F100%25',
     )
 
-    expect(unwrapYamm(url)).toBeUndefined()
+    expect(unwrapYamm(url)).toBe('https://www.example.com/100%')
   })
 
   it('should return undefined when link param is missing', () => {

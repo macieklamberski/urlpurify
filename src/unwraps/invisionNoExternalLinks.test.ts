@@ -38,6 +38,14 @@ describe('unwrapInvisionNoExternalLinks', () => {
     expect(unwrapInvisionNoExternalLinks(url)).toBe('https://example.org/a/')
   })
 
+  it('should keep a stray percent sign in a twice-encoded target', () => {
+    const url = new URL(
+      'https://www.example.com/redirect/?to=https%253A%252F%252Fexample.org%252F100%25',
+    )
+
+    expect(unwrapInvisionNoExternalLinks(url)).toBe('https://example.org/100%')
+  })
+
   it('should extract the first to param', () => {
     const url = new URL(
       'https://www.example.com/redirect/?to=https%3A%2F%2Fexample.org%2F&to=https%3A%2F%2Fexample.net%2F',

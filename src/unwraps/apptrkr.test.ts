@@ -50,12 +50,12 @@ describe('unwrapApptrkr', () => {
     expect(unwrapApptrkr(url)).toBe('HTTP://pathology.example.edu/')
   })
 
-  it('should return undefined when the twice-encoded target holds a malformed escape', () => {
+  it('should keep a stray percent sign in a twice-encoded target', () => {
     const url = new URL(
-      'https://apptrkr.com/get_redirect.php?id=9757952&targetURL=http%253A%252F%252Fpathology.example.edu%252F%25E0%25A4%25A',
+      'https://apptrkr.com/get_redirect.php?id=9757952&targetURL=http%253A%252F%252Fpathology.example.edu%252F100%25',
     )
 
-    expect(unwrapApptrkr(url)).toBeUndefined()
+    expect(unwrapApptrkr(url)).toBe('http://pathology.example.edu/100%')
   })
 
   it('should return undefined for a non-http target', () => {

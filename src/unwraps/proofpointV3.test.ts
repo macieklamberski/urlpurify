@@ -58,6 +58,15 @@ describe('unwrapProofpointV3', () => {
     expect(unwrapProofpointV3(url)).toBeUndefined()
   })
 
+  it('should return undefined when the replacement segment is not valid base64', () => {
+    // The replacement segment 'I' is truncated from 'Iw' and cannot be decoded.
+    const url = new URL(
+      'https://urldefense.com/v3/__https://www.example.com/*/__;I!!KVWo1iE!SMec7SFEcXPxdLhKneRkgk2g6rBf9qJnUxcz6IvlZTpfKCTAqA62J9L1o4Wonjoipb8u828VvIOSPofPO-7z35KPMQ$',
+    )
+
+    expect(unwrapProofpointV3(url)).toBeUndefined()
+  })
+
   it('should carry saved bytes across multi-byte replacement boundaries', () => {
     // `**B` = 3 bytes. Replacement 'w6Pigqw' decodes to 'ã€'; 'ã' is 2 bytes,
     // '€' is 3 bytes. After 'ã' (2/3), peeking '€' (3 bytes) > remaining 1 byte

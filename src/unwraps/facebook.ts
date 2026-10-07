@@ -1,6 +1,6 @@
 import { isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createParamExtractor, percentDecode } from '../utils.js'
 
 const legacyTargetRegex = /^\/l\/[\w-]+[/;]\/*([^/].*)$/
 const legacyEncodedSchemeRegex = /^https?%(?:25)?3A/i
@@ -48,7 +48,7 @@ const decodeLegacyTarget = (value: string): string | undefined => {
       return decoded
     }
 
-    return decodeURIComponent(decoded)
+    return percentDecode(decoded)
   } catch {}
 }
 

@@ -69,6 +69,14 @@ describe('unwrapPostAffiliatePro', () => {
     expect(unwrapPostAffiliatePro(url)).toBe('https://www.example.com/book')
   })
 
+  it('should keep a stray percent sign in a twice-encoded target', () => {
+    const url = new URL(
+      'https://affiliate.example.com/scripts/click.php?a_aid=1&desturl=https%253A%252F%252Fwww.example.com%252F100%25',
+    )
+
+    expect(unwrapPostAffiliatePro(url)).toBe('https://www.example.com/100%')
+  })
+
   it('should return the same target as unwrapEhub on an Ehub link', () => {
     const url = new URL(
       'https://ehub.cz/system/scripts/click.php?a_aid=f3eb58ad&a_bid=a2d39c31&data1=jaktak&desturl=https%3A%2F%2Fwww.example.com%2Fshop%2F',

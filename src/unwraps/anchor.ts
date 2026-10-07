@@ -1,5 +1,6 @@
 import { isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
+import { percentDecode } from '../utils.js'
 
 // Ad-inserted episodes carry `sponsor/<ids>/` before the target.
 const playPrefixRegex = /^\/s\/[^/]+\/podcast\/play\/[^/]+\/(?:sponsor\/[^/]+\/)?/
@@ -21,12 +22,8 @@ export const unwrapAnchor: UrlUnwrapper = (url) => {
 
   let target = url.pathname.slice(match[0].length)
 
-  try {
-    while (encodedSchemeRegex.test(target)) {
-      target = decodeURIComponent(target)
-    }
-  } catch {
-    return
+  while (encodedSchemeRegex.test(target)) {
+    target = percentDecode(target)
   }
 
   return `${target}${url.hash}`

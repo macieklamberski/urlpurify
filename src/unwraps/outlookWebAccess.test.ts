@@ -68,6 +68,14 @@ describe('unwrapOutlookWebAccess', () => {
     expect(unwrapOutlookWebAccess(url)).toBe('http://www.example.com/2014/05/idea-machine/')
   })
 
+  it('should keep a stray percent sign in a twice-encoded target', () => {
+    const url = new URL(
+      'https://mail.example.com/owa/redir.aspx?C=FxLT3ERNZUOMlMgbeBczBDtdGRzXKtII.&URL=http%253a%252f%252fwww.example.com%252f100%25',
+    )
+
+    expect(unwrapOutlookWebAccess(url)).toBe('http://www.example.com/100%')
+  })
+
   it('should return undefined when only the opaque SURL is present', () => {
     const url = new URL(
       'https://mail.example.it/owa/redir.aspx?SURL=M3uhAs3YUx9zQQMi-GFTel5fi9NWvyCgq9_ktiuZyj6FcmyCBFbSCGgAdAB0AHAAOgAvAC8A.',

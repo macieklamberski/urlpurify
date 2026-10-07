@@ -76,6 +76,14 @@ describe('unwrapCjNetwork', () => {
     )
   })
 
+  it('should keep a fragment segment with a malformed percent escape as is', () => {
+    const url = new URL(
+      'https://www.anrdoezrs.net/links/7768368/type/dlg/fragment/sale-50%-off/https://www.example.com/nursery/1043.html',
+    )
+
+    expect(unwrapCjNetwork(url)).toBe('https://www.example.com/nursery/1043.html#sale-50%-off')
+  })
+
   it('should keep the target anchor from the deep link path', () => {
     const url = new URL(
       'https://www.anrdoezrs.net/links/100048247/type/dlg/sid/UUwpUdUnU84278/https://www.example.com/music/podcasts/portal/u/0#p:id=playpodcast/series&a=100923914',

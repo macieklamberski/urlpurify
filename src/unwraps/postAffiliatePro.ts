@@ -1,6 +1,6 @@
 import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamValues } from '../utils.js'
+import { getParamValues, percentDecode } from '../utils.js'
 
 const pathRegex = /^\/(?:[^/]+\/)*scripts\/click\.php$/
 const encodedSchemeRegex = /^https?%3A/i
@@ -19,9 +19,7 @@ export const unwrapPostAffiliatePro: UrlUnwrapper = (url) => {
 
   // A target encoded twice still holds an encoded scheme after one decode.
   if (target && encodedSchemeRegex.test(target)) {
-    try {
-      target = decodeURIComponent(target)
-    } catch {}
+    target = percentDecode(target)
   }
 
   if (target && isHttpUrl(target)) {
