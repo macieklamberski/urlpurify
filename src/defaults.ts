@@ -349,6 +349,7 @@ import { unwrapVisibli } from './unwraps/visibli.js'
 import { unwrapVkAway } from './unwraps/vkAway.js'
 import { unwrapVocus } from './unwraps/vocus.js'
 import { unwrapVoxnest } from './unwraps/voxnest.js'
+import { unwrapVpixl } from './unwraps/vpixl.js'
 import { unwrapVuture } from './unwraps/vuture.js'
 import { unwrapWebArchive } from './unwraps/webArchive.js'
 import { unwrapWebcitation } from './unwraps/webcitation.js'
@@ -773,6 +774,7 @@ export const downloadMeasurementUnwrappers: Array<UrlUnwrapper> = [
   unwrapUpAudio,
   unwrapVgWort,
   unwrapVoxnest,
+  unwrapVpixl,
   unwrapXiaoyuzhou,
   unwrapXimalaya,
   unwrapZayads,
