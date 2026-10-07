@@ -12,7 +12,7 @@ export type ParamExtractorConfig = (
 }
 
 // Percent-decodes per the URL Standard, as `URLSearchParams` does: a `%` not followed by two hex
-// digits stays in place, where `decodeURIComponent` throws. A `+` stays a `+`.
+// digits stays in place, and a `+` stays a `+`.
 export const percentDecode = (value: string): string => {
   const escaped = value.replaceAll('+', '%2B').replaceAll('&', '%26')
 
