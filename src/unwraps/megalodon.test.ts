@@ -40,6 +40,12 @@ describe('unwrapMegalodon', () => {
     expect(unwrapMegalodon(url)).toBeUndefined()
   })
 
+  it('should return undefined for a numbered host with three digits', () => {
+    const url = new URL('http://s002.megalodon.jp/2008-0219-1451-14/www3.example.com/news.html')
+
+    expect(unwrapMegalodon(url)).toBeUndefined()
+  })
+
   it('should keep the query and fragment of the target', () => {
     const url = new URL(
       'https://megalodon.jp/2024-1027-0030-50/https://example.com:443/status/1850194155626217909?t=rZTzLHtz&s=19#reply',
