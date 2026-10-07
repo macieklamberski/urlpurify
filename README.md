@@ -6,7 +6,7 @@
 
 Unwrap redirect, affiliate, and tracking wrapper URLs and strip tracking parameters. Turn noisy links into clean, direct URLs.
 
-URLs collected from feeds, emails, and social platforms rarely point straight at their destination: they pass through search-engine redirects, email security gateways, affiliate networks, and AMP caches, and carry analytics parameters that bloat the link and leak data. urlpurify ships 70+ unwrappers for known wrapper services and a list of 150+ known tracking parameters, plus a composite `cleanUrl()` that applies both. It has zero dependencies and runs in any modern JavaScript runtime, including browsers.
+Links from feeds, emails and social platforms rarely point straight at their destination. They pass through search redirects, link shims, email gateways and affiliate networks, and pick up analytics parameters on the way. urlpurify unwraps 380+ known wrappers and strips 170+ known tracking parameters plus families like `utm_*`. It has no dependencies and runs in any modern JavaScript runtime, browsers included.
 
 ## Installation
 
@@ -14,60 +14,61 @@ URLs collected from feeds, emails, and social platforms rarely point straight at
 npm install urlpurify
 ```
 
-## Quick Start
+## Quick start
 
 ```typescript
 import { cleanUrl } from 'urlpurify'
 
-cleanUrl('https://www.google.com/url?q=https%3A%2F%2Fexample.com%2Fpost%3Futm_source%3Dnewsletter')
-// => 'https://example.com/post'
+const url = 'https://www.google.com/url?q=https%3A%2F%2Fexample.com%2Fpost%3Futm_source%3Dnewsletter'
+
+cleanUrl(url) // => 'https://example.com/post'
 ```
 
 ## API
 
 ### `cleanUrl(url, options?)`
 
-Unwraps redirect wrappers (repeatedly, since wrappers can nest), then strips tracking parameters. When the input cannot be parsed as a URL or nothing applies, the input string is returned unchanged, so the result is always safe to display. A target that decodes to U+FFFD, such as one percent-encoded in EUC-JP or Shift_JIS, is not returned: the last hop without one is.
+Unwraps wrappers, repeatedly since they nest, then strips tracking parameters. The result is serialized per the URL Standard, and input that can't be parsed comes back unchanged, so the result is always safe to display.
 
 ```typescript
-import { cleanUrl, defaultUnwrappers, unwrapWebArchive } from 'urlpurify'
+import { cleanUrl, defaultTrackingParams, defaultUnwrappers, unwrapWebArchive } from 'urlpurify'
 
-const cleaned = cleanUrl(url, {
-  // Unwrappers to apply, first match wins per pass (omit to use defaults).
+cleanUrl(url, {
+  // First match wins per pass.
   unwrappers: [...defaultUnwrappers, unwrapWebArchive],
-  // Param names (matched case-insensitively) or anchored regexes tested against the
-  // lowercased name (omit to use defaults).
-  trackingParams: ['fbclid', /^utm_[a-z0-9_-]+$/],
-  // Maximum number of unwrap passes for nested wrappers. Defaults to 6.
+  // Names, or regexes tested on the lowercased name.
+  trackingParams: [...defaultTrackingParams, 'newsletter_id', /^cmp_[a-z0-9_]+$/],
+  // The default.
   maxUnwrapDepth: 6,
 })
 ```
 
+An unwrapped target that isn't a usable URL is ignored, and the wrapper is kept.
+
 ### `unwrapUrl(url, unwrappers?)`
 
-Applies the unwrappers in order (one pass) and returns the first extracted target, or `undefined` when none match or the input cannot be parsed. The target is cleaned as in `cleanUrl`: trimmed, a malformed scheme such as `https:/host` or `https://https://host` repaired, and dropped when its host has no dot between two labels and is not an IP address, when its host ends in a page extension such as `.php` or `.html`, when it holds a control character or when it decodes to U+FFFD.
+Runs one pass of the unwrappers and returns the first target, or `undefined`.
 
 ### `stripTrackingParams(url, trackingParams?)`
 
-Removes matching query parameters and returns the cleaned URL. The input is returned unchanged when nothing matches or it cannot be parsed.
+Removes tracking parameters and returns the serialized URL. Both this and `cleanUrl` apply three rules on top of the list:
 
-Both `cleanUrl` and `stripTrackingParams` also drop a `ref` parameter when its value is the URL's own host (Ghost's self-referral `?ref=example.com` on `example.com`), regardless of the tracking list passed. With any other value `ref` is left alone, since it is often a real referral target.
+- `ref` is dropped when it names the URL's own host, as in Ghost's `?ref=example.com`, and kept otherwise.
+- A query with a signature (`sig`, `signature`, `X-Amz-Signature` or `X-Goog-Signature`) stays whole, since dropping anything breaks the signature.
+- `ts` stays on Alibaba DirectMail click URLs, which fail without it.
 
-Both leave a query whole, self-referral `ref` included, when it carries a signature parameter: `sig`, `signature`, `X-Amz-Signature` or `X-Goog-Signature`, matched case-insensitively. The signature covers the other parameters, so a signed CDN link such as `?id=…&ts=…&sig=…` stops working once its `ts` is dropped.
-
-Both also keep `ts` on Alibaba DirectMail click urls, `dm-cn.aliyuncs.com/trace/v1/report`, which answer 400 without it. The rest of the query is stripped as usual. The endpoint does not check its `sign`, so the query is not held whole as a signed one.
-
-A tracking list is compiled the first time it's used, and later calls with the same array reuse that result. To change the list, pass a new array. Entries pushed onto an array that's already been used are ignored.
+A tracking list is compiled on first use and cached per array. To change it, pass a new array.
 
 ### `createParamExtractor(config)`
 
-Builds an unwrapper for the common case where the target URL sits in a query parameter:
+Builds an unwrapper for a target that sits in a query parameter:
 
 ```typescript
 import { cleanUrl, createParamExtractor, defaultUnwrappers } from 'urlpurify'
 
 const unwrapExample = createParamExtractor({
-  domains: 'example.com', // Matches example.com and every subdomain. Also accepts an array.
+  // The domain and every subdomain. Use `hosts` for exact hosts or a regex.
+  domains: 'example.com',
   path: '/out',
   params: ['target'],
 })
@@ -75,167 +76,33 @@ const unwrapExample = createParamExtractor({
 cleanUrl(url, { unwrappers: [...defaultUnwrappers, unwrapExample] })
 ```
 
-On a domain where anyone can get a subdomain, such as a blog host, pass `hosts` instead of `domains`. It takes a host or an array of hosts, matched exactly, or a regex.
+A value still encoded after one decode, starting with `http%3A` or `https%3A`, is decoded once more. For any other shape, write a plain `UrlUnwrapper`: a function that takes a `URL` and returns the target or `undefined`.
 
-A value that is still percent-encoded after one decode and starts with `http%3A` or `https%3A` is decoded once more.
+### Tracking parameters
 
-For wrappers that encode the target (base64 path segments, custom escaping), write a plain function of type `UrlUnwrapper`: it receives a `URL` and returns the target string or `undefined`.
-
-### Defaults
-
-`defaultTrackingParams` is the combined default list for `cleanUrl` and `stripTrackingParams`: literal names plus family regexes like `/^utm_[a-z0-9_-]+$/` that cover vendor namespaces where new variants keep appearing. Its parts are exported separately as `trackingParamsLiterals` (strings only, for consumers that need a plain string list) and `trackingParamsPatterns`. `defaultUnwrappers` is exported alongside. `defaultUnwrappers` enables the unwrappers whose removal costs nobody anything, and the rest are grouped into categories below.
-
-### Unwrapper categories
-
-Every unwrapper belongs to one category, and each category is exported as an array. The categories split by what unwrapping takes away from someone, because that's what decides whether you want it.
-
-| Category | Unwrapping removes | Default |
-| --- | --- | --- |
-| `searchClickUnwrappers` | The search engine's or aggregator's click logging | Yes |
-| `linkShimUnwrappers` | Nothing, or at most the platform's or site's own click count | Yes |
-| `pressReleaseUnwrappers` | The wire's click stats | Yes |
-| `signInShimUnwrappers` | Nothing, but readers reach a page the shim opens only after a sign-in | No |
-| `securityGatewayUnwrappers` | The gateway's click-time check of the target | No |
-| `emailTrackingUnwrappers` | The sender's click stats | No |
-| `affiliateUnwrappers` | The publisher's commission | No |
-| `advertisingUnwrappers` | Ad click and app install attribution | No |
-| `downloadMeasurementUnwrappers` | The download or click counts of a podcaster or a site | No |
-| `archiveProxyUnwrappers` | The archived, translated or proxied copy: the result is the live page | No |
-
-`defaultUnwrappers` is the first three combined. The rest stay off because unwrapping either costs somebody something or changes the page the reader gets. An affiliate link is often the money paying for a small blog, a security gateway checks the target at click time for a reason, and an archive link points at a copy on purpose.
-
-To turn on more, spread the categories you want next to the defaults:
-
-```typescript
-import { archiveProxyUnwrappers, cleanUrl, defaultUnwrappers, emailTrackingUnwrappers } from 'urlpurify'
-
-cleanUrl(url, {
-  unwrappers: [...defaultUnwrappers, ...emailTrackingUnwrappers, ...archiveProxyUnwrappers],
-})
-```
-
-Prevalence is not the test: affiliate wrappers are more common than tracking shims.
+`defaultTrackingParams` holds literal names plus regexes for vendor families like `utm_*`. The two halves are also exported as `trackingParamsLiterals` and `trackingParamsPatterns`.
 
 ## Unwrappers
 
-Enabled by default:
+There are more than 380 unwrappers, each in its own file in [src/unwraps](src/unwraps), with a comment naming the service and the URL shape it handles. Each is exported on its own and belongs to one category. The categories split by what unwrapping takes away from someone, which is what decides whether you want it:
 
-| Unwrapper | Description |
-| --- | --- |
-| `unwrapBing` | Bing search-result redirect (www.bing.com/ck/a?u=a1\<base64url\>) and news click (www.bing.com/news/apiclick.aspx?url=\<target\>) |
-| `unwrap4pda` | 4PDA forum outbound link redirect (4pda.ru/pages/go/?u=\<target\>) |
-| `unwrapAboutCom` | About.com outbound link page (\<topic\>.about.com/gi/dynamic/offsite.htm?zu=\<target\>) and leaving page (/gi/o.htm?zu=\<target\>) |
-| `unwrapAliyun` | Alibaba Cloud developer community outbound link redirect (yq.aliyun.com/go/articleRenderRedirect?url=\<target\>) |
-| `unwrapAllblog` | Allblog metablog outbound link (link.allblog.net/\<post id\>/\<target\>) |
-| `unwrapAmpCache` | AMP cache (cdn.ampproject.org/{c,v}/[s/]\<host\>/\<path\>) |
-| `unwrapAnonymTo` | anonym.to referrer anonymizer (anonym.to/?\<target\> and anonym.to/\<target\>) |
-| `unwrapArxiv` | arXiv outbound link redirect (arxiv.org/ct?url=\<target\>) |
-| `unwrapAsk` | Ask.com search result click redirect (wzus.ask.com/r?u=\<target\>) |
-| `unwrapBabyblog` | Babyblog outbound link shim (www.babyblog.ru/redirect.php?l=\<target\>) |
-| `unwrapBale` | Bale messenger outbound link redirect (l.ble.ir/?l=\<target\>) |
-| `unwrapBitrix` | 1C-Bitrix outbound link counter (\<any host\>/bitrix/redirect.php?goto=\<target\>) |
-| `unwrapBlueskyRedirect` | Bluesky outbound link redirect (go.bsky.app/redirect?u=\<target\>) |
-| `unwrapBridgyFed` | Bridgy Fed redirect for a bridged post or profile (fed.brid.gy/r/\<target\>, also bsky.brid.gy and web.brid.gy) |
-| `unwrapBusinessWire` | Business Wire release click tracker (cts.businesswire.com/ct/CT?url=\<target\>) |
-| `unwrapBytedance` | ByteDance outbound link redirect (link.wtturl.cn/?target=\<target\>) |
-| `unwrapCalendly` | Calendly outbound link (calendly.com/url?q=\<target\>) |
-| `unwrapCanva` | Canva outbound link in published designs (www.canva.com/link?target=\<target\>) |
-| `unwrapCsdn` | CSDN external link redirect (link.csdn.net/?target=\<target\>) |
-| `unwrapDasBlog` | dasBlog click-through counter (\<any host\>/[\<blog\>/]ct.ashx?url=\<target\>) |
-| `unwrapDatalifeEngine` | DataLife Engine leaving redirect (\<any host\>/engine/go.php?url=\<base64 target\>, also /index.php?do=go&url=\<base64 target\>) |
-| `unwrapDerefMail` | GMX, WEB.DE and mail.com webmail dereferrer (deref-gmx.net/mail/client/dereferrer/?redirectUrl=\<target\>) |
-| `unwrapDeviantartOutgoing` | DeviantArt outbound link shim (www.deviantart.com/\<user\>/outgoing?\<target\>) |
-| `unwrapDisqus` | Disqus outbound link redirect (disq.us/url?url=\<target\> and disq.us/?url=\<target\>) |
-| `unwrapDouban` | Douban external link redirect (www.douban.com/link2/?url=\<target\>) |
-| `unwrapDropbox` | Dropbox outbound link redirect (www.dropbox.com/referrer_cleansing_redirect?url=\<target\>) and Paper external link (www.dropbox.com/paper/ep/redirect/external-link?url=\<target\>, also on paper.dropbox.com) |
-| `unwrapDuckduckgo` | DuckDuckGo search-result redirect (duckduckgo.com/l/?uddg=\<target\>) |
-| `unwrapDzen` | Dzen away redirect (dzen.ru/away?to=\<target\>) |
-| `unwrapEmbedly` | Embedly embed frame (cdn.embedly.com/widgets/media.html?src=\<target\>) |
-| `unwrapEvernote` | Evernote outbound link redirect (www.evernote.com/OutboundRedirect.action?dest=\<target\>) |
-| `unwrapFacebookShim` | Meta link shim (l.facebook.com/l.php?u=\<target\>, also lm., www., upload., m., web., pt-br., free., business., 0. and bare facebook.com, and l.messenger.com, plus l.facebook.com/?u=\<target\>, l.facebook.com/lsr.php?u=\<target\> and the legacy www.facebook.com/l/\<token\>/\<target\> and l.facebook.com/l/\<token\>/\<target\>, where a target without a scheme gets `http://`) |
-| `unwrapFeedblitz` | FeedBlitz feed item click tracker (feeds.feedblitz.com/~/t/0/0/\<feed\>/~\<target\>) |
-| `unwrapFeedsportal` | FeedSportal article link with the target encoded in the path (\<host\>/\<encoded id\>/story01.htm) |
-| `unwrapFeedStatistics` | Feed Statistics WordPress plugin click counter (\<any blog\>/?feed-stats-url=\<base64 target\>) |
-| `unwrapFinalsite` | Finalsite school website link counter (\<any host\>/cf_news/forward.cfm?dest=\<target\>&destkey=\<signature\>) |
-| `unwrapFlipboard` | Flipboard outbound redirect (flipboard.com/redirect?url=\<target\>) |
-| `unwrapFtc` | FTC leaving-site page (www.ftc.gov/now-leaving?external_url=\<target\>) |
-| `unwrapGfnLinkProxy` | GoodForNothing Link Proxy add-on for XenForo (\<any host\>/redirect/?to=\<base64 target\>, also /redirect?to=) |
-| `unwrapGitee` | Gitee external link redirect (gitee.com/link?target=\<target\>) |
-| `unwrapGoogle` | Google redirect (google.\<TLD\>/url?url=\<target\> or ?q=\<target\>) |
-| `unwrapGoogleAmpViewer` | Google AMP viewer (www.google.\<TLD\>/amp/s/\<host\>/\<path\>) |
-| `unwrapGoogleNews` | Google News legacy redirect (news.google.\<TLD\>/news/url?url=\<target\>) |
-| `unwrapGoogleNewsModern` | Google News modern article URLs (news.google.com/articles/\<base64\>) |
-| `unwrapGoogleScholar` | Google Scholar search-result redirect (scholar.google.\<TLD\>/scholar_url?url=\<target\>) |
-| `unwrapHackerone` | HackerOne external link warning on reports (hackerone.com/redirect?url=\<target\>) |
-| `unwrapHashnode` | Hashnode outbound redirect (hashnode.com/util/redirect?url=\<target\>) |
-| `unwrapHearthis` | hearthis.at outbound link shim (hearthis.at/l.php?url=\<target\>) |
-| `unwrapHirkereso` | Hírkereső news aggregator click redirect (rd.hirkereso.hu/rd/\<id\>?url=\<target\>) |
-| `unwrapHorde` | Horde webmail link dereferrer (\<any host\>/horde/services/go.php?url=\<target\>, also /util/go.php) |
-| `unwrapHrefLi` | href.li referrer stripper (href.li/?\<target\>), used by Tumblr |
-| `unwrapIndexHu` | Index.hu and Dex.hu outbound link counter (index.hu/x.php?id=\<id\>&url=\<target\>) |
-| `unwrapInfospace` | InfoSpace metasearch result click (click.infospace.com/ClickHandler.ashx?ru=\<target\>) |
-| `unwrapInstagramShim` | Instagram outbound link shim (l.instagram.com with ?u=\<target\>) |
-| `unwrapInvisionNoExternalLinks` | No External Links plugin for Invision Community (\<any host\>/redirect/?to=\<target\>) |
-| `unwrapIrs` | IRS leaving-site page (apps.irs.gov/app/scripts/exit.jsp?dest=\<target\>) |
-| `unwrapJianshuGo` | Jianshu external link redirect (links.jianshu.com/go?to=\<target\> and link.jianshu.com/?t=\<target\>) |
-| `unwrapJive` | Jive community external link redirect (\<any host\>/external-link.jspa?url=\<target\>) |
-| `unwrapJuejin` | Juejin external link redirect (link.juejin.cn/?target=\<target\>) |
-| `unwrapLd246` | LianDi community outbound link redirect (ld246.com/forward?goto=\<target\>) |
-| `unwrapLinkedin` | LinkedIn outbound link shims and click trackers (www.linkedin.com/safety/go?url=\<target\>, /redir/redirect, /redirect, /nhome/nus-redirect, /nus-trk, /e/v2, /company/\<id\>/redirect) |
-| `unwrapLivejournal` | LiveJournal outbound link redirect (www.livejournal.com/away?to=\<target\>) |
-| `unwrapLogicboard` | LogicBoard forum external link page (\<any host\>/away.php?s=\<target\>) |
-| `unwrapMailRu` | Mail.ru webmail link checker (checklink.mail.ru/proxy?url=\<target\>) and click redirect (click.mail.ru/redir?u=\<target\>, also click.my.mail.ru) |
-| `unwrapMarketwire` | Marketwire release click tracker (ctt.marketwire.com/?url=\<target\>) |
-| `unwrapMedium` | Medium outbound link redirect (medium.com/r/?url=\<target\>) and sign-in hop (medium.com/m/global-identity?redirectUrl=\<target\>) |
-| `unwrapMintFeeder` | Mint Feeder click counter on a site's own host (\<any host\>/feeder/?FeederAction=clicked&seed=\<target\>) |
-| `unwrapMozillaOutgoing` | Mozilla outgoing-link redirector (outgoing.prod.mozaws.net/v1/\<hash\>/\<target\>) |
-| `unwrapNaverOutgoing` | Naver outbound link redirect (cc.loginfra.com/...?u=\<target\>) and search result click (search.naver.com/p/crd/rd?u=\<target\>, also m.search.naver.com) |
-| `unwrapNetcentrum` | Centrum.cz and Atlas.cz webmail dereferrer (redir.netcentrum.cz/?noaudit&url=\<target\>) |
-| `unwrapNewswire` | Newswire release and email click tracker (stats.newswire.com/x/html?final=\<base64url\>, also stats.nwe.io and stats.mediadboutreach.com) |
-| `unwrapNicoMs` | nico.ms short link, expanded to the watch page (nico.ms/sm\<id\>, also /nm and /so), the illustration page (nico.ms/im\<id\>) or the live broadcast page (nico.ms/lv\<id\>) |
-| `unwrapNodeseek` | NodeSeek forum leaving-site page (www.nodeseek.com/jump?to=\<target\>) |
-| `unwrapOkRu` | OK.ru outbound link and leaving-site page (ok.ru/dk?cmd=logExternal&st.link=\<target\>, m.ok.ru/dk?st.cmd=outLinkWarning&st.rfn=\<target\>) |
-| `unwrapOsnova` | Osnova outbound link redirect on vc.ru and dtf.ru (api.vc.ru/v2.8/redirect?to=\<target\>) |
-| `unwrapPhilpapers` | PhilPapers outbound link to a work's source (philpapers.org/go.pl?u=\<target\>) |
-| `unwrapPinterest` | Pinterest outbound link shim (www.pinterest.com/offsite/?url=\<target\>) |
-| `unwrapPocket` | Pocket redirect (getpocket.com/redirect?url=\<target\>) |
-| `unwrapPrNewswire` | PR Newswire release click tracker (c212.net / edge.prnewswire.com /c/link/?u=\<target\>) |
-| `unwrapPrweb` | PRWeb release click tracker (www.prweb.net/Redirect.aspx?id=\<base64\>) |
-| `unwrapRamblerMail` | Rambler Mail link redirect (mail.rambler.ru/m/redirect?url=\<target\>) |
-| `unwrapRedditOut` | Reddit outbound click tracker (out.reddit.com/?url=\<target\>) |
-| `unwrapRediffmail` | Rediffmail webmail link redirect (www.rediffmail.com/cgi-bin/red.cgi?red=\<target\>) |
-| `unwrapResearchgate` | ResearchGate dereferrer (www.researchgate.net/deref/\<target\> and go.Deref.html?url=\<target\>) |
-| `unwrapSapHelp` | SAP Help Portal leaving-site page (help.sap.com/docs/link-disclaimer?site=\<target\>) |
-| `unwrapSegmentfault` | Segmentfault external link redirect (link.segmentfault.com/?enc=\<base64\>) |
-| `unwrapSerendipity` | Serendipity blog exit tracker (\<any host\>/[\<blog\>/]exit.php?url=\<base64\>&entry_id=\<n\>) |
-| `unwrapSkyrock` | Skyrock blog outbound link redirect (www.skyrock.com/r?url=\<target\>) |
-| `unwrapSlack` | Slack link redirect (slack-redir.net/link?url=\<target\>) |
-| `unwrapSoundcloud` | SoundCloud exit link (exit.sc/?url=\<target\>) |
-| `unwrapSspai` | Sspai external link redirect (sspai.com/link?target=\<target\>) |
-| `unwrapSteamLinkfilter` | Steam outbound link filter (steamcommunity.com/linkfilter/?url=\<target\> or ?u=\<target\>) |
-| `unwrapStorify` | Storify click counter on embedded stories (stats.storify.com/record/click?redirect=\<target\>) |
-| `unwrapStumbleupon` | StumbleUpon toolbar page (www.stumbleupon.com/su/\<id\>[/\<token\>]/\<target\>), target without its scheme, and app promo redirect (/to/event/redir/?url=\<target\>) |
-| `unwrapTeacup` | Teacup hosted BBS link jump (\<n\>.teacup.com/\<board\>/bbs?M=JU&JUR=\<target\>) |
-| `unwrapTheRegister` | The Register feed click counter (go.theregister.com/feed/\<target\> or /i/cfa/\<target\>), target with or without its scheme |
-| `unwrapThreadsShim` | Threads outbound link shim (l.threads.com / l.threads.net with ?u=\<target\>) |
-| `unwrapTiktok` | TikTok outbound link shim for profile bio links (www.tiktok.com/link/v2?target=\<target\>) |
-| `unwrapTumblr` | Tumblr outbound redirect (t.umblr.com/redirect?z=\<target\>) |
-| `unwrapTwitterRedirect` | Twitter email notification click redirect (t.co/redirect?url=\<target\>&sig=\<sig\>) |
-| `unwrapValuePress` | value press release click counter (www.value-press.com/bin/tools/link_counter?l=\<base64 of base64\>) |
-| `unwrapVanilla` | Vanilla Forums leaving page (\<any host\>/home/leaving?target=\<target\>) |
-| `unwrapVbulletin` | vBulletin SEO add-on external link redirect (\<any host\>/redirect-to/?redirect=\<target\>) |
-| `unwrapVirgool` | Virgool outbound link redirect (l.vrgl.ir/r?l=\<target\>) |
-| `unwrapVisibli` | Visibli framed share link (\<user\>.visibli.com/\<id\>/?dst=\<target\>) |
-| `unwrapVkAway` | VK away redirect (vk.com/away.php?to=\<target\>) |
-| `unwrapWpPoczta` | WP Poczta and o2 webmail dereferrer (zasobygwp.pl/redirect?url=\<base64\>) |
-| `unwrapXengentr` | XenGenTr external link redirect add-on for XenForo (\<any host\>/yonlendirme?to=\<base64\>) |
-| `unwrapYahooJapan` | Yahoo! JAPAN click redirect (rdsig.yahoo.co.jp/.../RU=\<base64url\>/RS=...) |
-| `unwrapYahooJapanAmpViewer` | Yahoo! JAPAN AMP viewer (search.yahoo.co.jp/amp/s/\<host\>/\<path\>) |
-| `unwrapYahooSearch` | Yahoo Search redirect (r.search.yahoo.com/.../RU=\<target\>/RK=...) |
-| `unwrapYandexMail` | Yandex Mail link redirect (mail.yandex.\<TLD\>/re.jsx?l=\<base64url\>) |
-| `unwrapYelp` | Yelp outbound link redirect (www.yelp.com/biz_redir?url=\<target\>, /redir) |
-| `unwrapYouTube` | YouTube external redirect (www.youtube.com/redirect?q=\<target\>) |
-| `unwrapZemanta` | Zemanta related-article redirect (r.zemanta.com/?u=\<target\>) |
-| `unwrapZhihu` | Zhihu external redirect (link.zhihu.com/?target=\<target\>) |
+| Category | Export | Unwrapping removes | Default |
+| --- | --- | --- | :---: |
+| Search clicks | `searchClickUnwrappers` | The search engine's or aggregator's click logging | ☑️ |
+| Link shims | `linkShimUnwrappers` | Nothing, or a platform's click count or a site click counter | ☑️ |
+| Press releases | `pressReleaseUnwrappers` | The wire's click stats | ☑️ |
+| Sign-in shims | `signInShimUnwrappers` | Nothing, but the shim's page needs a sign-in | |
+| Security gateways | `securityGatewayUnwrappers` | The gateway's click-time check of the target | |
+| Email tracking | `emailTrackingUnwrappers` | The sender's click stats | |
+| Affiliate links | `affiliateUnwrappers` | The publisher's commission | |
+| Advertising | `advertisingUnwrappers` | Ad click and app install attribution | |
+| Download measurement | `downloadMeasurementUnwrappers` | A podcaster's or site's download or click counts | |
+| Archives and proxies | `archiveProxyUnwrappers` | The archived or translated copy: you get the live page | |
 
-Everything else is opt-in, through the categories above or one unwrapper at a time. See [src/unwraps](src/unwraps) for the full catalog, each documented in its source file.
+`defaultUnwrappers` combines the first three. The rest cost somebody something or change the page: an affiliate link may pay for a small blog, and an archive link points at a copy on purpose. To turn more on, spread them next to the defaults:
+
+```typescript
+import { affiliateUnwrappers, cleanUrl, defaultUnwrappers } from 'urlpurify'
+
+cleanUrl(url, { unwrappers: [...defaultUnwrappers, ...affiliateUnwrappers] })
+```
