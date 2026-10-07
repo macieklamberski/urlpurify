@@ -10,7 +10,7 @@ describe('unwrapCloze', () => {
     expect(unwrapCloze(url)).toBe('http://example.com/contact')
   })
 
-  it('should extract a target after the contact name', () => {
+  it('should extract a target after the link text', () => {
     const url = new URL(
       'https://circulate.it/r/O62Bak8Z5Ls_AC-Nov38njmwAn4tJV4EievTmjAmMJ4tNi8zXHYBwW4j8rwMY_3NAvP6VQEEFF9O4I57lg3OXS6mpTU/n/QXN0ZXJpc2s/example.xyz/',
     )
