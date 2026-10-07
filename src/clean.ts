@@ -1,4 +1,4 @@
-import { isHttpUrl, parseUrl, stripWww } from 'trousse'
+import { fixMalformedProtocol, isHttpUrl, isIpAddress, parseUrl, stripWww } from 'trousse'
 import { defaultTrackingParams, defaultUnwrappers } from './defaults.js'
 import type { CleanUrlOptions, TrackingParam, UrlUnwrapper } from './types.js'
 
@@ -79,19 +79,30 @@ const deleteTrackingParams = (url: URL, trackingParams: Array<TrackingParam>): b
   return true
 }
 
-// A target the page can show: a scheme and a host, and no control characters.
-const usableTargetRegex = /^https?:\/\/[^/\s]/i
 const controlCharactersRegex = /[\p{Cc}\u2028\u2029]/u
-const singleSlashSchemeRegex = /^(https?:)\/(?!\/)/i
+const dottedHostRegex = /[^.]\.[^.]/
 
-// Trims the ends, repairs `https:/host`, which urldefense and web archives emit, and drops a target
-// that has no host or holds a control character, so the wrapper stays.
+// Repairs a malformed scheme such as `https:/host` or `https://https://host`, then drops a target
+// with a control character or a host without a dot between two labels, so the wrapper stays. Such
+// a host is a cut-off link, a path or a scheme read as one: `https://www.`, `https://s3://bucket`.
 const cleanTarget = (target: string | undefined): string | undefined => {
-  const trimmed = target?.trim().replace(singleSlashSchemeRegex, '$1//')
-
-  if (trimmed && usableTargetRegex.test(trimmed) && !controlCharactersRegex.test(trimmed)) {
-    return trimmed
+  if (!target) {
+    return
   }
+
+  const repaired = fixMalformedProtocol(target.trim())
+
+  if (controlCharactersRegex.test(repaired)) {
+    return
+  }
+
+  const hostname = parseUrl(repaired)?.hostname ?? ''
+
+  if (!dottedHostRegex.test(hostname) && !isIpAddress(hostname)) {
+    return
+  }
+
+  return repaired
 }
 
 const applyUnwrappers = (url: URL, unwrappers: Array<UrlUnwrapper>): string | undefined => {
