@@ -73,6 +73,7 @@ import { unwrapClaritas } from './unwraps/claritas.js'
 import { unwrapCleverbridge } from './unwraps/cleverbridge.js'
 import { unwrapClevercomm } from './unwraps/clevercomm.js'
 import { unwrapCloudhq } from './unwraps/cloudhq.js'
+import { unwrapCloze } from './unwraps/cloze.js'
 import { unwrapCommissionFactory } from './unwraps/commissionFactory.js'
 import { unwrapCommunicationads } from './unwraps/communicationads.js'
 import { unwrapConstantContact } from './unwraps/constantContact.js'
@@ -547,6 +548,7 @@ export const emailTrackingUnwrappers: Array<UrlUnwrapper> = [
   unwrapBuzzstream,
   unwrapClevercomm,
   unwrapCloudhq,
+  unwrapCloze,
   unwrapConstantContact,
   unwrapContactMonkey,
   unwrapCse360,
