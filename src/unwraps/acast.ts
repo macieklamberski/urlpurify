@@ -12,5 +12,5 @@ export const unwrapAcast: UrlUnwrapper = (url) => {
     return
   }
 
-  return getPathTarget(url, flexPrefixRegex)
+  return getPathTarget(url, flexPrefixRegex, url.protocol)
 }

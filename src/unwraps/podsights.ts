@@ -12,5 +12,5 @@ export const unwrapPodsights: UrlUnwrapper = (url) => {
     return
   }
 
-  return getPathTarget(url, episodePrefixRegex)
+  return getPathTarget(url, episodePrefixRegex, url.protocol)
 }

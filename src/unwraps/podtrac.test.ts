@@ -141,4 +141,12 @@ describe('unwrapPodtrac', () => {
 
     expect(unwrapPodtrac(url)).toBeUndefined()
   })
+
+  it('should give a target without a scheme https behind the http New York Times host', () => {
+    const url = new URL(
+      'http://dts.podtrac.nytimes.com/redirect.mp3/example.com/podcasts/2011/12/01/1201popcast.mp3',
+    )
+
+    expect(unwrapPodtrac(url)).toBe('https://example.com/podcasts/2011/12/01/1201popcast.mp3')
+  })
 })

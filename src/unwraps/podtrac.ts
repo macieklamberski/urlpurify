@@ -16,12 +16,17 @@ const playPrefixRegex = /^\/[^/]*\//
 // www.podtrac.net, www.podtrac.com/pts/redirect.<ext>?<target> and play.podtrac.com/<show>/<target>).
 // Not included in defaultUnwrappers: unwrapping removes the podcaster's download counts.
 export const unwrapPodtrac: UrlUnwrapper = (url) => {
-  if (isHostOf(url, ['dts.podtrac.com', 'dts.podtrac.nytimes.com'])) {
+  // The New York Times host answers 301 to https://dts.podtrac.com, so its targets get https.
+  if (isHostOf(url, 'dts.podtrac.nytimes.com')) {
     return getPathTarget(url, dtsPrefixRegex)
   }
 
+  if (isHostOf(url, 'dts.podtrac.com')) {
+    return getPathTarget(url, dtsPrefixRegex, url.protocol)
+  }
+
   if (isHostOf(url, 'play.podtrac.com')) {
-    return getPathTarget(url, playPrefixRegex)
+    return getPathTarget(url, playPrefixRegex, url.protocol)
   }
 
   if (
@@ -33,6 +38,6 @@ export const unwrapPodtrac: UrlUnwrapper = (url) => {
   }
 
   if (isHostOf(url, ['www.podtrac.com', 'podtrac.com', 'www.podtrac.net'])) {
-    return getPathTarget(url, ptsPrefixRegex)
+    return getPathTarget(url, ptsPrefixRegex, url.protocol)
   }
 }

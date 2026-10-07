@@ -18,7 +18,7 @@ describe('unwrapVoxnest', () => {
     )
 
     expect(unwrapVoxnest(url)).toBe(
-      'https://example.com/mf/web/r6kjhd/BTLO_HIGHLIGHTS_SUMMER_2019.mp3',
+      'http://example.com/mf/web/r6kjhd/BTLO_HIGHLIGHTS_SUMMER_2019.mp3',
     )
   })
 
