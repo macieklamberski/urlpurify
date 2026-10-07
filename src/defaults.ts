@@ -178,6 +178,7 @@ import { unwrapJustwatch } from './unwraps/justwatch.js'
 import { unwrapKlook } from './unwraps/klook.js'
 import { unwrapLazada } from './unwraps/lazada.js'
 import { unwrapLd246 } from './unwraps/ld246.js'
+import { unwrapLetscast } from './unwraps/letscast.js'
 import { unwrapLeverAnalytics } from './unwraps/leverAnalytics.js'
 import { unwrapLinkA } from './unwraps/linkA.js'
 import { unwrapLinkconnector } from './unwraps/linkconnector.js'
@@ -353,6 +354,7 @@ import { unwrapWordpressGo2 } from './unwraps/wordpressGo2.js'
 import { unwrapWorldNomads } from './unwraps/worldNomads.js'
 import { unwrapWpPoczta } from './unwraps/wpPoczta.js'
 import { unwrapXengentr } from './unwraps/xengentr.js'
+import { unwrapXiaoyuzhou } from './unwraps/xiaoyuzhou.js'
 import { unwrapYahooJapan } from './unwraps/yahooJapan.js'
 import { unwrapYahooJapanAmpViewer } from './unwraps/yahooJapanAmpViewer.js'
 import { unwrapYahooSearch } from './unwraps/yahooSearch.js'
@@ -738,6 +740,7 @@ export const downloadMeasurementUnwrappers: Array<UrlUnwrapper> = [
   unwrapFirstory,
   unwrapGodcaster,
   unwrapGumball,
+  unwrapLetscast,
   unwrapMagellan,
   unwrapMinistryCloud,
   unwrapMintDownloads,
@@ -754,6 +757,7 @@ export const downloadMeasurementUnwrappers: Array<UrlUnwrapper> = [
   unwrapUpAudio,
   unwrapVgWort,
   unwrapVoxnest,
+  unwrapXiaoyuzhou,
   unwrapZencastr,
 ]
 
