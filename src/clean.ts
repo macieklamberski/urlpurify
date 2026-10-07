@@ -62,6 +62,9 @@ const deleteTrackingParams = (url: URL, trackingParams: Array<TrackingParam>): b
   const matcher = getTrackingMatcher(trackingParams)
   const host = stripWww(url.hostname)
 
+  // Alibaba DirectMail click urls answer 400 without their `ts` and do not check their `sign`.
+  const keepsTs = url.hostname === 'dm-cn.aliyuncs.com' && url.pathname === '/trace/v1/report'
+
   // Kept pairs stay byte-for-byte: re-serializing through URLSearchParams turns
   // `%20` into `+`, `flag` into `flag=` and escapes `;`, which servers can read differently.
   const keptPairs = pairs.filter((_pair, index) => {
@@ -73,6 +76,10 @@ const deleteTrackingParams = (url: URL, trackingParams: Array<TrackingParam>): b
 
     const [key, value] = entry
     const name = key.toLowerCase()
+
+    if (keepsTs && name === 'ts') {
+      return true
+    }
 
     // `search` ignores `lastIndex`, so a caller's `g` or `y` pattern matches on every call.
     if (
