@@ -10,6 +10,7 @@ import { unwrapAcast } from './unwraps/acast.js'
 import { unwrapAccesstrade } from './unwraps/accesstrade.js'
 import { unwrapAceml } from './unwraps/aceml.js'
 import { unwrapAdcell } from './unwraps/adcell.js'
+import { unwrapAdfly } from './unwraps/adfly.js'
 import { unwrapAdjust } from './unwraps/adjust.js'
 import { unwrapAdmitad } from './unwraps/admitad.js'
 import { unwrapAdrecord } from './unwraps/adrecord.js'
@@ -73,6 +74,7 @@ import { unwrapClaritas } from './unwraps/claritas.js'
 import { unwrapCleverbridge } from './unwraps/cleverbridge.js'
 import { unwrapClevercomm } from './unwraps/clevercomm.js'
 import { unwrapCloudhq } from './unwraps/cloudhq.js'
+import { unwrapCloze } from './unwraps/cloze.js'
 import { unwrapCommissionFactory } from './unwraps/commissionFactory.js'
 import { unwrapCommunicationads } from './unwraps/communicationads.js'
 import { unwrapConstantContact } from './unwraps/constantContact.js'
@@ -293,6 +295,7 @@ import { unwrapStreamsend } from './unwraps/streamsend.js'
 import { unwrapStumbleupon } from './unwraps/stumbleupon.js'
 import { unwrapSubscribeRu } from './unwraps/subscribeRu.js'
 import { unwrapSubstack } from './unwraps/substack.js'
+import { unwrapSurly } from './unwraps/surly.js'
 import { unwrapSurugaya } from './unwraps/surugaya.js'
 import { unwrapSwap } from './unwraps/swap.js'
 import { unwrapSymantecClicktime } from './unwraps/symantecClicktime.js'
@@ -350,6 +353,7 @@ import { unwrapWorldNomads } from './unwraps/worldNomads.js'
 import { unwrapWpPoczta } from './unwraps/wpPoczta.js'
 import { unwrapXengentr } from './unwraps/xengentr.js'
 import { unwrapYahooJapan } from './unwraps/yahooJapan.js'
+import { unwrapYahooJapanAmpViewer } from './unwraps/yahooJapanAmpViewer.js'
 import { unwrapYahooSearch } from './unwraps/yahooSearch.js'
 import { unwrapYamm } from './unwraps/yamm.js'
 import { unwrapYandexMail } from './unwraps/yandexMail.js'
@@ -482,6 +486,7 @@ export const linkShimUnwrappers: Array<UrlUnwrapper> = [
   unwrapVkAway,
   unwrapWpPoczta,
   unwrapXengentr,
+  unwrapYahooJapanAmpViewer,
   unwrapYandexMail,
   unwrapYelp,
   unwrapYouTube,
@@ -544,6 +549,7 @@ export const emailTrackingUnwrappers: Array<UrlUnwrapper> = [
   unwrapBuzzstream,
   unwrapClevercomm,
   unwrapCloudhq,
+  unwrapCloze,
   unwrapConstantContact,
   unwrapContactMonkey,
   unwrapCse360,
@@ -602,6 +608,7 @@ export const affiliateUnwrappers: Array<UrlUnwrapper> = [
   unwrapA8Net,
   unwrapAccesstrade,
   unwrapAdcell,
+  unwrapAdfly,
   unwrapAdmitad,
   unwrapAdrecord,
   unwrapAdtraction,
@@ -675,6 +682,7 @@ export const affiliateUnwrappers: Array<UrlUnwrapper> = [
   unwrapSlickdeals,
   unwrapSmartredirect,
   unwrapStay22,
+  unwrapSurly,
   unwrapSurugaya,
   unwrapTargetCircle,
   unwrapToucharcade,
