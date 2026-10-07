@@ -104,8 +104,22 @@ describe('unwrapYandexTurbo', () => {
     expect(unwrapYandexTurbo(url)).toBeUndefined()
   })
 
-  it('should return undefined for a Yandex Turbo path with no host before /s/', () => {
-    const url = new URL('https://yandex.ru/turbo/s/example.com/news/1106993.html')
+  it('should extract the target of a Yandex Turbo page with /s/ before the host', () => {
+    const url = new URL(
+      'https://yandex.ru/turbo/s/example.com/news/1106993.html?parent-reqid=1652314211633181',
+    )
+
+    expect(unwrapYandexTurbo(url)).toBe('https://example.com/news/1106993.html')
+  })
+
+  it('should extract the target of a turbopages.org page with /s/ before the host', () => {
+    const url = new URL('https://example-com.turbopages.org/s/example.com/article/053551fc')
+
+    expect(unwrapYandexTurbo(url)).toBe('https://example.com/article/053551fc')
+  })
+
+  it('should return undefined for /s/ before the host on Yandex without /turbo', () => {
+    const url = new URL('https://yandex.ru/news/s/example.com/1106993.html')
 
     expect(unwrapYandexTurbo(url)).toBeUndefined()
   })
