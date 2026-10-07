@@ -238,6 +238,7 @@ import { unwrapOutlookSafelinks } from './unwraps/outlookSafelinks.js'
 import { unwrapOutlookWebAccess } from './unwraps/outlookWebAccess.js'
 import { unwrapPagefreezer } from './unwraps/pagefreezer.js'
 import { unwrapPartnerAds } from './unwraps/partnerAds.js'
+import { unwrapPbs } from './unwraps/pbs.js'
 import { unwrapPhilpapers } from './unwraps/philpapers.js'
 import { unwrapPinterest } from './unwraps/pinterest.js'
 import { unwrapPipedrive } from './unwraps/pipedrive.js'
@@ -756,6 +757,7 @@ export const downloadMeasurementUnwrappers: Array<UrlUnwrapper> = [
   unwrapMintDownloads,
   unwrapMohtwize,
   unwrapOp3,
+  unwrapPbs,
   unwrapPodcorn,
   unwrapPodder,
   unwrapPodkite,
