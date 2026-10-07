@@ -4,7 +4,7 @@ import type { UrlUnwrapper } from '../types.js'
 const pathRegex = /^\/gate\/big5\/([\w-]+(?:\.[\w-]+)+(?:\/.*)?)$/
 
 // Big5 conversion gate (<host>/gate/big5/<target host>/<path>), with the target's scheme dropped.
-// Chinese news and government sites run it on their own hosts, such as big5.xinhuanet.com.
+// Chinese-language news and government sites run it on their own hosts, such as big5.xinhuanet.com.
 // Not included in defaultUnwrappers: unwrapping returns the original page, not the converted copy.
 export const unwrapBig5Gate: UrlUnwrapper = (url) => {
   const match = pathRegex.exec(url.pathname)

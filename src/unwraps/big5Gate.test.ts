@@ -55,7 +55,7 @@ describe('unwrapBig5Gate', () => {
   })
 
   it('should return undefined for a scheme pasted after a host prefix', () => {
-    const url = new URL('https://big5.example.org/gate/big5/www.https://www.example.com/')
+    const url = new URL('https://big5.cantonfair.org.cn/gate/big5/www.https://www.example.com/')
 
     expect(unwrapBig5Gate(url)).toBeUndefined()
   })
