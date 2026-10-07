@@ -26,8 +26,9 @@ const scholarPathRegex = /^\/work\/[a-z0-9]+\/access\/wayback\/(.+)$/
 // A scheme has no dot, so `www.example.com:80/` reads as a host with a port.
 const schemeRegex = /^[a-z][a-z\d+-]*:/i
 // A dot in the first segment tells a host from Wayback's own paths, such as `/web/diff/`, except
-// its own pages `/web/form-submit.jsp` and `archive.org/web/web.php`.
-const schemelessRegex = /^(?![^/]*\.(?:jsp|php)(?:\/|$))[^/]*\./
+// its own pages `/web/form-submit.jsp` and `archive.org/web/web.php`, and a relative image
+// snapshot such as `/web/<timestamp>im_/photo.jpg`.
+const schemelessRegex = /^(?![^/]*\.(?:jsp|php|jpg)(?:\/|$))[^/]*\./
 
 // Web Archive snapshot wrapper (web.archive.org/web/<timestamp>[<modifier>]/<URL>), also served
 // from wayback, web-beta, web-wp, web-old and classic-web.archive.org, from archive.org itself and
