@@ -224,6 +224,7 @@ Enabled by default:
 | `unwrapWpPoczta` | WP Poczta and o2 webmail dereferrer (zasobygwp.pl/redirect?url=\<base64\>) |
 | `unwrapXengentr` | XenGenTr external link redirect add-on for XenForo (\<any host\>/yonlendirme?to=\<base64\>) |
 | `unwrapYahooJapan` | Yahoo! JAPAN click redirect (rdsig.yahoo.co.jp/.../RU=\<base64url\>/RS=...) |
+| `unwrapYahooJapanAmpViewer` | Yahoo! JAPAN AMP viewer (search.yahoo.co.jp/amp/s/\<host\>/\<path\>) |
 | `unwrapYahooSearch` | Yahoo Search redirect (r.search.yahoo.com/.../RU=\<target\>/RK=...) |
 | `unwrapYandexMail` | Yandex Mail link redirect (mail.yandex.\<TLD\>/re.jsx?l=\<base64url\>) |
 | `unwrapYelp` | Yelp outbound link redirect (www.yelp.com/biz_redir?url=\<target\>, /redir) |

@@ -133,6 +133,7 @@ describe('defaultUnwrappers', () => {
       'unwrapWpPoczta',
       'unwrapXengentr',
       'unwrapYahooJapan',
+      'unwrapYahooJapanAmpViewer',
       'unwrapYahooSearch',
       'unwrapYandexMail',
       'unwrapYelp',
