@@ -164,7 +164,7 @@ describe('stripTrackingParams', () => {
     expect(stripTrackingParams(value, ['utm_source'])).toBe(expected)
   })
 
-  it('should return the input unchanged when nothing matches', () => {
+  it('should return a serialized URL unchanged when nothing matches', () => {
     const value = 'https://example.com/post?id=42'
 
     expect(stripTrackingParams(value, ['utm_source'])).toBe(value)
@@ -458,7 +458,7 @@ describe('cleanUrl', () => {
     expect(cleanUrl(value, options)).toBe(value)
   })
 
-  it('should return the input unchanged when nothing applies', () => {
+  it('should return a serialized URL unchanged when nothing applies', () => {
     const value = 'https://example.com/post?id=42'
 
     expect(cleanUrl(value)).toBe(value)

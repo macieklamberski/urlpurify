@@ -42,8 +42,8 @@ const getTrackingMatcher = (params: Array<TrackingParam>): TrackingMatcher => {
   return cached
 }
 
-// Delete tracking parameters in place. Literal names match case-insensitively;
-// patterns are tested against the lowercased name. A query carrying a signature param is kept whole.
+// Delete tracking parameters in place. Literal names match case-insensitively, and patterns are
+// tested against the lowercased name. A query carrying a signature param is kept whole.
 const deleteTrackingParams = (url: URL, trackingParams: Array<TrackingParam>): void => {
   if (!url.search) {
     return
