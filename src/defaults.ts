@@ -365,6 +365,7 @@ import { unwrapYesware } from './unwraps/yesware.js'
 import { unwrapYourMembership } from './unwraps/yourMembership.js'
 import { unwrapYouTube } from './unwraps/youtube.js'
 import { unwrapZanox } from './unwraps/zanox.js'
+import { unwrapZayads } from './unwraps/zayads.js'
 import { unwrapZemanta } from './unwraps/zemanta.js'
 import { unwrapZhihu } from './unwraps/zhihu.js'
 import { unwrapZix } from './unwraps/zix.js'
@@ -753,6 +754,7 @@ export const downloadMeasurementUnwrappers: Array<UrlUnwrapper> = [
   unwrapUpAudio,
   unwrapVgWort,
   unwrapVoxnest,
+  unwrapZayads,
 ]
 
 // Archives, proxies and viewers: unwrapping returns the live page, not the copy.
