@@ -26,6 +26,24 @@ describe('unwrapNicoMs', () => {
     expect(unwrapNicoMs(url)).toBe('https://seiga.nicovideo.jp/seiga/im9999999')
   })
 
+  it('should rewrite lv-prefixed ids to the live broadcast URL', () => {
+    const url = new URL('http://nico.ms/lv187388398')
+
+    expect(unwrapNicoMs(url)).toBe('https://live.nicovideo.jp/watch/lv187388398')
+  })
+
+  it('should return undefined for an id below another path segment', () => {
+    const url = new URL('https://nico.ms/watch/lv187388398')
+
+    expect(unwrapNicoMs(url)).toBeUndefined()
+  })
+
+  it('should return undefined for an id followed by another path segment', () => {
+    const url = new URL('https://nico.ms/lv187388398/extra')
+
+    expect(unwrapNicoMs(url)).toBeUndefined()
+  })
+
   it('should return undefined for an unrecognised prefix', () => {
     const url = new URL('https://nico.ms/xx12345')
 
