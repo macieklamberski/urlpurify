@@ -104,6 +104,12 @@ describe('unwrapYandexTurbo', () => {
     expect(unwrapYandexTurbo(url)).toBeUndefined()
   })
 
+  it('should return undefined for a Yandex Turbo path with no host before /s/', () => {
+    const url = new URL('https://yandex.ru/turbo/s/example.com/news/1106993.html')
+
+    expect(unwrapYandexTurbo(url)).toBeUndefined()
+  })
+
   it('should return undefined for the Turbo view on another Yandex subdomain', () => {
     const url = new URL('https://mail.yandex.ru/turbo?text=https%3A%2F%2Fexample.com%2F')
 
