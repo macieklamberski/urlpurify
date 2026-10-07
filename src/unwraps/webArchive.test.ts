@@ -119,6 +119,20 @@ describe('unwrapWebArchive', () => {
     expect(unwrapWebArchive(value)).toBeUndefined()
   })
 
+  it('should return undefined for the Wayback search form', () => {
+    const value = new URL(
+      'https://web.archive.org/web/form-submit.jsp?type=prefixquery&url=http://example.com/',
+    )
+
+    expect(unwrapWebArchive(value)).toBeUndefined()
+  })
+
+  it('should return undefined for the old Wayback home page', () => {
+    const value = new URL('https://archive.org/web/web.php')
+
+    expect(unwrapWebArchive(value)).toBeUndefined()
+  })
+
   it('should return undefined for a mailto target', () => {
     const value = new URL('https://web.archive.org/web/20240101120000/mailto:info@example.com')
 
