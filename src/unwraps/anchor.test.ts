@@ -52,12 +52,12 @@ describe('unwrapAnchor', () => {
     expect(unwrapAnchor(url)).toBe('https://example.com/episode.mp3')
   })
 
-  it('should return undefined for a target cut short inside an escape', () => {
+  it('should keep a stray percent sign in a twice-encoded target', () => {
     const url = new URL(
-      'https://anchor.fm/s/102d2c870/podcast/play/100291057/https%3A%2F%2Fexample.com%2',
+      'https://anchor.fm/s/106db04/podcast/play/119132135/https%253A%252F%252Fexample.com%252F100%25',
     )
 
-    expect(unwrapAnchor(url)).toBeUndefined()
+    expect(unwrapAnchor(url)).toBe('https://example.com/100%')
   })
 
   it('should return undefined for the sponsor link', () => {

@@ -60,12 +60,12 @@ describe('unwrapIndexHu', () => {
     expect(unwrapIndexHu(url)).toBe('https://example.com/post')
   })
 
-  it('should keep a twice-encoded target that fails the second decode', () => {
+  it('should keep a stray percent sign in a twice-encoded target', () => {
     const url = new URL(
-      'http://index.hu/x?index_tech_cikklink=https%253A%252F%252Fexample.com%252F%25E0%25A4%25A',
+      'http://index.hu/x?index_tech_cikklink=https%253A%252F%252Fexample.com%252F100%25',
     )
 
-    expect(unwrapIndexHu(url)).toBe('https%3A%2F%2Fexample.com%2F%E0%A4%A')
+    expect(unwrapIndexHu(url)).toBe('https://example.com/100%')
   })
 
   it('should return undefined when the section counter param is empty', () => {

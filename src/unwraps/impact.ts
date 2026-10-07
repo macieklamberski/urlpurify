@@ -1,6 +1,6 @@
 import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamValues } from '../utils.js'
+import { getParamValues, percentDecode } from '../utils.js'
 
 const pathRegex = /^\/c\/\d+\/\d+\/\d+$/
 const sjvHostRegex = /\.sjv\.io$/
@@ -24,9 +24,7 @@ export const unwrapImpact: UrlUnwrapper = (url) => {
 
   // A target encoded twice still holds an encoded scheme after one decode.
   if (target && encodedSchemeRegex.test(target)) {
-    try {
-      target = decodeURIComponent(target)
-    } catch {}
+    target = percentDecode(target)
   }
 
   if (target && isHttpUrl(target)) {

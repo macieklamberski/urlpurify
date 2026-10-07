@@ -1,5 +1,6 @@
 import { isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
+import { percentDecode } from '../utils.js'
 
 const pathRegex = /^\/allez\/[\w-]+$/
 const encodedSchemeRegex = /^https?%3A/i
@@ -15,9 +16,7 @@ export const unwrapStay22: UrlUnwrapper = (url) => {
 
   // Some links encode the target twice.
   if (encodedSchemeRegex.test(target)) {
-    try {
-      target = decodeURIComponent(target)
-    } catch {}
+    target = percentDecode(target)
   }
 
   if (isHttpUrl(target)) {

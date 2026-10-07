@@ -236,9 +236,11 @@ describe('createParamExtractor', () => {
       expect(extract(value)).toBe(expected)
     })
 
-    it('should return the once-decoded value when the second decode throws', () => {
-      const value = new URL('https://redirect.example.com/?url=https%253A%252F%252Fexample.com%25')
-      const expected = 'https%3A%2F%2Fexample.com%'
+    it('should keep a stray percent sign in a twice-encoded target', () => {
+      const value = new URL(
+        'https://redirect.example.com/?url=https%253A%252F%252Fexample.com%252F100%25',
+      )
+      const expected = 'https://example.com/100%'
 
       expect(extract(value)).toBe(expected)
     })

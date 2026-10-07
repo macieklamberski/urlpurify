@@ -1,6 +1,6 @@
 import { isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createParamExtractor, percentDecode } from '../utils.js'
 
 const hosts = [
   'deref-1und1.de',
@@ -82,9 +82,7 @@ export const unwrapDerefMail: UrlUnwrapper = (url) => {
 
   // Some messages encode the target twice.
   if (encodedSchemeRegex.test(target)) {
-    try {
-      target = decodeURIComponent(target)
-    } catch {}
+    target = percentDecode(target)
   }
 
   if (isHttpUrl(target)) {

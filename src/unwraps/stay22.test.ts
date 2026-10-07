@@ -80,12 +80,12 @@ describe('unwrapStay22', () => {
     )
   })
 
-  it('should return undefined for a twice-encoded target that fails to decode', () => {
+  it('should keep a stray percent sign in a twice-encoded target', () => {
     const url = new URL(
-      'https://www.stay22.com/allez/booking?aid=examplepublisher&link=https%253A%252F%252Fexample.com%252F%25E0',
+      'https://www.stay22.com/allez/booking?aid=examplepublisher&link=https%253A%252F%252Fexample.com%252F100%25',
     )
 
-    expect(unwrapStay22(url)).toBeUndefined()
+    expect(unwrapStay22(url)).toBe('https://example.com/100%')
   })
 
   it('should return undefined when the link param is missing', () => {

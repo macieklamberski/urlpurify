@@ -11,6 +11,14 @@ export type ParamExtractorConfig = (
   params: Array<string>
 }
 
+// Percent-decodes per the URL Standard, as `URLSearchParams` does: a `%` not followed by two hex
+// digits stays in place, where `decodeURIComponent` throws. A `+` stays a `+`.
+export const percentDecode = (value: string): string => {
+  const escaped = value.replaceAll('+', '%2B').replaceAll('&', '%26')
+
+  return new URLSearchParams(`value=${escaped}`).get('value') ?? ''
+}
+
 const encodedSchemeRegex = /^https?%3A/i
 
 // A value already decoded once still holds an encoded scheme (`https%3A%2F%2F`) when the
@@ -20,11 +28,7 @@ const decodeEncodedScheme = (value: string): string => {
     return value
   }
 
-  try {
-    return decodeURIComponent(value)
-  } catch {
-    return value
-  }
+  return percentDecode(value)
 }
 
 const unencodedTargetRegex = /^https?:\/\//i
@@ -49,7 +53,7 @@ export const getParamValues = (url: URL, name: string): Array<string> => {
       continue
     }
 
-    values.push(new URLSearchParams(`value=${raw.replaceAll('+', '%2B')}`).get('value') ?? '')
+    values.push(percentDecode(raw))
   }
 
   return values

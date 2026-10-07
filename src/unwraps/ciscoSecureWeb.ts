@@ -1,5 +1,6 @@
 import { isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
+import { percentDecode } from '../utils.js'
 
 const pathRegex = /^\/[\w-]+\/(https?(?:%3A|%253A)(?:%2F|%252F){2}[^/]*)$/i
 
@@ -22,7 +23,7 @@ export const unwrapCiscoSecureWeb: UrlUnwrapper = (url) => {
 
     // Some links encode the target twice.
     if (!isHttpUrl(target)) {
-      target = decodeURIComponent(target)
+      target = percentDecode(target)
     }
 
     if (isHttpUrl(target)) {

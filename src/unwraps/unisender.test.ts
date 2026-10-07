@@ -134,12 +134,12 @@ describe('unwrapUnisender', () => {
     expect(unwrapUnisender(url)).toBeUndefined()
   })
 
-  it('should return undefined for a malformed twice-encoded target', () => {
+  it('should keep a stray percent sign in a twice-encoded target', () => {
     const url = new URL(
-      'https://usndr.com/ru/mail_link_tracker?url=https%253A%252F%252Fexample.org%252F%25E0%25A4%25A',
+      'https://usndr.com/ru/mail_link_tracker?url=https%253A%252F%252Fexample.org%252F100%25',
     )
 
-    expect(unwrapUnisender(url)).toBeUndefined()
+    expect(unwrapUnisender(url)).toBe('https://example.org/100%')
   })
 
   it('should return undefined when url param is missing', () => {
