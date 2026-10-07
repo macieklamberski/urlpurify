@@ -181,4 +181,20 @@ describe('unwrapUkgwa', () => {
 
     expect(unwrapUkgwa(url)).toBeUndefined()
   })
+
+  it('should read a host with a port as a host', () => {
+    const url = new URL(
+      'https://webarchive.nationalarchives.gov.uk/+/www.example.gov.uk:80/page.htm',
+    )
+
+    expect(unwrapUkgwa(url)).toBe('http://www.example.gov.uk:80/page.htm')
+  })
+
+  it('should keep a single-slash scheme of the target as written', () => {
+    const url = new URL(
+      'https://webarchive.nationalarchives.gov.uk/ukgwa/20130221121534/http:/www.example.gov.uk/our-report/',
+    )
+
+    expect(unwrapUkgwa(url)).toBe('http:/www.example.gov.uk/our-report/')
+  })
 })
