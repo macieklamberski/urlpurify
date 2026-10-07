@@ -55,4 +55,14 @@ describe('unwrapTheRegister', () => {
 
     expect(unwrapTheRegister(url)).toBeUndefined()
   })
+
+  it('should extract the target of the i/cfa counter path', () => {
+    const url = new URL(
+      'https://go.theregister.com/i/cfa/https://www.theregister.com/2023/07/26/openai_ai_classifier/',
+    )
+
+    expect(unwrapTheRegister(url)).toBe(
+      'https://www.theregister.com/2023/07/26/openai_ai_classifier/',
+    )
+  })
 })
