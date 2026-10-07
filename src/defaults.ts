@@ -44,6 +44,7 @@ import { unwrapBacLacWebArchive } from './unwraps/bacLacWebArchive.js'
 import { unwrapBale } from './unwraps/bale.js'
 import { unwrapBananatag } from './unwraps/bananatag.js'
 import { unwrapBarracudaLinkProtect } from './unwraps/barracudaLinkProtect.js'
+import { unwrapBig5Gate } from './unwraps/big5Gate.js'
 import { unwrapBing } from './unwraps/bing.js'
 import { unwrapBingAds } from './unwraps/bingAds.js'
 import { unwrapBitrix } from './unwraps/bitrix.js'
@@ -348,7 +349,6 @@ import { unwrapWordpressGo2 } from './unwraps/wordpressGo2.js'
 import { unwrapWorldNomads } from './unwraps/worldNomads.js'
 import { unwrapWpPoczta } from './unwraps/wpPoczta.js'
 import { unwrapXengentr } from './unwraps/xengentr.js'
-import { unwrapXinhuaBig5 } from './unwraps/xinhuaBig5.js'
 import { unwrapYahooJapan } from './unwraps/yahooJapan.js'
 import { unwrapYahooSearch } from './unwraps/yahooSearch.js'
 import { unwrapYamm } from './unwraps/yamm.js'
@@ -752,6 +752,7 @@ export const archiveProxyUnwrappers: Array<UrlUnwrapper> = [
   unwrapArchiveToday, // Snapshot of a page at a point in time, not a redirect
   unwrapArquivo,
   unwrapBacLacWebArchive,
+  unwrapBig5Gate,
   unwrapEmbedly,
   unwrapExciteTranslate,
   unwrapGoogleTranslate,
@@ -774,7 +775,6 @@ export const archiveProxyUnwrappers: Array<UrlUnwrapper> = [
   unwrapWebharvest,
   unwrapWikiwix,
   unwrapWikizero,
-  unwrapXinhuaBig5,
   unwrapYandexTranslate,
   unwrapYandexTurbo,
 ]
