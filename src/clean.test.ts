@@ -305,6 +305,19 @@ describe('cleanUrl', () => {
     expect(cleanUrl(value, options)).toBe(target)
   })
 
+  it('should unwrap a chain six wrappers deep by default', () => {
+    const target = 'https://example.com/episode.mp3'
+    const hop6 = `https://redirect.example.com/?target=${encodeURIComponent(target)}`
+    const hop5 = `https://outer.example.com/?url=${encodeURIComponent(hop6)}`
+    const hop4 = `https://redirect.example.com/?target=${encodeURIComponent(hop5)}`
+    const hop3 = `https://outer.example.com/?url=${encodeURIComponent(hop4)}`
+    const hop2 = `https://redirect.example.com/?target=${encodeURIComponent(hop3)}`
+    const value = `https://outer.example.com/?url=${encodeURIComponent(hop2)}`
+    const options = { unwrappers: [exampleUnwrapper, nestedUnwrapper] }
+
+    expect(cleanUrl(value, options)).toBe(target)
+  })
+
   // Tumblr nests the two: the signed t.umblr.com redirect wraps an href.li referrer
   // stripper, so a single pass would still leave a redirector.
   it('should unwrap a t.umblr.com redirect wrapping an href.li one', () => {

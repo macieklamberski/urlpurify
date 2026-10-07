@@ -152,7 +152,7 @@ export const stripTrackingParams = (
 export const cleanUrl = (url: string, options?: CleanUrlOptions): string => {
   const unwrappers = options?.unwrappers ?? defaultUnwrappers
   const trackingParams = options?.trackingParams ?? defaultTrackingParams
-  const maxUnwrapDepth = options?.maxUnwrapDepth ?? 3
+  const maxUnwrapDepth = options?.maxUnwrapDepth ?? 6
 
   const parsed = parseUrl(url)
 
