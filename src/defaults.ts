@@ -369,6 +369,7 @@ import { unwrapYourMembership } from './unwraps/yourMembership.js'
 import { unwrapYouTube } from './unwraps/youtube.js'
 import { unwrapZanox } from './unwraps/zanox.js'
 import { unwrapZemanta } from './unwraps/zemanta.js'
+import { unwrapZencastr } from './unwraps/zencastr.js'
 import { unwrapZhihu } from './unwraps/zhihu.js'
 import { unwrapZix } from './unwraps/zix.js'
 import { unwrapZscalerIsolation } from './unwraps/zscalerIsolation.js'
@@ -759,6 +760,7 @@ export const downloadMeasurementUnwrappers: Array<UrlUnwrapper> = [
   unwrapVgWort,
   unwrapVoxnest,
   unwrapXiaoyuzhou,
+  unwrapZencastr,
 ]
 
 // Archives, proxies and viewers: unwrapping returns the live page, not the copy.
