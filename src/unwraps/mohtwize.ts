@@ -3,6 +3,7 @@ import type { UrlUnwrapper } from '../types.js'
 
 const carrierPrefix = '?fileURL=/'
 const schemeRegex = /^https?:/i
+const encodedSchemeRegex = /^https?%3A/i
 
 // Mohtwize download measurement prefix (stats.mohtwize.net/redirect.mp3?fileURL=/<target>), where
 // the target often drops its scheme.
@@ -17,7 +18,16 @@ export const unwrapMohtwize: UrlUnwrapper = (url) => {
   }
 
   // The target's own query follows unencoded, and the service forwarded to all of it.
-  const target = `${url.search.slice(carrierPrefix.length)}${url.hash}`
+  let target = `${url.search.slice(carrierPrefix.length)}${url.hash}`
+
+  // An encoded target, as in `https%3A%2F%2F…`, which the service decoded before forwarding.
+  if (encodedSchemeRegex.test(target)) {
+    try {
+      target = decodeURIComponent(target)
+    } catch {
+      return
+    }
+  }
 
   if (!target) {
     return

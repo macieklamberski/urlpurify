@@ -55,4 +55,28 @@ describe('unwrapMohtwize', () => {
 
     expect(unwrapMohtwize(url)).toBeUndefined()
   })
+
+  it('should keep the fragment of the target', () => {
+    const url = new URL(
+      'https://stats.mohtwize.net/redirect.mp3?fileURL=/example.com/episode.mp3#t=10',
+    )
+
+    expect(unwrapMohtwize(url)).toBe('https://example.com/episode.mp3#t=10')
+  })
+
+  it('should decode an encoded target', () => {
+    const url = new URL(
+      'https://stats.mohtwize.net/redirect.mp3?fileURL=/https%3A%2F%2Fexample.com%2Fepisode.mp3',
+    )
+
+    expect(unwrapMohtwize(url)).toBe('https://example.com/episode.mp3')
+  })
+
+  it('should return undefined for an encoded target that does not decode', () => {
+    const url = new URL(
+      'https://stats.mohtwize.net/redirect.mp3?fileURL=/https%3A%2F%2Fexample.com%E0%A4%A',
+    )
+
+    expect(unwrapMohtwize(url)).toBeUndefined()
+  })
 })
