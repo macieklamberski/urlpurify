@@ -52,6 +52,14 @@ describe('unwrapYesware', () => {
     expect(unwrapYesware(url)).toBeUndefined()
   })
 
+  it('should return undefined for the tracking path under another path', () => {
+    const url = new URL(
+      'https://t.yesware.com/x/tt/cc4aab7ab5585b4f64d82ec15e4f4fe0f25b6e3d/a46491027919e3faf1bdee545ec1da8d/d3d018e9172577e0213cd571b7b2df8e/example.com/clubsapply',
+    )
+
+    expect(unwrapYesware(url)).toBeUndefined()
+  })
+
   it('should return undefined for the link path with a target segment', () => {
     const url = new URL(
       'https://t.yesware.com/tl/3c5694916fdfb30652ed71af9ad5ebe8af4179b5/0c046614bf3b70b9717fcd19749721cd/a017b28ef0f65b768f8b5f9983055bc0/example.com?ytl=http%3A%2F%2Fexample.com%2F',
@@ -63,6 +71,14 @@ describe('unwrapYesware', () => {
   it('should return undefined for the link path without ytl', () => {
     const url = new URL(
       'https://t.yesware.com/tl/3c5694916fdfb30652ed71af9ad5ebe8af4179b5/0c046614bf3b70b9717fcd19749721cd/a017b28ef0f65b768f8b5f9983055bc0',
+    )
+
+    expect(unwrapYesware(url)).toBeUndefined()
+  })
+
+  it('should return undefined for the link path with a short id', () => {
+    const url = new URL(
+      'https://t.yesware.com/tl/3c569491/0c046614bf3b70b9717fcd19749721cd/a017b28ef0f65b768f8b5f9983055bc0?ytl=http%3A%2F%2Fexample.com%2F',
     )
 
     expect(unwrapYesware(url)).toBeUndefined()
