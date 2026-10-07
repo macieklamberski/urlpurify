@@ -802,6 +802,23 @@ describe('signed query', () => {
     expect(stripTrackingParams(value)).toBe(expected)
   })
 
+  it('should strip a query whose param name only ends in sig', () => {
+    const value =
+      'https://example.com/news/article.html?guccounter=1&guce_referrer=aHR0cHM6Ly93d3cuYmluZy5jb20v&guce_referrer_sig=AQAAAJjHlYZ2iDWX'
+    const expected = 'https://example.com/news/article.html'
+
+    expect(stripTrackingParams(value)).toBe(expected)
+  })
+
+  it('should strip a query whose nested url carries sig', () => {
+    const value =
+      'https://example.com/share?url=https%3A%2F%2Fcdn.example.org%2Ffile.mp4%3Fsig%3Dabc&utm_source=feed'
+    const expected =
+      'https://example.com/share?url=https%3A%2F%2Fcdn.example.org%2Ffile.mp4%3Fsig%3Dabc'
+
+    expect(stripTrackingParams(value)).toBe(expected)
+  })
+
   it('should keep a self-referential ref on a signed url', () => {
     const value = 'https://example.com/post?ref=example.com&sig=NtAM31UkcdrglORmOSBE8bin4bg'
 

@@ -11,12 +11,12 @@ const replacementCharacter = '\uFFFD'
 
 // A signature covers the rest of the query, so dropping any param from it makes the server reject
 // the url, as a CDN answers 401 to a signed file url without its `ts`.
-const signatureParams = new Set([
+const signatureParams = [
   'sig', // Generic CDN and redirect signature
   'signature', // CloudFront, AWS Signature Version 2
   'x-amz-signature', // AWS Signature Version 4 presigned url
   'x-goog-signature', // Google Cloud Storage V4 signed url
-])
+]
 
 const trackingMatcherCache = new WeakMap<Array<TrackingParam>, TrackingMatcher>()
 
@@ -54,7 +54,7 @@ const deleteTrackingParams = (url: URL, trackingParams: Array<TrackingParam>): b
   const entries = pairs.map((pair) => new URLSearchParams(pair).entries().next().value)
 
   for (const entry of entries) {
-    if (entry && signatureParams.has(entry[0].toLowerCase())) {
+    if (entry && signatureParams.includes(entry[0].toLowerCase())) {
       return false
     }
   }
