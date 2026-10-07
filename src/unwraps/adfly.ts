@@ -7,11 +7,11 @@ const schemeRegex = /^https?:/i
 const hostRegex = /^[\da-z-]+(?:\.[\da-z-]+)+(?:[/:]|$)/i
 
 // Adfly ad interstitial (adf.ly/<user id>/<target>, also adf.ly/<user id>/banner/<target> and
-// adf.ly/<user id>/int/<target>), with or without the target's scheme. adf.ly now redirects to
-// Linkvertise, so a wrapped link no longer reaches its target.
+// adf.ly/<user id>/int/<target>, and the same on its q.gs domain), with or without the target's
+// scheme. Both now redirect to Linkvertise, so a wrapped link no longer reaches its target.
 // Not included in defaultUnwrappers: unwrapping removes the link owner's ad earnings.
 export const unwrapAdfly: UrlUnwrapper = (url) => {
-  if (!isHostOf(url, 'adf.ly')) {
+  if (!isHostOf(url, ['adf.ly', 'q.gs'])) {
     return
   }
 
