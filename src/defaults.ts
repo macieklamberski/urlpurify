@@ -127,6 +127,7 @@ import { unwrapFinalsite } from './unwraps/finalsite.js'
 import { unwrapFirebaseDynamicLinks } from './unwraps/firebaseDynamicLinks.js'
 import { unwrapFireeye } from './unwraps/fireeye.js'
 import { unwrapFirstory } from './unwraps/firstory.js'
+import { unwrapFiveByFive } from './unwraps/fiveByFive.js'
 import { unwrapFiverr } from './unwraps/fiverr.js'
 import { unwrapFlexoffers } from './unwraps/flexoffers.js'
 import { unwrapFlipboard } from './unwraps/flipboard.js'
@@ -735,6 +736,7 @@ export const downloadMeasurementUnwrappers: Array<UrlUnwrapper> = [
   unwrapClaritas,
   unwrapDstats,
   unwrapFirstory,
+  unwrapFiveByFive,
   unwrapGodcaster,
   unwrapGumball,
   unwrapMagellan,
