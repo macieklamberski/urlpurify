@@ -1,9 +1,17 @@
 import { isHostOf } from 'trousse'
+import { getPathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 
-// anonym.to referrer anonymizer (anonym.to/?<target>). The target is the whole query string
-// rather than a named parameter, and it is not encoded, so it is taken verbatim.
+// anonym.to shows its home page for a path target written `http:/` with one slash.
+const pathTargetRegex = /^\/(?=https?:\/\/)/
+
+// anonym.to referrer anonymizer (anonym.to/?<target> and anonym.to/<target>). The query target
+// is the whole query string, not encoded, so it is taken verbatim.
 export const unwrapAnonymTo: UrlUnwrapper = (url) => {
+  if (isHostOf(url, 'anonym.to') && url.pathname !== '/') {
+    return getPathTarget(url, pathTargetRegex)
+  }
+
   if (!isHostOf(url, ['anonym.to', 'www.anonym.to']) || url.pathname !== '/') {
     return
   }
