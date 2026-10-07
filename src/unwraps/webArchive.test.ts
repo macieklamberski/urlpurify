@@ -133,6 +133,12 @@ describe('unwrapWebArchive', () => {
     expect(unwrapWebArchive(value)).toBeUndefined()
   })
 
+  it('should return undefined for a relative image snapshot', () => {
+    const value = new URL('https://web.archive.org/web/20070220192932im_/dk46.jpg')
+
+    expect(unwrapWebArchive(value)).toBeUndefined()
+  })
+
   it('should add the http scheme to a host with a php label', () => {
     const value = new URL('https://web.archive.org/web/20160930144425/www.php.net/manual/')
 
