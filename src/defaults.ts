@@ -213,6 +213,7 @@ import { unwrapMimecast } from './unwraps/mimecast.js'
 import { unwrapMinistryCloud } from './unwraps/ministryCloud.js'
 import { unwrapMintDownloads } from './unwraps/mintDownloads.js'
 import { unwrapMintFeeder } from './unwraps/mintFeeder.js'
+import { unwrapMohtwize } from './unwraps/mohtwize.js'
 import { unwrapMoshimo } from './unwraps/moshimo.js'
 import { unwrapMozillaOutgoing } from './unwraps/mozillaOutgoing.js'
 import { unwrapMyNewsletterBuilder } from './unwraps/myNewsletterBuilder.js'
@@ -749,6 +750,7 @@ export const downloadMeasurementUnwrappers: Array<UrlUnwrapper> = [
   unwrapMagellan,
   unwrapMinistryCloud,
   unwrapMintDownloads,
+  unwrapMohtwize,
   unwrapOp3,
   unwrapPodcorn,
   unwrapPodder,
