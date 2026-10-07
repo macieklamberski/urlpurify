@@ -38,6 +38,14 @@ describe('unwrapQualityClick', () => {
     expect(unwrapQualityClick(url)).toBe('https://www.example.com/detail')
   })
 
+  it('should keep a stray percent sign in a twice-encoded target', () => {
+    const url = new URL(
+      'https://partner.example.com/go.cgi?pid=101&wmid=cc&cpid=1&target=https%253A%252F%252Fwww.example.com%252F100%25',
+    )
+
+    expect(unwrapQualityClick(url)).toBe('https://www.example.com/100%')
+  })
+
   it('should return undefined for another script on go.cgi', () => {
     const url = new URL('https://www.example.com/go.cgi?url=https://www.example.org/')
 

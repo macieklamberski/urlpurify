@@ -26,12 +26,12 @@ describe('unwrapCse360', () => {
     expect(unwrapCse360(url)).toBe('https://www.example.com.br/mascara?q=bombas')
   })
 
-  it('should return undefined for a malformed target', () => {
+  it('should keep a stray percent sign in a twice-encoded target', () => {
     const url = new URL(
-      'https://click.cse360.com.br/Click/AddCampaignEmailClick/91cb06fe-2319-45d2-6cbd-08da221b4c0d/https%253a%252f%252fwww.example.com%252f%25E0%25A4%25A/db795461-4748-41b3-a554-cb5aed11d7b0/reporter@example.com.br/True',
+      'https://click.cse360.com.br/Click/AddCampaignEmailClick/91cb06fe-2319-45d2-6cbd-08da221b4c0d/https%253a%252f%252fwww.example.com%252f100%25/db795461-4748-41b3-a554-cb5aed11d7b0/reporter@example.com.br/True',
     )
 
-    expect(unwrapCse360(url)).toBeUndefined()
+    expect(unwrapCse360(url)).toBe('https://www.example.com/100%')
   })
 
   it('should return undefined for a non-http target', () => {

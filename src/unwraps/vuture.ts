@@ -1,5 +1,6 @@
 import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
+import { percentDecode } from '../utils.js'
 
 const encodedSchemeRegex = /^https?%3A/i
 const handlerPaths = ['/email_handler.aspx', '/api/email/handler']
@@ -16,9 +17,7 @@ export const unwrapVuture: UrlUnwrapper = (url) => {
 
   // A target encoded twice still holds an encoded scheme after one decode.
   if (target && encodedSchemeRegex.test(target)) {
-    try {
-      target = decodeURIComponent(target)
-    } catch {}
+    target = percentDecode(target)
   }
 
   if (target && isHttpUrl(target)) {

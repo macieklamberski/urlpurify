@@ -1,6 +1,6 @@
 import { isAnyOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { decodeBase64Url } from '../utils.js'
+import { decodeBase64Url, percentDecode } from '../utils.js'
 
 const hosts = [
   'emlblog.com',
@@ -45,11 +45,7 @@ export const unwrapUnisender: UrlUnwrapper = (url) => {
 
   // A target encoded twice still holds an encoded scheme after one decode.
   if (encodedSchemeRegex.test(value)) {
-    try {
-      return decodeURIComponent(value)
-    } catch {
-      return
-    }
+    return percentDecode(value)
   }
 
   // Some senders encode the target as base64url with `~` as the padding character.

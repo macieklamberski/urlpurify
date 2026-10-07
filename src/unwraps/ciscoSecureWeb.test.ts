@@ -52,6 +52,14 @@ describe('unwrapCiscoSecureWeb', () => {
     expect(unwrapCiscoSecureWeb(url)).toBe('https://example.com/wp-content/uploads/poster.pdf')
   })
 
+  it('should keep a stray percent sign in a twice-encoded target', () => {
+    const url = new URL(
+      'https://secure-web.cisco.com/1YRgklg0XBMr4hOhxT5aQ7zBCDkk7fd6/https%253A%252F%252Fexample.com%252F100%25',
+    )
+
+    expect(unwrapCiscoSecureWeb(url)).toBe('https://example.com/100%')
+  })
+
   it('should drop a query the publisher added to the wrapper', () => {
     const url = new URL(
       'https://secure-web.cisco.com/1FUSlj3K3QVkKY875RHGJXaTEmxvyRjzy/https%3A%2F%2Fexample.com%2Frecall.pdf?ref=example.org',

@@ -44,12 +44,12 @@ describe('unwrapGodcaster', () => {
     )
   })
 
-  it('should return undefined for a target cut short inside an escape', () => {
+  it('should keep a stray percent sign in a twice-encoded target', () => {
     const url = new URL(
-      'https://go.godcaster.fm/act/e/147/285278/59424742195/https%253A%252F%252Fexample.com%25',
+      'https://go.godcaster.fm/act/e/147/285278/59424742195/https%253A%252F%252Fexample.com%252F100%25',
     )
 
-    expect(unwrapGodcaster(url)).toBeUndefined()
+    expect(unwrapGodcaster(url)).toBe('https://example.com/100%')
   })
 
   it('should extract a target from the show link', () => {

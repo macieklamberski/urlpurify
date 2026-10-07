@@ -1,5 +1,6 @@
 import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
+import { percentDecode } from '../utils.js'
 
 const owaPathRegex =
   /^\/(?:owa\/(?:[^/]+@[^/]+\/|\d+(?:\.\d+){3}\/scripts\/premium\/)?redir\.aspx|exchweb\/bin\/redir\.asp)$/i
@@ -24,9 +25,7 @@ export const unwrapOutlookWebAccess: UrlUnwrapper = (url) => {
 
   // Some links encode the target twice.
   if (encodedSchemeRegex.test(target)) {
-    try {
-      target = decodeURIComponent(target)
-    } catch {}
+    target = percentDecode(target)
   }
 
   if (isHttpUrl(target)) {

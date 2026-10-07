@@ -222,6 +222,14 @@ describe('unwrapImpact', () => {
     expect(unwrapImpact(url)).toBe('https://example.com/')
   })
 
+  it('should keep a stray percent sign in a twice-encoded target', () => {
+    const url = new URL(
+      'https://goto.example.com/c/1/2/3?u=https%253A%252F%252Fexample.com%252F100%25',
+    )
+
+    expect(unwrapImpact(url)).toBe('https://example.com/100%')
+  })
+
   it('should return undefined for a target that is encoded twice and malformed', () => {
     const url = new URL('https://goto.example.com/c/1/2/3?u=https%253A%252F%252Fexample.com%25')
 

@@ -26,6 +26,14 @@ describe('unwrapBitrix', () => {
     expect(unwrapBitrix(url)).toBe('https://www.example.com/projects/')
   })
 
+  it('should keep a stray percent sign in a twice-encoded target', () => {
+    const url = new URL(
+      'https://www.example.ru/bitrix/redirect.php?goto=https%253A%252F%252Fwww.example.com%252F100%25',
+    )
+
+    expect(unwrapBitrix(url)).toBe('https://www.example.com/100%')
+  })
+
   it('should return undefined when goto param is missing', () => {
     const url = new URL(
       'https://www.example.ru/bitrix/redirect.php?event1=news_out&event2=https://www.example.com/',

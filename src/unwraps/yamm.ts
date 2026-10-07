@@ -1,4 +1,5 @@
 import type { UrlUnwrapper } from '../types.js'
+import { percentDecode } from '../utils.js'
 
 const hostRegex = /^(?:[a-z0-9-]+-dot-)?yamm-track\.appspot\.com$/
 const encodedSchemeRegex = /^https?%3A/i
@@ -24,7 +25,5 @@ export const unwrapYamm: UrlUnwrapper = (url) => {
   }
 
   // A target encoded twice still holds an encoded scheme after one decode.
-  try {
-    return decodeURIComponent(value)
-  } catch {}
+  return percentDecode(value)
 }

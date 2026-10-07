@@ -42,6 +42,14 @@ describe('unwrapDerefMail', () => {
     expect(unwrapDerefMail(url)).toBe('https://example.com/c/arFxIdjGg/')
   })
 
+  it('should keep a stray percent sign in a twice-encoded target', () => {
+    const url = new URL(
+      'https://deref-gmx.net/mail/client/dereferrer/?redirectUrl=https%253A%252F%252Fexample.com%252F100%25',
+    )
+
+    expect(unwrapDerefMail(url)).toBe('https://example.com/100%')
+  })
+
   it('should extract an unencoded target', () => {
     const url = new URL(
       'https://deref-gmx.net/mail/client/dereferrer/?redirectUrl=https://www.example.com/Bienenkiller',

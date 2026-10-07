@@ -1,5 +1,6 @@
 import { isAnyOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
+import { percentDecode } from '../utils.js'
 
 const prNewswireHosts = ['c212.net', 'edge.prnewswire.com']
 const encodedSchemeRegex = /^https?%3A/i
@@ -20,9 +21,7 @@ export const unwrapPrNewswire: UrlUnwrapper = (url) => {
 
   // Some releases encode the target twice.
   if (encodedSchemeRegex.test(target)) {
-    try {
-      target = decodeURIComponent(target)
-    } catch {}
+    target = percentDecode(target)
   }
 
   if (isHttpUrl(target)) {

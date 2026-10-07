@@ -1,6 +1,6 @@
 import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamValues } from '../utils.js'
+import { getParamValues, percentDecode } from '../utils.js'
 
 // A forum root prefix, such as /forum/ or /ru/forum/.
 const pathRegex = /^(?:\/[^/]+){0,2}\/away\.php$/
@@ -18,9 +18,7 @@ export const unwrapLogicboard: UrlUnwrapper = (url) => {
 
   // A target encoded twice still holds an encoded scheme after one decode.
   if (target && encodedSchemeRegex.test(target)) {
-    try {
-      target = decodeURIComponent(target)
-    } catch {}
+    target = percentDecode(target)
   }
 
   if (!target || !isHttpUrl(target)) {

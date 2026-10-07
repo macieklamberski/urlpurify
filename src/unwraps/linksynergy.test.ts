@@ -61,6 +61,14 @@ describe('unwrapLinksynergy', () => {
       expect(unwrapLinksynergy(url)).toBe('https://example.com/cp/registry/1229485')
     })
 
+    it('should keep a stray percent sign in a twice-encoded target', () => {
+      const url = new URL(
+        'http://click.linksynergy.com/fs-bin/click?id=abc&offerid=223073.1&type=10&RD_PARM1=https%253A%252F%252Fexample.com%252F100%25',
+      )
+
+      expect(unwrapLinksynergy(url)).toBe('https://example.com/100%')
+    })
+
     it('should not decode a target that is already an http url', () => {
       const url = new URL(
         'http://click.linksynergy.com/fs-bin/click?id=abc&offerid=146261.1&type=10&RD_PARM1=http%3A%2F%2Fexample.com%2Fapp%3Fls%3D1%2526mt%3D8',
