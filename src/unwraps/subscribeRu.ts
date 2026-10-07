@@ -2,7 +2,7 @@ import { isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
 // A newsletter's `<list>,<issue>/<timestamp>/<ids>/m<n>` or the bare `_`, then `/-/` and the
-// target with no scheme. A target that keeps its scheme lands on a broken `http://https/…`, so
+// target with no scheme. A target that keeps its scheme lands on a broken `http://https:/…`, so
 // the first segment must be a host: a dot, no colon.
 const pathRegex = /^\/(?:[^/]+,\d+\/\d{14}\/[^/]+\/m\d+|_)\/-\/([^/:]*\.[^/:]*(?:\/.*)?)$/
 
