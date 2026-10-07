@@ -834,3 +834,39 @@ describe('signed query', () => {
     expect(cleanUrl(value, options)).toBe(target)
   })
 })
+
+describe('Alibaba DirectMail click url', () => {
+  it('should keep ts on a click url', () => {
+    const value =
+      'https://dm-cn.aliyuncs.com/trace/v1/report?bid=2546032&env=600000333590607418&extra=1-&mac=449735&mf=info%40e.example.com&msgid=c29c9133-14cf-4876-9610-962b2835b3e8%40alibaba.com&sac=0&tag=LED&tid=2546032&to=reader%40example.org&tpl=&ts=1783913769&type=0&url=http%3A%2F%2Fwww.example.com%2F&v=1.0&sign=fed82fcd6b69c59fe6c6d8c46b34cfb4&urlts=1783913802'
+
+    expect(cleanUrl(value)).toBe(value)
+  })
+
+  it('should strip other tracking params from a click url', () => {
+    const value =
+      'https://dm-cn.aliyuncs.com/trace/v1/report?ts=1783913769&url=http%3A%2F%2Fwww.example.com%2F&utm_source=feed&sign=fed82fcd6b69c59fe6c6d8c46b34cfb4'
+    const expected =
+      'https://dm-cn.aliyuncs.com/trace/v1/report?ts=1783913769&url=http%3A%2F%2Fwww.example.com%2F&sign=fed82fcd6b69c59fe6c6d8c46b34cfb4'
+
+    expect(cleanUrl(value)).toBe(expected)
+  })
+
+  it('should strip ts on a subdomain of the click host', () => {
+    const value =
+      'https://cdn.dm-cn.aliyuncs.com/trace/v1/report?ts=1783913769&url=http%3A%2F%2Fwww.example.com%2F'
+    const expected =
+      'https://cdn.dm-cn.aliyuncs.com/trace/v1/report?url=http%3A%2F%2Fwww.example.com%2F'
+
+    expect(cleanUrl(value)).toBe(expected)
+  })
+
+  it('should strip ts on another path of the click host', () => {
+    const value =
+      'https://dm-cn.aliyuncs.com/trace/v1/reports?ts=1783913769&url=http%3A%2F%2Fwww.example.com%2F'
+    const expected =
+      'https://dm-cn.aliyuncs.com/trace/v1/reports?url=http%3A%2F%2Fwww.example.com%2F'
+
+    expect(cleanUrl(value)).toBe(expected)
+  })
+})
