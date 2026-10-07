@@ -50,6 +50,12 @@ describe('unwrapXinhuaBig5', () => {
     expect(unwrapXinhuaBig5(url)).toBeUndefined()
   })
 
+  it('should return undefined for the gate path below another path', () => {
+    const url = new URL('http://big5.xinhuanet.com/news/gate/big5/www.example.com/index.htm')
+
+    expect(unwrapXinhuaBig5(url)).toBeUndefined()
+  })
+
   it('should return undefined for other hosts', () => {
     const url = new URL('http://example.com/gate/big5/www.example.org/index.htm')
 
