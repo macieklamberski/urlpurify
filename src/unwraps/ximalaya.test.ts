@@ -93,4 +93,14 @@ describe('unwrapXimalaya', () => {
 
     expect(unwrapXimalaya(url)).toBeUndefined()
   })
+
+  it('should extract a twice-encoded target', () => {
+    const url = new URL(
+      'https://jt.ximalaya.com//GKwRIJEHdJdaAK_G9QHh-p5O.m4a?channel=rss&album_id=8685104&track_id=597681973&uid=5669686&jt=https%253A%252F%252Faod.cos.tx.xmcdn.com%252Fstorages%252F738b-audiofreehighqps%252FDB%252F4C%252FGKwRIJEHdJdaAK_G9QHh-p5O.m4a',
+    )
+
+    expect(unwrapXimalaya(url)).toBe(
+      'https://aod.cos.tx.xmcdn.com/storages/738b-audiofreehighqps/DB/4C/GKwRIJEHdJdaAK_G9QHh-p5O.m4a',
+    )
+  })
 })
