@@ -128,7 +128,7 @@ Enabled by default:
 | `unwrapAliyun` | Alibaba Cloud developer community outbound link redirect (yq.aliyun.com/go/articleRenderRedirect?url=\<target\>) |
 | `unwrapAllblog` | Allblog metablog outbound link (link.allblog.net/\<post id\>/\<target\>) |
 | `unwrapAmpCache` | AMP cache (cdn.ampproject.org/{c,v}/[s/]\<host\>/\<path\>) |
-| `unwrapAnonymTo` | anonym.to referrer anonymizer (anonym.to/?\<target\>) |
+| `unwrapAnonymTo` | anonym.to referrer anonymizer (anonym.to/?\<target\> and anonym.to/\<target\>) |
 | `unwrapArxiv` | arXiv outbound link redirect (arxiv.org/ct?url=\<target\>) |
 | `unwrapAsk` | Ask.com search result click redirect (wzus.ask.com/r?u=\<target\>) |
 | `unwrapBabyblog` | Babyblog outbound link shim (www.babyblog.ru/redirect.php?l=\<target\>) |

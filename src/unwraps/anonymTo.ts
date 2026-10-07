@@ -6,8 +6,7 @@ import type { UrlUnwrapper } from '../types.js'
 const pathTargetRegex = /^\/(?=https?:\/\/)/
 
 // anonym.to referrer anonymizer (anonym.to/?<target> and anonym.to/<target>). The query target
-// is the whole query string rather than a named parameter, and it is not encoded, so it is taken
-// verbatim.
+// is the whole query string, not encoded, so it is taken verbatim.
 export const unwrapAnonymTo: UrlUnwrapper = (url) => {
   if (isHostOf(url, 'anonym.to') && url.pathname !== '/') {
     return getPathTarget(url, pathTargetRegex)
