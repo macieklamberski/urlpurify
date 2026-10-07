@@ -245,6 +245,7 @@ import { unwrapPodroll } from './unwraps/podroll.js'
 import { unwrapPodscribe } from './unwraps/podscribe.js'
 import { unwrapPodsights } from './unwraps/podsights.js'
 import { unwrapPodtrac } from './unwraps/podtrac.js'
+import { unwrapPodup } from './unwraps/podup.js'
 import { unwrapPostAffiliatePro } from './unwraps/postAffiliatePro.js'
 import { unwrapPostmark } from './unwraps/postmark.js'
 import { unwrapPrezly } from './unwraps/prezly.js'
@@ -753,6 +754,7 @@ export const downloadMeasurementUnwrappers: Array<UrlUnwrapper> = [
   unwrapPodscribe,
   unwrapPodsights,
   unwrapPodtrac,
+  unwrapPodup,
   unwrapSoundOn,
   unwrapSoundstack,
   unwrapSwap,
