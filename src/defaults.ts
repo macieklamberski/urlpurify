@@ -372,6 +372,7 @@ import { unwrapYesware } from './unwraps/yesware.js'
 import { unwrapYourMembership } from './unwraps/yourMembership.js'
 import { unwrapYouTube } from './unwraps/youtube.js'
 import { unwrapZanox } from './unwraps/zanox.js'
+import { unwrapZayads } from './unwraps/zayads.js'
 import { unwrapZemanta } from './unwraps/zemanta.js'
 import { unwrapZencastr } from './unwraps/zencastr.js'
 import { unwrapZhihu } from './unwraps/zhihu.js'
@@ -768,6 +769,7 @@ export const downloadMeasurementUnwrappers: Array<UrlUnwrapper> = [
   unwrapVgWort,
   unwrapVoxnest,
   unwrapXiaoyuzhou,
+  unwrapZayads,
   unwrapZencastr,
 ]
 
