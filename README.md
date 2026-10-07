@@ -191,7 +191,7 @@ Enabled by default:
 | `unwrapNaverOutgoing` | Naver outbound link redirect (cc.loginfra.com/...?u=\<target\>) and search result click (search.naver.com/p/crd/rd?u=\<target\>, also m.search.naver.com) |
 | `unwrapNetcentrum` | Centrum.cz and Atlas.cz webmail dereferrer (redir.netcentrum.cz/?noaudit&url=\<target\>) |
 | `unwrapNewswire` | Newswire release and email click tracker (stats.newswire.com/x/html?final=\<base64url\>, also stats.nwe.io and stats.mediadboutreach.com) |
-| `unwrapNicoMs` | nico.ms short link, expanded to the watch page (nico.ms/sm\<id\>, also /nm and /so) or the illustration page (nico.ms/im\<id\>) |
+| `unwrapNicoMs` | nico.ms short link, expanded to the watch page (nico.ms/sm\<id\>, also /nm and /so), the illustration page (nico.ms/im\<id\>) or the live broadcast page (nico.ms/lv\<id\>) |
 | `unwrapNodeseek` | NodeSeek forum leaving-site page (www.nodeseek.com/jump?to=\<target\>) |
 | `unwrapOkRu` | OK.ru outbound link and leaving-site page (ok.ru/dk?cmd=logExternal&st.link=\<target\>, m.ok.ru/dk?st.cmd=outLinkWarning&st.rfn=\<target\>) |
 | `unwrapOsnova` | Osnova outbound link redirect on vc.ru and dtf.ru (api.vc.ru/v2.8/redirect?to=\<target\>) |
