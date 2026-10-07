@@ -852,6 +852,15 @@ describe('Alibaba DirectMail click url', () => {
     expect(cleanUrl(value)).toBe(expected)
   })
 
+  it('should strip a param whose name only contains ts from a click url', () => {
+    const value =
+      'https://dm-cn.aliyuncs.com/trace/v1/report?ts=1783913769&url=http%3A%2F%2Fwww.example.com%2F&utm_ts=1783913769'
+    const expected =
+      'https://dm-cn.aliyuncs.com/trace/v1/report?ts=1783913769&url=http%3A%2F%2Fwww.example.com%2F'
+
+    expect(cleanUrl(value)).toBe(expected)
+  })
+
   it('should strip ts on a subdomain of the click host', () => {
     const value =
       'https://cdn.dm-cn.aliyuncs.com/trace/v1/report?ts=1783913769&url=http%3A%2F%2Fwww.example.com%2F'
