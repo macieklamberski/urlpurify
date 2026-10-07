@@ -55,4 +55,10 @@ describe('unwrapPodkite', () => {
 
     expect(unwrapPodkite(url)).toBeUndefined()
   })
+
+  it('should return undefined when the scheme segment is uppercase', () => {
+    const url = new URL('https://growx.podkite.com/HTTPS/PKjmzt90ew/example.com/episodes/audio.mp3')
+
+    expect(unwrapPodkite(url)).toBeUndefined()
+  })
 })
