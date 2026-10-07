@@ -137,6 +137,7 @@ import { unwrapGeoriot } from './unwraps/georiot.js'
 import { unwrapGfnLinkProxy } from './unwraps/gfnLinkProxy.js'
 import { unwrapGitee } from './unwraps/gitee.js'
 import { unwrapGlueUp } from './unwraps/glueUp.js'
+import { unwrapGodcaster } from './unwraps/godcaster.js'
 import { unwrapGoogle } from './unwraps/google.js'
 import { unwrapGoogleAds } from './unwraps/googleAds.js'
 import { unwrapGoogleAmpViewer } from './unwraps/googleAmpViewer.js'
@@ -734,6 +735,7 @@ export const downloadMeasurementUnwrappers: Array<UrlUnwrapper> = [
   unwrapClaritas,
   unwrapDstats,
   unwrapFirstory,
+  unwrapGodcaster,
   unwrapGumball,
   unwrapMagellan,
   unwrapMinistryCloud,
