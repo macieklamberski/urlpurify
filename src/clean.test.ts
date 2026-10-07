@@ -819,8 +819,9 @@ describe('self-referential ref param', () => {
 
   it('should keep a Unicode ref naming another internationalized host', () => {
     const value = 'https://bücher.example/post?ref=bücherei.example'
+    const expected = 'https://xn--bcher-kva.example/post?ref=b%C3%BCcherei.example'
 
-    expect(stripTrackingParams(value)).toBe(value)
+    expect(stripTrackingParams(value)).toBe(expected)
   })
 
   it('should keep a ref holding the same host followed by a path', () => {
