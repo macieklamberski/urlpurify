@@ -38,6 +38,48 @@ describe('unwrapFirstory', () => {
     expect(unwrapFirstory(url)).toBe('https://example.com/Record/episode.m4a')
   })
 
+  it('should add https to a scheme-less target from the short prefix', () => {
+    const url = new URL(
+      'https://track.fstry.me/p/psnx2924/example.com/rssf/c4f7213b-84ea-41d8-b9b4-e9a9d6e47730/feedurl/27200648-87dc-4de4-bf8a-43f6e9304253/rssFileVip.mp3?timestamp=1763827691662',
+    )
+
+    expect(unwrapFirstory(url)).toBe(
+      'https://example.com/rssf/c4f7213b-84ea-41d8-b9b4-e9a9d6e47730/feedurl/27200648-87dc-4de4-bf8a-43f6e9304253/rssFileVip.mp3?timestamp=1763827691662',
+    )
+  })
+
+  it('should add https to a scheme-less target from the short prefix on http', () => {
+    const url = new URL('http://track.fstry.me/p/psnx2924/example.com/rssFileVip.mp3')
+
+    expect(unwrapFirstory(url)).toBe('https://example.com/rssFileVip.mp3')
+  })
+
+  it('should keep the scheme of a target from the short prefix', () => {
+    const url = new URL(
+      'https://track.fstry.me/p/dmunc74c/http://example.com/stream/2339519129-juicybaskets-278a.mp3',
+    )
+
+    expect(unwrapFirstory(url)).toBe('http://example.com/stream/2339519129-juicybaskets-278a.mp3')
+  })
+
+  it('should return undefined for the short prefix without a target', () => {
+    const url = new URL('https://track.fstry.me/p/psnx2924/')
+
+    expect(unwrapFirstory(url)).toBeUndefined()
+  })
+
+  it('should return undefined for other paths on the short prefix host', () => {
+    const url = new URL('https://track.fstry.me/psnx2924/example.com/rssFileVip.mp3')
+
+    expect(unwrapFirstory(url)).toBeUndefined()
+  })
+
+  it('should return undefined for the short prefix on another Firstory host', () => {
+    const url = new URL('https://m.cdn.firstory.me/p/psnx2924/example.com/rssFileVip.mp3')
+
+    expect(unwrapFirstory(url)).toBeUndefined()
+  })
+
   it('should return undefined for the play endpoint without a url', () => {
     const url = new URL('https://m.cdn.firstory.me/play.mp3')
 
@@ -60,6 +102,12 @@ describe('unwrapFirstory', () => {
 
   it('should return undefined for other hosts', () => {
     const url = new URL('https://example.com/play.mp3?url=https%3A%2F%2Fexample.org%2Fepisode.mp3')
+
+    expect(unwrapFirstory(url)).toBeUndefined()
+  })
+
+  it('should return undefined for the short prefix below another path', () => {
+    const url = new URL('https://track.fstry.me/x/p/psnx2924/example.com/rssFileVip.mp3')
 
     expect(unwrapFirstory(url)).toBeUndefined()
   })
