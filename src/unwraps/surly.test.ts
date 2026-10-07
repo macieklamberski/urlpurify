@@ -65,4 +65,10 @@ describe('unwrapSurly', () => {
 
     expect(unwrapSurly(url)).toBe('https://www.flipadvisor101.com')
   })
+
+  it('should keep a scheme inside the target', () => {
+    const url = new URL('https://sur.ly/o/example.com/go%3Fu%3Dhttp%3A%2F%2Fexample.org/AA000014')
+
+    expect(unwrapSurly(url)).toBe('https://example.com/go?u=http://example.org')
+  })
 })
