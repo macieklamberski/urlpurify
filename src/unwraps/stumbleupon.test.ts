@@ -81,4 +81,10 @@ describe('unwrapStumbleupon', () => {
 
     expect(unwrapStumbleupon(url)).toBeUndefined()
   })
+
+  it('should return undefined for an id holding a punctuation mark', () => {
+    const url = new URL('http://www.stumbleupon.com/su/5Fv.LG/example.com/2010/06/page.html')
+
+    expect(unwrapStumbleupon(url)).toBeUndefined()
+  })
 })
