@@ -23,6 +23,11 @@ const pathRegex = new RegExp(`^/web/(?:${snapshot}/)?(.+)$`)
 const replayPathRegex = new RegExp(`^/${snapshot}/(.+)$`)
 const archiveItPathRegex = new RegExp(String.raw`^/(?:\d+|org-\d+|all)/${snapshot}/(.+)$`)
 const scholarPathRegex = /^\/work\/[a-z0-9]+\/access\/wayback\/(.+)$/
+// A scheme has no dot, so `www.example.com:80/` reads as a host with a port.
+const schemeRegex = /^[a-z][a-z\d+-]*:/i
+// A dot in the first segment tells a host from Wayback's own paths, such as `/web/diff/`, except
+// its own pages `/web/form-submit.jsp` and `archive.org/web/web.php`.
+const schemelessRegex = /^(?![^/]*\.(?:jsp|php)(?:\/|$))[^/]*\./
 
 // Web Archive snapshot wrapper (web.archive.org/web/<timestamp>[<modifier>]/<URL>), also served
 // from wayback, web-beta, web-wp, web-old and classic-web.archive.org, from archive.org itself and
@@ -31,7 +36,7 @@ const scholarPathRegex = /^\/work\/[a-z0-9]+\/access\/wayback\/(.+)$/
 // web.archive.org and replay.waybackmachine.org), Archive-It collections
 // (wayback.archive-it.org/<collection or all>/<timestamp>[<modifier>]/<URL>), and the Scholar
 // access link (scholar.archive.org/work/<id>/access/wayback/<URL>), which redirects to a Wayback
-// snapshot.
+// snapshot. Each may carry an http target with no scheme, as in `/web/<timestamp>/example.com/`.
 // Not included in defaultUnwrappers: an archive URL is a historical
 // snapshot at a specific point in time, not a redirect; unwrapping returns
 // the live page, which may have changed or 404'd. Opt in by passing a custom
@@ -59,7 +64,12 @@ export const unwrapWebArchive: UrlUnwrapper = (url) => {
     return
   }
 
-  const target = decodeSegment(match[1])
+  let target = decodeSegment(match[1])
+
+  // Wayback answers a target with no scheme with its http snapshot.
+  if (target && !schemeRegex.test(target) && schemelessRegex.test(target)) {
+    target = `http://${target}`
+  }
 
   if (!target || !isHttpUrl(target)) {
     return
