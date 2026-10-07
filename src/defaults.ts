@@ -75,6 +75,7 @@ import { unwrapCleverbridge } from './unwraps/cleverbridge.js'
 import { unwrapClevercomm } from './unwraps/clevercomm.js'
 import { unwrapCloudhq } from './unwraps/cloudhq.js'
 import { unwrapCloze } from './unwraps/cloze.js'
+import { unwrapCohst } from './unwraps/cohst.js'
 import { unwrapCommissionFactory } from './unwraps/commissionFactory.js'
 import { unwrapCommunicationads } from './unwraps/communicationads.js'
 import { unwrapConstantContact } from './unwraps/constantContact.js'
@@ -738,6 +739,7 @@ export const downloadMeasurementUnwrappers: Array<UrlUnwrapper> = [
   unwrapBlubrry,
   unwrapChartable,
   unwrapClaritas,
+  unwrapCohst,
   unwrapDstats,
   unwrapFirstory,
   unwrapFiveByFive,
