@@ -38,6 +38,14 @@ describe('unwrapXiaoyuzhou', () => {
     expect(unwrapXiaoyuzhou(url)).toBeUndefined()
   })
 
+  it('should return undefined for a target on a host that starts with media.xyzcdn.net', () => {
+    const url = new URL(
+      'https://dts-api.xiaoyuzhoufm.com/track/632bdd5ef9101a1a5422db47/69f09407740bacea87735df4/media.xyzcdn.net.example.com/episode.mp3',
+    )
+
+    expect(unwrapXiaoyuzhou(url)).toBeUndefined()
+  })
+
   it('should return undefined for a target that keeps its scheme', () => {
     const url = new URL(
       'https://dts-api.xiaoyuzhoufm.com/track/632bdd5ef9101a1a5422db47/69f09407740bacea87735df4/https://media.xyzcdn.net/FvOFz_SxU5xJROBoHDhPB9CbwNzB.m4a',
@@ -56,7 +64,7 @@ describe('unwrapXiaoyuzhou', () => {
 
   it('should return undefined for an id that is not a 24-digit hex id', () => {
     const url = new URL(
-      'https://dts-api.xiaoyuzhoufm.com/track/632bdd5ef9101a1a5422db47/episode/media.xyzcdn.net/FvOFz_SxU5xJROBoHDhPB9CbwNzB.m4a',
+      'https://dts-api.xiaoyuzhoufm.com/track/632bdd5ef9101a1a5422db47/69f09407740bacea87735df/media.xyzcdn.net/FvOFz_SxU5xJROBoHDhPB9CbwNzB.m4a',
     )
 
     expect(unwrapXiaoyuzhou(url)).toBeUndefined()
