@@ -55,4 +55,20 @@ describe('unwrapSubscribeRu', () => {
 
     expect(unwrapSubscribeRu(url)).toBeUndefined()
   })
+
+  it('should return undefined for a newsletter link with no issue number', () => {
+    const url = new URL(
+      'http://redirect.subscribe.ru/funny.anet.anec/20120215003154/77328=77037/m19604482/-/example.net/best/',
+    )
+
+    expect(unwrapSubscribeRu(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a newsletter link with no message number', () => {
+    const url = new URL(
+      'http://redirect.subscribe.ru/funny.anet.anec,1042/20120215003154/77328=77037/x19604482/-/example.net/best/',
+    )
+
+    expect(unwrapSubscribeRu(url)).toBeUndefined()
+  })
 })
