@@ -28,6 +28,12 @@ describe('unwrapYahooJapanAmpViewer', () => {
     expect(unwrapYahooJapanAmpViewer(url)).toBe('https://example.com/news/308550')
   })
 
+  it('should keep a query on the viewer url', () => {
+    const url = new URL('https://search.yahoo.co.jp/amp/s/example.com/news/308550?ref=example.org')
+
+    expect(unwrapYahooJapanAmpViewer(url)).toBe('https://example.com/news/308550?ref=example.org')
+  })
+
   it('should return undefined for a target cut short inside an escape', () => {
     const url = new URL('https://search.yahoo.co.jp/amp/s/example.com/amp/movie/92154/%3')
 
@@ -48,6 +54,18 @@ describe('unwrapYahooJapanAmpViewer', () => {
 
   it('should return undefined for other paths on the host', () => {
     const url = new URL('https://search.yahoo.co.jp/search?p=example.com/amp/s/example.com')
+
+    expect(unwrapYahooJapanAmpViewer(url)).toBeUndefined()
+  })
+
+  it('should return undefined for an https viewer path below another path', () => {
+    const url = new URL('https://search.yahoo.co.jp/search/amp/s/example.com/news/308550')
+
+    expect(unwrapYahooJapanAmpViewer(url)).toBeUndefined()
+  })
+
+  it('should return undefined for an http viewer path below another path', () => {
+    const url = new URL('https://search.yahoo.co.jp/search/amp/example.com/news/308550')
 
     expect(unwrapYahooJapanAmpViewer(url)).toBeUndefined()
   })
