@@ -28,7 +28,7 @@ cleanUrl(url) // => 'https://example.com/post'
 
 ### `cleanUrl(url, options?)`
 
-Unwraps wrappers, repeatedly since they nest, then strips tracking parameters. When the input can't be parsed or nothing applies, it comes back unchanged, so the result is always safe to display.
+Unwraps wrappers, repeatedly since they nest, then strips tracking parameters. The result is serialized per the URL Standard, and input that can't be parsed comes back unchanged, so the result is always safe to display.
 
 ```typescript
 import { cleanUrl, defaultTrackingParams, defaultUnwrappers, unwrapWebArchive } from 'urlpurify'
@@ -51,7 +51,7 @@ Runs one pass of the unwrappers and returns the first target, or `undefined`.
 
 ### `stripTrackingParams(url, trackingParams?)`
 
-Removes tracking parameters and returns the URL, unchanged when nothing matches. Both this and `cleanUrl` apply three rules on top of the list:
+Removes tracking parameters and returns the serialized URL. Both this and `cleanUrl` apply three rules on top of the list:
 
 - `ref` is dropped when it names the URL's own host, as in Ghost's `?ref=example.com`, and kept otherwise.
 - A query with a signature (`sig`, `signature`, `X-Amz-Signature` or `X-Goog-Signature`) stays whole, since dropping anything breaks the signature.
