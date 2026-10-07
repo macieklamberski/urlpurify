@@ -38,6 +38,32 @@ describe('unwrapFirstory', () => {
     expect(unwrapFirstory(url)).toBe('https://example.com/Record/episode.m4a')
   })
 
+  it('should extract a target from the play endpoint on the cloud host', () => {
+    const url = new URL(
+      'https://backend.endpoints.firstory-709db.cloud.goog/play.mp3?url=https%3A%2F%2Fexample.com%2FRecord%2Fcktmisn496f1w08423udj4ku6%2F1638182267048.mp3%3Fv%3D1638182274588',
+    )
+
+    expect(unwrapFirstory(url)).toBe(
+      'https://example.com/Record/cktmisn496f1w08423udj4ku6/1638182267048.mp3?v=1638182274588',
+    )
+  })
+
+  it('should return undefined for other paths on the cloud host', () => {
+    const url = new URL(
+      'https://backend.endpoints.firstory-709db.cloud.goog/api/play?url=https%3A%2F%2Fexample.com%2FRecord%2Fepisode.mp3',
+    )
+
+    expect(unwrapFirstory(url)).toBeUndefined()
+  })
+
+  it('should return undefined for the track prefix on the cloud host', () => {
+    const url = new URL(
+      'https://backend.endpoints.firstory-709db.cloud.goog/track/ckc6eqqt8kc010918u9vibolz/ckjcz4urh60mt0889kp7cdkvm/https%3A%2F%2Fexample.com%2FRecord%2F1609426748358.m4a',
+    )
+
+    expect(unwrapFirstory(url)).toBeUndefined()
+  })
+
   it('should add https to a scheme-less target from the short prefix', () => {
     const url = new URL(
       'https://track.fstry.me/p/psnx2924/example.com/rssf/c4f7213b-84ea-41d8-b9b4-e9a9d6e47730/feedurl/27200648-87dc-4de4-bf8a-43f6e9304253/rssFileVip.mp3?timestamp=1763827691662',
