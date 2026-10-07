@@ -124,6 +124,18 @@ describe('unwrapYandexTurbo', () => {
     expect(unwrapYandexTurbo(url)).toBeUndefined()
   })
 
+  it('should return undefined for /s/ at the root on Yandex', () => {
+    const url = new URL('https://yandex.ru/s/example.com/1106993.html')
+
+    expect(unwrapYandexTurbo(url)).toBeUndefined()
+  })
+
+  it('should return undefined for /turbo/s/ under another path on Yandex', () => {
+    const url = new URL('https://yandex.ru/news/turbo/s/example.com/1106993.html')
+
+    expect(unwrapYandexTurbo(url)).toBeUndefined()
+  })
+
   it('should return undefined for the Turbo view on another Yandex subdomain', () => {
     const url = new URL('https://mail.yandex.ru/turbo?text=https%3A%2F%2Fexample.com%2F')
 
