@@ -81,10 +81,13 @@ const deleteTrackingParams = (url: URL, trackingParams: Array<TrackingParam>): b
 
 const controlCharactersRegex = /[\p{Cc}\u2028\u2029]/u
 const dottedHostRegex = /[^.]\.[^.]/
+const fileExtensionHostRegex = /\.(?:asp|aspx|cgi|htm|html|jsp|jspa|php)$/
 
 // Repairs a malformed scheme such as `https:/host` or `https://https://host`, then drops a target
 // with a control character or a host without a dot between two labels, so the wrapper stays. Such
 // a host is a cut-off link, a path or a scheme read as one: `https://www.`, `https://s3://bucket`.
+// A host ending in a page extension is a relative link given a scheme, as Gmail writes
+// `http:///page.php`, which the scheme repair turns into the host `page.php`.
 const cleanTarget = (target: string | undefined): string | undefined => {
   if (!target) {
     return
@@ -99,6 +102,10 @@ const cleanTarget = (target: string | undefined): string | undefined => {
   const hostname = parseUrl(repaired)?.hostname ?? ''
 
   if (!dottedHostRegex.test(hostname) && !isIpAddress(hostname)) {
+    return
+  }
+
+  if (fileExtensionHostRegex.test(hostname)) {
     return
   }
 
