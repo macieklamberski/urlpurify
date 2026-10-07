@@ -299,6 +299,7 @@ import { unwrapSymplicity } from './unwraps/symplicity.js'
 import { unwrapTargetCircle } from './unwraps/targetCircle.js'
 import { unwrapTeacup } from './unwraps/teacup.js'
 import { unwrapTelegramIv } from './unwraps/telegramIv.js'
+import { unwrapTheRegister } from './unwraps/theRegister.js'
 import { unwrapThreadsShim } from './unwraps/threads.js'
 import { unwrapTiktok } from './unwraps/tiktok.js'
 import { unwrapTitanhqLinklock } from './unwraps/titanhqLinklock.js'
@@ -468,6 +469,7 @@ export const linkShimUnwrappers: Array<UrlUnwrapper> = [
   unwrapStorify,
   unwrapStumbleupon,
   unwrapTeacup,
+  unwrapTheRegister,
   unwrapThreadsShim,
   unwrapTiktok,
   unwrapTumblr,

@@ -120,6 +120,7 @@ describe('defaultUnwrappers', () => {
       'unwrapStorify',
       'unwrapStumbleupon',
       'unwrapTeacup',
+      'unwrapTheRegister',
       'unwrapThreadsShim',
       'unwrapTiktok',
       'unwrapTumblr',
