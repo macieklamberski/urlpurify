@@ -735,6 +735,32 @@ describe('self-referential ref param', () => {
     expect(stripTrackingParams(value)).toBe(expected)
   })
 
+  it('should strip a Unicode ref naming the same internationalized host', () => {
+    const value = 'https://bücher.example/post?ref=bücher.example'
+    const expected = 'https://xn--bcher-kva.example/post'
+
+    expect(stripTrackingParams(value)).toBe(expected)
+  })
+
+  it('should strip an uppercase Unicode ref naming the same internationalized host', () => {
+    const value = 'https://bücher.example/post?ref=BÜCHER.example'
+    const expected = 'https://xn--bcher-kva.example/post'
+
+    expect(stripTrackingParams(value)).toBe(expected)
+  })
+
+  it('should keep a Unicode ref naming another internationalized host', () => {
+    const value = 'https://bücher.example/post?ref=bücherei.example'
+
+    expect(stripTrackingParams(value)).toBe(value)
+  })
+
+  it('should keep a ref holding the same host followed by a path', () => {
+    const value = 'https://example.com/post?ref=example.com/about'
+
+    expect(stripTrackingParams(value)).toBe(value)
+  })
+
   it('should keep a ref to another host next to a self-referential one', () => {
     const value = 'https://example.com/post?ref=example.com&ref=partner.com'
     const expected = 'https://example.com/post?ref=partner.com'
