@@ -45,4 +45,10 @@ describe('unwrapEbuzzing', () => {
 
     expect(unwrapEbuzzing(url)).toBeUndefined()
   })
+
+  it('should return undefined for a target with no dot in its first segment', () => {
+    const url = new URL('http://www.ebuzzing.com/rd/23688_2506_388807/archive/page.html')
+
+    expect(unwrapEbuzzing(url)).toBeUndefined()
+  })
 })
