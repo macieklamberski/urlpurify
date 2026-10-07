@@ -43,11 +43,10 @@ const getTrackingMatcher = (params: Array<TrackingParam>): TrackingMatcher => {
 }
 
 // Delete tracking parameters in place. Literal names match case-insensitively;
-// patterns are tested against the lowercased name. Returns whether anything
-// was removed. A query carrying a signature param is kept whole.
-const deleteTrackingParams = (url: URL, trackingParams: Array<TrackingParam>): boolean => {
+// patterns are tested against the lowercased name. A query carrying a signature param is kept whole.
+const deleteTrackingParams = (url: URL, trackingParams: Array<TrackingParam>): void => {
   if (!url.search) {
-    return false
+    return
   }
 
   const pairs = url.search.slice(1).split('&')
@@ -55,7 +54,7 @@ const deleteTrackingParams = (url: URL, trackingParams: Array<TrackingParam>): b
 
   for (const entry of entries) {
     if (entry && signatureParams.includes(entry[0].toLowerCase())) {
-      return false
+      return
     }
   }
 
@@ -95,12 +94,10 @@ const deleteTrackingParams = (url: URL, trackingParams: Array<TrackingParam>): b
   })
 
   if (keptPairs.length === pairs.length) {
-    return false
+    return
   }
 
   url.search = keptPairs.join('&')
-
-  return true
 }
 
 const controlCharactersRegex = /[\p{Cc}\u2028\u2029]/u
@@ -146,8 +143,8 @@ const applyUnwrappers = (url: URL, unwrappers: Array<UrlUnwrapper>): string | un
   }
 }
 
-// Apply unwrappers in order and return the first extracted target URL, cleaned as in cleanUrl, or
-// undefined when none match or the input cannot be parsed.
+// Apply unwrappers in order and return the first extracted target URL, cleaned and serialized as in
+// cleanUrl, or undefined when none match or the input cannot be parsed.
 export const unwrapUrl = (
   url: string,
   unwrappers: Array<UrlUnwrapper> = defaultUnwrappers,
@@ -161,16 +158,15 @@ export const unwrapUrl = (
   const target = cleanTarget(applyUnwrappers(parsed, unwrappers))
 
   // With one hop there is no later hop to drop a part mis-decoded to U+FFFD, so the wrapper stays.
-  if (target?.includes(replacementCharacter)) {
+  if (!target || target.includes(replacementCharacter)) {
     return
   }
 
-  return target
+  return parseUrl(target)?.href
 }
 
-// Remove tracking parameters, matching names case-insensitively, and return
-// the cleaned URL string. The input is returned unchanged when nothing
-// matches or it cannot be parsed.
+// Remove tracking parameters, matching names case-insensitively, and return the cleaned URL in the
+// URL Standard serialization. Input that cannot be parsed is returned unchanged.
 export const stripTrackingParams = (
   url: string,
   trackingParams: Array<TrackingParam> = defaultTrackingParams,
@@ -181,16 +177,13 @@ export const stripTrackingParams = (
     return url
   }
 
-  if (deleteTrackingParams(parsed, trackingParams)) {
-    return parsed.toString()
-  }
+  deleteTrackingParams(parsed, trackingParams)
 
-  return url
+  return parsed.href
 }
 
-// Unwrap redirect/affiliate wrappers, then strip tracking parameters. When
-// nothing applies or the input cannot be parsed, the input string is returned
-// unchanged, so the result is always safe to display.
+// Unwrap redirect/affiliate wrappers, then strip tracking parameters, and return the result in the
+// URL Standard serialization. Input that cannot be parsed is returned unchanged.
 export const cleanUrl = (url: string, options?: CleanUrlOptions): string => {
   const unwrappers = options?.unwrappers ?? defaultUnwrappers
   const trackingParams = options?.trackingParams ?? defaultTrackingParams
@@ -238,9 +231,7 @@ export const cleanUrl = (url: string, options?: CleanUrlOptions): string => {
     currentParsed = intactParsed
   }
 
-  if (deleteTrackingParams(currentParsed, trackingParams)) {
-    return currentParsed.toString()
-  }
+  deleteTrackingParams(currentParsed, trackingParams)
 
-  return currentUrl
+  return currentParsed.href
 }
