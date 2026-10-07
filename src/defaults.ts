@@ -355,6 +355,7 @@ import { unwrapYandexMail } from './unwraps/yandexMail.js'
 import { unwrapYandexTranslate } from './unwraps/yandexTranslate.js'
 import { unwrapYandexTurbo } from './unwraps/yandexTurbo.js'
 import { unwrapYelp } from './unwraps/yelp.js'
+import { unwrapYesware } from './unwraps/yesware.js'
 import { unwrapYourMembership } from './unwraps/yourMembership.js'
 import { unwrapYouTube } from './unwraps/youtube.js'
 import { unwrapZanox } from './unwraps/zanox.js'
@@ -590,6 +591,7 @@ export const emailTrackingUnwrappers: Array<UrlUnwrapper> = [
   unwrapVuture,
   unwrapWordpressEmail,
   unwrapYamm,
+  unwrapYesware,
   unwrapYourMembership,
 ]
 
