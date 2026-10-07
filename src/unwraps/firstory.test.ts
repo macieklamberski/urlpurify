@@ -105,4 +105,10 @@ describe('unwrapFirstory', () => {
 
     expect(unwrapFirstory(url)).toBeUndefined()
   })
+
+  it('should return undefined for the short prefix below another path', () => {
+    const url = new URL('https://track.fstry.me/x/p/psnx2924/example.com/rssFileVip.mp3')
+
+    expect(unwrapFirstory(url)).toBeUndefined()
+  })
 })
