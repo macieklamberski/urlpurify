@@ -28,9 +28,9 @@ export const unwrapYesware: UrlUnwrapper = (url) => {
     return
   }
 
-  // Yesware keeps the scheme server-side, http on most archived links, and an https site
-  // redirects from http.
-  const target = `http://${match[1]}${url.search}${url.hash}`
+  // Yesware keeps the scheme server-side: http on links archived before 2019, https on nearly
+  // all since.
+  const target = `https://${match[1]}${url.search}${url.hash}`
 
   if (isHttpUrl(target)) {
     return target

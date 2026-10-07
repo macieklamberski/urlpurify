@@ -7,7 +7,7 @@ describe('unwrapYesware', () => {
       'http://t.yesware.com/tt/cc4aab7ab5585b4f64d82ec15e4f4fe0f25b6e3d/a46491027919e3faf1bdee545ec1da8d/d3d018e9172577e0213cd571b7b2df8e/example.com/clubsapply',
     )
 
-    expect(unwrapYesware(url)).toBe('http://example.com/clubsapply')
+    expect(unwrapYesware(url)).toBe('https://example.com/clubsapply')
   })
 
   it('should keep the query and fragment of a target in the path', () => {
@@ -16,7 +16,7 @@ describe('unwrapYesware', () => {
     )
 
     expect(unwrapYesware(url)).toBe(
-      'http://www.example.com/c-916f67f73461c2f8152c31d57b280a2e?term=bde7893f#strategies',
+      'https://www.example.com/c-916f67f73461c2f8152c31d57b280a2e?term=bde7893f#strategies',
     )
   })
 
