@@ -64,6 +64,7 @@ import { unwrapBytedance } from './unwraps/bytedance.js'
 import { unwrapCake } from './unwraps/cake.js'
 import { unwrapCalendly } from './unwraps/calendly.js'
 import { unwrapCanva } from './unwraps/canva.js'
+import { unwrapCastPlus } from './unwraps/castPlus.js'
 import { unwrapCcbill } from './unwraps/ccbill.js'
 import { unwrapChartable } from './unwraps/chartable.js'
 import { unwrapCheckPointHarmony } from './unwraps/checkPointHarmony.js'
@@ -237,6 +238,7 @@ import { unwrapOutlookSafelinks } from './unwraps/outlookSafelinks.js'
 import { unwrapOutlookWebAccess } from './unwraps/outlookWebAccess.js'
 import { unwrapPagefreezer } from './unwraps/pagefreezer.js'
 import { unwrapPartnerAds } from './unwraps/partnerAds.js'
+import { unwrapPbs } from './unwraps/pbs.js'
 import { unwrapPhilpapers } from './unwraps/philpapers.js'
 import { unwrapPinterest } from './unwraps/pinterest.js'
 import { unwrapPipedrive } from './unwraps/pipedrive.js'
@@ -373,6 +375,7 @@ import { unwrapYesware } from './unwraps/yesware.js'
 import { unwrapYourMembership } from './unwraps/yourMembership.js'
 import { unwrapYouTube } from './unwraps/youtube.js'
 import { unwrapZanox } from './unwraps/zanox.js'
+import { unwrapZayads } from './unwraps/zayads.js'
 import { unwrapZemanta } from './unwraps/zemanta.js'
 import { unwrapZencastr } from './unwraps/zencastr.js'
 import { unwrapZhihu } from './unwraps/zhihu.js'
@@ -740,6 +743,7 @@ export const downloadMeasurementUnwrappers: Array<UrlUnwrapper> = [
   unwrapAusha,
   unwrapAwesound,
   unwrapBlubrry,
+  unwrapCastPlus,
   unwrapChartable,
   unwrapClaritas,
   unwrapCohst,
@@ -754,6 +758,7 @@ export const downloadMeasurementUnwrappers: Array<UrlUnwrapper> = [
   unwrapMintDownloads,
   unwrapMohtwize,
   unwrapOp3,
+  unwrapPbs,
   unwrapPodcorn,
   unwrapPodder,
   unwrapPodkite,
@@ -770,6 +775,7 @@ export const downloadMeasurementUnwrappers: Array<UrlUnwrapper> = [
   unwrapVoxnest,
   unwrapXiaoyuzhou,
   unwrapXimalaya,
+  unwrapZayads,
   unwrapZencastr,
 ]
 
