@@ -118,6 +118,7 @@ describe('defaultUnwrappers', () => {
       'unwrapSspai',
       'unwrapSteamLinkfilter',
       'unwrapStorify',
+      'unwrapStumbleupon',
       'unwrapTeacup',
       'unwrapThreadsShim',
       'unwrapTiktok',
