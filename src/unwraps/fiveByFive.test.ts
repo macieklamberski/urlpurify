@@ -95,4 +95,10 @@ describe('unwrapFiveByFive', () => {
 
     expect(unwrapFiveByFive(url)).toBeUndefined()
   })
+
+  it('should return undefined for the show prefix below another path', () => {
+    const url = new URL('http://fdlyr.co/x/d/webahead/cdn.5by5.tv/audio/a.mp3')
+
+    expect(unwrapFiveByFive(url)).toBeUndefined()
+  })
 })
