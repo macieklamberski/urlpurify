@@ -1,5 +1,5 @@
 import type { UrlUnwrapper } from '../types.js'
-import { getParamValues } from '../utils.js'
+import { getParamValues, percentDecode } from '../utils.js'
 
 const encodedSchemeRegex = /^https?%3A/i
 
@@ -9,9 +9,7 @@ export const getBitrixTarget = (url: URL): string | undefined => {
 
   // A target encoded twice still holds an encoded scheme after one decode.
   if (target && encodedSchemeRegex.test(target)) {
-    try {
-      target = decodeURIComponent(target)
-    } catch {}
+    target = percentDecode(target)
   }
 
   return target

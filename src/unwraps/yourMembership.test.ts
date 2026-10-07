@@ -34,6 +34,14 @@ describe('unwrapYourMembership', () => {
     expect(unwrapYourMembership(url)).toBe('https://www.example.com/events/')
   })
 
+  it('should keep a stray percent sign in a twice-encoded target', () => {
+    const url = new URL(
+      'http://www.example.org/link.asp?e=member@example.org&job=3904796&ymlink=510233079&finalurl=https%253A%252F%252Fwww.example.com%252F100%25',
+    )
+
+    expect(unwrapYourMembership(url)).toBe('https://www.example.com/100%')
+  })
+
   it('should return undefined when finalurl param is missing', () => {
     const url = new URL(
       'http://www.example.org/link.asp?e=member@example.org&job=2859277&ymlink=103921985',

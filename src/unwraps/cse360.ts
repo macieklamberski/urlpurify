@@ -1,5 +1,6 @@
 import { isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
+import { percentDecode } from '../utils.js'
 
 const encodedSchemeRegex = /^https?%3A/i
 
@@ -26,7 +27,7 @@ export const unwrapCse360: UrlUnwrapper = (url) => {
     let target = decodeURIComponent(match[1])
 
     if (encodedSchemeRegex.test(target)) {
-      target = decodeURIComponent(target)
+      target = percentDecode(target)
     }
 
     if (isHttpUrl(target)) {

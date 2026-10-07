@@ -1,6 +1,6 @@
 import { isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createParamExtractor, percentDecode } from '../utils.js'
 
 // The first number is the show, as in the show's feeds.godcaster.fm/player_<n>.xml.
 const episodePrefixRegex = /^\/act\/e\/\d+\/\d+\/\d+\//
@@ -33,12 +33,8 @@ export const unwrapGodcaster: UrlUnwrapper = (url) => {
 
   let target = url.pathname.slice(match[0].length)
 
-  try {
-    while (encodedSchemeRegex.test(target)) {
-      target = decodeURIComponent(target)
-    }
-  } catch {
-    return
+  while (encodedSchemeRegex.test(target)) {
+    target = percentDecode(target)
   }
 
   return `${target}${url.hash}`

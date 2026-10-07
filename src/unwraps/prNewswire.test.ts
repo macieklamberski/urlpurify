@@ -18,6 +18,14 @@ describe('unwrapPrNewswire', () => {
     expect(unwrapPrNewswire(url)).toBe('http://example.com/')
   })
 
+  it('should keep a stray percent sign in a twice-encoded target', () => {
+    const url = new URL(
+      'https://edge.prnewswire.com/c/link/?t=0&u=http%253A%252F%252Fexample.com%252F100%25',
+    )
+
+    expect(unwrapPrNewswire(url)).toBe('http://example.com/100%')
+  })
+
   it('should extract an uppercase twice-encoded target', () => {
     const url = new URL('https://c212.net/c/link/?t=0&u=HTTPS%253A%252F%252Fexample.com%252F')
 
