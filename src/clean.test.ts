@@ -587,6 +587,26 @@ describe('cleanUrl with a malformed target', () => {
     expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
   })
 
+  it('should keep the wrapper when a relative php link reads as the host', () => {
+    const value =
+      'https://redirect.example.com/?target=http:///lermais_materias.php?cd_materias%3D5919&source=gmail'
+
+    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
+  })
+
+  it('should keep the wrapper when a relative jspa link reads as the host', () => {
+    const value =
+      'https://redirect.example.com/?target=http:///external-link.jspa?url%3Dhttp%253A%252F%252Fexample.com%252F'
+
+    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
+  })
+
+  it('should unwrap a target whose host has a php label before its last', () => {
+    const value = 'https://redirect.example.com/?target=https://www.php.net/manual/'
+
+    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe('https://www.php.net/manual/')
+  })
+
   it('should unwrap a target on an IPv4 address', () => {
     const value = 'https://redirect.example.com/?target=http://192.0.2.1/x'
 
