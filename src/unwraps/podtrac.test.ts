@@ -103,7 +103,7 @@ describe('unwrapPodtrac', () => {
       'http://www.podtrac.com/pts/redirect.mp3./example.com/stream/2329399343-interview.mp3',
     )
 
-    expect(unwrapPodtrac(url)).toBe('https://example.com/stream/2329399343-interview.mp3')
+    expect(unwrapPodtrac(url)).toBe('http://example.com/stream/2329399343-interview.mp3')
   })
 
   it('should extract a target after the show segment on the play host', () => {
@@ -112,7 +112,7 @@ describe('unwrapPodtrac', () => {
     )
 
     expect(unwrapPodtrac(url)).toBe(
-      'https://example.com/itunes/d/podcast/splendidtable_20161028_64.mp3',
+      'http://example.com/itunes/d/podcast/splendidtable_20161028_64.mp3',
     )
   })
 
@@ -140,5 +140,23 @@ describe('unwrapPodtrac', () => {
     const url = new URL('https://example.com/redirect.mp3/example.org/episode.mp3')
 
     expect(unwrapPodtrac(url)).toBeUndefined()
+  })
+
+  it('should give a target without a scheme https behind the http New York Times host', () => {
+    const url = new URL(
+      'http://dts.podtrac.nytimes.com/redirect.mp3/example.com/podcasts/2011/12/01/1201popcast.mp3',
+    )
+
+    expect(unwrapPodtrac(url)).toBe('https://example.com/podcasts/2011/12/01/1201popcast.mp3')
+  })
+
+  it('should keep the http scheme of the dts prefix on a target without one', () => {
+    const url = new URL(
+      'http://dts.podtrac.com/redirect.mp3/example.com/stream/325441224-devdiary-dev-diary-podcast-update.mp3',
+    )
+
+    expect(unwrapPodtrac(url)).toBe(
+      'http://example.com/stream/325441224-devdiary-dev-diary-podcast-update.mp3',
+    )
   })
 })

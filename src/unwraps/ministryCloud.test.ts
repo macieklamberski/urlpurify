@@ -18,7 +18,7 @@ describe('unwrapMinistryCloud', () => {
     )
 
     expect(unwrapMinistryCloud(url)).toBe(
-      'https://example.com/episodes/365118/2952801/twin-lakes-church-sermons.mp3',
+      'http://example.com/episodes/365118/2952801/twin-lakes-church-sermons.mp3',
     )
   })
 

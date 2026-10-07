@@ -12,5 +12,5 @@ export const unwrapVoxnest: UrlUnwrapper = (url) => {
     return
   }
 
-  return getPathTarget(url, streamPrefixRegex)
+  return getPathTarget(url, streamPrefixRegex, 'http:')
 }

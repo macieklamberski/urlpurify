@@ -34,7 +34,7 @@ describe('unwrapPodsights', () => {
     )
 
     expect(unwrapPodsights(url)).toBe(
-      'https://dts.podtrac.com/redirect.mp3/example.com/Podcasts/Gardenerd_06-18-20.mp3',
+      'http://dts.podtrac.com/redirect.mp3/example.com/Podcasts/Gardenerd_06-18-20.mp3',
     )
   })
 

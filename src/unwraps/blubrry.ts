@@ -16,5 +16,5 @@ export const unwrapBlubrry: UrlUnwrapper = (url) => {
     return
   }
 
-  return getPathTarget(url, showPrefixRegex)
+  return getPathTarget(url, showPrefixRegex, url.protocol)
 }

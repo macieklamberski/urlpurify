@@ -67,4 +67,10 @@ describe('unwrapPodroll', () => {
 
     expect(unwrapPodroll(url)).toBeUndefined()
   })
+
+  it('should keep the http scheme of the prefix on a target without one', () => {
+    const url = new URL('http://pdrl.fm/e800c2/example.com/FGP7915113410.mp3')
+
+    expect(unwrapPodroll(url)).toBe('http://example.com/FGP7915113410.mp3')
+  })
 })

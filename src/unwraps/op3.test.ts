@@ -71,4 +71,12 @@ describe('unwrapOp3', () => {
 
     expect(unwrapOp3(url)).toBeUndefined()
   })
+
+  it('should give a target without a scheme https behind an http prefix', () => {
+    const url = new URL(
+      'http://op3.dev/e/example.com/podcasts/kolomonashow/01-001-KolomonaShow.mp3',
+    )
+
+    expect(unwrapOp3(url)).toBe('https://example.com/podcasts/kolomonashow/01-001-KolomonaShow.mp3')
+  })
 })

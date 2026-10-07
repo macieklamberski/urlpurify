@@ -23,7 +23,7 @@ describe('unwrapBlubrry', () => {
       'http://media.blubrry.com/socialmediachurch/p/example.com/wp-content/uploads/2014/07/ep93.mp3',
     )
 
-    expect(unwrapBlubrry(url)).toBe('https://example.com/wp-content/uploads/2014/07/ep93.mp3')
+    expect(unwrapBlubrry(url)).toBe('http://example.com/wp-content/uploads/2014/07/ep93.mp3')
   })
 
   it('should extract a target after the s segment', () => {
@@ -39,7 +39,7 @@ describe('unwrapBlubrry', () => {
       'http://media.blubrry.com/truth_about_fx/b/example.com/truth_about_fx/CP_-_Alex.mp3',
     )
 
-    expect(unwrapBlubrry(url)).toBe('https://example.com/truth_about_fx/CP_-_Alex.mp3')
+    expect(unwrapBlubrry(url)).toBe('http://example.com/truth_about_fx/CP_-_Alex.mp3')
   })
 
   it('should extract a target with a scheme after the s segment', () => {

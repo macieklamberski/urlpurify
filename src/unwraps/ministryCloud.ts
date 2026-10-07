@@ -13,5 +13,5 @@ export const unwrapMinistryCloud: UrlUnwrapper = (url) => {
     return
   }
 
-  return getPathTarget(url, mediaPrefixRegex)
+  return getPathTarget(url, mediaPrefixRegex, 'http:')
 }
