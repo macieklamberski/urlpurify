@@ -149,4 +149,14 @@ describe('unwrapPodtrac', () => {
 
     expect(unwrapPodtrac(url)).toBe('https://example.com/podcasts/2011/12/01/1201popcast.mp3')
   })
+
+  it('should keep the http scheme of the dts prefix on a target without one', () => {
+    const url = new URL(
+      'http://dts.podtrac.com/redirect.mp3/example.com/stream/325441224-devdiary-dev-diary-podcast-update.mp3',
+    )
+
+    expect(unwrapPodtrac(url)).toBe(
+      'http://example.com/stream/325441224-devdiary-dev-diary-podcast-update.mp3',
+    )
+  })
 })
