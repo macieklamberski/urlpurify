@@ -49,7 +49,13 @@ describe('unwrapZencastr', () => {
   })
 
   it('should return undefined for other paths on the host', () => {
-    const url = new URL('https://r.zencastr.com/x/example.com/episode.mp3')
+    const url = new URL('https://r.zencastr.com/rss/example.com/episode.mp3')
+
+    expect(unwrapZencastr(url)).toBeUndefined()
+  })
+
+  it('should return undefined for the prefix below another path', () => {
+    const url = new URL('https://r.zencastr.com/x/r/example.com/episode.mp3')
 
     expect(unwrapZencastr(url)).toBeUndefined()
   })
