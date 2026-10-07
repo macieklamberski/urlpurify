@@ -75,6 +75,7 @@ import { unwrapCleverbridge } from './unwraps/cleverbridge.js'
 import { unwrapClevercomm } from './unwraps/clevercomm.js'
 import { unwrapCloudhq } from './unwraps/cloudhq.js'
 import { unwrapCloze } from './unwraps/cloze.js'
+import { unwrapCohst } from './unwraps/cohst.js'
 import { unwrapCommissionFactory } from './unwraps/commissionFactory.js'
 import { unwrapCommunicationads } from './unwraps/communicationads.js'
 import { unwrapConstantContact } from './unwraps/constantContact.js'
@@ -127,6 +128,7 @@ import { unwrapFinalsite } from './unwraps/finalsite.js'
 import { unwrapFirebaseDynamicLinks } from './unwraps/firebaseDynamicLinks.js'
 import { unwrapFireeye } from './unwraps/fireeye.js'
 import { unwrapFirstory } from './unwraps/firstory.js'
+import { unwrapFiveByFive } from './unwraps/fiveByFive.js'
 import { unwrapFiverr } from './unwraps/fiverr.js'
 import { unwrapFlexoffers } from './unwraps/flexoffers.js'
 import { unwrapFlipboard } from './unwraps/flipboard.js'
@@ -211,6 +213,7 @@ import { unwrapMimecast } from './unwraps/mimecast.js'
 import { unwrapMinistryCloud } from './unwraps/ministryCloud.js'
 import { unwrapMintDownloads } from './unwraps/mintDownloads.js'
 import { unwrapMintFeeder } from './unwraps/mintFeeder.js'
+import { unwrapMohtwize } from './unwraps/mohtwize.js'
 import { unwrapMoshimo } from './unwraps/moshimo.js'
 import { unwrapMozillaOutgoing } from './unwraps/mozillaOutgoing.js'
 import { unwrapMyNewsletterBuilder } from './unwraps/myNewsletterBuilder.js'
@@ -240,10 +243,12 @@ import { unwrapPipedrive } from './unwraps/pipedrive.js'
 import { unwrapPocket } from './unwraps/pocket.js'
 import { unwrapPodcorn } from './unwraps/podcorn.js'
 import { unwrapPodder } from './unwraps/podder.js'
+import { unwrapPodkite } from './unwraps/podkite.js'
 import { unwrapPodroll } from './unwraps/podroll.js'
 import { unwrapPodscribe } from './unwraps/podscribe.js'
 import { unwrapPodsights } from './unwraps/podsights.js'
 import { unwrapPodtrac } from './unwraps/podtrac.js'
+import { unwrapPodup } from './unwraps/podup.js'
 import { unwrapPostAffiliatePro } from './unwraps/postAffiliatePro.js'
 import { unwrapPostmark } from './unwraps/postmark.js'
 import { unwrapPrezly } from './unwraps/prezly.js'
@@ -369,6 +374,7 @@ import { unwrapYourMembership } from './unwraps/yourMembership.js'
 import { unwrapYouTube } from './unwraps/youtube.js'
 import { unwrapZanox } from './unwraps/zanox.js'
 import { unwrapZemanta } from './unwraps/zemanta.js'
+import { unwrapZencastr } from './unwraps/zencastr.js'
 import { unwrapZhihu } from './unwraps/zhihu.js'
 import { unwrapZix } from './unwraps/zix.js'
 import { unwrapZscalerIsolation } from './unwraps/zscalerIsolation.js'
@@ -736,21 +742,26 @@ export const downloadMeasurementUnwrappers: Array<UrlUnwrapper> = [
   unwrapBlubrry,
   unwrapChartable,
   unwrapClaritas,
+  unwrapCohst,
   unwrapDstats,
   unwrapFirstory,
+  unwrapFiveByFive,
   unwrapGodcaster,
   unwrapGumball,
   unwrapLetscast,
   unwrapMagellan,
   unwrapMinistryCloud,
   unwrapMintDownloads,
+  unwrapMohtwize,
   unwrapOp3,
   unwrapPodcorn,
   unwrapPodder,
+  unwrapPodkite,
   unwrapPodroll,
   unwrapPodscribe,
   unwrapPodsights,
   unwrapPodtrac,
+  unwrapPodup,
   unwrapSoundOn,
   unwrapSoundstack,
   unwrapSwap,
@@ -759,6 +770,7 @@ export const downloadMeasurementUnwrappers: Array<UrlUnwrapper> = [
   unwrapVoxnest,
   unwrapXiaoyuzhou,
   unwrapXimalaya,
+  unwrapZencastr,
 ]
 
 // Archives, proxies and viewers: unwrapping returns the live page, not the copy.
