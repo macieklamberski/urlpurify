@@ -50,6 +50,12 @@ describe('unwrapAdfly', () => {
     expect(unwrapAdfly(url)).toBeUndefined()
   })
 
+  it('should return undefined for a custom alias holding a dot', () => {
+    const url = new URL('http://adf.ly/6216564/resource-pack.v2_final')
+
+    expect(unwrapAdfly(url)).toBeUndefined()
+  })
+
   it('should return undefined for a short link', () => {
     const url = new URL('http://adf.ly/1aeu2J')
 
