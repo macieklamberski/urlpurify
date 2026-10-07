@@ -87,4 +87,24 @@ describe('unwrapStumbleupon', () => {
 
     expect(unwrapStumbleupon(url)).toBeUndefined()
   })
+
+  it('should extract the target of the app promo redirect', () => {
+    const url = new URL(
+      'http://www.stumbleupon.com/to/event/redir/?url=http://itunes.apple.com/us/app/stumbleupon/id386244833&source=suMobile',
+    )
+
+    expect(unwrapStumbleupon(url)).toBe('http://itunes.apple.com/us/app/stumbleupon/id386244833')
+  })
+
+  it('should return undefined for the app promo redirect with no target', () => {
+    const url = new URL('http://www.stumbleupon.com/to/event/redir/?source=suMobile')
+
+    expect(unwrapStumbleupon(url)).toBeUndefined()
+  })
+
+  it('should return undefined for another event path on the host', () => {
+    const url = new URL('http://www.stumbleupon.com/to/event/login/?url=http://example.com/')
+
+    expect(unwrapStumbleupon(url)).toBeUndefined()
+  })
 })
