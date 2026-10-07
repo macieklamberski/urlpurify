@@ -72,6 +72,32 @@ describe('unwrapUkgwa', () => {
     )
   })
 
+  it('should add the http scheme to a snapshot target stored without one', () => {
+    const url = new URL(
+      'http://webarchive.nationalarchives.gov.uk/20100421074139/example.gov.uk/propriety_and_ethics/civil_service/election_guidance.aspx',
+    )
+
+    expect(unwrapUkgwa(url)).toBe(
+      'http://example.gov.uk/propriety_and_ethics/civil_service/election_guidance.aspx',
+    )
+  })
+
+  it('should add the http scheme to a latest snapshot target stored without one', () => {
+    const url = new URL(
+      'http://webarchive.nationalarchives.gov.uk/+/www.example.gov.uk/assetRoot/04/14/31/67/04143167.pdf',
+    )
+
+    expect(unwrapUkgwa(url)).toBe('http://www.example.gov.uk/assetRoot/04/14/31/67/04143167.pdf')
+  })
+
+  it('should add the http scheme to a ukgwa snapshot target stored without one', () => {
+    const url = new URL(
+      'https://webarchive.nationalarchives.gov.uk/ukgwa/20121026065214/www.example.uk/NR/rdonlyres/0/sdr1998_complete.pdf',
+    )
+
+    expect(unwrapUkgwa(url)).toBe('http://www.example.uk/NR/rdonlyres/0/sdr1998_complete.pdf')
+  })
+
   it('should return undefined for a snapshot with no target', () => {
     const url = new URL('https://webarchive.nationalarchives.gov.uk/ukgwa/20220828193851/')
 
@@ -154,5 +180,21 @@ describe('unwrapUkgwa', () => {
     )
 
     expect(unwrapUkgwa(url)).toBeUndefined()
+  })
+
+  it('should read a host with a port as a host', () => {
+    const url = new URL(
+      'https://webarchive.nationalarchives.gov.uk/+/www.example.gov.uk:80/page.htm',
+    )
+
+    expect(unwrapUkgwa(url)).toBe('http://www.example.gov.uk:80/page.htm')
+  })
+
+  it('should keep a single-slash scheme of the target as written', () => {
+    const url = new URL(
+      'https://webarchive.nationalarchives.gov.uk/ukgwa/20130221121534/http:/www.example.gov.uk/our-report/',
+    )
+
+    expect(unwrapUkgwa(url)).toBe('http:/www.example.gov.uk/our-report/')
   })
 })
