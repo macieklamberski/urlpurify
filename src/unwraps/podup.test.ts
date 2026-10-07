@@ -45,4 +45,16 @@ describe('unwrapPodup', () => {
 
     expect(unwrapPodup(url)).toBeUndefined()
   })
+
+  it('should return undefined for the media path below another path', () => {
+    const url = new URL('https://traffic.podup.com/other/media/example.com/episode.mp3')
+
+    expect(unwrapPodup(url)).toBeUndefined()
+  })
+
+  it('should return undefined for a path that only starts with media', () => {
+    const url = new URL('https://traffic.podup.com/mediafiles/example.com/episode.mp3')
+
+    expect(unwrapPodup(url)).toBeUndefined()
+  })
 })
