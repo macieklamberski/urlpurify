@@ -45,6 +45,13 @@ describe('unwrapUrl', () => {
     expect(unwrapUrl(value)).toBe(expected)
   })
 
+  it('should return the target in the URL Standard serialization', () => {
+    const value = 'https://redirect.example.com/?target=https%3A%2F%2FEXAMPLE.com%2Fpost'
+    const expected = 'https://example.com/post'
+
+    expect(unwrapUrl(value, [exampleUnwrapper])).toBe(expected)
+  })
+
   it('should return undefined when no unwrapper matches', () => {
     const value = 'https://example.com/post'
 
@@ -157,10 +164,17 @@ describe('stripTrackingParams', () => {
     expect(stripTrackingParams(value, ['utm_source'])).toBe(expected)
   })
 
-  it('should return the input unchanged when nothing matches', () => {
+  it('should return a serialized URL unchanged when nothing matches', () => {
     const value = 'https://example.com/post?id=42'
 
     expect(stripTrackingParams(value, ['utm_source'])).toBe(value)
+  })
+
+  it('should serialize the URL when nothing matches', () => {
+    const value = 'https://EXAMPLE.com/post?id=42'
+    const expected = 'https://example.com/post?id=42'
+
+    expect(stripTrackingParams(value, ['utm_source'])).toBe(expected)
   })
 
   it('should return the input unchanged for an empty param list', () => {
@@ -444,7 +458,7 @@ describe('cleanUrl', () => {
     expect(cleanUrl(value, options)).toBe(value)
   })
 
-  it('should return the input unchanged when nothing applies', () => {
+  it('should return a serialized URL unchanged when nothing applies', () => {
     const value = 'https://example.com/post?id=42'
 
     expect(cleanUrl(value)).toBe(value)
@@ -452,6 +466,60 @@ describe('cleanUrl', () => {
 
   it('should return the input unchanged when it is not a valid URL', () => {
     expect(cleanUrl('not a url')).toBe('not a url')
+  })
+
+  it('should lowercase the host', () => {
+    const value = 'https://EXAMPLE.com/post'
+    const expected = 'https://example.com/post'
+
+    expect(cleanUrl(value)).toBe(expected)
+  })
+
+  it('should drop the default port', () => {
+    const value = 'https://example.com:443/post'
+    const expected = 'https://example.com/post'
+
+    expect(cleanUrl(value)).toBe(expected)
+  })
+
+  it('should resolve dot segments in the path', () => {
+    const value = 'https://example.com/archive/../post'
+    const expected = 'https://example.com/post'
+
+    expect(cleanUrl(value)).toBe(expected)
+  })
+
+  it('should return an IDN host in Punycode', () => {
+    const value = 'https://bücher.example/post'
+    const expected = 'https://xn--bcher-kva.example/post'
+
+    expect(cleanUrl(value)).toBe(expected)
+  })
+
+  it('should serialize the unwrapped target when nothing is stripped', () => {
+    const value = 'https://redirect.example.com/?target=https%3A%2F%2Fexample.com%3A443%2Fpost'
+    const options = { unwrappers: [exampleUnwrapper] }
+    const expected = 'https://example.com/post'
+
+    expect(cleanUrl(value, options)).toBe(expected)
+  })
+
+  it('should keep the query encoding as written when nothing is stripped', () => {
+    const value = 'https://example.com/get?file=my%20doc.pdf&q=a+b'
+
+    expect(cleanUrl(value)).toBe(value)
+  })
+
+  it('should keep a valueless param as written when nothing is stripped', () => {
+    const value = 'https://example.com/post?flag'
+
+    expect(cleanUrl(value)).toBe(value)
+  })
+
+  it('should keep semicolon-separated values as written when nothing is stripped', () => {
+    const value = 'https://example.com/post?a=1;b=2'
+
+    expect(cleanUrl(value)).toBe(value)
   })
 
   it('should return the wrapper unchanged when its target is javascript:', () => {
@@ -751,8 +819,9 @@ describe('self-referential ref param', () => {
 
   it('should keep a Unicode ref naming another internationalized host', () => {
     const value = 'https://bücher.example/post?ref=bücherei.example'
+    const expected = 'https://xn--bcher-kva.example/post?ref=b%C3%BCcherei.example'
 
-    expect(stripTrackingParams(value)).toBe(value)
+    expect(stripTrackingParams(value)).toBe(expected)
   })
 
   it('should keep a ref holding the same host followed by a path', () => {
