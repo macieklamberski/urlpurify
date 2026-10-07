@@ -101,6 +101,7 @@ import { unwrapDyn } from './unwraps/dyn.js'
 import { unwrapDzen } from './unwraps/dzen.js'
 import { unwrapEasyMarketing } from './unwraps/easyMarketing.js'
 import { unwrapEbayRover } from './unwraps/ebayRover.js'
+import { unwrapEbuzzing } from './unwraps/ebuzzing.js'
 import { unwrapEClick } from './unwraps/eClick.js'
 import { unwrapEdgepilot } from './unwraps/edgepilot.js'
 import { unwrapEffiliation } from './unwraps/effiliation.js'
@@ -696,6 +697,7 @@ export const advertisingUnwrappers: Array<UrlUnwrapper> = [
   unwrapBitrixBanner,
   unwrapChitika,
   unwrapDuckduckgoAds,
+  unwrapEbuzzing,
   unwrapEulerian,
   unwrapFederatedMedia,
   unwrapFirebaseDynamicLinks,
