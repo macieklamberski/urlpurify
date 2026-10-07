@@ -353,6 +353,7 @@ import { unwrapWordpressGo2 } from './unwraps/wordpressGo2.js'
 import { unwrapWorldNomads } from './unwraps/worldNomads.js'
 import { unwrapWpPoczta } from './unwraps/wpPoczta.js'
 import { unwrapXengentr } from './unwraps/xengentr.js'
+import { unwrapXiaoyuzhou } from './unwraps/xiaoyuzhou.js'
 import { unwrapYahooJapan } from './unwraps/yahooJapan.js'
 import { unwrapYahooJapanAmpViewer } from './unwraps/yahooJapanAmpViewer.js'
 import { unwrapYahooSearch } from './unwraps/yahooSearch.js'
@@ -753,6 +754,7 @@ export const downloadMeasurementUnwrappers: Array<UrlUnwrapper> = [
   unwrapUpAudio,
   unwrapVgWort,
   unwrapVoxnest,
+  unwrapXiaoyuzhou,
 ]
 
 // Archives, proxies and viewers: unwrapping returns the live page, not the copy.
