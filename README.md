@@ -209,6 +209,7 @@ Enabled by default:
 | `unwrapSspai` | Sspai external link redirect (sspai.com/link?target=\<target\>) |
 | `unwrapSteamLinkfilter` | Steam outbound link filter (steamcommunity.com/linkfilter/?url=\<target\> or ?u=\<target\>) |
 | `unwrapStorify` | Storify click counter on embedded stories (stats.storify.com/record/click?redirect=\<target\>) |
+| `unwrapStumbleupon` | StumbleUpon toolbar page (www.stumbleupon.com/su/\<id\>[/\<token\>]/\<target\>), target without its scheme |
 | `unwrapTeacup` | Teacup hosted BBS link jump (\<n\>.teacup.com/\<board\>/bbs?M=JU&JUR=\<target\>) |
 | `unwrapThreadsShim` | Threads outbound link shim (l.threads.com / l.threads.net with ?u=\<target\>) |
 | `unwrapTiktok` | TikTok outbound link shim for profile bio links (www.tiktok.com/link/v2?target=\<target\>) |
