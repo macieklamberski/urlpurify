@@ -9,6 +9,15 @@ type TrackingMatcher = {
 
 const replacementCharacter = '\uFFFD'
 
+// A signature covers the rest of the query, so dropping any param from it makes the server reject
+// the url, as a CDN answers 401 to a signed file url without its `ts`.
+const signatureParams = [
+  'sig', // Generic CDN and redirect signature
+  'signature', // CloudFront, AWS Signature Version 2
+  'x-amz-signature', // AWS Signature Version 4 presigned url
+  'x-goog-signature', // Google Cloud Storage V4 signed url
+]
+
 const trackingMatcherCache = new WeakMap<Array<TrackingParam>, TrackingMatcher>()
 
 const getTrackingMatcher = (params: Array<TrackingParam>): TrackingMatcher => {
@@ -35,20 +44,28 @@ const getTrackingMatcher = (params: Array<TrackingParam>): TrackingMatcher => {
 
 // Delete tracking parameters in place. Literal names match case-insensitively;
 // patterns are tested against the lowercased name. Returns whether anything
-// was removed.
+// was removed. A query carrying a signature param is kept whole.
 const deleteTrackingParams = (url: URL, trackingParams: Array<TrackingParam>): boolean => {
   if (!url.search) {
     return false
   }
 
+  const pairs = url.search.slice(1).split('&')
+  const entries = pairs.map((pair) => new URLSearchParams(pair).entries().next().value)
+
+  for (const entry of entries) {
+    if (entry && signatureParams.includes(entry[0].toLowerCase())) {
+      return false
+    }
+  }
+
   const matcher = getTrackingMatcher(trackingParams)
   const host = stripWww(url.hostname)
-  const pairs = url.search.slice(1).split('&')
 
   // Kept pairs stay byte-for-byte: re-serializing through URLSearchParams turns
   // `%20` into `+`, `flag` into `flag=` and escapes `;`, which servers can read differently.
-  const keptPairs = pairs.filter((pair) => {
-    const entry = new URLSearchParams(pair).entries().next().value
+  const keptPairs = pairs.filter((_pair, index) => {
+    const entry = entries[index]
 
     if (!entry) {
       return true

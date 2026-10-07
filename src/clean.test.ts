@@ -759,3 +759,78 @@ describe('self-referential ref param', () => {
     expect(cleanUrl(value, options)).toBe(expected)
   })
 })
+
+describe('signed query', () => {
+  it('should keep the query of a signed file url whole', () => {
+    const value =
+      'https://cdn.example.com/api/utils/file/11602721.mp4?id=4A665C2C-D81B-4313-999C-3D24CB22911E&ts=1822903430&sig=NtAM31UkcdrglORmOSBE8bin4bg%3d'
+
+    expect(cleanUrl(value)).toBe(value)
+  })
+
+  it('should keep the query whole when it carries sig', () => {
+    const value = 'https://cdn.example.com/file.mp4?ts=1822903430&sig=NtAM31UkcdrglORmOSBE8bin4bg'
+
+    expect(stripTrackingParams(value)).toBe(value)
+  })
+
+  it('should keep the query whole when it carries signature', () => {
+    const value =
+      'https://example.com/api/link?url=https%3A%2F%2Fexample.org%2F&timestamp=1652349406353&signature=867d5a792ea21a4f'
+
+    expect(stripTrackingParams(value)).toBe(value)
+  })
+
+  it('should keep the query whole when it carries X-Amz-Signature', () => {
+    const value =
+      'https://bucket.example.com/report.pdf?X-Amz-Expires=86400&utm_source=feed&X-Amz-Signature=3f1c2b9a'
+
+    expect(stripTrackingParams(value)).toBe(value)
+  })
+
+  it('should keep the query whole when it carries X-Goog-Signature', () => {
+    const value =
+      'https://storage.example.com/report.pdf?X-Goog-Expires=900&_=1736305435&X-Goog-Signature=9a8b7c6d'
+
+    expect(stripTrackingParams(value)).toBe(value)
+  })
+
+  it('should strip ts from a url without a signature', () => {
+    const value = 'https://cdn.example.com/file.mp4?id=4A665C2C&ts=1822903430'
+    const expected = 'https://cdn.example.com/file.mp4?id=4A665C2C'
+
+    expect(stripTrackingParams(value)).toBe(expected)
+  })
+
+  it('should strip a query whose param name only ends in sig', () => {
+    const value =
+      'https://example.com/news/article.html?guccounter=1&guce_referrer=aHR0cHM6Ly93d3cuYmluZy5jb20v&guce_referrer_sig=AQAAAJjHlYZ2iDWX'
+    const expected = 'https://example.com/news/article.html'
+
+    expect(stripTrackingParams(value)).toBe(expected)
+  })
+
+  it('should strip a query whose nested url carries sig', () => {
+    const value =
+      'https://example.com/share?url=https%3A%2F%2Fcdn.example.org%2Ffile.mp4%3Fsig%3Dabc&utm_source=feed'
+    const expected =
+      'https://example.com/share?url=https%3A%2F%2Fcdn.example.org%2Ffile.mp4%3Fsig%3Dabc'
+
+    expect(stripTrackingParams(value)).toBe(expected)
+  })
+
+  it('should keep a self-referential ref on a signed url', () => {
+    const value = 'https://example.com/post?ref=example.com&sig=NtAM31UkcdrglORmOSBE8bin4bg'
+
+    expect(stripTrackingParams(value)).toBe(value)
+  })
+
+  it('should keep the query of a signed target whole after unwrapping', () => {
+    const target =
+      'https://cdn.example.com/file.mp4?id=4A665C2C&ts=1822903430&sig=NtAM31UkcdrglORmOSBE8bin4bg'
+    const value = `https://redirect.example.com/?target=${encodeURIComponent(target)}`
+    const options = { unwrappers: [exampleUnwrapper] }
+
+    expect(cleanUrl(value, options)).toBe(target)
+  })
+})

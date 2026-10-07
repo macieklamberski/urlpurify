@@ -53,6 +53,8 @@ Removes matching query parameters and returns the cleaned URL. The input is retu
 
 Both `cleanUrl` and `stripTrackingParams` also drop a `ref` parameter when its value is the URL's own host (Ghost's self-referral `?ref=example.com` on `example.com`), regardless of the tracking list passed. With any other value `ref` is left alone, since it is often a real referral target.
 
+Both leave a query whole, self-referral `ref` included, when it carries a signature parameter: `sig`, `signature`, `X-Amz-Signature` or `X-Goog-Signature`, matched case-insensitively. The signature covers the other parameters, so a signed CDN link such as `?id=…&ts=…&sig=…` stops working once its `ts` is dropped.
+
 A tracking list is compiled the first time it's used, and later calls with the same array reuse that result. To change the list, pass a new array. Entries pushed onto an array that's already been used are ignored.
 
 ### `createParamExtractor(config)`
