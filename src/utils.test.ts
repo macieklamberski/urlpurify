@@ -45,6 +45,28 @@ describe('createParamExtractor', () => {
     expect(extract(value)).toBe(expected)
   })
 
+  it('should match a host with a trailing dot when given as hosts', () => {
+    const extract = createParamExtractor({
+      hosts: 'go.example.com',
+      params: ['u'],
+    })
+    const value = new URL('https://go.example.com./?u=https://example.org/post')
+    const expected = 'https://example.org/post'
+
+    expect(extract(value)).toBe(expected)
+  })
+
+  it('should match a host with a trailing dot when given as a hosts array', () => {
+    const extract = createParamExtractor({
+      hosts: ['a.example.com', 'go.example.com'],
+      params: ['u'],
+    })
+    const value = new URL('https://go.example.com./?u=https://example.org/post')
+    const expected = 'https://example.org/post'
+
+    expect(extract(value)).toBe(expected)
+  })
+
   it('should match hosts given as a regex', () => {
     const extract = createParamExtractor({
       hosts: exampleSubdomainRegex,
