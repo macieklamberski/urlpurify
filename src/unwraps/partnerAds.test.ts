@@ -28,6 +28,14 @@ describe('unwrapPartnerAds', () => {
     expect(unwrapPartnerAds(url)).toBe('https://example.com/post')
   })
 
+  it('should extract target on the apex domain', () => {
+    const url = new URL(
+      'https://partner-ads.com/dk/klikbanner.php?htmlurl=https%3A%2F%2Fexample.com%2F',
+    )
+
+    expect(unwrapPartnerAds(url)).toBe('https://example.com/')
+  })
+
   it('should extract target on a subdomain no specimen shows', () => {
     const url = new URL(
       'https://dk.partner-ads.com/dk/klikbanner.php?htmlurl=https%3A%2F%2Fexample.com%2Fpost',
