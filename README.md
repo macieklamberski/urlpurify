@@ -6,7 +6,7 @@
 
 Unwrap redirect, affiliate, and tracking wrapper URLs and strip tracking parameters. Turn noisy links into clean, direct URLs.
 
-Links from feeds, emails and social platforms rarely point straight at their destination. They pass through search redirects, link shims, email gateways and affiliate networks, and pick up analytics parameters on the way. urlpurify unwraps 380+ known wrappers and strips 170+ known tracking parameters plus families like `utm_*`. It has no dependencies and runs in any modern JavaScript runtime, browsers included.
+Links from feeds, emails and social platforms rarely point straight at their destination. They pass through search redirects, link shims, email gateways and affiliate networks, and pick up tracking parameters on the way, the link decoration that follows a reader from site to site. urlpurify unwraps 380+ known wrappers and strips 170+ known tracking parameters plus families like `utm_*`. It has no dependencies and runs in any modern JavaScript runtime, browsers included.
 
 ## Installation
 
@@ -96,7 +96,7 @@ There are more than 380 unwrappers, each in its own file in [src/unwraps](src/un
 | Email tracking | `emailTrackingUnwrappers` | The sender's click stats | |
 | Affiliate links | `affiliateUnwrappers` | The publisher's commission | |
 | Advertising | `advertisingUnwrappers` | Ad click and app install attribution | |
-| Download measurement | `downloadMeasurementUnwrappers` | A podcaster's or site's download or click counts | |
+| Download measurement | `downloadMeasurementUnwrappers` | A podcast measurement prefix's download counts, or a site's download or click counts | |
 | Archives and proxies | `archiveProxyUnwrappers` | The archived or translated copy: you get the live page | |
 
 `defaultUnwrappers` combines the first three. The rest cost somebody something or change the page: an affiliate link may pay for a small blog, and an archive link points at a copy on purpose. To turn more on, spread them next to the defaults:
