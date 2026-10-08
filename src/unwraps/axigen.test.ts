@@ -12,6 +12,20 @@ describe('unwrapAxigen', () => {
     )
   })
 
+  it('should extract a target encoded twice', () => {
+    const url = new URL(
+      'http://www.example.com/redir.hsp?url=https%253A%252F%252Fexample.org%252Fpage',
+    )
+
+    expect(unwrapAxigen(url)).toBe('https://example.org/page')
+  })
+
+  it('should keep a plus in an unencoded target', () => {
+    const url = new URL('http://www.example.com/redir.hsp?url=https://example.org/search/a+b')
+
+    expect(unwrapAxigen(url)).toBe('https://example.org/search/a+b')
+  })
+
   it('should extract an unencoded target', () => {
     const url = new URL('http://mail.example.mk/redir.hsp?url=https://www.example.com/')
 

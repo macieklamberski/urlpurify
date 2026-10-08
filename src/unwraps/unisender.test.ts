@@ -10,6 +10,14 @@ describe('unwrapUnisender', () => {
     expect(unwrapUnisender(url)).toBe('http://example.org/event/294092/?t=52829')
   })
 
+  it('should keep a plus in an unencoded target', () => {
+    const url = new URL(
+      'http://usndr.com/ru/mail_link_tracker?hash=5ophjexcycqe5wnr3ykwqf6hro5uuxtmkosu775oodnd8ro&url=https://example.org/search/a+b',
+    )
+
+    expect(unwrapUnisender(url)).toBe('https://example.org/search/a+b')
+  })
+
   it('should extract a target encoded once', () => {
     const url = new URL(
       'https://geteml.com/ru/mail_link_tracker?hash=68kdgpowswrq7it1mheb7tmhpcrg1jn48en&url=https%3A%2F%2Fexample.org%2F',

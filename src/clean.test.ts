@@ -138,6 +138,22 @@ describe('unwrapUrl', () => {
 
     expect(unwrapUrl(value, [exampleUnwrapper, exampleFallbackUnwrapper])).toBe(expected)
   })
+
+  it('should fall through to the next unwrapper when a target is ftp', () => {
+    const value =
+      'https://redirect.example.com/?target=ftp://example.org/file&fallback=https://example.com/post'
+    const expected = 'https://example.com/post'
+
+    expect(unwrapUrl(value, [exampleUnwrapper, exampleFallbackUnwrapper])).toBe(expected)
+  })
+
+  it('should fall through to the next unwrapper when a target has no usable host', () => {
+    const value =
+      'https://redirect.example.com/?target=https://www.&fallback=https://example.com/post'
+    const expected = 'https://example.com/post'
+
+    expect(unwrapUrl(value, [exampleUnwrapper, exampleFallbackUnwrapper])).toBe(expected)
+  })
 })
 
 describe('stripTrackingParams', () => {
@@ -631,6 +647,15 @@ describe('cleanUrl with a malformed target', () => {
     expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
   })
 
+  it('should fall through to the next unwrapper when a target has no usable host', () => {
+    const value =
+      'https://redirect.example.com/?target=https://www.&fallback=https://example.com/post'
+    const options = { unwrappers: [exampleUnwrapper, exampleFallbackUnwrapper] }
+    const expected = 'https://example.com/post'
+
+    expect(cleanUrl(value, options)).toBe(expected)
+  })
+
   it('should keep the wrapper when the target is an s3 url behind an https scheme', () => {
     const value =
       'https://redirect.example.com/?target=https://s3://podcast.example.com/2026/6.8.26'
@@ -820,6 +845,26 @@ describe('self-referential ref param', () => {
     const expected = 'https://example.com/post'
 
     expect(stripTrackingParams(value)).toBe(expected)
+  })
+
+  it('should strip a capitalized Ref when its value is the same host', () => {
+    const value = 'https://example.com/post?Ref=example.com'
+    const expected = 'https://example.com/post'
+
+    expect(stripTrackingParams(value)).toBe(expected)
+  })
+
+  it('should strip an uppercase REF when its value is the same host', () => {
+    const value = 'https://example.com/post?REF=example.com'
+    const expected = 'https://example.com/post'
+
+    expect(stripTrackingParams(value)).toBe(expected)
+  })
+
+  it('should keep a capitalized Ref when its value is a different host', () => {
+    const value = 'https://example.com/post?Ref=example.org'
+
+    expect(stripTrackingParams(value)).toBe(value)
   })
 
   it('should strip a Unicode ref naming the same internationalized host', () => {

@@ -1,4 +1,4 @@
-import { isAnyOf, isHostOrSubdomainOf } from 'trousse'
+import { isAnyOf, isHostOf, isHostOrSubdomainOf } from 'trousse'
 import type { UrlUnwrapper } from './types.js'
 
 // `domains` also matches every subdomain. `hosts` matches a host exactly, or by regex, for a domain
@@ -40,7 +40,7 @@ export const getParamValues = (url: URL, name: string): Array<string> => {
   const values: Array<string> = []
 
   for (const pair of url.search.slice(1).split('&')) {
-    const entry = new URLSearchParams(pair).entries().next().value
+    const entry = new URLSearchParams(`&${pair}`).entries().next().value
 
     if (!entry || entry[0] !== name) {
       continue
@@ -59,14 +59,33 @@ export const getParamValues = (url: URL, name: string): Array<string> => {
   return values
 }
 
-export const createParamExtractor = (config: ParamExtractorConfig): UrlUnwrapper => {
-  return (url) => {
-    const isHostMatch =
-      config.domains !== undefined
-        ? isHostOrSubdomainOf(url, config.domains)
-        : isAnyOf(url.hostname, config.hosts)
+// The target a carrier param holds, read as `getParamValues` reads it and decoded once more when
+// encoded twice: the first value, or the one at `index`, such as -1 for the last.
+export const getParamTarget = (url: URL, name: string, index = 0): string | undefined => {
+  const value = getParamValues(url, name).at(index)
 
-    if (!isHostMatch) {
+  if (!value) {
+    return
+  }
+
+  return decodeEncodedScheme(value)
+}
+
+export const createParamExtractor = (config: ParamExtractorConfig): UrlUnwrapper => {
+  const isHostMatch = (url: URL): boolean => {
+    if (config.domains !== undefined) {
+      return isHostOrSubdomainOf(url, config.domains)
+    }
+
+    if (config.hosts instanceof RegExp) {
+      return isAnyOf(url.hostname, config.hosts)
+    }
+
+    return isHostOf(url, config.hosts)
+  }
+
+  return (url) => {
+    if (!isHostMatch(url)) {
       return
     }
 

@@ -12,6 +12,22 @@ describe('unwrapFireeye', () => {
     )
   })
 
+  it('should extract a target encoded twice', () => {
+    const url = new URL(
+      'https://protect2.fireeye.com/v1/url?k=93407f2f-ccdb4639-9344362f-8681d5b5fa8e-01a4371d5adb092e&q=1&e=98882430-2b46-4dc6-90b8-29eb7702eb4c&u=https%253A%252F%252Fexample.org%252Fpage',
+    )
+
+    expect(unwrapFireeye(url)).toBe('https://example.org/page')
+  })
+
+  it('should keep a plus in an unencoded target', () => {
+    const url = new URL(
+      'https://protect2.fireeye.com/v1/url?k=93407f2f-ccdb4639-9344362f-8681d5b5fa8e-01a4371d5adb092e&q=1&e=98882430-2b46-4dc6-90b8-29eb7702eb4c&u=https://example.org/search/a+b',
+    )
+
+    expect(unwrapFireeye(url)).toBe('https://example.org/search/a+b')
+  })
+
   it('should extract target from the path without the version', () => {
     const url = new URL(
       'https://protect2.fireeye.com/url?k=a7f45eec-fb661037-a7f48a84-002590f4edde-626350e6a0c3fc1e&q=1&u=http%3A%2F%2Fexample.com%2Ftn.jsp%3Ff%3D001JsaCeX',

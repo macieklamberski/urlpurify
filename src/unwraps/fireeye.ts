@@ -1,5 +1,6 @@
 import { isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
+import { getParamTarget } from '../utils.js'
 
 const paths = ['/v1/url', '/url']
 
@@ -11,7 +12,7 @@ export const unwrapFireeye: UrlUnwrapper = (url) => {
     return
   }
 
-  const target = url.searchParams.get('u')
+  const target = getParamTarget(url, 'u')
 
   if (target && isHttpUrl(target)) {
     return target

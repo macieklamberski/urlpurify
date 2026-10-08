@@ -10,6 +10,22 @@ describe('unwrapFinalsite', () => {
     expect(unwrapFinalsite(url)).toBe('https://www.example.org//uploaded/MMS/Kennywood.pdf')
   })
 
+  it('should extract a target encoded twice', () => {
+    const url = new URL(
+      'https://www.example.com/cf_news/forward.cfm?dest=https%253A%252F%252Fexample.org%252Fpage&destkey=081A35EA62FBD890AA4F3901F29FCFAB79266FC41A7690754D061BD8B830C102',
+    )
+
+    expect(unwrapFinalsite(url)).toBe('https://example.org/page')
+  })
+
+  it('should keep a plus in an unencoded target', () => {
+    const url = new URL(
+      'https://www.example.com/cf_news/forward.cfm?dest=https://example.org/search/a+b&destkey=081A35EA62FBD890AA4F3901F29FCFAB79266FC41A7690754D061BD8B830C102',
+    )
+
+    expect(unwrapFinalsite(url)).toBe('https://example.org/search/a+b')
+  })
+
   it('should extract target from the root path', () => {
     const url = new URL(
       'http://www.fenn.org/forward.cfm?dest=http%3A%2F%2Fwww%2Eexample%2Eorg%2Ffs%2Fpages%2F565&destkey=37C82DF4D7932986CC53C15C332D5CA72936B4E659601EF12D0DF6F7D24B5206',

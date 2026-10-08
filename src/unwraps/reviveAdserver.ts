@@ -1,5 +1,6 @@
 import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
+import { getParamTarget } from '../utils.js'
 
 // The delivery directory varies per install, such as /www/delivery/ or /openx/www/delivery/.
 // ck.php is the click script, cl.php the signed one.
@@ -42,7 +43,7 @@ export const unwrapReviveAdserver: UrlUnwrapper = (url) => {
     return
   }
 
-  const target = url.searchParams.get('dest')
+  const target = getParamTarget(url, 'dest')
 
   if (!target || !isHttpUrl(target)) {
     return

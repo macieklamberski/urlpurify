@@ -1,6 +1,6 @@
 import { isAnyOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { decodeBase64Url } from '../utils.js'
+import { decodeBase64Url, getParamTarget } from '../utils.js'
 
 export const bingHosts = [
   'bing.com',
@@ -23,7 +23,7 @@ export const unwrapBing: UrlUnwrapper = (url) => {
   }
 
   if (url.pathname === '/news/apiclick.aspx') {
-    const target = url.searchParams.get('url')
+    const target = getParamTarget(url, 'url')
 
     if (!target || !isHttpUrl(target)) {
       return

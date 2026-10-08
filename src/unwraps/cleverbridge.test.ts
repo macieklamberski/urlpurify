@@ -10,6 +10,22 @@ describe('unwrapCleverbridge', () => {
     expect(unwrapCleverbridge(url)).toBe('https://www.example.com/en/pricing?hidefree=1&cb=46217')
   })
 
+  it('should extract a target encoded twice', () => {
+    const url = new URL(
+      'https://www.example.com/1034/cookie?affiliate=46217&expiry=45&redirectto=https%253A%252F%252Fexample.org%252Fpage',
+    )
+
+    expect(unwrapCleverbridge(url)).toBe('https://example.org/page')
+  })
+
+  it('should keep a plus in an unencoded target', () => {
+    const url = new URL(
+      'https://www.example.com/1034/cookie?affiliate=46217&expiry=45&redirectto=https://example.org/search/a+b',
+    )
+
+    expect(unwrapCleverbridge(url)).toBe('https://example.org/search/a+b')
+  })
+
   it('should extract a target with lowercase percent-encoding', () => {
     const url = new URL(
       'https://secure.piriform.com/502/cookie?affiliate=21030&redirectto=http%3a%2f%2fwww.example.com%2fspeccy%2fdownload%2fstandard&product=71030',

@@ -1,5 +1,6 @@
 import { isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
+import { getParamTarget } from '../utils.js'
 
 const hosts = [
   'h.accesstrade.net',
@@ -19,5 +20,5 @@ export const unwrapAccesstrade: UrlUnwrapper = (url) => {
     return
   }
 
-  return url.searchParams.get('url') || undefined
+  return getParamTarget(url, 'url')
 }

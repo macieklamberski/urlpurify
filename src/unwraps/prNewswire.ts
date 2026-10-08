@@ -1,9 +1,8 @@
 import { isAnyOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { percentDecode } from '../utils.js'
+import { getParamTarget } from '../utils.js'
 
 const prNewswireHosts = ['c212.net', 'edge.prnewswire.com']
-const encodedSchemeRegex = /^https?%3A/i
 
 // PR Newswire release click tracker (c212.net or edge.prnewswire.com /c/link/?u=<target>).
 export const unwrapPrNewswire: UrlUnwrapper = (url) => {
@@ -13,15 +12,10 @@ export const unwrapPrNewswire: UrlUnwrapper = (url) => {
 
   // A tracker nested unencoded in `u` spills its own `u` into this query, so the last one
   // holds the target.
-  let target = url.searchParams.getAll('u').at(-1)
+  const target = getParamTarget(url, 'u', -1)
 
   if (!target) {
     return
-  }
-
-  // Some releases encode the target twice.
-  if (encodedSchemeRegex.test(target)) {
-    target = percentDecode(target)
   }
 
   if (isHttpUrl(target)) {

@@ -94,7 +94,7 @@ const deleteTrackingParams = (url: URL, trackingParams: Array<TrackingParam>): v
 
     // A `ref` holding the URL's own host is Ghost's self-referral, `?ref=example.com` on
     // example.com. With any other value `ref` is often a real referral target.
-    if (key !== 'ref' || refDelimitersRegex.test(value)) {
+    if (name !== 'ref' || refDelimitersRegex.test(value)) {
       return true
     }
 
@@ -119,7 +119,7 @@ const dottedHostRegex = /[^.]\.[^.]/
 const fileExtensionHostRegex = /\.(?:asp|aspx|cgi|htm|html|jsp|jspa|php)$/
 
 // Repairs a malformed scheme such as `https:/host` or `https://https://host`, then drops a target
-// with a control character or a host without a dot between two labels, so the wrapper stays. Such
+// with a control character or a host without a dot between two labels, so it falls through. Such
 // a host is a cut-off link, a path or a scheme read as one: `https://www.`, `https://s3://bucket`.
 // A host ending in a page extension is a relative or cut-off link given a scheme, as Gmail writes
 // `http:///page.php`, which the scheme repair turns into the host `page.php`.
@@ -161,16 +161,22 @@ const addMissingScheme = (target: string | undefined): string | undefined => {
 
 const applyUnwrappers = (url: URL, unwrappers: Array<UrlUnwrapper>): string | undefined => {
   for (const unwrap of unwrappers) {
-    const target = addMissingScheme(unwrap(url))
+    const raw = addMissingScheme(unwrap(url))
 
-    if (target && isHttpUrl(target)) {
+    if (!raw || !isHttpUrl(raw)) {
+      continue
+    }
+
+    const target = cleanTarget(raw)
+
+    if (target) {
       return target
     }
   }
 }
 
-// Apply unwrappers in order and return the first extracted target URL, cleaned and serialized as in
-// cleanUrl, or undefined when none match or the input cannot be parsed.
+// Apply unwrappers in order and return the first extracted target URL that survives cleaning,
+// serialized as in cleanUrl, or undefined when none match or the input cannot be parsed.
 export const unwrapUrl = (
   url: string,
   unwrappers: Array<UrlUnwrapper> = defaultUnwrappers,
@@ -181,7 +187,7 @@ export const unwrapUrl = (
     return
   }
 
-  const target = cleanTarget(applyUnwrappers(parsed, unwrappers))
+  const target = applyUnwrappers(parsed, unwrappers)
 
   // With one hop there is no later hop to drop a part mis-decoded to U+FFFD, so the wrapper stays.
   if (!target || target.includes(replacementCharacter)) {
@@ -229,7 +235,7 @@ export const cleanUrl = (url: string, options?: CleanUrlOptions): string => {
   // Wrappers can nest (an email gateway wrapping a search redirect), so
   // unwrap repeatedly up to the depth limit.
   for (let depth = 0; depth < maxUnwrapDepth; depth += 1) {
-    const target = cleanTarget(applyUnwrappers(currentParsed, unwrappers))
+    const target = applyUnwrappers(currentParsed, unwrappers)
 
     if (!target) {
       break

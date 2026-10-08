@@ -1,5 +1,6 @@
 import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
+import { getParamTarget } from '../utils.js'
 
 const amazonPathRegex = /^\/x\/c\/[^/]+\/(https?:\/\/.+)$/
 const amazonHostRegex = /^aax(?:-[a-z]+)*\.amazon-adsystem\.com$|^aax-us-iad\.amazon\.com$/
@@ -15,22 +16,22 @@ const emailRedirectPaths = ['/gp/r.html', '/gp/f.html']
 // /gp/slredirect/picassoRedirect.html/ref=<ref>?url=<URL>.
 export const unwrapAmazonAffiliate: UrlUnwrapper = (url) => {
   if (storeHostRegex.test(url.hostname)) {
-    let target: string | null = null
+    let target: string | undefined
 
     if (storeRedirectPathRegex.test(url.pathname)) {
-      target = url.searchParams.get('location')
+      target = getParamTarget(url, 'location')
     }
 
     if (url.pathname === '/exec/obidos/redirect') {
-      target = url.searchParams.get('path')
+      target = getParamTarget(url, 'path')
     }
 
     if (emailRedirectPaths.includes(url.pathname)) {
-      target = url.searchParams.get('U')
+      target = getParamTarget(url, 'U')
     }
 
     if (sponsoredRedirectPathRegex.test(url.pathname)) {
-      target = url.searchParams.get('url')
+      target = getParamTarget(url, 'url')
     }
 
     if (target && isHttpUrl(target)) {

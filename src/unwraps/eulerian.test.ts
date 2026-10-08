@@ -10,6 +10,22 @@ describe('unwrapEulerian', () => {
     expect(unwrapEulerian(url)).toBe('http://www.example.com/box-internet/?sfrcpid=t20_ecom_086_gg')
   })
 
+  it('should extract a target encoded twice', () => {
+    const url = new URL(
+      'http://www.example.com/dynclick/sfr-fr/?eml-publisher=Ginger&eml-name=Email-Gestion&eemail=user@example.com&linkId=45&eurl=https%253A%252F%252Fexample.org%252Fpage',
+    )
+
+    expect(unwrapEulerian(url)).toBe('https://example.org/page')
+  })
+
+  it('should keep a plus in an unencoded target', () => {
+    const url = new URL(
+      'http://www.example.com/dynclick/sfr-fr/?eml-publisher=Ginger&eml-name=Email-Gestion&eemail=user@example.com&linkId=45&eurl=https://example.org/search/a+b',
+    )
+
+    expect(unwrapEulerian(url)).toBe('https://example.org/search/a+b')
+  })
+
   it('should extract an unencoded target', () => {
     const url = new URL(
       'https://eultech.fnac.com/dynclick/fnac/?ept-publisher=cineserie&ept-name=ArticlesEdito&eseg-name=article&eseg-item=&eurl=https://www.example.com/a14138664/Blu-ray',

@@ -10,6 +10,22 @@ describe('unwrapVanilla', () => {
     expect(unwrapVanilla(url)).toBe('https://wiki.example.org/Ubuntu_18.04')
   })
 
+  it('should extract a target encoded twice', () => {
+    const url = new URL(
+      'https://www.example.com/home/leaving?allowTrusted=1&target=https%253A%252F%252Fexample.org%252Fpage',
+    )
+
+    expect(unwrapVanilla(url)).toBe('https://example.org/page')
+  })
+
+  it('should keep a plus in an unencoded target', () => {
+    const url = new URL(
+      'https://www.example.com/home/leaving?allowTrusted=1&target=https://example.org/search/a+b',
+    )
+
+    expect(unwrapVanilla(url)).toBe('https://example.org/search/a+b')
+  })
+
   it('should extract target behind a locale prefix', () => {
     const url = new URL(
       'https://community.example.com/en/home/leaving?allowTrusted=1&target=https%3A%2F%2Fexample.org%2F',

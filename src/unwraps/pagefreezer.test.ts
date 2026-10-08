@@ -34,6 +34,22 @@ describe('unwrapPagefreezer', () => {
     expect(unwrapPagefreezer(url)).toBe('https://www.example.gov/about/news/2024/06/25/report.html')
   })
 
+  it('should extract a target encoded twice', () => {
+    const url = new URL(
+      'https://us.pagefreezer.com/en-US/wa/browse/0a7f82bb-be6e-448a-ae11-373d22c37842?find-by-timestamp=2025-01-02T05:49:59Z&url=https%253A%252F%252Fexample.org%252Fpage',
+    )
+
+    expect(unwrapPagefreezer(url)).toBe('https://example.org/page')
+  })
+
+  it('should keep a plus in an unencoded target', () => {
+    const url = new URL(
+      'https://us.pagefreezer.com/en-US/wa/browse/0a7f82bb-be6e-448a-ae11-373d22c37842?find-by-timestamp=2025-01-02T05:49:59Z&url=https://example.org/search/a+b',
+    )
+
+    expect(unwrapPagefreezer(url)).toBe('https://example.org/search/a+b')
+  })
+
   it('should return undefined for a path snapshot with no target', () => {
     const url = new URL('https://public3.pagefreezer.com/browse/HHS.gov/16-09-2020T14:35/')
 

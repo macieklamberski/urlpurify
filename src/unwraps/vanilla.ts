@@ -1,5 +1,6 @@
 import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
+import { getParamTarget } from '../utils.js'
 
 // A locale or subcommunity prefix, such as /en/ or /en/madden-nfl/.
 const pathRegex = /^(?:\/[^/]+){0,2}\/home\/leaving$/
@@ -12,7 +13,7 @@ export const unwrapVanilla: UrlUnwrapper = (url) => {
   }
 
   // Older Vanilla versions spell the carrier `Target`.
-  const target = url.searchParams.get('target') ?? url.searchParams.get('Target')
+  const target = getParamTarget(url, 'target') ?? getParamTarget(url, 'Target')
 
   if (!target || !isHttpUrl(target)) {
     return

@@ -10,6 +10,22 @@ describe('unwrapMail2easy', () => {
     expect(unwrapMail2easy(url)).toBe('http://www.example.com.br/')
   })
 
+  it('should extract a target encoded twice', () => {
+    const url = new URL(
+      'http://d-click.example.com/u/3971/2429/177699/4935_0/ca4da/?url=https%253A%252F%252Fexample.org%252Fpage&utm_source=mail2easy&utm_medium=e-mail',
+    )
+
+    expect(unwrapMail2easy(url)).toBe('https://example.org/page')
+  })
+
+  it('should keep a plus in an unencoded target', () => {
+    const url = new URL(
+      'http://d-click.example.com/u/3971/2429/177699/4935_0/ca4da/?url=https://example.org/search/a+b&utm_source=mail2easy&utm_medium=e-mail',
+    )
+
+    expect(unwrapMail2easy(url)).toBe('https://example.org/search/a+b')
+  })
+
   it('should extract an unencoded target', () => {
     const url = new URL(
       'http://d-click.eccopress.com.br/u/13902/972/41649/945_0/f19be/?url=https://www.example.com.br/cursos',

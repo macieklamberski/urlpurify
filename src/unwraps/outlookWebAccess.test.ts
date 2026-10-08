@@ -10,6 +10,14 @@ describe('unwrapOutlookWebAccess', () => {
     expect(unwrapOutlookWebAccess(url)).toBe('https://www.example.com/event/970904/')
   })
 
+  it('should keep a plus in an unencoded target', () => {
+    const url = new URL(
+      'https://www.example.com/owa/redir.aspx?C=KwklBeQqIEGufaohydg70Xi2UatAi9ZIhh3TgX5ZFL4HDJ9y7Y6W3CrqdcsWvol7driSgAV2DNc.&URL=https://example.org/search/a+b',
+    )
+
+    expect(unwrapOutlookWebAccess(url)).toBe('https://example.org/search/a+b')
+  })
+
   it('should extract target from the uppercase OWA path', () => {
     const url = new URL(
       'https://owa.example.ac.uk/OWA/redir.aspx?C=b5179a3ad8fb45f8ad7e6130bb7afcdc&URL=http%3a%2f%2fwww.example.com%2fcms%2fs%2f2%2f141f425e.html',

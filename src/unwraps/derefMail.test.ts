@@ -16,6 +16,14 @@ describe('unwrapDerefMail', () => {
     expect(unwrapDerefMail(url)).toBe('http://www.example.com')
   })
 
+  it('should keep a plus in an unencoded target', () => {
+    const url = new URL(
+      'https://deref-gmx.net/mail/client/dereferrer/?redirectUrl=https://example.org/search/a+b',
+    )
+
+    expect(unwrapDerefMail(url)).toBe('https://example.org/search/a+b')
+  })
+
   it('should extract target when the path carries a session token', () => {
     const url = new URL(
       'https://deref-web.de/mail/client/BnWC_HUE7ow/dereferrer/?redirectUrl=https%3A%2F%2Fexample.com%2Fkontakt',

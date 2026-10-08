@@ -1,5 +1,6 @@
 import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
+import { getParamTarget } from '../utils.js'
 
 // Elastic Email click tracker, on its own <code>.trk.elasticemail.com hosts and on senders' custom
 // tracking domains (tracking.<sender domain>/tracking/click?msgid=<id>&target=<target>).
@@ -9,7 +10,7 @@ export const unwrapElasticEmail: UrlUnwrapper = (url) => {
     return
   }
 
-  const target = url.searchParams.get('target')
+  const target = getParamTarget(url, 'target')
 
   if (!target || !isHttpUrl(target)) {
     return

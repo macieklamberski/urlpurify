@@ -10,6 +10,22 @@ describe('unwrapAdjust', () => {
     expect(unwrapAdjust(url)).toBe('https://example.com/app')
   })
 
+  it('should extract a target encoded twice', () => {
+    const url = new URL(
+      'https://app.adjust.com/abc123?campaign=launch&redirect=https%253A%252F%252Fexample.org%252Fpage',
+    )
+
+    expect(unwrapAdjust(url)).toBe('https://example.org/page')
+  })
+
+  it('should keep a plus in an unencoded target', () => {
+    const url = new URL(
+      'https://app.adjust.com/abc123?campaign=launch&redirect=https://example.org/search/a+b',
+    )
+
+    expect(unwrapAdjust(url)).toBe('https://example.org/search/a+b')
+  })
+
   it('should return undefined when redirect param is missing', () => {
     const url = new URL('https://app.adjust.com/abc123?campaign=launch')
 

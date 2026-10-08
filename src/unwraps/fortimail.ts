@@ -1,5 +1,6 @@
 import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
+import { getParamTarget } from '../utils.js'
 
 // Fortinet FortiMail URL click protection on any host
 // (<gateway host>/fmlurlsvc/?fewReq=<token>&url=<target>).
@@ -9,7 +10,7 @@ export const unwrapFortimail: UrlUnwrapper = (url) => {
     return
   }
 
-  const target = url.searchParams.get('url')
+  const target = getParamTarget(url, 'url')
 
   if (!target || !isHttpUrl(target)) {
     return

@@ -1,5 +1,6 @@
 import { isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
+import { getParamTarget } from '../utils.js'
 
 const shimPathRegex =
   /^\/(safety\/go|redir\/redirect)\/?$|^\/(redirect|nhome\/nus-redirect|nus-trk|e\/v2)$|^\/company\/[^/]+\/redirect$/
@@ -12,7 +13,7 @@ export const unwrapLinkedin: UrlUnwrapper = (url) => {
     return
   }
 
-  const target = url.searchParams.get('url')
+  const target = getParamTarget(url, 'url')
 
   if (!target) {
     return

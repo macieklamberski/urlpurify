@@ -52,6 +52,14 @@ describe('unwrapBing', () => {
     expect(unwrapBing(url)).toBe('https://example.com/news/112436')
   })
 
+  it('should keep a plus in an unencoded target', () => {
+    const url = new URL(
+      'http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6a46b6d7ac584d99bf3c81b8f232bc5a&url=https://example.org/search/a+b&c=12372153717731441417&mkt=en-us',
+    )
+
+    expect(unwrapBing(url)).toBe('https://example.org/search/a+b')
+  })
+
   it('should extract target from news apiclick with url as the only param', () => {
     const url = new URL('https://www.bing.com/news/apiclick.aspx?url=https%3A%2F%2Fexample.com%2F')
 
@@ -80,12 +88,12 @@ describe('unwrapBing', () => {
     expect(unwrapBing(url)).toBeUndefined()
   })
 
-  it('should return undefined when news apiclick target is twice encoded', () => {
+  it('should extract a twice-encoded news apiclick target', () => {
     const url = new URL(
       'https://www.bing.com/news/apiclick.aspx?url=https%253A%252F%252Fexample.com%252Fpage',
     )
 
-    expect(unwrapBing(url)).toBeUndefined()
+    expect(unwrapBing(url)).toBe('https://example.com/page')
   })
 
   it('should return undefined for other news paths', () => {

@@ -10,6 +10,22 @@ describe('unwrapMintDownloads', () => {
     expect(unwrapMintDownloads(url)).toBe('http://www.example.com/uploads/file/report.pdf')
   })
 
+  it('should extract a target encoded twice', () => {
+    const url = new URL(
+      'http://www.example.com/stats/pepper/orderedlist/downloads/download.php?file=https%253A%252F%252Fexample.org%252Fpage',
+    )
+
+    expect(unwrapMintDownloads(url)).toBe('https://example.org/page')
+  })
+
+  it('should keep a plus in an unencoded target', () => {
+    const url = new URL(
+      'http://www.example.com/stats/pepper/orderedlist/downloads/download.php?file=https://example.org/search/a+b',
+    )
+
+    expect(unwrapMintDownloads(url)).toBe('https://example.org/search/a+b')
+  })
+
   it('should extract the target from the counter under the mint folder', () => {
     const url = new URL(
       'http://www.example.com/mint/pepper/orderedlist/downloads/download.php?file=http%3A%2F%2Fwww.example.com%2Fdocs%2Fbrief.pdf',

@@ -10,6 +10,22 @@ describe('unwrapEasyMarketing', () => {
     expect(unwrapEasyMarketing(url)).toBe('https://www.example.com/')
   })
 
+  it('should extract a target encoded twice', () => {
+    const url = new URL(
+      'https://pvn.saturn.de/trck/eclick/ea7f1008243bc25a1c4ec20941e8fae8?url=https%253A%252F%252Fexample.org%252Fpage&subid=rss',
+    )
+
+    expect(unwrapEasyMarketing(url)).toBe('https://example.org/page')
+  })
+
+  it('should keep a plus in an unencoded target', () => {
+    const url = new URL(
+      'https://pvn.saturn.de/trck/eclick/ea7f1008243bc25a1c4ec20941e8fae8?url=https://example.org/search/a+b&subid=rss',
+    )
+
+    expect(unwrapEasyMarketing(url)).toBe('https://example.org/search/a+b')
+  })
+
   it('should extract a plain target from url param', () => {
     const url = new URL(
       'https://pvn.saturn.de/trck/eclick/7412cf7a122f7901d24f26db95f0b13a?subid=rss&url=https://www.example.com/de/product/_apple-iphone-17-pro',
