@@ -10,6 +10,14 @@ describe('unwrapJive', () => {
     expect(unwrapJive(url)).toBe('http://www.example.org/files/doc/data_sheet/KL36.pdf')
   })
 
+  it('should keep a plus in an unencoded target', () => {
+    const url = new URL(
+      'https://www.example.com/external-link.jspa?url=https://example.org/search/a+b',
+    )
+
+    expect(unwrapJive(url)).toBe('https://example.org/search/a+b')
+  })
+
   it('should extract an https target', () => {
     const url = new URL(
       'https://community.example.com/external-link.jspa?url=https%3A%2F%2Fdocs.example.org%2Fbackup%2Frecovery.html%23dr-infrastructure',

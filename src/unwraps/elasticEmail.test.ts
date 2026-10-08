@@ -10,6 +10,14 @@ describe('unwrapElasticEmail', () => {
     expect(unwrapElasticEmail(url)).toBe('http://www.example.org/index.php?subid=2')
   })
 
+  it('should keep a plus in an unencoded target', () => {
+    const url = new URL(
+      'http://www.example.com/tracking/click?msgid=Hq17hf_18KKEOrxUqkC5fQ2&target=https://example.org/search/a+b&lc=1&v=',
+    )
+
+    expect(unwrapElasticEmail(url)).toBe('https://example.org/search/a+b')
+  })
+
   it('should extract target from target param on an Elastic Email host', () => {
     const url = new URL(
       'http://m7r7.trk.elasticemail.com/tracking/click?msgid=2rLfZC2rjxYb2xeZ4Ov1ow2&target=https%3a%2f%2fexample.com%2fevents&v=',

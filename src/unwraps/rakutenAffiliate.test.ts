@@ -70,6 +70,14 @@ describe('unwrapRakutenAffiliate', () => {
     })
   })
 
+  it('should keep a plus in an unencoded target', () => {
+    const url = new URL(
+      'http://pt.afl.rakuten.co.jp/c/00008d94.89da87f5/?url=https://example.org/search/a+b&scid=af_ich_link_urltxt_pc',
+    )
+
+    expect(unwrapRakutenAffiliate(url)).toBe('https://example.org/search/a+b')
+  })
+
   describe('mt.afl.rakuten.co.jp/mc/ link', () => {
     it('should extract target from url param', () => {
       const url = new URL(

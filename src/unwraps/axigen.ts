@@ -1,5 +1,6 @@
 import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
+import { getParamTarget } from '../utils.js'
 
 // Axigen WebMail link redirect on an organization's own mail server
 // (<mail host>/redir.hsp?url=<target>). Each organization runs it on its own host, so the exact
@@ -9,7 +10,7 @@ export const unwrapAxigen: UrlUnwrapper = (url) => {
     return
   }
 
-  const target = url.searchParams.get('url')
+  const target = getParamTarget(url, 'url')
 
   if (!target || !isHttpUrl(target)) {
     return

@@ -1,5 +1,6 @@
 import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
+import { getParamTarget } from '../utils.js'
 
 const pathRegex = /^\/u\/\d+\/\d+\/\d+\/\d+(?:_\d+)?\/(?:[0-9a-f]+\/)?$/
 
@@ -11,7 +12,7 @@ export const unwrapMail2easy: UrlUnwrapper = (url) => {
     return
   }
 
-  const target = url.searchParams.get('url')
+  const target = getParamTarget(url, 'url')
 
   if (!target || !isHttpUrl(target)) {
     return

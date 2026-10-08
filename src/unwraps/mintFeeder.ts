@@ -1,5 +1,6 @@
 import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
+import { getParamTarget } from '../utils.js'
 
 // Feeder pepper of the self-hosted Mint stats package, which counts clicks from a site's feed on
 // its own host (<host>/feeder/?FeederAction=clicked&feed=<name>&seed=<target>). The exact path, the
@@ -9,7 +10,7 @@ export const unwrapMintFeeder: UrlUnwrapper = (url) => {
     return
   }
 
-  const target = url.searchParams.get('seed')
+  const target = getParamTarget(url, 'seed')
 
   if (target && isHttpUrl(target)) {
     return target

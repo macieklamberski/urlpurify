@@ -10,6 +10,14 @@ describe('unwrapMimecast', () => {
     expect(unwrapMimecast(url)).toBe('https://example.com/article')
   })
 
+  it('should keep a plus in an unencoded target', () => {
+    const url = new URL(
+      'https://protect-us.mimecast.com/s/abc123?url=https://example.org/search/a+b&token=xyz',
+    )
+
+    expect(unwrapMimecast(url)).toBe('https://example.org/search/a+b')
+  })
+
   it('should synthesise https URL from domain param', () => {
     const url = new URL('https://protect-us.mimecast.com/s/abc123?domain=example.com')
 

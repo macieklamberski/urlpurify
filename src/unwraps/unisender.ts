@@ -1,6 +1,6 @@
 import { isAnyOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { decodeBase64Url, percentDecode } from '../utils.js'
+import { decodeBase64Url, getParamTarget, percentDecode } from '../utils.js'
 
 const hosts = [
   'emlblog.com',
@@ -33,7 +33,7 @@ export const unwrapUnisender: UrlUnwrapper = (url) => {
 
   // An unencoded nested tracker repeats `url`, so the first value is a stub and the last one is
   // the target.
-  const value = url.searchParams.getAll('url').at(-1)
+  const value = getParamTarget(url, 'url', -1)
 
   if (!value) {
     return

@@ -1,6 +1,6 @@
 import { isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor, percentDecode } from '../utils.js'
+import { createParamExtractor, getParamTarget, percentDecode } from '../utils.js'
 
 const hosts = [
   'deref-1und1.de',
@@ -74,7 +74,7 @@ export const unwrapDerefMail: UrlUnwrapper = (url) => {
     )
   }
 
-  let target = url.searchParams.get('redirectUrl')
+  let target = getParamTarget(url, 'redirectUrl')
 
   if (!target) {
     return

@@ -1,5 +1,5 @@
 import type { UrlUnwrapper } from '../types.js'
-import { percentDecode } from '../utils.js'
+import { getParamTarget, percentDecode } from '../utils.js'
 
 const hostRegex = /^(?:[a-z0-9-]+-dot-)?yamm-track\.appspot\.com$/
 const encodedSchemeRegex = /^https?%3A/i
@@ -14,7 +14,7 @@ export const unwrapYamm: UrlUnwrapper = (url) => {
 
   // An unencoded nested tracker repeats `link`, so the first value is a stub and the last one is
   // the target.
-  const value = url.searchParams.getAll('link').at(-1)
+  const value = getParamTarget(url, 'link', -1)
 
   if (!value) {
     return

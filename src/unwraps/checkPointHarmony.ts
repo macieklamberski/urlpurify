@@ -1,5 +1,6 @@
 import { isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
+import { getParamTarget } from '../utils.js'
 
 const hosts = [
   'avanan.url-protection.com',
@@ -32,7 +33,7 @@ export const unwrapCheckPointHarmony: UrlUnwrapper = (url) => {
     return
   }
 
-  const target = url.searchParams.get('o')
+  const target = getParamTarget(url, 'o')
 
   if (!target) {
     return

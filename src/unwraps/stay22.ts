@@ -1,6 +1,6 @@
 import { isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { percentDecode } from '../utils.js'
+import { getParamTarget, percentDecode } from '../utils.js'
 
 const pathRegex = /^\/allez\/[\w-]+$/
 const encodedSchemeRegex = /^https?%3A/i
@@ -12,7 +12,7 @@ export const unwrapStay22: UrlUnwrapper = (url) => {
     return
   }
 
-  let target = url.searchParams.get('link') ?? ''
+  let target = getParamTarget(url, 'link') ?? ''
 
   // Some links encode the target twice.
   if (encodedSchemeRegex.test(target)) {

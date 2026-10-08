@@ -1,6 +1,6 @@
 import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { percentDecode } from '../utils.js'
+import { getParamTarget, percentDecode } from '../utils.js'
 
 const encodedSchemeRegex = /^https?%3A/i
 
@@ -17,7 +17,7 @@ export const unwrapTwoCheckout: UrlUnwrapper = (url) => {
     return
   }
 
-  let target = url.searchParams.get('PATH')
+  let target = getParamTarget(url, 'PATH')
 
   // A carrier that encoded its target twice still holds an encoded scheme after one decode.
   if (target && encodedSchemeRegex.test(target)) {

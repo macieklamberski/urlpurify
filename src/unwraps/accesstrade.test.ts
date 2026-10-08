@@ -10,6 +10,14 @@ describe('unwrapAccesstrade', () => {
     expect(unwrapAccesstrade(url)).toBe('https://www.example.co.jp/products/detail/item/227203/')
   })
 
+  it('should keep a plus in an unencoded target', () => {
+    const url = new URL(
+      'https://h.accesstrade.net/sp/cc?rk=01001xqc00op53&url=https://example.org/search/a+b',
+    )
+
+    expect(unwrapAccesstrade(url)).toBe('https://example.org/search/a+b')
+  })
+
   it('should extract target from www.accesstrade.net', () => {
     const url = new URL(
       'http://www.accesstrade.net/at/c.html?rk=01001xof000r53&url=http%3A%2F%2Fwww.example.com%2Ftimesale.htm',

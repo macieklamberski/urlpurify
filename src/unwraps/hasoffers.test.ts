@@ -10,6 +10,14 @@ describe('unwrapHasoffers', () => {
     expect(unwrapHasoffers(url)).toBe('https://www.example.com/products?utf8=✓&source=navbar')
   })
 
+  it('should keep a plus in an unencoded target', () => {
+    const url = new URL(
+      'https://www.example.com/aff_c?offer_id=15&aff_id=9561&url=https://example.org/search/a+b',
+    )
+
+    expect(unwrapHasoffers(url)).toBe('https://example.org/search/a+b')
+  })
+
   it('should extract an unencoded target', () => {
     const url = new URL(
       'http://aspireiq.go2cloud.org/aff_c?offer_id=24&aff_id=6110&url=https://blog.example.com/incense-recipe',

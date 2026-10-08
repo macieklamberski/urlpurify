@@ -1,6 +1,7 @@
 import { isHostOf } from 'trousse'
 import { getPathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
+import { getParamTarget } from '../utils.js'
 
 const trackPrefixRegex = /^\/track\/[^/]+\/[^/]+\//
 const playPathRegex = /^\/play\.[a-z0-9]+$/i
@@ -19,7 +20,7 @@ export const unwrapFirstory: UrlUnwrapper = (url) => {
   }
 
   if (isHostOf(url, playHosts) && playPathRegex.test(url.pathname)) {
-    return url.searchParams.get('url') || undefined
+    return getParamTarget(url, 'url')
   }
 
   if (!isHostOf(url, trackHosts)) {

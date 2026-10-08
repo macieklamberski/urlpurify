@@ -1,6 +1,6 @@
 import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { percentDecode } from '../utils.js'
+import { getParamTarget, percentDecode } from '../utils.js'
 
 const owaPathRegex =
   /^\/(?:owa\/(?:[^/]+@[^/]+\/|\d+(?:\.\d+){3}\/scripts\/premium\/)?redir\.aspx|exchweb\/bin\/redir\.asp)$/i
@@ -17,7 +17,7 @@ export const unwrapOutlookWebAccess: UrlUnwrapper = (url) => {
     return
   }
 
-  let target = url.searchParams.get('URL')
+  let target = getParamTarget(url, 'URL')
 
   if (!target) {
     return
