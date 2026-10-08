@@ -10,6 +10,14 @@ describe('unwrapCake', () => {
     expect(unwrapCake(url)).toBe('https://www.example.com/phantom-5-space-grey.html')
   })
 
+  it('should extract a target encoded twice', () => {
+    const url = new URL(
+      'http://www.example.com/?a=2111&c=11&p=r&E=kkYNyk2M4sk%3d&ckmrdr=https%253A%252F%252Fexample.org%252Fpage&s1=tecnophantom5&utm_source=cake',
+    )
+
+    expect(unwrapCake(url)).toBe('https://example.org/page')
+  })
+
   it('should keep a plus in an unencoded target', () => {
     const url = new URL(
       'http://www.example.com/?a=2111&c=11&p=r&E=kkYNyk2M4sk%3d&ckmrdr=https://example.org/search/a+b&s1=tecnophantom5&utm_source=cake',

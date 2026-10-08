@@ -1,6 +1,6 @@
 import { isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor, getParamTarget, percentDecode } from '../utils.js'
+import { createParamExtractor, getParamTarget } from '../utils.js'
 
 const hosts = [
   'deref-1und1.de',
@@ -29,7 +29,6 @@ const lightmailerHosts = ['lightmailer.mail.com', 'lightmailer-bs.gmx.net']
 // The optional segment is a session token, such as `12XJ9x8ZdSA`.
 const pathRegex = /^\/mail\/client\/(?:[\w-]+\/)?dereferrer\/$/
 const lightmailerPathRegex = /^\/[\w-]+\/deref\/$/
-const encodedSchemeRegex = /^https?%3A/i
 
 // The older GMX dereferrer (service.gmx.net/de/cgi/derefer?TYPE=3&DEST=<target>).
 const extractLegacy = createParamExtractor({
@@ -74,15 +73,10 @@ export const unwrapDerefMail: UrlUnwrapper = (url) => {
     )
   }
 
-  let target = getParamTarget(url, 'redirectUrl')
+  const target = getParamTarget(url, 'redirectUrl')
 
   if (!target) {
     return
-  }
-
-  // Some messages encode the target twice.
-  if (encodedSchemeRegex.test(target)) {
-    target = percentDecode(target)
   }
 
   if (isHttpUrl(target)) {

@@ -10,6 +10,14 @@ describe('unwrapVbulletin', () => {
     expect(unwrapVbulletin(url)).toBe('http://www.example.org/downloads/pdf+bekijken')
   })
 
+  it('should extract a target encoded twice', () => {
+    const url = new URL(
+      'https://www.example.com/redirect-to/?redirect=https%253A%252F%252Fexample.org%252Fpage',
+    )
+
+    expect(unwrapVbulletin(url)).toBe('https://example.org/page')
+  })
+
   it('should keep a plus in an unencoded target', () => {
     const url = new URL(
       'https://www.example.com/redirect-to/?redirect=https://example.org/search/a+b',

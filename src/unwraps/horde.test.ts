@@ -10,6 +10,14 @@ describe('unwrapHorde', () => {
     expect(unwrapHorde(url)).toBe('http://www.example.org/noticia.php?id=140236')
   })
 
+  it('should extract a target encoded twice', () => {
+    const url = new URL(
+      'https://www.example.com/horde/services/go.php?url=https%253A%252F%252Fexample.org%252Fpage',
+    )
+
+    expect(unwrapHorde(url)).toBe('https://example.org/page')
+  })
+
   it('should keep a plus in an unencoded target', () => {
     const url = new URL(
       'https://www.example.com/horde/services/go.php?url=https://example.org/search/a+b',

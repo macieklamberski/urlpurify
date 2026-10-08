@@ -1,10 +1,9 @@
 import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamTarget, percentDecode } from '../utils.js'
+import { getParamTarget } from '../utils.js'
 
 const owaPathRegex =
   /^\/(?:owa\/(?:[^/]+@[^/]+\/|\d+(?:\.\d+){3}\/scripts\/premium\/)?redir\.aspx|exchweb\/bin\/redir\.asp)$/i
-const encodedSchemeRegex = /^https?%3A/i
 
 // Outlook Web Access link shim on an organization's own Exchange server
 // (<mail host>/owa/redir.aspx?C=<canary>&URL=<target>, Exchange 2010's
@@ -17,15 +16,10 @@ export const unwrapOutlookWebAccess: UrlUnwrapper = (url) => {
     return
   }
 
-  let target = getParamTarget(url, 'URL')
+  const target = getParamTarget(url, 'URL')
 
   if (!target) {
     return
-  }
-
-  // Some links encode the target twice.
-  if (encodedSchemeRegex.test(target)) {
-    target = percentDecode(target)
   }
 
   if (isHttpUrl(target)) {

@@ -10,6 +10,14 @@ describe('unwrapCheckPointHarmony', () => {
     expect(unwrapCheckPointHarmony(url)).toBe('https://example.org/beforethepartysover')
   })
 
+  it('should extract a target encoded twice', () => {
+    const url = new URL(
+      'https://checkpoint.url-protection.com/v1/url?o=https%253A%252F%252Fexample.org%252Fpage&g=NWQ3N2JlOTQwYmM3NDU0YQ==&h=MTMxNmM2YWRl&p=YzJlOmtvZW5p',
+    )
+
+    expect(unwrapCheckPointHarmony(url)).toBe('https://example.org/page')
+  })
+
   it('should keep a plus in an unencoded target', () => {
     const url = new URL(
       'https://checkpoint.url-protection.com/v1/url?o=https://example.org/search/a+b&g=NWQ3N2JlOTQwYmM3NDU0YQ==&h=MTMxNmM2YWRl&p=YzJlOmtvZW5p',

@@ -10,6 +10,14 @@ describe('unwrapMimecast', () => {
     expect(unwrapMimecast(url)).toBe('https://example.com/article')
   })
 
+  it('should extract a target encoded twice', () => {
+    const url = new URL(
+      'https://protect-us.mimecast.com/s/abc123?url=https%253A%252F%252Fexample.org%252Fpage&token=xyz',
+    )
+
+    expect(unwrapMimecast(url)).toBe('https://example.org/page')
+  })
+
   it('should keep a plus in an unencoded target', () => {
     const url = new URL(
       'https://protect-us.mimecast.com/s/abc123?url=https://example.org/search/a+b&token=xyz',
