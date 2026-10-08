@@ -82,8 +82,8 @@ describe('unwrapUrl', () => {
     expect(unwrapUrl(value, [exampleUnwrapper])).toBe(expected)
   })
 
-  it('should return undefined for a protocol-relative target without a host', () => {
-    const value = 'https://redirect.example.com/?target=%2F%2F%2Fembed.html'
+  it('should return undefined for a target opening with three slashes', () => {
+    const value = 'https://redirect.example.com/?target=%2F%2F%2Fexample.com%2Fpost'
 
     expect(unwrapUrl(value, [exampleUnwrapper])).toBeUndefined()
   })
