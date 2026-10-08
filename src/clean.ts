@@ -149,9 +149,15 @@ const cleanTarget = (target: string | undefined): string | undefined => {
 
 const applyUnwrappers = (url: URL, unwrappers: Array<UrlUnwrapper>): string | undefined => {
   for (const unwrap of unwrappers) {
-    const target = unwrap(url)
+    const raw = unwrap(url)
 
-    if (target && isHttpUrl(target)) {
+    if (!raw || !isHttpUrl(raw)) {
+      continue
+    }
+
+    const target = cleanTarget(raw)
+
+    if (target) {
       return target
     }
   }
@@ -169,7 +175,7 @@ export const unwrapUrl = (
     return
   }
 
-  const target = cleanTarget(applyUnwrappers(parsed, unwrappers))
+  const target = applyUnwrappers(parsed, unwrappers)
 
   // With one hop there is no later hop to drop a part mis-decoded to U+FFFD, so the wrapper stays.
   if (!target || target.includes(replacementCharacter)) {
@@ -217,7 +223,7 @@ export const cleanUrl = (url: string, options?: CleanUrlOptions): string => {
   // Wrappers can nest (an email gateway wrapping a search redirect), so
   // unwrap repeatedly up to the depth limit.
   for (let depth = 0; depth < maxUnwrapDepth; depth += 1) {
-    const target = cleanTarget(applyUnwrappers(currentParsed, unwrappers))
+    const target = applyUnwrappers(currentParsed, unwrappers)
 
     if (!target) {
       break

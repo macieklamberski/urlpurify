@@ -119,6 +119,14 @@ describe('unwrapUrl', () => {
 
     expect(unwrapUrl(value, [exampleUnwrapper, exampleFallbackUnwrapper])).toBe(expected)
   })
+
+  it('should fall through to the next unwrapper when a target has no usable host', () => {
+    const value =
+      'https://redirect.example.com/?target=https://www.&fallback=https://example.com/post'
+    const expected = 'https://example.com/post'
+
+    expect(unwrapUrl(value, [exampleUnwrapper, exampleFallbackUnwrapper])).toBe(expected)
+  })
 })
 
 describe('stripTrackingParams', () => {
@@ -610,6 +618,15 @@ describe('cleanUrl with a malformed target', () => {
     const value = 'https://redirect.example.com/?target=https://'
 
     expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
+  })
+
+  it('should fall through to the next unwrapper when a target has no usable host', () => {
+    const value =
+      'https://redirect.example.com/?target=https://www.&fallback=https://example.com/post'
+    const options = { unwrappers: [exampleUnwrapper, exampleFallbackUnwrapper] }
+    const expected = 'https://example.com/post'
+
+    expect(cleanUrl(value, options)).toBe(expected)
   })
 
   it('should keep the wrapper when the target is an s3 url behind an https scheme', () => {
