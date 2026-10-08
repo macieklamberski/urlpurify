@@ -10,6 +10,14 @@ describe('unwrapVuture', () => {
     expect(unwrapVuture(url)).toBe('https://www.example.org/en/publications/2023/08/form-i9')
   })
 
+  it('should keep a plus in an unencoded target', () => {
+    const url = new URL(
+      'https://www.example.com/email_handler.aspx?sid=blankform&redirect=https://example.org/search/a+b&checksum=1FC68932',
+    )
+
+    expect(unwrapVuture(url)).toBe('https://example.org/search/a+b')
+  })
+
   it('should extract the target on a recipient link without a checksum', () => {
     const url = new URL(
       'https://response.example.com/email_handler.aspx?sid=6df8526a-9fe3-4725-b3cc-09695e2949b2&redirect=https%3a%2f%2fwww.example.org%2fsubscribe%2f',

@@ -40,7 +40,7 @@ export const getParamValues = (url: URL, name: string): Array<string> => {
   const values: Array<string> = []
 
   for (const pair of url.search.slice(1).split('&')) {
-    const entry = new URLSearchParams(pair).entries().next().value
+    const entry = new URLSearchParams(`&${pair}`).entries().next().value
 
     if (!entry || entry[0] !== name) {
       continue
@@ -57,6 +57,18 @@ export const getParamValues = (url: URL, name: string): Array<string> => {
   }
 
   return values
+}
+
+// The target a carrier param holds, read as `getParamValues` reads it: the first value, or the
+// one at `index`, such as -1 for the last.
+export const getParamTarget = (url: URL, name: string, index = 0): string | undefined => {
+  const value = getParamValues(url, name).at(index)
+
+  if (!value) {
+    return
+  }
+
+  return value
 }
 
 export const createParamExtractor = (config: ParamExtractorConfig): UrlUnwrapper => {

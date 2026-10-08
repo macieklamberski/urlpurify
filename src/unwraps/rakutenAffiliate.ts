@@ -1,5 +1,6 @@
 import { isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
+import { getParamTarget } from '../utils.js'
 
 // hbb.afl.rakuten.co.jp/hgb/ carries `pc` too, but as an `<img src>` banner whose `pc` is the
 // thumbnail, not a destination.
@@ -24,7 +25,7 @@ export const unwrapRakutenAffiliate: UrlUnwrapper = (url) => {
   }
 
   for (const param of targetParams) {
-    const value = url.searchParams.get(param)
+    const value = getParamTarget(url, param)
 
     if (value) {
       return value

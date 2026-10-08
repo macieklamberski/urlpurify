@@ -1,5 +1,6 @@
 import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
+import { getParamTarget } from '../utils.js'
 
 const pathRegex = /^\/dynclick\/[^/]+\/$/
 
@@ -11,7 +12,7 @@ export const unwrapEulerian: UrlUnwrapper = (url) => {
     return
   }
 
-  const target = url.searchParams.get('eurl')
+  const target = getParamTarget(url, 'eurl')
 
   if (!target || !isHttpUrl(target)) {
     return

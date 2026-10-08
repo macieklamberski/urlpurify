@@ -10,6 +10,14 @@ describe('unwrapStay22', () => {
     expect(unwrapStay22(url)).toBe('https://www.example.com/hotel/cz/example-hotel.html')
   })
 
+  it('should keep a plus in an unencoded target', () => {
+    const url = new URL(
+      'https://www.stay22.com/allez/booking?aid=examplepublisher&campaign=examplepublisher-thingstodoinprague&product=lma&habl=false&isinc=false&sid22=51ba062e-dc18-494e-849a-76fb5abf2131&source=direct&medium=deeplink&address=Prague%2C+Czechia&link=https://example.org/search/a+b',
+    )
+
+    expect(unwrapStay22(url)).toBe('https://example.org/search/a+b')
+  })
+
   it('should extract the target of an expedia link with the link param last', () => {
     const url = new URL(
       'https://www.stay22.com/allez/expedia?campaign=michoacan-tours&aid=examplepublisher&link=https%3A%2F%2Fwww.example.com%2FSan-Felipe-Hotels.h66198.Hotel-Information',

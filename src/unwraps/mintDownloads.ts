@@ -1,5 +1,6 @@
 import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
+import { getParamTarget } from '../utils.js'
 
 // The Mint install folder, such as /stats/ or /mint/, then the Downloads pepper's script.
 const pathRegex = /^\/[^/]+\/pepper\/orderedlist\/downloads\/download\.php$/
@@ -12,7 +13,7 @@ export const unwrapMintDownloads: UrlUnwrapper = (url) => {
     return
   }
 
-  const target = url.searchParams.get('file')
+  const target = getParamTarget(url, 'file')
 
   if (target && isHttpUrl(target)) {
     return target

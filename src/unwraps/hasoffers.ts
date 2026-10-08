@@ -1,5 +1,6 @@
 import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
+import { getParamTarget } from '../utils.js'
 
 // HasOffers (TUNE) affiliate click on any host
 // (<network>.go2cloud.org/aff_c?offer_id=<id>&aff_id=<id>&url=<target>).
@@ -9,7 +10,7 @@ export const unwrapHasoffers: UrlUnwrapper = (url) => {
     return
   }
 
-  const target = url.searchParams.get('url')
+  const target = getParamTarget(url, 'url')
 
   if (!target || !isHttpUrl(target)) {
     return

@@ -1,5 +1,6 @@
 import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
+import { getParamTarget } from '../utils.js'
 
 const pathRegex = /^\/\d+\/cookie$/
 
@@ -11,7 +12,7 @@ export const unwrapCleverbridge: UrlUnwrapper = (url) => {
     return
   }
 
-  const target = url.searchParams.get('redirectto')
+  const target = getParamTarget(url, 'redirectto')
 
   if (!target || !isHttpUrl(target)) {
     return

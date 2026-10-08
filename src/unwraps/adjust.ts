@@ -1,6 +1,6 @@
 import { isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createParamExtractor, getParamTarget } from '../utils.js'
 
 const hosts = ['app.adjust.com', 'app.adjust.net.in']
 const pathRegex = /^\/[^/]+$/
@@ -18,7 +18,7 @@ const unwrapTracker: UrlUnwrapper = (url) => {
   }
 
   for (const param of trackerParams) {
-    const target = url.searchParams.get(param)
+    const target = getParamTarget(url, param)
 
     if (target && isHttpUrl(target)) {
       return target

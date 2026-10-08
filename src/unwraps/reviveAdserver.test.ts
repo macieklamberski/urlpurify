@@ -70,6 +70,14 @@ describe('unwrapReviveAdserver', () => {
     )
   })
 
+  it('should keep a plus in an unencoded target', () => {
+    const url = new URL(
+      'http://www.example.com/ads/adclick.php?bannerid=41&zoneid=6&source=&dest=https://example.org/search/a+b',
+    )
+
+    expect(unwrapReviveAdserver(url)).toBe('https://example.org/search/a+b')
+  })
+
   it('should extract target from a phpAdsNew click on the root', () => {
     const url = new URL(
       'https://ads.example.net/adclick.php?bannerid=209&zoneid=0&dest=https://www.example.com/',

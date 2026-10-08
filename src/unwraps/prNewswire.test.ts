@@ -10,6 +10,14 @@ describe('unwrapPrNewswire', () => {
     expect(unwrapPrNewswire(url)).toBe('https://example.com/?utm_source=pressrelease')
   })
 
+  it('should keep a plus in an unencoded target', () => {
+    const url = new URL(
+      'https://c212.net/c/link/?t=0&l=en&o=4294123-1&h=1520464370&u=https://example.org/search/a+b&a=example.com',
+    )
+
+    expect(unwrapPrNewswire(url)).toBe('https://example.org/search/a+b')
+  })
+
   it('should extract a twice-encoded target', () => {
     const url = new URL(
       'https://edge.prnewswire.com/c/link/?t=0&l=en&o=4630040-1&h=1174090750&u=http%253A%252F%252Fexample.com%252F&a=Example',

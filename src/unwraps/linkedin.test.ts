@@ -10,6 +10,14 @@ describe('unwrapLinkedin', () => {
     expect(unwrapLinkedin(url)).toBe('https://example.com/article')
   })
 
+  it('should keep a plus in an unencoded target', () => {
+    const url = new URL(
+      'https://www.linkedin.com/safety/go?url=https://example.org/search/a+b&trk=flagship-messaging-web',
+    )
+
+    expect(unwrapLinkedin(url)).toBe('https://example.org/search/a+b')
+  })
+
   it('should extract target from /safety/go/ with a trailing slash', () => {
     const url = new URL(
       'https://www.linkedin.com/safety/go/?url=https%3A%2F%2Fexample%2Ecom%2Farticle&urlhash=MXRZ',

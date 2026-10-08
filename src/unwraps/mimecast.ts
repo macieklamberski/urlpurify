@@ -1,4 +1,5 @@
 import type { UrlUnwrapper } from '../types.js'
+import { getParamTarget } from '../utils.js'
 
 const mimecastHostRegex = /^protect-[a-z]{2,3}\.mimecast\.com$/
 const mimecastProtectHostRegex = /^url\.(?:au|ca|de|jer|uk|us|usb|za)\.m\.mimecastprotect\.com$/
@@ -15,7 +16,7 @@ export const unwrapMimecast: UrlUnwrapper = (url) => {
     return
   }
 
-  const targetUrl = url.searchParams.get('url')
+  const targetUrl = getParamTarget(url, 'url')
   if (targetUrl) {
     return targetUrl
   }

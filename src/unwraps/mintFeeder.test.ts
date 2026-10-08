@@ -10,6 +10,14 @@ describe('unwrapMintFeeder', () => {
     expect(unwrapMintFeeder(url)).toBe('http://www.example.com/2008/06/27/programmhinweis/')
   })
 
+  it('should keep a plus in an unencoded target', () => {
+    const url = new URL(
+      'http://www.example.com/feeder/?FeederAction=clicked&feed=Articles+%28rss2%29&seed=https://example.org/search/a+b&seed_title=Programmhinweis',
+    )
+
+    expect(unwrapMintFeeder(url)).toBe('https://example.org/search/a+b')
+  })
+
   it('should return undefined for another Feeder action', () => {
     const url = new URL(
       'http://www.example.com/feeder/?FeederAction=subscribed&seed=http%3A%2F%2Fwww.example.com%2F',

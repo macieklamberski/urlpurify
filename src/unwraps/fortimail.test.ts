@@ -10,6 +10,14 @@ describe('unwrapFortimail', () => {
     expect(unwrapFortimail(url)).toBe('https://www.example.com/fr/')
   })
 
+  it('should keep a plus in an unencoded target', () => {
+    const url = new URL(
+      'https://www.example.com/fmlurlsvc/?fewReq=:B:JVQwOz85MCx8NzgkOixjbjc6OzA6Oyx5Y21ka35/eG83azs+a28/bGgy&url=https://example.org/search/a+b',
+    )
+
+    expect(unwrapFortimail(url)).toBe('https://example.org/search/a+b')
+  })
+
   it('should extract an unencoded target', () => {
     const url = new URL(
       'https://gw117178.fortimail.com/fmlurlsvc/?fewReq=:B:JV07MDQwOyd3PDMvMSdoZTwxMDsxMCdy&url=http://www.example.net/',

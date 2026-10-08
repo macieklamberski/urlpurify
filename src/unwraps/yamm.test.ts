@@ -10,6 +10,14 @@ describe('unwrapYamm', () => {
     expect(unwrapYamm(url)).toBe('https://www.example.com/')
   })
 
+  it('should keep a plus in an unencoded target', () => {
+    const url = new URL(
+      'https://scribemedia-dot-yamm-track.appspot.com/Redirect?ukey=1b2gWLExqb7wH_-pFl9V4b75EylvsQz6N903fGMhdVpY-1097021115&key=YAMMID-97877214&link=https://example.org/search/a+b',
+    )
+
+    expect(unwrapYamm(url)).toBe('https://example.org/search/a+b')
+  })
+
   it('should extract an unencoded target on the bare host', () => {
     const url = new URL(
       'https://yamm-track.appspot.com/Redirect?ukey=1184QrcnZlSXDxHwnt3rro_6n8qAQ78_qo-p0yRs_M08-0&key=YAMMID-22712985&link=https://example.com/tactical5d',

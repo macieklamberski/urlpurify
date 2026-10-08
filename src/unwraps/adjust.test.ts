@@ -10,6 +10,14 @@ describe('unwrapAdjust', () => {
     expect(unwrapAdjust(url)).toBe('https://example.com/app')
   })
 
+  it('should keep a plus in an unencoded target', () => {
+    const url = new URL(
+      'https://app.adjust.com/abc123?campaign=launch&redirect=https://example.org/search/a+b',
+    )
+
+    expect(unwrapAdjust(url)).toBe('https://example.org/search/a+b')
+  })
+
   it('should return undefined when redirect param is missing', () => {
     const url = new URL('https://app.adjust.com/abc123?campaign=launch')
 

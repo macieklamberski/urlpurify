@@ -10,6 +10,14 @@ describe('unwrapHorde', () => {
     expect(unwrapHorde(url)).toBe('http://www.example.org/noticia.php?id=140236')
   })
 
+  it('should keep a plus in an unencoded target', () => {
+    const url = new URL(
+      'https://www.example.com/horde/services/go.php?url=https://example.org/search/a+b',
+    )
+
+    expect(unwrapHorde(url)).toBe('https://example.org/search/a+b')
+  })
+
   it('should extract target on a root install', () => {
     const url = new URL(
       'http://webmail.lutheran.hu/services/go.php?url=http%3A%2F%2Fwww.example.com%2Fmagyarvoroskereszt',

@@ -10,6 +10,14 @@ describe('unwrapVbulletin', () => {
     expect(unwrapVbulletin(url)).toBe('http://www.example.org/downloads/pdf+bekijken')
   })
 
+  it('should keep a plus in an unencoded target', () => {
+    const url = new URL(
+      'https://www.example.com/redirect-to/?redirect=https://example.org/search/a+b',
+    )
+
+    expect(unwrapVbulletin(url)).toBe('https://example.org/search/a+b')
+  })
+
   it('should extract target behind a forum prefix', () => {
     const url = new URL(
       'https://www.example.com/forums/redirect-to/?redirect=https%3A%2F%2Fwww.example.org%2Fclass.html',

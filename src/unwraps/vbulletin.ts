@@ -1,5 +1,6 @@
 import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
+import { getParamTarget } from '../utils.js'
 
 // A forum root prefix, such as /forum/ or /boards/.
 const pathRegex = /^(?:\/[^/]+)?\/redirect-to\/$/
@@ -12,7 +13,7 @@ export const unwrapVbulletin: UrlUnwrapper = (url) => {
     return
   }
 
-  const target = url.searchParams.get('redirect')
+  const target = getParamTarget(url, 'redirect')
 
   if (!target || !isHttpUrl(target)) {
     return

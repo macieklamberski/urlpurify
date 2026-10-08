@@ -1,5 +1,6 @@
 import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
+import { getParamTarget } from '../utils.js'
 
 // The click-through counter at the blog root or under one blog folder.
 const pathRegex = /^(?:\/[^/]+)?\/ct\.ashx$/
@@ -12,7 +13,7 @@ export const unwrapDasBlog: UrlUnwrapper = (url) => {
   }
 
   // A nested unencoded counter repeats `url`, and the first value is the inner counter cut short.
-  const target = url.searchParams.getAll('url').at(-1)
+  const target = getParamTarget(url, 'url', -1)
 
   if (target && isHttpUrl(target)) {
     return target

@@ -10,6 +10,14 @@ describe('unwrapTwoCheckout', () => {
     expect(unwrapTwoCheckout(url)).toBe('https://example.com/angular/?AFFILIATE=135112')
   })
 
+  it('should keep a plus in an unencoded target', () => {
+    const url = new URL(
+      'https://www.example.com/affiliate.php?ACCOUNT=250288725771&AFFILIATE=135112&PATH=https://example.org/search/a+b',
+    )
+
+    expect(unwrapTwoCheckout(url)).toBe('https://example.org/search/a+b')
+  })
+
   it('should extract the target from an Avangate link', () => {
     const url = new URL(
       'https://secure.avangate.com/affiliate.php?ACCOUNT=EXLEVEL&AFFILIATE=99982&PATH=http%3A%2F%2Fexample.com',

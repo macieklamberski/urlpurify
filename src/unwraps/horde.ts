@@ -1,5 +1,6 @@
 import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
+import { getParamTarget } from '../utils.js'
 
 // The install directory, such as /horde/ or /hwebmail/, or none. Horde 3 serves util/go.php too.
 const pathRegex = /^(?:\/[a-z0-9]+)?\/(?:services|util)\/go\.php$/
@@ -11,7 +12,7 @@ export const unwrapHorde: UrlUnwrapper = (url) => {
     return
   }
 
-  const target = url.searchParams.get('url')
+  const target = getParamTarget(url, 'url')
 
   if (!target || !isHttpUrl(target)) {
     return
