@@ -120,6 +120,14 @@ describe('unwrapUrl', () => {
     expect(unwrapUrl(value, [exampleUnwrapper, exampleFallbackUnwrapper])).toBe(expected)
   })
 
+  it('should fall through to the next unwrapper when a target is ftp', () => {
+    const value =
+      'https://redirect.example.com/?target=ftp://example.org/file&fallback=https://example.com/post'
+    const expected = 'https://example.com/post'
+
+    expect(unwrapUrl(value, [exampleUnwrapper, exampleFallbackUnwrapper])).toBe(expected)
+  })
+
   it('should fall through to the next unwrapper when a target has no usable host', () => {
     const value =
       'https://redirect.example.com/?target=https://www.&fallback=https://example.com/post'

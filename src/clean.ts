@@ -119,7 +119,7 @@ const dottedHostRegex = /[^.]\.[^.]/
 const fileExtensionHostRegex = /\.(?:asp|aspx|cgi|htm|html|jsp|jspa|php)$/
 
 // Repairs a malformed scheme such as `https:/host` or `https://https://host`, then drops a target
-// with a control character or a host without a dot between two labels, so the wrapper stays. Such
+// with a control character or a host without a dot between two labels, so it falls through. Such
 // a host is a cut-off link, a path or a scheme read as one: `https://www.`, `https://s3://bucket`.
 // A host ending in a page extension is a relative or cut-off link given a scheme, as Gmail writes
 // `http:///page.php`, which the scheme repair turns into the host `page.php`.
@@ -163,8 +163,8 @@ const applyUnwrappers = (url: URL, unwrappers: Array<UrlUnwrapper>): string | un
   }
 }
 
-// Apply unwrappers in order and return the first extracted target URL, cleaned and serialized as in
-// cleanUrl, or undefined when none match or the input cannot be parsed.
+// Apply unwrappers in order and return the first extracted target URL that survives cleaning,
+// serialized as in cleanUrl, or undefined when none match or the input cannot be parsed.
 export const unwrapUrl = (
   url: string,
   unwrappers: Array<UrlUnwrapper> = defaultUnwrappers,
