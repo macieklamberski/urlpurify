@@ -40,7 +40,7 @@ export const getParamValues = (url: URL, name: string): Array<string> => {
   const values: Array<string> = []
 
   for (const pair of url.search.slice(1).split('&')) {
-    const entry = new URLSearchParams(pair).entries().next().value
+    const entry = new URLSearchParams(`&${pair}`).entries().next().value
 
     if (!entry || entry[0] !== name) {
       continue
