@@ -803,6 +803,26 @@ describe('self-referential ref param', () => {
     expect(stripTrackingParams(value)).toBe(expected)
   })
 
+  it('should strip a capitalized Ref when its value is the same host', () => {
+    const value = 'https://example.com/post?Ref=example.com'
+    const expected = 'https://example.com/post'
+
+    expect(stripTrackingParams(value)).toBe(expected)
+  })
+
+  it('should strip an uppercase REF when its value is the same host', () => {
+    const value = 'https://example.com/post?REF=example.com'
+    const expected = 'https://example.com/post'
+
+    expect(stripTrackingParams(value)).toBe(expected)
+  })
+
+  it('should keep a capitalized Ref when its value is a different host', () => {
+    const value = 'https://example.com/post?Ref=example.org'
+
+    expect(stripTrackingParams(value)).toBe(value)
+  })
+
   it('should strip a Unicode ref naming the same internationalized host', () => {
     const value = 'https://bücher.example/post?ref=bücher.example'
     const expected = 'https://xn--bcher-kva.example/post'

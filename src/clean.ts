@@ -94,7 +94,7 @@ const deleteTrackingParams = (url: URL, trackingParams: Array<TrackingParam>): v
 
     // A `ref` holding the URL's own host is Ghost's self-referral, `?ref=example.com` on
     // example.com. With any other value `ref` is often a real referral target.
-    if (key !== 'ref' || refDelimitersRegex.test(value)) {
+    if (name !== 'ref' || refDelimitersRegex.test(value)) {
       return true
     }
 
