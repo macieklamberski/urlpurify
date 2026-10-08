@@ -147,9 +147,21 @@ const cleanTarget = (target: string | undefined): string | undefined => {
   return repaired
 }
 
+const protocolRelativeRegex = /^\/\/[^/]/
+
+// A protocol-relative target, `//host/path`, as Embedly writes for Issuu, has no scheme to pass the
+// http check, so it gets `https:`.
+const addMissingScheme = (target: string | undefined): string | undefined => {
+  if (!target || !protocolRelativeRegex.test(target)) {
+    return target
+  }
+
+  return `https:${target}`
+}
+
 const applyUnwrappers = (url: URL, unwrappers: Array<UrlUnwrapper>): string | undefined => {
   for (const unwrap of unwrappers) {
-    const raw = unwrap(url)
+    const raw = addMissingScheme(unwrap(url))
 
     if (!raw || !isHttpUrl(raw)) {
       continue

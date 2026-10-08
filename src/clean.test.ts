@@ -75,6 +75,25 @@ describe('unwrapUrl', () => {
     expect(unwrapUrl(value, [exampleUnwrapper])).toBe(expected)
   })
 
+  it('should give a protocol-relative target the https scheme', () => {
+    const value = 'https://redirect.example.com/?target=%2F%2Fexample.com%2Fembed.html'
+    const expected = 'https://example.com/embed.html'
+
+    expect(unwrapUrl(value, [exampleUnwrapper])).toBe(expected)
+  })
+
+  it('should return undefined for a target opening with three slashes', () => {
+    const value = 'https://redirect.example.com/?target=%2F%2F%2Fexample.com%2Fpost'
+
+    expect(unwrapUrl(value, [exampleUnwrapper])).toBeUndefined()
+  })
+
+  it('should return undefined for a root-relative target', () => {
+    const value = 'https://redirect.example.com/?target=%2Frelative%2Fpath'
+
+    expect(unwrapUrl(value, [exampleUnwrapper])).toBeUndefined()
+  })
+
   it('should trim whitespace around the target', () => {
     const value = 'https://redirect.example.com/?target=%20https%3A%2F%2Fexample.com%2Fpost%0A'
     const expected = 'https://example.com/post'
