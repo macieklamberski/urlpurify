@@ -88,12 +88,12 @@ describe('unwrapBing', () => {
     expect(unwrapBing(url)).toBeUndefined()
   })
 
-  it('should return undefined when news apiclick target is twice encoded', () => {
+  it('should extract a twice-encoded news apiclick target', () => {
     const url = new URL(
       'https://www.bing.com/news/apiclick.aspx?url=https%253A%252F%252Fexample.com%252Fpage',
     )
 
-    expect(unwrapBing(url)).toBeUndefined()
+    expect(unwrapBing(url)).toBe('https://example.com/page')
   })
 
   it('should return undefined for other news paths', () => {

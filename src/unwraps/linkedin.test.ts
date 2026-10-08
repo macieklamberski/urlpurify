@@ -10,6 +10,14 @@ describe('unwrapLinkedin', () => {
     expect(unwrapLinkedin(url)).toBe('https://example.com/article')
   })
 
+  it('should extract a target encoded twice', () => {
+    const url = new URL(
+      'https://www.linkedin.com/safety/go?url=https%253A%252F%252Fexample.org%252Fpage&trk=flagship-messaging-web',
+    )
+
+    expect(unwrapLinkedin(url)).toBe('https://example.org/page')
+  })
+
   it('should keep a plus in an unencoded target', () => {
     const url = new URL(
       'https://www.linkedin.com/safety/go?url=https://example.org/search/a+b&trk=flagship-messaging-web',

@@ -30,6 +30,14 @@ describe('unwrapFirstory', () => {
     )
   })
 
+  it('should extract a target encoded twice', () => {
+    const url = new URL(
+      'https://m.cdn.firstory.me/play.mp3?url=https%253A%252F%252Fexample.org%252Fpage',
+    )
+
+    expect(unwrapFirstory(url)).toBe('https://example.org/page')
+  })
+
   it('should keep a plus in an unencoded target', () => {
     const url = new URL('https://m.cdn.firstory.me/play.mp3?url=https://example.org/search/a+b')
 

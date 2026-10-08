@@ -10,6 +10,14 @@ describe('unwrapWorldNomads', () => {
     expect(unwrapWorldNomads(url)).toBe('https://www.example.com/travel-insurance')
   })
 
+  it('should extract a target encoded twice', () => {
+    const url = new URL(
+      'https://www.worldnomads.com/Turnstile/AffiliateLink?partnerCode=lifeseasia&source=&path=https%253A%252F%252Fexample.org%252Fpage&utm_source=lifeseasia&utm_content=link',
+    )
+
+    expect(unwrapWorldNomads(url)).toBe('https://example.org/page')
+  })
+
   it('should keep a plus in an unencoded target', () => {
     const url = new URL(
       'https://www.worldnomads.com/Turnstile/AffiliateLink?partnerCode=lifeseasia&source=&path=https://example.org/search/a+b&utm_source=lifeseasia&utm_content=link',

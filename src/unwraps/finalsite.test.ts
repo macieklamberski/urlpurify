@@ -10,6 +10,14 @@ describe('unwrapFinalsite', () => {
     expect(unwrapFinalsite(url)).toBe('https://www.example.org//uploaded/MMS/Kennywood.pdf')
   })
 
+  it('should extract a target encoded twice', () => {
+    const url = new URL(
+      'https://www.example.com/cf_news/forward.cfm?dest=https%253A%252F%252Fexample.org%252Fpage&destkey=081A35EA62FBD890AA4F3901F29FCFAB79266FC41A7690754D061BD8B830C102',
+    )
+
+    expect(unwrapFinalsite(url)).toBe('https://example.org/page')
+  })
+
   it('should keep a plus in an unencoded target', () => {
     const url = new URL(
       'https://www.example.com/cf_news/forward.cfm?dest=https://example.org/search/a+b&destkey=081A35EA62FBD890AA4F3901F29FCFAB79266FC41A7690754D061BD8B830C102',

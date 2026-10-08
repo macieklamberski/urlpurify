@@ -10,6 +10,14 @@ describe('unwrapNcls', () => {
     expect(unwrapNcls(url)).toBe('https://www.example.com/luminar')
   })
 
+  it('should extract a target encoded twice', () => {
+    const url = new URL(
+      'https://ncls1.com/irk?enk=bz10dXRoMjEmcz0yNTcyNTEmYj0xNzEwMiZia2Q9c2t5bHVtLmNvbQ==&subid=macworld.com&di=rss&d=https%253A%252F%252Fexample.org%252Fpage',
+    )
+
+    expect(unwrapNcls(url)).toBe('https://example.org/page')
+  })
+
   it('should keep a plus in an unencoded target', () => {
     const url = new URL(
       'https://ncls1.com/irk?enk=bz10dXRoMjEmcz0yNTcyNTEmYj0xNzEwMiZia2Q9c2t5bHVtLmNvbQ==&subid=macworld.com&di=rss&d=https://example.org/search/a+b',

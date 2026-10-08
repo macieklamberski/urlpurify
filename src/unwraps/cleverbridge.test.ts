@@ -10,6 +10,14 @@ describe('unwrapCleverbridge', () => {
     expect(unwrapCleverbridge(url)).toBe('https://www.example.com/en/pricing?hidefree=1&cb=46217')
   })
 
+  it('should extract a target encoded twice', () => {
+    const url = new URL(
+      'https://www.example.com/1034/cookie?affiliate=46217&expiry=45&redirectto=https%253A%252F%252Fexample.org%252Fpage',
+    )
+
+    expect(unwrapCleverbridge(url)).toBe('https://example.org/page')
+  })
+
   it('should keep a plus in an unencoded target', () => {
     const url = new URL(
       'https://www.example.com/1034/cookie?affiliate=46217&expiry=45&redirectto=https://example.org/search/a+b',

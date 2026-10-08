@@ -10,6 +10,14 @@ describe('unwrapDasBlog', () => {
     expect(unwrapDasBlog(url)).toBe('http://www.example.com/q/3922291/105999')
   })
 
+  it('should extract a target encoded twice', () => {
+    const url = new URL(
+      'http://www.example.com/ct.ashx?id=68b7e248-b9f5-4d07-bdfe-eb037bcf2cbb&url=https%253A%252F%252Fexample.org%252Fpage',
+    )
+
+    expect(unwrapDasBlog(url)).toBe('https://example.org/page')
+  })
+
   it('should keep a plus in an unencoded target', () => {
     const url = new URL(
       'http://www.example.com/ct.ashx?id=68b7e248-b9f5-4d07-bdfe-eb037bcf2cbb&url=https://example.org/search/a+b',

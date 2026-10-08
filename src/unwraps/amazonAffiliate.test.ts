@@ -125,12 +125,12 @@ describe('unwrapAmazonAffiliate', () => {
     expect(unwrapAmazonAffiliate(url)).toBe('https://example.com/dp/B00O4L3F9E?psc=1')
   })
 
-  it('should return undefined for a twice-encoded store redirect target', () => {
+  it('should extract a twice-encoded store redirect target', () => {
     const url = new URL(
       'http://www.amazon.com/gp/redirect.html?ie=UTF8&location=http%253A%252F%252Fexample.com%252Fs%253Fk%253Dbooks&tag=example-20',
     )
 
-    expect(unwrapAmazonAffiliate(url)).toBeUndefined()
+    expect(unwrapAmazonAffiliate(url)).toBe('http://example.com/s?k=books')
   })
 
   it('should return undefined for a store redirect without a target', () => {

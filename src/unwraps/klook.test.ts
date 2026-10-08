@@ -12,6 +12,14 @@ describe('unwrapKlook', () => {
     )
   })
 
+  it('should extract a target encoded twice', () => {
+    const url = new URL(
+      'https://affiliate.klook.com/redirect?aid=99683&aff_adid=1134759&k_site=https%253A%252F%252Fexample.org%252Fpage',
+    )
+
+    expect(unwrapKlook(url)).toBe('https://example.org/page')
+  })
+
   it('should keep a plus in an unencoded target', () => {
     const url = new URL(
       'https://affiliate.klook.com/redirect?aid=99683&aff_adid=1134759&k_site=https://example.org/search/a+b',

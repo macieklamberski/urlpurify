@@ -10,6 +10,14 @@ describe('unwrapLinktrust', () => {
     expect(unwrapLinktrust(url)).toBe('https://www.example.com/catalog/sale.jsp')
   })
 
+  it('should extract a target encoded twice', () => {
+    const url = new URL(
+      'https://www.example.com/click.track?CID=437133&AFID=301496&SID=&url=https%253A%252F%252Fexample.org%252Fpage',
+    )
+
+    expect(unwrapLinktrust(url)).toBe('https://example.org/page')
+  })
+
   it('should keep a plus in an unencoded target', () => {
     const url = new URL(
       'https://www.example.com/click.track?CID=437133&AFID=301496&SID=&url=https://example.org/search/a+b',

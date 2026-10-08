@@ -10,6 +10,14 @@ describe('unwrapAffilae', () => {
     expect(unwrapAffilae(url)).toBe('https://www.example.com/pneu-hiver/?utm_source=affilae')
   })
 
+  it('should extract a target encoded twice', () => {
+    const url = new URL(
+      'https://lb.affilae.com/r/?p=61b9aae6d4b9873f6d45ef3d&af=117&lp=https%253A%252F%252Fexample.org%252Fpage',
+    )
+
+    expect(unwrapAffilae(url)).toBe('https://example.org/page')
+  })
+
   it('should keep a plus in an unencoded target', () => {
     const url = new URL(
       'https://lb.affilae.com/r/?p=61b9aae6d4b9873f6d45ef3d&af=117&lp=https://example.org/search/a+b',
