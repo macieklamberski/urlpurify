@@ -59,4 +59,12 @@ describe('unwrapDasBlog', () => {
 
     expect(unwrapDasBlog(url)).toBeUndefined()
   })
+
+  it('should return undefined when the url param name opens with a question mark', () => {
+    const url = new URL(
+      'http://www.example.net/weblog/ct.ashx?id=c6ead234-901e-4642-aa46-3c86301d2e71&?url=http://www.example.com/',
+    )
+
+    expect(unwrapDasBlog(url)).toBeUndefined()
+  })
 })
