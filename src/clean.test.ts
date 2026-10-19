@@ -45,6 +45,27 @@ describe('unwrapUrl', () => {
     expect(unwrapUrl(value)).toBe(expected)
   })
 
+  it('should unwrap a wrapper whose path opens on a doubled slash', () => {
+    const value = 'https://www.linkedin.com//safety/go?url=https%3A%2F%2Fexample.com%2Fpost'
+    const expected = 'https://example.com/post'
+
+    expect(unwrapUrl(value)).toBe(expected)
+  })
+
+  it('should unwrap a wrapper with a doubled slash inside its path', () => {
+    const value = 'https://www.linkedin.com/safety//go?url=https%3A%2F%2Fexample.com%2Fpost'
+    const expected = 'https://example.com/post'
+
+    expect(unwrapUrl(value)).toBe(expected)
+  })
+
+  it('should keep a doubled slash in the path of the target', () => {
+    const value = 'https://www.linkedin.com/safety/go?url=https%3A%2F%2Fexample.com%2Fa%2F%2Fpost'
+    const expected = 'https://example.com/a//post'
+
+    expect(unwrapUrl(value)).toBe(expected)
+  })
+
   it('should return the target in the URL Standard serialization', () => {
     const value = 'https://redirect.example.com/?target=https%3A%2F%2FEXAMPLE.com%2Fpost'
     const expected = 'https://example.com/post'
