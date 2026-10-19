@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'bun:test'
 import { cleanUrl, stripTrackingParams, unwrapUrl } from './clean.js'
 import type { UrlUnwrapper } from './types.js'
+import { unwrapWebArchive } from './unwraps/webArchive.js'
 import { createParamExtractor } from './utils.js'
 
 const exampleUnwrapper = createParamExtractor({
@@ -64,6 +65,13 @@ describe('unwrapUrl', () => {
     const expected = 'https://example.com/a//post'
 
     expect(unwrapUrl(value)).toBe(expected)
+  })
+
+  it('should unwrap a wrapper with a doubled slash that carries its target in the path', () => {
+    const value = 'https://web.archive.org//web/20240101120000/https://example.com/page'
+    const expected = 'https://example.com/page'
+
+    expect(unwrapUrl(value, [unwrapWebArchive])).toBe(expected)
   })
 
   it('should return the target in the URL Standard serialization', () => {
