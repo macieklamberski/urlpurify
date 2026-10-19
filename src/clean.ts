@@ -1,4 +1,11 @@
-import { fixMalformedProtocol, isHttpUrl, isIpAddress, parseUrl, stripWww } from 'trousse'
+import {
+  fixMalformedProtocol,
+  isHttpUrl,
+  isIpAddress,
+  normalizeUrl,
+  parseUrl,
+  stripWww,
+} from 'trousse'
 import { defaultTrackingParams, defaultUnwrappers } from './defaults.js'
 import type { CleanUrlOptions, TrackingParam, UrlUnwrapper } from './types.js'
 
@@ -173,6 +180,16 @@ const applyUnwrappers = (url: URL, unwrappers: Array<UrlUnwrapper>): string | un
       return target
     }
   }
+
+  // A wrapper written with a doubled slash, `//safety/go`, matches only once collapsed. The url as
+  // written goes first, so a target whose own path holds `//` keeps it.
+  const collapsed = parseUrl(normalizeUrl(url.href, { collapseSlashes: true }))
+
+  if (!collapsed || collapsed.href === url.href) {
+    return
+  }
+
+  return applyUnwrappers(collapsed, unwrappers)
 }
 
 // Apply unwrappers in order and return the first extracted target URL that survives cleaning,

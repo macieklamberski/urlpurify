@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'bun:test'
 import { cleanUrl, stripTrackingParams, unwrapUrl } from './clean.js'
 import type { UrlUnwrapper } from './types.js'
+import { unwrapWebArchive } from './unwraps/webArchive.js'
 import { createParamExtractor } from './utils.js'
 
 const exampleUnwrapper = createParamExtractor({
@@ -43,6 +44,34 @@ describe('unwrapUrl', () => {
     const expected = 'https://example.com/post'
 
     expect(unwrapUrl(value)).toBe(expected)
+  })
+
+  it('should unwrap a wrapper whose path opens on a doubled slash', () => {
+    const value = 'https://www.linkedin.com//safety/go?url=https%3A%2F%2Fexample.com%2Fpost'
+    const expected = 'https://example.com/post'
+
+    expect(unwrapUrl(value)).toBe(expected)
+  })
+
+  it('should unwrap a wrapper with a doubled slash inside its path', () => {
+    const value = 'https://www.linkedin.com/safety//go?url=https%3A%2F%2Fexample.com%2Fpost'
+    const expected = 'https://example.com/post'
+
+    expect(unwrapUrl(value)).toBe(expected)
+  })
+
+  it('should keep a doubled slash in the path of the target', () => {
+    const value = 'https://www.linkedin.com/safety/go?url=https%3A%2F%2Fexample.com%2Fa%2F%2Fpost'
+    const expected = 'https://example.com/a//post'
+
+    expect(unwrapUrl(value)).toBe(expected)
+  })
+
+  it('should unwrap a wrapper with a doubled slash that carries its target in the path', () => {
+    const value = 'https://web.archive.org//web/20240101120000/https://example.com/page'
+    const expected = 'https://example.com/page'
+
+    expect(unwrapUrl(value, [unwrapWebArchive])).toBe(expected)
   })
 
   it('should return the target in the URL Standard serialization', () => {
