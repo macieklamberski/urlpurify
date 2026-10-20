@@ -6,6 +6,7 @@ export {
   archiveProxyUnwrappers,
   campaignParams,
   clickAttributionParams,
+  clickCounterUnwrappers,
   defaultTrackingParams,
   defaultUnwrappers,
   downloadMeasurementUnwrappers,

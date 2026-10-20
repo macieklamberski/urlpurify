@@ -758,29 +758,35 @@ export const advertisingUnwrappers: Array<UrlUnwrapper> = [
   unwrapTriplelift,
 ]
 
-// Download and click measurement: unwrapping removes the count of whoever is measured.
+// Site and feed click counters: unwrapping removes the site's count of which links get clicked.
+export const clickCounterUnwrappers: Array<UrlUnwrapper> = [
+  unwrapBitrix,
+  unwrapDasBlog,
+  unwrapFeedblitz,
+  unwrapFeedStatistics,
+  unwrapFinalsite,
+  unwrapIndexHu,
+  unwrapSerendipity,
+  unwrapTheRegister,
+]
+
+// Download measurement: unwrapping removes the count of whoever is measured.
 export const downloadMeasurementUnwrappers: Array<UrlUnwrapper> = [
   unwrapAcast,
   unwrapAnchor,
   unwrapArttrack,
   unwrapAusha,
   unwrapAwesound,
-  unwrapBitrix,
   unwrapBlubrry,
   unwrapCastPlus,
   unwrapChartable,
   unwrapClaritas,
   unwrapCohst,
-  unwrapDasBlog,
   unwrapDstats,
-  unwrapFeedblitz,
-  unwrapFeedStatistics,
-  unwrapFinalsite,
   unwrapFirstory,
   unwrapFiveByFive,
   unwrapGodcaster,
   unwrapGumball,
-  unwrapIndexHu,
   unwrapLetscast,
   unwrapMagellan,
   unwrapMinistryCloud,
@@ -796,11 +802,9 @@ export const downloadMeasurementUnwrappers: Array<UrlUnwrapper> = [
   unwrapPodsights,
   unwrapPodtrac,
   unwrapPodup,
-  unwrapSerendipity,
   unwrapSoundOn,
   unwrapSoundstack,
   unwrapSwap,
-  unwrapTheRegister,
   unwrapUpAudio,
   unwrapVgWort,
   unwrapVoxnest,
