@@ -20,6 +20,7 @@ const categories = [
   urlpurify.emailTrackingUnwrappers,
   urlpurify.affiliateUnwrappers,
   urlpurify.advertisingUnwrappers,
+  urlpurify.clickCounterUnwrappers,
   urlpurify.downloadMeasurementUnwrappers,
   urlpurify.archiveProxyUnwrappers,
 ]

@@ -114,7 +114,8 @@ There are more than 380 unwrappers, each in its own file in [src/unwraps](src/un
 | Email tracking | `emailTrackingUnwrappers` | The sender's click stats | |
 | Affiliate links | `affiliateUnwrappers` | The publisher's commission | |
 | Advertising | `advertisingUnwrappers` | Ad click and app install attribution | |
-| Download measurement | `downloadMeasurementUnwrappers` | A podcast measurement prefix's download counts, or a site's or feed's download or click counts | |
+| Click counters | `clickCounterUnwrappers` | A site's or feed's count of which links get clicked | |
+| Download measurement | `downloadMeasurementUnwrappers` | A podcast measurement prefix's download counts, or a site's download counts | |
 | Archives and proxies | `archiveProxyUnwrappers` | The archived or translated copy: you get the live page | |
 
 `defaultUnwrappers` combines the first two. The rest cost somebody something or change the page: a feed click counter tells a blog which posts get read, an affiliate link may pay for a small blog, and an archive link points at a copy on purpose. To turn more on, spread them next to the defaults:
@@ -123,43 +124,4 @@ There are more than 380 unwrappers, each in its own file in [src/unwraps](src/un
 import { affiliateUnwrappers, cleanUrl, defaultUnwrappers } from 'urlpurify'
 
 cleanUrl(url, { unwrappers: [...defaultUnwrappers, ...affiliateUnwrappers] })
-```
-
-## Upgrading from 1.x
-
-2.0 stops removing what serves the site or the publisher: campaign tags, affiliate ids, press release wires and site click counters. For the 1.x output, spread them back:
-
-```typescript
-import {
-  affiliateParams,
-  campaignParams,
-  cleanUrl,
-  defaultTrackingParams,
-  defaultUnwrappers,
-  pressReleaseUnwrappers,
-  unwrapBitrix,
-  unwrapDasBlog,
-  unwrapFeedStatistics,
-  unwrapFeedblitz,
-  unwrapFinalsite,
-  unwrapIndexHu,
-  unwrapSerendipity,
-  unwrapTheRegister,
-} from 'urlpurify'
-
-cleanUrl(url, {
-  unwrappers: [
-    ...defaultUnwrappers,
-    ...pressReleaseUnwrappers,
-    unwrapBitrix,
-    unwrapDasBlog,
-    unwrapFeedStatistics,
-    unwrapFeedblitz,
-    unwrapFinalsite,
-    unwrapIndexHu,
-    unwrapSerendipity,
-    unwrapTheRegister,
-  ],
-  trackingParams: [...defaultTrackingParams, ...campaignParams, ...affiliateParams],
-})
 ```
