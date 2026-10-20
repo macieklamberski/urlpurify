@@ -6,7 +6,7 @@
 
 Unwrap redirect, affiliate, and tracking wrapper URLs and strip tracking parameters. Turn noisy links into clean, direct URLs.
 
-Links from feeds, emails and social platforms rarely point straight at their destination. They pass through search redirects, link shims, email gateways and affiliate networks, and pick up tracking parameters on the way, the link decoration that follows a reader from site to site. urlpurify unwraps 380+ known wrappers and strips 170+ known tracking parameters plus families like `utm_*`. It has no dependencies and runs in any modern JavaScript runtime, browsers included.
+Links from feeds, emails and social platforms rarely point straight at their destination. They pass through search redirects, link shims, email gateways and affiliate networks, and pick up tracking parameters on the way, the link decoration that follows a reader from site to site. urlpurify unwraps 380+ known wrappers and strips 100+ known tracking parameters plus vendor families. Campaign tags like `utm_*` and affiliate ids stay by default: they serve the site, not a tracker. It has no dependencies and runs in any modern JavaScript runtime, browsers included.
 
 ## Installation
 
@@ -19,7 +19,7 @@ npm install urlpurify
 ```typescript
 import { cleanUrl } from 'urlpurify'
 
-const url = 'https://www.google.com/url?q=https%3A%2F%2Fexample.com%2Fpost%3Futm_source%3Dnewsletter'
+const url = 'https://www.google.com/url?q=https%3A%2F%2Fexample.com%2Fpost%3Ffbclid%3Dabc'
 
 cleanUrl(url) // => 'https://example.com/post'
 ```
@@ -80,7 +80,25 @@ A value still encoded after one decode, starting with `http%3A` or `https%3A`, i
 
 ### Tracking parameters
 
-`defaultTrackingParams` holds literal names plus regexes for vendor families like `utm_*`. The two halves are also exported as `trackingParamsLiterals` and `trackingParamsPatterns`.
+Tracking parameters are grouped like the unwrappers, by what stripping them takes away from someone:
+
+| Category | Export | Stripping removes | Default |
+| --- | --- | --- | :---: |
+| Click attribution | `clickAttributionParams` | Ad, search and platform click ids | ☑️ |
+| Visitor ids | `visitorIdParams` | Ids of one visitor, session, browser or email recipient | ☑️ |
+| Housekeeping | `housekeepingParams` | Nothing: cache busters, previews and redirect leftovers | ☑️ |
+| Campaign tags | `campaignParams` | The site's own traffic stats, from tags like `utm_*` | |
+| Affiliate ids | `affiliateParams` | The publisher's commission | |
+
+`defaultTrackingParams` combines the first three. A campaign tag carries the same value for every reader, so it tells the site where a visit came from and nothing about who made it. To strip more, spread them next to the defaults:
+
+```typescript
+import { campaignParams, defaultTrackingParams, stripTrackingParams } from 'urlpurify'
+
+stripTrackingParams(url, [...defaultTrackingParams, ...campaignParams])
+```
+
+`trackingParamsLiterals` and `trackingParamsPatterns` hold every known parameter, opt-in categories included, split into names and regexes.
 
 ## Unwrappers
 

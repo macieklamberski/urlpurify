@@ -1,12 +1,16 @@
 export { cleanUrl, stripTrackingParams, unwrapUrl } from './clean.js'
 export {
   advertisingUnwrappers,
+  affiliateParams,
   affiliateUnwrappers,
   archiveProxyUnwrappers,
+  campaignParams,
+  clickAttributionParams,
   defaultTrackingParams,
   defaultUnwrappers,
   downloadMeasurementUnwrappers,
   emailTrackingUnwrappers,
+  housekeepingParams,
   linkShimUnwrappers,
   pressReleaseUnwrappers,
   searchClickUnwrappers,
@@ -14,6 +18,7 @@ export {
   signInShimUnwrappers,
   trackingParamsLiterals,
   trackingParamsPatterns,
+  visitorIdParams,
 } from './defaults.js'
 export type { CleanUrlOptions, TrackingParam, UrlUnwrapper } from './types.js'
 export { unwrap2performant } from './unwraps/2performant.js'

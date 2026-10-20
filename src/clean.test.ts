@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'bun:test'
 import { cleanUrl, stripTrackingParams, unwrapUrl } from './clean.js'
+import { campaignParams, defaultTrackingParams } from './defaults.js'
 import type { UrlUnwrapper } from './types.js'
 import { unwrapWebArchive } from './unwraps/webArchive.js'
 import { createParamExtractor } from './utils.js'
@@ -201,7 +202,7 @@ describe('stripTrackingParams', () => {
   })
 
   it('should remove default params when none are given', () => {
-    const value = 'https://example.com/post?utm_source=feed&id=42'
+    const value = 'https://example.com/post?fbclid=abc&id=42'
     const expected = 'https://example.com/post?id=42'
 
     expect(stripTrackingParams(value)).toBe(expected)
@@ -258,14 +259,14 @@ describe('stripTrackingParams', () => {
   })
 
   it('should remove params matching default patterns', () => {
-    const value = 'https://example.com/post?utm_id=abc123&id=42'
+    const value = 'https://example.com/post?hsa_id=abc123&id=42'
     const expected = 'https://example.com/post?id=42'
 
     expect(stripTrackingParams(value)).toBe(expected)
   })
 
   it('should match patterns against lowercased names', () => {
-    const value = 'https://example.com/post?UTM_ID=abc123&id=42'
+    const value = 'https://example.com/post?HSA_ID=abc123&id=42'
     const expected = 'https://example.com/post?id=42'
 
     expect(stripTrackingParams(value)).toBe(expected)
@@ -285,6 +286,32 @@ describe('stripTrackingParams', () => {
     expect(stripTrackingParams(value, ['fbclid', utmFamilyRegex])).toBe(expected)
   })
 
+  it('should keep campaign tags by default', () => {
+    const value = 'https://example.com/post?utm_source=feed&utm_medium=rss'
+
+    expect(stripTrackingParams(value)).toBe(value)
+  })
+
+  it('should keep affiliate params by default', () => {
+    const value = 'https://example.com/product?awc=12345_1700000000_abc'
+
+    expect(stripTrackingParams(value)).toBe(value)
+  })
+
+  it('should strip utm_cid by default, which carries a client id', () => {
+    const value = 'https://example.com/post?utm_source=feed&utm_cid=1234.5678'
+    const expected = 'https://example.com/post?utm_source=feed'
+
+    expect(stripTrackingParams(value)).toBe(expected)
+  })
+
+  it('should strip campaign tags when campaignParams is added to the defaults', () => {
+    const value = 'https://example.com/post?utm_source=feed&id=42'
+    const expected = 'https://example.com/post?id=42'
+
+    expect(stripTrackingParams(value, [...defaultTrackingParams, ...campaignParams])).toBe(expected)
+  })
+
   it('should keep cid, which carries functional IDs', () => {
     const value = 'https://www.google.com/maps?cid=1234567890'
 
@@ -292,48 +319,48 @@ describe('stripTrackingParams', () => {
   })
 
   it('should not match anchored patterns inside longer names', () => {
-    const value = 'https://example.com/post?xutm_sourcey=1'
+    const value = 'https://example.com/post?xhsa_kwy=1'
 
     expect(stripTrackingParams(value)).toBe(value)
   })
 
   it('should keep a valueless param as written', () => {
-    const value = 'https://example.com/post?flag&utm_source=feed'
+    const value = 'https://example.com/post?flag&fbclid=abc'
     const expected = 'https://example.com/post?flag'
 
     expect(stripTrackingParams(value)).toBe(expected)
   })
 
   it('should keep an empty pair as written', () => {
-    const value = 'https://example.com/post?a=1&&utm_source=feed'
+    const value = 'https://example.com/post?a=1&&fbclid=abc'
     const expected = 'https://example.com/post?a=1&'
 
     expect(stripTrackingParams(value)).toBe(expected)
   })
 
   it('should keep the encoding of the remaining params', () => {
-    const value = 'https://example.com/get?file=my%20doc.pdf&q=a+b&utm_source=feed'
+    const value = 'https://example.com/get?file=my%20doc.pdf&q=a+b&fbclid=abc'
     const expected = 'https://example.com/get?file=my%20doc.pdf&q=a+b'
 
     expect(stripTrackingParams(value)).toBe(expected)
   })
 
   it('should keep semicolon-separated values as written', () => {
-    const value = 'https://example.com/post?a=1;b=2&utm_source=feed'
+    const value = 'https://example.com/post?a=1;b=2&fbclid=abc'
     const expected = 'https://example.com/post?a=1;b=2'
 
     expect(stripTrackingParams(value)).toBe(expected)
   })
 
   it('should match encoded param names', () => {
-    const value = 'https://example.com/post?utm%5Fsource=feed&id=42'
+    const value = 'https://example.com/post?fb%5Fsource=feed&id=42'
     const expected = 'https://example.com/post?id=42'
 
     expect(stripTrackingParams(value)).toBe(expected)
   })
 
   it('should keep the fragment', () => {
-    const value = 'https://example.com/post?utm_source=feed#section'
+    const value = 'https://example.com/post?fbclid=abc#section'
     const expected = 'https://example.com/post#section'
 
     expect(stripTrackingParams(value)).toBe(expected)
@@ -351,22 +378,21 @@ describe('stripTrackingParams', () => {
 
 describe('cleanUrl', () => {
   it('should unwrap and strip tracking params with defaults', () => {
-    const value =
-      'https://www.google.com/url?q=https%3A%2F%2Fexample.com%2Fpost%3Futm_source%3Dnewsletter'
+    const value = 'https://www.google.com/url?q=https%3A%2F%2Fexample.com%2Fpost%3Ffbclid%3Dabc'
     const expected = 'https://example.com/post'
 
     expect(cleanUrl(value)).toBe(expected)
   })
 
   it('should strip default tracking params without unwrapping', () => {
-    const value = 'https://example.com/post?utm_source=feed&utm_medium=email&id=42'
+    const value = 'https://example.com/post?fbclid=abc&gclid=abc&id=42'
     const expected = 'https://example.com/post?id=42'
 
     expect(cleanUrl(value)).toBe(expected)
   })
 
   it('should unwrap with custom unwrappers and strip tracking params', () => {
-    const target = 'https://example.com/post?utm_source=feed&id=42'
+    const target = 'https://example.com/post?fbclid=abc&id=42'
     const value = `https://redirect.example.com/?target=${encodeURIComponent(target)}`
     const options = { unwrappers: [exampleUnwrapper] }
     const expected = 'https://example.com/post?id=42'
@@ -489,7 +515,7 @@ describe('cleanUrl', () => {
 
   it('should not unwrap when maxUnwrapDepth is zero', () => {
     const target = 'https://example.com/post'
-    const value = `https://redirect.example.com/?target=${encodeURIComponent(target)}&utm_source=feed`
+    const value = `https://redirect.example.com/?target=${encodeURIComponent(target)}&fbclid=abc`
     const options = {
       unwrappers: [exampleUnwrapper],
       maxUnwrapDepth: 0,
@@ -628,8 +654,7 @@ describe('cleanUrl with a mis-decoded target', () => {
   })
 
   it('should strip the tracking params of the wrapper it falls back to', () => {
-    const value =
-      'https://redirect.example.com/?utm_source=feed&target=https%3A%2F%2Fexample.com%2F%A4'
+    const value = 'https://redirect.example.com/?fbclid=abc&target=https%3A%2F%2Fexample.com%2F%A4'
     const expected = 'https://redirect.example.com/?target=https%3A%2F%2Fexample.com%2F%A4'
 
     expect(cleanUrl(value, { unwrappers: [legacyUnwrapper] })).toBe(expected)
@@ -1042,7 +1067,7 @@ describe('signed query', () => {
 
   it('should strip a query whose nested url carries sig', () => {
     const value =
-      'https://example.com/share?url=https%3A%2F%2Fcdn.example.org%2Ffile.mp4%3Fsig%3Dabc&utm_source=feed'
+      'https://example.com/share?url=https%3A%2F%2Fcdn.example.org%2Ffile.mp4%3Fsig%3Dabc&fbclid=abc'
     const expected =
       'https://example.com/share?url=https%3A%2F%2Fcdn.example.org%2Ffile.mp4%3Fsig%3Dabc'
 
@@ -1075,7 +1100,7 @@ describe('Alibaba DirectMail click url', () => {
 
   it('should strip other tracking params from a click url', () => {
     const value =
-      'https://dm-cn.aliyuncs.com/trace/v1/report?ts=1783913769&url=http%3A%2F%2Fwww.example.com%2F&utm_source=feed&sign=fed82fcd6b69c59fe6c6d8c46b34cfb4'
+      'https://dm-cn.aliyuncs.com/trace/v1/report?ts=1783913769&url=http%3A%2F%2Fwww.example.com%2F&fbclid=abc&sign=fed82fcd6b69c59fe6c6d8c46b34cfb4'
     const expected =
       'https://dm-cn.aliyuncs.com/trace/v1/report?ts=1783913769&url=http%3A%2F%2Fwww.example.com%2F&sign=fed82fcd6b69c59fe6c6d8c46b34cfb4'
 
@@ -1084,7 +1109,7 @@ describe('Alibaba DirectMail click url', () => {
 
   it('should strip a param whose name only contains ts from a click url', () => {
     const value =
-      'https://dm-cn.aliyuncs.com/trace/v1/report?ts=1783913769&url=http%3A%2F%2Fwww.example.com%2F&utm_ts=1783913769'
+      'https://dm-cn.aliyuncs.com/trace/v1/report?ts=1783913769&url=http%3A%2F%2Fwww.example.com%2F&hsa_ts=1783913769'
     const expected =
       'https://dm-cn.aliyuncs.com/trace/v1/report?ts=1783913769&url=http%3A%2F%2Fwww.example.com%2F'
 

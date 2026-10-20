@@ -1,5 +1,8 @@
-import { trackingParamsLiterals } from './tracking/literals.js'
-import { trackingParamsPatterns } from './tracking/patterns.js'
+import { affiliateParams } from './tracking/affiliate.js'
+import { campaignParams } from './tracking/campaign.js'
+import { clickAttributionParams } from './tracking/clickAttribution.js'
+import { housekeepingParams } from './tracking/housekeeping.js'
+import { visitorIdParams } from './tracking/visitorId.js'
 import type { TrackingParam, UrlUnwrapper } from './types.js'
 import { unwrap2performant } from './unwraps/2performant.js'
 import { unwrap4pda } from './unwraps/4pda.js'
@@ -383,14 +386,40 @@ import { unwrapZhihu } from './unwraps/zhihu.js'
 import { unwrapZix } from './unwraps/zix.js'
 import { unwrapZscalerIsolation } from './unwraps/zscalerIsolation.js'
 
-export { trackingParamsLiterals } from './tracking/literals.js'
-export { trackingParamsPatterns } from './tracking/patterns.js'
+export {
+  affiliateParams,
+  campaignParams,
+  clickAttributionParams,
+  housekeepingParams,
+  visitorIdParams,
+}
 
-// Combined default list applied by cleanUrl and stripTrackingParams.
+// Applied by cleanUrl and stripTrackingParams: what tracks a person or adds nothing. A pattern is
+// tested against the lowercased param name, so it must be lowercase and anchored.
 export const defaultTrackingParams: Array<TrackingParam> = [
-  ...trackingParamsLiterals,
-  ...trackingParamsPatterns,
+  ...clickAttributionParams,
+  ...visitorIdParams,
+  ...housekeepingParams,
 ]
+
+const knownTrackingParams: Array<TrackingParam> = [
+  ...defaultTrackingParams,
+  ...campaignParams,
+  ...affiliateParams,
+]
+
+// Every known param, opt-in categories included, split into names and patterns.
+export const trackingParamsLiterals: Array<string> = []
+export const trackingParamsPatterns: Array<RegExp> = []
+
+for (const param of knownTrackingParams) {
+  if (typeof param === 'string') {
+    trackingParamsLiterals.push(param)
+    continue
+  }
+
+  trackingParamsPatterns.push(param)
+}
 
 // Search engine and aggregator result clicks: unwrapping removes only the click logging.
 export const searchClickUnwrappers: Array<UrlUnwrapper> = [
