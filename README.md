@@ -124,3 +124,42 @@ import { affiliateUnwrappers, cleanUrl, defaultUnwrappers } from 'urlpurify'
 
 cleanUrl(url, { unwrappers: [...defaultUnwrappers, ...affiliateUnwrappers] })
 ```
+
+## Upgrading from 1.x
+
+2.0 stops removing what serves the site or the publisher: campaign tags, affiliate ids, press release wires and site click counters. For the 1.x output, spread them back:
+
+```typescript
+import {
+  affiliateParams,
+  campaignParams,
+  cleanUrl,
+  defaultTrackingParams,
+  defaultUnwrappers,
+  pressReleaseUnwrappers,
+  unwrapBitrix,
+  unwrapDasBlog,
+  unwrapFeedStatistics,
+  unwrapFeedblitz,
+  unwrapFinalsite,
+  unwrapIndexHu,
+  unwrapSerendipity,
+  unwrapTheRegister,
+} from 'urlpurify'
+
+cleanUrl(url, {
+  unwrappers: [
+    ...defaultUnwrappers,
+    ...pressReleaseUnwrappers,
+    unwrapBitrix,
+    unwrapDasBlog,
+    unwrapFeedStatistics,
+    unwrapFeedblitz,
+    unwrapFinalsite,
+    unwrapIndexHu,
+    unwrapSerendipity,
+    unwrapTheRegister,
+  ],
+  trackingParams: [...defaultTrackingParams, ...campaignParams, ...affiliateParams],
+})
+```
