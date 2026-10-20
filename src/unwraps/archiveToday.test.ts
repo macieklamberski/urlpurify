@@ -172,7 +172,7 @@ describe('unwrapArchiveToday', () => {
   })
 
   it('should unwrap through cleanUrl when passed as an unwrapper', () => {
-    const value = 'https://archive.is/o/v8cfx/https:/www.example.com/us/story?utm_source=feed'
+    const value = 'https://archive.is/o/v8cfx/https:/www.example.com/us/story?fbclid=abc'
 
     expect(cleanUrl(value, { unwrappers: [unwrapArchiveToday] })).toBe(
       'https://www.example.com/us/story',

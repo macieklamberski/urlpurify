@@ -150,3 +150,9 @@ describe('unwrapper categories', () => {
     expect(new Set(placed).size).toBe(placed.length)
   })
 })
+
+describe('trackingParamsLiterals', () => {
+  it('should include names from the opt-in categories', () => {
+    expect(urlpurify.trackingParamsLiterals).toContain('utm_source')
+  })
+})
