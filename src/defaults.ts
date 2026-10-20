@@ -410,7 +410,7 @@ export const searchClickUnwrappers: Array<UrlUnwrapper> = [
   unwrapZemanta,
 ]
 
-// Link shims, leaving pages and site click counters: unwrapping removes at most a click count.
+// Link shims and leaving pages: unwrapping removes at most a platform's click count.
 export const linkShimUnwrappers: Array<UrlUnwrapper> = [
   unwrap4pda,
   unwrapAboutCom,
@@ -427,7 +427,6 @@ export const linkShimUnwrappers: Array<UrlUnwrapper> = [
   unwrapCalendly,
   unwrapCanva,
   unwrapCsdn,
-  unwrapDasBlog,
   unwrapDatalifeEngine,
   unwrapDerefMail,
   unwrapDeviantartOutgoing,
@@ -438,10 +437,7 @@ export const linkShimUnwrappers: Array<UrlUnwrapper> = [
   unwrapEmbedly,
   unwrapEvernote,
   unwrapFacebookShim,
-  unwrapFeedblitz,
   unwrapFeedsportal,
-  unwrapFeedStatistics,
-  unwrapFinalsite,
   unwrapFtc,
   unwrapGfnLinkProxy,
   unwrapGitee,
@@ -481,7 +477,6 @@ export const linkShimUnwrappers: Array<UrlUnwrapper> = [
   unwrapResearchgate,
   unwrapSapHelp,
   unwrapSegmentfault,
-  unwrapSerendipity,
   unwrapSkyrock,
   unwrapSlack,
   unwrapSoundcloud,
@@ -490,7 +485,6 @@ export const linkShimUnwrappers: Array<UrlUnwrapper> = [
   unwrapStorify,
   unwrapStumbleupon,
   unwrapTeacup,
-  unwrapTheRegister,
   unwrapThreadsShim,
   unwrapTiktok,
   unwrapTumblr,
@@ -749,7 +743,11 @@ export const downloadMeasurementUnwrappers: Array<UrlUnwrapper> = [
   unwrapChartable,
   unwrapClaritas,
   unwrapCohst,
+  unwrapDasBlog,
   unwrapDstats,
+  unwrapFeedblitz,
+  unwrapFeedStatistics,
+  unwrapFinalsite,
   unwrapFirstory,
   unwrapFiveByFive,
   unwrapGodcaster,
@@ -769,9 +767,11 @@ export const downloadMeasurementUnwrappers: Array<UrlUnwrapper> = [
   unwrapPodsights,
   unwrapPodtrac,
   unwrapPodup,
+  unwrapSerendipity,
   unwrapSoundOn,
   unwrapSoundstack,
   unwrapSwap,
+  unwrapTheRegister,
   unwrapUpAudio,
   unwrapVgWort,
   unwrapVoxnest,
@@ -818,5 +818,4 @@ export const archiveProxyUnwrappers: Array<UrlUnwrapper> = [
 export const defaultUnwrappers: Array<UrlUnwrapper> = [
   ...searchClickUnwrappers,
   ...linkShimUnwrappers,
-  ...pressReleaseUnwrappers,
 ]

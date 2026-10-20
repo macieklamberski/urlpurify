@@ -89,17 +89,17 @@ There are more than 380 unwrappers, each in its own file in [src/unwraps](src/un
 | Category | Export | Unwrapping removes | Default |
 | --- | --- | --- | :---: |
 | Search clicks | `searchClickUnwrappers` | The search engine's or aggregator's click logging | ☑️ |
-| Link shims | `linkShimUnwrappers` | Nothing, or a platform's click count or a site click counter | ☑️ |
-| Press releases | `pressReleaseUnwrappers` | The wire's click stats | ☑️ |
+| Link shims | `linkShimUnwrappers` | Nothing, or a platform's click count | ☑️ |
+| Press releases | `pressReleaseUnwrappers` | The issuer's click stats from the wire | |
 | Sign-in shims | `signInShimUnwrappers` | Nothing, but the shim's page needs a sign-in | |
 | Security gateways | `securityGatewayUnwrappers` | The gateway's click-time check of the target | |
 | Email tracking | `emailTrackingUnwrappers` | The sender's click stats | |
 | Affiliate links | `affiliateUnwrappers` | The publisher's commission | |
 | Advertising | `advertisingUnwrappers` | Ad click and app install attribution | |
-| Download measurement | `downloadMeasurementUnwrappers` | A podcast measurement prefix's download counts, or a site's download or click counts | |
+| Download measurement | `downloadMeasurementUnwrappers` | A podcast measurement prefix's download counts, or a site's or feed's download or click counts | |
 | Archives and proxies | `archiveProxyUnwrappers` | The archived or translated copy: you get the live page | |
 
-`defaultUnwrappers` combines the first three. The rest cost somebody something or change the page: an affiliate link may pay for a small blog, and an archive link points at a copy on purpose. To turn more on, spread them next to the defaults:
+`defaultUnwrappers` combines the first two. The rest cost somebody something or change the page: a feed click counter tells a blog which posts get read, an affiliate link may pay for a small blog, and an archive link points at a copy on purpose. To turn more on, spread them next to the defaults:
 
 ```typescript
 import { affiliateUnwrappers, cleanUrl, defaultUnwrappers } from 'urlpurify'
