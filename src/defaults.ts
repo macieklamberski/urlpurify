@@ -152,6 +152,7 @@ import { unwrapGoogleNewsModern } from './unwraps/googleNewsModern.js'
 import { unwrapGoogleScholar } from './unwraps/googleScholar.js'
 import { unwrapGoogleTranslate } from './unwraps/googleTranslate.js'
 import { unwrapGoogleWebLight } from './unwraps/googleWebLight.js'
+import { unwrapGovdelivery } from './unwraps/govdelivery.js'
 import { unwrapGroupMail } from './unwraps/groupMail.js'
 import { unwrapGroupon } from './unwraps/groupon.js'
 import { unwrapGumball } from './unwraps/gumball.js'
@@ -596,6 +597,7 @@ export const emailTrackingUnwrappers: Array<UrlUnwrapper> = [
   unwrapElasticEmail,
   unwrapFanbridge,
   unwrapGlueUp,
+  unwrapGovdelivery,
   unwrapGroupMail,
   unwrapHellohq,
   unwrapHubspotSidekick,
