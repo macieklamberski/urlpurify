@@ -18,6 +18,14 @@ describe('unwrapYahooSearch', () => {
     expect(unwrapYahooSearch(url)).toBe('https://en.wikipedia.org/wiki/Eicosapentaenoic_acid')
   })
 
+  it('should return undefined for a target with a malformed escape', () => {
+    const url = new URL(
+      'https://r.search.yahoo.com/_ylt=AAA/RU=https%3A%2F%2Fexample.com%2F%E0%A4/RK=2/RS=DDD-',
+    )
+
+    expect(unwrapYahooSearch(url)).toBeUndefined()
+  })
+
   it('should extract unencoded target from RU path segment', () => {
     const url = new URL(
       'https://r.search.yahoo.com/_ylt=AwrJ6SUKtuNeVsAAXDhXNyoA;_ylu=X3oDMTEyOGI4bGNnBGNvbG8DYmYxBHBvcwMxBHZ0aWQDQjg3NDZfMQRzZWMDc3I-/RV=2/RE=1592010379/RO=10/RU=https://www.example.com/en/main.html/RK=2/RS=h9cMUNkezgC.X6SqpQKt',
