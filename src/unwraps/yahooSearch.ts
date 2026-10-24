@@ -1,5 +1,6 @@
 import { decodeSegment, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
+import { decodeEncodedScheme } from '../utils.js'
 
 const hosts = ['r.search.yahoo.com', 'ri.search.yahoo.com', 'chicagotribune.search.yahoo.com']
 const yahooPathRegex = /^(?:\/[^/]+)*\/RU=([^/]+)\/RK=/
@@ -15,7 +16,13 @@ export const unwrapYahooSearch: UrlUnwrapper = (url) => {
   const match = url.pathname.match(yahooPathRegex)
 
   if (match) {
-    return decodeSegment(match[1])
+    const target = decodeSegment(match[1])
+
+    if (!target) {
+      return
+    }
+
+    return decodeEncodedScheme(target)
   }
 
   const unencodedMatch = url.pathname.match(unencodedTargetRegex)

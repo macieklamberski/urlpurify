@@ -10,6 +10,14 @@ describe('unwrapYahooSearch', () => {
     expect(unwrapYahooSearch(url)).toBe('https://example.com/article')
   })
 
+  it('should extract a target encoded twice with lowercase escapes', () => {
+    const url = new URL(
+      'https://r.search.yahoo.com/_ylt=A0SO8xaUZlRazG8AsgxXNyoA%3B_ylu=X3oDMTEyNHZmZXJ0BGNvbG8DZ3ExBHBvcwMxBHZ0aWQDQjQwNzlfMQRzZWMDc3I-/RV=2/RE=1515509524/RO=10/RU=https%253a%252f%252fen.wikipedia.org%252fwiki%252fEicosapentaenoic_acid/RK=2/RS=Q3AliY1vGSoKCNqTI0ScypJR4Cw-',
+    )
+
+    expect(unwrapYahooSearch(url)).toBe('https://en.wikipedia.org/wiki/Eicosapentaenoic_acid')
+  })
+
   it('should extract unencoded target from RU path segment', () => {
     const url = new URL(
       'https://r.search.yahoo.com/_ylt=AwrJ6SUKtuNeVsAAXDhXNyoA;_ylu=X3oDMTEyOGI4bGNnBGNvbG8DYmYxBHBvcwMxBHZ0aWQDQjg3NDZfMQRzZWMDc3I-/RV=2/RE=1592010379/RO=10/RU=https://www.example.com/en/main.html/RK=2/RS=h9cMUNkezgC.X6SqpQKt',

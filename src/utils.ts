@@ -23,7 +23,7 @@ const encodedSchemeRegex = /^https?%3A/i
 
 // A value already decoded once still holds an encoded scheme (`https%3A%2F%2F`) when the
 // carrier encoded its target twice.
-const decodeEncodedScheme = (value: string): string => {
+export const decodeEncodedScheme = (value: string): string => {
   if (!encodedSchemeRegex.test(value)) {
     return value
   }
