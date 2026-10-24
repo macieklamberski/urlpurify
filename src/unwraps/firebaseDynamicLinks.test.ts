@@ -26,12 +26,12 @@ describe('unwrapFirebaseDynamicLinks', () => {
     expect(unwrapFirebaseDynamicLinks(url)).toBeUndefined()
   })
 
-  it('should prefer link over ofl when both are present', () => {
+  it('should prefer ofl over link when both are present', () => {
     const url = new URL(
       'https://example.page.link/?link=https%3A%2F%2Fexample.com%2Fcanonical&ofl=https%3A%2F%2Fexample.com%2Ffallback',
     )
 
-    expect(unwrapFirebaseDynamicLinks(url)).toBe('https://example.com/canonical')
+    expect(unwrapFirebaseDynamicLinks(url)).toBe('https://example.com/fallback')
   })
 
   it('should extract target from link param on .app.goo.gl host', () => {

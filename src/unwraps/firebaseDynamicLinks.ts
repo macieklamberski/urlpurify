@@ -2,7 +2,9 @@ import type { UrlUnwrapper } from '../types.js'
 import { createParamExtractor } from '../utils.js'
 
 const appPathRegex = /^\/app\/[\w-]+$/
-const params = ['link', 'ofl']
+// A desktop browser gets `ofl` when present and `link` otherwise.
+// See: https://firebase.google.com/docs/dynamic-links/create-manually.
+const params = ['ofl', 'link']
 
 const extractTarget = createParamExtractor({
   domains: ['app.goo.gl', 'page.link'],
@@ -20,9 +22,6 @@ const extractGooGlTarget = createParamExtractor({
 // goo.gl hosts (<name>.app.goo.gl/?link=<canonical> and goo.gl/app/<name>?link=<canonical>).
 // A deeper path on page.link or app.goo.gl is a short link or another service, such as
 // maps.app.goo.gl/<id>, and is left alone.
-// `link` is the canonical destination; `ofl` is the web fallback used when no
-// app handler is available. They're often identical, but when they differ
-// `link` is the more correct choice.
 export const unwrapFirebaseDynamicLinks: UrlUnwrapper = (url) => {
   if (url.hostname !== 'goo.gl') {
     return extractTarget(url)
