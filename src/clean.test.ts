@@ -112,6 +112,40 @@ describe('unwrapUrl', () => {
     expect(unwrapUrl(value, [exampleUnwrapper])).toBe(expected)
   })
 
+  it('should give a target without a scheme the https scheme', () => {
+    const value =
+      'https://redirect.example.com/?target=www%2Eexample%2Ecom%2Fdominican-republic%2Fd32-ttd'
+    const expected = 'https://www.example.com/dominican-republic/d32-ttd'
+
+    expect(unwrapUrl(value, [exampleUnwrapper])).toBe(expected)
+  })
+
+  it('should give a bare host target the https scheme', () => {
+    const value = 'https://redirect.example.com/?target=example.com'
+    const expected = 'https://example.com/'
+
+    expect(unwrapUrl(value, [exampleUnwrapper])).toBe(expected)
+  })
+
+  it('should return undefined for a target without a scheme or a dotted host', () => {
+    const value = 'https://redirect.example.com/?target=relative%2Fpath'
+
+    expect(unwrapUrl(value, [exampleUnwrapper])).toBeUndefined()
+  })
+
+  it('should return undefined for a target naming another scheme', () => {
+    const value = 'https://redirect.example.com/?target=mailto%3Aname%40example.com'
+
+    expect(unwrapUrl(value, [exampleUnwrapper])).toBeUndefined()
+  })
+
+  it('should trim a no-break space after the target', () => {
+    const value = 'https://redirect.example.com/?target=http%3A%2F%2Fwww.example.com%C2%A0%C2%A0'
+    const expected = 'http://www.example.com/'
+
+    expect(unwrapUrl(value, [exampleUnwrapper])).toBe(expected)
+  })
+
   it('should return undefined for a target opening with three slashes', () => {
     const value = 'https://redirect.example.com/?target=%2F%2F%2Fexample.com%2Fpost'
 
