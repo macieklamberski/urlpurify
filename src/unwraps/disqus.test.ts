@@ -52,10 +52,26 @@ describe('unwrapDisqus', () => {
 
   it('should keep a colon inside the target path', () => {
     const url = new URL(
-      'https://disq.us/url?url=https%3A%2F%2Fexample.com%2Fwiki%2FTalk%3AMain_Page',
+      'https://disq.us/url?url=https%3A%2F%2Fexample.com%2Fwiki%2FTalk%3AUniform_Resource_Locator',
     )
 
-    expect(unwrapDisqus(url)).toBe('https://example.com/wiki/Talk:Main_Page')
+    expect(unwrapDisqus(url)).toBe('https://example.com/wiki/Talk:Uniform_Resource_Locator')
+  })
+
+  it('should drop only the signature from a target path ending in a colon segment', () => {
+    const url = new URL(
+      'https://disq.us/url?url=https%3A%2F%2Fexample.com%2FModding%3AInstalling_SMAPI_on_Windows%3Aouxfjrpf22Z5p2zEB5xmkNm6Jx8&cuid=391019',
+    )
+
+    expect(unwrapDisqus(url)).toBe('https://example.com/Modding:Installing_SMAPI_on_Windows')
+  })
+
+  it('should keep a root-form target ending in a colon segment', () => {
+    const url = new URL(
+      'https://disq.us/?url=https%3A%2F%2Fexample.com%2FModding%3AInstalling_SMAPI_on_Windows&key=aoxeYr0UHBhCO7dqCNrnPw',
+    )
+
+    expect(unwrapDisqus(url)).toBe('https://example.com/Modding:Installing_SMAPI_on_Windows')
   })
 
   it('should return undefined for a sibling path on the host', () => {

@@ -17,6 +17,13 @@ export const unwrapDisqus: UrlUnwrapper = (url) => {
     return
   }
 
+  const target = extractTarget(url)
+
+  // A root-form target is unsigned and can itself end in a colon and 27 characters.
+  if (url.pathname !== '/url') {
+    return target
+  }
+
   // Disqus redirects to the target with its signature cut off.
-  return extractTarget(url)?.replace(signatureRegex, '')
+  return target?.replace(signatureRegex, '')
 }
