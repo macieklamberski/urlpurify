@@ -66,12 +66,20 @@ describe('unwrapAdjust', () => {
     expect(unwrapAdjust(url)).toBe('https://www.example.com/')
   })
 
-  it('should extract target from the tracker macOS redirect', () => {
+  it('should return undefined for a tracker with only a macOS redirect', () => {
     const url = new URL(
       'https://app.adjust.com/vkqj7re?campaign=podcast&adgroup=broker&redirect_ios=https%3A%2F%2Fexample.org%2Fapp%2Fid1&redirect_macos=https%3A%2F%2Fexample.com%2Ftrading%2F',
     )
 
-    expect(unwrapAdjust(url)).toBe('https://example.com/trading/')
+    expect(unwrapAdjust(url)).toBeUndefined()
+  })
+
+  it('should prefer the tracker Windows redirect over the redirect', () => {
+    const url = new URL(
+      'https://app.adjust.com/abc123?redirect=https%3A%2F%2Fexample.com%2Fredirect&redirect_windows=https%3A%2F%2Fexample.com%2Fwindows',
+    )
+
+    expect(unwrapAdjust(url)).toBe('https://example.com/windows')
   })
 
   it('should prefer the tracker redirect over the fallback', () => {
@@ -106,7 +114,7 @@ describe('unwrapAdjust', () => {
     expect(unwrapAdjust(url)).toBe('https://example.com/en/live-matches')
   })
 
-  it('should extract target from a universal link macOS redirect', () => {
+  it('should extract target from a universal link Windows redirect', () => {
     const url = new URL(
       'https://vml8.adj.st/main?productId=515b205a&showcaseType=MINIMARKET&adj_t=zzwvyv8&adj_redirect_macos=https%3A%2F%2Fexample.com%2F&adj_redirect_windows=https%3A%2F%2Fexample.com%2F',
     )
@@ -128,6 +136,30 @@ describe('unwrapAdjust', () => {
     )
 
     expect(unwrapAdjust(url)).toBe('https://example.com/on-bilgilendirme/1411')
+  })
+
+  it('should return undefined for a universal link with only a macOS redirect', () => {
+    const url = new URL(
+      'https://vml8.adj.st/main?adj_t=zzwvyv8&adj_redirect_macos=https%3A%2F%2Fexample.com%2F',
+    )
+
+    expect(unwrapAdjust(url)).toBeUndefined()
+  })
+
+  it('should prefer the universal link Windows redirect over the redirect', () => {
+    const url = new URL(
+      'https://vml8.adj.st/main?adj_t=zzwvyv8&adj_redirect=https%3A%2F%2Fexample.com%2Fredirect&adj_redirect_windows=https%3A%2F%2Fexample.com%2Fwindows',
+    )
+
+    expect(unwrapAdjust(url)).toBe('https://example.com/windows')
+  })
+
+  it('should prefer the universal link older fallback over the fallback', () => {
+    const url = new URL(
+      'https://vml8.adj.st/main?adj_t=zzwvyv8&adj_fallback=https%3A%2F%2Fexample.com%2Ffallback&adjust_fallback=https%3A%2F%2Fexample.com%2Folder',
+    )
+
+    expect(unwrapAdjust(url)).toBe('https://example.com/older')
   })
 
   it('should prefer the universal link redirect over the fallback', () => {
