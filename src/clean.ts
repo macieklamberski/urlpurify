@@ -155,20 +155,31 @@ const cleanTarget = (target: string | undefined): string | undefined => {
 }
 
 const protocolRelativeRegex = /^\/\/[^/]/
+const bareHostRegex = /^[\p{L}\p{N}-]+(?:\.[\p{L}\p{N}-]+)+(?:[/?#:]|$)/u
 
-// A protocol-relative target, `//host/path`, as Embedly writes for Issuu, has no scheme to pass the
-// http check, so it gets `https:`.
+// A target without a scheme fails the http check, so it gets `https`: a protocol-relative
+// `//host/path`, as Embedly writes for Issuu, and a bare `host.tld/path`, as ShareASale's
+// `urllink` and LinkedIn's `safety/go` carry.
 const addMissingScheme = (target: string | undefined): string | undefined => {
-  if (!target || !protocolRelativeRegex.test(target)) {
-    return target
+  if (!target) {
+    return
   }
 
-  return `https:${target}`
+  if (protocolRelativeRegex.test(target)) {
+    return `https:${target}`
+  }
+
+  if (bareHostRegex.test(target)) {
+    return `https://${target}`
+  }
+
+  return target
 }
 
 const applyUnwrappers = (url: URL, unwrappers: Array<UrlUnwrapper>): string | undefined => {
   for (const unwrap of unwrappers) {
-    const raw = addMissingScheme(unwrap(url))
+    // A trailing no-break space, as YouTube descriptions carry, fails the http check untrimmed.
+    const raw = addMissingScheme(unwrap(url)?.trim())
 
     if (!raw || !isHttpUrl(raw)) {
       continue
