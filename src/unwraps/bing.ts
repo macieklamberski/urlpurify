@@ -1,6 +1,6 @@
 import { isAnyOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { decodeBase64Url, getParamTarget } from '../utils.js'
+import { decodeBase64Url, getParamTarget, getParamValues } from '../utils.js'
 
 export const bingHosts = [
   'bing.com',
@@ -36,7 +36,7 @@ export const unwrapBing: UrlUnwrapper = (url) => {
     return
   }
 
-  const value = url.searchParams.get('u')
+  const value = getParamValues(url, 'u').at(0)
   if (!value || !bingPrefixRegex.test(value)) {
     return
   }

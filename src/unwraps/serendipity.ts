@@ -1,6 +1,6 @@
 import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { decodeBase64 } from '../utils.js'
+import { decodeBase64, getParamValues } from '../utils.js'
 
 // The exit tracker at the blog root or under one blog folder.
 const pathRegex = /^(?:\/[^/]+)?\/exit\.php$/
@@ -13,7 +13,7 @@ export const unwrapSerendipity: UrlUnwrapper = (url) => {
     return
   }
 
-  const raw = url.searchParams.get('url')
+  const raw = getParamValues(url, 'url').at(0)
 
   if (!raw) {
     return

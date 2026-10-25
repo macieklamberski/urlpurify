@@ -1,6 +1,6 @@
 import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { decodeBase64 } from '../utils.js'
+import { decodeBase64, getParamValues } from '../utils.js'
 
 // A forum root prefix, such as /forum/.
 const pathRegex = /^(?:\/[^/]+)?\/redirect\/?$/
@@ -13,7 +13,7 @@ export const unwrapGfnLinkProxy: UrlUnwrapper = (url) => {
     return
   }
 
-  const raw = url.searchParams.get('to')
+  const raw = getParamValues(url, 'to').at(0)
 
   if (!raw) {
     return

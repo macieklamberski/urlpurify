@@ -1,6 +1,6 @@
 import { decodePercent, isAnyOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { decodeBase64Url } from '../utils.js'
+import { decodeBase64Url, getParamValues } from '../utils.js'
 import { bingHosts } from './bing.js'
 
 const adPaths = ['/aclk', '/aclick']
@@ -13,7 +13,7 @@ export const unwrapBingAds: UrlUnwrapper = (url) => {
     return
   }
 
-  const value = url.searchParams.get('u')
+  const value = getParamValues(url, 'u').at(0)
 
   if (!value) {
     return

@@ -76,7 +76,7 @@ const unwrapExample = createParamExtractor({
 cleanUrl(url, { unwrappers: [...defaultUnwrappers, unwrapExample] })
 ```
 
-A value still encoded after one decode, starting with `http%3A` or `https%3A`, is decoded once more. For any other shape, write a plain `UrlUnwrapper`: a function that takes a `URL` and returns the target or `undefined`.
+A value still encoded after one decode, starting with `http%3A` or `https%3A`, is decoded once more. A malformed escape, or one in a legacy charset such as `%E9` for é in Latin-1, stays as written. For any other shape, write a plain `UrlUnwrapper`: a function that takes a `URL` and returns the target or `undefined`.
 
 ### Tracking parameters
 

@@ -1,6 +1,6 @@
 import { isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor, decodeBase64Url } from '../utils.js'
+import { createParamExtractor, decodeBase64Url, getParamValues } from '../utils.js'
 
 const hosts = ['go.mnsvc.com', 'mandrillapp.com']
 const clickPathRegex = /^\/track\/click\/\d+\/[^/]+$/
@@ -36,7 +36,7 @@ export const unwrapMandrill: UrlUnwrapper = (url) => {
     return
   }
 
-  const payload = url.searchParams.get('p')
+  const payload = getParamValues(url, 'p').at(0)
 
   if (!payload) {
     return

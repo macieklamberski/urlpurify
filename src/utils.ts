@@ -104,9 +104,8 @@ export const decodeBase64Binary = (value: string): string | undefined => {
   } catch {}
 }
 
-// Stateless for non-streaming decodes, so one instance is shared across calls.
-const utf8Decoder = new TextDecoder()
-
+// Each byte goes through `decodePercent` as an escape, so a UTF-8 sequence decodes and a byte of a
+// legacy charset stays as `%XX`, where `TextDecoder` would write U+FFFD.
 export const decodeBase64 = (value: string): string | undefined => {
   const binary = decodeBase64Binary(value)
 
@@ -114,14 +113,20 @@ export const decodeBase64 = (value: string): string | undefined => {
     return
   }
 
-  // A plain fill loop; Uint8Array.from with a mapper invokes a callback per byte.
-  const bytes = new Uint8Array(binary.length)
+  let encoded = ''
 
   for (let index = 0; index < binary.length; index++) {
-    bytes[index] = binary.charCodeAt(index)
+    const byte = binary.charCodeAt(index)
+
+    if (byte < 0x80 && binary[index] !== '%') {
+      encoded += binary[index]
+      continue
+    }
+
+    encoded += `%${byte.toString(16).toUpperCase().padStart(2, '0')}`
   }
 
-  return utf8Decoder.decode(bytes)
+  return decodePercent(encoded)
 }
 
 const toBase64 = (base64Url: string): string => {
