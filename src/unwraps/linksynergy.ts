@@ -1,6 +1,6 @@
-import { isHostOf, isHttpUrl } from 'trousse'
+import { decodePercent, isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamValues, percentDecode } from '../utils.js'
+import { getParamValues } from '../utils.js'
 
 // linksynergy.jrs5.com and linksynergy.walmart.com sit on a merchant's own domain.
 const linksynergyHosts = [
@@ -41,7 +41,7 @@ export const unwrapLinksynergy: UrlUnwrapper = (url) => {
   }
 
   // The target is often percent-encoded twice.
-  const decoded = percentDecode(target)
+  const decoded = decodePercent(target)
 
   if (isHttpUrl(decoded)) {
     return decoded

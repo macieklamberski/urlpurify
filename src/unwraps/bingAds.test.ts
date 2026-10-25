@@ -120,12 +120,12 @@ describe('unwrapBingAds', () => {
     expect(unwrapBingAds(url)).toBeUndefined()
   })
 
-  it('should return undefined for a target with a broken percent escape', () => {
+  it('should keep a malformed escape in the target as written', () => {
     const url = new URL(
       'https://www.bing.com/aclk?ld=e8v53HweaYYJO4-AI3B9EQTjVUCUw_PMEVmStLE-Ak7-miCUGacAv4rlEWkyDU3pP48rH2hc&u=aHR0cHMlM2ElMmYlMmZleGFtcGxlLmNvbSUyZiVFMCVBNCVB&rlid=d9a7f0c1b2e44d5a8c3b6e1f0a2d4c7b&ntb=1',
     )
 
-    expect(unwrapBingAds(url)).toBeUndefined()
+    expect(unwrapBingAds(url)).toBe('https://example.com/%E0%A4%A')
   })
 
   it('should return undefined for the search result redirect path', () => {

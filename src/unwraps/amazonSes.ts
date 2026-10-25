@@ -1,4 +1,4 @@
-import { isHostOrSubdomainOf, isHttpUrl } from 'trousse'
+import { decodePercent, isHostOrSubdomainOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
 const awstrackPathRegex = /^\/L0\/(.+?)\/\d+\/[^/]+\/[^/]+$/
@@ -15,11 +15,9 @@ export const unwrapAmazonSes: UrlUnwrapper = (url) => {
     return
   }
 
-  try {
-    const target = decodeURIComponent(match[1])
+  const target = decodePercent(match[1])
 
-    if (isHttpUrl(target)) {
-      return target
-    }
-  } catch {}
+  if (isHttpUrl(target)) {
+    return target
+  }
 }

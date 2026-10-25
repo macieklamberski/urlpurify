@@ -130,12 +130,12 @@ describe('unwrapStreak', () => {
     expect(unwrapStreak(url)).toBeUndefined()
   })
 
-  it('should return undefined for a malformed percent escape in the target', () => {
+  it('should keep a malformed escape in the target as written', () => {
     const url = new URL(
       'https://streaklinks.com/BtuZeQExcU8ZwbuxOgI9VdLx/https%3A%2F%2Fexample.com%2F%E0%A4%A',
     )
 
-    expect(unwrapStreak(url)).toBeUndefined()
+    expect(unwrapStreak(url)).toBe('https://example.com/%E0%A4%A')
   })
 
   it('should return undefined for the same shape on another host', () => {

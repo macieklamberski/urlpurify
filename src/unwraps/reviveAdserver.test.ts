@@ -132,12 +132,12 @@ describe('unwrapReviveAdserver', () => {
     expect(unwrapReviveAdserver(url)).toBeUndefined()
   })
 
-  it('should return undefined for a malformed percent-encoding', () => {
+  it('should keep a malformed escape in the target as written', () => {
     const url = new URL(
       'http://ads.example.net/www/delivery/ck.php?oaparams=2__bannerid=40__oadest=https://www.example.com/%E0%A4%A',
     )
 
-    expect(unwrapReviveAdserver(url)).toBeUndefined()
+    expect(unwrapReviveAdserver(url)).toBe('https://www.example.com/%E0%A4%A')
   })
 
   it('should return undefined for a script that only ends in adclick.php', () => {

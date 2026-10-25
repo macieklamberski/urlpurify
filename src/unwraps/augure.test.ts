@@ -44,12 +44,12 @@ describe('unwrapAugure', () => {
     expect(unwrapAugure(url)).toBeUndefined()
   })
 
-  it('should return undefined for a malformed escape in the target', () => {
+  it('should keep a malformed escape in the target as written', () => {
     const url = new URL(
       'http://web-engage.augure.com/pub/tracking/554725/03393749411762681513331227939-example.com?id1=aHR0cHMlM0ElMkYlMkZ3d3cuZXhhbXBsZS5jb20lMkYlRTAlQTQlQQ%3D%3D',
     )
 
-    expect(unwrapAugure(url)).toBeUndefined()
+    expect(unwrapAugure(url)).toBe('https://www.example.com/%E0%A4%A')
   })
 
   it('should return undefined for the click tracker without id1', () => {

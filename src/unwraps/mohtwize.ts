@@ -1,4 +1,4 @@
-import { isHostOf } from 'trousse'
+import { decodePercent, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
 const carrierPrefix = '?fileURL=/'
@@ -22,11 +22,7 @@ export const unwrapMohtwize: UrlUnwrapper = (url) => {
 
   // An encoded target, as in `https%3A%2F%2F…`, which the service decoded before forwarding.
   if (encodedSchemeRegex.test(target)) {
-    try {
-      target = decodeURIComponent(target)
-    } catch {
-      return
-    }
+    target = decodePercent(target)
   }
 
   if (!target) {

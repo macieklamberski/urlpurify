@@ -56,10 +56,9 @@ describe('unwrapPostmark', () => {
     expect(unwrapPostmark(url)).toBeUndefined()
   })
 
-  it('should return undefined when the encoded path segment is malformed', () => {
-    // `%ZZ` is not a valid percent escape and breaks decodeURIComponent.
-    const url = new URL('https://click.pstmrk.it/3s/bad%ZZ/abc/def')
+  it('should keep a malformed escape in the target as written', () => {
+    const url = new URL('https://click.pstmrk.it/3s/example.com%2F100%ZZ/abc/def')
 
-    expect(unwrapPostmark(url)).toBeUndefined()
+    expect(unwrapPostmark(url)).toBe('https://example.com/100%ZZ')
   })
 })

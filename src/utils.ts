@@ -1,4 +1,4 @@
-import { isAnyOf, isHostOf, isHostOrSubdomainOf } from 'trousse'
+import { decodePercent, isAnyOf, isHostOf, isHostOrSubdomainOf } from 'trousse'
 import type { UrlUnwrapper } from './types.js'
 
 // `domains` also matches every subdomain. `hosts` matches a host exactly, or by regex, for a domain
@@ -11,31 +11,23 @@ export type ParamExtractorConfig = (
   params: Array<string>
 }
 
-// Percent-decodes per the URL Standard, as `URLSearchParams` does: a `%` not followed by two hex
-// digits stays in place, and a `+` stays a `+`.
-export const percentDecode = (value: string): string => {
-  const escaped = value.replaceAll('+', '%2B').replaceAll('&', '%26')
-
-  return new URLSearchParams(`value=${escaped}`).get('value') ?? ''
-}
-
 const encodedSchemeRegex = /^https?%3A/i
 
 // A value already decoded once still holds an encoded scheme (`https%3A%2F%2F`) when the
 // carrier encoded its target twice.
-const decodeEncodedScheme = (value: string): string => {
+export const decodeEncodedScheme = (value: string): string => {
   if (!encodedSchemeRegex.test(value)) {
     return value
   }
 
-  return percentDecode(value)
+  return decodePercent(value)
 }
 
 const unencodedTargetRegex = /^https?:\/\//i
 
-// Every value of a query param, in order, as `URLSearchParams.getAll` reads them, except a `+` in
-// a target the carrier left unencoded, as in `wgtarget=https://example.com/search/a+b/`. There the
-// `+` is the target's own and stays, where `URLSearchParams` reads it as a space.
+// Every value of a query param, in order, as `URLSearchParams.getAll` reads them, except that a
+// malformed escape stays as written, and a `+` stays in a target the carrier left unencoded, as in
+// `wgtarget=https://example.com/search/a+b/`, where `URLSearchParams` reads it as a space.
 export const getParamValues = (url: URL, name: string): Array<string> => {
   const values: Array<string> = []
 
@@ -46,14 +38,15 @@ export const getParamValues = (url: URL, name: string): Array<string> => {
       continue
     }
 
-    const raw = pair.slice(pair.indexOf('=') + 1)
+    const separator = pair.indexOf('=')
+    const raw = separator === -1 ? '' : pair.slice(separator + 1)
 
     if (!unencodedTargetRegex.test(raw)) {
-      values.push(entry[1])
+      values.push(decodePercent(raw.replaceAll('+', ' ')))
       continue
     }
 
-    values.push(percentDecode(raw))
+    values.push(decodePercent(raw))
   }
 
   return values

@@ -1,4 +1,4 @@
-import { isAnyOf, isHttpUrl } from 'trousse'
+import { decodePercent, isAnyOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { decodeBase64Url } from '../utils.js'
 import { bingHosts } from './bing.js'
@@ -21,11 +21,9 @@ export const unwrapBingAds: UrlUnwrapper = (url) => {
 
   const decoded = decodeBase64Url(value) ?? ''
 
-  try {
-    const target = decodeURIComponent(decoded)
+  const target = decodePercent(decoded)
 
-    if (isHttpUrl(target)) {
-      return target
-    }
-  } catch {}
+  if (isHttpUrl(target)) {
+    return target
+  }
 }

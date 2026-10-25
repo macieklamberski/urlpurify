@@ -76,12 +76,12 @@ describe('unwrapResearchgate', () => {
     expect(unwrapResearchgate(url)).toBeUndefined()
   })
 
-  it('should return undefined for a malformed escape in the deref path', () => {
+  it('should keep a malformed escape in the target as written', () => {
     const url = new URL(
       'https://www.researchgate.net/deref/https%3A%2F%2Fwww.example.com%2F%E0%A4%A',
     )
 
-    expect(unwrapResearchgate(url)).toBeUndefined()
+    expect(unwrapResearchgate(url)).toBe('https://www.example.com/%E0%A4%A')
   })
 
   it('should return undefined for the bare deref path', () => {

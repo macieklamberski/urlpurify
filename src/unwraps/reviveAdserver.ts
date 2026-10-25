@@ -1,4 +1,4 @@
-import { isHttpUrl } from 'trousse'
+import { decodePercent, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { getParamTarget } from '../utils.js'
 
@@ -28,13 +28,11 @@ export const unwrapReviveAdserver: UrlUnwrapper = (url) => {
       return
     }
 
-    try {
-      const target = decodeURIComponent(url.search.slice(index + marker.length))
+    const target = decodePercent(url.search.slice(index + marker.length))
 
-      if (isHttpUrl(target)) {
-        return target
-      }
-    } catch {}
+    if (isHttpUrl(target)) {
+      return target
+    }
 
     return
   }

@@ -1,6 +1,6 @@
-import { isHttpUrl } from 'trousse'
+import { decodePercent, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamValues, percentDecode } from '../utils.js'
+import { getParamValues } from '../utils.js'
 
 const ymlinkRegex = /^\d+$/
 const encodedSchemeRegex = /^https?%3A/i
@@ -17,7 +17,7 @@ export const unwrapYourMembership: UrlUnwrapper = (url) => {
 
   // A target encoded twice still holds an encoded scheme after one decode.
   if (target && encodedSchemeRegex.test(target)) {
-    target = percentDecode(target)
+    target = decodePercent(target)
   }
 
   if (target && isHttpUrl(target)) {

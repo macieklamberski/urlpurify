@@ -1,4 +1,4 @@
-import { isHostOf } from 'trousse'
+import { decodePercent, isHostOf } from 'trousse'
 import { getPathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 import { getParamTarget } from '../utils.js'
@@ -33,7 +33,5 @@ export const unwrapFirstory: UrlUnwrapper = (url) => {
     return
   }
 
-  try {
-    return `${decodeURIComponent(url.pathname.slice(match[0].length))}${url.search}${url.hash}`
-  } catch {}
+  return `${decodePercent(url.pathname.slice(match[0].length))}${url.search}${url.hash}`
 }

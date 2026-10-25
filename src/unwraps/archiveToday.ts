@@ -1,4 +1,4 @@
-import { decodeSegment, isHttpUrl } from 'trousse'
+import { decodePercent, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
 const hostRegex = /^(?:www\.)?archive\.(?:is|ph|today|md|fo|vn|li)$/
@@ -26,7 +26,7 @@ export const unwrapArchiveToday: UrlUnwrapper = (url) => {
   let target: string | undefined = match[1]
 
   if (encodedSchemeRegex.test(target)) {
-    target = decodeSegment(target)
+    target = decodePercent(target)
   }
 
   if (!target) {

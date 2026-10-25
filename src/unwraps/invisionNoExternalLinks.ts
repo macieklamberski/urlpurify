@@ -1,6 +1,6 @@
-import { isHttpUrl } from 'trousse'
+import { decodePercent, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamValues, percentDecode } from '../utils.js'
+import { getParamValues } from '../utils.js'
 
 // A forum root prefix, such as /forum/ or /en/.
 const pathRegex = /^(?:\/[^/]+)?\/redirect\/$/
@@ -19,7 +19,7 @@ export const unwrapInvisionNoExternalLinks: UrlUnwrapper = (url) => {
 
   // A target encoded twice still holds an encoded scheme after one decode.
   if (target && encodedSchemeRegex.test(target)) {
-    target = percentDecode(target)
+    target = decodePercent(target)
   }
 
   if (!target || !isHttpUrl(target)) {

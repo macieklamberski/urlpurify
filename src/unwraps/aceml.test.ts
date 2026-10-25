@@ -28,13 +28,13 @@ describe('unwrapAceml', () => {
     expect(unwrapAceml(url)).toBe('https://example.com/terms/a/annualized-rate.asp')
   })
 
-  it('should return undefined when the percent-encoded target is malformed', () => {
+  it('should keep a malformed escape in the target as written', () => {
     const encoded = Buffer.from('https%3A%2F%2Fexample.com%2F%E0%A4%A').toString('base64')
     const url = new URL(
       `https://abc.acemlnc.com/Prod/link-tracker?redirectUrl=${encodeURIComponent(encoded)}`,
     )
 
-    expect(unwrapAceml(url)).toBeUndefined()
+    expect(unwrapAceml(url)).toBe('https://example.com/%E0%A4%A')
   })
 
   it('should keep percent escapes in a base64 redirectUrl param holding a plain target', () => {

@@ -3,7 +3,7 @@ import { cleanUrl, stripTrackingParams, unwrapUrl } from './clean.js'
 import { campaignParams, defaultTrackingParams } from './defaults.js'
 import type { UrlUnwrapper } from './types.js'
 import { unwrapWebArchive } from './unwraps/webArchive.js'
-import { createParamExtractor } from './utils.js'
+import { createParamExtractor, decodeBase64 } from './utils.js'
 
 const exampleUnwrapper = createParamExtractor({
   hosts: 'redirect.example.com',
@@ -19,6 +19,15 @@ const nestedUnwrapper = createParamExtractor({
   hosts: 'outer.example.com',
   params: ['url'],
 })
+
+// A base64 carrier whose bytes are not UTF-8 decodes to U+FFFD.
+const base64Unwrapper: UrlUnwrapper = (url) => {
+  if (url.hostname !== 'base64.example.com') {
+    return
+  }
+
+  return decodeBase64(url.searchParams.get('u') ?? '')
+}
 
 const definitionPathRegex = /^\/v3\/__(https?):\/(.+?)__;/
 const sessionParamRegex = /^session_[a-z]$/
@@ -171,10 +180,16 @@ describe('unwrapUrl', () => {
     expect(unwrapUrl(value, [exampleUnwrapper])).toBeUndefined()
   })
 
-  it('should return undefined for a target that decodes to U+FFFD', () => {
+  it('should keep a legacy-charset escape in the target as written', () => {
     const value = 'https://redirect.example.com/?target=https%3A%2F%2Fexample.com%2F%A4%A2'
 
-    expect(unwrapUrl(value, [exampleUnwrapper])).toBeUndefined()
+    expect(unwrapUrl(value, [exampleUnwrapper])).toBe('https://example.com/%A4%A2')
+  })
+
+  it('should return undefined for a target that decodes to U+FFFD', () => {
+    const value = 'https://base64.example.com/?u=aHR0cHM6Ly9leGFtcGxlLmNvbS%2Bkog%3D%3D'
+
+    expect(unwrapUrl(value, [base64Unwrapper])).toBeUndefined()
   })
 
   it('should skip a javascript: target', () => {
@@ -675,23 +690,23 @@ describe('cleanUrl with a mis-decoded target', () => {
   })
 
   it('should keep the wrapper when the target decodes to U+FFFD', () => {
-    const value = 'https://redirect.example.com/?target=https%3A%2F%2Fexample.com%2F%A4%A2'
+    const value = 'https://base64.example.com/?u=aHR0cHM6Ly9leGFtcGxlLmNvbS%2Bkog%3D%3D'
 
-    expect(cleanUrl(value, { unwrappers: [legacyUnwrapper] })).toBe(value)
+    expect(cleanUrl(value, { unwrappers: [base64Unwrapper] })).toBe(value)
   })
 
   it('should leave the tracking params of the broken target alone', () => {
     const value =
-      'https://redirect.example.com/?target=https%3A%2F%2Fexample.com%2F%A4%3Futm_source%3Dfeed'
+      'https://base64.example.com/?u=aHR0cHM6Ly9leGFtcGxlLmNvbS%2BkP3V0bV9zb3VyY2U9ZmVlZA%3D%3D'
 
-    expect(cleanUrl(value, { unwrappers: [legacyUnwrapper] })).toBe(value)
+    expect(cleanUrl(value, { unwrappers: [base64Unwrapper] })).toBe(value)
   })
 
   it('should strip the tracking params of the wrapper it falls back to', () => {
-    const value = 'https://redirect.example.com/?fbclid=abc&target=https%3A%2F%2Fexample.com%2F%A4'
-    const expected = 'https://redirect.example.com/?target=https%3A%2F%2Fexample.com%2F%A4'
+    const value = 'https://base64.example.com/?fbclid=abc&u=aHR0cHM6Ly9leGFtcGxlLmNvbS%2Bk'
+    const expected = 'https://base64.example.com/?u=aHR0cHM6Ly9leGFtcGxlLmNvbS%2Bk'
 
-    expect(cleanUrl(value, { unwrappers: [legacyUnwrapper] })).toBe(expected)
+    expect(cleanUrl(value, { unwrappers: [base64Unwrapper] })).toBe(expected)
   })
 
   it('should return the final target when an inner hop holds U+FFFD', () => {
@@ -704,17 +719,16 @@ describe('cleanUrl with a mis-decoded target', () => {
 
   it('should fall back to the last intact hop when a later hop decodes to U+FFFD', () => {
     const value =
-      'https://outer.example.com/?url=https%3A%2F%2Fredirect.example.com%2F%3Ftarget%3Dhttps%253A%252F%252Fexample.com%252F%25A4'
-    const expected = 'https://redirect.example.com/?target=https%3A%2F%2Fexample.com%2F%A4'
+      'https://outer.example.com/?url=https%3A%2F%2Fbase64.example.com%2F%3Fu%3DaHR0cHM6Ly9leGFtcGxlLmNvbS%252Bk'
+    const expected = 'https://base64.example.com/?u=aHR0cHM6Ly9leGFtcGxlLmNvbS%2Bk'
 
-    expect(cleanUrl(value, { unwrappers: [nestedUnwrapper, legacyUnwrapper] })).toBe(expected)
+    expect(cleanUrl(value, { unwrappers: [nestedUnwrapper, base64Unwrapper] })).toBe(expected)
   })
 
-  it('should fall back to the last hop without U+FFFD', () => {
+  it('should keep a legacy-charset escape in an inner hop as written', () => {
     const value =
       'https://redirect.example.com/?target=https://defense.example.net/v3/__https:/example.org/news/__;tail%%EDITOR'
-    const expected =
-      'https://redirect.example.com/?target=https://defense.example.net/v3/__https:/example.org/news/__;tail%%EDITOR'
+    const expected = 'https://defense.example.net/v3/__https:/example.org/news/__;tail%%EDITOR'
 
     expect(cleanUrl(value, { unwrappers: [legacyUnwrapper] })).toBe(expected)
   })

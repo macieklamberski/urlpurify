@@ -1,4 +1,4 @@
-import { decodeSegment, isHostOf } from 'trousse'
+import { decodePercent, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
 const pathRegex = /^\/v1\/[0-9a-f]{64}\/(.+)$/
@@ -21,5 +21,5 @@ export const unwrapMozillaOutgoing: UrlUnwrapper = (url) => {
     return
   }
 
-  return decodeSegment(match[1])
+  return decodePercent(match[1])
 }

@@ -1,4 +1,4 @@
-import { decodeSegment, isHostOf, isHttpUrl } from 'trousse'
+import { decodePercent, isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
 const hosts = [
@@ -65,7 +65,7 @@ export const unwrapWebArchive: UrlUnwrapper = (url) => {
     return
   }
 
-  let target = decodeSegment(match[1])
+  let target = decodePercent(match[1])
 
   // Wayback answers a target with no scheme with its http snapshot.
   if (target && !schemeRegex.test(target) && schemelessRegex.test(target)) {

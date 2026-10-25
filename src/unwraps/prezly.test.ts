@@ -42,12 +42,12 @@ describe('unwrapPrezly', () => {
     expect(unwrapPrezly(url)).toBeUndefined()
   })
 
-  it('should return undefined for a malformed escape in the target', () => {
+  it('should keep a malformed escape in the target as written', () => {
     const url = new URL(
       'https://prezlymail.com/c/264cd01e-3f4c-475e-87a2-4d7f7c7ddc7d/4535aa6c/https%3A%2F%2Fwww.example.org%2F%E0%A4%A',
     )
 
-    expect(unwrapPrezly(url)).toBeUndefined()
+    expect(unwrapPrezly(url)).toBe('https://www.example.org/%E0%A4%A')
   })
 
   it('should return undefined for the open pixel', () => {

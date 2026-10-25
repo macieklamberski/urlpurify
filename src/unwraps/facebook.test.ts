@@ -158,10 +158,10 @@ describe('unwrapFacebookShim', () => {
     expect(unwrapFacebookShim(url)).toBe('https://example.com/100%')
   })
 
-  it('should return undefined for a malformed encoded target in the legacy path', () => {
-    const url = new URL('https://www.facebook.com/l/jAQEpUZL6/https%3A%2F%2Fexample.com%E0%A4%A')
+  it('should keep a malformed escape in the target as written', () => {
+    const url = new URL('https://www.facebook.com/l/jAQEpUZL6/https%3A%2F%2Fexample.com%2F%E0%A4%A')
 
-    expect(unwrapFacebookShim(url)).toBeUndefined()
+    expect(unwrapFacebookShim(url)).toBe('https://example.com/%E0%A4%A')
   })
 
   it('should return undefined for the legacy path without a token or a target', () => {
