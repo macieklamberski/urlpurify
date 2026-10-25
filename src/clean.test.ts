@@ -168,6 +168,15 @@ describe('unwrapUrl', () => {
     expect(unwrapUrl(value, [exampleUnwrapper])).toBe('https://www.theclairco.com/')
   })
 
+  it('should repair a scheme typo in the target before the http check', () => {
+    const value =
+      'https://redirect.example.com/?target=hthttps%3A%2F%2Faudiomack.com%2Fcharles-menut%2Fsong%2Fross-wilson'
+
+    expect(unwrapUrl(value, [exampleUnwrapper])).toBe(
+      'https://audiomack.com/charles-menut/song/ross-wilson',
+    )
+  })
+
   it('should trim a no-break space after the target', () => {
     const value = 'https://redirect.example.com/?target=http%3A%2F%2Fwww.example.com%C2%A0%C2%A0'
     const expected = 'http://www.example.com/'
