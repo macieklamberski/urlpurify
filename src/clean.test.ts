@@ -147,6 +147,27 @@ describe('unwrapUrl', () => {
     expect(unwrapUrl(value, [exampleUnwrapper])).toBeUndefined()
   })
 
+  it('should drop the space between a prefixed scheme and the target', () => {
+    const value =
+      'https://redirect.example.com/?target=http%3A%2F%2F%2520www.instagram.com%2Fiankoniak%2F'
+
+    expect(unwrapUrl(value, [exampleUnwrapper])).toBe('http://www.instagram.com/iankoniak/')
+  })
+
+  it('should drop a prefixed scheme and the space before the scheme of the target', () => {
+    const value =
+      'https://redirect.example.com/?target=http%3A%2F%2F+https%3A%2F%2Fgive.sams-usa.org%2F'
+
+    expect(unwrapUrl(value, [exampleUnwrapper])).toBe('https://give.sams-usa.org/')
+  })
+
+  it('should drop a no-break space after a prefixed scheme', () => {
+    const value =
+      'https://redirect.example.com/?target=http%3A%2F%2F%C2%A0https%3A%2F%2Fwww.theclairco.com%2F'
+
+    expect(unwrapUrl(value, [exampleUnwrapper])).toBe('https://www.theclairco.com/')
+  })
+
   it('should trim a no-break space after the target', () => {
     const value = 'https://redirect.example.com/?target=http%3A%2F%2Fwww.example.com%C2%A0%C2%A0'
     const expected = 'http://www.example.com/'

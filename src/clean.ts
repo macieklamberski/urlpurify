@@ -174,10 +174,23 @@ const addMissingScheme = (target: string | undefined): string | undefined => {
   return target
 }
 
+const schemeSpacingRegex = /^(https?:\/\/)(?:%20|\s|\+)+/i
+
+// A scheme a CMS prefixed onto a pasted url with a leading space, as `http:// https://host` or
+// `http://%20host`, fails the http check, so it is repaired before it.
+
+const repairSchemeSpacing = (target: string | undefined): string | undefined => {
+  if (!target || !schemeSpacingRegex.test(target)) {
+    return target
+  }
+
+  return fixMalformedProtocol(target.replace(schemeSpacingRegex, '$1'))
+}
+
 const applyUnwrappers = (url: URL, unwrappers: Array<UrlUnwrapper>): string | undefined => {
   for (const unwrap of unwrappers) {
     // A trailing no-break space, as YouTube descriptions carry, fails the http check untrimmed.
-    const raw = addMissingScheme(unwrap(url)?.trim())
+    const raw = repairSchemeSpacing(addMissingScheme(unwrap(url)?.trim()))
 
     if (!raw || !isHttpUrl(raw)) {
       continue
