@@ -36,11 +36,12 @@ describe('unwrapProofpointV2', () => {
     expect(unwrapProofpointV2(url)).toBeUndefined()
   })
 
-  it('should return undefined when decoded URL has malformed percent escapes', () => {
-    // `-Z` becomes `%Z` after substitution, which decodeURIComponent rejects.
-    const url = new URL('https://urldefense.proofpoint.com/v2/url?u=https-Zbroken')
+  it('should keep a malformed escape in the target as written', () => {
+    const url = new URL(
+      'https://urldefense.proofpoint.com/v2/url?u=https-3A__example.com_100-25off-ZZ',
+    )
 
-    expect(unwrapProofpointV2(url)).toBeUndefined()
+    expect(unwrapProofpointV2(url)).toBe('https://example.com/100%off%ZZ')
   })
 
   it('should return undefined for a subdomain no specimen shows', () => {

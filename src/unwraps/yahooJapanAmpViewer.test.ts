@@ -34,10 +34,10 @@ describe('unwrapYahooJapanAmpViewer', () => {
     expect(unwrapYahooJapanAmpViewer(url)).toBe('https://example.com/news/308550?ref=example.org')
   })
 
-  it('should return undefined for a target cut short inside an escape', () => {
+  it('should keep an escape cut short in the target as written', () => {
     const url = new URL('https://search.yahoo.co.jp/amp/s/example.com/amp/movie/92154/%3')
 
-    expect(unwrapYahooJapanAmpViewer(url)).toBeUndefined()
+    expect(unwrapYahooJapanAmpViewer(url)).toBe('https://example.com/amp/movie/92154/%3')
   })
 
   it('should return undefined for a target host that does not parse', () => {

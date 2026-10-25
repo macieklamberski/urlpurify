@@ -126,12 +126,12 @@ describe('unwrapFirstory', () => {
     expect(unwrapFirstory(url)).toBeUndefined()
   })
 
-  it('should return undefined for a target cut short inside an escape', () => {
+  it('should keep an escape cut short in the target as written', () => {
     const url = new URL(
-      'https://m.cdn.firstory.me/track/ckc6eqqt8kc010918u9vibolz/ckjcz4urh60mt0889kp7cdkvm/https%3A%2F%2Fexample.com%2',
+      'https://m.cdn.firstory.me/track/ckc6eqqt8kc010918u9vibolz/ckjcz4urh60mt0889kp7cdkvm/https%3A%2F%2Fexample.com%2Fpage%2',
     )
 
-    expect(unwrapFirstory(url)).toBeUndefined()
+    expect(unwrapFirstory(url)).toBe('https://example.com/page%2')
   })
 
   it('should return undefined for other paths on the host', () => {

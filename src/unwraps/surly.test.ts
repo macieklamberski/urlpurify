@@ -30,10 +30,10 @@ describe('unwrapSurly', () => {
     expect(unwrapSurly(url)).toBe('https://example.com/paracinnekretnine')
   })
 
-  it('should return undefined for a target cut short inside an escape', () => {
+  it('should keep an escape cut short in the target as written', () => {
     const url = new URL('http://sur.ly/o/example.com/doclib%2/AA001290')
 
-    expect(unwrapSurly(url)).toBeUndefined()
+    expect(unwrapSurly(url)).toBe('https://example.com/doclib%2')
   })
 
   it('should return undefined for a target host that does not parse', () => {

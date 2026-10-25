@@ -104,12 +104,12 @@ describe('unwrapCiscoSecureWeb', () => {
     expect(unwrapCiscoSecureWeb(url)).toBeUndefined()
   })
 
-  it('should return undefined for a target with malformed escapes', () => {
+  it('should keep an escape cut short in the target as written', () => {
     const url = new URL(
       'https://secure-web.cisco.com/1FUSlj3K3QVkKY875RHGJXaTEmxvyRjzy/https%3A%2F%2Fexample.com%2F%E3%81',
     )
 
-    expect(unwrapCiscoSecureWeb(url)).toBeUndefined()
+    expect(unwrapCiscoSecureWeb(url)).toBe('https://example.com/%E3%81')
   })
 
   it('should return undefined for another path shape on the host', () => {

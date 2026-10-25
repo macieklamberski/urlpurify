@@ -1,4 +1,4 @@
-import { isHostOf, isHttpUrl } from 'trousse'
+import { decodePercent, isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
 // The campaign id, a link hash, then the target percent-encoded as one path segment.
@@ -17,13 +17,7 @@ export const unwrapPrezly: UrlUnwrapper = (url) => {
     return
   }
 
-  let target: string
-
-  try {
-    target = decodeURIComponent(match[1])
-  } catch {
-    return
-  }
+  const target = decodePercent(match[1])
 
   if (isHttpUrl(target)) {
     return target

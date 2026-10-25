@@ -1,4 +1,4 @@
-import { isHttpUrl } from 'trousse'
+import { decodePercent, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createParamExtractor, decodeBase64 } from '../utils.js'
 
@@ -31,13 +31,7 @@ export const unwrapAugure: UrlUnwrapper = (url) => {
     return
   }
 
-  let target: string
-
-  try {
-    target = decodeURIComponent(decoded)
-  } catch {
-    return
-  }
+  const target = decodePercent(decoded)
 
   if (isHttpUrl(target)) {
     return target

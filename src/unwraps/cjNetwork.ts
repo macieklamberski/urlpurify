@@ -1,4 +1,4 @@
-import { isAnyOf } from 'trousse'
+import { decodePercent, isAnyOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createParamExtractor } from '../utils.js'
 
@@ -29,14 +29,6 @@ const clickPathRegex = /^\/(?:t\/)?[^/]+$/
 const deepLinkPathRegex =
   /^\/links\/\d+\/type\/(?:dlg|am)\/(?:sid\/[^/]*\/)?(?:fragment\/([^/]*)\/)?(https?):\/\/?(.+)$/
 
-const decodeFragment = (value: string): string => {
-  try {
-    return decodeURIComponent(value)
-  } catch {
-    return value
-  }
-}
-
 const extractUrlParam = createParamExtractor({
   hosts,
   params: ['url', 'loc'],
@@ -61,7 +53,7 @@ export const unwrapCjNetwork: UrlUnwrapper = (url) => {
   }
 
   const [, fragment, scheme, target] = match
-  const hash = url.hash || (fragment ? `#${decodeFragment(fragment)}` : '')
+  const hash = url.hash || (fragment ? `#${decodePercent(fragment)}` : '')
 
   return `${scheme}://${target}${url.search}${hash}`
 }

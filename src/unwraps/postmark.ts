@@ -1,4 +1,4 @@
-import { decodeSegment, isHostOf } from 'trousse'
+import { decodePercent, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
 const postmarkPathRegex = /^\/[23][mt]?(s?)\/([^/]+)\//
@@ -17,7 +17,7 @@ export const unwrapPostmark: UrlUnwrapper = (url) => {
     return
   }
 
-  const target = decodeSegment(match[2])
+  const target = decodePercent(match[2])
 
   if (!target) {
     return

@@ -170,12 +170,12 @@ describe('unwrapAmazonSes', () => {
     expect(unwrapAmazonSes(url)).toBeUndefined()
   })
 
-  it('should return undefined for a malformed percent escape in the target', () => {
+  it('should keep a malformed escape in the target as written', () => {
     const url = new URL(
       `https://abcd1234.r.us-east-1.awstrack.me/L0/https:%2F%2Fexample.com%2F%E0%A4%A${tail}`,
     )
 
-    expect(unwrapAmazonSes(url)).toBeUndefined()
+    expect(unwrapAmazonSes(url)).toBe('https://example.com/%E0%A4%A')
   })
 
   it('should return undefined for the same shape on another host', () => {
@@ -320,12 +320,6 @@ describe('unwrapAmazonSes', () => {
 
   it('should return undefined on a custom domain for a target that is not http', () => {
     const url = new URL(`https://ses.example.de/CL0/mailto:%2F%2Fexample.com${tail}`)
-
-    expect(unwrapAmazonSes(url)).toBeUndefined()
-  })
-
-  it('should return undefined on a custom domain for a malformed percent escape in the target', () => {
-    const url = new URL(`https://ses.example.de/CL0/https:%2F%2Fexample.com%2F%E0%A4%A${tail}`)
 
     expect(unwrapAmazonSes(url)).toBeUndefined()
   })

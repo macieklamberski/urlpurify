@@ -1,6 +1,6 @@
-import { isHostOf } from 'trousse'
+import { decodePercent, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor, percentDecode } from '../utils.js'
+import { createParamExtractor } from '../utils.js'
 
 const sectionParamRegex = /^index_[a-z]+_cikklink$/
 const encodedSchemeRegex = /^https?%3A/i
@@ -25,7 +25,7 @@ const unwrapSectionCounter: UrlUnwrapper = (url) => {
       return value
     }
 
-    return percentDecode(value)
+    return decodePercent(value)
   }
 }
 

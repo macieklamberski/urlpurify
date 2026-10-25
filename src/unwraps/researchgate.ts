@@ -1,4 +1,4 @@
-import { isHostOf, isHttpUrl } from 'trousse'
+import { decodePercent, isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createParamExtractor } from '../utils.js'
 
@@ -35,11 +35,9 @@ export const unwrapResearchgate: UrlUnwrapper = (url) => {
     return `${match[1]}${url.search}${url.hash}`
   }
 
-  try {
-    const target = decodeURIComponent(match[1])
+  const target = decodePercent(match[1])
 
-    if (isHttpUrl(target)) {
-      return target
-    }
-  } catch {}
+  if (isHttpUrl(target)) {
+    return target
+  }
 }

@@ -72,11 +72,11 @@ describe('unwrapMohtwize', () => {
     expect(unwrapMohtwize(url)).toBe('https://example.com/episode.mp3')
   })
 
-  it('should return undefined for an encoded target that does not decode', () => {
+  it('should keep a malformed escape in the target as written', () => {
     const url = new URL(
-      'https://stats.mohtwize.net/redirect.mp3?fileURL=/https%3A%2F%2Fexample.com%E0%A4%A',
+      'https://stats.mohtwize.net/redirect.mp3?fileURL=/https%3A%2F%2Fexample.com%2F%E0%A4%A',
     )
 
-    expect(unwrapMohtwize(url)).toBeUndefined()
+    expect(unwrapMohtwize(url)).toBe('https://example.com/%E0%A4%A')
   })
 })

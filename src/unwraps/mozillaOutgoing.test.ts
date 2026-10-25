@@ -33,10 +33,12 @@ describe('unwrapMozillaOutgoing', () => {
     expect(unwrapMozillaOutgoing(url)).toBeUndefined()
   })
 
-  it('should return undefined when encoded target has malformed percent escapes', () => {
+  it('should keep a malformed escape in the target as written', () => {
     const sha = 'd'.repeat(64)
-    const url = new URL(`https://outgoing.prod.mozaws.net/v1/${sha}/bad%ZZ`)
+    const url = new URL(
+      `https://outgoing.prod.mozaws.net/v1/${sha}/https%3A%2F%2Fexample.com%2F100%ZZ`,
+    )
 
-    expect(unwrapMozillaOutgoing(url)).toBeUndefined()
+    expect(unwrapMozillaOutgoing(url)).toBe('https://example.com/100%ZZ')
   })
 })

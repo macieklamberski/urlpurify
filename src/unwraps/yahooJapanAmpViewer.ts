@@ -1,4 +1,4 @@
-import { isHostOf, isHttpUrl } from 'trousse'
+import { decodePercent, isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
 const httpsPathRegex = /^\/amp\/s\/(.+)$/
@@ -18,14 +18,8 @@ export const unwrapYahooJapanAmpViewer: UrlUnwrapper = (url) => {
     return
   }
 
-  let path: string
-
   // The target's own query is percent-encoded into the path, as in `%3Fusqp%3D`.
-  try {
-    path = decodeURIComponent(match[1])
-  } catch {
-    return
-  }
+  const path = decodePercent(match[1])
 
   const target = `${httpsMatch ? 'https' : 'http'}://${path}${url.search}`
 

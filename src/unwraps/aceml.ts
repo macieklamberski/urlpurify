@@ -1,4 +1,4 @@
-import { isHttpUrl } from 'trousse'
+import { decodePercent, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createParamExtractor, decodeBase64 } from '../utils.js'
 
@@ -23,9 +23,7 @@ export const unwrapAceml: UrlUnwrapper = (url) => {
   let decoded = decodeBase64(raw)
 
   if (decoded && encodedSchemeRegex.test(decoded)) {
-    try {
-      decoded = decodeURIComponent(decoded)
-    } catch {}
+    decoded = decodePercent(decoded)
   }
 
   if (decoded && isHttpUrl(decoded)) {
