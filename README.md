@@ -39,7 +39,7 @@ cleanUrl(url, {
   // Names, or regexes tested on the lowercased name.
   trackingParams: [...defaultTrackingParams, 'newsletter_id', /^cmp_[a-z0-9_]+$/],
   // The default.
-  maxUnwrapDepth: 6,
+  maxUnwrapDepth: 12,
 })
 ```
 
