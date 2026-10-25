@@ -1,6 +1,6 @@
 import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { decodeBase64Url } from '../utils.js'
+import { decodeBase64Url, getParamValues } from '../utils.js'
 
 const hostRegex = /^mail\.yandex\.(?:com\.tr|[a-z]{2,3})$/
 
@@ -10,7 +10,7 @@ export const unwrapYandexMail: UrlUnwrapper = (url) => {
     return
   }
 
-  const value = url.searchParams.get('l')
+  const value = getParamValues(url, 'l').at(0)
 
   if (!value) {
     return

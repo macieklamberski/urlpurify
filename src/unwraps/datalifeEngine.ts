@@ -1,6 +1,6 @@
 import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { decodeBase64 } from '../utils.js'
+import { decodeBase64, getParamValues } from '../utils.js'
 
 // DataLife Engine leaving redirect (<site host>/engine/go.php?url=<base64>, also routed as
 // /index.php?do=go&url=<base64>). Each site runs the CMS on its own host, so the exact path and a
@@ -13,7 +13,7 @@ export const unwrapDatalifeEngine: UrlUnwrapper = (url) => {
     return
   }
 
-  const raw = url.searchParams.get('url')
+  const raw = getParamValues(url, 'url').at(0)
 
   if (!raw) {
     return

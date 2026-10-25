@@ -20,7 +20,7 @@ const nestedUnwrapper = createParamExtractor({
   params: ['url'],
 })
 
-// A base64 carrier whose bytes are not UTF-8 decodes to U+FFFD.
+// A base64 carrier holding the raw bytes of a legacy-charset target.
 const base64Unwrapper: UrlUnwrapper = (url) => {
   if (url.hostname !== 'base64.example.com') {
     return
@@ -29,7 +29,6 @@ const base64Unwrapper: UrlUnwrapper = (url) => {
   return decodeBase64(url.searchParams.get('u') ?? '')
 }
 
-const definitionPathRegex = /^\/v3\/__(https?):\/(.+?)__;/
 const sessionParamRegex = /^session_[a-z]$/
 const utmFamilyRegex = /^utm_[a-z0-9_-]+$/
 
@@ -186,10 +185,10 @@ describe('unwrapUrl', () => {
     expect(unwrapUrl(value, [exampleUnwrapper])).toBe('https://example.com/%A4%A2')
   })
 
-  it('should return undefined for a target that decodes to U+FFFD', () => {
+  it('should keep a legacy-charset byte of a base64 target as an escape', () => {
     const value = 'https://base64.example.com/?u=aHR0cHM6Ly9leGFtcGxlLmNvbS%2Bkog%3D%3D'
 
-    expect(unwrapUrl(value, [base64Unwrapper])).toBeUndefined()
+    expect(unwrapUrl(value, [base64Unwrapper])).toBe('https://example.com/%A4%A2')
   })
 
   it('should skip a javascript: target', () => {
@@ -672,65 +671,42 @@ describe('cleanUrl', () => {
   })
 })
 
-describe('cleanUrl with a mis-decoded target', () => {
-  const definitionUnwrapper: UrlUnwrapper = (url) => {
-    if (url.hostname !== 'defense.example.net') {
-      return
-    }
-
-    const match = url.pathname.match(definitionPathRegex)
-
-    if (match) {
-      return `${match[1]}://${match[2]}`
-    }
-  }
+describe('cleanUrl with a legacy-charset target', () => {
   const legacyUnwrapper = createParamExtractor({
     hosts: 'redirect.example.com',
     params: ['target'],
   })
 
-  it('should keep the wrapper when the target decodes to U+FFFD', () => {
-    const value = 'https://base64.example.com/?u=aHR0cHM6Ly9leGFtcGxlLmNvbS%2Bkog%3D%3D'
+  it('should keep the bytes of a base64 target and strip its tracking params', () => {
+    const value = 'https://base64.example.com/?u=aHR0cHM6Ly9leGFtcGxlLmNvbS%2BkP2ZiY2xpZD1hYmM%3D'
 
-    expect(cleanUrl(value, { unwrappers: [base64Unwrapper] })).toBe(value)
+    expect(cleanUrl(value, { unwrappers: [base64Unwrapper] })).toBe('https://example.com/%A4')
   })
 
-  it('should leave the tracking params of the broken target alone', () => {
-    const value =
-      'https://base64.example.com/?u=aHR0cHM6Ly9leGFtcGxlLmNvbS%2BkP3V0bV9zb3VyY2U9ZmVlZA%3D%3D'
-
-    expect(cleanUrl(value, { unwrappers: [base64Unwrapper] })).toBe(value)
-  })
-
-  it('should strip the tracking params of the wrapper it falls back to', () => {
-    const value = 'https://base64.example.com/?fbclid=abc&u=aHR0cHM6Ly9leGFtcGxlLmNvbS%2Bk'
-    const expected = 'https://base64.example.com/?u=aHR0cHM6Ly9leGFtcGxlLmNvbS%2Bk'
-
-    expect(cleanUrl(value, { unwrappers: [base64Unwrapper] })).toBe(expected)
-  })
-
-  it('should return the final target when an inner hop holds U+FFFD', () => {
-    const value =
-      'https://redirect.example.com/?target=https://defense.example.net/v3/__https:/example.org/news/__;tail%%EDITOR'
-    const expected = 'https://example.org/news/'
-
-    expect(cleanUrl(value, { unwrappers: [legacyUnwrapper, definitionUnwrapper] })).toBe(expected)
-  })
-
-  it('should fall back to the last intact hop when a later hop decodes to U+FFFD', () => {
+  it('should keep the bytes of a base64 target reached through another wrapper', () => {
     const value =
       'https://outer.example.com/?url=https%3A%2F%2Fbase64.example.com%2F%3Fu%3DaHR0cHM6Ly9leGFtcGxlLmNvbS%252Bk'
-    const expected = 'https://base64.example.com/?u=aHR0cHM6Ly9leGFtcGxlLmNvbS%2Bk'
 
-    expect(cleanUrl(value, { unwrappers: [nestedUnwrapper, base64Unwrapper] })).toBe(expected)
+    expect(cleanUrl(value, { unwrappers: [nestedUnwrapper, base64Unwrapper] })).toBe(
+      'https://example.com/%A4',
+    )
   })
 
-  it('should keep a legacy-charset escape in an inner hop as written', () => {
+  it('should keep a legacy-charset escape in a percent-encoded target as written', () => {
     const value =
       'https://redirect.example.com/?target=https://defense.example.net/v3/__https:/example.org/news/__;tail%%EDITOR'
     const expected = 'https://defense.example.net/v3/__https:/example.org/news/__;tail%%EDITOR'
 
     expect(cleanUrl(value, { unwrappers: [legacyUnwrapper] })).toBe(expected)
+  })
+
+  it('should keep a replacement character the target carries as written', () => {
+    const value =
+      'https://redirect.example.com/?target=https%3A%2F%2Fexample.com%2Fpage%EF%BF%BD%3Ffbclid%3Dabc'
+
+    expect(cleanUrl(value, { unwrappers: [legacyUnwrapper] })).toBe(
+      'https://example.com/page%EF%BF%BD',
+    )
   })
 })
 
