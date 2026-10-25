@@ -478,14 +478,17 @@ describe('cleanUrl', () => {
     expect(cleanUrl(value, options)).toBe(target)
   })
 
-  it('should unwrap a chain six wrappers deep by default', () => {
-    const target = 'https://example.com/episode.mp3'
-    const hop6 = `https://redirect.example.com/?target=${encodeURIComponent(target)}`
-    const hop5 = `https://outer.example.com/?url=${encodeURIComponent(hop6)}`
-    const hop4 = `https://redirect.example.com/?target=${encodeURIComponent(hop5)}`
-    const hop3 = `https://outer.example.com/?url=${encodeURIComponent(hop4)}`
-    const hop2 = `https://redirect.example.com/?target=${encodeURIComponent(hop3)}`
-    const value = `https://outer.example.com/?url=${encodeURIComponent(hop2)}`
+  it('should unwrap a chain twelve wrappers deep by default', () => {
+    const target = 'https://traffic.example.com/episode.mp3'
+    let value = target
+
+    for (let hop = 0; hop < 12; hop++) {
+      value =
+        hop % 2 === 0
+          ? `https://redirect.example.com/?target=${encodeURIComponent(value)}`
+          : `https://outer.example.com/?url=${encodeURIComponent(value)}`
+    }
+
     const options = { unwrappers: [exampleUnwrapper, nestedUnwrapper] }
 
     expect(cleanUrl(value, options)).toBe(target)
