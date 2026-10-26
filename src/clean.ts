@@ -1,5 +1,6 @@
 import {
   fixMalformedScheme,
+  isAnyOf,
   isHttpUrl,
   isIpAddress,
   normalizeUrl,
@@ -62,7 +63,7 @@ const deleteTrackingParams = (url: URL, trackingParams: Array<TrackingParam>): v
   const entries = pairs.map((pair) => new URLSearchParams(pair).entries().next().value)
 
   for (const entry of entries) {
-    if (entry && signatureParams.includes(entry[0].toLowerCase())) {
+    if (entry && isAnyOf(entry[0], signatureParams)) {
       return
     }
   }

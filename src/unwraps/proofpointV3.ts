@@ -103,7 +103,7 @@ export const unwrapProofpointV3: UrlUnwrapper = (url) => {
     return
   }
 
-  const match = `${url.pathname}${url.search}`.match(v3PathRegex)
+  const match = v3PathRegex.exec(`${url.pathname}${url.search}`)
   if (!match) {
     return
   }
