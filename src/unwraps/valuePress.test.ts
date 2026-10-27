@@ -49,12 +49,11 @@ describe('unwrapValuePress', () => {
   })
 
   it('should return undefined for the click counter without a carrier', () => {
-    expect(
-      unwrapValuePress(new URL('https://www.value-press.com/bin/tools/link_counter?a=x')),
-    ).toBeUndefined()
-    expect(
-      unwrapValuePress(new URL('https://www.value-press.com/bin/tools/link_counter?a=x&l=')),
-    ).toBeUndefined()
+    const urlWithoutCarrier = new URL('https://www.value-press.com/bin/tools/link_counter?a=x')
+    const urlWithEmptyCarrier = new URL('https://www.value-press.com/bin/tools/link_counter?a=x&l=')
+
+    expect(unwrapValuePress(urlWithoutCarrier)).toBeUndefined()
+    expect(unwrapValuePress(urlWithEmptyCarrier)).toBeUndefined()
   })
 
   it('should return undefined for another path on the host', () => {
