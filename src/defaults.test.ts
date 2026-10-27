@@ -139,9 +139,8 @@ describe('unwrapper categories', () => {
   it('should place every exported unwrapper in a category', () => {
     const placed: Array<unknown> = categories.flat()
     const unplaced = exportedUnwrappers.filter(([, unwrapper]) => !placed.includes(unwrapper))
-    const result = unplaced.map(([name]) => name)
 
-    expect(result).toEqual([])
+    expect(unplaced.map(([name]) => name)).toEqual([])
   })
 
   it('should place no unwrapper in two categories', () => {
