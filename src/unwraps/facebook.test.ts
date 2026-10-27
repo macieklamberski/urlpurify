@@ -165,9 +165,9 @@ describe('unwrapFacebookShim', () => {
   })
 
   it('should return undefined for the legacy path without a token or a target', () => {
-    expect(
-      unwrapFacebookShim(new URL('http://www.facebook.com/l/;http://example.com/page')),
-    ).toBeUndefined()
+    const url = new URL('http://www.facebook.com/l/;http://example.com/page')
+
+    expect(unwrapFacebookShim(url)).toBeUndefined()
     expect(unwrapFacebookShim(new URL('http://www.facebook.com/l/mAQFYlx2o/'))).toBeUndefined()
     expect(unwrapFacebookShim(new URL('http://www.facebook.com/l/mAQFYlx2o'))).toBeUndefined()
   })
