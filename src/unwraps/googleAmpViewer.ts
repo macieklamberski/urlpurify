@@ -1,3 +1,4 @@
+import { decodePercent } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
 const googleAmpHostRegex = /^(?:www\.)?google\.(?:com|[a-z]{2,3}(?:\.[a-z]{2,3})?)$/
@@ -12,12 +13,14 @@ export const unwrapGoogleAmpViewer: UrlUnwrapper = (url) => {
   }
 
   const httpsMatch = url.pathname.match(httpsPathRegex)
-  if (httpsMatch) {
-    return `https://${httpsMatch[1]}${url.search}`
+  const match = httpsMatch ?? url.pathname.match(httpPathRegex)
+
+  if (!match) {
+    return
   }
 
-  const httpMatch = url.pathname.match(httpPathRegex)
-  if (httpMatch) {
-    return `http://${httpMatch[1]}${url.search}`
-  }
+  // The target's own query can be percent-encoded into the path, as in `%3famp`.
+  const path = decodePercent(match[1])
+
+  return `${httpsMatch ? 'https' : 'http'}://${path}${url.search}`
 }

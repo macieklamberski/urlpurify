@@ -38,6 +38,18 @@ describe('unwrapGoogleAmpViewer', () => {
     expect(unwrapGoogleAmpViewer(url)).toBe('http://example.com/article.php?id=5')
   })
 
+  it('should decode a target query encoded into the path', () => {
+    const url = new URL('https://www.google.com/amp/s/example.com/news/article%3fampMode=1')
+
+    expect(unwrapGoogleAmpViewer(url)).toBe('https://example.com/news/article?ampMode=1')
+  })
+
+  it('should decode a target query encoded into the path on the http variant', () => {
+    const url = new URL('https://www.google.com/amp/example.com/vinegar/%3Famp')
+
+    expect(unwrapGoogleAmpViewer(url)).toBe('http://example.com/vinegar/?amp')
+  })
+
   it('should return undefined for non-/amp/ paths', () => {
     const url = new URL('https://www.google.com/search?q=test')
 
