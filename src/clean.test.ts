@@ -601,7 +601,7 @@ describe('cleanUrl', () => {
       unwrappers: [exampleUnwrapper],
       maxUnwrapDepth: 0,
     }
-    const expected = `https://redirect.example.com/?target=${encodeURIComponent(target)}`
+    const expected = 'https://redirect.example.com/?target=https%3A%2F%2Fexample.com%2Fpost'
 
     expect(cleanUrl(value, options)).toBe(expected)
   })
