@@ -2,7 +2,7 @@ import { isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { decodeBase64Url, getUtf8ByteLength } from '../utils.js'
 
-const v3PathRegex = /^\/v3\/__(.+)__;([^!]*)!/
+const v3PathRegex = /^\/v3\/__(?<mangled>.+)__;(?<replacementBase64>[^!]*)!/
 
 const v3Hosts = ['urldefense.com', 'urldefense.proofpoint.com', 'urldefense.us']
 
@@ -104,9 +104,9 @@ export const unwrapProofpointV3: UrlUnwrapper = (url) => {
   }
 
   const match = v3PathRegex.exec(`${url.pathname}${url.search}`)
-  if (!match) {
+  if (!match?.groups) {
     return
   }
 
-  return decodeReplacements(match[1], match[2])
+  return decodeReplacements(match.groups.mangled, match.groups.replacementBase64)
 }

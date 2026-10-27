@@ -10,7 +10,7 @@ const hosts = [
 
 // A region segment, such as /r01/.
 const pathRegex = /^\/v1\/(?:r\d+\/)?url$/
-const v2Regex = /^\/v2\/(?:r\d+\/)?___(.+)___\.[\w+/=-]+(#.*)?$/
+const v2Regex = /^\/v2\/(?:r\d+\/)?___(?<target>.+)___\.[\w+/=-]+(?<fragment>#.*)?$/
 const starEscapeRegex = /\*([0-9a-f]{2})/gi
 
 // Check Point Harmony Email link protection (checkpoint.url-protection.com/v1/url?o=<target>, and
@@ -22,11 +22,11 @@ export const unwrapCheckPointHarmony: UrlUnwrapper = (url) => {
     const pathname = url.pathname.replace(starEscapeRegex, '%$1')
     const match = v2Regex.exec(`${pathname}${url.search}${url.hash}`)
 
-    if (!match?.[1] || !isHttpUrl(match[1])) {
+    if (!match?.groups?.target || !isHttpUrl(match.groups.target)) {
       return
     }
 
-    return `${match[1]}${match[2] ?? ''}`
+    return `${match.groups.target}${match.groups.fragment ?? ''}`
   }
 
   if (!isHostOf(url, hosts) || !pathRegex.test(url.pathname)) {
