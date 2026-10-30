@@ -117,6 +117,7 @@ There are more than 380 unwrappers, each in its own file in [src/unwraps](src/un
 | Click counters | `clickCounterUnwrappers` | A site's or feed's count of which links get clicked | |
 | Download measurement | `downloadMeasurementUnwrappers` | A podcast measurement prefix's download counts, or a site's download counts | |
 | Archives and proxies | `archiveProxyUnwrappers` | The archived or translated copy: you get the live page | |
+| Image proxies | `imageProxyUnwrappers` | The resized or optimized copy: you get the original image | |
 
 `defaultUnwrappers` combines the first two. The rest cost somebody something or change the page: a feed click counter tells a blog which posts get read, an affiliate link may pay for a small blog, and an archive link points at a copy on purpose. To turn more on, spread them next to the defaults:
 

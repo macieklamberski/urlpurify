@@ -23,6 +23,7 @@ const categories = [
   urlpurify.clickCounterUnwrappers,
   urlpurify.downloadMeasurementUnwrappers,
   urlpurify.archiveProxyUnwrappers,
+  urlpurify.imageProxyUnwrappers,
 ]
 
 describe('defaultUnwrappers', () => {

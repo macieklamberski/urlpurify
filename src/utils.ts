@@ -52,6 +52,25 @@ export const getParamValues = (url: URL, name: string): Array<string> => {
   return values
 }
 
+// Every non-empty value of a query param as written, still percent-encoded, with the name matched
+// case-insensitively, for a carrier whose service reads a raw `+` its own way.
+export const getRawParamValues = (url: URL, name: string): Array<string> => {
+  const values: Array<string> = []
+
+  for (const pair of url.search.slice(1).split('&')) {
+    const separator = pair.indexOf('=')
+    const value = pair.slice(separator + 1)
+
+    if (separator === -1 || !value || pair.slice(0, separator).toLowerCase() !== name) {
+      continue
+    }
+
+    values.push(value)
+  }
+
+  return values
+}
+
 // The target a carrier param holds, read as `getParamValues` reads it and decoded once more when
 // encoded twice: the first value, or the one at `index`, such as -1 for the last.
 export const getParamTarget = (url: URL, name: string, index = 0): string | undefined => {

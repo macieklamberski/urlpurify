@@ -4,6 +4,7 @@ import {
   decodeBase64,
   decodeBase64Binary,
   decodeBase64Url,
+  getRawParamValues,
   getUtf8ByteLength,
 } from './utils.js'
 
@@ -316,6 +317,34 @@ describe('createParamExtractor', () => {
 
       expect(extract(value)).toBe(expected)
     })
+  })
+})
+
+describe('getRawParamValues', () => {
+  it('should return every value as written', () => {
+    const value = new URL('https://proxy.example.com/?url=https%3A%2F%2Fa.example.com&w=10&url=b+c')
+    const expected = ['https%3A%2F%2Fa.example.com', 'b+c']
+
+    expect(getRawParamValues(value, 'url')).toEqual(expected)
+  })
+
+  it('should match the name case-insensitively', () => {
+    const value = new URL('https://proxy.example.com/?URL=https%3A%2F%2Fa.example.com')
+    const expected = ['https%3A%2F%2Fa.example.com']
+
+    expect(getRawParamValues(value, 'url')).toEqual(expected)
+  })
+
+  it('should skip an empty value and a name without a value', () => {
+    const value = new URL('https://proxy.example.com/?url=&url&w=10')
+
+    expect(getRawParamValues(value, 'url')).toEqual([])
+  })
+
+  it('should skip a name that only ends in the param name', () => {
+    const value = new URL('https://proxy.example.com/?imageurl=https%3A%2F%2Fa.example.com')
+
+    expect(getRawParamValues(value, 'url')).toEqual([])
   })
 })
 
