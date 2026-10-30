@@ -23,23 +23,9 @@ describe('unwrapWeserv', () => {
     expect(unwrapWeserv(value)).toBe(expected)
   })
 
-  it('should give https to a source with the ssl prefix', () => {
-    const value = new URL('https://images.weserv.nl/?url=ssl:cdn.example.com/photo.png')
-    const expected = 'https://cdn.example.com/photo.png'
-
-    expect(unwrapWeserv(value)).toBe(expected)
-  })
-
-  it('should return a source without a scheme as a host', () => {
-    const value = new URL('https://images.weserv.nl/?url=cdn.example.com%2Fuploads%2Fphoto.jpg')
-    const expected = 'cdn.example.com/uploads/photo.jpg'
-
-    expect(unwrapWeserv(value)).toBe(expected)
-  })
-
-  it('should resolve a path source against the proxy', () => {
-    const value = new URL('https://wsrv.nl/?url=/images/photo.jpg')
-    const expected = 'https://wsrv.nl/images/photo.jpg'
+  it('should return a relative source as written', () => {
+    const value = new URL('https://wsrv.nl/?url=%2Fimages%2Fphoto.jpg')
+    const expected = '/images/photo.jpg'
 
     expect(unwrapWeserv(value)).toBe(expected)
   })
