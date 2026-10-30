@@ -36,4 +36,12 @@ describe('unwrapHatenaImage', () => {
 
     expect(unwrapHatenaImage(value)).toBeUndefined()
   })
+
+  it('should return undefined for another host', () => {
+    const value = new URL(
+      'https://cdn.example.com/image/scale/abc/width=1300/https://cdn.example.com/photo.jpg',
+    )
+
+    expect(unwrapHatenaImage(value)).toBeUndefined()
+  })
 })

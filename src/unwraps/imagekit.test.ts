@@ -32,4 +32,10 @@ describe('unwrapImagekit', () => {
 
     expect(unwrapImagekit(value)).toBeUndefined()
   })
+
+  it('should return undefined for another host', () => {
+    const value = new URL('https://cdn.example.com/demo/tr:w-200/https://cdn.example.com/photo.jpg')
+
+    expect(unwrapImagekit(value)).toBeUndefined()
+  })
 })
