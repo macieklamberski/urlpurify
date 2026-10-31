@@ -20,13 +20,12 @@ describe('unwrapBloggerImageProxy', () => {
     expect(unwrapBloggerImageProxy(value)).toBe(expected)
   })
 
-  it('should return a relative source as written', () => {
+  it('should return undefined for a source that is not an http url', () => {
     const value = new URL(
       'https://images-blogger-opensocial.googleusercontent.com/gadgets/proxy?url=%2Fuploads%2Fphoto.jpg',
     )
-    const expected = '/uploads/photo.jpg'
 
-    expect(unwrapBloggerImageProxy(value)).toBe(expected)
+    expect(unwrapBloggerImageProxy(value)).toBeUndefined()
   })
 
   it('should return undefined without a source', () => {
@@ -66,6 +65,23 @@ describe('unwrapBloggerImageProxy', () => {
   it('should return undefined for a host that only ends in a focus host', () => {
     const value = new URL(
       'https://ximages1-focus-opensocial.googleusercontent.com/gadgets/proxy?url=https%3A%2F%2Fcdn.example.com%2Fphoto.jpg',
+    )
+
+    expect(unwrapBloggerImageProxy(value)).toBeUndefined()
+  })
+
+  it('should extract the source on an unlisted gmodules subdomain', () => {
+    const value = new URL(
+      'https://www.gmodules.com/gadgets/proxy?container=blogger&url=https%3A%2F%2Fcdn.example.com%2Fphoto.jpg',
+    )
+    const expected = 'https://cdn.example.com/photo.jpg'
+
+    expect(unwrapBloggerImageProxy(value)).toBe(expected)
+  })
+
+  it('should return undefined for a lookalike gmodules domain', () => {
+    const value = new URL(
+      'https://gmodules.com.example.org/gadgets/proxy?url=https%3A%2F%2Fcdn.example.com%2Fphoto.jpg',
     )
 
     expect(unwrapBloggerImageProxy(value)).toBeUndefined()
