@@ -52,18 +52,17 @@ describe('unwrapBrightspot', () => {
     expect(unwrapBrightspot(value)).toBeUndefined()
   })
 
-  it('should return undefined for the bare domain', () => {
+  it('should extract the source on a publisher domain', () => {
     const value = new URL(
-      'https://brightspotcdn.com/dims4/default/f008/?url=https%3A%2F%2Fcdn.example.com%2Fphoto.jpg',
+      'https://dims.apnews.com/dims4/default/8b9a0c1/2147483647/strip/true/crop/3000x2000+0+0/resize/1440x960!/quality/90/?url=https%3A%2F%2Fcdn.example.com%2Fphoto.jpg',
     )
+    const expected = 'https://cdn.example.com/photo.jpg'
 
-    expect(unwrapBrightspot(value)).toBeUndefined()
+    expect(unwrapBrightspot(value)).toBe(expected)
   })
 
-  it('should return undefined for a lookalike host', () => {
-    const value = new URL(
-      'https://examplebrightspotcdn.com/dims4/default/f008/?url=https%3A%2F%2Fcdn.example.com%2Fphoto.jpg',
-    )
+  it('should return undefined for a source that is not an http url', () => {
+    const value = new URL('https://example.com/dims4/report/?url=quarterly-results')
 
     expect(unwrapBrightspot(value)).toBeUndefined()
   })

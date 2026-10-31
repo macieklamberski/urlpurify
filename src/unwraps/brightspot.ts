@@ -1,13 +1,13 @@
-import { decodePercent, getQueryParamValues, isSubdomainOf } from 'trousse'
+import { decodePercent, getQueryParamValues, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
 const dimsPathRegex = /^\/dims\d\/.*$/i
 
-// Brightspot image resizer on a publisher's subdomain
-// (<publisher>.brightspotcdn.com/dims4/<options>/?url=<source>).
+// Brightspot dims image resizer on any host: its own brightspotcdn.com subdomains and the
+// publishers' domains (<host>/dims4/<options>/?url=<source>), such as dims.apnews.com.
 // Not included in defaultUnwrappers: unwrapping swaps the resized copy for the original image.
 export const unwrapBrightspot: UrlUnwrapper = (url) => {
-  if (!isSubdomainOf(url, 'brightspotcdn.com') || !dimsPathRegex.test(url.pathname)) {
+  if (!dimsPathRegex.test(url.pathname)) {
     return
   }
 
@@ -17,5 +17,12 @@ export const unwrapBrightspot: UrlUnwrapper = (url) => {
     return
   }
 
-  return decodePercent(value)
+  const source = decodePercent(value)
+
+  // On any host, only an http source tells the resizer from another site's /dims4/ path.
+  if (!isHttpUrl(source)) {
+    return
+  }
+
+  return source
 }

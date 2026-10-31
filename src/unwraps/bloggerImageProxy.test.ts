@@ -44,4 +44,30 @@ describe('unwrapBloggerImageProxy', () => {
 
     expect(unwrapBloggerImageProxy(value)).toBeUndefined()
   })
+
+  it('should extract the source on a numbered focus host', () => {
+    const value = new URL(
+      'https://images1-focus-opensocial.googleusercontent.com/gadgets/proxy?container=focus&refresh=86400&url=https%3A%2F%2Fcdn.example.com%2Fphoto.jpg',
+    )
+    const expected = 'https://cdn.example.com/photo.jpg'
+
+    expect(unwrapBloggerImageProxy(value)).toBe(expected)
+  })
+
+  it('should extract the source on a gmodules host', () => {
+    const value = new URL(
+      'https://orkut.gmodules.com/gadgets/proxy?container=orkut&url=https%3A%2F%2Fcdn.example.com%2Fphoto.jpg',
+    )
+    const expected = 'https://cdn.example.com/photo.jpg'
+
+    expect(unwrapBloggerImageProxy(value)).toBe(expected)
+  })
+
+  it('should return undefined for a host that only ends in a focus host', () => {
+    const value = new URL(
+      'https://ximages1-focus-opensocial.googleusercontent.com/gadgets/proxy?url=https%3A%2F%2Fcdn.example.com%2Fphoto.jpg',
+    )
+
+    expect(unwrapBloggerImageProxy(value)).toBeUndefined()
+  })
 })

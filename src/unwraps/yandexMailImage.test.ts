@@ -40,4 +40,13 @@ describe('unwrapYandexMailImage', () => {
 
     expect(unwrapYandexMailImage(value)).toBeUndefined()
   })
+
+  it('should extract the source from the orig path', () => {
+    const value = new URL(
+      'https://resize.yandex.net/orig?url=https%3A%2F%2Fcdn.example.com%2Fphoto.jpg',
+    )
+    const expected = 'https://cdn.example.com/photo.jpg'
+
+    expect(unwrapYandexMailImage(value)).toBe(expected)
+  })
 })
