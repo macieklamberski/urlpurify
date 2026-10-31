@@ -1,4 +1,4 @@
-import { isHttpUrl } from 'trousse'
+import { hasQueryParam, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { getParamTarget } from '../utils.js'
 
@@ -8,7 +8,7 @@ const paths = ['/forward.cfm', '/cf_news/forward.cfm']
 // (<school host>/cf_news/forward.cfm?dest=<target>&destkey=<signature>). `destkey` signs the
 // redirect and is not needed to reach the target. Each school runs the platform on its own host.
 export const unwrapFinalsite: UrlUnwrapper = (url) => {
-  if (!paths.includes(url.pathname) || !url.searchParams.has('destkey')) {
+  if (!paths.includes(url.pathname) || !hasQueryParam(url, 'destkey')) {
     return
   }
 

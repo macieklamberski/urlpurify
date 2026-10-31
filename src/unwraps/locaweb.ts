@@ -1,3 +1,4 @@
+import { getQueryParam } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { getParamValues } from '../utils.js'
 
@@ -8,7 +9,7 @@ const idRegex = /^T?H\|(?:\d+|teste)\|\d+\|\d+$/
 // (<sender host>/registra_clique.php?id=<ids>&url=<target>). Senders run it on subdomains of
 // Locaweb's mailing domains and on their own hosts. Opt-in: unwrapping removes the click count.
 export const unwrapLocaweb: UrlUnwrapper = (url) => {
-  if (url.pathname !== '/registra_clique.php' || !idRegex.test(url.searchParams.get('id') ?? '')) {
+  if (url.pathname !== '/registra_clique.php' || !idRegex.test(getQueryParam(url, 'id') ?? '')) {
     return
   }
 

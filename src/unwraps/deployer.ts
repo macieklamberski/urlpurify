@@ -1,4 +1,4 @@
-import { isHostOf, isHttpUrl } from 'trousse'
+import { hasQueryParam, isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { decodeBase64, getParamValues } from '../utils.js'
 
@@ -13,7 +13,7 @@ const paths = ['/link.php', '/wta/link.php']
 // (<sender host>/link.php?AGENCY=<sender>&M=<n>&N=<n>&L=<n>&F=H&drurl=<base64>, also
 // /wta/link.php). Opt-in: unwrapping removes the sender's click count.
 export const unwrapDeployer: UrlUnwrapper = (url) => {
-  if (!isHostOf(url, hosts) || !paths.includes(url.pathname) || !url.searchParams.has('AGENCY')) {
+  if (!isHostOf(url, hosts) || !paths.includes(url.pathname) || !hasQueryParam(url, 'AGENCY')) {
     return
   }
 

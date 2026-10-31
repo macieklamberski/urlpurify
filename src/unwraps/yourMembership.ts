@@ -1,4 +1,4 @@
-import { decodePercent, isHttpUrl } from 'trousse'
+import { decodePercent, getQueryParam, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { getParamValues } from '../utils.js'
 
@@ -9,7 +9,7 @@ const encodedSchemeRegex = /^https?%3A/i
 // (<association>/link.asp?e=<email>&job=<n>&ymlink=<n>&finalurl=<target>). A numeric `ymlink` and
 // an http `finalurl` guard the shared path. Opt-in: unwrapping removes the sender's click count.
 export const unwrapYourMembership: UrlUnwrapper = (url) => {
-  if (url.pathname !== '/link.asp' || !ymlinkRegex.test(url.searchParams.get('ymlink') ?? '')) {
+  if (url.pathname !== '/link.asp' || !ymlinkRegex.test(getQueryParam(url, 'ymlink') ?? '')) {
     return
   }
 

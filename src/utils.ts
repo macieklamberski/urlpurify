@@ -122,7 +122,7 @@ export const decodeBase64 = (value: string): string | undefined => {
 }
 
 const toBase64 = (base64Url: string): string => {
-  return base64Url.replace(/-/g, '+').replace(/_/g, '/')
+  return base64Url.replaceAll('-', '+').replaceAll('_', '/')
 }
 
 export const decodeBase64Url = (value: string): string | undefined => {

@@ -1,4 +1,4 @@
-import { isHttpUrl } from 'trousse'
+import { getQueryParam, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { getParamValues } from '../utils.js'
 
@@ -15,7 +15,7 @@ export const unwrapDrupalOembed: UrlUnwrapper = (url) => {
     return
   }
 
-  const hash = url.searchParams.get('hash')
+  const hash = getQueryParam(url, 'hash')
 
   if (!hash || !hashRegex.test(hash)) {
     return

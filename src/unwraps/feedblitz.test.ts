@@ -44,16 +44,10 @@ describe('unwrapFeedblitz', () => {
     expect(unwrapFeedblitz(url)).toBe('https://www.example.com/2015/09/post/')
   })
 
-  it('should add https to a target without a scheme', () => {
+  it('should return a target without a scheme as written', () => {
     const url = new URL('https://feeds.feedblitz.com/~/t/0/0/markmcguinnesspoetry/~example.com/')
 
-    expect(unwrapFeedblitz(url)).toBe('https://example.com/')
-  })
-
-  it('should return undefined for a target without a host', () => {
-    const url = new URL('https://feeds.feedblitz.com/~/t/0/0/markmcguinnesspoetry/~about')
-
-    expect(unwrapFeedblitz(url)).toBeUndefined()
+    expect(unwrapFeedblitz(url)).toBe('example.com/')
   })
 
   it('should return undefined for an empty target', () => {

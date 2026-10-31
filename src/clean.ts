@@ -1,6 +1,7 @@
 import {
   fixMalformedScheme,
   isAnyOf,
+  isHostOf,
   isHttpUrl,
   isIpAddress,
   normalizeUrl,
@@ -72,7 +73,7 @@ const deleteTrackingParams = (url: URL, trackingParams: Array<TrackingParam>): v
   const host = stripWww(url.hostname)
 
   // Alibaba DirectMail click urls answer 400 without their `ts` and do not check their `sign`.
-  const keepsTs = url.hostname === 'dm-cn.aliyuncs.com' && url.pathname === '/trace/v1/report'
+  const keepsTs = isHostOf(url, 'dm-cn.aliyuncs.com') && url.pathname === '/trace/v1/report'
 
   // Kept pairs stay byte-for-byte: re-serializing through URLSearchParams turns
   // `%20` into `+`, `flag` into `flag=` and escapes `;`, which servers can read differently.
@@ -106,11 +107,13 @@ const deleteTrackingParams = (url: URL, trackingParams: Array<TrackingParam>): v
 
     // The URL parser gives `url.hostname` in lowercase Punycode, so `ref` goes through the same
     // host parsing: `?ref=bücher.example` names `xn--bcher-kva.example`.
-    try {
-      return stripWww(new URL(`http://${value}`).hostname) !== host
-    } catch {}
+    const refUrl = parseUrl(`http://${value}`)
 
-    return true
+    if (!refUrl) {
+      return true
+    }
+
+    return stripWww(refUrl.hostname) !== host
   })
 
   if (keptPairs.length === pairs.length) {

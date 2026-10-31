@@ -1,3 +1,4 @@
+import { isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { getParamTarget } from '../utils.js'
 
@@ -7,7 +8,7 @@ const affiliatePaths = ['/Turnstile/AffiliateLink', '/af.aspx']
 // <target>, also /af.aspx?affiliate=<id>&path=<target>). Not included in defaultUnwrappers:
 // unwrapping drops the publisher's commission.
 export const unwrapWorldNomads: UrlUnwrapper = (url) => {
-  if (url.hostname !== 'www.worldnomads.com' || !affiliatePaths.includes(url.pathname)) {
+  if (!isHostOf(url, 'www.worldnomads.com') || !affiliatePaths.includes(url.pathname)) {
     return
   }
 

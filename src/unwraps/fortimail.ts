@@ -1,4 +1,4 @@
-import { isHttpUrl } from 'trousse'
+import { hasQueryParam, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { getParamTarget } from '../utils.js'
 
@@ -6,7 +6,7 @@ import { getParamTarget } from '../utils.js'
 // (<gateway host>/fmlurlsvc/?fewReq=<token>&url=<target>).
 // Opt-in: an email security gateway, like Outlook Safe Links. Customers run it on their own hosts.
 export const unwrapFortimail: UrlUnwrapper = (url) => {
-  if (url.pathname !== '/fmlurlsvc/' || !url.searchParams.has('fewReq')) {
+  if (url.pathname !== '/fmlurlsvc/' || !hasQueryParam(url, 'fewReq')) {
     return
   }
 

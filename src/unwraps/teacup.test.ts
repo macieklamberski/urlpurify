@@ -10,6 +10,14 @@ describe('unwrapTeacup', () => {
     expect(unwrapTeacup(url)).toBe('http://www.example.org/SG/NRSC-1-B.pdf')
   })
 
+  it('should read the board action named in lowercase', () => {
+    const url = new URL(
+      'http://8252.teacup.com/jh4abz/bbs?m=JU&JUR=http%3A%2F%2Fwww.example.org%2F',
+    )
+
+    expect(unwrapTeacup(url)).toBe('http://www.example.org/')
+  })
+
   it('should return undefined for another board action', () => {
     const url = new URL(
       'http://8252.teacup.com/jh4abz/bbs?M=RE&JUR=http%3A%2F%2Fwww.example.org%2F',

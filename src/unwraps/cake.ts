@@ -1,4 +1,4 @@
-import { isHttpUrl } from 'trousse'
+import { hasQueryParam, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { getParamTarget } from '../utils.js'
 
@@ -6,7 +6,7 @@ import { getParamTarget } from '../utils.js'
 // Opt-in: unwrapping removes the publisher's commission. Networks and advertisers run it on their
 // own hosts.
 export const unwrapCake: UrlUnwrapper = (url) => {
-  if (url.pathname !== '/' || !url.searchParams.has('a') || !url.searchParams.has('c')) {
+  if (url.pathname !== '/' || !hasQueryParam(url, 'a') || !hasQueryParam(url, 'c')) {
     return
   }
 

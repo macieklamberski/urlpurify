@@ -1,4 +1,4 @@
-import { decodePercent, isHttpUrl } from 'trousse'
+import { decodePercent, hasQueryParam, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { getParamTarget } from '../utils.js'
 
@@ -37,7 +37,7 @@ export const unwrapReviveAdserver: UrlUnwrapper = (url) => {
     return
   }
 
-  if (!legacyClickPathRegex.test(url.pathname) || !url.searchParams.has('bannerid')) {
+  if (!legacyClickPathRegex.test(url.pathname) || !hasQueryParam(url, 'bannerid')) {
     return
   }
 

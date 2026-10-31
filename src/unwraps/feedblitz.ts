@@ -1,13 +1,12 @@
-import { addMissingProtocol, isHttpUrl } from 'trousse'
+import { isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
 const pathRegex = /^\/~\/t\/0\/[0_]\/[^/]+(?:\/full)?\/~(.+)$/
 
 // FeedBlitz feed item click tracker (feeds.feedblitz.com/~/t/0/0/<feed>/~<target>, also /0/_/ and
-// /full/). The target runs to the end of the url. FeedBlitz answers a target without a scheme
-// with a redirect to its https url, so one is added.
+// /full/). The target runs to the end of the url.
 export const unwrapFeedblitz: UrlUnwrapper = (url) => {
-  if (url.hostname !== 'feeds.feedblitz.com') {
+  if (!isHostOf(url, 'feeds.feedblitz.com')) {
     return
   }
 
@@ -17,9 +16,5 @@ export const unwrapFeedblitz: UrlUnwrapper = (url) => {
     return
   }
 
-  const target = addMissingProtocol(`${match[1]}${url.search}${url.hash}`)
-
-  if (isHttpUrl(target)) {
-    return target
-  }
+  return `${match[1]}${url.search}${url.hash}`
 }

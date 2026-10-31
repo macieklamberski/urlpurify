@@ -1,4 +1,4 @@
-import { isHttpUrl } from 'trousse'
+import { getQueryParam, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { decodeBase64, getParamValues } from '../utils.js'
 
@@ -7,7 +7,7 @@ import { decodeBase64, getParamValues } from '../utils.js'
 // base64 http `url` are the guard, not the host.
 export const unwrapDatalifeEngine: UrlUnwrapper = (url) => {
   const isEngineGo = url.pathname === '/engine/go.php'
-  const isIndexGo = url.pathname === '/index.php' && url.searchParams.get('do') === 'go'
+  const isIndexGo = url.pathname === '/index.php' && getQueryParam(url, 'do') === 'go'
 
   if (!isEngineGo && !isIndexGo) {
     return

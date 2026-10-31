@@ -206,6 +206,14 @@ describe('unwrapGoogleTranslate', () => {
     expect(unwrapGoogleTranslate(url)).toBe('https://www.example.com/post')
   })
 
+  it('should read and drop a website proxy param named in uppercase', () => {
+    const url = new URL(
+      'https://xample-com.translate.goog/post?_X_TR_HP=www-e&_x_tr_sl=en&_x_tr_tl=de',
+    )
+
+    expect(unwrapGoogleTranslate(url)).toBe('https://www.example.com/post')
+  })
+
   it('should decode an IDN website proxy host', () => {
     const url = new URL(
       'https://0-mnchen--3ya-example.translate.goog/?_x_tr_enc=0&_x_tr_sl=de&_x_tr_tl=en',
