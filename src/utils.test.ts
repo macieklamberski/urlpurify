@@ -204,6 +204,17 @@ describe('createParamExtractor', () => {
     expect(extract(value)).toBeUndefined()
   })
 
+  it('should match the param name in any case', () => {
+    const extract = createParamExtractor({
+      hosts: 'redirect.example.com',
+      params: ['url'],
+    })
+    const value = new URL('https://redirect.example.com/?URL=https%3A%2F%2Fexample.com')
+    const expected = 'https://example.com'
+
+    expect(extract(value)).toBe(expected)
+  })
+
   describe('twice-encoded target', () => {
     const extract = createParamExtractor({
       hosts: 'redirect.example.com',

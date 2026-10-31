@@ -1,4 +1,4 @@
-import { decodePercent, isAnyOf, isHostOf, isHostOrSubdomainOf } from 'trousse'
+import { decodePercent, getQueryParamValues, isAnyOf, isHostOf, isHostOrSubdomainOf } from 'trousse'
 import type { UrlUnwrapper } from './types.js'
 
 // `domains` also matches every subdomain. `hosts` matches a host exactly, or by regex, for a domain
@@ -25,22 +25,14 @@ export const decodeEncodedScheme = (value: string): string => {
 
 const unencodedTargetRegex = /^https?:\/\//i
 
-// Every value of a query param, in order, as `URLSearchParams.getAll` reads them, except that a
-// malformed escape stays as written, and a `+` stays in a target the carrier left unencoded, as in
-// `wgtarget=https://example.com/search/a+b/`, where `URLSearchParams` reads it as a space.
+// Every value of a query param, in order, its name in any case, decoded as `URLSearchParams` does,
+// except that a malformed escape stays as written, and a `+` stays in an unencoded target,
+// as in `wgtarget=https://example.com/search/a+b/`, which `URLSearchParams` reads as a space.
 export const getParamValues = (url: URL, name: string): Array<string> => {
   const values: Array<string> = []
+  const raws = getQueryParamValues(url, name, { decodeValues: false, preserveEmptyValues: true })
 
-  for (const pair of url.search.slice(1).split('&')) {
-    const entry = new URLSearchParams(`&${pair}`).entries().next().value
-
-    if (!entry || entry[0] !== name) {
-      continue
-    }
-
-    const separator = pair.indexOf('=')
-    const raw = separator === -1 ? '' : pair.slice(separator + 1)
-
+  for (const raw of raws) {
     if (!unencodedTargetRegex.test(raw)) {
       values.push(decodePercent(raw.replaceAll('+', ' ')))
       continue
