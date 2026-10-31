@@ -1,4 +1,4 @@
-import { isHttpUrl } from 'trousse'
+import { isHttpUrl, isString } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { decodeBase64Url, getParamValues } from '../utils.js'
 
@@ -29,7 +29,7 @@ export const unwrapMailinblack: UrlUnwrapper = (url) => {
   try {
     const target = JSON.parse(json)?.url
 
-    if (typeof target === 'string' && isHttpUrl(target)) {
+    if (isString(target) && isHttpUrl(target)) {
       return target
     }
   } catch {}
