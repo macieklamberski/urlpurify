@@ -11,6 +11,7 @@ export {
   defaultUnwrappers,
   downloadMeasurementUnwrappers,
   emailTrackingUnwrappers,
+  embedProxyUnwrappers,
   housekeepingParams,
   imageProxyUnwrappers,
   linkShimUnwrappers,
@@ -126,6 +127,7 @@ export { unwrapDmmAffiliate } from './unwraps/dmmAffiliate.js'
 export { unwrapDognet } from './unwraps/dognet.js'
 export { unwrapDouban } from './unwraps/douban.js'
 export { unwrapDropbox } from './unwraps/dropbox.js'
+export { unwrapDrupalOembed } from './unwraps/drupalOembed.js'
 export { unwrapDstats } from './unwraps/dstats.js'
 export { unwrapDuckduckgo } from './unwraps/duckduckgo.js'
 export { unwrapDuckduckgoAds } from './unwraps/duckduckgoAds.js'
@@ -195,6 +197,7 @@ export { unwrapHornetsecurity } from './unwraps/hornetsecurity.js'
 export { unwrapHrefLi } from './unwraps/hrefLi.js'
 export { unwrapHubspotSidekick } from './unwraps/hubspotSidekick.js'
 export { unwrapIcptrack } from './unwraps/icptrack.js'
+export { unwrapIframely } from './unwraps/iframely.js'
 export { unwrapIgafnl } from './unwraps/igafnl.js'
 export { unwrapImagekit } from './unwraps/imagekit.js'
 export { unwrapImpact } from './unwraps/impact.js'

@@ -24,6 +24,7 @@ const categories = [
   urlpurify.downloadMeasurementUnwrappers,
   urlpurify.archiveProxyUnwrappers,
   urlpurify.imageProxyUnwrappers,
+  urlpurify.embedProxyUnwrappers,
 ]
 
 describe('defaultUnwrappers', () => {
@@ -54,7 +55,6 @@ describe('defaultUnwrappers', () => {
       'unwrapDropbox',
       'unwrapDuckduckgo',
       'unwrapDzen',
-      'unwrapEmbedly',
       'unwrapEvernote',
       'unwrapFacebookShim',
       'unwrapFeedsportal',

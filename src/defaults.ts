@@ -107,6 +107,7 @@ import { unwrapDmmAffiliate } from './unwraps/dmmAffiliate.js'
 import { unwrapDognet } from './unwraps/dognet.js'
 import { unwrapDouban } from './unwraps/douban.js'
 import { unwrapDropbox } from './unwraps/dropbox.js'
+import { unwrapDrupalOembed } from './unwraps/drupalOembed.js'
 import { unwrapDstats } from './unwraps/dstats.js'
 import { unwrapDuckduckgo } from './unwraps/duckduckgo.js'
 import { unwrapDuckduckgoAds } from './unwraps/duckduckgoAds.js'
@@ -176,6 +177,7 @@ import { unwrapHornetsecurity } from './unwraps/hornetsecurity.js'
 import { unwrapHrefLi } from './unwraps/hrefLi.js'
 import { unwrapHubspotSidekick } from './unwraps/hubspotSidekick.js'
 import { unwrapIcptrack } from './unwraps/icptrack.js'
+import { unwrapIframely } from './unwraps/iframely.js'
 import { unwrapIgafnl } from './unwraps/igafnl.js'
 import { unwrapImagekit } from './unwraps/imagekit.js'
 import { unwrapImpact } from './unwraps/impact.js'
@@ -479,7 +481,6 @@ export const linkShimUnwrappers: Array<UrlUnwrapper> = [
   unwrapDouban,
   unwrapDropbox,
   unwrapDzen,
-  unwrapEmbedly,
   unwrapEvernote,
   unwrapFacebookShim,
   unwrapFeedsportal,
@@ -884,6 +885,13 @@ export const imageProxyUnwrappers: Array<UrlUnwrapper> = [
   unwrapYahooImage,
   unwrapYahooMailImage,
   unwrapYandexMailImage,
+]
+
+// Embed proxies: unwrapping returns the provider's page, not the site's frame around it.
+export const embedProxyUnwrappers: Array<UrlUnwrapper> = [
+  unwrapDrupalOembed,
+  unwrapEmbedly,
+  unwrapIframely,
 ]
 
 export const defaultUnwrappers: Array<UrlUnwrapper> = [
