@@ -107,11 +107,13 @@ const deleteTrackingParams = (url: URL, trackingParams: Array<TrackingParam>): v
 
     // The URL parser gives `url.hostname` in lowercase Punycode, so `ref` goes through the same
     // host parsing: `?ref=bücher.example` names `xn--bcher-kva.example`.
-    try {
-      return stripWww(new URL(`http://${value}`).hostname) !== host
-    } catch {}
+    const refUrl = parseUrl(`http://${value}`)
 
-    return true
+    if (!refUrl) {
+      return true
+    }
+
+    return stripWww(refUrl.hostname) !== host
   })
 
   if (keptPairs.length === pairs.length) {
