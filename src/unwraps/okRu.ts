@@ -1,3 +1,4 @@
+import { getQueryParam } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createParamExtractor } from '../utils.js'
 
@@ -17,11 +18,11 @@ const extractOutLinkWarningTarget = createParamExtractor({
 // page (m.ok.ru/dk?st.cmd=outLinkWarning&st.rfn=<target>), also on odnoklassniki.ru.
 export const unwrapOkRu: UrlUnwrapper = (url) => {
   // `/dk` serves every OK.ru action, such as the `addShare` share intent, so the command decides.
-  if (url.searchParams.get('cmd') === 'logExternal') {
+  if (getQueryParam(url, 'cmd') === 'logExternal') {
     return extractLogExternalLink(url)
   }
 
-  if (url.searchParams.get('st.cmd') === 'outLinkWarning') {
+  if (getQueryParam(url, 'st.cmd') === 'outLinkWarning') {
     return extractOutLinkWarningTarget(url)
   }
 }

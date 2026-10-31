@@ -1,4 +1,4 @@
-import { isAnyOf, isHostOf } from 'trousse'
+import { getQueryParam, isAnyOf, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { getParamValues } from '../utils.js'
 
@@ -32,8 +32,8 @@ const unwrapWebsiteProxy: UrlUnwrapper = (url) => {
     return
   }
 
-  const encodings = url.searchParams.get(`${proxyParamPrefix}enc`)?.split(',') ?? []
-  let prefix = `${url.searchParams.get(`${proxyParamPrefix}hp`) ?? ''}${label}`
+  const encodings = getQueryParam(url, `${proxyParamPrefix}enc`)?.split(',') ?? []
+  let prefix = `${getQueryParam(url, `${proxyParamPrefix}hp`) ?? ''}${label}`
 
   if (encodings.includes('1') && prefix.startsWith('1-')) {
     prefix = prefix.slice(2)
@@ -46,11 +46,11 @@ const unwrapWebsiteProxy: UrlUnwrapper = (url) => {
   }
 
   const host = `${isIdn ? 'xn--' : ''}${prefix.replaceAll(singleDashRegex, '.').replaceAll('--', '-')}`
-  const scheme = url.searchParams.get(`${proxyParamPrefix}sch`) === 'http' ? 'http' : 'https'
+  const scheme = getQueryParam(url, `${proxyParamPrefix}sch`) === 'http' ? 'http' : 'https'
   const query = url.search
     .slice(1)
     .split('&')
-    .filter((part) => part && !part.startsWith(proxyParamPrefix))
+    .filter((part) => part && !part.toLowerCase().startsWith(proxyParamPrefix))
     .join('&')
 
   return `${scheme}://${host}${url.pathname}${query ? `?${query}` : ''}${url.hash}`

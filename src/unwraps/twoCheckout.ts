@@ -1,4 +1,4 @@
-import { isHttpUrl } from 'trousse'
+import { getQueryParam, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { getParamTarget } from '../utils.js'
 
@@ -11,7 +11,7 @@ export const unwrapTwoCheckout: UrlUnwrapper = (url) => {
     return
   }
 
-  if (!url.searchParams.get('ACCOUNT') || !url.searchParams.get('AFFILIATE')) {
+  if (!getQueryParam(url, 'ACCOUNT') || !getQueryParam(url, 'AFFILIATE')) {
     return
   }
 

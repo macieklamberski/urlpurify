@@ -1,4 +1,4 @@
-import { decodePercent, isHttpUrl } from 'trousse'
+import { decodePercent, hasQueryParam, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { getParamValues } from '../utils.js'
 
@@ -13,7 +13,7 @@ export const unwrapQualityClick: UrlUnwrapper = (url) => {
     return
   }
 
-  if (!url.searchParams.has('pid') || !url.searchParams.has('wmid')) {
+  if (!hasQueryParam(url, 'pid') || !hasQueryParam(url, 'wmid')) {
     return
   }
 

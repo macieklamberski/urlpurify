@@ -1,4 +1,4 @@
-import { isHttpUrl } from 'trousse'
+import { hasQueryParam, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { getParamTarget } from '../utils.js'
 
@@ -6,7 +6,7 @@ import { getParamTarget } from '../utils.js'
 // tracking domains (tracking.<sender domain>/tracking/click?msgid=<id>&target=<target>).
 // Opt-in: unwrapping removes the sender's click count.
 export const unwrapElasticEmail: UrlUnwrapper = (url) => {
-  if (url.pathname !== '/tracking/click' || !url.searchParams.has('msgid')) {
+  if (url.pathname !== '/tracking/click' || !hasQueryParam(url, 'msgid')) {
     return
   }
 

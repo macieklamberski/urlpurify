@@ -1,4 +1,4 @@
-import { isHttpUrl } from 'trousse'
+import { hasQueryParam, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { decodeBase64, getParamValues } from '../utils.js'
 
@@ -9,7 +9,7 @@ const pathRegex = /^(?:\/[^/]+)?\/exit\.php$/
 // (<host>/[<blog>/]exit.php?url=<base64>&entry_id=<n>). The url param is a base64-encoded target
 // URL, and entry_id names the post holding the link.
 export const unwrapSerendipity: UrlUnwrapper = (url) => {
-  if (!pathRegex.test(url.pathname) || !url.searchParams.has('entry_id')) {
+  if (!pathRegex.test(url.pathname) || !hasQueryParam(url, 'entry_id')) {
     return
   }
 
