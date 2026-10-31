@@ -2,13 +2,12 @@ import { getQueryParam, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { getParamValues } from '../utils.js'
 
-const pathRegex = /^(?:\/[^/]+)*\/media\/oembed$/
-const hashRegex = /^[\w-]{43}$/
+const pathRegex = /^(?:\/[^/]+)*\/media\/oembed$/i
 
 // Drupal media oEmbed frame on the site's own domain, below a language or subsite prefix too
 // (<host>/media/oembed?url=<page>&max_width=<n>&max_height=<n>&hash=<hmac>).
-// On any host, the 43-character base64url HMAC in `hash` and an http `url` tell Drupal's frame
-// from another site's /media/oembed path. Drupal reads the last `url`.
+// On any host, a `hash` param and an http `url` tell Drupal's frame from another site's
+// /media/oembed path. Drupal reads the last `url`.
 // Not included in defaultUnwrappers: unwrapping swaps the site's frame for the provider's page.
 export const unwrapDrupalOembed: UrlUnwrapper = (url) => {
   if (!pathRegex.test(url.pathname)) {
@@ -17,7 +16,7 @@ export const unwrapDrupalOembed: UrlUnwrapper = (url) => {
 
   const hash = getQueryParam(url, 'hash')
 
-  if (!hash || !hashRegex.test(hash)) {
+  if (!hash) {
     return
   }
 
