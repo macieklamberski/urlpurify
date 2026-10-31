@@ -1,6 +1,5 @@
-import { decodePercent, isSubdomainOf } from 'trousse'
+import { decodePercent, getQueryParamValues, isSubdomainOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getRawParamValues } from '../utils.js'
 
 const dimsPathRegex = /^\/dims\d\/.*$/i
 
@@ -12,7 +11,7 @@ export const unwrapBrightspot: UrlUnwrapper = (url) => {
     return
   }
 
-  const value = getRawParamValues(url, 'url').at(-1)
+  const value = getQueryParamValues(url, 'url', { decodeValues: false }).at(-1)
 
   if (!value) {
     return
