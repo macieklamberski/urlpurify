@@ -1,4 +1,4 @@
-import { addMissingProtocol, isHostOf, isHttpUrl } from 'trousse'
+import { addMissingScheme, isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
 const pathRegex = /^\/~\/t\/0\/[0_]\/[^/]+(?:\/full)?\/~(.+)$/
@@ -17,7 +17,7 @@ export const unwrapFeedblitz: UrlUnwrapper = (url) => {
     return
   }
 
-  const target = addMissingProtocol(`${match[1]}${url.search}${url.hash}`)
+  const target = addMissingScheme(`${match[1]}${url.search}${url.hash}`)
 
   if (isHttpUrl(target)) {
     return target
