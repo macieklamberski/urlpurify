@@ -14,6 +14,8 @@ const proxyLabelRegex = /^[a-z0-9-]+$/
 // which does not decode back to the host.
 const hashedLabelRegex = /^[a-z2-7]{26}-[a-z0-9]{15}-/
 const proxyParamPrefix = '_x_tr_'
+// A single `-` between two word characters stands for a `.` of the host.
+const singleDashRegex = /\b-\b/g
 
 // The website proxy names the target host in its own subdomain, `.` as `-` and `-` as `--`, so
 // every subdomain of translate.goog is a proxied site. A long host moves its start into the
@@ -43,7 +45,7 @@ const unwrapWebsiteProxy: UrlUnwrapper = (url) => {
     prefix = prefix.slice(2)
   }
 
-  const host = `${isIdn ? 'xn--' : ''}${prefix.replaceAll(/\b-\b/g, '.').replaceAll('--', '-')}`
+  const host = `${isIdn ? 'xn--' : ''}${prefix.replaceAll(singleDashRegex, '.').replaceAll('--', '-')}`
   const scheme = url.searchParams.get(`${proxyParamPrefix}sch`) === 'http' ? 'http' : 'https'
   const query = url.search
     .slice(1)

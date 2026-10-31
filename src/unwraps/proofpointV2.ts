@@ -17,5 +17,5 @@ export const unwrapProofpointV2: UrlUnwrapper = (url) => {
     return
   }
 
-  return decodePercent(raw.replace(/-/g, '%').replace(/_/g, '/'))
+  return decodePercent(raw.replaceAll('-', '%').replaceAll('_', '/'))
 }

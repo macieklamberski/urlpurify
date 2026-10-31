@@ -43,7 +43,7 @@ export const unwrapUnisender: UrlUnwrapper = (url) => {
   }
 
   // Some senders encode the target as base64url with `~` as the padding character.
-  const decoded = decodeBase64Url(value.replace(/~/g, '='))
+  const decoded = decodeBase64Url(value.replaceAll('~', '='))
 
   if (decoded && isHttpUrl(decoded)) {
     return decoded
