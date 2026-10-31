@@ -1,4 +1,4 @@
-import { addMissingProtocol, isHttpUrl } from 'trousse'
+import { addMissingProtocol, isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
 const pathRegex = /^\/~\/t\/0\/[0_]\/[^/]+(?:\/full)?\/~(.+)$/
@@ -7,7 +7,7 @@ const pathRegex = /^\/~\/t\/0\/[0_]\/[^/]+(?:\/full)?\/~(.+)$/
 // /full/). The target runs to the end of the url. FeedBlitz answers a target without a scheme
 // with a redirect to its https url, so one is added.
 export const unwrapFeedblitz: UrlUnwrapper = (url) => {
-  if (url.hostname !== 'feeds.feedblitz.com') {
+  if (!isHostOf(url, 'feeds.feedblitz.com')) {
     return
   }
 

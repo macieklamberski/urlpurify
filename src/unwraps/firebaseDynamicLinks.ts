@@ -1,3 +1,4 @@
+import { isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createParamExtractor } from '../utils.js'
 
@@ -23,7 +24,7 @@ const extractGooGlTarget = createParamExtractor({
 // A deeper path on page.link or app.goo.gl is a short link or another service, such as
 // maps.app.goo.gl/<id>, and is left alone.
 export const unwrapFirebaseDynamicLinks: UrlUnwrapper = (url) => {
-  if (url.hostname !== 'goo.gl') {
+  if (!isHostOf(url, 'goo.gl')) {
     return extractTarget(url)
   }
 

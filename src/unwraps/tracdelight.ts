@@ -1,3 +1,4 @@
+import { isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createParamExtractor } from '../utils.js'
 
@@ -20,7 +21,7 @@ export const unwrapTracdelight: UrlUnwrapper = (url) => {
     return target
   }
 
-  if (url.hostname !== 'td.oo34.net') {
+  if (!isHostOf(url, 'td.oo34.net')) {
     return
   }
 
