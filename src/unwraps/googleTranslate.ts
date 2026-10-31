@@ -1,4 +1,4 @@
-import { getQueryParam, getSubdomain, isAnyOf, isHostOf } from 'trousse'
+import { getQueryParam, getSubdomain, isAnyOf, isHostOf, startsWithAnyOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { getParamValues } from '../utils.js'
 
@@ -46,7 +46,7 @@ const unwrapWebsiteProxy: UrlUnwrapper = (url) => {
   const query = url.search
     .slice(1)
     .split('&')
-    .filter((part) => part && !part.toLowerCase().startsWith(proxyParamPrefix))
+    .filter((part) => part && !startsWithAnyOf(part, proxyParamPrefix))
     .join('&')
 
   return `${scheme}://${host}${url.pathname}${query ? `?${query}` : ''}${url.hash}`
