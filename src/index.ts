@@ -11,6 +11,7 @@ export {
   defaultUnwrappers,
   downloadMeasurementUnwrappers,
   emailTrackingUnwrappers,
+  embedProxyUnwrappers,
   housekeepingParams,
   imageProxyUnwrappers,
   linkShimUnwrappers,

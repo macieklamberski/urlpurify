@@ -477,7 +477,6 @@ export const linkShimUnwrappers: Array<UrlUnwrapper> = [
   unwrapDouban,
   unwrapDropbox,
   unwrapDzen,
-  unwrapEmbedly,
   unwrapEvernote,
   unwrapFacebookShim,
   unwrapFeedsportal,
@@ -881,6 +880,9 @@ export const imageProxyUnwrappers: Array<UrlUnwrapper> = [
   unwrapYahooMailImage,
   unwrapYandexMailImage,
 ]
+
+// Embed proxies: unwrapping returns the provider's page, not the site's frame around it.
+export const embedProxyUnwrappers: Array<UrlUnwrapper> = [unwrapEmbedly]
 
 export const defaultUnwrappers: Array<UrlUnwrapper> = [
   ...searchClickUnwrappers,
