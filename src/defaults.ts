@@ -27,6 +27,7 @@ import { unwrapAllblog } from './unwraps/allblog.js'
 import { unwrapAmazonAffiliate } from './unwraps/amazonAffiliate.js'
 import { unwrapAmazonSes } from './unwraps/amazonSes.js'
 import { unwrapAmpCache } from './unwraps/ampCache.js'
+import { unwrapAmpCacheImage } from './unwraps/ampCacheImage.js'
 import { unwrapAnchor } from './unwraps/anchor.js'
 import { unwrapAnonymouse } from './unwraps/anonymouse.js'
 import { unwrapAnonymTo } from './unwraps/anonymTo.js'
@@ -109,6 +110,7 @@ import { unwrapDropbox } from './unwraps/dropbox.js'
 import { unwrapDstats } from './unwraps/dstats.js'
 import { unwrapDuckduckgo } from './unwraps/duckduckgo.js'
 import { unwrapDuckduckgoAds } from './unwraps/duckduckgoAds.js'
+import { unwrapDuckduckgoImage } from './unwraps/duckduckgoImage.js'
 import { unwrapDuomai } from './unwraps/duomai.js'
 import { unwrapDyn } from './unwraps/dyn.js'
 import { unwrapDzen } from './unwraps/dzen.js'
@@ -866,11 +868,13 @@ export const archiveProxyUnwrappers: Array<UrlUnwrapper> = [
 
 // Image proxies and resizers: unwrapping swaps the resized or optimized copy for the original image.
 export const imageProxyUnwrappers: Array<UrlUnwrapper> = [
+  unwrapAmpCacheImage,
   unwrapBloggerImageProxy,
   unwrapBrightspot,
   unwrapCloudflareImages,
   unwrapCloudinaryFetch,
   unwrapDevToImage,
+  unwrapDuckduckgoImage,
   unwrapHatenaImage,
   unwrapImagekit,
   unwrapJetpack,
