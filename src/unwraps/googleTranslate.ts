@@ -1,4 +1,4 @@
-import { getQueryParam, isAnyOf, isHostOf } from 'trousse'
+import { getQueryParam, getSubdomain, isAnyOf, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { getParamValues } from '../utils.js'
 
@@ -8,7 +8,7 @@ const googleTranslateHostRegex =
 
 const googleTranslatePaths = ['/translate', '/website']
 
-const proxyHostSuffix = '.translate.goog'
+const proxyDomain = 'translate.goog'
 const proxyLabelRegex = /^[a-z0-9-]+$/
 // A host that does not fit the dashed form gets a hashed label, <base32>-<hash>-<host part>,
 // which does not decode back to the host.
@@ -22,13 +22,9 @@ const singleDashRegex = /\b-\b/g
 // _x_tr_hp param, and _x_tr_enc marks a `1-` prefix to drop or a `0-` prefix that stands for
 // the `xn--` of an IDN host.
 const unwrapWebsiteProxy: UrlUnwrapper = (url) => {
-  if (!url.hostname.endsWith(proxyHostSuffix)) {
-    return
-  }
+  const label = getSubdomain(url, proxyDomain)
 
-  const label = url.hostname.slice(0, -proxyHostSuffix.length)
-
-  if (!proxyLabelRegex.test(label) || hashedLabelRegex.test(label)) {
+  if (!label || !proxyLabelRegex.test(label) || hashedLabelRegex.test(label)) {
     return
   }
 
