@@ -3,7 +3,7 @@ import type { UrlUnwrapper } from '../types.js'
 
 const pathRegex = /^\/v1\/[0-9a-f]{64}\/(.+)$/
 
-const mozillaOutgoingHosts = [
+const hosts = [
   'outgoing.mozilla.org',
   'outgoing.prod.mozaws.net',
   'prod.outgoing.prod.webservices.mozgcp.net',
@@ -12,7 +12,7 @@ const mozillaOutgoingHosts = [
 // Mozilla outgoing-link redirector used on Mozilla mailing lists, blogs, and
 // support forums. Path: /v1/<sha256>/<URL-encoded-target>
 export const unwrapMozillaOutgoing: UrlUnwrapper = (url) => {
-  if (!isHostOf(url, mozillaOutgoingHosts)) {
+  if (!isHostOf(url, hosts)) {
     return
   }
 

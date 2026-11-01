@@ -5,15 +5,15 @@ const redirectPathRegex = /^\/r\/?$/
 const globalIdentityPathRegex = /^\/m\/global-identity(?:-2)?$/
 
 // Authors and publications get their own `<name>.medium.com`, so the hosts match exactly.
-const mediumHosts = ['medium.com', 'gen.medium.com']
+const hosts = ['medium.com', 'gen.medium.com']
 
 const extractRedirectTarget = createParamExtractor({
-  hosts: mediumHosts,
+  hosts,
   params: ['url'],
 })
 
 const extractGlobalIdentityTarget = createParamExtractor({
-  hosts: mediumHosts,
+  hosts,
   params: ['redirectUrl'],
 })
 
