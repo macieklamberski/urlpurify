@@ -3,7 +3,7 @@ import type { UrlUnwrapper } from '../types.js'
 import { getParamValues } from '../utils.js'
 
 // A forum root prefix, such as /forum/ or /en/.
-const pathRegex = /^(?:\/[^/]+)?\/redirect\/$/
+const pathRegex = /^(?:\/[^/]+)?\/redirect\/$/i
 
 const encodedSchemeRegex = /^https?%3A/i
 

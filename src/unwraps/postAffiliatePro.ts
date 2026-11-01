@@ -2,7 +2,7 @@ import { decodePercent, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { getParamValues } from '../utils.js'
 
-const pathRegex = /^\/(?:[^/]+\/)*scripts\/click\.php$/
+const pathRegex = /^\/(?:[^/]+\/)*scripts\/click\.php$/i
 const encodedSchemeRegex = /^https?%3A/i
 
 // Post Affiliate Pro click script, run by each merchant on its own host under any install folder

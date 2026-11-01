@@ -1,7 +1,7 @@
 import { isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
-const pathRegex = /^\/\d+\/(?:banner\/|int\/)?(.+)$/
+const pathRegex = /^\/\d+\/(?:banner\/|int\/)?(.+)$/i
 const schemeRegex = /^https?:/i
 // A scheme-less target starts with a dotted host, which tells it from a custom alias.
 const hostRegex = /^[\da-z-]+(?:\.[\da-z-]+)+(?:[/:]|$)/i

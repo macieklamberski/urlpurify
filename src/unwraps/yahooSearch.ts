@@ -3,8 +3,8 @@ import type { UrlUnwrapper } from '../types.js'
 import { decodeEncodedScheme } from '../utils.js'
 
 const hosts = ['r.search.yahoo.com', 'ri.search.yahoo.com', 'chicagotribune.search.yahoo.com']
-const yahooPathRegex = /^(?:\/[^/]+)*\/RU=([^/]+)\/RK=/
-const unencodedTargetRegex = /^(?:\/[^/]+)*\/RU=(https?:\/\/.+?)\/RK=/
+const yahooPathRegex = /^(?:\/[^/]+)*\/RU=([^/]+)\/RK=/i
+const unencodedTargetRegex = /^(?:\/[^/]+)*\/RU=(https?:\/\/.+?)\/RK=/i
 
 // Yahoo Search redirect (r.search.yahoo.com/.../RU=<URL-encoded-target>/RK=...), also with the
 // target unencoded (.../RU=<target>/RK=...).

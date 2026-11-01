@@ -2,7 +2,7 @@ import { isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { decodeBase64UrlBinary } from '../utils.js'
 
-const articleIdRegex = /^\/(?:rss\/)?articles\/([\w-]+)/
+const articleIdRegex = /^\/(?:rss\/)?articles\/([\w-]+)/i
 // Protobuf framing around the destination URL: 0x08 0x13 + length-prefixed
 // string, terminated by 0xd2 0x01. Control bytes are part of the protocol.
 // biome-ignore lint/suspicious/noControlCharactersInRegex: protobuf framing bytes

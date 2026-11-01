@@ -5,7 +5,7 @@ import { createParamExtractor } from '../utils.js'
 const hostRegex = /^(?:ssl-)?vg\d+\.met\.vgwort\.de$/
 
 // The counter id.
-const pathRegex = /^\/na\/[0-9a-f]+$/
+const pathRegex = /^\/na\/[0-9a-f]+$/i
 
 const extractTarget = createParamExtractor({
   hosts: hostRegex,

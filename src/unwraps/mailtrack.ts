@@ -1,7 +1,7 @@
 import type { UrlUnwrapper } from '../types.js'
 import { createParamExtractor } from '../utils.js'
 
-const trackPathRegex = /^\/(?:(?:(?:trace\/)?link|l)\/[^/]+)?$/
+const trackPathRegex = /^\/(?:(?:(?:trace\/)?link|l)\/[^/]+)?$/i
 
 const extractTarget = createParamExtractor({
   hosts: 'mailtrack.io',

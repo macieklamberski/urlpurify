@@ -1,7 +1,7 @@
 import { decodePercent, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
-const postmarkPathRegex = /^\/[23][mt]?(?<secure>s?)\/(?<target>[^/]+)\//
+const postmarkPathRegex = /^\/[23][mt]?(?<secure>s?)\/(?<target>[^/]+)\//i
 
 // Postmark click tracker ({click,track}.pstmrk.it/{2,3}[m,t][s]/<encoded>/...). The segment
 // after the version prefix carries the URL-encoded target without its scheme. An `s` in the

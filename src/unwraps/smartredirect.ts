@@ -1,7 +1,7 @@
 import type { UrlUnwrapper } from '../types.js'
 import { createParamExtractor } from '../utils.js'
 
-const pathRegex = /^\/(?:redir\/clickGate\.php|api_v2\/ClickGate\.php)?$/
+const pathRegex = /^\/(?:redir\/clickGate\.php|api_v2\/ClickGate\.php)?$/i
 
 const extractTarget = createParamExtractor({
   hosts: ['smartredirect.de', 'www.smartredirect.de', 'api.smartredirect.de', 'b.xfreeservice.com'],

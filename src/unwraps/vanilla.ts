@@ -3,7 +3,7 @@ import type { UrlUnwrapper } from '../types.js'
 import { getParamTarget } from '../utils.js'
 
 // A locale or subcommunity prefix, such as /en/ or /en/madden-nfl/.
-const pathRegex = /^(?:\/[^/]+){0,2}\/home\/leaving$/
+const pathRegex = /^(?:\/[^/]+){0,2}\/home\/leaving$/i
 
 // Vanilla Forums leaving page (<forum host>/home/leaving?target=<target>). Each forum runs on its
 // own host, so the exact path and an http `target` are the guard, not the host.

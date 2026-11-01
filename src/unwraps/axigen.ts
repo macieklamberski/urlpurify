@@ -1,4 +1,4 @@
-import { isHttpUrl } from 'trousse'
+import { isAnyOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { getParamTarget } from '../utils.js'
 
@@ -6,7 +6,7 @@ import { getParamTarget } from '../utils.js'
 // (<mail host>/redir.hsp?url=<target>). Each organization runs it on its own host, so the exact
 // path and an http `url` are the guard, not the host. Opt-in, like the other webmail link shims.
 export const unwrapAxigen: UrlUnwrapper = (url) => {
-  if (url.pathname !== '/redir.hsp') {
+  if (!isAnyOf(url.pathname, '/redir.hsp')) {
     return
   }
 

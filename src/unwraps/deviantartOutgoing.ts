@@ -1,7 +1,7 @@
 import { isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
-const pathRegex = /^\/[^/]+\/outgoing$/
+const pathRegex = /^\/[^/]+\/outgoing$/i
 
 // DeviantArt outbound link shim (www.deviantart.com/<user>/outgoing?<target>). Only the www host
 // redirects: every user has a subdomain of deviantart.com. The target is the whole query string,

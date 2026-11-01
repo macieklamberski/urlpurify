@@ -2,9 +2,9 @@ import { isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
 // A 14-digit timestamp after the web prefix.
-const webPathRegex = /^\/web\/\d{14}\/(.+)$/
+const webPathRegex = /^\/web\/\d{14}\/(.+)$/i
 // The persistent id of a collection, as in /info:ndljp/pid/286890/.
-const pidPathRegex = /^\/info:ndljp\/pid\/\d+\/(.+)$/
+const pidPathRegex = /^\/info:ndljp\/pid\/\d+\/(.+)$/i
 const schemeRegex = /^[a-z][a-z\d+.-]*:/i
 
 // WARP, the National Diet Library web archive, snapshot (warp.ndl.go.jp/web/<timestamp>/<target>),

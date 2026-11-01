@@ -2,7 +2,7 @@ import { isHostOf } from 'trousse'
 import { getPathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 
-const episodePrefixRegex = /^\/e\//
+const episodePrefixRegex = /^\/e\//i
 
 // Podcorn, now Audacy Creator Lab, download measurement prefix (pdcn.co/e/<target>), where the
 // target often drops its scheme.

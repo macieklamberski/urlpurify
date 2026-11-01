@@ -3,7 +3,7 @@ import type { UrlUnwrapper } from '../types.js'
 import { getParamTarget } from '../utils.js'
 
 // A forum root prefix, such as /forum/ or /boards/.
-const pathRegex = /^(?:\/[^/]+)?\/redirect-to\/$/
+const pathRegex = /^(?:\/[^/]+)?\/redirect-to\/$/i
 
 // vBulletin SEO add-on external link redirect, vBSEO and DragonByte SEO
 // (<forum host>/redirect-to/?redirect=<target>). Each forum runs on its own host, so the exact

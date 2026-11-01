@@ -1,4 +1,4 @@
-import { isHttpUrl } from 'trousse'
+import { isAnyOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { decodeBase64Url, getParamValues } from '../utils.js'
 
@@ -6,7 +6,7 @@ const hostRegex = /^mail\.yandex\.(?:com\.tr|[a-z]{2,3})$/
 
 // Yandex Mail link redirect (mail.yandex.<TLD>/re.jsx?l=<base64url>&h=<signature>).
 export const unwrapYandexMail: UrlUnwrapper = (url) => {
-  if (!hostRegex.test(url.hostname) || url.pathname !== '/re.jsx') {
+  if (!hostRegex.test(url.hostname) || !isAnyOf(url.pathname, '/re.jsx')) {
     return
   }
 

@@ -3,7 +3,7 @@ import type { UrlUnwrapper } from '../types.js'
 import { createParamExtractor } from '../utils.js'
 
 const hostRegex = /^\d+\.teacup\.com$/
-const pathRegex = /^\/[^/]+\/bbs$/
+const pathRegex = /^\/[^/]+\/bbs$/i
 
 const extractTarget = createParamExtractor({
   hosts: hostRegex,

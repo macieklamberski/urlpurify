@@ -2,8 +2,8 @@ import { isHostOf } from 'trousse'
 import { getPathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 
-const showPrefixRegex = /^\/d\/[^/]+\//
-const redirectPrefixRegex = /^\/(?:pts\/)?redirect\.mp3\//
+const showPrefixRegex = /^\/d\/[^/]+\//i
+const redirectPrefixRegex = /^\/(?:pts\/)?redirect\.mp3\//i
 
 // 5by5 network download measurement prefixes (fdlyr.co/d/<show>/<target>, and
 // /redirect.mp3/<target> on d.5by5.net and d.ahoy.co, also /pts/redirect.mp3/<target>).

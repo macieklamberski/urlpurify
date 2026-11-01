@@ -2,7 +2,7 @@ import { decodePercent, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
 // Ad-inserted episodes carry `sponsor/<ids>/` before the target.
-const playPrefixRegex = /^\/s\/[^/]+\/podcast\/play\/[^/]+\/(?:sponsor\/[^/]+\/)?/
+const playPrefixRegex = /^\/s\/[^/]+\/podcast\/play\/[^/]+\/(?:sponsor\/[^/]+\/)?/i
 const encodedSchemeRegex = /^https?%(?:25)?3A/i
 
 // Spotify for Podcasters download prefix (anchor.fm/s/<show>/podcast/play/<episode>/<target>,

@@ -1,4 +1,4 @@
-import { isHttpUrl } from 'trousse'
+import { hasQueryParam, isAnyOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { getParamTarget } from '../utils.js'
 
@@ -8,9 +8,9 @@ const params = ['url', 'u', 'nonencodedurl']
 // (<host>/click.track?CID=<campaign>&AFID=<affiliate>&url=<target>, also u and nonencodedurl).
 // Opt-in: unwrapping drops the affiliate's commission.
 export const unwrapLinktrust: UrlUnwrapper = (url) => {
-  const { pathname, searchParams } = url
+  const isClick = isAnyOf(url.pathname, '/click.track')
 
-  if (pathname !== '/click.track' || !searchParams.has('CID') || !searchParams.has('AFID')) {
+  if (!isClick || !hasQueryParam(url, 'CID') || !hasQueryParam(url, 'AFID')) {
     return
   }
 

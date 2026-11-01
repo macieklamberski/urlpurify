@@ -1,7 +1,7 @@
 import type { UrlUnwrapper } from '../types.js'
 import { createParamExtractor } from '../utils.js'
 
-const pathRegex = /^\/(?:[A-Za-z0-9]+|a\/1\/[\w=-]+)$/
+const pathRegex = /^\/(?:[A-Za-z0-9]+|a\/1\/[\w=-]+)$/i
 
 const extractTarget = createParamExtractor({
   hosts: 'clicktime.symantec.com',

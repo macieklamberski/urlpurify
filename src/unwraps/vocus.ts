@@ -1,7 +1,7 @@
 import type { UrlUnwrapper } from '../types.js'
 import { createParamExtractor } from '../utils.js'
 
-const linkPathRegex = /^\/m?link$/
+const linkPathRegex = /^\/m?link$/i
 
 const extractTarget = createParamExtractor({
   hosts: 'tracking.vocus.io',

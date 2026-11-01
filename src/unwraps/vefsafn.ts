@@ -2,11 +2,11 @@ import { isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
 // Legacy replay on wayback.vefsafn.is: a 14-digit timestamp after the wayback prefix.
-const waybackPathRegex = /^\/wayback\/\d{14}\/(.+)$/
+const waybackPathRegex = /^\/wayback\/\d{14}\/(.+)$/i
 
 // Current replay on vefsafn.is: a 14-digit timestamp with an optional mp_ modifier after the
 // language prefix.
-const currentPathRegex = /^\/is\/\d{14}(?:mp_)?\/(.+)$/
+const currentPathRegex = /^\/is\/\d{14}(?:mp_)?\/(.+)$/i
 
 // Icelandic web archive snapshot, run by the National and University Library of Iceland
 // (wayback.vefsafn.is/wayback/<timestamp>/<target> and vefsafn.is/is/<timestamp>[mp_]/<target>).

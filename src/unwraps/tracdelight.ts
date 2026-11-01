@@ -3,7 +3,7 @@ import type { UrlUnwrapper } from '../types.js'
 import { createParamExtractor } from '../utils.js'
 
 // Links written without the `?` carry their params in the path.
-const pathLinkRegex = /^\/cl\/aaid=.*?&link=(.+)$/
+const pathLinkRegex = /^\/cl\/aaid=.*?&link=(.+)$/i
 
 const extractQueryLink = createParamExtractor({
   hosts: 'td.oo34.net',

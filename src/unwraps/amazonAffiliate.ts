@@ -1,13 +1,13 @@
-import { isHttpUrl } from 'trousse'
+import { isAnyOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { getParamTarget } from '../utils.js'
 
-const amazonPathRegex = /^\/x\/c\/[^/]+\/(https?:\/\/.+)$/
+const amazonPathRegex = /^\/x\/c\/[^/]+\/(https?:\/\/.+)$/i
 const amazonHostRegex = /^aax(?:-[a-z]+)*\.amazon-adsystem\.com$|^aax-us-iad\.amazon\.com$/
 const storeHostRegex =
   /^(?:www|smile|affiliate-program)\.amazon\.(?:ca|co\.jp|co\.uk|com|com\.au|com\.br|de|es|fr|it)$/
-const storeRedirectPathRegex = /^\/gp\/redirect\.html(?:\/ref=.+)?$/
-const sponsoredRedirectPathRegex = /^\/gp\/slredirect\/picassoRedirect\.html\/ref=.+$/
+const storeRedirectPathRegex = /^\/gp\/redirect\.html(?:\/ref=.+)?$/i
+const sponsoredRedirectPathRegex = /^\/gp\/slredirect\/picassoRedirect\.html\/ref=.+$/i
 const emailRedirectPaths = ['/gp/r.html', '/gp/f.html']
 
 // Amazon affiliate click tracker (aax-<region>.amazon-adsystem.com and aax-us-iad.amazon.com,
@@ -22,7 +22,7 @@ export const unwrapAmazonAffiliate: UrlUnwrapper = (url) => {
       target = getParamTarget(url, 'location')
     }
 
-    if (url.pathname === '/exec/obidos/redirect') {
+    if (isAnyOf(url.pathname, '/exec/obidos/redirect')) {
       target = getParamTarget(url, 'path')
     }
 

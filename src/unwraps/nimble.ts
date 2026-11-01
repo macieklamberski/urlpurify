@@ -2,7 +2,7 @@ import type { UrlUnwrapper } from '../types.js'
 import { createParamExtractor } from '../utils.js'
 
 const clickPathRegex =
-  /^\/api\/v1\/messages\/tracking\/click\/[0-9a-f]{24}\/[0-9a-f]{24}\/[0-9a-f]{24}\/$/
+  /^\/api\/v1\/messages\/tracking\/click\/[0-9a-f]{24}\/[0-9a-f]{24}\/[0-9a-f]{24}\/$/i
 
 const extractTarget = createParamExtractor({
   hosts: 'app.nimble.com',

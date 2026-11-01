@@ -2,7 +2,7 @@ import { isHostOf } from 'trousse'
 import { getPathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 
-const mediaPrefixRegex = /^\/media\//
+const mediaPrefixRegex = /^\/media\//i
 
 // Podup download measurement prefix (traffic.podup.com/media/<target>), where the target drops its
 // scheme and carries a `key` param holding the show and episode for the download count.

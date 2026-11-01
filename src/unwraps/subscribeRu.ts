@@ -4,7 +4,7 @@ import type { UrlUnwrapper } from '../types.js'
 // A newsletter's `<list>,<issue>/<timestamp>/<ids>/m<n>` or the bare `_`, then `/-/` and the
 // target with no scheme. A target that keeps its scheme lands on a broken `http://https:/…`, so
 // the first segment must be a host: a dot, no colon.
-const pathRegex = /^\/(?:[^/]+,\d+\/\d{14}\/[^/]+\/m\d+|_)\/-\/([^/:]*\.[^/:]*(?:\/.*)?)$/
+const pathRegex = /^\/(?:[^/]+,\d+\/\d{14}\/[^/]+\/m\d+|_)\/-\/([^/:]*\.[^/:]*(?:\/.*)?)$/i
 
 // Subscribe.ru newsletter click tracker (redirect.subscribe.ru/<list>,<issue>/<timestamp>/<ids>/
 // m<n>/-/<target>, also redirect.subscribe.ru/_/-/<target>), which answers 302 to the target with

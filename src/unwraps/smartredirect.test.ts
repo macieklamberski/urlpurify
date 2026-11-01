@@ -36,12 +36,12 @@ describe('unwrapSmartredirect', () => {
     expect(unwrapSmartredirect(url)).toBeUndefined()
   })
 
-  it('should return undefined for a clickGate path with another letter case', () => {
+  it('should match a clickGate path in another letter case', () => {
     const url = new URL(
       'https://www.smartredirect.de/redir/ClickGate.php?url=https%3A%2F%2Fexample.com',
     )
 
-    expect(unwrapSmartredirect(url)).toBeUndefined()
+    expect(unwrapSmartredirect(url)).toBe('https://example.com')
   })
 
   it('should return undefined for non-smartredirect hosts', () => {

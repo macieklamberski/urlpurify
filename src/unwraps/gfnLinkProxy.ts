@@ -3,7 +3,7 @@ import type { UrlUnwrapper } from '../types.js'
 import { decodeBase64, getParamValues } from '../utils.js'
 
 // A forum root prefix, such as /forum/.
-const pathRegex = /^(?:\/[^/]+)?\/redirect\/?$/
+const pathRegex = /^(?:\/[^/]+)?\/redirect\/?$/i
 
 // GoodForNothing Link Proxy add-on for XenForo, its leaving page
 // (<forum host>/redirect/?to=<base64>, with or without the slash after redirect). Each forum runs

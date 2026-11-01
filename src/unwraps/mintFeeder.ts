@@ -1,4 +1,4 @@
-import { getQueryParam, isHttpUrl } from 'trousse'
+import { getQueryParam, isAnyOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { getParamTarget } from '../utils.js'
 
@@ -6,7 +6,7 @@ import { getParamTarget } from '../utils.js'
 // its own host (<host>/feeder/?FeederAction=clicked&feed=<name>&seed=<target>). The exact path, the
 // clicked action and an http `seed` are the guard. Captures from 2008 show it forwarding.
 export const unwrapMintFeeder: UrlUnwrapper = (url) => {
-  if (url.pathname !== '/feeder/' || getQueryParam(url, 'FeederAction') !== 'clicked') {
+  if (!isAnyOf(url.pathname, '/feeder/') || getQueryParam(url, 'FeederAction') !== 'clicked') {
     return
   }
 

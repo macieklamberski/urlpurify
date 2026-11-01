@@ -1,4 +1,4 @@
-import { decodePercent } from 'trousse'
+import { decodePercent, isAnyOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { getParamValues } from '../utils.js'
 
@@ -19,7 +19,7 @@ export const getBitrixTarget = (url: URL): string | undefined => {
 // 1C-Bitrix statistics module outbound link counter on each site's own host
 // (<host>/bitrix/redirect.php?event1=&event2=&event3=&goto=<target>).
 export const unwrapBitrix: UrlUnwrapper = (url) => {
-  if (url.pathname !== '/bitrix/redirect.php') {
+  if (!isAnyOf(url.pathname, '/bitrix/redirect.php')) {
     return
   }
 

@@ -6,10 +6,10 @@ import { getParamTarget } from '../utils.js'
 const publicHostRegex = /^public\d+\.pagefreezer\.com$/
 
 // The collection, then a dd-mm-yyyyTHH:MM capture time.
-const publicPathRegex = /^\/(?:browse|content)\/[^/]+\/\d{2}-\d{2}-\d{4}T\d{2}:\d{2}\/(.+)$/
+const publicPathRegex = /^\/(?:browse|content)\/[^/]+\/\d{2}-\d{2}-\d{4}T\d{2}:\d{2}\/(.+)$/i
 
 // The web archive browser takes the archive id in the path and the target in `url`.
-const browsePathRegex = /^\/en-US\/wa\/browse\/[0-9a-f-]{36}$/
+const browsePathRegex = /^\/en-US\/wa\/browse\/[0-9a-f-]{36}$/i
 
 // PageFreezer public web archive snapshot (public<n>.pagefreezer.com/{browse,content}/<collection>/
 // <capture time>/<target> and us.pagefreezer.com/en-US/wa/browse/<archive id>?url=<target>).

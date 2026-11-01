@@ -74,7 +74,7 @@ export const createParamExtractor = (config: ParamExtractorConfig): UrlUnwrapper
       return
     }
 
-    if (config.path && url.pathname !== config.path) {
+    if (config.path && !isAnyOf(url.pathname, config.path)) {
       return
     }
 

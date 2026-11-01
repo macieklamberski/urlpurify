@@ -1,7 +1,7 @@
 import type { UrlUnwrapper } from '../types.js'
 import { createParamExtractor } from '../utils.js'
 
-const pathRegex = /^\/t\/c\.[A-Za-z0-9]+$/
+const pathRegex = /^\/t\/c\.[A-Za-z0-9]+$/i
 
 const extractTarget = createParamExtractor({
   hosts: [

@@ -2,7 +2,7 @@ import { isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
 // The collection name, then a 14-digit timestamp.
-const pathRegex = /^\/(?:all|legacy|congressional-record)\/\d{14}\/(.+)$/
+const pathRegex = /^\/(?:all|legacy|congressional-record)\/\d{14}\/(.+)$/i
 
 // Library of Congress Web Archives snapshot (webarchive.loc.gov/<collection>/<timestamp>/<target>,
 // in the all, legacy and congressional-record collections). Opt-in: unwrapping returns the live

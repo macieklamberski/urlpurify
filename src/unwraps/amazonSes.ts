@@ -1,8 +1,8 @@
 import { decodePercent, isHostOrSubdomainOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
-const awstrackPathRegex = /^\/L0\/(.+?)\/\d+\/[^/]+\/[^/]+$/
-const customPathRegex = /^\/CL0\/(.+?)\/\d+\/[^/]+-000000\/[^/]+$/
+const awstrackPathRegex = /^\/L0\/(.+?)\/\d+\/[^/]+\/[^/]+$/i
+const customPathRegex = /^\/CL0\/(.+?)\/\d+\/[^/]+-000000\/[^/]+$/i
 
 // Amazon SES click tracking (<id>.r.<region>.awstrack.me/L0/<target>/<n>/<message id>/<signature>)
 // and a sender's own host (/CL0/<target>/<n>/<message id>-000000/<signature>).

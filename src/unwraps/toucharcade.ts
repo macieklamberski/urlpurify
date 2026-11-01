@@ -1,7 +1,7 @@
 import { isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
-const pathRegex = /^\/link\/(.+)$/
+const pathRegex = /^\/link\/(.+)$/i
 
 // TouchArcade outbound link (toucharcade.com/link/<target>). Opt-in: the redirect goes
 // through TouchArcade's Georiot affiliate link.

@@ -2,7 +2,7 @@ import { hasQueryParam, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { getParamTarget } from '../utils.js'
 
-const pathRegex = /^\/\d+\/cookie$/
+const pathRegex = /^\/\d+\/cookie$/i
 
 // Cleverbridge affiliate cookie redirect on any host
 // (<store host>/<client id>/cookie?affiliate=<id>&redirectto=<target>).

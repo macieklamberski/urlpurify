@@ -22,7 +22,7 @@ export const unwrapBing: UrlUnwrapper = (url) => {
     return
   }
 
-  if (url.pathname === '/news/apiclick.aspx') {
+  if (isAnyOf(url.pathname, '/news/apiclick.aspx')) {
     const target = getParamTarget(url, 'url')
 
     if (!target || !isHttpUrl(target)) {
@@ -32,7 +32,7 @@ export const unwrapBing: UrlUnwrapper = (url) => {
     return target
   }
 
-  if (url.pathname !== '/ck/a') {
+  if (!isAnyOf(url.pathname, '/ck/a')) {
     return
   }
 

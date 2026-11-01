@@ -2,7 +2,7 @@ import { isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { getParamTarget } from '../utils.js'
 
-const pathRegex = /^\/allez\/[\w-]+$/
+const pathRegex = /^\/allez\/[\w-]+$/i
 
 // Stay22 affiliate redirect (www.stay22.com/allez/<provider>?link=<target>).
 // Not included in defaultUnwrappers: unwrapping drops the publisher's affiliate commission.

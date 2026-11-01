@@ -2,7 +2,7 @@ import { isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createParamExtractor } from '../utils.js'
 
-const appPathRegex = /^\/app\/[\w-]+$/
+const appPathRegex = /^\/app\/[\w-]+$/i
 // A desktop browser gets `ofl` when present and `link` otherwise.
 // See: https://firebase.google.com/docs/dynamic-links/create-manually.
 const params = ['ofl', 'link']

@@ -2,7 +2,7 @@ import { isHostOf } from 'trousse'
 import { getPathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 
-const prefixRegex = /^\/pdcst\/[A-Za-z0-9]+\//
+const prefixRegex = /^\/pdcst\/[A-Za-z0-9]+\//i
 
 // Cohost download measurement prefix (cohst.app/pdcst/<id>/<target>), where the target drops its
 // scheme.

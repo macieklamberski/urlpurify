@@ -1,4 +1,4 @@
-import { decodePercent, isHostOf } from 'trousse'
+import { decodePercent, isAnyOf, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createParamExtractor } from '../utils.js'
 
@@ -12,7 +12,7 @@ const unwrapCounter = createParamExtractor({
 })
 
 const unwrapSectionCounter: UrlUnwrapper = (url) => {
-  if (!isHostOf(url, ['dex.hu', 'index.hu']) || url.pathname !== '/x') {
+  if (!isHostOf(url, ['dex.hu', 'index.hu']) || !isAnyOf(url.pathname, '/x')) {
     return
   }
 

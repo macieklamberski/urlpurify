@@ -2,7 +2,7 @@ import { isHostOf } from 'trousse'
 import { getPathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 
-const streamPrefixRegex = /^\/stream\/[^/]+\//
+const streamPrefixRegex = /^\/stream\/[^/]+\//i
 
 // Voxnest download measurement prefix (audio.voxnest.com/stream/<show id>/<target>), where the
 // target often drops its scheme.

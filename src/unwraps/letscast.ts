@@ -2,7 +2,7 @@ import { isHostOf } from 'trousse'
 import { getPathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 
-const trackPrefixRegex = /^\/track\//
+const trackPrefixRegex = /^\/track\//i
 
 // LetsCast download measurement prefix (letscast.fm/track/<target>). The target is LetsCast's own
 // audio server, such as lc.podcast-hosting.org/<path>, which serves the file itself.

@@ -1,7 +1,7 @@
 import type { UrlUnwrapper } from '../types.js'
 import { createParamExtractor } from '../utils.js'
 
-const clickPathRegex = /^\/(?:e1t|s[12]t)\/c\/5\/[^/]+$/
+const clickPathRegex = /^\/(?:e1t|s[12]t)\/c\/5\/[^/]+$/i
 
 const extractTarget = createParamExtractor({
   hosts:

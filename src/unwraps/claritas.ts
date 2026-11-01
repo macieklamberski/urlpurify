@@ -2,8 +2,8 @@ import { isHostOf } from 'trousse'
 import { getPathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 
-const measurePrefixRegex = /^\/measure\//
-const shortPrefixRegex = /^\/m\//
+const measurePrefixRegex = /^\/measure\//i
+const shortPrefixRegex = /^\/m\//i
 
 // Claritas download measurement prefix (claritaspod.com/measure/<target>, also on
 // www.claritaspod.com, and clrtpod.com/m/<target>), where the target drops its scheme.

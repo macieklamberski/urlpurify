@@ -2,7 +2,7 @@ import { isHostOf } from 'trousse'
 import { getPathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 
-const campaignPrefixRegex = /^\/p\/[A-Z0-9]{5}\//
+const campaignPrefixRegex = /^\/p\/[A-Z0-9]{5}\//i
 
 // Arttrack download measurement prefix (arttrk.com/p/<campaign id>/<target>), where the target
 // drops its scheme.

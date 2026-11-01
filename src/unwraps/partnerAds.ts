@@ -2,9 +2,9 @@ import type { UrlUnwrapper } from '../types.js'
 import { createParamExtractor } from '../utils.js'
 
 const hostRegex = /(?:^|\.)partner-ads\.com$/
-const clickPathRegex = /^\/(?:dk\/klikbanner\.php)?$/
+const clickPathRegex = /^\/(?:dk\/klikbanner\.php)?$/i
 // Optional u1 and u2 segments hold the partner's own sub ids.
-const deepLinkPathRegex = /^\/dk\/c\/p\/\d+\/b\/\d+\/(?:u\d\/[^/]+\/)*(https?:\/\/.+)$/
+const deepLinkPathRegex = /^\/dk\/c\/p\/\d+\/b\/\d+\/(?:u\d\/[^/]+\/)*(https?:\/\/.+)$/i
 
 const extractTarget = createParamExtractor({
   hosts: hostRegex,

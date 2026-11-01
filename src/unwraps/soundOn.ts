@@ -2,7 +2,7 @@ import { isHostOf } from 'trousse'
 import { getPathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 
-const showPrefixRegex = /^\/p\/[^/]+\//
+const showPrefixRegex = /^\/p\/[^/]+\//i
 
 // SoundOn download measurement prefix (sw.soundon.fm/p/<show id>/<target>), where the target
 // often drops its scheme.

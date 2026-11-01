@@ -1,7 +1,7 @@
 import type { UrlUnwrapper } from '../types.js'
 import { createParamExtractor } from '../utils.js'
 
-const clicksPathRegex = /^\/mctx\/clicks?$/
+const clicksPathRegex = /^\/mctx\/clicks?$/i
 
 const extractTarget = createParamExtractor({
   hosts: /^us\d+\.mailchimp\.com$/,

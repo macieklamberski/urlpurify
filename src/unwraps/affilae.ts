@@ -1,11 +1,11 @@
-import { isHostOf } from 'trousse'
+import { isAnyOf, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { getParamTarget } from '../utils.js'
 
 // Affilae affiliate click (lb.affilae.com/r/?p=<program id>&af=<id>&lp=<target>).
 // Not included in defaultUnwrappers: unwrapping drops the publisher's commission.
 export const unwrapAffilae: UrlUnwrapper = (url) => {
-  if (!isHostOf(url, 'lb.affilae.com') || url.pathname !== '/r/') {
+  if (!isHostOf(url, 'lb.affilae.com') || !isAnyOf(url.pathname, '/r/')) {
     return
   }
 

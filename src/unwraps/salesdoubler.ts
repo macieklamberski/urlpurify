@@ -1,7 +1,7 @@
 import type { UrlUnwrapper } from '../types.js'
 import { createParamExtractor } from '../utils.js'
 
-const pathRegex = /^\/in\/offer\/\d+$/
+const pathRegex = /^\/in\/offer\/\d+$/i
 
 const extractTarget = createParamExtractor({
   hosts: 'rdr.salesdoubler.com.ua',

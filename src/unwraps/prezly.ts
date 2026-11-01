@@ -2,7 +2,7 @@ import { decodePercent, isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
 // The campaign id, a link hash, then the target percent-encoded as one path segment.
-const pathRegex = /^\/c\/[0-9a-f-]{36}\/[0-9a-f]{8}\/([^/]+)$/
+const pathRegex = /^\/c\/[0-9a-f-]{36}\/[0-9a-f]{8}\/([^/]+)$/i
 
 // Prezly email click tracker (prezlymail.com/c/<campaign id>/<link hash>/<encoded target>).
 // Opt-in: unwrapping drops the sender's click count, as with the other email trackers.

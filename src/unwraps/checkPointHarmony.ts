@@ -9,8 +9,8 @@ const hosts = [
 ]
 
 // A region segment, such as /r01/.
-const pathRegex = /^\/v1\/(?:r\d+\/)?url$/
-const v2Regex = /^\/v2\/(?:r\d+\/)?___(?<target>.+)___\.[\w+/=-]+(?<fragment>#.*)?$/
+const pathRegex = /^\/v1\/(?:r\d+\/)?url$/i
+const v2Regex = /^\/v2\/(?:r\d+\/)?___(?<target>.+)___\.[\w+/=-]+(?<fragment>#.*)?$/i
 const starEscapeRegex = /\*([0-9a-f]{2})/gi
 
 // Check Point Harmony Email link protection (checkpoint.url-protection.com/v1/url?o=<target>, and

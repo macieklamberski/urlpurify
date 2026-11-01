@@ -163,6 +163,18 @@ describe('createParamExtractor', () => {
     expect(extract(value)).toBe(expected)
   })
 
+  it('should match the configured path in any case', () => {
+    const extract = createParamExtractor({
+      hosts: 'redirect.example.com',
+      path: '/out',
+      params: ['url'],
+    })
+    const value = new URL('https://redirect.example.com/OUT?url=https%3A%2F%2Fexample.com')
+    const expected = 'https://example.com'
+
+    expect(extract(value)).toBe(expected)
+  })
+
   it('should return undefined for a non-matching path', () => {
     const extract = createParamExtractor({
       hosts: 'redirect.example.com',

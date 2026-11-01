@@ -2,7 +2,7 @@ import { isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
 // The snapshot is a 14-digit timestamp with an optional replay modifier.
-const pathRegex = /^\/wayback\/(?:en\/)?archive\/\d{14}(?:mp_)?\/(.+)$/
+const pathRegex = /^\/wayback\/(?:en\/)?archive\/\d{14}(?:mp_)?\/(.+)$/i
 
 // UK Web Archive snapshot (www.webarchive.org.uk/wayback/[en/]archive/<timestamp>[mp_]/<target>).
 // Opt-in: unwrapping returns the live page, which may have changed or be gone.

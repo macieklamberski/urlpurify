@@ -2,7 +2,7 @@ import { isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
 // The snapshot is a 14-digit timestamp with an optional replay modifier, or `+` for the latest.
-const pathRegex = /^(?:\/ukgwa)?\/(?:\d{14}(?:mp_)?|\+)\/(.+)$/
+const pathRegex = /^(?:\/ukgwa)?\/(?:\d{14}(?:mp_)?|\+)\/(.+)$/i
 // This check takes no dot in the scheme, so `www.example.gov.uk:80/` reads as a host with a port.
 const schemeRegex = /^[a-z][a-z\d+-]*:/i
 
