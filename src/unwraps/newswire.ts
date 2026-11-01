@@ -7,7 +7,7 @@ const hosts = ['stats.newswire.com', 'stats.nwe.io', 'stats.mediadboutreach.com'
 // Newswire release and email click tracker (stats.newswire.com/x/html?final=<base64url>&sig=…,
 // also stats.nwe.io and stats.mediadboutreach.com).
 export const unwrapNewswire: UrlUnwrapper = (url) => {
-  if (!isAnyOf(url.hostname, hosts) || url.pathname !== '/x/html') {
+  if (!isAnyOf(url.hostname, hosts) || !isAnyOf(url.pathname, '/x/html')) {
     return
   }
 

@@ -1,7 +1,7 @@
 import type { UrlUnwrapper } from '../types.js'
 import { createParamExtractor } from '../utils.js'
 
-const pathRegex = /^\/redirect\/cpa\/o\/[a-z0-9]{32}\/$/
+const pathRegex = /^\/redirect\/cpa\/o\/[a-z0-9]{32}\/$/i
 
 const extractTarget = createParamExtractor({
   hosts: ['alipromo.com', 'buyeasy.by', 'epnclick.ru', 'gotbest.by', 'shopnow.pub'],

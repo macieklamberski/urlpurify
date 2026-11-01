@@ -1,7 +1,7 @@
 import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
-const pathRegex = /^\/gate\/big5\/([\w-]+(?:\.[\w-]+)+(?:\/.*)?)$/
+const pathRegex = /^\/gate\/big5\/([\w-]+(?:\.[\w-]+)+(?:\/.*)?)$/i
 
 // Big5 conversion gate (<host>/gate/big5/<target host>/<path>), with the target's scheme dropped.
 // Chinese-language news and government sites run it on their own hosts, such as big5.xinhuanet.com.

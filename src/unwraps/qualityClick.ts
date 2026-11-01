@@ -1,4 +1,4 @@
-import { decodePercent, hasQueryParam, isHttpUrl } from 'trousse'
+import { decodePercent, hasQueryParam, isAnyOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { getParamValues } from '../utils.js'
 
@@ -9,7 +9,7 @@ const encodedSchemeRegex = /^https?%3A/i
 // `go.cgi`, so `pid`, `wmid` and an http `target` together are the guard, not the host. Opt-in:
 // unwrapping drops the publisher's commission.
 export const unwrapQualityClick: UrlUnwrapper = (url) => {
-  if (url.pathname !== '/go.cgi') {
+  if (!isAnyOf(url.pathname, '/go.cgi')) {
     return
   }
 

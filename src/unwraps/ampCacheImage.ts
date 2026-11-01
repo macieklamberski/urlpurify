@@ -1,7 +1,7 @@
 import { isHostOrSubdomainOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
-const pathRegex = /^\/(?:i|ii\/[^/]+)\/(?<secure>s\/)?(?<target>.+)$/
+const pathRegex = /^\/(?:i|ii\/[^/]+)\/(?<secure>s\/)?(?<target>.+)$/i
 
 // AMP cache image (cdn.ampproject.org/i/[s/]<hostname>/<path>), and its resized copy under
 // `/ii/<options>/`, such as `/ii/w680/` or `/ii/AW/`. The `s/` segment marks an https source.

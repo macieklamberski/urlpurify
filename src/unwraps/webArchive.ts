@@ -19,16 +19,16 @@ const replayHosts = ['web.archive.org', 'replay.web.archive.org', 'replay.waybac
 // bytes or `im_`, `js_` and `cs_` for an archived image, script or stylesheet.
 const snapshot = String.raw`\d{14}(?:\*|(?:id|if|mp|fw|oe|im|js|cs)_)?`
 // With no timestamp, the target follows `/web/` directly and Wayback serves its latest snapshot.
-const pathRegex = new RegExp(`^/web/(?:${snapshot}/)?(.+)$`)
-const replayPathRegex = new RegExp(`^/${snapshot}/(.+)$`)
-const archiveItPathRegex = new RegExp(String.raw`^/(?:\d+|org-\d+|all)/${snapshot}/(.+)$`)
-const scholarPathRegex = /^\/work\/[a-z0-9]+\/access\/wayback\/(.+)$/
+const pathRegex = new RegExp(`^/web/(?:${snapshot}/)?(.+)$`, 'i')
+const replayPathRegex = new RegExp(`^/${snapshot}/(.+)$`, 'i')
+const archiveItPathRegex = new RegExp(String.raw`^/(?:\d+|org-\d+|all)/${snapshot}/(.+)$`, 'i')
+const scholarPathRegex = /^\/work\/[a-z0-9]+\/access\/wayback\/(.+)$/i
 // A scheme has no dot, so `www.example.com:80/` reads as a host with a port.
 const schemeRegex = /^[a-z][a-z\d+-]*:/i
 // A dot in the first segment tells a host from Wayback's own paths, such as `/web/diff/`, except
 // its own pages `/web/form-submit.jsp` and `archive.org/web/web.php`, and a relative image
 // snapshot such as `/web/<timestamp>im_/photo.jpg`.
-const schemelessRegex = /^(?![^/]*\.(?:jsp|php|jpg)(?:\/|$))[^/]*\./
+const schemelessRegex = /^(?![^/]*\.(?:jsp|php|jpg)(?:\/|$))[^/]*\./i
 
 // Web Archive snapshot wrapper (web.archive.org/web/<timestamp>[<modifier>]/<URL>), also served
 // from wayback, web-beta, web-wp, web-old and classic-web.archive.org, from archive.org itself and

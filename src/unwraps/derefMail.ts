@@ -1,4 +1,4 @@
-import { isHostOf, isHttpUrl } from 'trousse'
+import { isAnyOf, isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createParamExtractor, getParamTarget } from '../utils.js'
 
@@ -27,8 +27,8 @@ const clientHosts = [
 const lightmailerHosts = ['lightmailer.mail.com', 'lightmailer-bs.gmx.net']
 
 // The optional segment is a session token, such as `12XJ9x8ZdSA`.
-const pathRegex = /^\/mail\/client\/(?:[\w-]+\/)?dereferrer\/$/
-const lightmailerPathRegex = /^\/[\w-]+\/deref\/$/
+const pathRegex = /^\/mail\/client\/(?:[\w-]+\/)?dereferrer\/$/i
+const lightmailerPathRegex = /^\/[\w-]+\/deref\/$/i
 
 // The older GMX dereferrer (service.gmx.net/de/cgi/derefer?TYPE=3&DEST=<target>).
 const extractLegacy = createParamExtractor({
@@ -63,7 +63,8 @@ const extractFreemailJump = createParamExtractor({
 // lightmailer.mail.com/<token>/deref/?redirectUrl=<target>), plus the older shapes above.
 export const unwrapDerefMail: UrlUnwrapper = (url) => {
   const isDerefHost = isHostOf(url, hosts) && pathRegex.test(url.pathname)
-  const isClientHost = isHostOf(url, clientHosts) && url.pathname === '/mail/client/dereferrer'
+  const isClientHost =
+    isHostOf(url, clientHosts) && isAnyOf(url.pathname, '/mail/client/dereferrer')
   const isLightmailerHost =
     isHostOf(url, lightmailerHosts) && lightmailerPathRegex.test(url.pathname)
 

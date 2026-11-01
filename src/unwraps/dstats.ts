@@ -4,7 +4,7 @@ import type { UrlUnwrapper } from '../types.js'
 import { createParamExtractor } from '../utils.js'
 
 // The target keeps its scheme, as in /download/http://example.com/file.pdf.
-const downloadPrefixRegex = /^\/download\/(?=https?:\/)/
+const downloadPrefixRegex = /^\/download\/(?=https?:\/)/i
 
 const extractDownload = createParamExtractor({
   hosts: 'dstats.net',

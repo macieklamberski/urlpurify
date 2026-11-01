@@ -2,7 +2,7 @@ import { isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { decodeBase64Url } from '../utils.js'
 
-const pathRegex = /^(?:\/[^/]+)*\/RU=([\w-]+)(?:\/R[A-Z]=[^/]*)*(?:;.*)?$/
+const pathRegex = /^(?:\/[^/]+)*\/RU=([\w-]+)(?:\/R[A-Z]=[^/]*)*(?:;.*)?$/i
 const paddingRegex = /-+$/
 
 // Yahoo! JAPAN click redirect (rdsig.yahoo.co.jp/.../RV=1/RU=<base64url target>/RS=...). The

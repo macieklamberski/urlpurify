@@ -2,7 +2,7 @@ import { isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
 // A 14-digit timestamp after the web prefix.
-const pathRegex = /^\/web\/\d{14}\/(.+)$/
+const pathRegex = /^\/web\/\d{14}\/(.+)$/i
 
 // UNESCO web archive snapshot (webarchive.unesco.org/web/<timestamp>/<target>). Opt-in: unwrapping
 // returns the live page, which may have changed or be gone.

@@ -2,7 +2,7 @@ import { isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
 // Some links put `n/<base64url link text>/` between the token and the target.
-const pathRegex = /^\/r\/[\w-]+\/(?:n\/[\w-]+\/)?(.+)$/
+const pathRegex = /^\/r\/[\w-]+\/(?:n\/[\w-]+\/)?(.+)$/i
 
 // Cloze email click tracker (circulate.it/r/<token>/<target>, also
 // circulate.it/r/<token>/n/<link text>/<target>), with the target's scheme dropped.

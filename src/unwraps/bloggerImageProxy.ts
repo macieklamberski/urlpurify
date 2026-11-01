@@ -1,6 +1,7 @@
 import {
   decodePercent,
   getQueryParamValues,
+  isAnyOf,
   isHostOf,
   isHostOrSubdomainOf,
   isHttpUrl,
@@ -23,7 +24,7 @@ export const unwrapBloggerImageProxy: UrlUnwrapper = (url) => {
     return
   }
 
-  if (url.pathname !== '/gadgets/proxy') {
+  if (!isAnyOf(url.pathname, '/gadgets/proxy')) {
     return
   }
 

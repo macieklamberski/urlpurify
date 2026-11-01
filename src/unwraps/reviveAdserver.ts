@@ -4,8 +4,8 @@ import { getParamTarget } from '../utils.js'
 
 // The delivery directory varies per install, such as /www/delivery/ or /openx/www/delivery/.
 // ck.php is the click script, cl.php the signed one.
-const clickPathRegex = /^(?:\/[^/]+)*\/c[kl]\.php$/
-const legacyClickPathRegex = /^(?:\/[^/]+)*\/adclick\.php$/
+const clickPathRegex = /^(?:\/[^/]+)*\/c[kl]\.php$/i
+const legacyClickPathRegex = /^(?:\/[^/]+)*\/adclick\.php$/i
 const destinationMarker = 'oadest='
 const fallbackMarker = 'dest='
 

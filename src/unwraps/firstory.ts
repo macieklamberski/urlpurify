@@ -3,9 +3,9 @@ import { getPathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 import { getParamTarget } from '../utils.js'
 
-const trackPrefixRegex = /^\/track\/[^/]+\/[^/]+\//
+const trackPrefixRegex = /^\/track\/[^/]+\/[^/]+\//i
 const playPathRegex = /^\/play\.[a-z0-9]+$/i
-const shortPrefixRegex = /^\/p\/[^/]+\//
+const shortPrefixRegex = /^\/p\/[^/]+\//i
 const trackHosts = ['m.cdn.firstory.me', 'v1.firstory.me']
 const playHosts = [...trackHosts, 'backend.endpoints.firstory-709db.cloud.goog']
 

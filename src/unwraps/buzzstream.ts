@@ -1,7 +1,7 @@
 import type { UrlUnwrapper } from '../types.js'
 import { createParamExtractor } from '../utils.js'
 
-const clickPathRegex = /^\/1\/l\/[0-9a-f]{32}$/
+const clickPathRegex = /^\/1\/l\/[0-9a-f]{32}$/i
 
 const extractTarget = createParamExtractor({
   hosts: ['tx.bz-mail-us1.com', 'tx.bz-mail.com'],

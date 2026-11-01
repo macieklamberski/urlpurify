@@ -21,7 +21,7 @@ const hosts = [
   /^us\d+-usndr\.com$/,
 ]
 
-const pathRegex = /^\/(?:ru|ua)\/(?:mail|go2|eu1)_link_tracker$/
+const pathRegex = /^\/(?:ru|ua)\/(?:mail|go2|eu1)_link_tracker$/i
 
 // Unisender email click tracker (usndr.com/ru/mail_link_tracker?hash=<id>&url=<target>, also
 // /go2_link_tracker and /eu1_link_tracker). Opt-in: unwrapping removes the sender's click count.

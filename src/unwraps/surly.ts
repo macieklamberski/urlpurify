@@ -2,7 +2,7 @@ import { decodePercent, isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
 // The partner's toolbar id, `AA` and six digits, may follow the target.
-const pathRegex = /^\/o\/([^/].*?)(?:\/AA\d{6})?$/
+const pathRegex = /^\/o\/([^/].*?)(?:\/AA\d{6})?$/i
 const schemeRegex = /^https?:\/\//i
 
 // Sur.ly link toolbar (sur.ly/o/<target>/<partner id>, also on www.sur.ly), with the target's

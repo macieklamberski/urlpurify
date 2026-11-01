@@ -2,11 +2,11 @@ import { decodePercent, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
 const hostRegex = /^(?:www\.)?archive\.(?:is|ph|today|md|fo|vn|li)$/
-const pathRegex = /^\/(?:\d{14}|\d{4}\.\d{2}\.\d{2}-\d{6}|o\/[^/]+|newest)\/(.+)$/
+const pathRegex = /^\/(?:\d{14}|\d{4}\.\d{2}\.\d{2}-\d{6}|o\/[^/]+|newest)\/(.+)$/i
 const encodedSchemeRegex = /^https?%3A/i
 const schemeRegex = /^[a-z][a-z\d+.-]*:/i
 const escapedQueryRegex = /%3F/i
-const selectionHashRegex = /^#selection-\d+\.\d+-\d+\.\d+$/
+const selectionHashRegex = /^#selection-\d+\.\d+-\d+\.\d+$/i
 
 // archive.today snapshot (archive.ph/<timestamp>/<URL>, archive.ph/o/<id>/<URL> and
 // archive.ph/newest/<URL>, on every archive.today mirror domain).

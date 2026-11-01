@@ -2,7 +2,7 @@ import { isHostOf } from 'trousse'
 import { getPathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 
-const episodePrefixRegex = /^\/e(?:,[^/]*)?\//
+const episodePrefixRegex = /^\/e(?:,[^/]*)?\//i
 
 // OP3 download measurement prefix (op3.dev/e/<target> and op3.dev/e,<params>/<target>), where
 // the target often drops its scheme.

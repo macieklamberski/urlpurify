@@ -21,13 +21,13 @@ const hosts = [
 ]
 
 // A click link is /click-<id>-<id>[-<timestamp>], /t/<token> or a single opaque token.
-const clickPathRegex = /^\/(?:t\/)?[^/]+$/
+const clickPathRegex = /^\/(?:t\/)?[^/]+$/i
 
 // Optional sid/<x>/ and fragment/<x>/ segments sit before the target, which is unencoded and
 // sometimes has its scheme collapsed to https:/. The fragment segment is the target's anchor,
 // percent-encoded once.
 const deepLinkPathRegex =
-  /^\/links\/\d+\/type\/(?:dlg|am)\/(?:sid\/[^/]*\/)?(?:fragment\/([^/]*)\/)?(https?):\/\/?(.+)$/
+  /^\/links\/\d+\/type\/(?:dlg|am)\/(?:sid\/[^/]*\/)?(?:fragment\/([^/]*)\/)?(https?):\/\/?(.+)$/i
 
 const extractUrlParam = createParamExtractor({
   hosts,

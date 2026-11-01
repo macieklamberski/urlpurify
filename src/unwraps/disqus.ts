@@ -1,3 +1,4 @@
+import { isAnyOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createParamExtractor } from '../utils.js'
 
@@ -20,7 +21,7 @@ export const unwrapDisqus: UrlUnwrapper = (url) => {
   const target = extractTarget(url)
 
   // A root-form target is unsigned and can itself end in a colon and 27 characters.
-  if (url.pathname !== '/url') {
+  if (!isAnyOf(url.pathname, '/url')) {
     return target
   }
 

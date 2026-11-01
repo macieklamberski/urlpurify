@@ -3,7 +3,7 @@ import { getParamTarget } from '../utils.js'
 
 const mimecastHostRegex = /^protect-[a-z]{2,3}\.mimecast\.com$/
 const mimecastProtectHostRegex = /^url\.(?:au|ca|de|jer|uk|us|usb|za)\.m\.mimecastprotect\.com$/
-const mimecastPathRegex = /^\/s\/[^/]+$/
+const mimecastPathRegex = /^\/s\/[^/]+$/i
 
 // Mimecast email link protection (protect-<region>.mimecast.com/s/<id>?url=<target> and
 // url.<region>.m.mimecastprotect.com/s/<id>?url=<target>).

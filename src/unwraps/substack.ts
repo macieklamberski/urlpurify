@@ -2,7 +2,7 @@ import { isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { decodeBase64Url } from '../utils.js'
 
-const redirectPathRegex = /^\/redirect\/2\/([A-Za-z0-9_-]+)\.[A-Za-z0-9_-]+$/
+const redirectPathRegex = /^\/redirect\/2\/([A-Za-z0-9_-]+)\.[A-Za-z0-9_-]+$/i
 
 // Substack email click redirect (substack.com/redirect/2/<base64url JSON>.<signature>), the
 // target in the JSON's e field. Opt-in: unwrapping removes the sender's click count.

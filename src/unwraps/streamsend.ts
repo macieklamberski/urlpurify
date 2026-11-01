@@ -3,7 +3,7 @@ import { createParamExtractor } from '../utils.js'
 
 // Some senders left the recipient hash unrendered, such as `{{{tracking_hash}}}`, so the two
 // hash segments take any characters.
-const clickPathRegex = /^\/c\/\d+\/\d+\/[^/]+\/[^/]+$/
+const clickPathRegex = /^\/c\/\d+\/\d+\/[^/]+\/[^/]+$/i
 
 const extractTarget = createParamExtractor({
   hosts: 'app.streamsend.com',

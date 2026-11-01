@@ -3,7 +3,7 @@ import type { UrlUnwrapper } from '../types.js'
 import { decodeBase64, getParamValues } from '../utils.js'
 
 // The exit tracker at the blog root or under one blog folder.
-const pathRegex = /^(?:\/[^/]+)?\/exit\.php$/
+const pathRegex = /^(?:\/[^/]+)?\/exit\.php$/i
 
 // Serendipity blog engine exit tracker, on each blog's own host
 // (<host>/[<blog>/]exit.php?url=<base64>&entry_id=<n>). The url param is a base64-encoded target

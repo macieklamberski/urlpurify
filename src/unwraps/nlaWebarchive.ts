@@ -2,12 +2,12 @@ import { isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
 // A collection, then a 14-digit timestamp with an optional replay modifier.
-const pathRegex = /^\/(?:awa|gov|wayback)\/\d{14}(?:mp_)?\/(.+)$/
+const pathRegex = /^\/(?:awa|gov|wayback)\/\d{14}(?:mp_)?\/(.+)$/i
 // Pandora answers 404 on the archive's collections and serves its old replay path only.
-const pandoraPathRegex = /^\/nph-wb\/\d{14}\/(.+)$/
+const pandoraPathRegex = /^\/nph-wb\/\d{14}\/(.+)$/i
 // A title id, then the harvest date with an optional time, then the target with no scheme. The
 // dot in its first segment marks a host.
-const pandoraTitlePathRegex = /^\/pan\/\d+\/\d{8}(?:-\d{4})?\/([^/]*\..*)$/
+const pandoraTitlePathRegex = /^\/pan\/\d+\/\d{8}(?:-\d{4})?\/([^/]*\..*)$/i
 
 // National Library of Australia web archive snapshot (webarchive.nla.gov.au/awa/<timestamp>/
 // <target>, also /gov/ and /wayback/, web.archive.org.au/awa/<timestamp>[mp_]/<target>, and

@@ -1,7 +1,7 @@
 import type { UrlUnwrapper } from '../types.js'
 import { createParamExtractor } from '../utils.js'
 
-const safeproxyPathRegex = /^\/safeproxy\/v[34]$/
+const safeproxyPathRegex = /^\/safeproxy\/v[34]$/i
 
 const extractAntiphishing = createParamExtractor({
   hosts: 'antiphishing.vadesecure.com',

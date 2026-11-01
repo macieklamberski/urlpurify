@@ -1,11 +1,11 @@
-import { isHostOf, isHttpUrl } from 'trousse'
+import { isAnyOf, isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { getParamTarget } from '../utils.js'
 
 // ncls1.com affiliate click (ncls1.com/irk?enk=<encoded ids>&subid=<site>&d=<target>). Not included
 // in defaultUnwrappers: unwrapping drops the publisher's commission.
 export const unwrapNcls: UrlUnwrapper = (url) => {
-  if (!isHostOf(url, 'ncls1.com') || url.pathname !== '/irk') {
+  if (!isHostOf(url, 'ncls1.com') || !isAnyOf(url.pathname, '/irk')) {
     return
   }
 

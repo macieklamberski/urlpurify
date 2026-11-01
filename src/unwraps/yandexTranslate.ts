@@ -3,7 +3,7 @@ import type { UrlUnwrapper } from '../types.js'
 
 // The first segment is the language pair plus an optional session token. A target with no
 // scheme segment is http.
-const proxyPathRegex = /^\/proxy_u\/[^/]+\/(?:(?<scheme>https?)\/)?(?<target>.+)$/
+const proxyPathRegex = /^\/proxy_u\/[^/]+\/(?:(?<scheme>https?)\/)?(?<target>.+)$/i
 
 // Yandex Translate page proxy (translated.turbopages.org/proxy_u/<langs>/[<scheme>/]<host>/<path>).
 // Not included in defaultUnwrappers: the proxy renders the target translated, so unwrapping

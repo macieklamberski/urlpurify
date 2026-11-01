@@ -1,7 +1,7 @@
 import { decodePercent, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
-const pathRegex = /^\/v1\/[0-9a-f]{64}\/(.+)$/
+const pathRegex = /^\/v1\/[0-9a-f]{64}\/(.+)$/i
 
 const hosts = [
   'outgoing.mozilla.org',

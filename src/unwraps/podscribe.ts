@@ -2,7 +2,7 @@ import { isHostOf } from 'trousse'
 import { getPathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 
-const rssPrefixRegex = /^\/rss\/p\//
+const rssPrefixRegex = /^\/rss\/p\//i
 
 // Podscribe download measurement prefix (pscrb.fm/rss/p/<target> and
 // verifi.podscribe.com/rss/p/<target>), where the target often drops its scheme.

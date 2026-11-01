@@ -1,7 +1,7 @@
 import type { UrlUnwrapper } from '../types.js'
 import { createParamExtractor } from '../utils.js'
 
-const deepLinkPathRegex = /^\/deep_link\/\d+(?:\/\d+)?$/
+const deepLinkPathRegex = /^\/deep_link\/\d+(?:\/\d+)?$/i
 
 const extractDeepLink = createParamExtractor({
   hosts: 'go.isclix.com',

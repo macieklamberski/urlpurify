@@ -1,7 +1,7 @@
-import { isHostOf } from 'trousse'
+import { isAnyOf, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
-const carrierRegex = /[?&]cm_destination=/
+const carrierRegex = /[?&]cm_destination=/i
 
 const hosts = ['contactmonkey.com', 'tk.cmnky.co']
 
@@ -9,7 +9,7 @@ const hosts = ['contactmonkey.com', 'tk.cmnky.co']
 // (contactmonkey.com/api/v1/tracker?cm_session=<id>&cm_type=link&cm_link=<id>&cm_destination=<target>,
 // also tk.cmnky.co). Opt-in: unwrapping removes the sender's click count.
 export const unwrapContactMonkey: UrlUnwrapper = (url) => {
-  if (!isHostOf(url, hosts) || url.pathname !== '/api/v1/tracker') {
+  if (!isHostOf(url, hosts) || !isAnyOf(url.pathname, '/api/v1/tracker')) {
     return
   }
 

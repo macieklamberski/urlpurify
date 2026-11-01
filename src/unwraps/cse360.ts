@@ -6,7 +6,7 @@ const encodedSchemeRegex = /^https?%3A/i
 // The target sits percent-encoded once or twice in one segment, between the campaign id and the
 // recipient's id and email address.
 const clickPathRegex =
-  /^\/Click\/AddCampaignEmailClick\/[0-9a-f-]{36}\/([^/]+)\/[0-9a-f-]{36}\/[^/]+\/(?:True|False)$/
+  /^\/Click\/AddCampaignEmailClick\/[0-9a-f-]{36}\/([^/]+)\/[0-9a-f-]{36}\/[^/]+\/(?:True|False)$/i
 
 // CSE360 email click tracker
 // (click.cse360.com.br/Click/AddCampaignEmailClick/<id>/<target>/<id>/<email>/<True|False>).

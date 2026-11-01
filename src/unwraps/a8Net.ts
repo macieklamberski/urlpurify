@@ -12,7 +12,7 @@ const extractDeeplinkTarget = createParamExtractor({
   params: ['url'],
 })
 
-const deeplinkPathRegex = /^\/s\d+\/redirect_v2\.php$/
+const deeplinkPathRegex = /^\/s\d+\/redirect_v2\.php$/i
 
 // A8.net affiliate redirect (px.a8.net, rpx.a8.net, www.a8.net and px.moba8.net,
 // /svt/ejp?a8ejpredirect=<target>) and deep link (ow.a8.net/s<id>/redirect_v2.php?url=<target>).

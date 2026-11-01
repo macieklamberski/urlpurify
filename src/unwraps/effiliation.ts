@@ -1,7 +1,7 @@
 import type { UrlUnwrapper } from '../types.js'
 import { createParamExtractor } from '../utils.js'
 
-const pathRegex = /^\/servlet\/effi\.(?:redir|product)$/
+const pathRegex = /^\/servlet\/effi\.(?:redir|product)$/i
 
 const extractUrl = createParamExtractor({
   hosts: 'track.effiliation.com',

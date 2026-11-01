@@ -5,9 +5,9 @@ import { getParamTarget } from '../utils.js'
 // hbb.afl.rakuten.co.jp/hgb/ carries `pc` too, but as an `<img src>` banner whose `pc` is the
 // thumbnail, not a destination.
 const linkShapes = [
-  { host: 'hb.afl.rakuten.co.jp', pathRegex: /^\/(?:hgc|ichiba)\// },
-  { host: 'pt.afl.rakuten.co.jp', pathRegex: /^\/c\// },
-  { host: 'mt.afl.rakuten.co.jp', pathRegex: /^\/mc\// },
+  { host: 'hb.afl.rakuten.co.jp', pathRegex: /^\/(?:hgc|ichiba)\//i },
+  { host: 'pt.afl.rakuten.co.jp', pathRegex: /^\/c\//i },
+  { host: 'mt.afl.rakuten.co.jp', pathRegex: /^\/mc\//i },
 ]
 
 const targetParams = ['pc', 'url']

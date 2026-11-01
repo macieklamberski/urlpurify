@@ -3,7 +3,7 @@ import { getPathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 
 // The segment after r/ is a base64 JSON id naming the site, sermon and media file.
-const mediaPrefixRegex = /^\/r\/[^/]+\//
+const mediaPrefixRegex = /^\/r\/[^/]+\//i
 
 // MinistryCloud sermon media download counter (historian.ministrycloud.com/r/<media id>/<target>),
 // where the target mostly keeps its scheme.

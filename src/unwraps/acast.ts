@@ -2,7 +2,7 @@ import { isHostOf } from 'trousse'
 import { getPathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 
-const flexPrefixRegex = /^\/s\/[^/]+\/u\//
+const flexPrefixRegex = /^\/s\/[^/]+\/u\//i
 
 // Acast prefix for shows hosted elsewhere (flex2.acast.com/s/<show>/u/<target>), where the target
 // drops its scheme. Acast measures downloads and inserts ads through it.

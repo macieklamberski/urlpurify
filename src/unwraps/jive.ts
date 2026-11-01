@@ -1,11 +1,11 @@
-import { isHttpUrl } from 'trousse'
+import { isAnyOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { getParamTarget } from '../utils.js'
 
 // Jive community external link redirect (<community host>/external-link.jspa?url=<target>). Each
 // community runs on its own host, so the exact path and an http `url` are the guard, not the host.
 export const unwrapJive: UrlUnwrapper = (url) => {
-  if (url.pathname !== '/external-link.jspa') {
+  if (!isAnyOf(url.pathname, '/external-link.jspa')) {
     return
   }
 

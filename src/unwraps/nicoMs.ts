@@ -1,7 +1,7 @@
 import { isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
-const nicoMsRegex = /^\/((?:sm|nm|so|im|lv)\w+)$/
+const nicoMsRegex = /^\/((?:sm|nm|so|im|lv)\w+)$/i
 
 // nico.ms short link. `/sm`, `/nm` and `/so` route to the watch page, `/im` to the seiga
 // illustration page, `/lv` to the live broadcast page.

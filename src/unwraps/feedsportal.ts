@@ -1,7 +1,7 @@
 import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
-const feedsportalPathRegex = /\/([0-9A-Za-z]{20,})\/story01\.htm$/
+const feedsportalPathRegex = /\/([0-9A-Za-z]{20,})\/story01\.htm$/i
 
 // The id uses `0` as a digraph prefix: each `0X`, X from A to Z, decodes to a fixed substitution.
 const feedsportalAlphabet: Record<string, string> = {

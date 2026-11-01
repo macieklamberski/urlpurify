@@ -2,7 +2,7 @@ import { isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
 // A 14-digit timestamp after the web archive prefix.
-const pathRegex = /^\/webarchive\/\d{14}\/(.+)$/
+const pathRegex = /^\/webarchive\/\d{14}\/(.+)$/i
 
 // National Library of New Zealand web archive snapshot
 // (ndhadeliver.natlib.govt.nz/webarchive/<timestamp>/<target>). Opt-in: unwrapping returns the live

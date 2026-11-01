@@ -3,7 +3,7 @@ import type { UrlUnwrapper } from '../types.js'
 import { getParamTarget } from '../utils.js'
 
 const shimPathRegex =
-  /^\/(safety\/go|redir\/redirect)\/?$|^\/(redirect|nhome\/nus-redirect|nus-trk|e\/v2)$|^\/company\/[^/]+\/redirect$/
+  /^\/(safety\/go|redir\/redirect)\/?$|^\/(redirect|nhome\/nus-redirect|nus-trk|e\/v2)$|^\/company\/[^/]+\/redirect$/i
 
 // LinkedIn outbound link shims and click trackers, all with ?url=<target> on www.linkedin.com:
 // /safety/go, /redir/redirect (both also with a trailing slash), /redirect, /nhome/nus-redirect,

@@ -1,4 +1,4 @@
-import { getQueryParam, isHttpUrl } from 'trousse'
+import { getQueryParam, isAnyOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { getParamTarget } from '../utils.js'
 
@@ -7,7 +7,7 @@ import { getParamTarget } from '../utils.js'
 // store.<merchant>.com. Each merchant runs it on its own domain, so the exact path, both ids and an
 // http `PATH` are the guard, not the host. Opt-in: unwrapping drops the affiliate's commission.
 export const unwrapTwoCheckout: UrlUnwrapper = (url) => {
-  if (url.pathname !== '/affiliate.php') {
+  if (!isAnyOf(url.pathname, '/affiliate.php')) {
     return
   }
 

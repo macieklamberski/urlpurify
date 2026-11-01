@@ -1,7 +1,7 @@
 import type { UrlUnwrapper } from '../types.js'
 import { createParamExtractor } from '../utils.js'
 
-const outPathRegex = /^\/(?:t\d_[a-z0-9]+)?$/
+const outPathRegex = /^\/(?:t\d_[a-z0-9]+)?$/i
 
 const extractTarget = createParamExtractor({
   hosts: 'out.reddit.com',

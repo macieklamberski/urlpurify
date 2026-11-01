@@ -1,7 +1,7 @@
-import { isHostOrSubdomainOf } from 'trousse'
+import { isAnyOf, isHostOrSubdomainOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
-const pathRegex = /^\/([cv])\/(s\/)?(.+)$/
+const pathRegex = /^\/([cv])\/(s\/)?(.+)$/i
 const viewerParams = ['amp_gsa', 'amp_js_v', 'usqp']
 
 // AMP cache (cdn.ampproject.org/{c,v}/[s/]<hostname>/<path>), `/c/` serving the document alone
@@ -25,9 +25,9 @@ export const unwrapAmpCache: UrlUnwrapper = (url) => {
   const params = url.search
     .slice(1)
     .split('&')
-    .filter((pair) => pair && !viewerParams.includes(pair.split('=')[0]))
+    .filter((pair) => pair && !isAnyOf(pair.split('=')[0], viewerParams))
   const search = params.length ? `?${params.join('&')}` : ''
-  const hash = type === 'v' ? '' : url.hash
+  const hash = isAnyOf(type, 'v') ? '' : url.hash
 
   return `${scheme}://${target}${search}${hash}`
 }

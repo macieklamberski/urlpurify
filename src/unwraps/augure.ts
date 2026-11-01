@@ -8,7 +8,7 @@ const baseExtractor = createParamExtractor({
 })
 
 // The account id, then a message id joined to the sender's domain.
-const pathRegex = /^\/(?:pub|www)\/tracking\/\d+\/[^/]+$/
+const pathRegex = /^\/(?:pub|www)\/tracking\/\d+\/[^/]+$/i
 
 // Augure, now Launchmetrics, email click tracker
 // (web-engage.augure.com/pub/tracking/<account>/<message>?id1=<base64>). The id1 param is a

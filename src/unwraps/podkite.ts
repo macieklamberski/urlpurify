@@ -2,7 +2,7 @@ import { isHostOf } from 'trousse'
 import { getPathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 
-const schemePrefixRegex = /^\/(https?)\/[^/]+\//
+const schemePrefixRegex = /^\/(https?)\/[^/]+\//i
 
 // Podkite download measurement prefix (growx.podkite.com/<scheme>/<show id>/<target>), where the
 // target drops its scheme and the first segment names it.

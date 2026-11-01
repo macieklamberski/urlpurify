@@ -3,10 +3,10 @@ import { createParamExtractor } from '../utils.js'
 
 const turbopagesHostRegex = /\.turbopages\.org$/
 // turbopages.org answers 404 as of 2026-09-27, so only archived feeds carry its links.
-const turbopagesPathRegex = /^\/[^/]+\/s\/(.+)$/
-const hostInPathRegex = /^\/turbo\/([^/]+)\/s\/(.+)$/
-const yandexSlashSFirstRegex = /^\/turbo\/s\/([^/]+)\/(.*)$/
-const turbopagesSlashSFirstRegex = /^\/s\/([^/]+)\/(.*)$/
+const turbopagesPathRegex = /^\/[^/]+\/s\/(.+)$/i
+const hostInPathRegex = /^\/turbo\/([^/]+)\/s\/(.+)$/i
+const yandexSlashSFirstRegex = /^\/turbo\/s\/([^/]+)\/(.*)$/i
+const turbopagesSlashSFirstRegex = /^\/s\/([^/]+)\/(.*)$/i
 const dashRegex = /-/g
 const yandexHostRegex = /^(?:www\.)?yandex\.(?:com\.tr|[a-z]{2,3})$/
 

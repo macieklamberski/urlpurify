@@ -1,7 +1,7 @@
 import type { UrlUnwrapper } from '../types.js'
 import { createParamExtractor } from '../utils.js'
 
-const productLinkPathRegex = /^\/click_product_link\/[0-9a-f]+\/[0-9a-f]+\/?$/
+const productLinkPathRegex = /^\/click_product_link\/[0-9a-f]+\/[0-9a-f]+\/?$/i
 
 const extractGateTarget = createParamExtractor({
   hosts: 'link-a.net',

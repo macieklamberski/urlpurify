@@ -2,11 +2,11 @@ import { decodePercent, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { getParamValues } from '../utils.js'
 
-const pathRegex = /^\/c\/\d+\/\d+\/\d+$/
+const pathRegex = /^\/c\/\d+\/\d+\/\d+$/i
 const sjvHostRegex = /\.sjv\.io$/
 const sjvPathRegex = /^\/[A-Za-z0-9]{5,6}$/
 const pxfHostRegex = /\.pxf\.io$/
-const pxfPathRegex = /^\/(?:c\/\d+\/\d+.*|[A-Za-z0-9]+)?$/
+const pxfPathRegex = /^\/(?:c\/\d+\/\d+.*|[A-Za-z0-9]+)?$/i
 const encodedSchemeRegex = /^https?%3A/i
 
 // Impact click tracker on any host (<host>/c/<publisher id>/<ad id>/<campaign id>?u=<target>),

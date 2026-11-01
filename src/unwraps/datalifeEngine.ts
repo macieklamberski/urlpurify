@@ -1,4 +1,4 @@
-import { getQueryParam, isHttpUrl } from 'trousse'
+import { getQueryParam, isAnyOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { decodeBase64, getParamValues } from '../utils.js'
 
@@ -6,8 +6,8 @@ import { decodeBase64, getParamValues } from '../utils.js'
 // /index.php?do=go&url=<base64>). Each site runs the CMS on its own host, so the exact path and a
 // base64 http `url` are the guard, not the host.
 export const unwrapDatalifeEngine: UrlUnwrapper = (url) => {
-  const isEngineGo = url.pathname === '/engine/go.php'
-  const isIndexGo = url.pathname === '/index.php' && getQueryParam(url, 'do') === 'go'
+  const isEngineGo = isAnyOf(url.pathname, '/engine/go.php')
+  const isIndexGo = isAnyOf(url.pathname, '/index.php') && getQueryParam(url, 'do') === 'go'
 
   if (!isEngineGo && !isIndexGo) {
     return

@@ -1,8 +1,8 @@
 import { decodePercent, isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
-const httpsPathRegex = /^\/amp\/s\/(.+)$/
-const httpPathRegex = /^\/amp\/(?!s\/)(.+)$/
+const httpsPathRegex = /^\/amp\/s\/(.+)$/i
+const httpPathRegex = /^\/amp\/(?!s\/)(.+)$/i
 
 // Yahoo! JAPAN AMP viewer (search.yahoo.co.jp/amp/s/<host>/<path> for https, or
 // /amp/<host>/<path> for http).

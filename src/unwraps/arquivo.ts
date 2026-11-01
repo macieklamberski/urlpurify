@@ -2,7 +2,7 @@ import { isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
 // A 14-digit timestamp after the replay prefix.
-const pathRegex = /^\/wayback\/\d{14}\/(.+)$/
+const pathRegex = /^\/wayback\/\d{14}\/(.+)$/i
 
 // Arquivo.pt, the Portuguese web archive, snapshot (arquivo.pt/wayback/<timestamp>/<target>).
 // Opt-in: unwrapping returns the live page, which may have changed or be gone.

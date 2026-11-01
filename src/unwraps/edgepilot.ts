@@ -1,7 +1,7 @@
 import type { UrlUnwrapper } from '../types.js'
 import { createParamExtractor } from '../utils.js'
 
-const linkPathRegex = /^\/(?:s\/[0-9a-f]+\/[\w-]+|x\/[\w-]+)$/
+const linkPathRegex = /^\/(?:s\/[0-9a-f]+\/[\w-]+|x\/[\w-]+)$/i
 
 const extractTarget = createParamExtractor({
   hosts: 'link.edgepilot.com',

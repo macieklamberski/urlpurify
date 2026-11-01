@@ -2,8 +2,8 @@ import { isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createParamExtractor } from '../utils.js'
 
-const trackPathRegex = /^\/tt\/[\da-f]{40}\/[\da-f]{32}\/[\da-f]{32}\/(.+)$/
-const linkPathRegex = /^\/tl\/[\da-f]{40}\/[\da-f]{32}\/[\da-f]{32}$/
+const trackPathRegex = /^\/tt\/[\da-f]{40}\/[\da-f]{32}\/[\da-f]{32}\/(.+)$/i
+const linkPathRegex = /^\/tl\/[\da-f]{40}\/[\da-f]{32}\/[\da-f]{32}$/i
 
 const extractLinkTarget = createParamExtractor({
   hosts: 't.yesware.com',

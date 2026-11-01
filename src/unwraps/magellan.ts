@@ -2,7 +2,7 @@ import { isHostOf } from 'trousse'
 import { getPathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 
-const prefixRegex = /^\/(?:e\/p?\d+|track)\//
+const prefixRegex = /^\/(?:e\/p?\d+|track)\//i
 
 // Magellan AI download measurement prefix (mgln.ai/e/<id>/<target> and mgln.ai/track/<target>),
 // where the target often drops its scheme.

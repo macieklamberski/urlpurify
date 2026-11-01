@@ -1,4 +1,4 @@
-import { isHttpUrl } from 'trousse'
+import { isAnyOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { decodeBase64Url, getParamValues } from '../utils.js'
 
@@ -10,7 +10,7 @@ import { decodeBase64Url, getParamValues } from '../utils.js'
 // Not included in defaultUnwrappers: the gateway checks the target when the link is clicked,
 // so unwrapping skips the check the recipient's organization put in place.
 export const unwrapMailinblack: UrlUnwrapper = (url) => {
-  if (url.pathname !== '/securelink/') {
+  if (!isAnyOf(url.pathname, '/securelink/')) {
     return
   }
 

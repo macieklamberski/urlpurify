@@ -2,7 +2,7 @@ import { decodePercent, isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createParamExtractor } from '../utils.js'
 
-const derefPathRegex = /^\/deref\/(.+)$/
+const derefPathRegex = /^\/deref\/(.+)$/i
 
 const unwrapDerefPage = createParamExtractor({
   hosts: 'www.researchgate.net',

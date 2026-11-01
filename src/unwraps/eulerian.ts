@@ -2,7 +2,7 @@ import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { getParamTarget } from '../utils.js'
 
-const pathRegex = /^\/dynclick\/[^/]+\/$/
+const pathRegex = /^\/dynclick\/[^/]+\/$/i
 
 // Eulerian click redirect on any host
 // (<advertiser host>/dynclick/<site>/?ept-publisher=<name>&eurl=<target>).

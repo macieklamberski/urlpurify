@@ -3,7 +3,7 @@ import type { UrlUnwrapper } from '../types.js'
 import { getParamTarget } from '../utils.js'
 
 // The click-through counter at the blog root or under one blog folder.
-const pathRegex = /^(?:\/[^/]+)?\/ct\.ashx$/
+const pathRegex = /^(?:\/[^/]+)?\/ct\.ashx$/i
 
 // dasBlog click-through counter, on each blog's own host (<host>/[<blog>/]ct.ashx?id=<guid>&
 // url=<target>).
