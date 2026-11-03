@@ -3,6 +3,7 @@ import type { UrlUnwrapper } from '../types.js'
 import { createParamExtractor, decodeBase64Url, getParamValues } from '../utils.js'
 
 const hosts = ['go.mnsvc.com', 'mandrillapp.com']
+
 const clickPathRegex = /^\/track\/click\/\d+\/[^/]+$/i
 
 const extractClickPhp = createParamExtractor({

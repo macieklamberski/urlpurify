@@ -2,6 +2,7 @@ import { decodePercent, isHostOrSubdomainOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
 const domains = ['streaklinks.com', 'streak-link.com']
+
 const pathRegex = /^\/[\w-]{24}\/([^/]+)$/
 
 // Streak email click tracker (<id>.streak-link.com/<24 character id>/<target>).

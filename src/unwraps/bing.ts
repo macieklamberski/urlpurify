@@ -11,6 +11,7 @@ export const hosts = [
   'global.bing.com',
   'www.bing.de',
 ]
+
 const bingPrefixRegex = /^a\d/
 
 // Bing redirects, in two shapes:

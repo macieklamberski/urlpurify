@@ -3,6 +3,7 @@ import type { UrlUnwrapper } from '../types.js'
 import { createParamExtractor } from '../utils.js'
 
 const paths = ['/', '/url']
+
 // A colon and 27 base64url characters, an unpadded 20-byte digest.
 const signatureRegex = /:[\w-]{27}$/
 

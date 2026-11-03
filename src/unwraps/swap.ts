@@ -9,6 +9,7 @@ const hosts = [
   'staging.swap.fm',
   'tracking-stage.swap.fm',
 ]
+
 const trackPrefixRegex = /^\/track\/[^/]+\//i
 
 // Swap download measurement prefix (tracking.swap.fm/track/<show id>/<target>, also on swap.fm

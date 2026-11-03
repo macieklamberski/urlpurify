@@ -3,6 +3,7 @@ import type { UrlUnwrapper } from '../types.js'
 import { decodeEncodedScheme } from '../utils.js'
 
 const hosts = ['r.search.yahoo.com', 'ri.search.yahoo.com', 'chicagotribune.search.yahoo.com']
+
 const yahooPathRegex = /^(?:\/[^/]+)*\/RU=([^/]+)\/RK=/i
 const unencodedTargetRegex = /^(?:\/[^/]+)*\/RU=(https?:\/\/.+?)\/RK=/i
 
