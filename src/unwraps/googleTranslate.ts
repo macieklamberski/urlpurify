@@ -9,10 +9,12 @@ const googleTranslateHostRegex =
 const googleTranslatePaths = ['/translate', '/website']
 
 const proxyDomains = ['translate.goog']
+
 const proxyLabelRegex = /^[a-z0-9-]+$/
 // A host that does not fit the dashed form gets a hashed label, <base32>-<hash>-<host part>,
 // which does not decode back to the host.
 const hashedLabelRegex = /^[a-z2-7]{26}-[a-z0-9]{15}-/
+
 const proxyParamPrefix = '_x_tr_'
 // A single `-` between two word characters stands for a `.` of the host.
 const singleDashRegex = /\b-\b/g

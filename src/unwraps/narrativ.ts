@@ -2,6 +2,7 @@ import type { UrlUnwrapper } from '../types.js'
 import { createParamExtractor } from '../utils.js'
 
 const redirectPathRegex = /^\/api\/v\d+\/(?:client_)?redirect\/?$/i
+
 const linkPaths = ['/link', '/link/']
 
 const extractTarget = createParamExtractor({

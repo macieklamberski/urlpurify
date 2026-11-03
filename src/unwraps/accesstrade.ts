@@ -10,6 +10,7 @@ const hosts = [
   'pub.accesstrade.vn',
   'click.accesstrade.in.th',
 ]
+
 const pathRegex = /^\/(?:sp\/cc|at\/c\.html|adv\.php|deep_link\/\d+(?:\/\d+)?)$/i
 
 // Accesstrade affiliate redirect (h.accesstrade.net/sp/cc?url=<target>, /at/c.html, /adv.php and

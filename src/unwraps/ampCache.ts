@@ -2,6 +2,7 @@ import { isAnyOf, isHostOrSubdomainOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
 const pathRegex = /^\/([cv])\/(s\/)?(.+)$/i
+
 const viewerParams = ['amp_gsa', 'amp_js_v', 'usqp']
 
 // AMP cache (cdn.ampproject.org/{c,v}/[s/]<hostname>/<path>), `/c/` serving the document alone

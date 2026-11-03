@@ -4,10 +4,13 @@ import { getParamTarget } from '../utils.js'
 
 const amazonPathRegex = /^\/x\/c\/[^/]+\/(https?:\/\/.+)$/i
 const amazonHostRegex = /^aax(?:-[a-z]+)*\.amazon-adsystem\.com$|^aax-us-iad\.amazon\.com$/
+
 const storeHostRegex =
   /^(?:www|smile|affiliate-program)\.amazon\.(?:ca|co\.jp|co\.uk|com|com\.au|com\.br|de|es|fr|it)$/
+
 const storeRedirectPathRegex = /^\/gp\/redirect\.html(?:\/ref=.+)?$/i
 const sponsoredRedirectPathRegex = /^\/gp\/slredirect\/picassoRedirect\.html\/ref=.+$/i
+
 const emailRedirectPaths = ['/gp/r.html', '/gp/f.html']
 
 // Amazon affiliate click tracker (aax-<region>.amazon-adsystem.com and aax-us-iad.amazon.com,

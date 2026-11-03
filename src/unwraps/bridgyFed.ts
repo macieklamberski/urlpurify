@@ -2,6 +2,7 @@ import { isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
 const hosts = ['fed.brid.gy', 'bsky.brid.gy', 'web.brid.gy']
+
 const pathRegex = /^\/r\/(https?:\/\/.+)$/i
 
 // Bridgy Fed redirect for a bridged post or profile (fed.brid.gy/r/<target>, also bsky.brid.gy
