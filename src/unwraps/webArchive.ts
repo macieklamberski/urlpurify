@@ -18,6 +18,7 @@ const replayHosts = ['web.archive.org', 'replay.web.archive.org', 'replay.waybac
 // A 14-digit timestamp, then the wildcard or a replay modifier, such as `id_` for the original
 // bytes or `im_`, `js_` and `cs_` for an archived image, script or stylesheet.
 const snapshot = String.raw`\d{14}(?:\*|(?:id|if|mp|fw|oe|im|js|cs)_)?`
+
 // With no timestamp, the target follows `/web/` directly and Wayback serves its latest snapshot.
 const pathRegex = new RegExp(`^/web/(?:${snapshot}/)?(.+)$`, 'i')
 const replayPathRegex = new RegExp(`^/${snapshot}/(.+)$`, 'i')

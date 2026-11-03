@@ -5,6 +5,7 @@ import { createParamExtractor, getParamTarget } from '../utils.js'
 const hosts = ['app.adjust.com', 'app.adjust.net.in']
 
 const pathRegex = /^\/[^/]+$/
+
 // The order a Windows desktop browser gets; a macOS-only carrier sends it elsewhere.
 const trackerParams = ['redirect_windows', 'redirect', 'fallback']
 
