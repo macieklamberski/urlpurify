@@ -41,8 +41,8 @@
   },
   "devDependencies": {
     "@types/bun": "^1.4.4",
-    "kvalita": "^1.33.0",
-    "trousse": "^3.4.0",
-    "tsdown": "0.23.4"
+    "kvalita": "^1.34.0",
+    "trousse": "^3.7.0",
+    "tsdown": "0.23.5"
   }
 }
