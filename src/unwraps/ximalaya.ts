@@ -1,3 +1,4 @@
+import { parseUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createParamExtractor } from '../utils.js'
 
@@ -24,9 +25,9 @@ export const unwrapXimalaya: UrlUnwrapper = (url) => {
 
   // The prefix forwards only to Ximalaya's own audio hosts and answers 200 with no redirect for
   // any other target.
-  try {
-    if (targetHostRegex.test(new URL(target).hostname)) {
-      return target
-    }
-  } catch {}
+  const targetHost = parseUrl(target)?.hostname
+
+  if (targetHost && targetHostRegex.test(targetHost)) {
+    return target
+  }
 }
