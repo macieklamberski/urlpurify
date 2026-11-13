@@ -4,11 +4,13 @@ const schemeRegex = /^https?:/i
 // The target that follows a prefix at the start of the path, with the url's own query and
 // fragment. Podcast analytics prefixes mostly drop the target's scheme and forward to https. A
 // prefix that forwards with its own scheme passes `url.protocol`, and one that forwards to http
-// passes `http:`.
+// passes `http:`. A prefix that drops the url's query and fragment on forwarding passes an empty
+// `suffix`.
 export const getPathTarget = (
   url: URL,
   prefixRegex: RegExp,
   scheme = 'https:',
+  suffix = `${url.search}${url.hash}`,
 ): string | undefined => {
   const match = url.pathname.match(prefixRegex)
 
@@ -23,7 +25,7 @@ export const getPathTarget = (
     return
   }
 
-  const target = `${path}${url.search}${url.hash}`
+  const target = `${path}${suffix}`
 
   if (schemeRegex.test(target)) {
     return target
