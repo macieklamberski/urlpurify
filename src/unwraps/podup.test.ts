@@ -34,6 +34,12 @@ describe('unwrapPodup', () => {
     expect(unwrapPodup(url)).toBeUndefined()
   })
 
+  it('should return undefined for a path that resolves to no url', () => {
+    const url = new URL('https://traffic.podup.com//')
+
+    expect(unwrapPodup(url)).toBeUndefined()
+  })
+
   it('should return undefined for other paths on the host', () => {
     const url = new URL('https://traffic.podup.com/other/example.com/episode.mp3')
 

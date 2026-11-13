@@ -1,4 +1,4 @@
-import { isHostOf } from 'trousse'
+import { isHostOf, parseUrl } from 'trousse'
 import { getPathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 
@@ -13,7 +13,11 @@ export const unwrapPodup: UrlUnwrapper = (url) => {
   }
 
   // Podup forwards to the path alone on https, dropping the query and fragment.
-  const pathUrl = new URL(url.pathname, url.origin)
+  const pathUrl = parseUrl(url.pathname, url.origin)
+
+  if (!pathUrl) {
+    return
+  }
 
   return getPathTarget(pathUrl, mediaPrefixRegex)
 }
