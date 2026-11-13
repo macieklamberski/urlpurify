@@ -1,3 +1,4 @@
+import { isString } from 'trousse'
 import { affiliateParams } from './tracking/affiliate.js'
 import { campaignParams } from './tracking/campaign.js'
 import { clickAttributionParams } from './tracking/clickAttribution.js'
@@ -432,7 +433,7 @@ export const trackingParamsLiterals: Array<string> = []
 export const trackingParamsPatterns: Array<RegExp> = []
 
 for (const param of knownTrackingParams) {
-  if (typeof param === 'string') {
+  if (isString(param)) {
     trackingParamsLiterals.push(param)
     continue
   }
