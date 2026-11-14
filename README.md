@@ -78,28 +78,6 @@ cleanUrl(url, { unwrappers: [...defaultUnwrappers, unwrapExample] })
 
 A value still encoded after one decode, starting with `http%3A` or `https%3A`, is decoded once more. A malformed escape, or one in a legacy charset such as `%E9` for é in Latin-1, stays as written. For any other shape, write a plain `UrlUnwrapper`: a function that takes a `URL` and returns the target or `undefined`.
 
-### Tracking parameters
-
-Tracking parameters are grouped like the unwrappers, by what stripping them takes away from someone:
-
-| Category | Export | Stripping removes | Default |
-| --- | --- | --- | :---: |
-| Click attribution | `clickAttributionParams` | Ad, search and platform click ids | ☑️ |
-| Visitor ids | `visitorIdParams` | Ids of one visitor, session, browser or email recipient | ☑️ |
-| Housekeeping | `housekeepingParams` | Nothing: cache busters, previews and redirect leftovers | ☑️ |
-| Campaign tags | `campaignParams` | The site's own traffic stats, from tags like `utm_*` | |
-| Affiliate ids | `affiliateParams` | The publisher's commission | |
-
-`defaultTrackingParams` combines the first three. A campaign tag carries the same value for every reader, so it tells the site where a visit came from and nothing about who made it. To strip more, spread them next to the defaults:
-
-```typescript
-import { campaignParams, defaultTrackingParams, stripTrackingParams } from 'urlpurify'
-
-stripTrackingParams(url, [...defaultTrackingParams, ...campaignParams])
-```
-
-`trackingParamsLiterals` and `trackingParamsPatterns` hold every known parameter, opt-in categories included, split into names and regexes.
-
 ## Unwrappers
 
 There are more than 380 unwrappers, each in its own file in [src/unwraps](src/unwraps), with a comment naming the service and the URL shape it handles. Each is exported on its own and belongs to one category. The categories split by what unwrapping takes away from someone, which is what decides whether you want it:
@@ -134,3 +112,25 @@ import { affiliateUnwrappers, cleanUrl, defaultUnwrappers } from 'urlpurify'
 
 cleanUrl(url, { unwrappers: [...defaultUnwrappers, ...affiliateUnwrappers] })
 ```
+
+## Tracking parameters
+
+Tracking parameters are grouped like the unwrappers, by what stripping them takes away from someone:
+
+| Category | Export | Stripping removes | Default |
+| --- | --- | --- | :---: |
+| Click attribution | `clickAttributionParams` | Ad, search and platform click ids | ☑️ |
+| Visitor ids | `visitorIdParams` | Ids of one visitor, session, browser or email recipient | ☑️ |
+| Housekeeping | `housekeepingParams` | Nothing: cache busters, previews and redirect leftovers | ☑️ |
+| Campaign tags | `campaignParams` | The site's own traffic stats, from tags like `utm_*` | |
+| Affiliate ids | `affiliateParams` | The publisher's commission | |
+
+`defaultTrackingParams` combines the first three. A campaign tag carries the same value for every reader, so it tells the site where a visit came from and nothing about who made it. To strip more, spread them next to the defaults:
+
+```typescript
+import { campaignParams, defaultTrackingParams, stripTrackingParams } from 'urlpurify'
+
+stripTrackingParams(url, [...defaultTrackingParams, ...campaignParams])
+```
+
+`trackingParamsLiterals` and `trackingParamsPatterns` hold every known parameter, opt-in categories included, split into names and regexes.
