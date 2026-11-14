@@ -5,6 +5,7 @@ import {
   decodeBase64Binary,
   decodeBase64Url,
   getUtf8ByteLength,
+  isUtf8Binary,
 } from './utils.js'
 
 const exampleSubdomainRegex = /\.example\.com$/
@@ -359,6 +360,32 @@ describe('decodeBase64Binary', () => {
 
   it('should return undefined for invalid base64', () => {
     expect(decodeBase64Binary('!!!')).toBeUndefined()
+  })
+})
+
+describe('isUtf8Binary', () => {
+  it('should accept an ASCII binary string', () => {
+    const value = 'https://example.com/feed'
+
+    expect(isUtf8Binary(value)).toBe(true)
+  })
+
+  it('should accept a multi-byte UTF-8 sequence', () => {
+    const value = '\xc4\xa9\xc5\xbe'
+
+    expect(isUtf8Binary(value)).toBe(true)
+  })
+
+  it('should refuse a byte that starts no UTF-8 sequence', () => {
+    const value = 'https://example.com/feed\xfb'
+
+    expect(isUtf8Binary(value)).toBe(false)
+  })
+
+  it('should refuse a truncated UTF-8 sequence', () => {
+    const value = 'https://example.com/\xe3\x82'
+
+    expect(isUtf8Binary(value)).toBe(false)
   })
 })
 
