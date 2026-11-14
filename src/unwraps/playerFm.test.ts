@@ -76,6 +76,14 @@ describe('unwrapPlayerFm', () => {
     expect(unwrapPlayerFm(value)).toBeUndefined()
   })
 
+  it('should return undefined for the id param on another path', () => {
+    const value = new URL(
+      'https://player.fm/series/example?id=https%3A%2F%2Fexample.com%2Ffeed.xml',
+    )
+
+    expect(unwrapPlayerFm(value)).toBeUndefined()
+  })
+
   it('should return undefined for the shape on another host', () => {
     const value = new URL(
       'https://example.com/importer/feed?url=https%3A%2F%2Fexample.org%2Ffeed.xml',
