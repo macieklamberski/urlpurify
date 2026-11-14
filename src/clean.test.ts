@@ -921,6 +921,12 @@ describe('cleanUrl with a malformed target', () => {
     expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe('https://example.com/x')
   })
 
+  it('should keep the wrapper when the target host has a comma', () => {
+    const value = 'https://redirect.example.com/?target=https%3A%2F%2Ccexample.com%2F'
+
+    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
+  })
+
   it('should resolve a chain whose inner target has a single slash', () => {
     const value =
       'https://redirect.example.com/?target=https://defense.example.net/v3/__https:/example.org/news/__;tail'
