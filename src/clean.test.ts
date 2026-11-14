@@ -1,9 +1,10 @@
 import { describe, expect, it } from 'bun:test'
+import { decodeBase64 } from 'trousse'
 import { cleanUrl, stripTrackingParams, unwrapUrl } from './clean.js'
 import { campaignParams, defaultTrackingParams } from './defaults.js'
 import type { UrlUnwrapper } from './types.js'
 import { unwrapWebArchive } from './unwraps/webArchive.js'
-import { createParamExtractor, decodeBase64 } from './utils.js'
+import { createParamExtractor } from './utils.js'
 
 const exampleUnwrapper = createParamExtractor({
   hosts: 'redirect.example.com',

@@ -1,6 +1,6 @@
-import { hasQueryParam, isHttpUrl } from 'trousse'
+import { decodeBase64, hasQueryParam, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { decodeBase64, getParamValues } from '../utils.js'
+import { getParamValues } from '../utils.js'
 
 // The exit tracker at the blog root or under one blog folder.
 const pathRegex = /^(?:\/[^/]+)?\/exit\.php$/i

@@ -1,6 +1,14 @@
-import { decodePercent, isAnyOf, isHostOf, isHttpUrl } from 'trousse'
+import {
+  decodeBase64Url,
+  decodeBase64UrlBinary,
+  decodePercent,
+  isAnyOf,
+  isHostOf,
+  isHttpUrl,
+  isUtf8Binary,
+} from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { decodeBase64Url, decodeBase64UrlBinary, getParamValues, isUtf8Binary } from '../utils.js'
+import { getParamValues } from '../utils.js'
 
 const showPathRegex = /^\/(?:u\/\d+\/)?feed\/([\w%=-]+)(?:\/episode\/[\w%=-]+)?\/?$/i
 

@@ -1,6 +1,5 @@
-import { isHostOf, isHttpUrl } from 'trousse'
+import { decodeBase64Url, isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { decodeBase64Url } from '../utils.js'
 
 const pathRegex = /^(?:\/[^/]+)*\/RU=([\w-]+)(?:\/R[A-Z]=[^/]*)*(?:;.*)?$/i
 const paddingRegex = /-+$/

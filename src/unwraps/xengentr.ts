@@ -1,6 +1,6 @@
-import { isAnyOf, isHttpUrl } from 'trousse'
+import { decodeBase64, isAnyOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { decodeBase64, getParamValues } from '../utils.js'
+import { getParamValues } from '../utils.js'
 
 // XenGenTr external link redirect add-on for XenForo, on each forum's own host
 // (<host>/yonlendirme?to=<base64>). The to param is a base64-encoded target URL.

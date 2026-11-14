@@ -1,6 +1,6 @@
-import { decodePercent, isHttpUrl } from 'trousse'
+import { decodeBase64, decodePercent, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor, decodeBase64 } from '../utils.js'
+import { createParamExtractor } from '../utils.js'
 
 const encodedSchemeRegex = /^https?%3A/i
 

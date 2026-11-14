@@ -1,6 +1,6 @@
-import { isAnyOf, isHttpUrl, isString } from 'trousse'
+import { decodeBase64Url, isAnyOf, isHttpUrl, isString } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { decodeBase64Url, getParamValues } from '../utils.js'
+import { getParamValues } from '../utils.js'
 
 // Mailinblack Secure Link (mibc-fr-<n>.mailinblack.com/securelink/?url=<origin>&key=<blob>).
 // Partners serve the same link from their own hosts, such as mib.numerian.fr and antispam.xefi.fr,
