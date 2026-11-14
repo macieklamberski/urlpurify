@@ -135,6 +135,7 @@ import { unwrapFacebookShim } from './unwraps/facebook.js'
 import { unwrapFanbridge } from './unwraps/fanbridge.js'
 import { unwrapFederatedMedia } from './unwraps/federatedMedia.js'
 import { unwrapFeedblitz } from './unwraps/feedblitz.js'
+import { unwrapFeedland } from './unwraps/feedland.js'
 import { unwrapFeedStatistics } from './unwraps/feedStatistics.js'
 import { unwrapFeedsportal } from './unwraps/feedsportal.js'
 import { unwrapFinalsite } from './unwraps/finalsite.js'
@@ -907,6 +908,7 @@ export const shareIntentUnwrappers: Array<UrlUnwrapper> = []
 // Subscribe buttons, and players and app pages carrying a feed: unwrapping returns the feed, not
 // the reader's or app's page that adds or plays it.
 export const subscribeIntentUnwrappers: Array<UrlUnwrapper> = [
+  unwrapFeedland,
   unwrapGooglePodcasts,
   unwrapGoogleReader,
   unwrapPrxPlayer,
