@@ -2,8 +2,8 @@ import { isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { getParamTarget } from '../utils.js'
 
-// The site's locale copies of the page, each running the same script.
-const subscribePathRegex = /^\/(?:(?:da|de|es|fa|fr|it|ja|ko|nl)\/)?deeplink\/subscribe\/?$/i
+// A locale copy of the page, such as /fr/ or /pt-br/, runs the same script.
+const subscribePathRegex = /^\/(?:[a-z]{2}(?:-[a-z]{2})?\/)?deeplink\/subscribe\/?$/i
 
 const hosts = ['antennapod.org', 'www.antennapod.org']
 

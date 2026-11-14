@@ -29,6 +29,24 @@ describe('unwrapAntennaPod', () => {
     expect(unwrapAntennaPod(value)).toBe(expected)
   })
 
+  it('should extract a feed from a locale the site may add later', () => {
+    const value = new URL(
+      'https://antennapod.org/pt/deeplink/subscribe/?url=https://example.com/@lemegaphone/feed.xml',
+    )
+    const expected = 'https://example.com/@lemegaphone/feed.xml'
+
+    expect(unwrapAntennaPod(value)).toBe(expected)
+  })
+
+  it('should extract a feed from a locale with a region', () => {
+    const value = new URL(
+      'https://antennapod.org/pt-br/deeplink/subscribe/?url=https://example.com/@lemegaphone/feed.xml',
+    )
+    const expected = 'https://example.com/@lemegaphone/feed.xml'
+
+    expect(unwrapAntennaPod(value)).toBe(expected)
+  })
+
   it('should extract a feed on the www host', () => {
     const value = new URL(
       'https://www.antennapod.org/deeplink/subscribe/?url=https://example.com/feed.xml',
@@ -84,9 +102,9 @@ describe('unwrapAntennaPod', () => {
     expect(unwrapAntennaPod(value)).toBeUndefined()
   })
 
-  it('should return undefined for a prefix the site has no locale for', () => {
+  it('should return undefined for a prefix that is not a locale', () => {
     const value = new URL(
-      'https://antennapod.org/pt/deeplink/subscribe/?url=https://example.com/feed.xml',
+      'https://antennapod.org/blog/deeplink/subscribe/?url=https://example.com/feed.xml',
     )
 
     expect(unwrapAntennaPod(value)).toBeUndefined()
