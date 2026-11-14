@@ -1,6 +1,6 @@
-import { isHttpUrl } from 'trousse'
+import { decodeBase64, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { decodeBase64, getParamValues } from '../utils.js'
+import { getParamValues } from '../utils.js'
 
 // The blog home, or a WordPress install under up to two path segments, such as /blog/.
 const pathRegex = /^\/(?:[^/]+\/){0,2}$/

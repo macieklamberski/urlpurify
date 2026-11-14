@@ -88,66 +88,6 @@ export const createParamExtractor = (config: ParamExtractorConfig): UrlUnwrapper
   }
 }
 
-// Decode base64 into the raw binary string (one character per byte). atob
-// already implements forgiving decoding; this only turns errors into undefined.
-export const decodeBase64Binary = (value: string): string | undefined => {
-  try {
-    return atob(value)
-  } catch {}
-}
-
-const utf8Decoder = new TextDecoder('utf-8', { fatal: true })
-
-// Whether a binary string, one character per byte as `atob` returns it, holds valid UTF-8. A
-// target that has to be UTF-8 text, such as a feed url, can refuse bytes `decodeBase64` would
-// keep as `%XX` for a legacy charset.
-export const isUtf8Binary = (binary: string): boolean => {
-  try {
-    utf8Decoder.decode(Uint8Array.from(binary, (char) => char.charCodeAt(0)))
-
-    return true
-  } catch {
-    return false
-  }
-}
-
-// Each byte goes through `decodePercent` as an escape, so a UTF-8 sequence decodes and a byte of a
-// legacy charset stays as `%XX`, where `TextDecoder` would write U+FFFD.
-export const decodeBase64 = (value: string): string | undefined => {
-  const binary = decodeBase64Binary(value)
-
-  if (binary === undefined) {
-    return
-  }
-
-  let encoded = ''
-
-  for (let index = 0; index < binary.length; index++) {
-    const byte = binary.charCodeAt(index)
-
-    if (byte < 0x80 && binary[index] !== '%') {
-      encoded += binary[index]
-      continue
-    }
-
-    encoded += `%${byte.toString(16).toUpperCase().padStart(2, '0')}`
-  }
-
-  return decodePercent(encoded)
-}
-
-const toBase64 = (base64Url: string): string => {
-  return base64Url.replaceAll('-', '+').replaceAll('_', '/')
-}
-
-export const decodeBase64Url = (value: string): string | undefined => {
-  return decodeBase64(toBase64(value))
-}
-
-export const decodeBase64UrlBinary = (value: string): string | undefined => {
-  return decodeBase64Binary(toBase64(value))
-}
-
 const utf8Encoder = new TextEncoder()
 
 export const getUtf8ByteLength = (value: string): number => {

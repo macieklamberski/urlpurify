@@ -1,12 +1,5 @@
 import { describe, expect, it } from 'bun:test'
-import {
-  createParamExtractor,
-  decodeBase64,
-  decodeBase64Binary,
-  decodeBase64Url,
-  getUtf8ByteLength,
-  isUtf8Binary,
-} from './utils.js'
+import { createParamExtractor, getUtf8ByteLength } from './utils.js'
 
 const exampleSubdomainRegex = /\.example\.com$/
 
@@ -340,92 +333,6 @@ describe('createParamExtractor', () => {
 
       expect(extract(value)).toBe(expected)
     })
-  })
-})
-
-describe('decodeBase64Binary', () => {
-  it('should decode base64 into a binary string', () => {
-    const value = 'aGVsbG8='
-    const expected = 'hello'
-
-    expect(decodeBase64Binary(value)).toBe(expected)
-  })
-
-  it('should decode unpadded base64', () => {
-    const value = 'aGVsbG8'
-    const expected = 'hello'
-
-    expect(decodeBase64Binary(value)).toBe(expected)
-  })
-
-  it('should return undefined for invalid base64', () => {
-    expect(decodeBase64Binary('!!!')).toBeUndefined()
-  })
-})
-
-describe('isUtf8Binary', () => {
-  it('should accept an ASCII binary string', () => {
-    const value = 'https://example.com/feed'
-
-    expect(isUtf8Binary(value)).toBe(true)
-  })
-
-  it('should accept a multi-byte UTF-8 sequence', () => {
-    const value = '\xc4\xa9\xc5\xbe'
-
-    expect(isUtf8Binary(value)).toBe(true)
-  })
-
-  it('should refuse a byte that starts no UTF-8 sequence', () => {
-    const value = 'https://example.com/feed\xfb'
-
-    expect(isUtf8Binary(value)).toBe(false)
-  })
-
-  it('should refuse a truncated UTF-8 sequence', () => {
-    const value = 'https://example.com/\xe3\x82'
-
-    expect(isUtf8Binary(value)).toBe(false)
-  })
-})
-
-describe('decodeBase64', () => {
-  it('should decode base64 into a UTF-8 string', () => {
-    const value = 'xKnFvsO4'
-    const expected = 'ĩžø'
-
-    expect(decodeBase64(value)).toBe(expected)
-  })
-
-  it('should decode ASCII content', () => {
-    const value = 'aHR0cHM6Ly9leGFtcGxlLmNvbQ=='
-    const expected = 'https://example.com'
-
-    expect(decodeBase64(value)).toBe(expected)
-  })
-
-  it('should return undefined for invalid base64', () => {
-    expect(decodeBase64('!!!')).toBeUndefined()
-  })
-})
-
-describe('decodeBase64Url', () => {
-  it('should decode base64url with url-safe characters', () => {
-    const value = 'Pz8-Pw'
-    const expected = '??>?'
-
-    expect(decodeBase64Url(value)).toBe(expected)
-  })
-
-  it('should decode underscores as slashes', () => {
-    const value = 'aHR0cHM6Ly9leGFtcGxlLmNvbS9hL2I_cT0x'
-    const expected = 'https://example.com/a/b?q=1'
-
-    expect(decodeBase64Url(value)).toBe(expected)
-  })
-
-  it('should return undefined for invalid input', () => {
-    expect(decodeBase64Url('!!!')).toBeUndefined()
   })
 })
 

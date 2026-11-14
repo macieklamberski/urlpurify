@@ -1,6 +1,6 @@
-import { isAnyOf, isHttpUrl } from 'trousse'
+import { decodeBase64Url, isAnyOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { decodeBase64Url, getParamTarget } from '../utils.js'
+import { getParamTarget } from '../utils.js'
 
 const hosts = [
   'emlblog.com',

@@ -1,6 +1,6 @@
-import { isHttpUrl } from 'trousse'
+import { decodeBase64Url, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor, decodeBase64Url } from '../utils.js'
+import { createParamExtractor } from '../utils.js'
 
 const baseExtractor = createParamExtractor({
   hosts: [
