@@ -96,6 +96,21 @@ export const decodeBase64Binary = (value: string): string | undefined => {
   } catch {}
 }
 
+const utf8Decoder = new TextDecoder('utf-8', { fatal: true })
+
+// Whether a binary string, one character per byte as `atob` returns it, holds valid UTF-8. A
+// target that has to be UTF-8 text, such as a feed url, can refuse bytes `decodeBase64` would
+// keep as `%XX` for a legacy charset.
+export const isUtf8Binary = (binary: string): boolean => {
+  try {
+    utf8Decoder.decode(Uint8Array.from(binary, (char) => char.charCodeAt(0)))
+
+    return true
+  } catch {
+    return false
+  }
+}
+
 // Each byte goes through `decodePercent` as an escape, so a UTF-8 sequence decodes and a byte of a
 // legacy charset stays as `%XX`, where `TextDecoder` would write U+FFFD.
 export const decodeBase64 = (value: string): string | undefined => {
