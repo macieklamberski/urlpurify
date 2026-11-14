@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'bun:test'
+import { cleanUrl } from '../clean.js'
 import { unwrapFacebookShare } from './facebookShare.js'
 
 describe('unwrapFacebookShare', () => {
@@ -129,6 +130,22 @@ describe('unwrapFacebookShare', () => {
     const expected = 'https://example.com/post'
 
     expect(unwrapFacebookShare(value)).toBe(expected)
+  })
+
+  it('should strip a literal href= before the target in u', () => {
+    const value = new URL(
+      'http://facebook.com/sharer/sharer.php?u=href=http://www.example.com/blog/default.cfm/2018/11/10/Here-is-another-posting',
+    )
+    const expected = 'http://www.example.com/blog/default.cfm/2018/11/10/Here-is-another-posting'
+
+    expect(unwrapFacebookShare(value)).toBe(expected)
+  })
+
+  it('should keep the share link wrapped when href= in u has no scheme after it', () => {
+    const value = 'http://facebook.com/sharer/sharer.php?u=href=www.example.com/blog/post'
+    const expected = 'http://facebook.com/sharer/sharer.php?u=href=www.example.com/blog/post'
+
+    expect(cleanUrl(value, { unwrappers: [unwrapFacebookShare] })).toBe(expected)
   })
 
   it('should match the path in any case', () => {

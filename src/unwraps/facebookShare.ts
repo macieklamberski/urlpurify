@@ -13,6 +13,7 @@ const hosts = [
 const sharerPathRegex = /^\/(?:sharer(?:\/sharer)?(?:\.php)?|share\.php)\/?$/i
 const shareDialogPathRegex = /^\/dialog\/share\/?$/i
 const linkDialogPathRegex = /^\/dialog\/(?:feed|send)\/?$/i
+const hrefPrefixRegex = /^href=(?=https?:)/i
 
 // Facebook share (facebook.com/sharer/sharer.php?u=<target>, /sharer.php, /share.php, /sharer,
 // p[url]=, /dialog/share?href=, /dialog/feed and /dialog/send ?link=, never redirect_uri, on www.,
@@ -23,7 +24,14 @@ export const unwrapFacebookShare: UrlUnwrapper = (url) => {
   }
 
   if (sharerPathRegex.test(url.pathname)) {
-    return getParamTarget(url, 'u') ?? getParamTarget(url, 'p[url]')
+    const target = getParamTarget(url, 'u')
+
+    if (target) {
+      // One CMS writes its share link as `u=href=<target>`, the attribute name kept in the value.
+      return target.replace(hrefPrefixRegex, '')
+    }
+
+    return getParamTarget(url, 'p[url]')
   }
 
   if (shareDialogPathRegex.test(url.pathname)) {
