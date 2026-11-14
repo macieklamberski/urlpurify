@@ -137,6 +137,7 @@ import { unwrapEvernote } from './unwraps/evernote.js'
 import { unwrapExciteTranslate } from './unwraps/exciteTranslate.js'
 import { unwrapExpediaAffiliate } from './unwraps/expediaAffiliate.js'
 import { unwrapFacebookShim } from './unwraps/facebook.js'
+import { unwrapFacebookShare } from './unwraps/facebookShare.js'
 import { unwrapFanbridge } from './unwraps/fanbridge.js'
 import { unwrapFederatedMedia } from './unwraps/federatedMedia.js'
 import { unwrapFeed2js } from './unwraps/feed2js.js'
@@ -919,7 +920,7 @@ export const embedProxyUnwrappers: Array<UrlUnwrapper> = [
 ]
 
 // Share and bookmark buttons: unwrapping returns the shared page, not the form that shares it.
-export const shareIntentUnwrappers: Array<UrlUnwrapper> = [unwrapTwitterIntent]
+export const shareIntentUnwrappers: Array<UrlUnwrapper> = [unwrapFacebookShare, unwrapTwitterIntent]
 
 // Subscribe buttons, and players and app pages carrying a feed: unwrapping returns the feed, not
 // the reader's or app's page that adds or plays it.
