@@ -32,6 +32,7 @@ import { unwrapAmpCacheImage } from './unwraps/ampCacheImage.js'
 import { unwrapAnchor } from './unwraps/anchor.js'
 import { unwrapAnonymouse } from './unwraps/anonymouse.js'
 import { unwrapAnonymTo } from './unwraps/anonymTo.js'
+import { unwrapAnytimePlayer } from './unwraps/anytimePlayer.js'
 import { unwrapAppsflyerOnelink } from './unwraps/appsflyerOnelink.js'
 import { unwrapApptrkr } from './unwraps/apptrkr.js'
 import { unwrapArchiveToday } from './unwraps/archiveToday.js'
@@ -907,6 +908,7 @@ export const shareIntentUnwrappers: Array<UrlUnwrapper> = []
 // Subscribe buttons, and players and app pages carrying a feed: unwrapping returns the feed, not
 // the reader's or app's page that adds or plays it.
 export const subscribeIntentUnwrappers: Array<UrlUnwrapper> = [
+  unwrapAnytimePlayer,
   unwrapGooglePodcasts,
   unwrapGoogleReader,
   unwrapPrxPlayer,
