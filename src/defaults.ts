@@ -134,6 +134,7 @@ import { unwrapExpediaAffiliate } from './unwraps/expediaAffiliate.js'
 import { unwrapFacebookShim } from './unwraps/facebook.js'
 import { unwrapFanbridge } from './unwraps/fanbridge.js'
 import { unwrapFederatedMedia } from './unwraps/federatedMedia.js'
+import { unwrapFeed2js } from './unwraps/feed2js.js'
 import { unwrapFeedblitz } from './unwraps/feedblitz.js'
 import { unwrapFeedStatistics } from './unwraps/feedStatistics.js'
 import { unwrapFeedsportal } from './unwraps/feedsportal.js'
@@ -917,7 +918,7 @@ export const subscribeIntentUnwrappers: Array<UrlUnwrapper> = [
 
 // Feed validators, viewers and full-text proxies: unwrapping returns the feed the tool was
 // given, not the tool's view of it.
-export const feedToolUnwrappers: Array<UrlUnwrapper> = []
+export const feedToolUnwrappers: Array<UrlUnwrapper> = [unwrapFeed2js]
 
 export const defaultUnwrappers: Array<UrlUnwrapper> = [
   ...searchClickUnwrappers,
