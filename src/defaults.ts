@@ -158,6 +158,7 @@ import { unwrapGoogleAds } from './unwraps/googleAds.js'
 import { unwrapGoogleAmpViewer } from './unwraps/googleAmpViewer.js'
 import { unwrapGoogleNews } from './unwraps/googleNews.js'
 import { unwrapGoogleNewsModern } from './unwraps/googleNewsModern.js'
+import { unwrapGoogleReader } from './unwraps/googleReader.js'
 import { unwrapGoogleScholar } from './unwraps/googleScholar.js'
 import { unwrapGoogleTranslate } from './unwraps/googleTranslate.js'
 import { unwrapGoogleWebLight } from './unwraps/googleWebLight.js'
@@ -901,7 +902,7 @@ export const shareIntentUnwrappers: Array<UrlUnwrapper> = []
 
 // Subscribe buttons, and players and app pages carrying a feed: unwrapping returns the feed, not
 // the reader's or app's page that adds or plays it.
-export const subscribeIntentUnwrappers: Array<UrlUnwrapper> = [unwrapXianguo]
+export const subscribeIntentUnwrappers: Array<UrlUnwrapper> = [unwrapGoogleReader, unwrapXianguo]
 
 // Feed validators, viewers and full-text proxies: unwrapping returns the feed the tool was
 // given, not the tool's view of it.
