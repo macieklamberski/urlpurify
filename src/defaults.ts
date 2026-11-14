@@ -144,6 +144,7 @@ import { unwrapFeedland } from './unwraps/feedland.js'
 import { unwrapFeedly } from './unwraps/feedly.js'
 import { unwrapFeedStatistics } from './unwraps/feedStatistics.js'
 import { unwrapFeedsportal } from './unwraps/feedsportal.js'
+import { unwrapFeedValidator } from './unwraps/feedValidator.js'
 import { unwrapFinalsite } from './unwraps/finalsite.js'
 import { unwrapFirebaseDynamicLinks } from './unwraps/firebaseDynamicLinks.js'
 import { unwrapFireeye } from './unwraps/fireeye.js'
@@ -942,7 +943,7 @@ export const subscribeIntentUnwrappers: Array<UrlUnwrapper> = [
 
 // Feed validators, viewers and full-text proxies: unwrapping returns the feed the tool was
 // given, not the tool's view of it.
-export const feedToolUnwrappers: Array<UrlUnwrapper> = [unwrapW3cFeedValidator]
+export const feedToolUnwrappers: Array<UrlUnwrapper> = [unwrapFeedValidator, unwrapW3cFeedValidator]
 
 export const defaultUnwrappers: Array<UrlUnwrapper> = [
   ...searchClickUnwrappers,
