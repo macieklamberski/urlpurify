@@ -19,6 +19,13 @@ describe('unwrapSubscribeOnAndroid', () => {
     expect(unwrapSubscribeOnAndroid(value)).toBe(expected)
   })
 
+  it('should extract a feed whose host has capital letters', () => {
+    const value = new URL('http://subscribeonandroid.com/NRR.example.com/feed/')
+    const expected = 'https://NRR.example.com/feed/'
+
+    expect(unwrapSubscribeOnAndroid(value)).toBe(expected)
+  })
+
   it('should keep the query string of the feed', () => {
     const value = new URL(
       'http://subscribeonandroid.com/www.example.com/rss_search.rss?speakeronly=true&keyword=Pastor+Edward+Donnelly',
