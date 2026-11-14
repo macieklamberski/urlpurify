@@ -1,6 +1,6 @@
-import { isHostOf, isHttpUrl } from 'trousse'
+import { decodeBase64, isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { decodeBase64, getParamValues } from '../utils.js'
+import { getParamValues } from '../utils.js'
 
 const pathRegex = /^\/api\/v1\/Click\/b\/[A-Za-z0-9]+$/i
 

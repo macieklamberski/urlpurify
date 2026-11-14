@@ -1,6 +1,6 @@
-import { isHttpUrl } from 'trousse'
+import { decodeBase64, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { decodeBase64, getParamValues } from '../utils.js'
+import { getParamValues } from '../utils.js'
 
 // A forum root prefix, such as /forum/.
 const pathRegex = /^(?:\/[^/]+)?\/redirect\/?$/i

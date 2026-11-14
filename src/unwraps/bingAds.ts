@@ -1,6 +1,6 @@
-import { decodePercent, isAnyOf, isHttpUrl } from 'trousse'
+import { decodeBase64Url, decodePercent, isAnyOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { decodeBase64Url, getParamValues } from '../utils.js'
+import { getParamValues } from '../utils.js'
 import { hosts as bingHosts } from './bing.js'
 
 const adPaths = ['/aclk', '/aclick']

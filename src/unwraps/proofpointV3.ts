@@ -1,6 +1,6 @@
-import { isHostOf } from 'trousse'
+import { decodeBase64Url, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { decodeBase64Url, getUtf8ByteLength } from '../utils.js'
+import { getUtf8ByteLength } from '../utils.js'
 
 const v3PathRegex = /^\/v3\/__(.+)__;([^!]*)!/i
 

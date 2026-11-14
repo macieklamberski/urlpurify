@@ -1,6 +1,5 @@
-import { isHostOf } from 'trousse'
+import { decodeBase64UrlBinary, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { decodeBase64UrlBinary } from '../utils.js'
 
 const articleIdRegex = /^\/(?:rss\/)?articles\/([\w-]+)/i
 // Protobuf framing around the destination URL: 0x08 0x13 + length-prefixed

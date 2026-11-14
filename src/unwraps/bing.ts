@@ -1,6 +1,6 @@
-import { isAnyOf, isHttpUrl } from 'trousse'
+import { decodeBase64Url, isAnyOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { decodeBase64Url, getParamTarget, getParamValues } from '../utils.js'
+import { getParamTarget, getParamValues } from '../utils.js'
 
 export const hosts = [
   'bing.com',

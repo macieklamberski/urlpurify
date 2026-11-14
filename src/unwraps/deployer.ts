@@ -1,6 +1,6 @@
-import { hasQueryParam, isHostOf, isHttpUrl } from 'trousse'
+import { decodeBase64, hasQueryParam, isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { decodeBase64, getParamValues } from '../utils.js'
+import { getParamValues } from '../utils.js'
 
 const hosts = [
   'daily.news.humanevents.com',

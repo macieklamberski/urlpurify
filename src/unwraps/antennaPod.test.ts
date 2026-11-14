@@ -47,6 +47,24 @@ describe('unwrapAntennaPod', () => {
     expect(unwrapAntennaPod(value)).toBe(expected)
   })
 
+  it('should extract a feed from a locale with a numeric region', () => {
+    const value = new URL(
+      'https://antennapod.org/es-419/deeplink/subscribe/?url=https://example.com/@lemegaphone/feed.xml',
+    )
+    const expected = 'https://example.com/@lemegaphone/feed.xml'
+
+    expect(unwrapAntennaPod(value)).toBe(expected)
+  })
+
+  it('should extract a feed from a locale with a script', () => {
+    const value = new URL(
+      'https://antennapod.org/zh-hant/deeplink/subscribe/?url=https://example.com/@lemegaphone/feed.xml',
+    )
+    const expected = 'https://example.com/@lemegaphone/feed.xml'
+
+    expect(unwrapAntennaPod(value)).toBe(expected)
+  })
+
   it('should extract a feed on the www host', () => {
     const value = new URL(
       'https://www.antennapod.org/deeplink/subscribe/?url=https://example.com/feed.xml',

@@ -1,6 +1,6 @@
-import { isAnyOf, isHttpUrl } from 'trousse'
+import { decodeBase64Url, isAnyOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { decodeBase64Url, getParamValues } from '../utils.js'
+import { getParamValues } from '../utils.js'
 
 const hostRegex = /^mail\.yandex\.(?:com\.tr|[a-z]{2,3})$/
 

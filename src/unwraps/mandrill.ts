@@ -1,6 +1,6 @@
-import { isHostOf, isHttpUrl } from 'trousse'
+import { decodeBase64Url, isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor, decodeBase64Url, getParamValues } from '../utils.js'
+import { createParamExtractor, getParamValues } from '../utils.js'
 
 const hosts = ['go.mnsvc.com', 'mandrillapp.com']
 
