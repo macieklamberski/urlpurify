@@ -327,6 +327,7 @@ import { unwrapStorify } from './unwraps/storify.js'
 import { unwrapStreak } from './unwraps/streak.js'
 import { unwrapStreamsend } from './unwraps/streamsend.js'
 import { unwrapStumbleupon } from './unwraps/stumbleupon.js'
+import { unwrapSubscribeByEmail } from './unwraps/subscribeByEmail.js'
 import { unwrapSubscribeOnAndroid } from './unwraps/subscribeOnAndroid.js'
 import { unwrapSubscribeRu } from './unwraps/subscribeRu.js'
 import { unwrapSubstack } from './unwraps/substack.js'
@@ -915,6 +916,7 @@ export const subscribeIntentUnwrappers: Array<UrlUnwrapper> = [
   unwrapInoreader,
   unwrapPrxPlayer,
   unwrapQqMailReader,
+  unwrapSubscribeByEmail,
   unwrapSubscribeOnAndroid,
   unwrapXianguo,
 ]
