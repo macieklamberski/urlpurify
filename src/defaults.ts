@@ -215,6 +215,7 @@ import { unwrapLinkedin } from './unwraps/linkedin.js'
 import { unwrapLinksynergy } from './unwraps/linksynergy.js'
 import { unwrapLinktrust } from './unwraps/linktrust.js'
 import { unwrapLinkwise } from './unwraps/linkwise.js'
+import { unwrapLivedoorReader } from './unwraps/livedoorReader.js'
 import { unwrapLivejournal } from './unwraps/livejournal.js'
 import { unwrapLnkam } from './unwraps/lnkam.js'
 import { unwrapLocaweb } from './unwraps/locaweb.js'
@@ -927,6 +928,7 @@ export const subscribeIntentUnwrappers: Array<UrlUnwrapper> = [
   unwrapGooglePodcasts,
   unwrapGoogleReader,
   unwrapInoreader,
+  unwrapLivedoorReader,
   unwrapPlayerFm,
   unwrapPodcastAddict,
   unwrapPrxPlayer,
