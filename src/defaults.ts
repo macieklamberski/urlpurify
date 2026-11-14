@@ -14,6 +14,7 @@ import { unwrapAcast } from './unwraps/acast.js'
 import { unwrapAccesstrade } from './unwraps/accesstrade.js'
 import { unwrapAceml } from './unwraps/aceml.js'
 import { unwrapAdcell } from './unwraps/adcell.js'
+import { unwrapAddToAny } from './unwraps/addToAny.js'
 import { unwrapAdfly } from './unwraps/adfly.js'
 import { unwrapAdjust } from './unwraps/adjust.js'
 import { unwrapAdmitad } from './unwraps/admitad.js'
@@ -902,7 +903,7 @@ export const embedProxyUnwrappers: Array<UrlUnwrapper> = [
 ]
 
 // Share and bookmark buttons: unwrapping returns the shared page, not the form that shares it.
-export const shareIntentUnwrappers: Array<UrlUnwrapper> = []
+export const shareIntentUnwrappers: Array<UrlUnwrapper> = [unwrapAddToAny]
 
 // Subscribe buttons, and players and app pages carrying a feed: unwrapping returns the feed, not
 // the reader's or app's page that adds or plays it.
