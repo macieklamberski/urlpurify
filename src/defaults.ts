@@ -281,6 +281,7 @@ import { unwrapProofpointV1 } from './unwraps/proofpointV1.js'
 import { unwrapProofpointV2 } from './unwraps/proofpointV2.js'
 import { unwrapProofpointV3 } from './unwraps/proofpointV3.js'
 import { unwrapPrweb } from './unwraps/prweb.js'
+import { unwrapPrxPlayer } from './unwraps/prxPlayer.js'
 import { unwrapQualityClick } from './unwraps/qualityClick.js'
 import { unwrapRakutenAffiliate } from './unwraps/rakutenAffiliate.js'
 import { unwrapRamblerMail } from './unwraps/ramblerMail.js'
@@ -900,7 +901,7 @@ export const shareIntentUnwrappers: Array<UrlUnwrapper> = []
 
 // Subscribe buttons, and players and app pages carrying a feed: unwrapping returns the feed, not
 // the reader's or app's page that adds or plays it.
-export const subscribeIntentUnwrappers: Array<UrlUnwrapper> = []
+export const subscribeIntentUnwrappers: Array<UrlUnwrapper> = [unwrapPrxPlayer]
 
 // Feed validators, viewers and full-text proxies: unwrapping returns the feed the tool was
 // given, not the tool's view of it.
