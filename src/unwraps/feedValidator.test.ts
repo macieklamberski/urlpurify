@@ -19,9 +19,9 @@ describe('unwrapFeedValidator', () => {
       expect(unwrapFeedValidator(value)).toBe(expected)
     })
 
-    it('should extract a feed with only its scheme colon encoded from the beta host', () => {
+    it('should extract a feed with only its scheme colon encoded', () => {
       const value = new URL(
-        'http://beta.feedvalidator.org/check.cgi?url=http%3A//www.example.com/teaching/Praktika/2009ws/rnp/rss.xml',
+        'http://feedvalidator.org/check.cgi?url=http%3A//www.example.com/teaching/Praktika/2009ws/rnp/rss.xml',
       )
       const expected = 'http://www.example.com/teaching/Praktika/2009ws/rnp/rss.xml'
 
