@@ -295,6 +295,7 @@ import { unwrapRedirectingat } from './unwraps/redirectingat.js'
 import { unwrapResearchgate } from './unwraps/researchgate.js'
 import { unwrapReverbnation } from './unwraps/reverbnation.js'
 import { unwrapReviveAdserver } from './unwraps/reviveAdserver.js'
+import { unwrapRssBoardValidator } from './unwraps/rssBoardValidator.js'
 import { unwrapSalesdoubler } from './unwraps/salesdoubler.js'
 import { unwrapSalesflare } from './unwraps/salesflare.js'
 import { unwrapSalesforceiq } from './unwraps/salesforceiq.js'
@@ -917,7 +918,7 @@ export const subscribeIntentUnwrappers: Array<UrlUnwrapper> = [
 
 // Feed validators, viewers and full-text proxies: unwrapping returns the feed the tool was
 // given, not the tool's view of it.
-export const feedToolUnwrappers: Array<UrlUnwrapper> = []
+export const feedToolUnwrappers: Array<UrlUnwrapper> = [unwrapRssBoardValidator]
 
 export const defaultUnwrappers: Array<UrlUnwrapper> = [
   ...searchClickUnwrappers,
