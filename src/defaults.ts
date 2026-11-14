@@ -158,6 +158,8 @@ import { unwrapGoogleAds } from './unwraps/googleAds.js'
 import { unwrapGoogleAmpViewer } from './unwraps/googleAmpViewer.js'
 import { unwrapGoogleNews } from './unwraps/googleNews.js'
 import { unwrapGoogleNewsModern } from './unwraps/googleNewsModern.js'
+import { unwrapGooglePodcasts } from './unwraps/googlePodcasts.js'
+import { unwrapGoogleReader } from './unwraps/googleReader.js'
 import { unwrapGoogleScholar } from './unwraps/googleScholar.js'
 import { unwrapGoogleTranslate } from './unwraps/googleTranslate.js'
 import { unwrapGoogleWebLight } from './unwraps/googleWebLight.js'
@@ -383,6 +385,7 @@ import { unwrapWordpressGo2 } from './unwraps/wordpressGo2.js'
 import { unwrapWorldNomads } from './unwraps/worldNomads.js'
 import { unwrapWpPoczta } from './unwraps/wpPoczta.js'
 import { unwrapXengentr } from './unwraps/xengentr.js'
+import { unwrapXianguo } from './unwraps/xianguo.js'
 import { unwrapXiaoyuzhou } from './unwraps/xiaoyuzhou.js'
 import { unwrapXimalaya } from './unwraps/ximalaya.js'
 import { unwrapYahooImage } from './unwraps/yahooImage.js'
@@ -901,7 +904,12 @@ export const shareIntentUnwrappers: Array<UrlUnwrapper> = []
 
 // Subscribe buttons, and players and app pages carrying a feed: unwrapping returns the feed, not
 // the reader's or app's page that adds or plays it.
-export const subscribeIntentUnwrappers: Array<UrlUnwrapper> = [unwrapSubscribeOnAndroid]
+export const subscribeIntentUnwrappers: Array<UrlUnwrapper> = [
+  unwrapGooglePodcasts,
+  unwrapGoogleReader,
+  unwrapSubscribeOnAndroid,
+  unwrapXianguo,
+]
 
 // Feed validators, viewers and full-text proxies: unwrapping returns the feed the tool was
 // given, not the tool's view of it.
