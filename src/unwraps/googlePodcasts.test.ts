@@ -148,6 +148,19 @@ describe('unwrapGooglePodcasts', () => {
     expect(unwrapGooglePodcasts(value)).toBe(expected)
   })
 
+  it('should match the show path in any case', () => {
+    const value = new URL('https://podcasts.google.com/Feed/aHR0cHM6Ly9leGFtcGxlLmNvbS9mZWVk')
+    const expected = 'https://example.com/feed'
+
+    expect(unwrapGooglePodcasts(value)).toBe(expected)
+  })
+
+  it('should return undefined for a feed with text glued after its base64', () => {
+    const value = new URL('https://www.google.com/podcasts?feed=aHR0cHM6Ly9leGFtcGxlLmNvbS9mZWVk--')
+
+    expect(unwrapGooglePodcasts(value)).toBeUndefined()
+  })
+
   it('should return undefined for a non-http feed', () => {
     const value = new URL('https://podcasts.google.com/?feed=amF2YXNjcmlwdDphbGVydCgxKQ%3D%3D')
 
