@@ -11,6 +11,24 @@ describe('unwrapAnytimePlayer', () => {
     expect(unwrapAnytimePlayer(value)).toBe(expected)
   })
 
+  it('should extract the feed on the www host', () => {
+    const value = new URL(
+      'https://www.anytimeplayer.app/subscribe?url=https://example.com/@rdgp/feed.xml',
+    )
+    const expected = 'https://example.com/@rdgp/feed.xml'
+
+    expect(unwrapAnytimePlayer(value)).toBe(expected)
+  })
+
+  it('should extract the feed from the html page', () => {
+    const value = new URL(
+      'https://anytimeplayer.app/subscribe.html?url=https://example.com/@rdgp/feed.xml',
+    )
+    const expected = 'https://example.com/@rdgp/feed.xml'
+
+    expect(unwrapAnytimePlayer(value)).toBe(expected)
+  })
+
   it('should extract a percent-encoded feed url', () => {
     const value = new URL(
       'https://anytimeplayer.app/subscribe?url=https%3A%2F%2Fexample.com%2F%40rdgp%2Ffeed.xml',
