@@ -38,6 +38,15 @@ describe('unwrapAddToAnySubscribe', () => {
     expect(unwrapAddToAnySubscribe(value)).toBe(expected)
   })
 
+  it('should prefer linkurl over url', () => {
+    const value = new URL(
+      'https://www.addtoany.com/subscribe?url=https%3A%2F%2Fexample.org%2Fpage&linkurl=https%3A%2F%2Fexample.com%2Ffeed',
+    )
+    const expected = 'https://example.com/feed'
+
+    expect(unwrapAddToAnySubscribe(value)).toBe(expected)
+  })
+
   it('should extract the feed on the apex host', () => {
     const value = new URL('https://addtoany.com/subscribe?linkurl=https%3A%2F%2Fexample.com%2Ffeed')
     const expected = 'https://example.com/feed'
