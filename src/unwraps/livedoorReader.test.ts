@@ -107,4 +107,10 @@ describe('unwrapLivedoorReader', () => {
 
     expect(unwrapLivedoorReader(value)).toBeUndefined()
   })
+
+  it('should return undefined for the feed path under another path', () => {
+    const value = new URL('http://reader.livedoor.com/reader/subscribe/http://example.com/rss.xml')
+
+    expect(unwrapLivedoorReader(value)).toBeUndefined()
+  })
 })
