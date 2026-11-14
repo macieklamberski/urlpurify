@@ -144,6 +144,39 @@ describe('unwrapAddToMyYahoo', () => {
 
       expect(unwrapAddToMyYahoo(value)).toBeUndefined()
     })
+
+    it('should return undefined for an add link on a longer path', () => {
+      const value = new URL(
+        'http://us.rd.yahoo.com/my/atm/News/*http://add.my.yahoo.com/rss/extra?url=http://example.com/rss',
+      )
+
+      expect(unwrapAddToMyYahoo(value)).toBeUndefined()
+    })
+
+    it('should match the redirect path in any case', () => {
+      const value = new URL(
+        'http://us.rd.yahoo.com/MY/atm/News/*http://add.my.yahoo.com/RSS?url=http://example.com/rss',
+      )
+      const expected = 'http://example.com/rss'
+
+      expect(unwrapAddToMyYahoo(value)).toBe(expected)
+    })
+
+    it('should return undefined for an add link the module leaves wrapped', () => {
+      const value = new URL(
+        'http://us.rd.yahoo.com/my/atm/News/*http://add.my.yahoo.co.jp/content?url=http://example.com/rss',
+      )
+
+      expect(unwrapAddToMyYahoo(value)).toBeUndefined()
+    })
+
+    it('should return undefined for the myyahoo path', () => {
+      const value = new URL(
+        'http://us.rd.yahoo.com/myyahoo/rss/addtomy/users/*http://add.my.yahoo.com/rss?url=http://example.com/rss',
+      )
+
+      expect(unwrapAddToMyYahoo(value)).toBeUndefined()
+    })
   })
 
   describe('rd.yahoo.co.jp/myyahoo redirect', () => {
@@ -154,6 +187,22 @@ describe('unwrapAddToMyYahoo', () => {
       const expected = 'http://minamuranomad.example.net/index.rdf'
 
       expect(unwrapAddToMyYahoo(value)).toBe(expected)
+    })
+
+    it('should return undefined for an add link on a longer path', () => {
+      const value = new URL(
+        'http://rd.yahoo.co.jp/myyahoo/rss/addtomy/users/*http://add.my.yahoo.co.jp/rss/extra?url=http://example.com/rss',
+      )
+
+      expect(unwrapAddToMyYahoo(value)).toBeUndefined()
+    })
+
+    it('should return undefined for the my path', () => {
+      const value = new URL(
+        'http://rd.yahoo.co.jp/my/atm/News/*http://add.my.yahoo.co.jp/rss?url=http://example.com/rss',
+      )
+
+      expect(unwrapAddToMyYahoo(value)).toBeUndefined()
     })
   })
 })

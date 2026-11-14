@@ -3,11 +3,12 @@ import type { UrlUnwrapper } from '../types.js'
 import { createParamExtractor, getParamTarget } from '../utils.js'
 
 const hosts = ['add.my.yahoo.com', 'add.my.yahoo.co.jp']
-const redirectHosts = ['us.rd.yahoo.com', 'rd.yahoo.co.jp']
 
 // The add link follows the `*` unencoded, so its own query is the redirect's query.
-const redirectPathRegex =
-  /^\/(?:my|myyahoo)\/[^*]*\*https?:\/\/add\.my\.yahoo\.co(?:m|\.jp)\/(?:rss|content)$/i
+const usRedirectPathRegex =
+  /^\/my\/[^*]*\*https?:\/\/add\.my\.yahoo\.(?:com\/(?:rss|content)|co\.jp\/rss)$/i
+const jpRedirectPathRegex =
+  /^\/myyahoo\/[^*]*\*https?:\/\/add\.my\.yahoo\.(?:com\/(?:rss|content)|co\.jp\/rss)$/i
 
 const unwrapRss = createParamExtractor({ hosts, path: '/rss', params: ['url'] })
 const unwrapContent = createParamExtractor({
@@ -21,8 +22,16 @@ const unwrapContent = createParamExtractor({
 // (us.rd.yahoo.com/my/.../*<add link>, rd.yahoo.co.jp/myyahoo/.../*<add link>). Opt-in: the button
 // opens My Yahoo's page that adds the feed, not the feed.
 export const unwrapAddToMyYahoo: UrlUnwrapper = (url) => {
-  if (isHostOf(url, redirectHosts)) {
-    if (!isAnyOf(url.pathname, redirectPathRegex)) {
+  if (isHostOf(url, 'us.rd.yahoo.com')) {
+    if (!isAnyOf(url.pathname, usRedirectPathRegex)) {
+      return
+    }
+
+    return getParamTarget(url, 'url')
+  }
+
+  if (isHostOf(url, 'rd.yahoo.co.jp')) {
+    if (!isAnyOf(url.pathname, jpRedirectPathRegex)) {
       return
     }
 
