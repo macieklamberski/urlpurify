@@ -20,6 +20,15 @@ describe('unwrapRssBoardValidator', () => {
     expect(unwrapRssBoardValidator(value)).toBe(expected)
   })
 
+  it('should extract a feed on the bare host', () => {
+    const value = new URL(
+      'https://rssboard.org/rss-validator/check.cgi?url=https%3A%2F%2Fexample.com%2Frss%2F2921',
+    )
+    const expected = 'https://example.com/rss/2921'
+
+    expect(unwrapRssBoardValidator(value)).toBe(expected)
+  })
+
   it('should extract a twice-encoded feed', () => {
     const value = new URL(
       'https://www.rssboard.org/rss-validator/check.cgi?url=https%253A%252F%252Fexample.com%252Ffeed%252F',
