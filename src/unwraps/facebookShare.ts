@@ -12,11 +12,11 @@ const hosts = [
 
 const sharerPathRegex = /^\/(?:sharer(?:\/sharer)?(?:\.php)?|share\.php)\/?$/i
 const shareDialogPathRegex = /^\/dialog\/share\/?$/i
-const feedDialogPathRegex = /^\/dialog\/feed\/?$/i
+const linkDialogPathRegex = /^\/dialog\/(?:feed|send)\/?$/i
 
 // Facebook share (facebook.com/sharer/sharer.php?u=<target>, also /sharer.php, /share.php, /sharer,
-// legacy p[url]=, /dialog/share?href=, /dialog/feed?link=, never their redirect_uri). Opt-in:
-// unwrapping returns the shared page, not the form that shares it.
+// legacy p[url]=, /dialog/share?href=, /dialog/feed and /dialog/send ?link=, never redirect_uri).
+// Opt-in: unwrapping returns the shared page, not the form that shares it.
 export const unwrapFacebookShare: UrlUnwrapper = (url) => {
   if (!isHostOf(url, hosts)) {
     return
@@ -30,7 +30,7 @@ export const unwrapFacebookShare: UrlUnwrapper = (url) => {
     return getParamTarget(url, 'href')
   }
 
-  if (feedDialogPathRegex.test(url.pathname)) {
+  if (linkDialogPathRegex.test(url.pathname)) {
     return getParamTarget(url, 'link')
   }
 }

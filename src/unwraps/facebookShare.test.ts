@@ -104,6 +104,15 @@ describe('unwrapFacebookShare', () => {
     expect(unwrapFacebookShare(value)).toBe(expected)
   })
 
+  it('should extract the target from the send dialog over its redirect_uri', () => {
+    const value = new URL(
+      'http://www.facebook.com/dialog/send?app_id=891268654262273&redirect_uri=https%3A%2F%2Fexample.org%2Fdone%2F&link=https%3A%2F%2Fexample.com%2Fman-arrested-after-dropping-meth-inside-walmart-2%2F&display=popup',
+    )
+    const expected = 'https://example.com/man-arrested-after-dropping-meth-inside-walmart-2/'
+
+    expect(unwrapFacebookShare(value)).toBe(expected)
+  })
+
   it('should read href over redirect_uri in the share dialog', () => {
     const value = new URL(
       'https://facebook.com/dialog/share?app_id=220580041311284&display=page&redirect_uri=https%3A%2F%2Fexample.org%2Fdone&href=https%3A%2F%2Fexample.com%2Fblog%2Fforgiveness',
@@ -140,14 +149,6 @@ describe('unwrapFacebookShare', () => {
   it('should return undefined for the share dialog with only a redirect_uri', () => {
     const value = new URL(
       'https://www.facebook.com/dialog/share?app_id=180444840287&redirect_uri=https%3A%2F%2Fexample.org%2Fdone',
-    )
-
-    expect(unwrapFacebookShare(value)).toBeUndefined()
-  })
-
-  it('should return undefined for the send dialog', () => {
-    const value = new URL(
-      'https://www.facebook.com/dialog/send?app_id=180444840287&link=https%3A%2F%2Fexample.com%2Fpost&redirect_uri=https%3A%2F%2Fexample.org%2Fdone',
     )
 
     expect(unwrapFacebookShare(value)).toBeUndefined()
