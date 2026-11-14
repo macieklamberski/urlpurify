@@ -61,9 +61,9 @@ describe('unwrapFeedland', () => {
     expect(unwrapFeedland(value)).toBeUndefined()
   })
 
-  it('should return undefined for the reading list api on another path', () => {
+  it('should return undefined for the river param on another path', () => {
     const value = new URL(
-      'https://feedland.org/getriverfromreadinglist?url=https://example.org/artshow.opml',
+      'https://feedland.org/getriverfromreadinglist?river=http://data.feedland.org/feeds/dave.xml',
     )
 
     expect(unwrapFeedland(value)).toBeUndefined()
