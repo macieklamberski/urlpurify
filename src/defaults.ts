@@ -57,6 +57,7 @@ import { unwrapBitrix } from './unwraps/bitrix.js'
 import { unwrapBitrixBanner } from './unwraps/bitrixBanner.js'
 import { unwrapBizrate } from './unwraps/bizrate.js'
 import { unwrapBloggerImageProxy } from './unwraps/bloggerImageProxy.js'
+import { unwrapBloglines } from './unwraps/bloglines.js'
 import { unwrapBlubrry } from './unwraps/blubrry.js'
 import { unwrapBolPartner } from './unwraps/bolPartner.js'
 import { unwrapBridgyFed } from './unwraps/bridgyFed.js'
@@ -907,6 +908,7 @@ export const shareIntentUnwrappers: Array<UrlUnwrapper> = []
 // Subscribe buttons, and players and app pages carrying a feed: unwrapping returns the feed, not
 // the reader's or app's page that adds or plays it.
 export const subscribeIntentUnwrappers: Array<UrlUnwrapper> = [
+  unwrapBloglines,
   unwrapGooglePodcasts,
   unwrapGoogleReader,
   unwrapPrxPlayer,
