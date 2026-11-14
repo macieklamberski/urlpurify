@@ -52,13 +52,74 @@ describe('unwrapGooglePodcasts', () => {
     expect(unwrapGooglePodcasts(value)).toBe(expected)
   })
 
-  it('should decode the feed of an episode link with app params', () => {
+  it('should decode a feed with app params beside it', () => {
+    const value = new URL(
+      'https://podcasts.google.com/?feed=aHR0cHM6Ly9leGFtcGxlLmNvbS9mZWVk&sa=X&ved=2ahUKEwiVzq2bmrTmAhXPpFkKHXpQBvAQjrkEegQIARAS&hl=en&ep=14',
+    )
+    const expected = 'https://example.com/feed'
+
+    expect(unwrapGooglePodcasts(value)).toBe(expected)
+  })
+
+  it('should return undefined for an episode link with a query feed', () => {
     const value = new URL(
       'https://podcasts.google.com/?feed=aHR0cDovL2V4YW1wbGUuY29tL3VzZXJzL3NvdW5kY2xvdWQ6dXNlcnM6MzM1NTUzOTA4L3NvdW5kcy5yc3M&episode=dGFnOnNvdW5kY2xvdWQsMjAxMDp0cmFja3MvNjIyMzEzMjk1&hl=en&ep=6',
     )
-    const expected = 'http://example.com/users/soundcloud:users:335553908/sounds.rss'
+
+    expect(unwrapGooglePodcasts(value)).toBeUndefined()
+  })
+
+  it('should decode a feed from the show page path', () => {
+    const value = new URL('https://podcasts.google.com/feed/aHR0cHM6Ly9leGFtcGxlLmNvbS9mZWVk')
+    const expected = 'https://example.com/feed'
 
     expect(unwrapGooglePodcasts(value)).toBe(expected)
+  })
+
+  it('should decode a padded feed from the show page path with app params', () => {
+    const value = new URL(
+      'https://podcasts.google.com/feed/aHR0cHM6Ly9leGFtcGxlLmNvbS9mZWVkL21wMw==?sa=X&ved=2ahUKEwiVzq2bmrTmAhXPpFkKHXpQBvAQjrkEegQIARAS',
+    )
+    const expected = 'https://example.com/feed/mp3'
+
+    expect(unwrapGooglePodcasts(value)).toBe(expected)
+  })
+
+  it('should decode a feed padded with a percent-encoded equals sign in the path', () => {
+    const value = new URL(
+      'https://podcasts.google.com/feed/aHR0cDovL2V4YW1wbGUuY29tL2ZlZWRzL3BvZGNhc3Q%3D',
+    )
+    const expected = 'http://example.com/feeds/podcast'
+
+    expect(unwrapGooglePodcasts(value)).toBe(expected)
+  })
+
+  it('should decode a feed from the show page path under an account prefix', () => {
+    const value = new URL('https://podcasts.google.com/u/1/feed/aHR0cHM6Ly9leGFtcGxlLmNvbS9mZWVk')
+    const expected = 'https://example.com/feed'
+
+    expect(unwrapGooglePodcasts(value)).toBe(expected)
+  })
+
+  it('should decode a feed from the show page path with a trailing slash', () => {
+    const value = new URL('https://podcasts.google.com/feed/aHR0cHM6Ly9leGFtcGxlLmNvbS9mZWVk/')
+    const expected = 'https://example.com/feed'
+
+    expect(unwrapGooglePodcasts(value)).toBe(expected)
+  })
+
+  it('should return undefined for an episode page path', () => {
+    const value = new URL(
+      'https://podcasts.google.com/feed/aHR0cHM6Ly9leGFtcGxlLmNvbS9mZWVk/episode/dGFnOnNvdW5kY2xvdWQsMjAxMDp0cmFja3MvNjIyMzEzMjk1',
+    )
+
+    expect(unwrapGooglePodcasts(value)).toBeUndefined()
+  })
+
+  it('should return undefined for the show page path on www.google.com', () => {
+    const value = new URL('https://www.google.com/feed/aHR0cHM6Ly9leGFtcGxlLmNvbS9mZWVk')
+
+    expect(unwrapGooglePodcasts(value)).toBeUndefined()
   })
 
   it('should decode a feed from subscribe-by-rss-feed', () => {
