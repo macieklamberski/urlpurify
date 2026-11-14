@@ -141,6 +141,7 @@ import { unwrapFanbridge } from './unwraps/fanbridge.js'
 import { unwrapFederatedMedia } from './unwraps/federatedMedia.js'
 import { unwrapFeedblitz } from './unwraps/feedblitz.js'
 import { unwrapFeedland } from './unwraps/feedland.js'
+import { unwrapFeedly } from './unwraps/feedly.js'
 import { unwrapFeedStatistics } from './unwraps/feedStatistics.js'
 import { unwrapFeedsportal } from './unwraps/feedsportal.js'
 import { unwrapFinalsite } from './unwraps/finalsite.js'
@@ -925,6 +926,7 @@ export const subscribeIntentUnwrappers: Array<UrlUnwrapper> = [
   unwrapAnytimePlayer,
   unwrapBloglines,
   unwrapFeedland,
+  unwrapFeedly,
   unwrapGooglePodcasts,
   unwrapGoogleReader,
   unwrapInoreader,
