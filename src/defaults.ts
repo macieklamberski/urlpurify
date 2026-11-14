@@ -187,6 +187,7 @@ import { unwrapImagekit } from './unwraps/imagekit.js'
 import { unwrapImpact } from './unwraps/impact.js'
 import { unwrapIndexHu } from './unwraps/indexHu.js'
 import { unwrapInfospace } from './unwraps/infospace.js'
+import { unwrapInoreader } from './unwraps/inoreader.js'
 import { unwrapInsiderAffiliate } from './unwraps/insiderAffiliate.js'
 import { unwrapInstagramShim } from './unwraps/instagram.js'
 import { unwrapIntranetQuorum } from './unwraps/intranetQuorum.js'
@@ -911,6 +912,7 @@ export const subscribeIntentUnwrappers: Array<UrlUnwrapper> = [
   unwrapFeedland,
   unwrapGooglePodcasts,
   unwrapGoogleReader,
+  unwrapInoreader,
   unwrapPrxPlayer,
   unwrapQqMailReader,
   unwrapSubscribeOnAndroid,
