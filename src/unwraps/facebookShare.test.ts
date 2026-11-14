@@ -154,9 +154,18 @@ describe('unwrapFacebookShare', () => {
     expect(unwrapFacebookShare(value)).toBeUndefined()
   })
 
-  it('should return undefined for the oauth dialog', () => {
+  it('should return undefined for the feed dialog with only a redirect_uri', () => {
     const value = new URL(
-      'https://www.facebook.com/dialog/oauth?client_id=180444840287&redirect_uri=https%3A%2F%2Fexample.org%2Fdone',
+      'https://www.facebook.com/dialog/feed?_path=feed&app_id=292970214170969&redirect_uri=https%3A%2F%2Fexample.org%2Fdone',
+    )
+
+    expect(unwrapFacebookShare(value)).toBeUndefined()
+  })
+
+  it('should return undefined for the oauth dialog', () => {
+    // The link= and href= params are constructed: no oauth link in the walk carries them.
+    const value = new URL(
+      'https://www.facebook.com/dialog/oauth?client_id=180444840287&redirect_uri=https%3A%2F%2Fexample.org%2Fdone&link=https%3A%2F%2Fexample.com%2Fpost&href=https%3A%2F%2Fexample.com%2Fpost',
     )
 
     expect(unwrapFacebookShare(value)).toBeUndefined()
