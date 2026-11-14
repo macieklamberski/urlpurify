@@ -158,6 +158,8 @@ import { unwrapGoogleAds } from './unwraps/googleAds.js'
 import { unwrapGoogleAmpViewer } from './unwraps/googleAmpViewer.js'
 import { unwrapGoogleNews } from './unwraps/googleNews.js'
 import { unwrapGoogleNewsModern } from './unwraps/googleNewsModern.js'
+import { unwrapGooglePodcasts } from './unwraps/googlePodcasts.js'
+import { unwrapGoogleReader } from './unwraps/googleReader.js'
 import { unwrapGoogleScholar } from './unwraps/googleScholar.js'
 import { unwrapGoogleTranslate } from './unwraps/googleTranslate.js'
 import { unwrapGoogleWebLight } from './unwraps/googleWebLight.js'
@@ -281,6 +283,7 @@ import { unwrapProofpointV1 } from './unwraps/proofpointV1.js'
 import { unwrapProofpointV2 } from './unwraps/proofpointV2.js'
 import { unwrapProofpointV3 } from './unwraps/proofpointV3.js'
 import { unwrapPrweb } from './unwraps/prweb.js'
+import { unwrapPrxPlayer } from './unwraps/prxPlayer.js'
 import { unwrapQqMailReader } from './unwraps/qqMailReader.js'
 import { unwrapQualityClick } from './unwraps/qualityClick.js'
 import { unwrapRakutenAffiliate } from './unwraps/rakutenAffiliate.js'
@@ -322,6 +325,7 @@ import { unwrapStorify } from './unwraps/storify.js'
 import { unwrapStreak } from './unwraps/streak.js'
 import { unwrapStreamsend } from './unwraps/streamsend.js'
 import { unwrapStumbleupon } from './unwraps/stumbleupon.js'
+import { unwrapSubscribeOnAndroid } from './unwraps/subscribeOnAndroid.js'
 import { unwrapSubscribeRu } from './unwraps/subscribeRu.js'
 import { unwrapSubstack } from './unwraps/substack.js'
 import { unwrapSurly } from './unwraps/surly.js'
@@ -383,6 +387,7 @@ import { unwrapWordpressGo2 } from './unwraps/wordpressGo2.js'
 import { unwrapWorldNomads } from './unwraps/worldNomads.js'
 import { unwrapWpPoczta } from './unwraps/wpPoczta.js'
 import { unwrapXengentr } from './unwraps/xengentr.js'
+import { unwrapXianguo } from './unwraps/xianguo.js'
 import { unwrapXiaoyuzhou } from './unwraps/xiaoyuzhou.js'
 import { unwrapXimalaya } from './unwraps/ximalaya.js'
 import { unwrapYahooImage } from './unwraps/yahooImage.js'
@@ -901,7 +906,14 @@ export const shareIntentUnwrappers: Array<UrlUnwrapper> = []
 
 // Subscribe buttons, and players and app pages carrying a feed: unwrapping returns the feed, not
 // the reader's or app's page that adds or plays it.
-export const subscribeIntentUnwrappers: Array<UrlUnwrapper> = [unwrapQqMailReader]
+export const subscribeIntentUnwrappers: Array<UrlUnwrapper> = [
+  unwrapGooglePodcasts,
+  unwrapGoogleReader,
+  unwrapPrxPlayer,
+  unwrapQqMailReader,
+  unwrapSubscribeOnAndroid,
+  unwrapXianguo,
+]
 
 // Feed validators, viewers and full-text proxies: unwrapping returns the feed the tool was
 // given, not the tool's view of it.
