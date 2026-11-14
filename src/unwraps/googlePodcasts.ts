@@ -2,7 +2,7 @@ import { decodePercent, isAnyOf, isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { decodeBase64Url, getParamValues } from '../utils.js'
 
-const showPathRegex = /^\/(?:u\/\d+\/)?feed\/([\w%=-]+)\/?$/i
+const showPathRegex = /^\/(?:u\/\d+\/)?feed\/([\w%=-]+)(?:\/episode\/[\w%=-]+)?\/?$/i
 
 const appHosts = ['podcasts.google.com']
 const appPaths = ['/', '/subscribe-by-rss-feed']
@@ -24,17 +24,12 @@ const getEncodedFeed = (url: URL): string | undefined => {
     return
   }
 
-  // An episode link carries its episode in `episode=`, which the feed alone does not reach.
-  if (getParamValues(url, 'episode').length > 0) {
-    return
-  }
-
   return getParamValues(url, 'feed').at(0)
 }
 
-// Google Podcasts show and app pages (podcasts.google.com/feed/<base64 feed>, also under /u/<n>/,
-// and ?feed=<base64 feed> on /, /subscribe-by-rss-feed and www.google.com/podcasts). Not included
-// in defaultUnwrappers: the link opens the app's page, not the feed it carries.
+// Google Podcasts show, episode and app pages (podcasts.google.com/feed/<base64 feed>, with
+// /episode/<id> or under /u/<n>/, and ?feed=<base64 feed> on /, /subscribe-by-rss-feed and
+// www.google.com/podcasts). Not included in defaultUnwrappers: the link opens the app's page.
 export const unwrapGooglePodcasts: UrlUnwrapper = (url) => {
   const encoded = getEncodedFeed(url)
 

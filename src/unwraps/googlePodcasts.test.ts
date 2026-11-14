@@ -61,12 +61,13 @@ describe('unwrapGooglePodcasts', () => {
     expect(unwrapGooglePodcasts(value)).toBe(expected)
   })
 
-  it('should return undefined for an episode link with a query feed', () => {
+  it('should decode the show feed of an episode link with a query feed', () => {
     const value = new URL(
       'https://podcasts.google.com/?feed=aHR0cDovL2V4YW1wbGUuY29tL3VzZXJzL3NvdW5kY2xvdWQ6dXNlcnM6MzM1NTUzOTA4L3NvdW5kcy5yc3M&episode=dGFnOnNvdW5kY2xvdWQsMjAxMDp0cmFja3MvNjIyMzEzMjk1&hl=en&ep=6',
     )
+    const expected = 'http://example.com/users/soundcloud:users:335553908/sounds.rss'
 
-    expect(unwrapGooglePodcasts(value)).toBeUndefined()
+    expect(unwrapGooglePodcasts(value)).toBe(expected)
   })
 
   it('should decode a feed from the show page path', () => {
@@ -108,9 +109,18 @@ describe('unwrapGooglePodcasts', () => {
     expect(unwrapGooglePodcasts(value)).toBe(expected)
   })
 
-  it('should return undefined for an episode page path', () => {
+  it('should decode the show feed of an episode page path', () => {
     const value = new URL(
-      'https://podcasts.google.com/feed/aHR0cHM6Ly9leGFtcGxlLmNvbS9mZWVk/episode/dGFnOnNvdW5kY2xvdWQsMjAxMDp0cmFja3MvNjIyMzEzMjk1',
+      'https://podcasts.google.com/feed/aHR0cHM6Ly9leGFtcGxlLmNvbS9mZWVk/episode/dGFnOnNvdW5kY2xvdWQsMjAxMDp0cmFja3MvNjIyMzEzMjk1?sa=X&ved=0CAUQkfYCahcKEwiA1q2bmrTmAhUAAAAAHQAAAAAQAQ',
+    )
+    const expected = 'https://example.com/feed'
+
+    expect(unwrapGooglePodcasts(value)).toBe(expected)
+  })
+
+  it('should return undefined for an episode page path without an id', () => {
+    const value = new URL(
+      'https://podcasts.google.com/feed/aHR0cHM6Ly9leGFtcGxlLmNvbS9mZWVk/episode/',
     )
 
     expect(unwrapGooglePodcasts(value)).toBeUndefined()
