@@ -375,6 +375,7 @@ import { unwrapVocus } from './unwraps/vocus.js'
 import { unwrapVoxnest } from './unwraps/voxnest.js'
 import { unwrapVpixl } from './unwraps/vpixl.js'
 import { unwrapVuture } from './unwraps/vuture.js'
+import { unwrapW3cFeedValidator } from './unwraps/w3cFeedValidator.js'
 import { unwrapWebArchive } from './unwraps/webArchive.js'
 import { unwrapWebcitation } from './unwraps/webcitation.js'
 import { unwrapWebgains } from './unwraps/webgains.js'
@@ -917,7 +918,7 @@ export const subscribeIntentUnwrappers: Array<UrlUnwrapper> = [
 
 // Feed validators, viewers and full-text proxies: unwrapping returns the feed the tool was
 // given, not the tool's view of it.
-export const feedToolUnwrappers: Array<UrlUnwrapper> = []
+export const feedToolUnwrappers: Array<UrlUnwrapper> = [unwrapW3cFeedValidator]
 
 export const defaultUnwrappers: Array<UrlUnwrapper> = [
   ...searchClickUnwrappers,
