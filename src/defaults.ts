@@ -321,6 +321,7 @@ import { unwrapStorify } from './unwraps/storify.js'
 import { unwrapStreak } from './unwraps/streak.js'
 import { unwrapStreamsend } from './unwraps/streamsend.js'
 import { unwrapStumbleupon } from './unwraps/stumbleupon.js'
+import { unwrapSubscribeOnAndroid } from './unwraps/subscribeOnAndroid.js'
 import { unwrapSubscribeRu } from './unwraps/subscribeRu.js'
 import { unwrapSubstack } from './unwraps/substack.js'
 import { unwrapSurly } from './unwraps/surly.js'
@@ -900,7 +901,7 @@ export const shareIntentUnwrappers: Array<UrlUnwrapper> = []
 
 // Subscribe buttons, and players and app pages carrying a feed: unwrapping returns the feed, not
 // the reader's or app's page that adds or plays it.
-export const subscribeIntentUnwrappers: Array<UrlUnwrapper> = []
+export const subscribeIntentUnwrappers: Array<UrlUnwrapper> = [unwrapSubscribeOnAndroid]
 
 // Feed validators, viewers and full-text proxies: unwrapping returns the feed the tool was
 // given, not the tool's view of it.
