@@ -284,6 +284,7 @@ import { unwrapProofpointV2 } from './unwraps/proofpointV2.js'
 import { unwrapProofpointV3 } from './unwraps/proofpointV3.js'
 import { unwrapPrweb } from './unwraps/prweb.js'
 import { unwrapPrxPlayer } from './unwraps/prxPlayer.js'
+import { unwrapQqMailReader } from './unwraps/qqMailReader.js'
 import { unwrapQualityClick } from './unwraps/qualityClick.js'
 import { unwrapRakutenAffiliate } from './unwraps/rakutenAffiliate.js'
 import { unwrapRamblerMail } from './unwraps/ramblerMail.js'
@@ -909,6 +910,7 @@ export const subscribeIntentUnwrappers: Array<UrlUnwrapper> = [
   unwrapGooglePodcasts,
   unwrapGoogleReader,
   unwrapPrxPlayer,
+  unwrapQqMailReader,
   unwrapSubscribeOnAndroid,
   unwrapXianguo,
 ]
