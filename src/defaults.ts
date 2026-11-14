@@ -366,6 +366,7 @@ import { unwrapTriplelift } from './unwraps/triplelift.js'
 import { unwrapTrustwaveScanmail } from './unwraps/trustwaveScanmail.js'
 import { unwrapTrxHub } from './unwraps/trxHub.js'
 import { unwrapTumblr } from './unwraps/tumblr.js'
+import { unwrapTwitterIntent } from './unwraps/twitterIntent.js'
 import { unwrapTwitterRedirect } from './unwraps/twitterRedirect.js'
 import { unwrapTwoCheckout } from './unwraps/twoCheckout.js'
 import { unwrapUinterbox } from './unwraps/uinterbox.js'
@@ -918,7 +919,7 @@ export const embedProxyUnwrappers: Array<UrlUnwrapper> = [
 ]
 
 // Share and bookmark buttons: unwrapping returns the shared page, not the form that shares it.
-export const shareIntentUnwrappers: Array<UrlUnwrapper> = []
+export const shareIntentUnwrappers: Array<UrlUnwrapper> = [unwrapTwitterIntent]
 
 // Subscribe buttons, and players and app pages carrying a feed: unwrapping returns the feed, not
 // the reader's or app's page that adds or plays it.
