@@ -125,6 +125,12 @@ describe('unwrapInoreader', () => {
       expect(unwrapInoreader(value)).toBeUndefined()
     })
 
+    it('should return undefined for a feed path on another host', () => {
+      const value = new URL('https://notinoreader.com/feed/https%3A%2F%2Fexample.com%2Ffeed%2F')
+
+      expect(unwrapInoreader(value)).toBeUndefined()
+    })
+
     it('should return undefined for a feed path under another prefix', () => {
       const value = new URL('https://www.inoreader.com/x/feed/https%3A%2F%2Fexample.com%2Ffeed%2F')
 
