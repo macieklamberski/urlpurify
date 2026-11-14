@@ -135,6 +135,7 @@ import { unwrapFacebookShim } from './unwraps/facebook.js'
 import { unwrapFanbridge } from './unwraps/fanbridge.js'
 import { unwrapFederatedMedia } from './unwraps/federatedMedia.js'
 import { unwrapFeedblitz } from './unwraps/feedblitz.js'
+import { unwrapFeedland } from './unwraps/feedland.js'
 import { unwrapFeedStatistics } from './unwraps/feedStatistics.js'
 import { unwrapFeedsportal } from './unwraps/feedsportal.js'
 import { unwrapFinalsite } from './unwraps/finalsite.js'
@@ -186,6 +187,7 @@ import { unwrapImagekit } from './unwraps/imagekit.js'
 import { unwrapImpact } from './unwraps/impact.js'
 import { unwrapIndexHu } from './unwraps/indexHu.js'
 import { unwrapInfospace } from './unwraps/infospace.js'
+import { unwrapInoreader } from './unwraps/inoreader.js'
 import { unwrapInsiderAffiliate } from './unwraps/insiderAffiliate.js'
 import { unwrapInstagramShim } from './unwraps/instagram.js'
 import { unwrapIntranetQuorum } from './unwraps/intranetQuorum.js'
@@ -325,6 +327,7 @@ import { unwrapStorify } from './unwraps/storify.js'
 import { unwrapStreak } from './unwraps/streak.js'
 import { unwrapStreamsend } from './unwraps/streamsend.js'
 import { unwrapStumbleupon } from './unwraps/stumbleupon.js'
+import { unwrapSubscribeByEmail } from './unwraps/subscribeByEmail.js'
 import { unwrapSubscribeOnAndroid } from './unwraps/subscribeOnAndroid.js'
 import { unwrapSubscribeRu } from './unwraps/subscribeRu.js'
 import { unwrapSubstack } from './unwraps/substack.js'
@@ -908,10 +911,13 @@ export const shareIntentUnwrappers: Array<UrlUnwrapper> = []
 // Subscribe buttons, and players and app pages carrying a feed: unwrapping returns the feed, not
 // the reader's or app's page that adds or plays it.
 export const subscribeIntentUnwrappers: Array<UrlUnwrapper> = [
+  unwrapFeedland,
   unwrapGooglePodcasts,
   unwrapGoogleReader,
+  unwrapInoreader,
   unwrapPrxPlayer,
   unwrapQqMailReader,
+  unwrapSubscribeByEmail,
   unwrapSubscribeOnAndroid,
   unwrapXianguo,
 ]
