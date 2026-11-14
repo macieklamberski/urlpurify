@@ -86,6 +86,15 @@ describe('unwrapTwitterIntent', () => {
     expect(unwrapTwitterIntent(value)).toBe(expected)
   })
 
+  it('should extract url and ignore a url held in text', () => {
+    const value = new URL(
+      'https://twitter.com/intent/tweet?text=https%3A%2F%2Fwww.example.es%2F+%E2%80%94+Santos+Barber&url=https%3A%2F%2Fexample.com%2Ffeed%2F',
+    )
+    const expected = 'https://example.com/feed/'
+
+    expect(unwrapTwitterIntent(value)).toBe(expected)
+  })
+
   it('should return undefined for a url held only in text', () => {
     const value = new URL(
       'https://twitter.com/intent/tweet?text=https://example.com/differentiate-product-competition/',
