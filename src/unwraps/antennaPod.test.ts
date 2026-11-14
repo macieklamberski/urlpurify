@@ -76,6 +76,14 @@ describe('unwrapAntennaPod', () => {
     expect(unwrapAntennaPod(value)).toBeUndefined()
   })
 
+  it('should return undefined for a path past the subscribe page', () => {
+    const value = new URL(
+      'https://antennapod.org/deeplink/subscribe/extra?url=https://example.com/feed.xml',
+    )
+
+    expect(unwrapAntennaPod(value)).toBeUndefined()
+  })
+
   it('should return undefined for a prefix the site has no locale for', () => {
     const value = new URL(
       'https://antennapod.org/pt/deeplink/subscribe/?url=https://example.com/feed.xml',
