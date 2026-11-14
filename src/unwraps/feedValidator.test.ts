@@ -73,6 +73,15 @@ describe('unwrapFeedValidator', () => {
       expect(unwrapFeedValidator(value)).toBe(expected)
     })
 
+    it('should extract a feed from check', () => {
+      const value = new URL(
+        'http://www.atomenabled.org/feedvalidator/check?url=http://atomenabled.org/developers/syndication/atombad.xml',
+      )
+      const expected = 'http://atomenabled.org/developers/syndication/atombad.xml'
+
+      expect(unwrapFeedValidator(value)).toBe(expected)
+    })
+
     it('should return undefined for check.cgi outside the validator folder', () => {
       const value = new URL('http://www.atomenabled.org/check.cgi?url=https://example.com/atom.xml')
 
@@ -84,6 +93,15 @@ describe('unwrapFeedValidator', () => {
     it('should extract a raw feed', () => {
       const value = new URL(
         'http://feeds.archive.org/validator/check?url=http://www.example.com/rss/',
+      )
+      const expected = 'http://www.example.com/rss/'
+
+      expect(unwrapFeedValidator(value)).toBe(expected)
+    })
+
+    it('should extract a feed from check.cgi', () => {
+      const value = new URL(
+        'http://feeds.archive.org/validator/check.cgi?url=http://www.example.com/rss/',
       )
       const expected = 'http://www.example.com/rss/'
 
@@ -102,6 +120,20 @@ describe('unwrapFeedValidator', () => {
   describe('another host', () => {
     it('should return undefined for the shape on another host', () => {
       const value = new URL('https://example.com/check.cgi?url=https://example.com/feed/')
+
+      expect(unwrapFeedValidator(value)).toBeUndefined()
+    })
+
+    it('should return undefined for the atomenabled.org folder on another host', () => {
+      const value = new URL(
+        'https://example.com/feedvalidator/check.cgi?url=https://example.com/atom.xml',
+      )
+
+      expect(unwrapFeedValidator(value)).toBeUndefined()
+    })
+
+    it('should return undefined for the feeds.archive.org folder on another host', () => {
+      const value = new URL('https://example.com/validator/check?url=https://example.com/rss/')
 
       expect(unwrapFeedValidator(value)).toBeUndefined()
     })
