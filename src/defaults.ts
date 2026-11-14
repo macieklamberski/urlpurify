@@ -137,6 +137,7 @@ import { unwrapFederatedMedia } from './unwraps/federatedMedia.js'
 import { unwrapFeedblitz } from './unwraps/feedblitz.js'
 import { unwrapFeedStatistics } from './unwraps/feedStatistics.js'
 import { unwrapFeedsportal } from './unwraps/feedsportal.js'
+import { unwrapFeedValidator } from './unwraps/feedValidator.js'
 import { unwrapFinalsite } from './unwraps/finalsite.js'
 import { unwrapFirebaseDynamicLinks } from './unwraps/firebaseDynamicLinks.js'
 import { unwrapFireeye } from './unwraps/fireeye.js'
@@ -917,7 +918,7 @@ export const subscribeIntentUnwrappers: Array<UrlUnwrapper> = [
 
 // Feed validators, viewers and full-text proxies: unwrapping returns the feed the tool was
 // given, not the tool's view of it.
-export const feedToolUnwrappers: Array<UrlUnwrapper> = []
+export const feedToolUnwrappers: Array<UrlUnwrapper> = [unwrapFeedValidator]
 
 export const defaultUnwrappers: Array<UrlUnwrapper> = [
   ...searchClickUnwrappers,
