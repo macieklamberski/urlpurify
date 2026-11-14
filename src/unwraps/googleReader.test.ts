@@ -26,22 +26,12 @@ describe('unwrapGoogleReader', () => {
       expect(unwrapGoogleReader(value)).toBe(expected)
     })
 
-    it('should extract a moduleurl', () => {
+    it('should return undefined for a moduleurl', () => {
       const value = new URL(
         'http://fusion.google.com/add?source=atgs&moduleurl=http%3A//www.example.com/alert/gadget.xml',
       )
-      const expected = 'http://www.example.com/alert/gadget.xml'
 
-      expect(unwrapGoogleReader(value)).toBe(expected)
-    })
-
-    it('should prefer feedurl over moduleurl', () => {
-      const value = new URL(
-        'http://fusion.google.com/add?moduleurl=http://example.com/gadget.xml&feedurl=http://example.com/feed',
-      )
-      const expected = 'http://example.com/feed'
-
-      expect(unwrapGoogleReader(value)).toBe(expected)
+      expect(unwrapGoogleReader(value)).toBeUndefined()
     })
 
     it('should return undefined without a carrier', () => {
@@ -67,23 +57,20 @@ describe('unwrapGoogleReader', () => {
       expect(unwrapGoogleReader(value)).toBe(expected)
     })
 
-    it('should extract a moduleurl from /ig/add on fusion.google.com', () => {
+    it('should return undefined for a moduleurl on /ig/add on fusion.google.com', () => {
       const value = new URL(
         'http://fusion.google.com/ig/add?synd=open&source=ggyp&moduleurl=http://example.com/ig/gadgets/file/101307934535771975753/genealogisch_nieuws2.xml',
       )
-      const expected =
-        'http://example.com/ig/gadgets/file/101307934535771975753/genealogisch_nieuws2.xml'
 
-      expect(unwrapGoogleReader(value)).toBe(expected)
+      expect(unwrapGoogleReader(value)).toBeUndefined()
     })
 
-    it('should extract a moduleurl from /ig/adde', () => {
+    it('should return undefined for a moduleurl on /ig/adde', () => {
       const value = new URL(
         'http://www.google.com/ig/adde?moduleurl=http://example.com/news/rss/&source=imag',
       )
-      const expected = 'http://example.com/news/rss/'
 
-      expect(unwrapGoogleReader(value)).toBe(expected)
+      expect(unwrapGoogleReader(value)).toBeUndefined()
     })
 
     it('should extract a feedurl from /ig/addtoreader before its url param', () => {
@@ -155,6 +142,24 @@ describe('unwrapGoogleReader', () => {
       expect(unwrapGoogleReader(value)).toBe(expected)
     })
 
+    it('should extract a feed from the mobile path', () => {
+      const value = new URL(
+        'http://www.google.com/reader/m/view/feed/https://example.wordpress.com/feed/',
+      )
+      const expected = 'https://example.wordpress.com/feed/'
+
+      expect(unwrapGoogleReader(value)).toBe(expected)
+    })
+
+    it('should extract a feed from the lite path', () => {
+      const value = new URL(
+        'http://www.google.com/reader/lite/feed/http://feeds.example.com/GoogleOperatingSystem',
+      )
+      const expected = 'http://feeds.example.com/GoogleOperatingSystem'
+
+      expect(unwrapGoogleReader(value)).toBe(expected)
+    })
+
     it('should extract a feed from the preview path', () => {
       const value = new URL(
         'http://www.google.com/reader/preview/*/feed/http%3A%2F%2Fexample.com%2F%3Fxml',
@@ -202,6 +207,12 @@ describe('unwrapGoogleReader', () => {
 
     it('should return undefined on a lookalike host', () => {
       const value = new URL('https://www.examplegoogle.com/reader/view/feed/http://example.com/rss')
+
+      expect(unwrapGoogleReader(value)).toBeUndefined()
+    })
+
+    it('should return undefined for a feed path under another prefix', () => {
+      const value = new URL('https://www.google.com/x/reader/view/feed/http://example.com/rss')
 
       expect(unwrapGoogleReader(value)).toBeUndefined()
     })

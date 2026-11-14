@@ -3,15 +3,15 @@ import type { UrlUnwrapper } from '../types.js'
 import { decodeEncodedScheme, getParamTarget } from '../utils.js'
 import { googleHostRegex } from './google.js'
 
-const feedPathRegex = /^\/reader\/(?:view|preview\/\*)\/feed\/(?<target>.+)$/i
-const addPathRegex = /^\/ig\/(?:add|adde|addtoreader)$/i
+const feedPathRegex = /^\/reader\/(?:view|m\/view|lite|preview\/\*)\/feed\/(?<target>.+)$/i
+const addPathRegex = /^\/ig\/(?:add|addtoreader)$/i
 
 const hosts = ['fusion.google.com']
 
-// Google Reader, iGoogle and Fusion subscribe links (google.<TLD>/reader/view/feed/<feed>,
-// google.<TLD>/reader/preview/*/feed/<feed>, google.<TLD>/ig/add?feedurl=<feed>, /ig/adde and
-// /ig/addtoreader, fusion.google.com/add?feedurl=<feed>), feedurl before moduleurl. Not included
-// in defaultUnwrappers: the link adds the feed to a reader, it does not redirect to it.
+// Google Reader, iGoogle and Fusion subscribe links (google.<TLD>/reader/view/feed/<feed>, also
+// /reader/m/view/feed/, /reader/lite/feed/ and /reader/preview/*/feed/,
+// google.<TLD>/ig/add?feedurl=<feed> and /ig/addtoreader, fusion.google.com/add?feedurl=<feed>).
+// Not included in defaultUnwrappers: the link adds the feed to a reader, it does not redirect to it.
 export const unwrapGoogleReader: UrlUnwrapper = (url) => {
   if (!isAnyOf(url.hostname, googleHostRegex)) {
     return
@@ -38,5 +38,5 @@ export const unwrapGoogleReader: UrlUnwrapper = (url) => {
     return
   }
 
-  return getParamTarget(url, 'feedurl') ?? getParamTarget(url, 'moduleurl')
+  return getParamTarget(url, 'feedurl')
 }
