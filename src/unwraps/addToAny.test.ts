@@ -47,6 +47,15 @@ describe('unwrapAddToAny', () => {
     expect(unwrapAddToAny(value)).toBe(expected)
   })
 
+  it('should extract the page from the share menu fragment beside another query', () => {
+    const value = new URL(
+      'https://www.addtoany.com/share?ref=example.dk#url=https%3A%2F%2Fexample.dk%2F201%2F',
+    )
+    const expected = 'https://example.dk/201/'
+
+    expect(unwrapAddToAny(value)).toBe(expected)
+  })
+
   it('should extract the page from the share_save menu query', () => {
     const value = new URL(
       'http://www.addtoany.com/share_save?linkurl=https%3A%2F%2Fexample.com%2Fblog%2Fv-tallinne-mechtayut-zapustit-skorostnoe-metro&linkname=%D0%92%20%D0%A2%D0%B0%D0%BB',
