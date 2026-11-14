@@ -34,6 +34,7 @@ import { unwrapAnchor } from './unwraps/anchor.js'
 import { unwrapAnonymouse } from './unwraps/anonymouse.js'
 import { unwrapAnonymTo } from './unwraps/anonymTo.js'
 import { unwrapAntennaPod } from './unwraps/antennaPod.js'
+import { unwrapAnytimePlayer } from './unwraps/anytimePlayer.js'
 import { unwrapAppsflyerOnelink } from './unwraps/appsflyerOnelink.js'
 import { unwrapApptrkr } from './unwraps/apptrkr.js'
 import { unwrapArchiveToday } from './unwraps/archiveToday.js'
@@ -917,6 +918,7 @@ export const shareIntentUnwrappers: Array<UrlUnwrapper> = []
 export const subscribeIntentUnwrappers: Array<UrlUnwrapper> = [
   unwrapAddToMyYahoo,
   unwrapAntennaPod,
+  unwrapAnytimePlayer,
   unwrapBloglines,
   unwrapFeedland,
   unwrapGooglePodcasts,
