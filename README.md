@@ -18,13 +18,13 @@ Links from feeds, emails and social platforms rarely point straight at their des
 
 ---
 
-## Installation
+## Quick start
 
 ```bash
 npm install urlpurify
 ```
 
-## Quick start
+Then:
 
 ```typescript
 import { cleanUrl } from 'urlpurify'
