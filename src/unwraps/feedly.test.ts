@@ -178,6 +178,15 @@ describe('unwrapFeedly', () => {
       expect(unwrapFeedly(value)).toBe(expected)
     })
 
+    it('should decode a fully encoded fragment route on cloud.feedly.com', () => {
+      const value = new URL(
+        'http://cloud.feedly.com/#subscription%2Ffeed%2Fhttps%3A%2F%2Fwww.example.com%2Fatom.xml',
+      )
+      const expected = 'https://www.example.com/atom.xml'
+
+      expect(unwrapFeedly(value)).toBe(expected)
+    })
+
     it('should return undefined for another fragment route', () => {
       const value = new URL('https://feedly.com/#latest')
 
