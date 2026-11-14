@@ -323,6 +323,7 @@ import { unwrapStorify } from './unwraps/storify.js'
 import { unwrapStreak } from './unwraps/streak.js'
 import { unwrapStreamsend } from './unwraps/streamsend.js'
 import { unwrapStumbleupon } from './unwraps/stumbleupon.js'
+import { unwrapSubscribeOnAndroid } from './unwraps/subscribeOnAndroid.js'
 import { unwrapSubscribeRu } from './unwraps/subscribeRu.js'
 import { unwrapSubstack } from './unwraps/substack.js'
 import { unwrapSurly } from './unwraps/surly.js'
@@ -906,6 +907,7 @@ export const shareIntentUnwrappers: Array<UrlUnwrapper> = []
 export const subscribeIntentUnwrappers: Array<UrlUnwrapper> = [
   unwrapGooglePodcasts,
   unwrapGoogleReader,
+  unwrapSubscribeOnAndroid,
   unwrapXianguo,
 ]
 
