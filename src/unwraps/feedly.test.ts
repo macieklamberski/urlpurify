@@ -24,6 +24,13 @@ describe('unwrapFeedly', () => {
       expect(unwrapFeedly(value)).toBe(expected)
     })
 
+    it('should keep the feed fragment', () => {
+      const value = new URL('https://feedly.com/i/subscription/feed/https://example.com/feed/#top')
+      const expected = 'https://example.com/feed/#top'
+
+      expect(unwrapFeedly(value)).toBe(expected)
+    })
+
     it('should extract a feed without a scheme', () => {
       const value = new URL('https://feedly.com/i/subscription/feed/example.hatenablog.com/feed')
       const expected = 'example.hatenablog.com/feed'
@@ -158,6 +165,15 @@ describe('unwrapFeedly', () => {
     it('should keep the feed query inside the fragment', () => {
       const value = new URL('https://feedly.com/#subscription/feed/https://example.com/?feed=rss2')
       const expected = 'https://example.com/?feed=rss2'
+
+      expect(unwrapFeedly(value)).toBe(expected)
+    })
+
+    it('should decode a percent-encoded feed in the fragment', () => {
+      const value = new URL(
+        'https://feedly.com/#subscription/feed/https%3A%2F%2Fexample.com%2Ffeed%2F',
+      )
+      const expected = 'https://example.com/feed/'
 
       expect(unwrapFeedly(value)).toBe(expected)
     })
