@@ -25,6 +25,9 @@ const categories = [
   urlpurify.archiveProxyUnwrappers,
   urlpurify.imageProxyUnwrappers,
   urlpurify.embedProxyUnwrappers,
+  urlpurify.shareIntentUnwrappers,
+  urlpurify.subscribeIntentUnwrappers,
+  urlpurify.feedToolUnwrappers,
 ]
 
 describe('defaultUnwrappers', () => {

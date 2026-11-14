@@ -119,8 +119,11 @@ There are more than 380 unwrappers, each in its own file in [src/unwraps](src/un
 | Archives and proxies | `archiveProxyUnwrappers` | The archived or translated copy: you get the live page | |
 | Image proxies | `imageProxyUnwrappers` | The resized or optimized copy: you get the original image | |
 | Embed proxies | `embedProxyUnwrappers` | The site's frame around another provider's embed: you get the provider's page | |
+| Share intents | `shareIntentUnwrappers` | The share or bookmark form: you get the page being shared | |
+| Subscribe intents | `subscribeIntentUnwrappers` | The reader's or app's subscribe page: you get the feed | |
+| Feed tools | `feedToolUnwrappers` | The validator's or proxy's view: you get the feed it was given | |
 
-`defaultUnwrappers` combines the first two. The rest cost somebody something or change the page: a feed click counter tells a blog which posts get read, an affiliate link may pay for a small blog, and an archive link points at a copy on purpose. To turn more on, spread them next to the defaults:
+`defaultUnwrappers` combines the first two. The rest cost somebody something or change the page: a feed click counter tells a blog which posts get read, an affiliate link may pay for a small blog, and an archive link points at a copy on purpose. The last three are links that never redirect to what they carry, so they suit a caller collecting feeds or shared pages, not one cleaning links for a reader. To turn more on, spread them next to the defaults:
 
 ```typescript
 import { affiliateUnwrappers, cleanUrl, defaultUnwrappers } from 'urlpurify'

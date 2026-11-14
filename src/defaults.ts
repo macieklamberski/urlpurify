@@ -895,6 +895,18 @@ export const embedProxyUnwrappers: Array<UrlUnwrapper> = [
   unwrapIframely,
 ]
 
+// Share and bookmark buttons: unwrapping returns the page being shared, not the form that shares
+// it.
+export const shareIntentUnwrappers: Array<UrlUnwrapper> = []
+
+// Subscribe buttons, and players and app pages that carry a feed: unwrapping returns the feed, not
+// the page that adds or plays it.
+export const subscribeIntentUnwrappers: Array<UrlUnwrapper> = []
+
+// Feed validators, viewers and full-text proxies: unwrapping returns the feed the tool was given,
+// not the tool's output.
+export const feedToolUnwrappers: Array<UrlUnwrapper> = []
+
 export const defaultUnwrappers: Array<UrlUnwrapper> = [
   ...searchClickUnwrappers,
   ...linkShimUnwrappers,
