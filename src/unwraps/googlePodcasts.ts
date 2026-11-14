@@ -1,26 +1,12 @@
 import { decodePercent, isAnyOf, isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { decodeBase64Url, decodeBase64UrlBinary, getParamValues } from '../utils.js'
+import { decodeBase64Url, decodeBase64UrlBinary, getParamValues, isUtf8Binary } from '../utils.js'
 
 const showPathRegex = /^\/(?:u\/\d+\/)?feed\/([\w%=-]+)(?:\/episode\/[\w%=-]+)?\/?$/i
 
 const appHosts = ['podcasts.google.com']
 const appPaths = ['/', '/subscribe-by-rss-feed']
 const searchHosts = ['google.com', 'www.google.com']
-
-const utf8Decoder = new TextDecoder('utf-8', { fatal: true })
-
-// A feed url is UTF-8 text, so bytes that are not valid UTF-8 come from text glued after the
-// base64 value, such as `…ZmVlZA--`, and the decoded url would be broken.
-const isUtf8 = (binary: string): boolean => {
-  try {
-    utf8Decoder.decode(Uint8Array.from(binary, (char) => char.charCodeAt(0)))
-
-    return true
-  } catch {
-    return false
-  }
-}
 
 const getEncodedFeed = (url: URL): string | undefined => {
   if (isHostOf(url, appHosts)) {
@@ -54,7 +40,9 @@ export const unwrapGooglePodcasts: UrlUnwrapper = (url) => {
 
   const binary = decodeBase64UrlBinary(encoded)
 
-  if (binary === undefined || !isUtf8(binary)) {
+  // A feed url is UTF-8 text, so bytes that are not valid UTF-8 come from text glued after the
+  // base64 value, such as `…ZmVlZA--`, and the decoded url would be broken.
+  if (binary === undefined || !isUtf8Binary(binary)) {
     return
   }
 
