@@ -263,6 +263,7 @@ import { unwrapPhilpapers } from './unwraps/philpapers.js'
 import { unwrapPinterest } from './unwraps/pinterest.js'
 import { unwrapPipedrive } from './unwraps/pipedrive.js'
 import { unwrapPocket } from './unwraps/pocket.js'
+import { unwrapPodcastAddict } from './unwraps/podcastAddict.js'
 import { unwrapPodcorn } from './unwraps/podcorn.js'
 import { unwrapPodder } from './unwraps/podder.js'
 import { unwrapPodigee } from './unwraps/podigee.js'
@@ -909,6 +910,7 @@ export const shareIntentUnwrappers: Array<UrlUnwrapper> = []
 export const subscribeIntentUnwrappers: Array<UrlUnwrapper> = [
   unwrapGooglePodcasts,
   unwrapGoogleReader,
+  unwrapPodcastAddict,
   unwrapPrxPlayer,
   unwrapQqMailReader,
   unwrapSubscribeOnAndroid,
