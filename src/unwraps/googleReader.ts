@@ -11,7 +11,7 @@ const hosts = ['fusion.google.com']
 // Google Reader, iGoogle and Fusion subscribe links (google.<TLD>/reader/view/feed/<feed>, also
 // /reader/m/view/feed/, /reader/lite/feed/ and /reader/preview/*/feed/,
 // google.<TLD>/ig/add?feedurl=<feed> and /ig/addtoreader, fusion.google.com/add?feedurl=<feed>).
-// Not included in defaultUnwrappers: the link adds the feed to a reader, it does not redirect to it.
+// Not in defaultUnwrappers: the link adds the feed to a reader, it does not redirect to it.
 export const unwrapGoogleReader: UrlUnwrapper = (url) => {
   if (!isAnyOf(url.hostname, googleHostRegex)) {
     return
