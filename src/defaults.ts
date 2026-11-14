@@ -14,6 +14,7 @@ import { unwrapAcast } from './unwraps/acast.js'
 import { unwrapAccesstrade } from './unwraps/accesstrade.js'
 import { unwrapAceml } from './unwraps/aceml.js'
 import { unwrapAdcell } from './unwraps/adcell.js'
+import { unwrapAddToAnySubscribe } from './unwraps/addToAnySubscribe.js'
 import { unwrapAdfly } from './unwraps/adfly.js'
 import { unwrapAdjust } from './unwraps/adjust.js'
 import { unwrapAdmitad } from './unwraps/admitad.js'
@@ -907,6 +908,7 @@ export const shareIntentUnwrappers: Array<UrlUnwrapper> = []
 // Subscribe buttons, and players and app pages carrying a feed: unwrapping returns the feed, not
 // the reader's or app's page that adds or plays it.
 export const subscribeIntentUnwrappers: Array<UrlUnwrapper> = [
+  unwrapAddToAnySubscribe,
   unwrapGooglePodcasts,
   unwrapGoogleReader,
   unwrapPrxPlayer,
