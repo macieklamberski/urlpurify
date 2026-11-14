@@ -54,6 +54,13 @@ describe('unwrapTwitterIntent', () => {
     expect(unwrapTwitterIntent(value)).toBe(expected)
   })
 
+  it('should extract a url from the mobile host', () => {
+    const value = new URL('https://mobile.twitter.com/intent/tweet?url=https://example.com/post')
+    const expected = 'https://example.com/post'
+
+    expect(unwrapTwitterIntent(value)).toBe(expected)
+  })
+
   it('should extract a url from a path with a trailing slash', () => {
     const value = new URL(
       'http://twitter.com/intent/tweet/?text=Checkerboard+-+pink+and+white&url=https%3A%2F%2Fexample.com%2Fcheckerboard-pink-and-white',

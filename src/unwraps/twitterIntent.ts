@@ -4,7 +4,7 @@ import { getParamTarget } from '../utils.js'
 
 const pathRegex = /^\/(?:intent\/(?:tweet|post)|share)\/?$/i
 
-const hosts = ['twitter.com', 'www.twitter.com', 'x.com', 'www.x.com']
+const hosts = ['twitter.com', 'www.twitter.com', 'mobile.twitter.com', 'x.com', 'www.x.com']
 
 // Twitter / X share intent (twitter.com/intent/tweet?url=<target>, also /intent/post and /share,
 // on twitter.com and x.com). Opt-in: unwrapping returns the shared page, not the post composer.
