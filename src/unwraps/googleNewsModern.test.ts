@@ -34,6 +34,45 @@ describe('unwrapGoogleNewsModern', () => {
     expect(unwrapGoogleNewsModern(url)).toBe('https://example.com/article')
   })
 
+  it('should decode target from the /__i/rss/rd/articles/<base64> redirect path', () => {
+    const value = new URL(
+      'https://news.google.com/__i/rss/rd/articles/CBMiXmh0dHBzOi8vd3d3LnNjaWVuY2Vmb2N1cy5jb20vbmV3cy9saXZpbmctd2l0aC1jb3ZpZC1ob3ctY2FuLXdlLXN0YXktc2FmZS13aXRob3V0LXJlc3RyaWN0aW9ucy_SAQA?oc=5',
+    )
+    const expected =
+      'https://www.sciencefocus.com/news/living-with-covid-how-can-we-stay-safe-without-restrictions/'
+
+    expect(unwrapGoogleNewsModern(value)).toBe(expected)
+  })
+
+  it('should decode target from the redirect path in another case', () => {
+    const id = buildArticleId('https://example.com/article')
+    const value = new URL(`https://news.google.com/__I/RSS/RD/Articles/${id}`)
+    const expected = 'https://example.com/article'
+
+    expect(unwrapGoogleNewsModern(value)).toBe(expected)
+  })
+
+  it('should return undefined for the redirect path on another host', () => {
+    const id = buildArticleId('https://example.com/article')
+    const value = new URL(`https://example.com/__i/rss/rd/articles/${id}`)
+
+    expect(unwrapGoogleNewsModern(value)).toBeUndefined()
+  })
+
+  it('should return undefined for the redirect prefix without articles', () => {
+    const id = buildArticleId('https://example.com/article')
+    const value = new URL(`https://news.google.com/__i/rss/rd/${id}`)
+
+    expect(unwrapGoogleNewsModern(value)).toBeUndefined()
+  })
+
+  it('should return undefined when a segment follows the article id', () => {
+    const id = buildArticleId('https://example.com/article')
+    const value = new URL(`https://news.google.com/rss/articles/${id}/`)
+
+    expect(unwrapGoogleNewsModern(value)).toBeUndefined()
+  })
+
   it('should return undefined when the id lacks framing bytes', () => {
     const id = Buffer.from('hello world', 'utf8')
       .toString('base64')
