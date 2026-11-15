@@ -138,6 +138,14 @@ describe('unwrapPinterestPin', () => {
     expect(unwrapPinterestPin(value)).toBeUndefined()
   })
 
+  it('should return undefined for a lookalike country host', () => {
+    const value = new URL(
+      'https://frxpinterest.com/pin/create/button/?url=https%3A%2F%2Fexample.com%2Fpost',
+    )
+
+    expect(unwrapPinterestPin(value)).toBeUndefined()
+  })
+
   it('should return undefined for the shape on another host', () => {
     const value = new URL(
       'https://www.example.com/pin/create/button/?url=https%3A%2F%2Fexample.org%2Fpost',
