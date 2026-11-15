@@ -63,6 +63,7 @@ import { unwrapBitrix } from './unwraps/bitrix.js'
 import { unwrapBitrixBanner } from './unwraps/bitrixBanner.js'
 import { unwrapBizrate } from './unwraps/bizrate.js'
 import { unwrapBlinkList } from './unwraps/blinkList.js'
+import { unwrapBloggerBlogThis } from './unwraps/bloggerBlogThis.js'
 import { unwrapBloggerImageProxy } from './unwraps/bloggerImageProxy.js'
 import { unwrapBloglines } from './unwraps/bloglines.js'
 import { unwrapBlubrry } from './unwraps/blubrry.js'
@@ -112,6 +113,7 @@ import { unwrapDevToImage } from './unwraps/devToImage.js'
 import { unwrapDiggSubmit } from './unwraps/diggSubmit.js'
 import { unwrapDigidip } from './unwraps/digidip.js'
 import { unwrapDigikala } from './unwraps/digikala.js'
+import { unwrapDiigoPost } from './unwraps/diigoPost.js'
 import { unwrapDirectMail } from './unwraps/directMail.js'
 import { unwrapDisqus } from './unwraps/disqus.js'
 import { unwrapDmmAffiliate } from './unwraps/dmmAffiliate.js'
@@ -161,7 +163,9 @@ import { unwrapFiverr } from './unwraps/fiverr.js'
 import { unwrapFlattrSubmit } from './unwraps/flattrSubmit.js'
 import { unwrapFlexoffers } from './unwraps/flexoffers.js'
 import { unwrapFlipboard } from './unwraps/flipboard.js'
+import { unwrapFlipboardShare } from './unwraps/flipboardShare.js'
 import { unwrapFortimail } from './unwraps/fortimail.js'
+import { unwrapFriendFeed } from './unwraps/friendFeed.js'
 import { unwrapFtc } from './unwraps/ftc.js'
 import { unwrapGateSc } from './unwraps/gateSc.js'
 import { unwrapGeoriot } from './unwraps/georiot.js'
@@ -186,6 +190,7 @@ import { unwrapGroupMail } from './unwraps/groupMail.js'
 import { unwrapGroupon } from './unwraps/groupon.js'
 import { unwrapGumball } from './unwraps/gumball.js'
 import { unwrapGurunavi } from './unwraps/gurunavi.js'
+import { unwrapHackerNewsSubmit } from './unwraps/hackerNewsSubmit.js'
 import { unwrapHackerone } from './unwraps/hackerone.js'
 import { unwrapHashnode } from './unwraps/hashnode.js'
 import { unwrapHasoffers } from './unwraps/hasoffers.js'
@@ -223,6 +228,7 @@ import { unwrapLazada } from './unwraps/lazada.js'
 import { unwrapLd246 } from './unwraps/ld246.js'
 import { unwrapLetscast } from './unwraps/letscast.js'
 import { unwrapLeverAnalytics } from './unwraps/leverAnalytics.js'
+import { unwrapLineShare } from './unwraps/lineShare.js'
 import { unwrapLinkA } from './unwraps/linkA.js'
 import { unwrapLinkconnector } from './unwraps/linkconnector.js'
 import { unwrapLinkedin } from './unwraps/linkedin.js'
@@ -269,6 +275,7 @@ import { unwrapNcls } from './unwraps/ncls.js'
 import { unwrapNdlWarp } from './unwraps/ndlWarp.js'
 import { unwrapNetaffiliation } from './unwraps/netaffiliation.js'
 import { unwrapNetcentrum } from './unwraps/netcentrum.js'
+import { unwrapNetvibes } from './unwraps/netvibes.js'
 import { unwrapNewsGator } from './unwraps/newsGator.js'
 import { unwrapNewswire } from './unwraps/newswire.js'
 import { unwrapNextImage } from './unwraps/nextImage.js'
@@ -292,6 +299,7 @@ import { unwrapPinterestPin } from './unwraps/pinterestPin.js'
 import { unwrapPipedrive } from './unwraps/pipedrive.js'
 import { unwrapPlayerFm } from './unwraps/playerFm.js'
 import { unwrapPocket } from './unwraps/pocket.js'
+import { unwrapPocketSave } from './unwraps/pocketSave.js'
 import { unwrapPodcastAddict } from './unwraps/podcastAddict.js'
 import { unwrapPodcorn } from './unwraps/podcorn.js'
 import { unwrapPodder } from './unwraps/podder.js'
@@ -376,6 +384,7 @@ import { unwrapTelegramIv } from './unwraps/telegramIv.js'
 import { unwrapTelegramShare } from './unwraps/telegramShare.js'
 import { unwrapTheRegister } from './unwraps/theRegister.js'
 import { unwrapThreadsShim } from './unwraps/threads.js'
+import { unwrapThreadsIntent } from './unwraps/threadsIntent.js'
 import { unwrapTiktok } from './unwraps/tiktok.js'
 import { unwrapTitanhqLinklock } from './unwraps/titanhqLinklock.js'
 import { unwrapTopsec } from './unwraps/topsec.js'
@@ -951,25 +960,33 @@ export const shareIntentUnwrappers: Array<UrlUnwrapper> = [
   unwrapAddThis,
   unwrapAddToAny,
   unwrapBlinkList,
+  unwrapBloggerBlogThis,
   unwrapDelicious,
   unwrapDiggSubmit,
+  unwrapDiigoPost,
   unwrapFacebookShare,
   unwrapFlattrSubmit,
+  unwrapFlipboardShare,
+  unwrapFriendFeed,
   unwrapGoogleBookmarks,
   unwrapGooglePlusShare,
+  unwrapHackerNewsSubmit,
   unwrapHatenaBookmark,
   unwrapInstapaperSave,
+  unwrapLineShare,
   unwrapLinkedinShare,
   unwrapMeneameSubmit,
   unwrapMeweShare,
   unwrapOkShare,
   unwrapPinterestPin,
+  unwrapPocketSave,
   unwrapRedditSubmit,
   unwrapShareaholic,
   unwrapSlashdotBookmark,
   unwrapStumbleuponSubmit,
   unwrapTechnoratiFaves,
   unwrapTelegramShare,
+  unwrapThreadsIntent,
   unwrapTumblrShare,
   unwrapTwitterIntent,
   unwrapVkShare,
@@ -992,6 +1009,7 @@ export const subscribeIntentUnwrappers: Array<UrlUnwrapper> = [
   unwrapGoogleReader,
   unwrapInoreader,
   unwrapLivedoorReader,
+  unwrapNetvibes,
   unwrapNewsGator,
   unwrapPlayerFm,
   unwrapPodcastAddict,
