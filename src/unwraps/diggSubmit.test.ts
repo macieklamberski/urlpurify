@@ -20,6 +20,16 @@ describe('unwrapDiggSubmit', () => {
     expect(unwrapDiggSubmit(value)).toBe(expected)
   })
 
+  it('should extract the page from a Digg This login link', () => {
+    const value = new URL(
+      'http://digg.com/tools/diggthis/login?url=http://example.com/2010/08/16/apples-steve-wozniak-to-appear-on-big-bang-theory/&title=Apple%E2%80%99s%20Steve%20Wozniak&related=true&style=true',
+    )
+    const expected =
+      'http://example.com/2010/08/16/apples-steve-wozniak-to-appear-on-big-bang-theory/'
+
+    expect(unwrapDiggSubmit(value)).toBe(expected)
+  })
+
   it('should extract the page on the www host', () => {
     const value = new URL(
       'http://www.digg.com/submit?phase=2&url=http%3A%2F%2Fexample.com%2Fpost&title=Hello',
@@ -71,7 +81,7 @@ describe('unwrapDiggSubmit', () => {
   })
 
   it('should return undefined for another path on the host', () => {
-    const value = new URL('http://digg.com/tools/diggthis.php?u=https%3A%2F%2Fexample.com%2Fpost')
+    const value = new URL('http://digg.com/news/technology?url=https%3A%2F%2Fexample.com%2Fpost')
 
     expect(unwrapDiggSubmit(value)).toBeUndefined()
   })
