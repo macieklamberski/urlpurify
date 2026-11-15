@@ -1,6 +1,14 @@
 import { describe, expect, it } from 'bun:test'
 import { unwrapVkShare } from './vkShare.js'
 
+const aliasHostUrls = [
+  'https://vk.ru/share.php?url=https%3A%2F%2Fexample.com%2Fpost',
+  'https://www.vk.com/share.php?url=https%3A%2F%2Fexample.com%2Fpost',
+  'https://www.vk.ru/share.php?url=https%3A%2F%2Fexample.com%2Fpost',
+  'https://www.vkontakte.ru/share.php?url=https%3A%2F%2Fexample.com%2Fpost',
+  'https://new.vk.com/share.php?url=https%3A%2F%2Fexample.com%2Fpost',
+]
+
 describe('unwrapVkShare', () => {
   it('should extract a raw target', () => {
     const value = new URL('http://vk.com/share.php?url=http://example.com/pczxbje&title=')
@@ -34,6 +42,12 @@ describe('unwrapVkShare', () => {
     const expected = 'https://example.com/new-blog/'
 
     expect(unwrapVkShare(value)).toBe(expected)
+  })
+
+  it.each(aliasHostUrls)('should extract the target from %s', (value) => {
+    const expected = 'https://example.com/post'
+
+    expect(unwrapVkShare(new URL(value))).toBe(expected)
   })
 
   it('should extract a twice-encoded target', () => {
