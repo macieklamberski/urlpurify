@@ -267,6 +267,7 @@ import { unwrapMintFeeder } from './unwraps/mintFeeder.js'
 import { unwrapMohtwize } from './unwraps/mohtwize.js'
 import { unwrapMoshimo } from './unwraps/moshimo.js'
 import { unwrapMozillaOutgoing } from './unwraps/mozillaOutgoing.js'
+import { unwrapMyAolFeeds } from './unwraps/myAolFeeds.js'
 import { unwrapMyNewsletterBuilder } from './unwraps/myNewsletterBuilder.js'
 import { unwrapNarrativ } from './unwraps/narrativ.js'
 import { unwrapNatlibNz } from './unwraps/natlibNz.js'
@@ -1010,6 +1011,7 @@ export const subscribeIntentUnwrappers: Array<UrlUnwrapper> = [
   unwrapGoogleReader,
   unwrapInoreader,
   unwrapLivedoorReader,
+  unwrapMyAolFeeds,
   unwrapNetvibes,
   unwrapNewsGator,
   unwrapPageflakes,
