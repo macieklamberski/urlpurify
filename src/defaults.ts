@@ -320,6 +320,7 @@ import { unwrapSapHelp } from './unwraps/sapHelp.js'
 import { unwrapSbsAd } from './unwraps/sbsAd.js'
 import { unwrapSegmentfault } from './unwraps/segmentfault.js'
 import { unwrapSerendipity } from './unwraps/serendipity.js'
+import { unwrapShareaholic } from './unwraps/shareaholic.js'
 import { unwrapShareasale } from './unwraps/shareasale.js'
 import { unwrapShareit } from './unwraps/shareit.js'
 import { unwrapSkimlinks } from './unwraps/skimlinks.js'
@@ -924,6 +925,7 @@ export const embedProxyUnwrappers: Array<UrlUnwrapper> = [
 export const shareIntentUnwrappers: Array<UrlUnwrapper> = [
   unwrapAddToAny,
   unwrapFacebookShare,
+  unwrapShareaholic,
   unwrapTwitterIntent,
 ]
 
