@@ -11,6 +11,7 @@ export {
   defaultUnwrappers,
   downloadMeasurementUnwrappers,
   emailTrackingUnwrappers,
+  embedApiUnwrappers,
   embedProxyUnwrappers,
   feedToolUnwrappers,
   genericCarrierUnwrappers,
@@ -480,6 +481,7 @@ export { unwrapWindowsLive } from './unwraps/windowsLive.js'
 export { unwrapWindowsLiveFavorites } from './unwraps/windowsLiveFavorites.js'
 export { unwrapWordpressEmail } from './unwraps/wordpressEmail.js'
 export { unwrapWordpressGo2 } from './unwraps/wordpressGo2.js'
+export { unwrapWordpressOembed } from './unwraps/wordpressOembed.js'
 export { unwrapWorldNomads } from './unwraps/worldNomads.js'
 export { unwrapWpPoczta } from './unwraps/wpPoczta.js'
 export { unwrapWykop } from './unwraps/wykop.js'

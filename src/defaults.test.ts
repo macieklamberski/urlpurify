@@ -25,6 +25,7 @@ const categories = [
   urlpurify.archiveProxyUnwrappers,
   urlpurify.imageProxyUnwrappers,
   urlpurify.embedProxyUnwrappers,
+  urlpurify.embedApiUnwrappers,
   urlpurify.shareIntentUnwrappers,
   urlpurify.subscribeIntentUnwrappers,
   urlpurify.feedToolUnwrappers,

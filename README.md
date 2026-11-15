@@ -53,6 +53,7 @@ There are more than 400 unwrappers, each in its own file in [src/unwraps](src/un
 | Archives and proxies | `archiveProxyUnwrappers` | The archived or translated copy: you get the live page | |
 | Image proxies | `imageProxyUnwrappers` | The resized or optimized copy: you get the original image | |
 | Embed proxies | `embedProxyUnwrappers` | The site's frame around another provider's embed: you get the provider's page | |
+| Embed APIs | `embedApiUnwrappers` | The endpoint that returns data about a page: you get the page | |
 | Share intents | `shareIntentUnwrappers` | The share or bookmark form: you get the page being shared | |
 | Subscribe intents | `subscribeIntentUnwrappers` | The reader's or app's subscribe page, or a player carrying a feed: you get the feed | |
 | Feed tools | `feedToolUnwrappers` | The validator's or proxy's view: you get the feed it was given | |

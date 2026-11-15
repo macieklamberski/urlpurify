@@ -450,6 +450,7 @@ import { unwrapWindowsLive } from './unwraps/windowsLive.js'
 import { unwrapWindowsLiveFavorites } from './unwraps/windowsLiveFavorites.js'
 import { unwrapWordpressEmail } from './unwraps/wordpressEmail.js'
 import { unwrapWordpressGo2 } from './unwraps/wordpressGo2.js'
+import { unwrapWordpressOembed } from './unwraps/wordpressOembed.js'
 import { unwrapWorldNomads } from './unwraps/worldNomads.js'
 import { unwrapWpPoczta } from './unwraps/wpPoczta.js'
 import { unwrapWykop } from './unwraps/wykop.js'
@@ -975,6 +976,10 @@ export const embedProxyUnwrappers: Array<UrlUnwrapper> = [
   unwrapEmbedly,
   unwrapIframely,
 ]
+
+// Embed APIs, endpoints that return data about a page: unwrapping returns the page, not the data
+// about it.
+export const embedApiUnwrappers: Array<UrlUnwrapper> = [unwrapWordpressOembed]
 
 // Share and bookmark buttons: unwrapping returns the shared page, not the form that shares it.
 export const shareIntentUnwrappers: Array<UrlUnwrapper> = [
