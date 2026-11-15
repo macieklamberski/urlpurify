@@ -1732,6 +1732,22 @@ describe('host-scoped click attribution', () => {
     expect(cleanUrl(value)).toBe(expected)
   })
 
+  it('should keep the query on a host starting with xiaohongshu.com', () => {
+    const value =
+      'https://xiaohongshu.com.example.com/discovery/item/68ac166a000000001d012571?source=webshare&xhsshare=pc_web'
+
+    expect(cleanUrl(value)).toBe(value)
+  })
+
+  it('should drop a name that only starts with xsec_token on Xiaohongshu', () => {
+    const value =
+      'https://www.xiaohongshu.com/discovery/item/68ac166a000000001d012571?xsec_token=CBxtz16cD7hBeyge2T9Q3r5OWhHWYeqpxRhRb2uIoNKxk=&xsec_tokens=1'
+    const expected =
+      'https://www.xiaohongshu.com/discovery/item/68ac166a000000001d012571?xsec_token=CBxtz16cD7hBeyge2T9Q3r5OWhHWYeqpxRhRb2uIoNKxk='
+
+    expect(cleanUrl(value)).toBe(expected)
+  })
+
   it('should keep the query on a host ending in xiaohongshu.com', () => {
     const value =
       'https://www.notxiaohongshu.com/discovery/item/68ac166a000000001d012571?source=webshare&xhsshare=pc_web'
