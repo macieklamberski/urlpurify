@@ -210,6 +210,25 @@ describe('unwrapGenericCarrier', () => {
       expect(unwrapGenericCarrier(value)).toBe(expected)
     })
 
+    it('should decode the target once', () => {
+      const value = new URL(
+        'https://example.com/app/playmusic?ibi=com.example.PlayMusic&isi=691797987&link=https://music.example.org/m/Ikfde3waxmlyfhqcip6g57s3a2a?t%3DThis_Week_in_Parasitism',
+      )
+      const expected =
+        'https://music.example.org/m/Ikfde3waxmlyfhqcip6g57s3a2a?t=This_Week_in_Parasitism'
+
+      expect(unwrapGenericCarrier(value)).toBe(expected)
+    })
+
+    it('should keep a malformed escape as written', () => {
+      const value = new URL(
+        'https://www.example.com/external/?url=https://www.example.org/post?off=50%&lang=en',
+      )
+      const expected = 'https://www.example.org/post?off=50%&lang=en'
+
+      expect(unwrapGenericCarrier(value)).toBe(expected)
+    })
+
     it('should take the first carrier when a second sits inside the target', () => {
       const value = new URL(
         'https://www.example.com/go?url=https://a.example.org/x?feedurl=https://b.example.org/feed',
