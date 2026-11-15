@@ -409,6 +409,7 @@ import { unwrapXengentr } from './unwraps/xengentr.js'
 import { unwrapXianguo } from './unwraps/xianguo.js'
 import { unwrapXiaoyuzhou } from './unwraps/xiaoyuzhou.js'
 import { unwrapXimalaya } from './unwraps/ximalaya.js'
+import { unwrapYahooBookmarks } from './unwraps/yahooBookmarks.js'
 import { unwrapYahooImage } from './unwraps/yahooImage.js'
 import { unwrapYahooJapan } from './unwraps/yahooJapan.js'
 import { unwrapYahooJapanAmpViewer } from './unwraps/yahooJapanAmpViewer.js'
@@ -925,6 +926,7 @@ export const shareIntentUnwrappers: Array<UrlUnwrapper> = [
   unwrapAddToAny,
   unwrapFacebookShare,
   unwrapTwitterIntent,
+  unwrapYahooBookmarks,
 ]
 
 // Subscribe buttons, and players and app pages carrying a feed: unwrapping returns the feed, not
