@@ -62,10 +62,10 @@ describe('unwrapXingShare', () => {
 
   it('should extract the page from /app/user?op=share', () => {
     const value = new URL(
-      'https://www.xing.com/app/user?op=share&url=http%3A//www.example.at/presse-news/2023/06/zertifikatsverleihung-familienfreundlichegemeinde-20222023',
+      'https://www.xing.com/app/user?op=share&url=http%3A//www.example.com/presse-news/2023/06/zertifikatsverleihung-familienfreundlichegemeinde-20222023',
     )
     const expected =
-      'http://www.example.at/presse-news/2023/06/zertifikatsverleihung-familienfreundlichegemeinde-20222023'
+      'http://www.example.com/presse-news/2023/06/zertifikatsverleihung-familienfreundlichegemeinde-20222023'
 
     expect(unwrapXingShare(value)).toBe(expected)
   })
