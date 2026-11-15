@@ -71,6 +71,7 @@ import { unwrapBolPartner } from './unwraps/bolPartner.js'
 import { unwrapBridgyFed } from './unwraps/bridgyFed.js'
 import { unwrapBrightspot } from './unwraps/brightspot.js'
 import { unwrapBlueskyRedirect } from './unwraps/bsky.js'
+import { unwrapBuffer } from './unwraps/buffer.js'
 import { unwrapBusinessWire } from './unwraps/businessWire.js'
 import { unwrapButton } from './unwraps/button.js'
 import { unwrapBuyAt } from './unwraps/buyAt.js'
@@ -141,6 +142,7 @@ import { unwrapEpn } from './unwraps/epn.js'
 import { unwrapEsva } from './unwraps/esva.js'
 import { unwrapEulerian } from './unwraps/eulerian.js'
 import { unwrapEvernote } from './unwraps/evernote.js'
+import { unwrapEvernoteClip } from './unwraps/evernoteClip.js'
 import { unwrapExciteTranslate } from './unwraps/exciteTranslate.js'
 import { unwrapExpediaAffiliate } from './unwraps/expediaAffiliate.js'
 import { unwrapFacebookShim } from './unwraps/facebook.js'
@@ -167,6 +169,7 @@ import { unwrapFlipboardShare } from './unwraps/flipboardShare.js'
 import { unwrapFortimail } from './unwraps/fortimail.js'
 import { unwrapFriendFeed } from './unwraps/friendFeed.js'
 import { unwrapFtc } from './unwraps/ftc.js'
+import { unwrapGabCompose } from './unwraps/gabCompose.js'
 import { unwrapGateSc } from './unwraps/gateSc.js'
 import { unwrapGeoriot } from './unwraps/georiot.js'
 import { unwrapGfnLinkProxy } from './unwraps/gfnLinkProxy.js'
@@ -265,6 +268,7 @@ import { unwrapMinistryCloud } from './unwraps/ministryCloud.js'
 import { unwrapMintDownloads } from './unwraps/mintDownloads.js'
 import { unwrapMintFeeder } from './unwraps/mintFeeder.js'
 import { unwrapMohtwize } from './unwraps/mohtwize.js'
+import { unwrapMorss } from './unwraps/morss.js'
 import { unwrapMoshimo } from './unwraps/moshimo.js'
 import { unwrapMozillaOutgoing } from './unwraps/mozillaOutgoing.js'
 import { unwrapMyAolFeeds } from './unwraps/myAolFeeds.js'
@@ -437,6 +441,7 @@ import { unwrapWebharvest } from './unwraps/webharvest.js'
 import { unwrapWeserv } from './unwraps/weserv.js'
 import { unwrapWikiwix } from './unwraps/wikiwix.js'
 import { unwrapWikizero } from './unwraps/wikizero.js'
+import { unwrapWindowsLive } from './unwraps/windowsLive.js'
 import { unwrapWordpressEmail } from './unwraps/wordpressEmail.js'
 import { unwrapWordpressGo2 } from './unwraps/wordpressGo2.js'
 import { unwrapWorldNomads } from './unwraps/worldNomads.js'
@@ -965,13 +970,16 @@ export const shareIntentUnwrappers: Array<UrlUnwrapper> = [
   unwrapAddToAny,
   unwrapBlinkList,
   unwrapBloggerBlogThis,
+  unwrapBuffer,
   unwrapDelicious,
   unwrapDiggSubmit,
   unwrapDiigoPost,
+  unwrapEvernoteClip,
   unwrapFacebookShare,
   unwrapFlattrSubmit,
   unwrapFlipboardShare,
   unwrapFriendFeed,
+  unwrapGabCompose,
   unwrapGoogleBookmarks,
   unwrapGooglePlusShare,
   unwrapHackerNewsSubmit,
@@ -1025,6 +1033,7 @@ export const subscribeIntentUnwrappers: Array<UrlUnwrapper> = [
   unwrapQqMailReader,
   unwrapSubscribeByEmail,
   unwrapSubscribeOnAndroid,
+  unwrapWindowsLive,
   unwrapXianguo,
 ]
 
@@ -1033,6 +1042,7 @@ export const subscribeIntentUnwrappers: Array<UrlUnwrapper> = [
 export const feedToolUnwrappers: Array<UrlUnwrapper> = [
   unwrapFeed2js,
   unwrapFeedValidator,
+  unwrapMorss,
   unwrapRssBoardValidator,
   unwrapW3cFeedValidator,
 ]
