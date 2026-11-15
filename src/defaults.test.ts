@@ -28,6 +28,7 @@ const categories = [
   urlpurify.shareIntentUnwrappers,
   urlpurify.subscribeIntentUnwrappers,
   urlpurify.feedToolUnwrappers,
+  urlpurify.genericCarrierUnwrappers,
 ]
 
 describe('defaultUnwrappers', () => {
