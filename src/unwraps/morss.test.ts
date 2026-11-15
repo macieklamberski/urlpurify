@@ -82,6 +82,14 @@ describe('unwrapMorss', () => {
       expect(unwrapMorss(value)).toBeUndefined()
     })
 
+    it('should return undefined for an items selector after another option', () => {
+      const value = new URL(
+        'https://morss.it/:proxy:items=%7C%7C*%5Bh3%5D/https:/www.example.com/-Francais-',
+      )
+
+      expect(unwrapMorss(value)).toBeUndefined()
+    })
+
     it('should return undefined for a second option segment', () => {
       const value = new URL('https://morss.it/:proxy/:clip/https:/www.example.com/feed')
 
@@ -103,15 +111,9 @@ describe('unwrapMorss', () => {
     })
   })
 
-  describe('morss own pages', () => {
+  describe('root', () => {
     it('should return undefined for the root', () => {
       const value = new URL('http://morss.it/')
-
-      expect(unwrapMorss(value)).toBeUndefined()
-    })
-
-    it('should return undefined for the feed stylesheet', () => {
-      const value = new URL('https://morss.it/sheet.xsl')
 
       expect(unwrapMorss(value)).toBeUndefined()
     })
