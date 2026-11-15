@@ -3,6 +3,7 @@ import { affiliateParams } from './tracking/affiliate.js'
 import { campaignParams } from './tracking/campaign.js'
 import { clickAttributionParams } from './tracking/clickAttribution.js'
 import { housekeepingParams } from './tracking/housekeeping.js'
+import { sessionParams } from './tracking/session.js'
 import { visitorIdParams } from './tracking/visitorId.js'
 import type { TrackingParam, UrlUnwrapper } from './types.js'
 import { unwrap2performant } from './unwraps/2performant.js'
@@ -472,6 +473,7 @@ export {
   campaignParams,
   clickAttributionParams,
   housekeepingParams,
+  sessionParams,
   visitorIdParams,
 }
 
@@ -480,6 +482,7 @@ export {
 export const defaultTrackingParams: Array<TrackingParam> = [
   ...clickAttributionParams,
   ...visitorIdParams,
+  ...sessionParams,
   ...housekeepingParams,
 ]
 

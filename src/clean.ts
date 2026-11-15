@@ -28,6 +28,8 @@ const signatureParams = [
   'x-goog-signature', // Google Cloud Storage V4 signed url
 ]
 
+const pathParamRegex = /;([^;/=]+)=[^;/]*/g
+
 const trackingMatcherCache = new WeakMap<Array<TrackingParam>, TrackingMatcher>()
 
 const getTrackingMatcher = (params: Array<TrackingParam>): TrackingMatcher => {
@@ -126,13 +128,25 @@ const isTrackedPair = (
   return matcher.entries.some((entry) => matchesEntry(entry, name, value, host))
 }
 
-// Delete tracking parameters in place. Literal names match case-insensitively, and patterns are
-// tested against the lowercased name. A query carrying a signature param is kept whole.
-const deleteTrackingParams = (url: URL, trackingParams: Array<TrackingParam>): void => {
-  if (!url.search) {
-    return
-  }
+// Java servlet containers write the session id into the path, `/page;jsessionid=<id>`.
+const deletePathParams = (url: URL, matcher: TrackingMatcher): void => {
+  const pathname = url.pathname.replace(pathParamRegex, (param, name: string) => {
+    if (matcher.literals.has(name.toLowerCase())) {
+      return ''
+    }
 
+    return param
+  })
+
+  if (pathname !== url.pathname) {
+    url.pathname = pathname
+  }
+}
+
+// Delete tracking parameters in place, from the query and from `;name=value` path params. Literal
+// names match case-insensitively, and patterns are tested against the lowercased name. A url
+// whose query carries a signature param is kept whole.
+const deleteTrackingParams = (url: URL, trackingParams: Array<TrackingParam>): void => {
   const pairs = url.search.slice(1).split('&')
   const entries = pairs.map((pair) => new URLSearchParams(pair).entries().next().value)
 
@@ -143,6 +157,13 @@ const deleteTrackingParams = (url: URL, trackingParams: Array<TrackingParam>): v
   }
 
   const matcher = getTrackingMatcher(trackingParams)
+
+  deletePathParams(url, matcher)
+
+  if (!url.search) {
+    return
+  }
+
   const host = stripWww(url.hostname)
 
   // Alibaba DirectMail click urls answer 400 without their `ts` and do not check their `sign`.

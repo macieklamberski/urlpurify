@@ -20,6 +20,7 @@ export {
   pressReleaseUnwrappers,
   searchClickUnwrappers,
   securityGatewayUnwrappers,
+  sessionParams,
   shareIntentUnwrappers,
   signInShimUnwrappers,
   subscribeIntentUnwrappers,

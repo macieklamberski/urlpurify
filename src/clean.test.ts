@@ -1443,3 +1443,124 @@ describe('isTrackingParam', () => {
     expect(isQueryParamTracking('from', 'list', value)).toBe(true)
   })
 })
+
+describe('session ids', () => {
+  it('should strip PHPSESSID', () => {
+    const value =
+      'https://forum.example.com/index.php?PHPSESSID=3f01a9a50ab99bff744317fc3cb0b92b&topic=2590.40'
+    const expected = 'https://forum.example.com/index.php?topic=2590.40'
+
+    expect(cleanUrl(value)).toBe(expected)
+  })
+
+  it('should strip JSESSIONID from the query', () => {
+    const value =
+      'https://example.com/rss/news.shtml?jsessionid=02B4978C7CE0C25C878D034E5DF9C9DD&id=7'
+    const expected = 'https://example.com/rss/news.shtml?id=7'
+
+    expect(cleanUrl(value)).toBe(expected)
+  })
+
+  it('should strip a classic ASP session id', () => {
+    const value = 'https://example.com/page.asp?ASPSESSIONIDQASTCRBA=MEJFLHPDNDGKOEOAJCMBNEKP&id=7'
+    const expected = 'https://example.com/page.asp?id=7'
+
+    expect(cleanUrl(value)).toBe(expected)
+  })
+
+  it('should strip CFID and CFTOKEN', () => {
+    const value = 'https://example.com/doc.pdf?key1=1281671&CFID=11714&CFTOKEN=34558592'
+    const expected = 'https://example.com/doc.pdf?key1=1281671'
+
+    expect(cleanUrl(value)).toBe(expected)
+  })
+
+  it('should strip a session-shaped sid', () => {
+    const value = 'https://example.com/search?sid=46a3f0c2e8b1d4f6a9c3e5b7d1f2a4c6&city=7'
+    const expected = 'https://example.com/search?city=7'
+
+    expect(cleanUrl(value)).toBe(expected)
+  })
+
+  it('should strip a session-shaped sid followed by a second question mark', () => {
+    const value = 'https://example.com/search?sid=46a3f0c2e8b1d4f6a9c3e5b7d1f2a4c6?city=7'
+    const expected = 'https://example.com/search'
+
+    expect(cleanUrl(value)).toBe(expected)
+  })
+
+  it('should keep a short sid', () => {
+    const value = 'https://example.com/rss?sid=46551'
+
+    expect(cleanUrl(value)).toBe(value)
+  })
+
+  it('should keep a sid of 25 characters', () => {
+    const value = 'https://example.com/rss?sid=46a3f0c2e8b1d4f6a9c3e5b7d'
+
+    expect(cleanUrl(value)).toBe(value)
+  })
+})
+
+describe('path params', () => {
+  it('should strip a jsessionid path param', () => {
+    const value = 'https://example.com/site/Donation2;jsessionid=00000000.app20023b?idb=682725718'
+    const expected = 'https://example.com/site/Donation2?idb=682725718'
+
+    expect(cleanUrl(value)).toBe(expected)
+  })
+
+  it('should strip an uppercase JSESSIONID path param', () => {
+    const value = 'https://example.com/servlets/ProductServlet;JSESSIONID=07BCD08E5B349EC6'
+    const expected = 'https://example.com/servlets/ProductServlet'
+
+    expect(cleanUrl(value)).toBe(expected)
+  })
+
+  it('should keep a path param no list holds', () => {
+    const value = 'https://example.com/map;lat=52.1;lon=21.0'
+
+    expect(cleanUrl(value)).toBe(value)
+  })
+
+  it('should strip only the listed path param among others', () => {
+    const value = 'https://example.com/page;jsessionid=ABC123;lang=en'
+    const expected = 'https://example.com/page;lang=en'
+
+    expect(cleanUrl(value)).toBe(expected)
+  })
+
+  it('should strip a path param inside the path', () => {
+    const value = 'https://example.com/shop;jsessionid=ABC123/item/42'
+    const expected = 'https://example.com/shop/item/42'
+
+    expect(cleanUrl(value)).toBe(expected)
+  })
+
+  it('should keep a path param whose name only an entry holds', () => {
+    const value = 'https://example.com/page;sid=46a3f0c2e8b1d4f6a9c3e5b7d1f2a4c6'
+
+    expect(cleanUrl(value)).toBe(value)
+  })
+
+  it('should keep a path param with a custom list lacking it', () => {
+    const value = 'https://example.com/page;jsessionid=ABC123'
+
+    expect(stripTrackingParams(value, ['utm_source'])).toBe(value)
+  })
+
+  it('should keep the path of a signed url whole', () => {
+    const value = 'https://cdn.example.com/file;jsessionid=ABC123?Signature=abc'
+
+    expect(cleanUrl(value)).toBe(value)
+  })
+
+  it('should scan a long run of path params in linear time', () => {
+    const value = `https://example.com/${';a'.repeat(100_000)}`
+    const start = performance.now()
+
+    cleanUrl(value)
+
+    expect(performance.now() - start).toBeLessThan(1000)
+  })
+})

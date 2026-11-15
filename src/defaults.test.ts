@@ -158,4 +158,11 @@ describe('trackingParamsLiterals', () => {
   it('should include names from the opt-in categories', () => {
     expect(urlpurify.trackingParamsLiterals).toContain('utm_source')
   })
+  it('should leave out a name only an entry holds', () => {
+    expect(urlpurify.trackingParamsLiterals).not.toContain('sid')
+  })
+
+  it('should leave out the self-referral ref', () => {
+    expect(urlpurify.trackingParamsLiterals).not.toContain('ref')
+  })
 })

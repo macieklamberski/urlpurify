@@ -71,11 +71,12 @@ Tracking parameters are grouped like the unwrappers, by what stripping them take
 | --- | --- | --- | :---: |
 | Click attribution | `clickAttributionParams` | Ad, search and platform click ids | ☑️ |
 | Visitor ids | `visitorIdParams` | Ids of one visitor, session, browser or email recipient | ☑️ |
+| Session ids | `sessionParams` | A server session id, which never changes what the page shows | ☑️ |
 | Housekeeping | `housekeepingParams` | Nothing: cache busters, previews and redirect leftovers | ☑️ |
 | Campaign tags | `campaignParams` | The site's own traffic stats, from tags like `utm_*` | |
 | Affiliate ids | `affiliateParams` | The publisher's commission | |
 
-`defaultTrackingParams` combines the first three. A campaign tag carries the same value for every reader, so it tells the site where a visit came from and nothing about who made it.
+`defaultTrackingParams` combines the first four. A campaign tag carries the same value for every reader, so it tells the site where a visit came from and nothing about who made it.
 
 To strip more, see [Choosing tracking parameters](#choosing-tracking-parameters).
 
@@ -91,8 +92,16 @@ import { cleanUrl, defaultTrackingParams, defaultUnwrappers, unwrapWebArchive } 
 cleanUrl(url, {
   // First match wins per pass.
   unwrappers: [...defaultUnwrappers, unwrapWebArchive],
-  // Names, or regexes tested on the lowercased name.
-  trackingParams: [...defaultTrackingParams, 'newsletter_id', /^cmp_[a-z0-9_]+$/],
+  // Names, regexes tested on the lowercased name, or entries.
+  trackingParams: [
+    ...defaultTrackingParams,
+    'newsletter_id',
+    /^cmp_[a-z0-9_]+$/,
+    // Only with a value of 32 hex digits.
+    { name: 'token', value: /^[0-9a-f]{32}$/ },
+    // Only on these hosts, and `/^/` matches every name.
+    { name: /^/, hosts: ['share.example.com', 'go.example.com'] },
+  ],
   // The default.
   maxUnwrapDepth: 12,
 })
@@ -111,7 +120,20 @@ Removes tracking parameters and returns the serialized URL. Both this and `clean
 - A query with a signature (`sig`, `signature`, `X-Amz-Signature` or `X-Goog-Signature`) stays whole, since dropping anything breaks the signature.
 - `ts` stays on Alibaba DirectMail click URLs, which fail without it.
 
+A name the list holds is also dropped as a path parameter, as in `/page;jsessionid=<id>`. An entry's `value` is a regex or a function `(value, host) => boolean` tested on the decoded value, and its `hosts` are exact hostnames or a regex, matched without `www.`.
+
 A tracking list is compiled on first use and cached per array. To change it, pass a new array.
+
+### `isTrackingParam(name, value, hostname, trackingParams?)`
+
+Answers whether one query pair is tracking, for a caller filtering pairs itself. The list defaults to `defaultTrackingParams`. A single pair cannot see the rest of the URL, so the two rules above don't apply.
+
+```typescript
+import { isTrackingParam, knownTrackingParams } from 'urlpurify'
+
+isTrackingParam('sid', '46551', 'example.com') // false
+isTrackingParam('utm_source', 'feed', url.hostname, knownTrackingParams) // true
+```
 
 ### `createParamExtractor(config)`
 
@@ -152,4 +174,4 @@ import { campaignParams, defaultTrackingParams, stripTrackingParams } from 'urlp
 stripTrackingParams(url, [...defaultTrackingParams, ...campaignParams])
 ```
 
-`trackingParamsLiterals` and `trackingParamsPatterns` hold every known parameter, opt-in categories included, split into names and regexes.
+`knownTrackingParams` holds every known parameter, opt-in categories included. `trackingParamsLiterals` and `trackingParamsPatterns` split its names and regexes, and leave out entries, whose name alone would strip `sid` or `ref` everywhere.
