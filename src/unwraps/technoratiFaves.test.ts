@@ -13,34 +13,32 @@ describe('unwrapTechnoratiFaves', () => {
 
   it('should extract a percent-encoded page', () => {
     const value = new URL(
-      'http://www.technorati.com/faves?add=http%3A%2F%2Fexample.wordpress.com%2F2011%2F08%2F24%2F',
+      'http://www.technorati.com/faves?add=http%3A%2F%2Fblog.example.com%2F2011%2F08%2F24%2F',
     )
-    const expected = 'http://example.wordpress.com/2011/08/24/'
+    const expected = 'http://blog.example.com/2011/08/24/'
 
     expect(unwrapTechnoratiFaves(value)).toBe(expected)
   })
 
   it('should extract the page from the faves button with sub=addfavbtn', () => {
-    const value = new URL(
-      'http://technorati.com/faves?sub=addfavbtn&add=http://example.blogspot.com',
-    )
-    const expected = 'http://example.blogspot.com'
+    const value = new URL('http://technorati.com/faves?sub=addfavbtn&add=http://blog.example.com')
+    const expected = 'http://blog.example.com'
 
     expect(unwrapTechnoratiFaves(value)).toBe(expected)
   })
 
   it('should extract the page from faves with a trailing slash', () => {
-    const value = new URL('http://technorati.com/faves/?add=http%3A%2F%2Fexample.blog.com%2F')
-    const expected = 'http://example.blog.com/'
+    const value = new URL('http://technorati.com/faves/?add=http%3A%2F%2Fblog.example.com%2F')
+    const expected = 'http://blog.example.com/'
 
     expect(unwrapTechnoratiFaves(value)).toBe(expected)
   })
 
   it('should end the page at the next param', () => {
     const value = new URL(
-      'http://technorati.com/faves/?add=https://example.wordpress.com/2009/04/27/see-your-add-in-a-different-lens/&title=Looking',
+      'http://technorati.com/faves/?add=https://blog.example.com/2009/04/27/see-your-add-in-a-different-lens/&title=Looking',
     )
-    const expected = 'https://example.wordpress.com/2009/04/27/see-your-add-in-a-different-lens/'
+    const expected = 'https://blog.example.com/2009/04/27/see-your-add-in-a-different-lens/'
 
     expect(unwrapTechnoratiFaves(value)).toBe(expected)
   })
@@ -74,15 +72,15 @@ describe('unwrapTechnoratiFaves', () => {
   })
 
   it('should extract the page from a user faves page', () => {
-    const value = new URL('http://technorati.com/faves/infodepot?add=http://example.blogspot.com/')
-    const expected = 'http://example.blogspot.com/'
+    const value = new URL('http://technorati.com/faves/infodepot?add=http://blog.example.com/')
+    const expected = 'http://blog.example.com/'
 
     expect(unwrapTechnoratiFaves(value)).toBe(expected)
   })
 
   it('should return undefined for a user faves tag page', () => {
     const value = new URL(
-      'http://technorati.com/faves/infodepot/tag/news?add=http://example.blogspot.com/',
+      'http://technorati.com/faves/infodepot/tag/news?add=http://blog.example.com/',
     )
 
     expect(unwrapTechnoratiFaves(value)).toBeUndefined()
@@ -92,6 +90,12 @@ describe('unwrapTechnoratiFaves', () => {
     const value = new URL(
       'http://www.technorati.com/cosmos/search.html?add=http://example.com/archives/2004/07/19/rss.html',
     )
+
+    expect(unwrapTechnoratiFaves(value)).toBeUndefined()
+  })
+
+  it('should return undefined for a path that ends with the faves path', () => {
+    const value = new URL('http://technorati.com/blogs/faves?add=http://example.com/post')
 
     expect(unwrapTechnoratiFaves(value)).toBeUndefined()
   })
