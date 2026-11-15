@@ -163,6 +163,7 @@ import { unwrapFiverr } from './unwraps/fiverr.js'
 import { unwrapFlattrSubmit } from './unwraps/flattrSubmit.js'
 import { unwrapFlexoffers } from './unwraps/flexoffers.js'
 import { unwrapFlipboard } from './unwraps/flipboard.js'
+import { unwrapFlipboardShare } from './unwraps/flipboardShare.js'
 import { unwrapFortimail } from './unwraps/fortimail.js'
 import { unwrapFriendFeed } from './unwraps/friendFeed.js'
 import { unwrapFtc } from './unwraps/ftc.js'
@@ -960,6 +961,7 @@ export const shareIntentUnwrappers: Array<UrlUnwrapper> = [
   unwrapDiigoPost,
   unwrapFacebookShare,
   unwrapFlattrSubmit,
+  unwrapFlipboardShare,
   unwrapFriendFeed,
   unwrapGoogleBookmarks,
   unwrapGooglePlusShare,
