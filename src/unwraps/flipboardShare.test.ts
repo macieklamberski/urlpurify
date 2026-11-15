@@ -51,6 +51,15 @@ describe('unwrapFlipboardShare', () => {
     expect(unwrapFlipboardShare(value)).toBe(expected)
   })
 
+  it('should extract a url from the path with a trailing slash', () => {
+    const value = new URL(
+      'https://share.flipboard.com/bookmarklet/popout/?v=2&url=https%3A%2F%2Fexample.com%2Fpost',
+    )
+    const expected = 'https://example.com/post'
+
+    expect(unwrapFlipboardShare(value)).toBe(expected)
+  })
+
   it('should match the path in any case', () => {
     const value = new URL(
       'https://share.flipboard.com/Bookmarklet/Popout?url=https://example.com/post',
