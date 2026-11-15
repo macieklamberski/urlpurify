@@ -113,6 +113,7 @@ import { unwrapDevToImage } from './unwraps/devToImage.js'
 import { unwrapDiggSubmit } from './unwraps/diggSubmit.js'
 import { unwrapDigidip } from './unwraps/digidip.js'
 import { unwrapDigikala } from './unwraps/digikala.js'
+import { unwrapDiigoPost } from './unwraps/diigoPost.js'
 import { unwrapDirectMail } from './unwraps/directMail.js'
 import { unwrapDisqus } from './unwraps/disqus.js'
 import { unwrapDmmAffiliate } from './unwraps/dmmAffiliate.js'
@@ -955,6 +956,7 @@ export const shareIntentUnwrappers: Array<UrlUnwrapper> = [
   unwrapBloggerBlogThis,
   unwrapDelicious,
   unwrapDiggSubmit,
+  unwrapDiigoPost,
   unwrapFacebookShare,
   unwrapFlattrSubmit,
   unwrapGoogleBookmarks,
