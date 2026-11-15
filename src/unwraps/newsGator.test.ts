@@ -80,5 +80,13 @@ describe('unwrapNewsGator', () => {
 
       expect(unwrapNewsGator(value)).toBeUndefined()
     })
+
+    it('should return undefined for the subfext shape on another host', () => {
+      const value = new URL(
+        'http://www.example.com/ngs/subscriber/subfext.aspx?url=http%3A%2F%2Fexample.com%2Ffeed',
+      )
+
+      expect(unwrapNewsGator(value)).toBeUndefined()
+    })
   })
 })
