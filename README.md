@@ -6,7 +6,7 @@
 
 Unwrap redirect, affiliate, and tracking wrapper URLs and strip tracking parameters. Turn noisy links into clean, direct URLs.
 
-Links from feeds, emails and social platforms rarely point straight at their destination. They pass through search redirects, link shims, email gateways and affiliate networks, and pick up tracking parameters on the way, the link decoration that follows a reader from site to site. urlpurify unwraps 380+ known wrappers and strips 100+ known tracking parameters plus vendor families. Campaign tags like `utm_*` and affiliate ids stay by default: they serve the site, not a tracker. It has no dependencies and runs in any modern JavaScript runtime, browsers included.
+Links from feeds, emails and social platforms rarely point straight at their destination. They pass through search redirects, link shims, email gateways and affiliate networks, and pick up tracking parameters on the way, the link decoration that follows a reader from site to site. urlpurify unwraps 400+ known wrappers and strips 100+ known tracking parameters plus vendor families. Campaign tags like `utm_*` and affiliate ids stay by default: they serve the site, not a tracker. It has no dependencies and runs in any modern JavaScript runtime, browsers included.
 
 [Quick start](#quick-start)
 &nbsp;&nbsp;·&nbsp;&nbsp;
@@ -36,7 +36,7 @@ cleanUrl(url) // => 'https://example.com/post'
 
 ## Unwrappers
 
-There are more than 380 unwrappers, each in its own file in [src/unwraps](src/unwraps), with a comment naming the service and the URL shape it handles. Each is exported on its own and belongs to one category. The categories split by what unwrapping takes away from someone, which is what decides whether you want it:
+There are more than 400 unwrappers, each in its own file in [src/unwraps](src/unwraps), with a comment naming the service and the URL shape it handles. Each is exported on its own and belongs to one category. The categories split by what unwrapping takes away from someone, which is what decides whether you want it:
 
 | Category | Export | Unwrapping removes | Default |
 | --- | --- | --- | :---: |
