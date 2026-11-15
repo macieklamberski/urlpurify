@@ -431,6 +431,7 @@ import { unwrapXengentr } from './unwraps/xengentr.js'
 import { unwrapXianguo } from './unwraps/xianguo.js'
 import { unwrapXiaoyuzhou } from './unwraps/xiaoyuzhou.js'
 import { unwrapXimalaya } from './unwraps/ximalaya.js'
+import { unwrapXingShare } from './unwraps/xingShare.js'
 import { unwrapYahooBookmarks } from './unwraps/yahooBookmarks.js'
 import { unwrapYahooImage } from './unwraps/yahooImage.js'
 import { unwrapYahooJapan } from './unwraps/yahooJapan.js'
@@ -970,6 +971,7 @@ export const shareIntentUnwrappers: Array<UrlUnwrapper> = [
   unwrapTwitterIntent,
   unwrapVkShare,
   unwrapWykop,
+  unwrapXingShare,
   unwrapYahooBookmarks,
 ]
 
