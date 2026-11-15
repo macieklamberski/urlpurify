@@ -43,6 +43,29 @@ describe('unwrapHatenaBookmark', () => {
 
       expect(unwrapHatenaBookmark(value)).toBe(expected)
     })
+
+    it('should keep an escaped slash in the page path', () => {
+      const value = new URL(
+        'https://b.hatena.ne.jp/entry/https://example.com/motoso/A_global_workspace_in_language_models_%2F_Anthropic',
+      )
+      const expected =
+        'https://example.com/motoso/A_global_workspace_in_language_models_%2F_Anthropic'
+
+      expect(unwrapHatenaBookmark(value)).toBe(expected)
+    })
+
+    it('should match the path in any case', () => {
+      const value = new URL('http://b.hatena.ne.jp/Entry/http://example.com/blog/archives/4023')
+      const expected = 'http://example.com/blog/archives/4023'
+
+      expect(unwrapHatenaBookmark(value)).toBe(expected)
+    })
+
+    it('should return undefined for the entry path under another segment', () => {
+      const value = new URL('https://b.hatena.ne.jp/x/entry/https://example.com/post')
+
+      expect(unwrapHatenaBookmark(value)).toBeUndefined()
+    })
   })
 
   describe('entry page with an encoded page', () => {
@@ -51,6 +74,15 @@ describe('unwrapHatenaBookmark', () => {
         'http://b.hatena.ne.jp/entry/http%3A%2F%2Fexample.com%2Fhamhamham000%2Fentry-11037312955.html',
       )
       const expected = 'http://example.com/hamhamham000/entry-11037312955.html'
+
+      expect(unwrapHatenaBookmark(value)).toBe(expected)
+    })
+
+    it('should decode the page with an unencoded path tail', () => {
+      const value = new URL(
+        'http://b.hatena.ne.jp/entry/https%3A%2F%2Fwww.example.com%2Fentry%2F20180302/feed',
+      )
+      const expected = 'https://www.example.com/entry/20180302/feed'
 
       expect(unwrapHatenaBookmark(value)).toBe(expected)
     })
@@ -67,8 +99,8 @@ describe('unwrapHatenaBookmark', () => {
     })
 
     it('should give http to a page under /entry/', () => {
-      const value = new URL('http://b.hatena.ne.jp/entry/example.jp/import-io')
-      const expected = 'http://example.jp/import-io'
+      const value = new URL('http://b.hatena.ne.jp/entry/example.com/import-io')
+      const expected = 'http://example.com/import-io'
 
       expect(unwrapHatenaBookmark(value)).toBe(expected)
     })
@@ -80,9 +112,22 @@ describe('unwrapHatenaBookmark', () => {
       expect(unwrapHatenaBookmark(value)).toBe(expected)
     })
 
+    it('should match the path in any case', () => {
+      const value = new URL('https://b.hatena.ne.jp/Entry/s/www.example.com/')
+      const expected = 'https://www.example.com/'
+
+      expect(unwrapHatenaBookmark(value)).toBe(expected)
+    })
+
+    it('should return undefined for the entry path under another segment', () => {
+      const value = new URL('https://b.hatena.ne.jp/x/entry/s/www.example.com/post')
+
+      expect(unwrapHatenaBookmark(value)).toBeUndefined()
+    })
+
     it('should keep the link fragment', () => {
-      const value = new URL('http://b.hatena.ne.jp/entry/example.fm/episode/v001/#tw?u=upamune')
-      const expected = 'http://example.fm/episode/v001/#tw?u=upamune'
+      const value = new URL('http://b.hatena.ne.jp/entry/example.com/episode/v001/#tw?u=upamune')
+      const expected = 'http://example.com/episode/v001/#tw?u=upamune'
 
       expect(unwrapHatenaBookmark(value)).toBe(expected)
     })
@@ -114,6 +159,15 @@ describe('unwrapHatenaBookmark', () => {
       expect(unwrapHatenaBookmark(value)).toBe(expected)
     })
 
+    it('should match the path in any case', () => {
+      const value = new URL(
+        'http://b.hatena.ne.jp/Add?mode=confirm&url=https%3A%2F%2Fexample.com%2F',
+      )
+      const expected = 'https://example.com/'
+
+      expect(unwrapHatenaBookmark(value)).toBe(expected)
+    })
+
     it('should return undefined without a url', () => {
       const value = new URL('http://b.hatena.ne.jp/add?mode=confirm&title=XVX+MU68+FujiWave')
 
@@ -131,7 +185,7 @@ describe('unwrapHatenaBookmark', () => {
     })
 
     it('should return undefined for the counter image', () => {
-      const value = new URL('http://b.hatena.ne.jp/bc/gr/http://example.jp/')
+      const value = new URL('http://b.hatena.ne.jp/bc/gr/http://example.com/')
 
       expect(unwrapHatenaBookmark(value)).toBeUndefined()
     })
@@ -146,7 +200,7 @@ describe('unwrapHatenaBookmark', () => {
 
     it('should return undefined for the comments widget', () => {
       const value = new URL(
-        'http://b.hatena.ne.jp/entry.parts?url=http%3A%2F%2Fexample.jp%2Fhamhamham000%2Fentry-11037312955.html',
+        'http://b.hatena.ne.jp/entry.parts?url=http%3A%2F%2Fexample.com%2Fhamhamham000%2Fentry-11037312955.html',
       )
 
       expect(unwrapHatenaBookmark(value)).toBeUndefined()
