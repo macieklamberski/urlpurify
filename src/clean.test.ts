@@ -849,6 +849,21 @@ describe('cleanUrl with a malformed target', () => {
     expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe('https://example.com/x')
   })
 
+  it('should convert a feed scheme on the target', () => {
+    const value = 'https://redirect.example.com/?target=feed%3Ahttps%3A%2F%2Fexample.com%2Ffeed'
+    const expected = 'https://example.com/feed'
+
+    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(expected)
+  })
+
+  it('should decode an html entity in the target', () => {
+    const value =
+      'https://redirect.example.com/?target=https%3A%2F%2Fexample.com%2F%3Fa%3D1%26amp%3Bb%3D2'
+    const expected = 'https://example.com/?a=1&b=2'
+
+    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(expected)
+  })
+
   it('should repair a leading dot in the target host', () => {
     const value = 'https://redirect.example.com/?target=http://.example.com/x&source=gmail'
 
