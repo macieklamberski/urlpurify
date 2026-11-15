@@ -25,23 +25,22 @@ export const decodeEncodedScheme = (value: string): string => {
 
 const unencodedTargetRegex = /^https?:\/\//i
 
-// Every value of a query param, in order, its name in any case, decoded as `URLSearchParams` does,
-// except that a malformed escape stays as written, and a `+` stays in an unencoded target,
-// as in `wgtarget=https://example.com/search/a+b/`, which `URLSearchParams` reads as a space.
-export const getParamValues = (url: URL, name: string): Array<string> => {
-  const values: Array<string> = []
-  const raws = getQueryParamValues(url, name, { decodeValues: false, preserveEmptyValues: true })
-
-  for (const raw of raws) {
-    if (!unencodedTargetRegex.test(raw)) {
-      values.push(decodePercent(raw.replaceAll('+', ' ')))
-      continue
-    }
-
-    values.push(decodePercent(raw))
+// A raw query param value decoded as `URLSearchParams` does, except that a malformed escape stays
+// as written, and a `+` stays in an unencoded target, as in `wgtarget=https://example.com/a+b/`,
+// which `URLSearchParams` reads as a space.
+export const decodeParamValue = (raw: string): string => {
+  if (!unencodedTargetRegex.test(raw)) {
+    return decodePercent(raw.replaceAll('+', ' '))
   }
 
-  return values
+  return decodePercent(raw)
+}
+
+// Every value of a query param, in order, its name in any case, decoded by `decodeParamValue`.
+export const getParamValues = (url: URL, name: string): Array<string> => {
+  const raws = getQueryParamValues(url, name, { decodeValues: false, preserveEmptyValues: true })
+
+  return raws.map(decodeParamValue)
 }
 
 // The target a carrier param holds, read as `getParamValues` reads it and decoded once more when

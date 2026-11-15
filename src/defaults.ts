@@ -173,6 +173,7 @@ import { unwrapFriendFeed } from './unwraps/friendFeed.js'
 import { unwrapFtc } from './unwraps/ftc.js'
 import { unwrapGabCompose } from './unwraps/gabCompose.js'
 import { unwrapGateSc } from './unwraps/gateSc.js'
+import { unwrapGenericCarrier } from './unwraps/genericCarrier.js'
 import { unwrapGeoriot } from './unwraps/georiot.js'
 import { unwrapGfnLinkProxy } from './unwraps/gfnLinkProxy.js'
 import { unwrapGitee } from './unwraps/gitee.js'
@@ -1061,6 +1062,10 @@ export const feedToolUnwrappers: Array<UrlUnwrapper> = [
   unwrapRssBoardValidator,
   unwrapW3cFeedValidator,
 ]
+
+// Any host carrying an http url in a url-named param: unwrapping removes the link's own page,
+// whatever it is, a redirect or a page that takes the url as an argument.
+export const genericCarrierUnwrappers: Array<UrlUnwrapper> = [unwrapGenericCarrier]
 
 export const defaultUnwrappers: Array<UrlUnwrapper> = [
   ...searchClickUnwrappers,

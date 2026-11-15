@@ -13,6 +13,7 @@ export {
   emailTrackingUnwrappers,
   embedProxyUnwrappers,
   feedToolUnwrappers,
+  genericCarrierUnwrappers,
   housekeepingParams,
   imageProxyUnwrappers,
   knownTrackingParams,
@@ -202,6 +203,7 @@ export { unwrapFriendFeed } from './unwraps/friendFeed.js'
 export { unwrapFtc } from './unwraps/ftc.js'
 export { unwrapGabCompose } from './unwraps/gabCompose.js'
 export { unwrapGateSc } from './unwraps/gateSc.js'
+export { unwrapGenericCarrier } from './unwraps/genericCarrier.js'
 export { unwrapGeoriot } from './unwraps/georiot.js'
 export { unwrapGfnLinkProxy } from './unwraps/gfnLinkProxy.js'
 export { unwrapGitee } from './unwraps/gitee.js'
