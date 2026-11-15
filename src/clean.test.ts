@@ -805,12 +805,6 @@ describe('cleanUrl with a malformed target', () => {
     expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
   })
 
-  it('should keep the wrapper when the target host has an empty label', () => {
-    const value = 'https://redirect.example.com/?target=http%3A%2F%2Fexample..com%2F'
-
-    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
-  })
-
   it('should keep the wrapper when a relative php link reads as the host', () => {
     const value =
       'https://redirect.example.com/?target=http:///lermais_materias.php?cd_materias%3D5919&source=gmail'
@@ -853,6 +847,21 @@ describe('cleanUrl with a malformed target', () => {
     const value = 'https://redirect.example.com/?target=https%3A%2F%2Fhttps://example.com%2Fx'
 
     expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe('https://example.com/x')
+  })
+
+  it('should convert a feed scheme on the target', () => {
+    const value = 'https://redirect.example.com/?target=feed%3Ahttps%3A%2F%2Fexample.com%2Ffeed'
+    const expected = 'https://example.com/feed'
+
+    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(expected)
+  })
+
+  it('should decode an html entity in the target', () => {
+    const value =
+      'https://redirect.example.com/?target=https%3A%2F%2Fexample.com%2F%3Fa%3D1%26amp%3Bb%3D2'
+    const expected = 'https://example.com/?a=1&b=2'
+
+    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(expected)
   })
 
   it('should repair a leading dot in the target host', () => {
@@ -919,6 +928,39 @@ describe('cleanUrl with a malformed target', () => {
     const value = 'https://redirect.example.com/?target=HTTPS:/example.com/x'
 
     expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe('https://example.com/x')
+  })
+
+  it('should keep the wrapper when the target host opens with a comma', () => {
+    const value = 'https://redirect.example.com/?target=https%3A%2F%2Ccexample.com%2F'
+
+    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
+  })
+
+  it('should drop a parenthesis closing the target host', () => {
+    const value = 'https://redirect.example.com/?target=https%3A%2F%2Fwww.example.com)'
+    const expected = 'https://www.example.com/'
+
+    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(expected)
+  })
+
+  it('should collapse a doubled dot in the target host', () => {
+    const value = 'https://redirect.example.com/?target=https%3A%2F%2Fwww..example.org%2Fevents'
+    const expected = 'https://www.example.org/events'
+
+    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(expected)
+  })
+
+  it('should keep the wrapper when the target host ends in an ellipsis', () => {
+    const value = 'https://redirect.example.com/?target=http%3A%2F%2Fitem.example.co.j...'
+
+    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
+  })
+
+  it('should unwrap a target whose host label ends with a hyphen', () => {
+    const value = 'https://redirect.example.com/?target=https%3A%2F%2Fok-.example.com%2Fpost'
+    const expected = 'https://ok-.example.com/post'
+
+    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(expected)
   })
 
   it('should resolve a chain whose inner target has a single slash', () => {
