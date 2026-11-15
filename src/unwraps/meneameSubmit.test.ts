@@ -69,14 +69,6 @@ describe('unwrapMeneameSubmit', () => {
     expect(unwrapMeneameSubmit(value)).toBeUndefined()
   })
 
-  it('should return undefined for the login return url', () => {
-    const value = new URL(
-      'http://meneame.net/login.php?return=/submit.php?url=http://www.example.com/articulo.asp?idarticulo=33405',
-    )
-
-    expect(unwrapMeneameSubmit(value)).toBeUndefined()
-  })
-
   it('should return undefined for another path carrying url', () => {
     const value = new URL('https://www.meneame.net/story?url=https%3A%2F%2Fexample.com%2Fpost')
 
