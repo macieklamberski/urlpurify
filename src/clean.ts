@@ -10,6 +10,7 @@ import {
   stripWww,
 } from 'trousse'
 import { defaultTrackingParams, defaultUnwrappers } from './defaults.js'
+import { getCandidates } from './scope.js'
 import type { CleanUrlOptions, TrackingEntry, TrackingParam, UrlUnwrapper } from './types.js'
 
 type TrackingMatcher = {
@@ -242,8 +243,20 @@ const addMissingScheme = (target: string | undefined): string | undefined => {
   return target
 }
 
+// A wrapper written with a doubled slash, `//safety/go`, matches only once collapsed. Undefined
+// when the url has no doubled slash to collapse.
+const getCollapsedUrl = (url: URL): URL | undefined => {
+  const collapsed = parseUrl(normalizeUrl(url.href, { collapseSlashes: true }))
+
+  if (!collapsed || collapsed.href === url.href) {
+    return
+  }
+
+  return collapsed
+}
+
 const applyUnwrappers = (url: URL, unwrappers: Array<UrlUnwrapper>): string | undefined => {
-  for (const unwrap of unwrappers) {
+  for (const unwrap of getCandidates(url, unwrappers)) {
     // A trailing no-break space, as YouTube descriptions carry, hides a bare host untrimmed.
     const target = cleanTarget(addMissingScheme(unwrap(url)?.trim()))
 
@@ -252,15 +265,39 @@ const applyUnwrappers = (url: URL, unwrappers: Array<UrlUnwrapper>): string | un
     }
   }
 
-  // A wrapper written with a doubled slash, `//safety/go`, matches only once collapsed. The url as
-  // written goes first, so a target whose own path holds `//` keeps it.
-  const collapsed = parseUrl(normalizeUrl(url.href, { collapseSlashes: true }))
+  // The url as written goes first, so a target whose own path holds `//` keeps it.
+  const collapsed = getCollapsedUrl(url)
 
-  if (!collapsed || collapsed.href === url.href) {
+  if (!collapsed) {
     return
   }
 
   return applyUnwrappers(collapsed, unwrappers)
+}
+
+// Answer whether any of the unwrappers may unwrap the url, from their scopes alone, without
+// running them. False means unwrapUrl returns undefined for it. True means it may not.
+export const mayUnwrap = (
+  url: string | URL,
+  unwrappers: Array<UrlUnwrapper> = defaultUnwrappers,
+): boolean => {
+  const parsed = parseUrl(url)
+
+  if (!parsed) {
+    return false
+  }
+
+  if (getCandidates(parsed, unwrappers).length > 0) {
+    return true
+  }
+
+  const collapsed = getCollapsedUrl(parsed)
+
+  if (!collapsed) {
+    return false
+  }
+
+  return getCandidates(collapsed, unwrappers).length > 0
 }
 
 // Apply unwrappers in order and return the first extracted target URL that survives cleaning,

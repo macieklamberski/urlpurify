@@ -1,9 +1,30 @@
 import { describe, expect, it } from 'bun:test'
+import type { UrlUnwrapperScope } from './types.js'
 import { createParamExtractor, getUtf8ByteLength } from './utils.js'
 
 const exampleSubdomainRegex = /\.example\.com$/
 
 describe('createParamExtractor', () => {
+  it('should declare its hosts as the scope', () => {
+    const extract = createParamExtractor({
+      hosts: ['a.example.com', 'b.example.com'],
+      params: ['url'],
+    })
+    const expected: UrlUnwrapperScope = { hosts: ['a.example.com', 'b.example.com'] }
+
+    expect(extract.scope).toEqual(expected)
+  })
+
+  it('should declare its domains as the scope', () => {
+    const extract = createParamExtractor({
+      domains: 'example.com',
+      params: ['url'],
+    })
+    const expected: UrlUnwrapperScope = { domains: 'example.com' }
+
+    expect(extract.scope).toEqual(expected)
+  })
+
   it('should extract the first present param for a matching host', () => {
     const extract = createParamExtractor({
       hosts: 'redirect.example.com',
