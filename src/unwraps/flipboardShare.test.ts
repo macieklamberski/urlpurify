@@ -4,40 +4,40 @@ import { unwrapFlipboardShare } from './flipboardShare.js'
 describe('unwrapFlipboardShare', () => {
   it('should extract a percent-encoded url', () => {
     const value = new URL(
-      'https://share.flipboard.com/bookmarklet/popout?v=2&title=The%20Architecture%20of%20Japanese%20Shrines%20and%20Temples&url=https%3A%2F%2Flivejapan.com%2Fen%2Fin-tokyo%2Fin-pref-tokyo%2Fin-tokyo_train_station%2Farticle-a0000271%2F',
+      'https://share.flipboard.com/bookmarklet/popout?v=2&title=The%20Architecture%20of%20Japanese%20Shrines%20and%20Temples&url=https%3A%2F%2Fexample.com%2Fen%2Fin-tokyo%2Fin-pref-tokyo%2Fin-tokyo_train_station%2Farticle-a0000271%2F',
     )
     const expected =
-      'https://livejapan.com/en/in-tokyo/in-pref-tokyo/in-tokyo_train_station/article-a0000271/'
+      'https://example.com/en/in-tokyo/in-pref-tokyo/in-tokyo_train_station/article-a0000271/'
 
     expect(unwrapFlipboardShare(value)).toBe(expected)
   })
 
   it('should extract a raw url', () => {
     const value = new URL(
-      'https://share.flipboard.com/bookmarklet/popout?v=2&url=https://www.billboard.com/music/music-news/americas-got-talent-winner-michael-grimm-recovery-no-singing-v',
+      'https://share.flipboard.com/bookmarklet/popout?v=2&url=https://www.example.com/music/music-news/americas-got-talent-winner-michael-grimm-recovery-no-singing-v',
     )
     const expected =
-      'https://www.billboard.com/music/music-news/americas-got-talent-winner-michael-grimm-recovery-no-singing-v'
+      'https://www.example.com/music/music-news/americas-got-talent-winner-michael-grimm-recovery-no-singing-v'
 
     expect(unwrapFlipboardShare(value)).toBe(expected)
   })
 
   it('should extract a url when v holds a title', () => {
     const value = new URL(
-      'https://share.flipboard.com/bookmarklet/popout?v=The+Ocean+Teems+With+Networks+of+Interconnected+Bacteria&url=https://www.quantamagazine.org/the-ocean-teems-with-networks-of-interconnected-bacteria-20250106/',
+      'https://share.flipboard.com/bookmarklet/popout?v=The+Ocean+Teems+With+Networks+of+Interconnected+Bacteria&url=https://www.example.com/the-ocean-teems-with-networks-of-interconnected-bacteria-20250106/',
     )
     const expected =
-      'https://www.quantamagazine.org/the-ocean-teems-with-networks-of-interconnected-bacteria-20250106/'
+      'https://www.example.com/the-ocean-teems-with-networks-of-interconnected-bacteria-20250106/'
 
     expect(unwrapFlipboardShare(value)).toBe(expected)
   })
 
   it('should extract a url from the www host', () => {
     const value = new URL(
-      'https://www.flipboard.com/bookmarklet/popout?title=Almendrados%20(Flourless%20Almond%20Cookies)%20&url=https://www.myrecipes.com/recipe/almendrados-almond-cookies%3Futm_source=flipboard.com&utm_medium=referral&v=2',
+      'https://www.flipboard.com/bookmarklet/popout?title=Almendrados%20(Flourless%20Almond%20Cookies)%20&url=https://www.example.com/recipe/almendrados-almond-cookies%3Futm_source=flipboard.com&utm_medium=referral&v=2',
     )
     const expected =
-      'https://www.myrecipes.com/recipe/almendrados-almond-cookies?utm_source=flipboard.com'
+      'https://www.example.com/recipe/almendrados-almond-cookies?utm_source=flipboard.com'
 
     expect(unwrapFlipboardShare(value)).toBe(expected)
   })
