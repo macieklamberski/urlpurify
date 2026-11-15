@@ -353,6 +353,7 @@ import { unwrapSymplicity } from './unwraps/symplicity.js'
 import { unwrapTargetCircle } from './unwraps/targetCircle.js'
 import { unwrapTeacup } from './unwraps/teacup.js'
 import { unwrapTelegramIv } from './unwraps/telegramIv.js'
+import { unwrapTelegramShare } from './unwraps/telegramShare.js'
 import { unwrapTheRegister } from './unwraps/theRegister.js'
 import { unwrapThreadsShim } from './unwraps/threads.js'
 import { unwrapTiktok } from './unwraps/tiktok.js'
@@ -924,6 +925,7 @@ export const embedProxyUnwrappers: Array<UrlUnwrapper> = [
 export const shareIntentUnwrappers: Array<UrlUnwrapper> = [
   unwrapAddToAny,
   unwrapFacebookShare,
+  unwrapTelegramShare,
   unwrapTwitterIntent,
 ]
 
