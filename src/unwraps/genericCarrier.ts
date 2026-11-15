@@ -43,6 +43,11 @@ export const unwrapGenericCarrier: UrlUnwrapper = (url) => {
       return `${[raw, ...params.slice(index + 1)].join('&')}${url.hash}`
     }
 
+    // An escaped target can hold its own `%23` fragment, which wins over the link's.
+    if (target.includes('#')) {
+      return target
+    }
+
     return `${target}${url.hash}`
   }
 }
