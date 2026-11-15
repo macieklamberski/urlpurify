@@ -286,6 +286,7 @@ import { unwrapOrkut } from './unwraps/orkut.js'
 import { unwrapOsnova } from './unwraps/osnova.js'
 import { unwrapOutlookSafelinks } from './unwraps/outlookSafelinks.js'
 import { unwrapOutlookWebAccess } from './unwraps/outlookWebAccess.js'
+import { unwrapPageflakes } from './unwraps/pageflakes.js'
 import { unwrapPagefreezer } from './unwraps/pagefreezer.js'
 import { unwrapPartnerAds } from './unwraps/partnerAds.js'
 import { unwrapPbs } from './unwraps/pbs.js'
@@ -999,6 +1000,7 @@ export const subscribeIntentUnwrappers: Array<UrlUnwrapper> = [
   unwrapGoogleReader,
   unwrapInoreader,
   unwrapLivedoorReader,
+  unwrapPageflakes,
   unwrapPlayerFm,
   unwrapPodcastAddict,
   unwrapPrxPlayer,
