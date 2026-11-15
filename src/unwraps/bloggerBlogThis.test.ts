@@ -33,9 +33,18 @@ describe('unwrapBloggerBlogThis', () => {
 
   it('should extract the target on www2.blogger.com', () => {
     const value = new URL(
-      'http://www2.blogger.com/blog-this.g?t=&u=http%3A%2F%2Fexample.blogspot.com%2F2007%2F04%2Fblog-post_9604.html%23links&n=%D0%90%D0%BB%D0%B5%D0%BA%D1%81%D0%B0%D0%BD%D0%B4%D1%8A%D1%80',
+      'http://www2.blogger.com/blog-this.g?t=&u=http%3A%2F%2Fblog.example.com%2F2007%2F04%2Fblog-post_9604.html%23links&n=%D0%90%D0%BB%D0%B5%D0%BA%D1%81%D0%B0%D0%BD%D0%B4%D1%8A%D1%80',
     )
-    const expected = 'http://example.blogspot.com/2007/04/blog-post_9604.html#links'
+    const expected = 'http://blog.example.com/2007/04/blog-post_9604.html#links'
+
+    expect(unwrapBloggerBlogThis(value)).toBe(expected)
+  })
+
+  it('should extract the target on draft.blogger.com', () => {
+    const value = new URL(
+      'https://draft.blogger.com/blog-this.g?u=https%3A%2F%2Fexample.com%2Fpost&n=Hello',
+    )
+    const expected = 'https://example.com/post'
 
     expect(unwrapBloggerBlogThis(value)).toBe(expected)
   })
