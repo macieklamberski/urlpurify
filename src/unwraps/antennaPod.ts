@@ -1,4 +1,4 @@
-import { getPathSegments, isAnyOf, isHostOf, isLocaleSegment } from 'trousse'
+import { getPathSegments, isAnyOf, isHostOf, isLocale } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { getParamTarget } from '../utils.js'
 
@@ -15,7 +15,7 @@ export const unwrapAntennaPod: UrlUnwrapper = (url) => {
   const segments = getPathSegments(url)
   const [locale] = segments
   // A locale copy of the page, such as /fr/ or /pt-br/, runs the same script.
-  const pageSegments = locale && isLocaleSegment(locale) ? segments.slice(1) : segments
+  const pageSegments = locale && isLocale(locale) ? segments.slice(1) : segments
   const [route, action, ...rest] = pageSegments
 
   if (!isAnyOf(route, 'deeplink') || !isAnyOf(action, 'subscribe') || rest.length > 0) {

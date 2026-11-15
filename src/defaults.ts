@@ -445,6 +445,7 @@ import { unwrapWeserv } from './unwraps/weserv.js'
 import { unwrapWikiwix } from './unwraps/wikiwix.js'
 import { unwrapWikizero } from './unwraps/wikizero.js'
 import { unwrapWindowsLive } from './unwraps/windowsLive.js'
+import { unwrapWindowsLiveFavorites } from './unwraps/windowsLiveFavorites.js'
 import { unwrapWordpressEmail } from './unwraps/wordpressEmail.js'
 import { unwrapWordpressGo2 } from './unwraps/wordpressGo2.js'
 import { unwrapWorldNomads } from './unwraps/worldNomads.js'
@@ -1014,6 +1015,7 @@ export const shareIntentUnwrappers: Array<UrlUnwrapper> = [
   unwrapTwitterIntent,
   unwrapVkShare,
   unwrapWeiboShare,
+  unwrapWindowsLiveFavorites,
   unwrapWykop,
   unwrapXingShare,
   unwrapYahooBookmarks,
