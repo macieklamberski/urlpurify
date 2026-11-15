@@ -1,9 +1,18 @@
-import { createParamExtractor } from '../utils.js'
+import { isHostOf } from 'trousse'
+import type { UrlUnwrapper } from '../types.js'
+import { getParamTarget } from '../utils.js'
 
-// StumbleUpon share (stumbleupon.com/submit?url=<target>, on www. and bare stumbleupon.com), which
-// redirects to Mix's share form. Opt-in: unwrapping returns the shared page, not the form.
-export const unwrapStumbleuponSubmit = createParamExtractor({
-  hosts: ['www.stumbleupon.com', 'stumbleupon.com'],
-  path: '/submit',
-  params: ['url'],
-})
+const hosts = ['www.stumbleupon.com', 'stumbleupon.com']
+
+const pathRegex = /^\/(?:submit(?:\.php)?|refer\.php|badge\/?)$/i
+
+// StumbleUpon share (stumbleupon.com/submit?url=<target>, /submit.php, /refer.php, /badge and
+// /badge/, on www. and bare stumbleupon.com), which redirects to Mix's share form with the same
+// url=. Opt-in: unwrapping returns the shared page, not the form.
+export const unwrapStumbleuponSubmit: UrlUnwrapper = (url) => {
+  if (!isHostOf(url, hosts) || !pathRegex.test(url.pathname)) {
+    return
+  }
+
+  return getParamTarget(url, 'url')
+}

@@ -13,10 +13,44 @@ describe('unwrapStumbleuponSubmit', () => {
 
   it('should extract a raw target on www.stumbleupon.com', () => {
     const value = new URL(
-      'http://www.stumbleupon.com/submit?url=http://www.goodnewspdx.com/2011/02/18/whole-foods-making-a-micro-major-difference/&title=Whole+Foods+making+a+micro+%2',
+      'https://www.stumbleupon.com/submit?url=https://ddrous.github.io/posts/parallel-mind-theory/&title=A',
+    )
+    const expected = 'https://ddrous.github.io/posts/parallel-mind-theory/'
+
+    expect(unwrapStumbleuponSubmit(value)).toBe(expected)
+  })
+
+  it('should extract the target from submit.php', () => {
+    const value = new URL(
+      'http://www.stumbleupon.com/submit.php?url=http://www.goodnewspdx.com/2011/02/18/whole-foods-making-a-micro-major-difference/&title=Whole+Foods+making+a+micro+%28MAJOR%29+difference',
     )
     const expected =
       'http://www.goodnewspdx.com/2011/02/18/whole-foods-making-a-micro-major-difference/'
+
+    expect(unwrapStumbleuponSubmit(value)).toBe(expected)
+  })
+
+  it('should extract the target from refer.php', () => {
+    const value = new URL('http://www.stumbleupon.com/refer.php?url=http://www.maraboutime.com/')
+    const expected = 'http://www.maraboutime.com/'
+
+    expect(unwrapStumbleuponSubmit(value)).toBe(expected)
+  })
+
+  it('should extract the target from the badge path', () => {
+    const value = new URL(
+      'http://www.stumbleupon.com/badge?url=https%3A%2F%2Fsailingheaven.com%2Fyacht-charter%2Flagoon-50-2019%2F&title=Lagoon%2050%20%7C%202019',
+    )
+    const expected = 'https://sailingheaven.com/yacht-charter/lagoon-50-2019/'
+
+    expect(unwrapStumbleuponSubmit(value)).toBe(expected)
+  })
+
+  it('should extract the target from the badge path with a trailing slash', () => {
+    const value = new URL(
+      'http://www.stumbleupon.com/badge/?url=http%3A%2F%2Fdornob.com%2Fthe-waterphone-an-unorthodox-musical-instrument%2F',
+    )
+    const expected = 'http://dornob.com/the-waterphone-an-unorthodox-musical-instrument/'
 
     expect(unwrapStumbleuponSubmit(value)).toBe(expected)
   })
@@ -51,9 +85,17 @@ describe('unwrapStumbleuponSubmit', () => {
     expect(unwrapStumbleuponSubmit(value)).toBeUndefined()
   })
 
-  it('should return undefined for the badge path', () => {
+  it('should return undefined for the badge embed path', () => {
     const value = new URL(
       'http://www.stumbleupon.com/badge/embed/1/?url=https%3A%2F%2Fwww.aalep.eu%2Fchina-not-yet-superpower',
+    )
+
+    expect(unwrapStumbleuponSubmit(value)).toBeUndefined()
+  })
+
+  it('should return undefined for another path carrying url', () => {
+    const value = new URL(
+      'http://www.stumbleupon.com/likecontent?url=http%3A%2F%2Fdictionary.cambridge.org%2Fdictionary%2Fenglish%2Ffast-food&title=fast+food',
     )
 
     expect(unwrapStumbleuponSubmit(value)).toBeUndefined()
