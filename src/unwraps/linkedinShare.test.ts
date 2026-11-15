@@ -96,7 +96,7 @@ describe('unwrapLinkedinShare', () => {
 
   it('should match the path in any case', () => {
     const value = new URL(
-      'https://www.linkedin.com/SHAREARTICLE?url=https%3A%2F%2Fexample.com%2Fpost',
+      'https://www.linkedin.com/sharearticle?url=https%3A%2F%2Fexample.com%2Fpost',
     )
     const expected = 'https://example.com/post'
 
@@ -121,6 +121,14 @@ describe('unwrapLinkedinShare', () => {
     // The url= is constructed: no learning-login link in the walk carries it.
     const value = new URL(
       'https://www.linkedin.com/learning-login/share?forceAccount=false&redirect=https%3A%2F%2Fwww.linkedin.com%2Flearning%2Finterview-master-class&url=https%3A%2F%2Fexample.com%2Fpost',
+    )
+
+    expect(unwrapLinkedinShare(value)).toBeUndefined()
+  })
+
+  it('should return undefined for a longer path starting with share', () => {
+    const value = new URL(
+      'https://www.linkedin.com/sharer/sharer.php?url=https%3A%2F%2Fexample.com%2Fpost',
     )
 
     expect(unwrapLinkedinShare(value)).toBeUndefined()
