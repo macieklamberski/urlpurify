@@ -167,6 +167,7 @@ import { unwrapFlipboardShare } from './unwraps/flipboardShare.js'
 import { unwrapFortimail } from './unwraps/fortimail.js'
 import { unwrapFriendFeed } from './unwraps/friendFeed.js'
 import { unwrapFtc } from './unwraps/ftc.js'
+import { unwrapGabCompose } from './unwraps/gabCompose.js'
 import { unwrapGateSc } from './unwraps/gateSc.js'
 import { unwrapGeoriot } from './unwraps/georiot.js'
 import { unwrapGfnLinkProxy } from './unwraps/gfnLinkProxy.js'
@@ -972,6 +973,7 @@ export const shareIntentUnwrappers: Array<UrlUnwrapper> = [
   unwrapFlattrSubmit,
   unwrapFlipboardShare,
   unwrapFriendFeed,
+  unwrapGabCompose,
   unwrapGoogleBookmarks,
   unwrapGooglePlusShare,
   unwrapHackerNewsSubmit,
