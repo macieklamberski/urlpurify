@@ -167,6 +167,7 @@ import { unwrapGodcaster } from './unwraps/godcaster.js'
 import { unwrapGoogle } from './unwraps/google.js'
 import { unwrapGoogleAds } from './unwraps/googleAds.js'
 import { unwrapGoogleAmpViewer } from './unwraps/googleAmpViewer.js'
+import { unwrapGoogleBuzz } from './unwraps/googleBuzz.js'
 import { unwrapGoogleNews } from './unwraps/googleNews.js'
 import { unwrapGoogleNewsModern } from './unwraps/googleNewsModern.js'
 import { unwrapGooglePodcasts } from './unwraps/googlePodcasts.js'
@@ -924,6 +925,7 @@ export const embedProxyUnwrappers: Array<UrlUnwrapper> = [
 export const shareIntentUnwrappers: Array<UrlUnwrapper> = [
   unwrapAddToAny,
   unwrapFacebookShare,
+  unwrapGoogleBuzz,
   unwrapTwitterIntent,
 ]
 
