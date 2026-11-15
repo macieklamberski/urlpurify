@@ -355,6 +355,7 @@ import { unwrapTeacup } from './unwraps/teacup.js'
 import { unwrapTelegramIv } from './unwraps/telegramIv.js'
 import { unwrapTheRegister } from './unwraps/theRegister.js'
 import { unwrapThreadsShim } from './unwraps/threads.js'
+import { unwrapThreadsIntent } from './unwraps/threadsIntent.js'
 import { unwrapTiktok } from './unwraps/tiktok.js'
 import { unwrapTitanhqLinklock } from './unwraps/titanhqLinklock.js'
 import { unwrapTopsec } from './unwraps/topsec.js'
@@ -924,6 +925,7 @@ export const embedProxyUnwrappers: Array<UrlUnwrapper> = [
 export const shareIntentUnwrappers: Array<UrlUnwrapper> = [
   unwrapAddToAny,
   unwrapFacebookShare,
+  unwrapThreadsIntent,
   unwrapTwitterIntent,
 ]
 
