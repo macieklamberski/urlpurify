@@ -368,6 +368,7 @@ import { unwrapTriplelift } from './unwraps/triplelift.js'
 import { unwrapTrustwaveScanmail } from './unwraps/trustwaveScanmail.js'
 import { unwrapTrxHub } from './unwraps/trxHub.js'
 import { unwrapTumblr } from './unwraps/tumblr.js'
+import { unwrapTumblrShare } from './unwraps/tumblrShare.js'
 import { unwrapTwitterIntent } from './unwraps/twitterIntent.js'
 import { unwrapTwitterRedirect } from './unwraps/twitterRedirect.js'
 import { unwrapTwoCheckout } from './unwraps/twoCheckout.js'
@@ -924,6 +925,7 @@ export const embedProxyUnwrappers: Array<UrlUnwrapper> = [
 export const shareIntentUnwrappers: Array<UrlUnwrapper> = [
   unwrapAddToAny,
   unwrapFacebookShare,
+  unwrapTumblrShare,
   unwrapTwitterIntent,
 ]
 
