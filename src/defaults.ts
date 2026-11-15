@@ -208,6 +208,7 @@ import { unwrapInfospace } from './unwraps/infospace.js'
 import { unwrapInoreader } from './unwraps/inoreader.js'
 import { unwrapInsiderAffiliate } from './unwraps/insiderAffiliate.js'
 import { unwrapInstagramShim } from './unwraps/instagram.js'
+import { unwrapInstapaperSave } from './unwraps/instapaperSave.js'
 import { unwrapIntranetQuorum } from './unwraps/intranetQuorum.js'
 import { unwrapInvisionNoExternalLinks } from './unwraps/invisionNoExternalLinks.js'
 import { unwrapInvolveAsia } from './unwraps/involveAsia.js'
@@ -951,6 +952,7 @@ export const shareIntentUnwrappers: Array<UrlUnwrapper> = [
   unwrapGoogleBookmarks,
   unwrapGooglePlusShare,
   unwrapHatenaBookmark,
+  unwrapInstapaperSave,
   unwrapLinkedinShare,
   unwrapMeweShare,
   unwrapOkShare,
