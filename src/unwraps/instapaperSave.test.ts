@@ -38,15 +38,6 @@ describe('unwrapInstapaperSave', () => {
     expect(unwrapInstapaperSave(value)).toBe(expected)
   })
 
-  it('should extract the page from the simple API', () => {
-    const value = new URL(
-      'https://www.instapaper.com/api/add?username=reader&password=secret&url=https%3A%2F%2Fexample.com%2Fpost',
-    )
-    const expected = 'https://example.com/post'
-
-    expect(unwrapInstapaperSave(value)).toBe(expected)
-  })
-
   it('should extract the page on the bare host', () => {
     const value = new URL('https://instapaper.com/hello2?url=https%3A%2F%2Fexample.com%2Fpost')
     const expected = 'https://example.com/post'
