@@ -82,9 +82,9 @@ describe('unwrapBlinkList', () => {
     expect(unwrapBlinkList(value)).toBeUndefined()
   })
 
-  it('should return undefined for the redirect path', () => {
+  it('should return undefined for another path carrying Url', () => {
     const value = new URL(
-      'http://www.blinklist.com/redirect/1164770/http://example.com/project/showfiles.php?group_id=110693',
+      'http://www.blinklist.com/redirect/1164770/?Url=https%3A%2F%2Fexample.com%2Fpost',
     )
 
     expect(unwrapBlinkList(value)).toBeUndefined()
