@@ -14,6 +14,7 @@ import { unwrapAcast } from './unwraps/acast.js'
 import { unwrapAccesstrade } from './unwraps/accesstrade.js'
 import { unwrapAceml } from './unwraps/aceml.js'
 import { unwrapAdcell } from './unwraps/adcell.js'
+import { unwrapAddThis } from './unwraps/addThis.js'
 import { unwrapAddToAny } from './unwraps/addToAny.js'
 import { unwrapAddToAnySubscribe } from './unwraps/addToAnySubscribe.js'
 import { unwrapAddToMyYahoo } from './unwraps/addToMyYahoo.js'
@@ -926,6 +927,7 @@ export const embedProxyUnwrappers: Array<UrlUnwrapper> = [
 
 // Share and bookmark buttons: unwrapping returns the shared page, not the form that shares it.
 export const shareIntentUnwrappers: Array<UrlUnwrapper> = [
+  unwrapAddThis,
   unwrapAddToAny,
   unwrapFacebookShare,
   unwrapLinkedinShare,
