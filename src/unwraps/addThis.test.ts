@@ -38,20 +38,6 @@ describe('unwrapAddThis', () => {
     expect(unwrapAddThis(value)).toBe(expected)
   })
 
-  it('should extract the page from a live redirect link', () => {
-    const value = new URL('https://m.addthis.com/live/redirect/?url=http%3A%2F%2Fexample.co.uk')
-    const expected = 'http://example.co.uk'
-
-    expect(unwrapAddThis(value)).toBe(expected)
-  })
-
-  it('should extract the page from a live redirect link on v1', () => {
-    const value = new URL('https://v1.addthis.com/live/redirect/?url=http://www.example.me/')
-    const expected = 'http://www.example.me/'
-
-    expect(unwrapAddThis(value)).toBe(expected)
-  })
-
   it('should extract a twice-encoded page', () => {
     const value = new URL(
       'https://api.addthis.com/oexchange/0.8/forward/twitter/offer?url=https%253A%252F%252Fexample.com%252Fpost',

@@ -4,10 +4,8 @@ import { getParamTarget } from '../utils.js'
 
 const bookmarkHosts = ['www.addthis.com']
 const apiHosts = ['api.addthis.com']
-const liveHosts = ['m.addthis.com', 'v1.addthis.com']
 
 const offerPathRegex = /^\/oexchange\/0\.8\/(?:forward\/[^/]+\/)?offer\/?$/i
-const livePathRegex = /^\/live\/redirect\/?$/i
 
 const isCarrierPath = (url: URL): boolean => {
   if (isHostOf(url, bookmarkHosts)) {
@@ -18,16 +16,12 @@ const isCarrierPath = (url: URL): boolean => {
     return offerPathRegex.test(url.pathname)
   }
 
-  if (isHostOf(url, liveHosts)) {
-    return livePathRegex.test(url.pathname)
-  }
-
   return false
 }
 
 // AddThis share links (www.addthis.com/bookmark.php?url=<page>, api.addthis.com/oexchange/0.8/
-// offer?url= and /forward/<service>/offer?url=, and /live/redirect/?url= on m. and
-// v1.addthis.com). Opt-in: unwrapping returns the shared page, not the form that shares it.
+// offer?url= and /forward/<service>/offer?url=). Opt-in: unwrapping returns the shared page, not
+// the form that shares it.
 export const unwrapAddThis: UrlUnwrapper = (url) => {
   if (!isCarrierPath(url)) {
     return
