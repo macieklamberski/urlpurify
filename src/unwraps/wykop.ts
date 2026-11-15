@@ -1,0 +1,19 @@
+import { isAnyOf, isHostOf } from 'trousse'
+import type { UrlUnwrapper } from '../types.js'
+import { getParamTarget } from '../utils.js'
+
+const hosts = ['www.wykop.pl', 'wykop.pl']
+
+const pathRegex = /^\/(?:remotelink|dodaj(?:\/link|-link)?)\/?$/i
+
+// Wykop add-link form (wykop.pl/dodaj?url=<target>, also /dodaj/link, /dodaj-link and the
+// former /remotelink, on www. and bare wykop.pl). Opt-in: unwrapping returns the shared page, not
+// the form.
+export const unwrapWykop: UrlUnwrapper = (url) => {
+  if (!isHostOf(url, hosts) || !isAnyOf(url.pathname, pathRegex)) {
+    return
+  }
+
+  // The `title=` and `desc=` beside it are the find's own text, never a carrier.
+  return getParamTarget(url, 'url')
+}
