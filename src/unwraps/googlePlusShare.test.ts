@@ -37,6 +37,15 @@ describe('unwrapGooglePlusShare', () => {
     expect(unwrapGooglePlusShare(value)).toBe(expected)
   })
 
+  it('should extract the target on a numbered account path', () => {
+    const value = new URL(
+      'https://plus.google.com/u/0/share?url=http%3A%2F%2Fwww.example.com%2Fwatch%3Fv%3DFZD8365q05E%26feature%3Dshare&source=yt',
+    )
+    const expected = 'http://www.example.com/watch?v=FZD8365q05E&feature=share'
+
+    expect(unwrapGooglePlusShare(value)).toBe(expected)
+  })
+
   it('should match the path in any case', () => {
     const value = new URL('https://plus.google.com/Share?url=https%3A%2F%2Fexample.com%2Fpost')
     const expected = 'https://example.com/post'
@@ -51,9 +60,7 @@ describe('unwrapGooglePlusShare', () => {
   })
 
   it('should return undefined for another path on the host', () => {
-    const value = new URL(
-      'https://plus.google.com/up/appredir?continue=https%3A%2F%2Fexample.com%2Fpost',
-    )
+    const value = new URL('https://plus.google.com/url?sa=t&url=https%3A%2F%2Fexample.com%2Fpost')
 
     expect(unwrapGooglePlusShare(value)).toBeUndefined()
   })
