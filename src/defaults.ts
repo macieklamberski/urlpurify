@@ -187,6 +187,7 @@ import { unwrapGurunavi } from './unwraps/gurunavi.js'
 import { unwrapHackerone } from './unwraps/hackerone.js'
 import { unwrapHashnode } from './unwraps/hashnode.js'
 import { unwrapHasoffers } from './unwraps/hasoffers.js'
+import { unwrapHatenaBookmark } from './unwraps/hatenaBookmark.js'
 import { unwrapHatenaImage } from './unwraps/hatenaImage.js'
 import { unwrapHearthis } from './unwraps/hearthis.js'
 import { unwrapHellohq } from './unwraps/hellohq.js'
@@ -939,6 +940,7 @@ export const shareIntentUnwrappers: Array<UrlUnwrapper> = [
   unwrapFacebookShare,
   unwrapGoogleBookmarks,
   unwrapGooglePlusShare,
+  unwrapHatenaBookmark,
   unwrapLinkedinShare,
   unwrapPinterestPin,
   unwrapRedditSubmit,
