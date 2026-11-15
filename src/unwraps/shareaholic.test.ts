@@ -94,6 +94,14 @@ describe('unwrapShareaholic', () => {
     expect(unwrapShareaholic(value)).toBeUndefined()
   })
 
+  it('should return undefined for the share path under another segment', () => {
+    const value = new URL(
+      'https://www.shareaholic.com/x/api/share/?link=https%3A%2F%2Fexample.com%2Fpost&service=5',
+    )
+
+    expect(unwrapShareaholic(value)).toBeUndefined()
+  })
+
   it('should return undefined for the share path on another host', () => {
     const value = new URL(
       'https://example.com/api/share/?link=https%3A%2F%2Fexample.org%2Fpost&service=5',
