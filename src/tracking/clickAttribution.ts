@@ -1,5 +1,13 @@
 import type { TrackingParam } from '../types.js'
 
+// `/^/` matches every name. A negative lookahead matches every name but the ones it lists.
+const everyNameRegex = /^/
+const exceptJdProductRegex = /^(?!(?:id|shopid|skuids|suitid|wareid)$)/
+const exceptIdRegex = /^(?!id$)/
+
+const douyinHostRegex = /(?:^|\.)(?:douyin|iesdouyin)\.com$/
+const smzdmHostRegex = /(?:^|\.)smzdm\.com$/
+
 // Ad, search and platform click attribution, added by the platform and not by the site.
 export const clickAttributionParams: Array<TrackingParam> = [
   // Google Ads.
@@ -79,4 +87,10 @@ export const clickAttributionParams: Array<TrackingParam> = [
 
   // HubSpot ads.
   /^hsa_[a-z0-9_]+$/,
+
+  // Share links whose query only names the sharer and the app.
+  { name: everyNameRegex, hosts: douyinHostRegex }, // Douyin
+  { name: everyNameRegex, hosts: smzdmHostRegex }, // SMZDM
+  { name: exceptJdProductRegex, hosts: ['item.jd.com', 'item.m.jd.com'] }, // JD product pages
+  { name: exceptIdRegex, hosts: 'y.music.163.com' }, // NetEase Cloud Music
 ]

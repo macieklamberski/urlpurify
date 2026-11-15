@@ -1564,3 +1564,72 @@ describe('path params', () => {
     expect(performance.now() - start).toBeLessThan(1000)
   })
 })
+
+describe('host-scoped click attribution', () => {
+  it('should drop the query of a Douyin share link', () => {
+    const value =
+      'https://www.iesdouyin.com/share/video/7129381734923177246/?region=CN&mid=7129381800000000000&u_code=abc&did=1'
+    const expected = 'https://www.iesdouyin.com/share/video/7129381734923177246/'
+
+    expect(cleanUrl(value)).toBe(expected)
+  })
+
+  it('should drop the query of a Douyin video page', () => {
+    const value = 'https://www.douyin.com/video/7129381734923177246?previous_page=app_code_link'
+    const expected = 'https://www.douyin.com/video/7129381734923177246'
+
+    expect(cleanUrl(value)).toBe(expected)
+  })
+
+  it('should keep the query on a host ending in douyin.com', () => {
+    const value = 'https://www.notdouyin.com/video/7129381734923177246?previous_page=app_code_link'
+
+    expect(cleanUrl(value)).toBe(value)
+  })
+
+  it('should drop the query of an SMZDM post', () => {
+    const value = 'https://post.smzdm.com/p/ar6kpg7g/?send_by=3716913905&from=other'
+    const expected = 'https://post.smzdm.com/p/ar6kpg7g/'
+
+    expect(cleanUrl(value)).toBe(expected)
+  })
+
+  it('should keep the query on a host starting with smzdm.com', () => {
+    const value = 'https://smzdm.com.example/p/ar6kpg7g/?send_by=3716913905&from=other'
+
+    expect(cleanUrl(value)).toBe(value)
+  })
+
+  it('should keep only the product params on a JD product page', () => {
+    const value = 'https://item.jd.com/100004898715.html?cu=true&skuIds=100004898715&pps=jdq.share'
+    const expected = 'https://item.jd.com/100004898715.html?skuIds=100004898715'
+
+    expect(cleanUrl(value)).toBe(expected)
+  })
+
+  it('should keep only the product params on a JD mobile product page', () => {
+    const value = 'https://item.m.jd.com/product/100004898715.html?gx=abc&ad_od=share&wareId=7'
+    const expected = 'https://item.m.jd.com/product/100004898715.html?wareId=7'
+
+    expect(cleanUrl(value)).toBe(expected)
+  })
+
+  it('should keep the query of a JD affiliate click link', () => {
+    const value = 'https://union-click.jd.com/jdc?e=abc&p=JF8BAN8JK1olXwUFU1pfC0sQ'
+
+    expect(cleanUrl(value)).toBe(value)
+  })
+
+  it('should keep only the id on a NetEase Cloud Music playlist', () => {
+    const value = 'https://y.music.163.com/m/playlist?id=2809513713&userid=1&creatorId=2'
+    const expected = 'https://y.music.163.com/m/playlist?id=2809513713'
+
+    expect(cleanUrl(value)).toBe(expected)
+  })
+
+  it('should keep the query on another NetEase host', () => {
+    const value = 'https://music.163.com/playlist?id=2809513713&creatorId=2'
+
+    expect(cleanUrl(value)).toBe(value)
+  })
+})
