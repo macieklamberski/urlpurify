@@ -420,6 +420,7 @@ import { unwrapWordpressEmail } from './unwraps/wordpressEmail.js'
 import { unwrapWordpressGo2 } from './unwraps/wordpressGo2.js'
 import { unwrapWorldNomads } from './unwraps/worldNomads.js'
 import { unwrapWpPoczta } from './unwraps/wpPoczta.js'
+import { unwrapWykop } from './unwraps/wykop.js'
 import { unwrapXengentr } from './unwraps/xengentr.js'
 import { unwrapXianguo } from './unwraps/xianguo.js'
 import { unwrapXiaoyuzhou } from './unwraps/xiaoyuzhou.js'
@@ -956,6 +957,7 @@ export const shareIntentUnwrappers: Array<UrlUnwrapper> = [
   unwrapTechnoratiFaves,
   unwrapTumblrShare,
   unwrapTwitterIntent,
+  unwrapWykop,
   unwrapYahooBookmarks,
 ]
 
