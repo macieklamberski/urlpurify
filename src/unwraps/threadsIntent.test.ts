@@ -38,6 +38,15 @@ describe('unwrapThreadsIntent', () => {
     expect(unwrapThreadsIntent(value)).toBe(expected)
   })
 
+  it('should extract a url from a path with a trailing slash', () => {
+    const value = new URL(
+      'https://www.threads.com/intent/post/?url=https%3A%2F%2Fexample.com%2Fpost',
+    )
+    const expected = 'https://example.com/post'
+
+    expect(unwrapThreadsIntent(value)).toBe(expected)
+  })
+
   it('should match the path in any case', () => {
     const value = new URL(
       'https://www.threads.net/Intent/Post?url=https%3A%2F%2Fexample.com%2Fpost',
