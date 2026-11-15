@@ -159,6 +159,12 @@ describe('unwrapOkShare', () => {
     expect(unwrapOkShare(value)).toBeUndefined()
   })
 
+  it('should return undefined for the offer shape on another host', () => {
+    const value = new URL('https://www.example.org/offer?url=https%3A%2F%2Fexample.com%2Fpost')
+
+    expect(unwrapOkShare(value)).toBeUndefined()
+  })
+
   it('should return undefined for the addShare shape on another host', () => {
     const value = new URL(
       'https://www.example.org/dk?st.cmd=addShare&st._surl=https%3A%2F%2Fexample.com%2Fpost',
