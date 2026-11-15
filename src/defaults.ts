@@ -433,6 +433,7 @@ import { unwrapWebharvest } from './unwraps/webharvest.js'
 import { unwrapWeserv } from './unwraps/weserv.js'
 import { unwrapWikiwix } from './unwraps/wikiwix.js'
 import { unwrapWikizero } from './unwraps/wikizero.js'
+import { unwrapWindowsLive } from './unwraps/windowsLive.js'
 import { unwrapWordpressEmail } from './unwraps/wordpressEmail.js'
 import { unwrapWordpressGo2 } from './unwraps/wordpressGo2.js'
 import { unwrapWorldNomads } from './unwraps/worldNomads.js'
@@ -1017,6 +1018,7 @@ export const subscribeIntentUnwrappers: Array<UrlUnwrapper> = [
   unwrapQqMailReader,
   unwrapSubscribeByEmail,
   unwrapSubscribeOnAndroid,
+  unwrapWindowsLive,
   unwrapXianguo,
 ]
 
