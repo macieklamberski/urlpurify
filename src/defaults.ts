@@ -252,6 +252,7 @@ import { unwrapMarketwire } from './unwraps/marketwire.js'
 import { unwrapMcas } from './unwraps/mcas.js'
 import { unwrapMedium } from './unwraps/medium.js'
 import { unwrapMegalodon } from './unwraps/megalodon.js'
+import { unwrapMeneameSubmit } from './unwraps/meneameSubmit.js'
 import { unwrapMeweShare } from './unwraps/meweShare.js'
 import { unwrapMimecast } from './unwraps/mimecast.js'
 import { unwrapMinistryCloud } from './unwraps/ministryCloud.js'
@@ -958,6 +959,7 @@ export const shareIntentUnwrappers: Array<UrlUnwrapper> = [
   unwrapHatenaBookmark,
   unwrapInstapaperSave,
   unwrapLinkedinShare,
+  unwrapMeneameSubmit,
   unwrapMeweShare,
   unwrapOkShare,
   unwrapPinterestPin,
