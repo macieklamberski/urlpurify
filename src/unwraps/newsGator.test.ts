@@ -39,15 +39,6 @@ describe('unwrapNewsGator', () => {
       expect(unwrapNewsGator(value)).toBe(expected)
     })
 
-    it('should extract a feed on the bare host', () => {
-      const value = new URL(
-        'http://newsgator.com/ngs/subscriber/subext.aspx?url=http%3A%2F%2Fexample.com%2Ffeed',
-      )
-      const expected = 'http://example.com/feed'
-
-      expect(unwrapNewsGator(value)).toBe(expected)
-    })
-
     it('should return undefined for an empty url', () => {
       const value = new URL('http://www.newsgator.com/ngs/subscriber/subext.aspx?url=')
 
@@ -64,9 +55,19 @@ describe('unwrapNewsGator', () => {
   describe('subfext.aspx', () => {
     it('should extract a percent-encoded feed', () => {
       const value = new URL(
-        'http://www.newsgator.com/ngs/subscriber/subfext.aspx?url=http%3A%2F%2Fexample.com%2Ffeed',
+        'http://www.newsgator.com/ngs/subscriber/subfext.aspx?url=http%3A%2F%2Fpipes.example.com%2Fpipes%2Fpipe.run%3F_id%3D3843bc59549eb622035e3f5d62b63ac7%26_render%3Drss',
       )
-      const expected = 'http://example.com/feed'
+      const expected =
+        'http://pipes.example.com/pipes/pipe.run?_id=3843bc59549eb622035e3f5d62b63ac7&_render=rss'
+
+      expect(unwrapNewsGator(value)).toBe(expected)
+    })
+
+    it('should extract a feed on the bare host', () => {
+      const value = new URL(
+        'http://newsgator.com/ngs/subscriber/subfext.aspx?url=http://example.com/?feed=rss2',
+      )
+      const expected = 'http://example.com/?feed=rss2'
 
       expect(unwrapNewsGator(value)).toBe(expected)
     })
