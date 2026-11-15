@@ -110,6 +110,15 @@ describe('unwrapFeedly', () => {
       expect(unwrapFeedly(value)).toBe(expected)
     })
 
+    it('should decode a twice-encoded feed', () => {
+      const value = new URL(
+        'https://feedly.com/i/subscription/feed?url=https%253A%252F%252Fexample.com%252Ffeed%252F',
+      )
+      const expected = 'https://example.com/feed/'
+
+      expect(unwrapFeedly(value)).toBe(expected)
+    })
+
     it('should match the path in any case', () => {
       const value = new URL('https://feedly.com/I/Subscription/Feed?url=https://example.com/feed')
       const expected = 'https://example.com/feed'
