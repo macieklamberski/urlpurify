@@ -72,7 +72,7 @@ Tracking parameters are grouped like the unwrappers, by what stripping them take
 | Click attribution | `clickAttributionParams` | Ad, search and platform click ids | ☑️ |
 | Visitor ids | `visitorIdParams` | Ids of one visitor, session, browser or email recipient | ☑️ |
 | Session ids | `sessionParams` | A server session id, which never changes what the page shows | ☑️ |
-| Housekeeping | `housekeepingParams` | Nothing: cache busters, previews and redirect leftovers | ☑️ |
+| Housekeeping | `housekeepingParams` | Nothing: cache busters, previews, redirect leftovers and a `ref` naming the URL's own host | ☑️ |
 | Campaign tags | `campaignParams` | The site's own traffic stats, from tags like `utm_*` | |
 | Affiliate ids | `affiliateParams` | The publisher's commission | |
 
@@ -120,13 +120,13 @@ Removes tracking parameters and returns the serialized URL. Both this and `clean
 - A query with a signature (`sig`, `signature`, `X-Amz-Signature` or `X-Goog-Signature`) stays whole, since dropping anything breaks the signature.
 - `ts` stays on Alibaba DirectMail click URLs, which fail without it.
 
-A name the list holds is also dropped as a path parameter, as in `/page;jsessionid=<id>`. An entry's `value` is a regex or a function `(value, host) => boolean` tested on the decoded value, and its `hosts` are exact hostnames or a regex, matched without `www.`.
+A literal name the list holds is also dropped as a path parameter, as in `/page;jsessionid=<id>`. An entry's `value` is a regex or a function `(value, host) => boolean` tested on the decoded value, and its `hosts` are exact hostnames or a regex, matched without `www.`.
 
 A tracking list is compiled on first use and cached per array. To change it, pass a new array.
 
 ### `isTrackingParam(name, value, hostname, trackingParams?)`
 
-Answers whether one query pair is tracking, for a caller filtering pairs itself. The list defaults to `defaultTrackingParams`. A single pair cannot see the rest of the URL, so the two rules above don't apply.
+Answers whether one query pair is tracking, for a caller filtering pairs itself. The list defaults to `defaultTrackingParams`. It sees one query pair and never the path, so the two rules above don't apply and a `;name=value` path param needs `cleanUrl` or `stripTrackingParams`.
 
 ```typescript
 import { isTrackingParam, knownTrackingParams } from 'urlpurify'

@@ -1595,6 +1595,30 @@ describe('host-scoped click attribution', () => {
     expect(cleanUrl(value)).toBe(expected)
   })
 
+  it('should keep modal_id on a Douyin page', () => {
+    const value =
+      'https://www.douyin.com/discover?modal_id=7129381734923177246&previous_page=app_code_link'
+    const expected = 'https://www.douyin.com/discover?modal_id=7129381734923177246'
+
+    expect(cleanUrl(value)).toBe(expected)
+  })
+
+  it('should keep vid on a Douyin user page', () => {
+    const value =
+      'https://www.douyin.com/user/MS4wLjABAAAAmYWDaUwRro4ONVYTyTUfq6Ur8imDsE47pVwyqw5Lqzk?relation=0&vid=7129381734923177246'
+    const expected =
+      'https://www.douyin.com/user/MS4wLjABAAAAmYWDaUwRro4ONVYTyTUfq6Ur8imDsE47pVwyqw5Lqzk?vid=7129381734923177246'
+
+    expect(cleanUrl(value)).toBe(expected)
+  })
+
+  it('should drop a name that only starts with vid on Douyin', () => {
+    const value = 'https://www.douyin.com/video/7129381734923177246?vidx=1'
+    const expected = 'https://www.douyin.com/video/7129381734923177246'
+
+    expect(cleanUrl(value)).toBe(expected)
+  })
+
   it('should keep the query on a host ending in douyin.com', () => {
     const value = 'https://www.notdouyin.com/video/7129381734923177246?previous_page=app_code_link'
 
@@ -1608,8 +1632,16 @@ describe('host-scoped click attribution', () => {
     expect(cleanUrl(value)).toBe(expected)
   })
 
-  it('should keep the query on a host starting with smzdm.com', () => {
-    const value = 'https://smzdm.com.example/p/ar6kpg7g/?send_by=3716913905&from=other'
+  it('should drop the query of an SMZDM page on www.smzdm.com', () => {
+    const value = 'https://www.smzdm.com/p/12345678/?send_by=3716913905&from=other'
+    const expected = 'https://www.smzdm.com/p/12345678/'
+
+    expect(cleanUrl(value)).toBe(expected)
+  })
+
+  it('should keep the query of an SMZDM search', () => {
+    const value =
+      'http://search.smzdm.com/?c=home&order=time&s=%E4%BA%AC%E4%B8%9C%E5%9B%BE%E4%B9%A6&v=b'
 
     expect(cleanUrl(value)).toBe(value)
   })
@@ -1624,6 +1656,22 @@ describe('host-scoped click attribution', () => {
   it('should keep only the product params on a JD mobile product page', () => {
     const value = 'https://item.m.jd.com/product/100004898715.html?gx=abc&ad_od=share&wareId=7'
     const expected = 'https://item.m.jd.com/product/100004898715.html?wareId=7'
+
+    expect(cleanUrl(value)).toBe(expected)
+  })
+
+  it('should keep every JD product param', () => {
+    const value =
+      'https://item.jd.com/100004898715.html?id=1&shopId=2&skuIds=3&suitId=4&wareId=5&cu=true'
+    const expected =
+      'https://item.jd.com/100004898715.html?id=1&shopId=2&skuIds=3&suitId=4&wareId=5'
+
+    expect(cleanUrl(value)).toBe(expected)
+  })
+
+  it('should drop a name that only starts with a JD product param', () => {
+    const value = 'https://item.jd.com/100004898715.html?idx=1&skuIds=3'
+    const expected = 'https://item.jd.com/100004898715.html?skuIds=3'
 
     expect(cleanUrl(value)).toBe(expected)
   })
@@ -1693,6 +1741,13 @@ describe('host-scoped click attribution', () => {
 
   it('should keep only the id on a NetEase Cloud Music playlist', () => {
     const value = 'https://y.music.163.com/m/playlist?id=2809513713&userid=1&creatorId=2'
+    const expected = 'https://y.music.163.com/m/playlist?id=2809513713'
+
+    expect(cleanUrl(value)).toBe(expected)
+  })
+
+  it('should drop a name that only starts with id on NetEase Cloud Music', () => {
+    const value = 'https://y.music.163.com/m/playlist?id=2809513713&ids=1'
     const expected = 'https://y.music.163.com/m/playlist?id=2809513713'
 
     expect(cleanUrl(value)).toBe(expected)

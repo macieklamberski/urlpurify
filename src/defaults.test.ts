@@ -166,3 +166,13 @@ describe('trackingParamsLiterals', () => {
     expect(urlpurify.trackingParamsLiterals).not.toContain('ref')
   })
 })
+
+describe('trackingParamsPatterns', () => {
+  it('should hold only regexes', () => {
+    const isEveryRegex = urlpurify.trackingParamsPatterns.every((pattern) => {
+      return pattern instanceof RegExp
+    })
+
+    expect(isEveryRegex).toBe(true)
+  })
+})

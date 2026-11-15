@@ -319,8 +319,8 @@ export const stripTrackingParams = (
 }
 
 // Answer whether one query pair is tracking on a url with this hostname, as cleanUrl decides it.
-// A single pair cannot see the rest of the url, so the signature rule and the Alibaba DirectMail
-// `ts` rule do not apply. `value` is the decoded value, or undefined for a pair with no `=`.
+// It never sees the path or the other pairs, so a `;name=value` path param, the signature rule and
+// the Alibaba DirectMail `ts` rule need cleanUrl. `value` is decoded, or undefined with no `=`.
 export const isTrackingParam = (
   name: string,
   value: string | undefined,

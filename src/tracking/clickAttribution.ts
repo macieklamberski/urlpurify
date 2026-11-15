@@ -2,13 +2,13 @@ import type { TrackingParam } from '../types.js'
 
 // `/^/` matches every name. A negative lookahead matches every name but the ones it lists.
 const everyNameRegex = /^/
+const exceptDouyinVideoRegex = /^(?!(?:modal_id|vid)$)/
 const exceptJdProductRegex = /^(?!(?:id|shopid|skuids|suitid|wareid)$)/
 const exceptIdRegex = /^(?!id$)/
 const exceptXsecTokenRegex = /^(?!xsec_token$)/
 
 const douyinHostRegex = /(?:^|\.)(?:douyin|iesdouyin)\.com$/
 const kuaishouHostRegex = /(?:^|\.)(?:kuaishou\.com|m\.chenzhongtech\.com)$|^m\.gifshow\.com$/
-const smzdmHostRegex = /(?:^|\.)smzdm\.com$/
 const xiaohongshuHostRegex = /(?:^|\.)xiaohongshu\.com$/
 
 // Ad, search and platform click attribution, added by the platform and not by the site.
@@ -91,10 +91,11 @@ export const clickAttributionParams: Array<TrackingParam> = [
   // HubSpot ads.
   /^hsa_[a-z0-9_]+$/,
 
-  // Share links whose query only names the sharer and the app.
-  { name: everyNameRegex, hosts: douyinHostRegex }, // Douyin
+  // Share links whose query only names the sharer and the app. Douyin's `modal_id` and `vid` select
+  // the video a page opens.
+  { name: exceptDouyinVideoRegex, hosts: douyinHostRegex }, // Douyin
   { name: everyNameRegex, hosts: kuaishouHostRegex }, // Kuaishou
-  { name: everyNameRegex, hosts: smzdmHostRegex }, // SMZDM
+  { name: everyNameRegex, hosts: ['post.smzdm.com', 'smzdm.com'] }, // SMZDM
   { name: exceptJdProductRegex, hosts: ['item.jd.com', 'item.m.jd.com'] }, // JD product pages
   { name: exceptIdRegex, hosts: 'y.music.163.com' }, // NetEase Cloud Music
   { name: exceptXsecTokenRegex, hosts: xiaohongshuHostRegex }, // Xiaohongshu
