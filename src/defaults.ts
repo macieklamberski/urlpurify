@@ -276,6 +276,7 @@ import { unwrapNdlWarp } from './unwraps/ndlWarp.js'
 import { unwrapNetaffiliation } from './unwraps/netaffiliation.js'
 import { unwrapNetcentrum } from './unwraps/netcentrum.js'
 import { unwrapNetvibes } from './unwraps/netvibes.js'
+import { unwrapNewsGator } from './unwraps/newsGator.js'
 import { unwrapNewswire } from './unwraps/newswire.js'
 import { unwrapNextImage } from './unwraps/nextImage.js'
 import { unwrapNicoMs } from './unwraps/nicoMs.js'
@@ -1009,6 +1010,7 @@ export const subscribeIntentUnwrappers: Array<UrlUnwrapper> = [
   unwrapInoreader,
   unwrapLivedoorReader,
   unwrapNetvibes,
+  unwrapNewsGator,
   unwrapPlayerFm,
   unwrapPodcastAddict,
   unwrapPrxPlayer,
