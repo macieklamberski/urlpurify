@@ -108,6 +108,7 @@ import { unwrapDeviantartOutgoing } from './unwraps/deviantartOutgoing.js'
 import { unwrapDevToImage } from './unwraps/devToImage.js'
 import { unwrapDigidip } from './unwraps/digidip.js'
 import { unwrapDigikala } from './unwraps/digikala.js'
+import { unwrapDiigoPost } from './unwraps/diigoPost.js'
 import { unwrapDirectMail } from './unwraps/directMail.js'
 import { unwrapDisqus } from './unwraps/disqus.js'
 import { unwrapDmmAffiliate } from './unwraps/dmmAffiliate.js'
@@ -923,6 +924,7 @@ export const embedProxyUnwrappers: Array<UrlUnwrapper> = [
 // Share and bookmark buttons: unwrapping returns the shared page, not the form that shares it.
 export const shareIntentUnwrappers: Array<UrlUnwrapper> = [
   unwrapAddToAny,
+  unwrapDiigoPost,
   unwrapFacebookShare,
   unwrapTwitterIntent,
 ]
