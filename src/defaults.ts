@@ -62,6 +62,7 @@ import { unwrapBingAds } from './unwraps/bingAds.js'
 import { unwrapBitrix } from './unwraps/bitrix.js'
 import { unwrapBitrixBanner } from './unwraps/bitrixBanner.js'
 import { unwrapBizrate } from './unwraps/bizrate.js'
+import { unwrapBlinkList } from './unwraps/blinkList.js'
 import { unwrapBloggerImageProxy } from './unwraps/bloggerImageProxy.js'
 import { unwrapBloglines } from './unwraps/bloglines.js'
 import { unwrapBlubrry } from './unwraps/blubrry.js'
@@ -938,6 +939,7 @@ export const embedProxyUnwrappers: Array<UrlUnwrapper> = [
 export const shareIntentUnwrappers: Array<UrlUnwrapper> = [
   unwrapAddThis,
   unwrapAddToAny,
+  unwrapBlinkList,
   unwrapDelicious,
   unwrapDiggSubmit,
   unwrapFacebookShare,
