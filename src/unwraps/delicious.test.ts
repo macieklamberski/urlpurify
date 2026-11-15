@@ -41,9 +41,9 @@ describe('unwrapDelicious', () => {
 
   it('should extract a target with only its scheme separator encoded', () => {
     const value = new URL(
-      'http://del.icio.us/post?url=http%3A//example.hu/node/222&title=Tan%C3%A1cs-Guly%C3%A1s%20N%C3%B3ra-%20FizioPont',
+      'http://del.icio.us/post?url=http%3A//example.com/node/222&title=Tan%C3%A1cs-Guly%C3%A1s%20N%C3%B3ra-%20FizioPont',
     )
-    const expected = 'http://example.hu/node/222'
+    const expected = 'http://example.com/node/222'
 
     expect(unwrapDelicious(value)).toBe(expected)
   })
