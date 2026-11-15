@@ -352,6 +352,7 @@ import { unwrapSymantecClicktime } from './unwraps/symantecClicktime.js'
 import { unwrapSymplicity } from './unwraps/symplicity.js'
 import { unwrapTargetCircle } from './unwraps/targetCircle.js'
 import { unwrapTeacup } from './unwraps/teacup.js'
+import { unwrapTechnoratiFaves } from './unwraps/technoratiFaves.js'
 import { unwrapTelegramIv } from './unwraps/telegramIv.js'
 import { unwrapTheRegister } from './unwraps/theRegister.js'
 import { unwrapThreadsShim } from './unwraps/threads.js'
@@ -924,6 +925,7 @@ export const embedProxyUnwrappers: Array<UrlUnwrapper> = [
 export const shareIntentUnwrappers: Array<UrlUnwrapper> = [
   unwrapAddToAny,
   unwrapFacebookShare,
+  unwrapTechnoratiFaves,
   unwrapTwitterIntent,
 ]
 
