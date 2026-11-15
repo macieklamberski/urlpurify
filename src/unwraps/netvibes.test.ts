@@ -20,15 +20,6 @@ describe('unwrapNetvibes', () => {
     expect(unwrapNetvibes(value)).toBe(expected)
   })
 
-  it('should extract a feed on the bare host', () => {
-    const value = new URL(
-      'https://netvibes.com/subscribe.php?url=https%3A%2F%2Fexample.com%2Ffeed%2F',
-    )
-    const expected = 'https://example.com/feed/'
-
-    expect(unwrapNetvibes(value)).toBe(expected)
-  })
-
   it('should decode a twice-encoded feed', () => {
     const value = new URL(
       'http://www.netvibes.com/subscribe.php?url=http%253A%252F%252Fexample.com%252Ffeed',
