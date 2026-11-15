@@ -1495,6 +1495,20 @@ describe('session ids', () => {
     expect(cleanUrl(value)).toBe(value)
   })
 
+  it('should keep a CJ SubID without a digit', () => {
+    const value =
+      'https://www.example.com/click-3471301-13819538?sid=SeafoodChorizePaellaRecipeStaubDoubleHandleFryPan&url=https%3A%2F%2Fshop.example.com%2Fpan'
+
+    expect(cleanUrl(value)).toBe(value)
+  })
+
+  it('should strip a 26-character PHP session id as sid', () => {
+    const value = 'https://example.com/index.php?sid=qd860jvhk9vphrslp7a9932kgd&topic=7'
+    const expected = 'https://example.com/index.php?topic=7'
+
+    expect(cleanUrl(value)).toBe(expected)
+  })
+
   it('should keep a sid of 25 characters', () => {
     const value = 'https://example.com/rss?sid=46a3f0c2e8b1d4f6a9c3e5b7d'
 
@@ -1616,6 +1630,63 @@ describe('host-scoped click attribution', () => {
 
   it('should keep the query of a JD affiliate click link', () => {
     const value = 'https://union-click.jd.com/jdc?e=abc&p=JF8BAN8JK1olXwUFU1pfC0sQ'
+
+    expect(cleanUrl(value)).toBe(value)
+  })
+
+  it('should drop the query of a Kuaishou share link', () => {
+    const value =
+      'https://www.kuaishou.com/short-video/3xg6fmtj9qjhm2q?fid=0&cc=share_copylink&shareMethod=TOKEN&kpn=KUAISHOU'
+    const expected = 'https://www.kuaishou.com/short-video/3xg6fmtj9qjhm2q'
+
+    expect(cleanUrl(value)).toBe(expected)
+  })
+
+  it('should drop the query of a Kuaishou link on m.gifshow.com', () => {
+    const value = 'https://m.gifshow.com/fw/photo/5230364029584519186?cc=share_copylink&fid=0'
+    const expected = 'https://m.gifshow.com/fw/photo/5230364029584519186'
+
+    expect(cleanUrl(value)).toBe(expected)
+  })
+
+  it('should drop the query of a Kuaishou link on a subdomain of m.chenzhongtech.com', () => {
+    const value =
+      'https://v.m.chenzhongtech.com/fw/photo/5230364029584519186?cc=share_copylink&fid=0'
+    const expected = 'https://v.m.chenzhongtech.com/fw/photo/5230364029584519186'
+
+    expect(cleanUrl(value)).toBe(expected)
+  })
+
+  it('should keep the query on a host ending in m.gifshow.com', () => {
+    const value = 'https://wm.gifshow.com/fw/photo/5230364029584519186?cc=share_copylink&fid=0'
+
+    expect(cleanUrl(value)).toBe(value)
+  })
+
+  it('should keep the query on a host ending in kuaishou.com', () => {
+    const value = 'https://www.notkuaishou.com/short-video/3xg6fmtj9qjhm2q?fid=0&cc=share_copylink'
+
+    expect(cleanUrl(value)).toBe(value)
+  })
+
+  it('should keep the query on a host starting with kuaishou.com', () => {
+    const value = 'https://kuaishou.com.example/short-video/3xg6fmtj9qjhm2q?fid=0&cc=share_copylink'
+
+    expect(cleanUrl(value)).toBe(value)
+  })
+
+  it('should keep only xsec_token on a Xiaohongshu note', () => {
+    const value =
+      'https://www.xiaohongshu.com/discovery/item/68ac166a000000001d012571?source=webshare&xhsshare=pc_web&xsec_token=CBxtz16cD7hBeyge2T9Q3r5OWhHWYeqpxRhRb2uIoNKxk=&xsec_source=pc_share'
+    const expected =
+      'https://www.xiaohongshu.com/discovery/item/68ac166a000000001d012571?xsec_token=CBxtz16cD7hBeyge2T9Q3r5OWhHWYeqpxRhRb2uIoNKxk='
+
+    expect(cleanUrl(value)).toBe(expected)
+  })
+
+  it('should keep the query on a host ending in xiaohongshu.com', () => {
+    const value =
+      'https://www.notxiaohongshu.com/discovery/item/68ac166a000000001d012571?source=webshare&xhsshare=pc_web'
 
     expect(cleanUrl(value)).toBe(value)
   })
