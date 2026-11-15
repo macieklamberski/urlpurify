@@ -141,6 +141,7 @@ import { unwrapEpn } from './unwraps/epn.js'
 import { unwrapEsva } from './unwraps/esva.js'
 import { unwrapEulerian } from './unwraps/eulerian.js'
 import { unwrapEvernote } from './unwraps/evernote.js'
+import { unwrapEvernoteClip } from './unwraps/evernoteClip.js'
 import { unwrapExciteTranslate } from './unwraps/exciteTranslate.js'
 import { unwrapExpediaAffiliate } from './unwraps/expediaAffiliate.js'
 import { unwrapFacebookShim } from './unwraps/facebook.js'
@@ -968,6 +969,7 @@ export const shareIntentUnwrappers: Array<UrlUnwrapper> = [
   unwrapDelicious,
   unwrapDiggSubmit,
   unwrapDiigoPost,
+  unwrapEvernoteClip,
   unwrapFacebookShare,
   unwrapFlattrSubmit,
   unwrapFlipboardShare,
