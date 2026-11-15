@@ -2,12 +2,20 @@ import { isAnyOf, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { getParamTarget } from '../utils.js'
 
-const pathRegex = /^\/share(?:\/url)?\/?$/i
+const pathRegex = /^\/share(?:\/url|\/link\/add)?\/?$/i
 
-const hosts = ['t.me', 'telegram.me']
+const hosts = [
+  't.me',
+  'www.t.me',
+  'telegram.me',
+  'www.telegram.me',
+  'telegram.dog',
+  'www.telegram.dog',
+]
 
-// Telegram share (t.me/share/url?url=<target>, also /share, on t.me and telegram.me). Opt-in:
-// unwrapping returns the shared page, not the share dialog.
+// Telegram share (t.me/share/url?url=<target>, also /share and /share/link/add, on t.me,
+// telegram.me, telegram.dog and their www. hosts). Opt-in: unwrapping returns the shared page, not
+// the share dialog.
 export const unwrapTelegramShare: UrlUnwrapper = (url) => {
   if (!isHostOf(url, hosts) || !isAnyOf(url.pathname, pathRegex)) {
     return
