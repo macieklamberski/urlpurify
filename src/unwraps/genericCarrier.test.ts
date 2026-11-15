@@ -46,6 +46,24 @@ describe('unwrapGenericCarrier', () => {
       expect(unwrapGenericCarrier(value)).toBe(expected)
     })
 
+    it('should keep the fragment on a target cut at the next param', () => {
+      const value = new URL(
+        'https://example.com/go?url=https://blog.example.com/post&title=Hello#comments',
+      )
+      const expected = 'https://blog.example.com/post#comments'
+
+      expect(unwrapGenericCarrier(value)).toBe(expected)
+    })
+
+    it('should keep an escaped fragment of the target over the fragment of the link', () => {
+      const value = new URL(
+        'https://example.com/go?url=https%3A%2F%2Fblog.example.com%2Fpost%23intro&title=Hello#comments',
+      )
+      const expected = 'https://blog.example.com/post#intro'
+
+      expect(unwrapGenericCarrier(value)).toBe(expected)
+    })
+
     it('should cut an escaped target with a literal query of its own at the next param', () => {
       const value = new URL(
         'https://player.example.com/player/?url=https%3A//api.example.org/tracks/316457900?secret_token=s-KJKTw&color=%23ff5500&auto_play=false',
