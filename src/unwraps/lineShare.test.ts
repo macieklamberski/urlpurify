@@ -47,6 +47,40 @@ describe('unwrapLineShare', () => {
     expect(unwrapLineShare(value)).toBe(expected)
   })
 
+  it('should extract the target from social-plugins.line.me/lineit/share/ui', () => {
+    const value = new URL(
+      'https://social-plugins.line.me/lineit/share/ui?url=https%3A%2F%2Fexample.com%2Fpost',
+    )
+    const expected = 'https://example.com/post'
+
+    expect(unwrapLineShare(value)).toBe(expected)
+  })
+
+  it('should extract the target from social-plugins.line.me/social-plugin/share', () => {
+    const value = new URL(
+      'https://social-plugins.line.me/social-plugin/share?url=https%3A%2F%2Fexample.com%2Fpost',
+    )
+    const expected = 'https://example.com/post'
+
+    expect(unwrapLineShare(value)).toBe(expected)
+  })
+
+  it('should extract the target from lineit.line.me/share', () => {
+    const value = new URL('https://lineit.line.me/share?url=https%3A%2F%2Fexample.com%2Fpost')
+    const expected = 'https://example.com/post'
+
+    expect(unwrapLineShare(value)).toBe(expected)
+  })
+
+  it('should extract the target from timeline.line.me/lineit/share', () => {
+    const value = new URL(
+      'https://timeline.line.me/lineit/share?url=https%3A%2F%2Fexample.com%2Fpost',
+    )
+    const expected = 'https://example.com/post'
+
+    expect(unwrapLineShare(value)).toBe(expected)
+  })
+
   it('should extract a twice-encoded target', () => {
     const value = new URL(
       'https://social-plugins.line.me/lineit/share?url=https%253A%252F%252Fexample.com%252Fpost',
