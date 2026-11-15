@@ -41,9 +41,9 @@ describe('unwrapHackerNewsSubmit', () => {
 
   it('should cut a raw url at the title param', () => {
     const value = new URL(
-      'http://news.ycombinator.com/submitlink?u=https://example.ca/?p=1522&t=IMG_20150216_155437',
+      'http://news.ycombinator.com/submitlink?u=https://example.com/?p=1522&t=IMG_20150216_155437',
     )
-    const expected = 'https://example.ca/?p=1522'
+    const expected = 'https://example.com/?p=1522'
 
     expect(unwrapHackerNewsSubmit(value)).toBe(expected)
   })
