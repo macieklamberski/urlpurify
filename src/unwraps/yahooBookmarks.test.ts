@@ -159,7 +159,23 @@ describe('unwrapYahooBookmarks', () => {
 
   it('should return undefined for another path on the host', () => {
     const value = new URL(
-      'http://bookmarks.yahoo.com/config/set_bookmark?.folder=10&.src=bookmarks&.bmprop=1&.done=http%253a//my.yahoo.com',
+      'http://bookmarks.yahoo.com/config/set_bookmark?.folder=10&u=https%3A%2F%2Fexample.com%2Fpost',
+    )
+
+    expect(unwrapYahooBookmarks(value)).toBeUndefined()
+  })
+
+  it('should return undefined for another path on the Buzz host', () => {
+    const value = new URL(
+      'http://buzz.yahoo.com/article/forbes?targetUrl=https%3A%2F%2Fexample.com%2Fpost&submitUrl=https%3A%2F%2Fexample.com%2Fpost',
+    )
+
+    expect(unwrapYahooBookmarks(value)).toBeUndefined()
+  })
+
+  it('should return undefined for a path that starts with the Buzz submit path', () => {
+    const value = new URL(
+      'http://buzz.yahoo.com/submitted?submitUrl=https%3A%2F%2Fexample.com%2Fpost',
     )
 
     expect(unwrapYahooBookmarks(value)).toBeUndefined()
@@ -168,6 +184,28 @@ describe('unwrapYahooBookmarks', () => {
   it('should return undefined for the shape on another host', () => {
     const value = new URL(
       'https://www.example.com/myresults/bookmarklet?u=https%3A%2F%2Fexample.org%2Fpost',
+    )
+
+    expect(unwrapYahooBookmarks(value)).toBeUndefined()
+  })
+
+  it('should return undefined for the toolbar shape on another host', () => {
+    const value = new URL(
+      'https://www.example.com/toolbar/savebm?u=https%3A%2F%2Fexample.org%2Fpost',
+    )
+
+    expect(unwrapYahooBookmarks(value)).toBeUndefined()
+  })
+
+  it('should return undefined for the Buzz shape on another host', () => {
+    const value = new URL('https://www.example.com/buzz?targetUrl=https%3A%2F%2Fexample.org%2Fpost')
+
+    expect(unwrapYahooBookmarks(value)).toBeUndefined()
+  })
+
+  it('should return undefined for the Buzz submit shape on another host', () => {
+    const value = new URL(
+      'https://www.example.com/submit?submitUrl=https%3A%2F%2Fexample.org%2Fpost',
     )
 
     expect(unwrapYahooBookmarks(value)).toBeUndefined()
