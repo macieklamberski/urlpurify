@@ -29,6 +29,24 @@ describe('unwrapDiasporaShare', () => {
     expect(unwrapDiasporaShare(value)).toBe(expected)
   })
 
+  it('should extract a url from index', () => {
+    const value = new URL(
+      'https://share.diasporafoundation.org/index?url=https%3A%2F%2Fexample.com%2Fpost',
+    )
+    const expected = 'https://example.com/post'
+
+    expect(unwrapDiasporaShare(value)).toBe(expected)
+  })
+
+  it('should extract a url from index with a trailing slash', () => {
+    const value = new URL(
+      'https://share.diasporafoundation.org/index/?url=https%3A%2F%2Fexample.com%2Fpost',
+    )
+    const expected = 'https://example.com/post'
+
+    expect(unwrapDiasporaShare(value)).toBe(expected)
+  })
+
   it('should match the path in any case', () => {
     const value = new URL(
       'https://share.diasporafoundation.org/INDEX.HTML?url=https%3A%2F%2Fexample.com%2Fpost',
