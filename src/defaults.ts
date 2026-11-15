@@ -14,6 +14,7 @@ import { unwrapAcast } from './unwraps/acast.js'
 import { unwrapAccesstrade } from './unwraps/accesstrade.js'
 import { unwrapAceml } from './unwraps/aceml.js'
 import { unwrapAdcell } from './unwraps/adcell.js'
+import { unwrapAddThis } from './unwraps/addThis.js'
 import { unwrapAddToAny } from './unwraps/addToAny.js'
 import { unwrapAddToAnySubscribe } from './unwraps/addToAnySubscribe.js'
 import { unwrapAddToMyYahoo } from './unwraps/addToMyYahoo.js'
@@ -102,6 +103,7 @@ import { unwrapCse360 } from './unwraps/cse360.js'
 import { unwrapCuelinks } from './unwraps/cuelinks.js'
 import { unwrapDasBlog } from './unwraps/dasBlog.js'
 import { unwrapDatalifeEngine } from './unwraps/datalifeEngine.js'
+import { unwrapDelicious } from './unwraps/delicious.js'
 import { unwrapDeployer } from './unwraps/deployer.js'
 import { unwrapDerefMail } from './unwraps/derefMail.js'
 import { unwrapDeviantartOutgoing } from './unwraps/deviantartOutgoing.js'
@@ -218,6 +220,7 @@ import { unwrapLeverAnalytics } from './unwraps/leverAnalytics.js'
 import { unwrapLinkA } from './unwraps/linkA.js'
 import { unwrapLinkconnector } from './unwraps/linkconnector.js'
 import { unwrapLinkedin } from './unwraps/linkedin.js'
+import { unwrapLinkedinShare } from './unwraps/linkedinShare.js'
 import { unwrapLinksynergy } from './unwraps/linksynergy.js'
 import { unwrapLinktrust } from './unwraps/linktrust.js'
 import { unwrapLinkwise } from './unwraps/linkwise.js'
@@ -275,6 +278,7 @@ import { unwrapPartnerAds } from './unwraps/partnerAds.js'
 import { unwrapPbs } from './unwraps/pbs.js'
 import { unwrapPhilpapers } from './unwraps/philpapers.js'
 import { unwrapPinterest } from './unwraps/pinterest.js'
+import { unwrapPinterestPin } from './unwraps/pinterestPin.js'
 import { unwrapPipedrive } from './unwraps/pipedrive.js'
 import { unwrapPlayerFm } from './unwraps/playerFm.js'
 import { unwrapPocket } from './unwraps/pocket.js'
@@ -306,6 +310,7 @@ import { unwrapRakutenAffiliate } from './unwraps/rakutenAffiliate.js'
 import { unwrapRamblerMail } from './unwraps/ramblerMail.js'
 import { unwrapRecruitics } from './unwraps/recruitics.js'
 import { unwrapRedditOut } from './unwraps/redditOut.js'
+import { unwrapRedditSubmit } from './unwraps/redditSubmit.js'
 import { unwrapRediffmail } from './unwraps/rediffmail.js'
 import { unwrapRedirectingat } from './unwraps/redirectingat.js'
 import { unwrapResearchgate } from './unwraps/researchgate.js'
@@ -369,6 +374,7 @@ import { unwrapTriplelift } from './unwraps/triplelift.js'
 import { unwrapTrustwaveScanmail } from './unwraps/trustwaveScanmail.js'
 import { unwrapTrxHub } from './unwraps/trxHub.js'
 import { unwrapTumblr } from './unwraps/tumblr.js'
+import { unwrapTumblrShare } from './unwraps/tumblrShare.js'
 import { unwrapTwitterIntent } from './unwraps/twitterIntent.js'
 import { unwrapTwitterRedirect } from './unwraps/twitterRedirect.js'
 import { unwrapTwoCheckout } from './unwraps/twoCheckout.js'
@@ -923,9 +929,15 @@ export const embedProxyUnwrappers: Array<UrlUnwrapper> = [
 
 // Share and bookmark buttons: unwrapping returns the shared page, not the form that shares it.
 export const shareIntentUnwrappers: Array<UrlUnwrapper> = [
+  unwrapAddThis,
   unwrapAddToAny,
+  unwrapDelicious,
   unwrapFacebookShare,
   unwrapGooglePlusShare,
+  unwrapLinkedinShare,
+  unwrapPinterestPin,
+  unwrapRedditSubmit,
+  unwrapTumblrShare,
   unwrapTwitterIntent,
 ]
 
