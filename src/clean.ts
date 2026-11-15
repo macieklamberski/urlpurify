@@ -3,22 +3,20 @@ import {
   isHostname,
   isHostOf,
   isIpAddress,
+  isString,
   normalizeUrl,
   parseUrl,
   resolveUrl,
   stripWww,
 } from 'trousse'
 import { defaultTrackingParams, defaultUnwrappers } from './defaults.js'
-import type { CleanUrlOptions, TrackingParam, UrlUnwrapper } from './types.js'
+import type { CleanUrlOptions, TrackingEntry, TrackingParam, UrlUnwrapper } from './types.js'
 
 type TrackingMatcher = {
   literals: Set<string>
   patterns: Array<RegExp>
+  entries: Array<TrackingEntry>
 }
-
-// A `ref` value with a url delimiter or whitespace is more than a host: `example.com/page` would
-// parse to the hostname `example.com`.
-const refDelimitersRegex = /[\s/?#\\:@]/
 
 // A signature covers the rest of the query, so dropping any param from it makes the server reject
 // the url, as a CDN answers 401 to a signed file url without its `ts`.
@@ -29,6 +27,8 @@ const signatureParams = [
   'x-goog-signature', // Google Cloud Storage V4 signed url
 ]
 
+const pathParamRegex = /;([^;/=]+)=[^;/]*/g
+
 const trackingMatcherCache = new WeakMap<Array<TrackingParam>, TrackingMatcher>()
 
 const getTrackingMatcher = (params: Array<TrackingParam>): TrackingMatcher => {
@@ -37,29 +37,99 @@ const getTrackingMatcher = (params: Array<TrackingParam>): TrackingMatcher => {
   if (!cached) {
     const literals = new Set<string>()
     const patterns: Array<RegExp> = []
+    const entries: Array<TrackingEntry> = []
 
     for (const param of params) {
+      if (isString(param)) {
+        literals.add(param.toLowerCase())
+        continue
+      }
+
       if (param instanceof RegExp) {
         patterns.push(param)
-      } else {
-        literals.add(param.toLowerCase())
+        continue
       }
+
+      entries.push(param)
     }
 
-    cached = { literals, patterns }
+    cached = { literals, patterns, entries }
     trackingMatcherCache.set(params, cached)
   }
 
   return cached
 }
 
-// Delete tracking parameters in place. Literal names match case-insensitively, and patterns are
-// tested against the lowercased name. A query carrying a signature param is kept whole.
-const deleteTrackingParams = (url: URL, trackingParams: Array<TrackingParam>): void => {
-  if (!url.search) {
-    return
+// `search` ignores `lastIndex`, so a caller's `g` or `y` pattern matches on every call.
+const matchesPattern = (text: string, pattern: RegExp): boolean => {
+  return text.search(pattern) !== -1
+}
+
+const matchesEntry = (entry: TrackingEntry, name: string, value: string, host: string): boolean => {
+  const isNameMatch = isString(entry.name)
+    ? entry.name.toLowerCase() === name
+    : matchesPattern(name, entry.name)
+
+  if (!isNameMatch) {
+    return false
   }
 
+  if (entry.hosts instanceof RegExp && !matchesPattern(host, entry.hosts)) {
+    return false
+  }
+
+  if (Array.isArray(entry.hosts) && !entry.hosts.includes(host)) {
+    return false
+  }
+
+  if (entry.value instanceof RegExp) {
+    return matchesPattern(value, entry.value)
+  }
+
+  if (entry.value) {
+    return entry.value(value, host)
+  }
+
+  return true
+}
+
+// Takes the lowercased name, the decoded value and the hostname without `www.`.
+const isTrackedPair = (
+  matcher: TrackingMatcher,
+  name: string,
+  value: string,
+  host: string,
+): boolean => {
+  if (matcher.literals.has(name)) {
+    return true
+  }
+
+  if (matcher.patterns.some((pattern) => matchesPattern(name, pattern))) {
+    return true
+  }
+
+  return matcher.entries.some((entry) => matchesEntry(entry, name, value, host))
+}
+
+// Java servlet containers write the session id into the path, `/page;jsessionid=<id>`.
+const deletePathParams = (url: URL, matcher: TrackingMatcher): void => {
+  const pathname = url.pathname.replace(pathParamRegex, (param, name: string) => {
+    if (matcher.literals.has(name.toLowerCase())) {
+      return ''
+    }
+
+    return param
+  })
+
+  if (pathname !== url.pathname) {
+    url.pathname = pathname
+  }
+}
+
+// Delete tracking parameters in place, from the query and from `;name=value` path params. Literal
+// names match case-insensitively, and patterns are tested against the lowercased name. A url
+// whose query carries a signature param is kept whole.
+const deleteTrackingParams = (url: URL, trackingParams: Array<TrackingParam>): void => {
   const pairs = url.search.slice(1).split('&')
   const entries = pairs.map((pair) => new URLSearchParams(pair).entries().next().value)
 
@@ -70,6 +140,13 @@ const deleteTrackingParams = (url: URL, trackingParams: Array<TrackingParam>): v
   }
 
   const matcher = getTrackingMatcher(trackingParams)
+
+  deletePathParams(url, matcher)
+
+  if (!url.search) {
+    return
+  }
+
   const host = stripWww(url.hostname)
 
   // Alibaba DirectMail click urls answer 400 without their `ts` and do not check their `sign`.
@@ -91,29 +168,7 @@ const deleteTrackingParams = (url: URL, trackingParams: Array<TrackingParam>): v
       return true
     }
 
-    // `search` ignores `lastIndex`, so a caller's `g` or `y` pattern matches on every call.
-    if (
-      matcher.literals.has(name) ||
-      matcher.patterns.some((pattern) => name.search(pattern) !== -1)
-    ) {
-      return false
-    }
-
-    // A `ref` holding the URL's own host is Ghost's self-referral, `?ref=example.com` on
-    // example.com. With any other value `ref` is often a real referral target.
-    if (name !== 'ref' || refDelimitersRegex.test(value)) {
-      return true
-    }
-
-    // The URL parser gives `url.hostname` in lowercase Punycode, so `ref` goes through the same
-    // host parsing: `?ref=bücher.example` names `xn--bcher-kva.example`.
-    const refUrl = parseUrl(`http://${value}`)
-
-    if (!refUrl) {
-      return true
-    }
-
-    return stripWww(refUrl.hostname) !== host
+    return !isTrackedPair(matcher, name, value, host)
   })
 
   if (keptPairs.length === pairs.length) {
@@ -244,6 +299,21 @@ export const stripTrackingParams = (
   deleteTrackingParams(parsed, trackingParams)
 
   return parsed.href
+}
+
+// Answer whether one query pair is tracking on a url with this hostname, as cleanUrl decides it.
+// It never sees the path or the other pairs, so a `;name=value` path param, the signature rule and
+// the Alibaba DirectMail `ts` rule need cleanUrl. `value` is decoded, or undefined with no `=`.
+export const isTrackingParam = (
+  name: string,
+  value: string | undefined,
+  hostname: string,
+  trackingParams: Array<TrackingParam> = defaultTrackingParams,
+): boolean => {
+  const matcher = getTrackingMatcher(trackingParams)
+  const host = stripWww(hostname.toLowerCase())
+
+  return isTrackedPair(matcher, name.toLowerCase(), value ?? '', host)
 }
 
 // Unwrap redirect/affiliate wrappers, then strip tracking parameters, and return the result in the

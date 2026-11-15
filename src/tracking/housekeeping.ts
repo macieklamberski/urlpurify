@@ -1,4 +1,27 @@
-import type { TrackingParam } from '../types.js'
+import { parseUrl, stripWww } from 'trousse'
+import type { TrackingParam, TrackingValueTest } from '../types.js'
+
+// A `ref` value with a url delimiter or whitespace is more than a host: `example.com/page` would
+// parse to the hostname `example.com`.
+const refDelimitersRegex = /[\s/?#\\:@]/
+
+// A `ref` holding the URL's own host is Ghost's self-referral, `?ref=example.com` on example.com.
+// With any other value `ref` is often a real referral target.
+const isSelfReferral: TrackingValueTest = (value, host) => {
+  if (refDelimitersRegex.test(value)) {
+    return false
+  }
+
+  // The URL parser gives `url.hostname` in lowercase Punycode, so `ref` goes through the same
+  // host parsing: `?ref=bücher.example` names `xn--bcher-kva.example`.
+  const refUrl = parseUrl(`http://${value}`)
+
+  if (!refUrl) {
+    return false
+  }
+
+  return stripWww(refUrl.hostname) === host
+}
 
 // Cache busters, previews and redirect leftovers. Stripping them costs nobody anything.
 export const housekeepingParams: Array<TrackingParam> = [
@@ -42,4 +65,7 @@ export const housekeepingParams: Array<TrackingParam> = [
 
   // Reader apps.
   '__readwiseLocation', // Readwise Reader position tracking.
+
+  // Ghost.
+  { name: 'ref', value: isSelfReferral }, // Self-referral naming the url's own host.
 ]
