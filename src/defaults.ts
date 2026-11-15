@@ -302,6 +302,7 @@ import { unwrapPlayerFm } from './unwraps/playerFm.js'
 import { unwrapPocket } from './unwraps/pocket.js'
 import { unwrapPocketSave } from './unwraps/pocketSave.js'
 import { unwrapPodcastAddict } from './unwraps/podcastAddict.js'
+import { unwrapPodcastReady } from './unwraps/podcastReady.js'
 import { unwrapPodcorn } from './unwraps/podcorn.js'
 import { unwrapPodder } from './unwraps/podder.js'
 import { unwrapPodigee } from './unwraps/podigee.js'
@@ -1015,6 +1016,7 @@ export const subscribeIntentUnwrappers: Array<UrlUnwrapper> = [
   unwrapPageflakes,
   unwrapPlayerFm,
   unwrapPodcastAddict,
+  unwrapPodcastReady,
   unwrapPrxPlayer,
   unwrapQqMailReader,
   unwrapSubscribeByEmail,
