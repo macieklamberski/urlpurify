@@ -1,4 +1,5 @@
 import {
+  fixMalformedHost,
   fixMalformedScheme,
   isAnyOf,
   isHostname,
@@ -128,15 +129,15 @@ const controlCharactersRegex = /[\p{Cc}\u2028\u2029]/u
 const dottedHostRegex = /[^.]\.[^.]/
 const fileExtensionHostRegex = /\.(?:asp|aspx|cgi|htm|html|jsp|jspa|php)$/
 
-// Repairs a malformed scheme such as `https:/host`, then drops a target with a control character
-// or a junk host, so it falls through: a label outside the hostname alphabet such as `,ccam.cc`,
-// no dot between two labels such as `www.`, or a page extension such as Gmail's `http:///page.php`.
+// Repairs a scheme such as `https:/host` and a host with one reading such as `example.com)`, then
+// drops a target with a control character or a host still junk, so it falls through: not a
+// hostname such as `,ccam.cc`, no dot between two labels, or a page extension such as `page.php`.
 const cleanTarget = (target: string | undefined): string | undefined => {
   if (!target) {
     return
   }
 
-  const repaired = fixMalformedScheme(target.trim())
+  const repaired = fixMalformedHost(fixMalformedScheme(target.trim()))
 
   if (controlCharactersRegex.test(repaired)) {
     return
