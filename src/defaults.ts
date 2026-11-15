@@ -439,6 +439,7 @@ import { unwrapWebArchive } from './unwraps/webArchive.js'
 import { unwrapWebcitation } from './unwraps/webcitation.js'
 import { unwrapWebgains } from './unwraps/webgains.js'
 import { unwrapWebharvest } from './unwraps/webharvest.js'
+import { unwrapWeiboShare } from './unwraps/weiboShare.js'
 import { unwrapWeserv } from './unwraps/weserv.js'
 import { unwrapWikiwix } from './unwraps/wikiwix.js'
 import { unwrapWikizero } from './unwraps/wikizero.js'
@@ -1005,6 +1006,7 @@ export const shareIntentUnwrappers: Array<UrlUnwrapper> = [
   unwrapTumblrShare,
   unwrapTwitterIntent,
   unwrapVkShare,
+  unwrapWeiboShare,
   unwrapWykop,
   unwrapXingShare,
   unwrapYahooBookmarks,
