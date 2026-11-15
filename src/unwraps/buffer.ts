@@ -6,7 +6,7 @@ const hosts = ['bufferapp.com', 'www.bufferapp.com', 'buffer.com', 'www.buffer.c
 const composeHosts = ['publish.buffer.com']
 
 const addPathRegex = /^\/add\/?$/i
-const composePathRegex = /^\/compose\/?$/i
+const composePathRegex = /^\/compose$/i
 
 const isCarrierPath = (url: URL): boolean => {
   if (isHostOf(url, hosts)) {
