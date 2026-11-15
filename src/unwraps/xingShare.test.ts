@@ -145,6 +145,29 @@ describe('unwrapXingShare', () => {
     expect(unwrapXingShare(value)).toBeUndefined()
   })
 
+  it('should keep a dollar sign in the page from /app/user', () => {
+    const value = new URL('https://www.xing.com/app/user?op=share;url=https://example.com/?q=$&')
+    const expected = 'https://example.com/?q=$'
+
+    expect(unwrapXingShare(value)).toBe(expected)
+  })
+
+  it('should return undefined for a share action on another path', () => {
+    const value = new URL(
+      'https://www.xing.com/app/profile?op=share&url=https%3A%2F%2Fexample.com%2Fpost',
+    )
+
+    expect(unwrapXingShare(value)).toBeUndefined()
+  })
+
+  it('should not split on semicolons outside /app/user', () => {
+    const value = new URL(
+      'https://www.xing.com/social_plugins/share?h=1;url=https://example.com/onlinewerbung-so-werben-sie-online-erfolgreich/',
+    )
+
+    expect(unwrapXingShare(value)).toBeUndefined()
+  })
+
   it('should return undefined for the shape on another host', () => {
     const value = new URL(
       'https://www.example.com/spi/shares/new?url=https%3A%2F%2Fexample.com%2Fpost',
