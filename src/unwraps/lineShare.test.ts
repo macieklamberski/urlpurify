@@ -57,9 +57,7 @@ describe('unwrapLineShare', () => {
   })
 
   it('should match the path in any case', () => {
-    const value = new URL(
-      'https://social-plugins.line.me/LineIt/Share?url=https%3A%2F%2Fexample.com%2Fpost',
-    )
+    const value = new URL('https://lineit.line.me/Share/UI?url=https%3A%2F%2Fexample.com%2Fpost')
     const expected = 'https://example.com/post'
 
     expect(unwrapLineShare(value)).toBe(expected)
@@ -72,7 +70,9 @@ describe('unwrapLineShare', () => {
   })
 
   it('should return undefined for a url carried only in text=', () => {
-    const value = new URL('https://line.me/R/share?text=https%3A%2F%2Fexample.com%2Fpost')
+    const value = new URL(
+      'https://social-plugins.line.me/lineit/share?text=https%3A%2F%2Fexample.com%2Fpost',
+    )
 
     expect(unwrapLineShare(value)).toBeUndefined()
   })
@@ -80,6 +80,20 @@ describe('unwrapLineShare', () => {
   it('should return undefined for the share button widget', () => {
     const value = new URL(
       'https://social-plugins.line.me/widget/share?url=https%3A%2F%2Fexample.com%2Fpost&buttonType=share-a',
+    )
+
+    expect(unwrapLineShare(value)).toBeUndefined()
+  })
+
+  it('should return undefined for another path on timeline.line.me', () => {
+    const value = new URL('https://timeline.line.me/share/ui?url=https%3A%2F%2Fexample.com%2Fpost')
+
+    expect(unwrapLineShare(value)).toBeUndefined()
+  })
+
+  it('should return undefined for the share path under another segment', () => {
+    const value = new URL(
+      'https://social-plugins.line.me/x/lineit/share?url=https%3A%2F%2Fexample.com%2Fpost',
     )
 
     expect(unwrapLineShare(value)).toBeUndefined()
