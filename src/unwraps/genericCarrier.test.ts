@@ -1,0 +1,211 @@
+import { describe, expect, it } from 'bun:test'
+import { unwrapGenericCarrier } from './genericCarrier.js'
+
+describe('unwrapGenericCarrier', () => {
+  describe('url carrier', () => {
+    it('should extract a raw target', () => {
+      const value = new URL(
+        'https://messaging.example.com/redirect?tag=K-AAAA-AAAA-AAAA&message=0&url=https://podcasts.example.org/pod/show/episodes/Lena-Poetry-e2mlq52',
+      )
+      const expected = 'https://podcasts.example.org/pod/show/episodes/Lena-Poetry-e2mlq52'
+
+      expect(unwrapGenericCarrier(value)).toBe(expected)
+    })
+
+    it('should extract an escaped target', () => {
+      const value = new URL(
+        'http://app.example.com/redir.do?source=1&feed=6&language=en&listingId=15358533&type=VIDEO&url=https%3A%2F%2Fvideo.example.org%2Fwatch%3Fv%3DGDzjrrQwSM0',
+      )
+      const expected = 'https://video.example.org/watch?v=GDzjrrQwSM0'
+
+      expect(unwrapGenericCarrier(value)).toBe(expected)
+    })
+
+    it('should extract a twice-escaped target', () => {
+      const value = new URL(
+        'https://www.example.com/out?url=https%253A%252F%252Fwww.example.org%252Fpost%252F',
+      )
+      const expected = 'https://www.example.org/post/'
+
+      expect(unwrapGenericCarrier(value)).toBe(expected)
+    })
+
+    it('should match the carrier name in any case', () => {
+      const value = new URL('https://www.example.com/go?URL=https://www.example.org/post/')
+      const expected = 'https://www.example.org/post/'
+
+      expect(unwrapGenericCarrier(value)).toBe(expected)
+    })
+
+    it('should cut a target without a query of its own at the next param', () => {
+      const value = new URL(
+        'https://bitly.example.com/a/warning?hash=2wI9AMs&url=http://www.example.org/obi/jess.htm&ref=feed',
+      )
+      const expected = 'http://www.example.org/obi/jess.htm'
+
+      expect(unwrapGenericCarrier(value)).toBe(expected)
+    })
+  })
+
+  describe('feedurl carrier', () => {
+    it('should extract a raw target', () => {
+      const value = new URL(
+        'https://wire.example.com/read-partners-feed?feedurl=https://news.example.org/feed/',
+      )
+      const expected = 'https://news.example.org/feed/'
+
+      expect(unwrapGenericCarrier(value)).toBe(expected)
+    })
+
+    it('should extract an escaped target', () => {
+      const value = new URL(
+        'https://www.example.com/apiv2/feed?theme=dark&feedurl=https%3A%2F%2Fsocial.example.org%2Fusers%2Fweather%2Foutbox%3Fpage%3Dtrue&size=80',
+      )
+      const expected = 'https://social.example.org/users/weather/outbox?page=true'
+
+      expect(unwrapGenericCarrier(value)).toBe(expected)
+    })
+  })
+
+  describe('moduleurl carrier', () => {
+    it('should extract a target', () => {
+      const value = new URL(
+        'https://portal.example.com/add?moduleurl=https%3A%2F%2Fwww.example.org%2Frss.xml',
+      )
+      const expected = 'https://www.example.org/rss.xml'
+
+      expect(unwrapGenericCarrier(value)).toBe(expected)
+    })
+  })
+
+  describe('feed.url carrier', () => {
+    it('should extract a target', () => {
+      const value = new URL(
+        'https://reader.example.com/subscribe?feed.url=https%3A%2F%2Fwww.example.org%2Ffeed',
+      )
+      const expected = 'https://www.example.org/feed'
+
+      expect(unwrapGenericCarrier(value)).toBe(expected)
+    })
+  })
+
+  describe('.url carrier', () => {
+    it('should extract a target', () => {
+      const value = new URL('https://reader.example.com/add?id=7&.url=https://www.example.org/feed')
+      const expected = 'https://www.example.org/feed'
+
+      expect(unwrapGenericCarrier(value)).toBe(expected)
+    })
+  })
+
+  describe('raw target with a query of its own', () => {
+    it('should read the target to the end', () => {
+      const value = new URL(
+        'https://www.example.com/external/?url=https://www.example.org/feed?page=1&tag=news',
+      )
+      const expected = 'https://www.example.org/feed?page=1&tag=news'
+
+      expect(unwrapGenericCarrier(value)).toBe(expected)
+    })
+
+    it('should keep the fragment', () => {
+      const value = new URL(
+        'https://www.example.com/external/?url=https://www.example.org/post?id=4&lang=en#comments',
+      )
+      const expected = 'https://www.example.org/post?id=4&lang=en#comments'
+
+      expect(unwrapGenericCarrier(value)).toBe(expected)
+    })
+
+    it('should take the first carrier when a second sits inside the target', () => {
+      const value = new URL(
+        'https://www.example.com/go?url=https://a.example.org/x?feedurl=https://b.example.org/feed',
+      )
+      const expected = 'https://a.example.org/x?feedurl=https://b.example.org/feed'
+
+      expect(unwrapGenericCarrier(value)).toBe(expected)
+    })
+  })
+
+  describe('oEmbed endpoints', () => {
+    it('should return undefined for a WordPress oEmbed endpoint', () => {
+      const value = new URL(
+        'https://www.example.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.example.com%2F2012%2F06%2F15%2Fpodcast%2F&format=xml',
+      )
+
+      expect(unwrapGenericCarrier(value)).toBeUndefined()
+    })
+
+    it('should return undefined for a Drupal oEmbed frame', () => {
+      const value = new URL(
+        'https://www.example.com/media/oembed?url=https%3A//video.example.org/watch%3Fv%3Dabc&max_width=0&max_height=0&hash=a1b2c3',
+      )
+
+      expect(unwrapGenericCarrier(value)).toBeUndefined()
+    })
+
+    it('should match the oembed segment in any case', () => {
+      const value = new URL('https://www.example.com/OEmbed?url=https://www.example.org/post/')
+
+      expect(unwrapGenericCarrier(value)).toBeUndefined()
+    })
+  })
+
+  it('should skip a carrier without an http target for a later one', () => {
+    const value = new URL(
+      'https://www.example.com/feed?url=www.example.com&feedurl=https://www.example.org/feed',
+    )
+    const expected = 'https://www.example.org/feed'
+
+    expect(unwrapGenericCarrier(value)).toBe(expected)
+  })
+
+  it('should return undefined for a target without a scheme', () => {
+    const value = new URL('https://search.example.com/results?url=www.example.org/post/')
+
+    expect(unwrapGenericCarrier(value)).toBeUndefined()
+  })
+
+  it('should return undefined for a protocol-relative target', () => {
+    const value = new URL('https://www.example.com/go?url=//www.example.org/post/')
+
+    expect(unwrapGenericCarrier(value)).toBeUndefined()
+  })
+
+  it('should return undefined for a non-http target', () => {
+    const value = new URL('https://www.example.com/go?url=ftp://files.example.org/archive.zip')
+
+    expect(unwrapGenericCarrier(value)).toBeUndefined()
+  })
+
+  it('should return undefined for an empty carrier', () => {
+    const value = new URL('https://www.example.com/go?url=&feedurl=')
+
+    expect(unwrapGenericCarrier(value)).toBeUndefined()
+  })
+
+  it('should return undefined for a url in a free-text field', () => {
+    const value = new URL(
+      'https://chat.example.com/send?text=https%3A%2F%2Fwww.example.org%2Fpost%2F',
+    )
+
+    expect(unwrapGenericCarrier(value)).toBeUndefined()
+  })
+
+  it('should return undefined for a carrier name inside another param name', () => {
+    const value = new URL(
+      'https://www.example.com/apiv2/feed?userurl=https%3A%2F%2Fsocial.example.org%2Fusers%2Fweather',
+    )
+
+    expect(unwrapGenericCarrier(value)).toBeUndefined()
+  })
+
+  it('should scan a long query in linear time', () => {
+    const value = new URL(`https://www.example.com/go?${'url=x&'.repeat(40000)}`)
+    const start = performance.now()
+
+    unwrapGenericCarrier(value)
+
+    expect(performance.now() - start).toBeLessThan(1000)
+  })
+})
