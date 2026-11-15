@@ -94,6 +94,16 @@ describe('unwrapLinkedinShare', () => {
     expect(unwrapLinkedinShare(value)).toBe(expected)
   })
 
+  it('should extract the target on a country host', () => {
+    // Constructed from the live probe: no country-host share link in the walk.
+    const value = new URL(
+      'https://uk.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fexample.com%2Fpost',
+    )
+    const expected = 'https://example.com/post'
+
+    expect(unwrapLinkedinShare(value)).toBe(expected)
+  })
+
   it('should match the path in any case', () => {
     const value = new URL(
       'https://www.linkedin.com/sharearticle?url=https%3A%2F%2Fexample.com%2Fpost',
@@ -129,6 +139,38 @@ describe('unwrapLinkedinShare', () => {
   it('should return undefined for a longer path starting with share', () => {
     const value = new URL(
       'https://www.linkedin.com/sharer/sharer.php?url=https%3A%2F%2Fexample.com%2Fpost',
+    )
+
+    expect(unwrapLinkedinShare(value)).toBeUndefined()
+  })
+
+  it('should return undefined for a lookalike country host', () => {
+    const value = new URL(
+      'https://ukxlinkedin.com/shareArticle?url=https%3A%2F%2Fexample.com%2Fpost',
+    )
+
+    expect(unwrapLinkedinShare(value)).toBeUndefined()
+  })
+
+  it('should return undefined for a lookalike country host suffix', () => {
+    const value = new URL(
+      'https://uk.linkedinxcom/shareArticle?url=https%3A%2F%2Fexample.com%2Fpost',
+    )
+
+    expect(unwrapLinkedinShare(value)).toBeUndefined()
+  })
+
+  it('should return undefined for a host ending in a country host', () => {
+    const value = new URL(
+      'https://www.uk.linkedin.com/shareArticle?url=https%3A%2F%2Fexample.com%2Fpost',
+    )
+
+    expect(unwrapLinkedinShare(value)).toBeUndefined()
+  })
+
+  it('should return undefined for a host starting with a country host', () => {
+    const value = new URL(
+      'https://uk.linkedin.com.example.com/shareArticle?url=https%3A%2F%2Fexample.com%2Fpost',
     )
 
     expect(unwrapLinkedinShare(value)).toBeUndefined()
