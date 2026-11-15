@@ -113,18 +113,6 @@ An unwrapped target that isn't a usable URL is ignored, and the wrapper is kept.
 
 Runs one pass of the unwrappers and returns the first target, or `undefined`.
 
-### `mayUnwrap(url, unwrappers?)`
-
-Answers whether any of the unwrappers could unwrap the URL, from their scopes alone, without running them. It takes a string or a `URL`. `false` means `unwrapUrl` returns `undefined`, so a caller with many links can skip most of them cheaply. `true` only means it may not. The index behind it is built on first use and cached per array, and `cleanUrl` and `unwrapUrl` use the same index to run only the unwrappers whose scope matches.
-
-```typescript
-import { mayUnwrap, unwrapUrl } from 'urlpurify'
-
-if (mayUnwrap(url)) {
-  const target = unwrapUrl(url)
-}
-```
-
 ### `stripTrackingParams(url, trackingParams?)`
 
 Removes tracking parameters and returns the serialized URL. Both this and `cleanUrl` apply two rules on top of the list:
@@ -168,7 +156,7 @@ A value still encoded after one decode, starting with `http%3A` or `https%3A`, i
 
 ### Writing your own unwrapper
 
-For any other shape, write a plain `UrlUnwrapper`: a function that takes a `URL` and returns the target or `undefined`. Give it a scope with `withScope`, so `mayUnwrap` and `cleanUrl` skip it on URLs it can't match:
+For any other shape, write a plain `UrlUnwrapper`: a function that takes a `URL` and returns the target or `undefined`. Give it a scope with `withScope`, so `cleanUrl` and `unwrapUrl` skip it on URLs it can't match:
 
 ```typescript
 import { withScope } from 'urlpurify'
@@ -188,7 +176,7 @@ const unwrapExample = withScope(
 )
 ```
 
-A scope takes `hosts`, exact hostnames or a regex, `domains`, a host and its subdomains, and `mayMatch`, a test for a wrapper that runs on any host. An unwrapper matches a URL that any of the three admits. One without a scope may run on any URL, so it stays correct and is always run.
+A scope takes `hosts`, a list of exact hostnames or a regex, `domains`, a list or a regex matching a host and its subdomains, and `mayMatch`, a test for a wrapper that runs on any host. An unwrapper runs on a URL that any of the three admits. One without a scope runs on every URL. The scopes are indexed on first use and cached per array, so to change the unwrappers, pass a new array.
 
 ### Choosing unwrappers
 

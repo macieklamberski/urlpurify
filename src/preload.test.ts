@@ -6,7 +6,7 @@ import type { UrlUnwrapper } from './types.js'
 // Reads `target` on any host, but its scope names one host.
 const narrowScopeUnwrapper: UrlUnwrapper = withScope(
   (url) => url.searchParams.get('target') ?? undefined,
-  { hosts: 'redirect.example.com' },
+  { hosts: ['redirect.example.com'] },
 )
 
 describe('guardUnwrapper', () => {

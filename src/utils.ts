@@ -1,4 +1,11 @@
-import { decodePercent, getQueryParamValues, isAnyOf, isHostOf, isHostOrSubdomainOf } from 'trousse'
+import {
+  coerceArray,
+  decodePercent,
+  getQueryParamValues,
+  isAnyOf,
+  isHostOf,
+  isHostOrSubdomainOf,
+} from 'trousse'
 import { withScope } from './scope.js'
 import type { UrlUnwrapper, UrlUnwrapperFunction } from './types.js'
 
@@ -88,7 +95,13 @@ export const createParamExtractor = (config: ParamExtractorConfig): UrlUnwrapper
     }
   }
 
-  return withScope(unwrap, { hosts: config.hosts, domains: config.domains })
+  if (config.domains !== undefined) {
+    return withScope(unwrap, { domains: coerceArray(config.domains) })
+  }
+
+  return withScope(unwrap, {
+    hosts: config.hosts instanceof RegExp ? config.hosts : coerceArray(config.hosts),
+  })
 }
 
 const utf8Encoder = new TextEncoder()

@@ -1,4 +1,4 @@
-export { cleanUrl, isTrackingParam, mayUnwrap, stripTrackingParams, unwrapUrl } from './clean.js'
+export { cleanUrl, isTrackingParam, stripTrackingParams, unwrapUrl } from './clean.js'
 export {
   advertisingUnwrappers,
   affiliateParams,

@@ -1,4 +1,4 @@
-import { coerceArray, isHostOf, parseUrl } from 'trousse'
+import { isHostOf, isHostOrSubdomainOf, parseUrl } from 'trousse'
 import type { UrlUnwrapper, UrlUnwrapperFunction, UrlUnwrapperScope } from './types.js'
 
 // Unwrapper positions by exact host and by domain, and the positions that need a call per url:
@@ -39,18 +39,20 @@ const getIndex = (unwrappers: Array<UrlUnwrapper>): UnwrapperIndex => {
     for (const [position, unwrap] of unwrappers.entries()) {
       const scope = unwrap.scope
 
-      if (!scope || scope.hosts instanceof RegExp || scope.mayMatch) {
+      const hasRegex = scope?.hosts instanceof RegExp || scope?.domains instanceof RegExp
+
+      if (!scope || hasRegex || scope.mayMatch) {
         cached.scanned.push(position)
       }
 
-      if (scope?.hosts !== undefined && !(scope.hosts instanceof RegExp)) {
-        for (const host of coerceArray(scope.hosts)) {
+      if (Array.isArray(scope?.hosts)) {
+        for (const host of scope.hosts) {
           addPosition(cached.hosts, toHostKey(host), position)
         }
       }
 
-      if (scope?.domains !== undefined) {
-        for (const domain of coerceArray(scope.domains)) {
+      if (Array.isArray(scope?.domains)) {
+        for (const domain of scope.domains) {
           addPosition(cached.domains, toHostKey(domain), position)
         }
       }
@@ -73,10 +75,14 @@ const isScannedMatch = (url: URL, unwrap: UrlUnwrapper): boolean => {
     return true
   }
 
+  if (scope.domains instanceof RegExp && isHostOrSubdomainOf(url, scope.domains)) {
+    return true
+  }
+
   return scope.mayMatch?.(url) ?? false
 }
 
-// Attaches the scope to an unwrapper, so `mayUnwrap` and `cleanUrl` can skip it on other urls.
+// Attaches the scope to an unwrapper, so `cleanUrl` and `unwrapUrl` skip it on other urls.
 export const withScope = (unwrap: UrlUnwrapperFunction, scope: UrlUnwrapperScope): UrlUnwrapper => {
   return Object.assign(unwrap, { scope })
 }

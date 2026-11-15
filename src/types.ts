@@ -6,8 +6,8 @@ export type UrlUnwrapperTest = (url: URL) => boolean
 // `domains` a host and its subdomains, and `mayMatch` is a cheap test for one that runs on any
 // host, such as its path check. A url matching none of the three never unwraps.
 export type UrlUnwrapperScope = {
-  hosts?: string | Array<string> | RegExp
-  domains?: string | Array<string>
+  hosts?: Array<string> | RegExp
+  domains?: Array<string> | RegExp
   mayMatch?: UrlUnwrapperTest
 }
 

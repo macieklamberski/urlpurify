@@ -20,7 +20,7 @@ describe('createParamExtractor', () => {
       domains: 'example.com',
       params: ['url'],
     })
-    const expected: UrlUnwrapperScope = { domains: 'example.com' }
+    const expected: UrlUnwrapperScope = { domains: ['example.com'] }
 
     expect(extract.scope).toEqual(expected)
   })

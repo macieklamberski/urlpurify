@@ -275,31 +275,6 @@ const applyUnwrappers = (url: URL, unwrappers: Array<UrlUnwrapper>): string | un
   return applyUnwrappers(collapsed, unwrappers)
 }
 
-// Answer whether any of the unwrappers may unwrap the url, from their scopes alone, without
-// running them. False means unwrapUrl returns undefined for it. True means it may not.
-export const mayUnwrap = (
-  url: string | URL,
-  unwrappers: Array<UrlUnwrapper> = defaultUnwrappers,
-): boolean => {
-  const parsed = parseUrl(url)
-
-  if (!parsed) {
-    return false
-  }
-
-  if (getCandidates(parsed, unwrappers).length > 0) {
-    return true
-  }
-
-  const collapsed = getCollapsedUrl(parsed)
-
-  if (!collapsed) {
-    return false
-  }
-
-  return getCandidates(collapsed, unwrappers).length > 0
-}
-
 // Apply unwrappers in order and return the first extracted target URL that survives cleaning,
 // serialized as in cleanUrl, or undefined when none match or the input cannot be parsed.
 export const unwrapUrl = (

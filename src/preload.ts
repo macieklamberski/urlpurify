@@ -5,7 +5,7 @@ import { getCandidates, withScope } from './scope.js'
 import type { UrlUnwrapper, UrlUnwrapperFunction } from './types.js'
 
 // Throws when the unwrapper returns a target for a url its own scope leaves out, so a scope that
-// would make mayUnwrap or cleanUrl skip a real wrapper fails the test that fed it the url.
+// would make cleanUrl skip a real wrapper fails the test that fed it the url.
 export const guardUnwrapper = (name: string, unwrap: UrlUnwrapper): UrlUnwrapper => {
   const guarded: UrlUnwrapperFunction = (url) => {
     const target = unwrap(url)
