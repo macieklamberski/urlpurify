@@ -86,6 +86,18 @@ describe('unwrapDiggSubmit', () => {
     expect(unwrapDiggSubmit(value)).toBeUndefined()
   })
 
+  it('should return undefined for a path that starts with the submit path', () => {
+    const value = new URL('http://digg.com/submitted?url=https%3A%2F%2Fexample.com%2Fpost')
+
+    expect(unwrapDiggSubmit(value)).toBeUndefined()
+  })
+
+  it('should return undefined for a path that ends with the submit path', () => {
+    const value = new URL('http://digg.com/news/submit?url=https%3A%2F%2Fexample.com%2Fpost')
+
+    expect(unwrapDiggSubmit(value)).toBeUndefined()
+  })
+
   it('should return undefined for the shape on another host', () => {
     const value = new URL('http://example.com/submit?url=https%3A%2F%2Fexample.com%2Fpost')
 
