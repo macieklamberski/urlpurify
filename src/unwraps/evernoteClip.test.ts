@@ -69,7 +69,15 @@ describe('unwrapEvernoteClip', () => {
 
   it('should return undefined for a page held only in the title', () => {
     const value = new URL(
-      'https://www.evernote.com/clip.action?title=https%3A%2F%2Fexample.com%2Fpost',
+      'https://www.evernote.com/clip.action?url=&title=https%3A%2F%2Fexample.com%2Fpost',
+    )
+
+    expect(unwrapEvernoteClip(value)).toBeUndefined()
+  })
+
+  it('should return undefined for a page held only in the body', () => {
+    const value = new URL(
+      'https://www.evernote.com/clip.action?url=&body=https%3A%2F%2Fexample.com%2Fpost',
     )
 
     expect(unwrapEvernoteClip(value)).toBeUndefined()
