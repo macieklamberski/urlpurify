@@ -273,6 +273,7 @@ import { unwrapNimble } from './unwraps/nimble.js'
 import { unwrapNlaWebarchive } from './unwraps/nlaWebarchive.js'
 import { unwrapNodeseek } from './unwraps/nodeseek.js'
 import { unwrapOkRu } from './unwraps/okRu.js'
+import { unwrapOkShare } from './unwraps/okShare.js'
 import { unwrapOp3 } from './unwraps/op3.js'
 import { unwrapOrkut } from './unwraps/orkut.js'
 import { unwrapOsnova } from './unwraps/osnova.js'
@@ -948,6 +949,7 @@ export const shareIntentUnwrappers: Array<UrlUnwrapper> = [
   unwrapGooglePlusShare,
   unwrapHatenaBookmark,
   unwrapLinkedinShare,
+  unwrapOkShare,
   unwrapPinterestPin,
   unwrapRedditSubmit,
   unwrapSlashdotBookmark,
