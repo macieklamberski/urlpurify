@@ -32,7 +32,7 @@ export const unwrapGenericCarrier: UrlUnwrapper = (url) => {
     }
 
     const raw = param.slice(separator + 1)
-    const target = decodeEncodedScheme(decodeParamValue(raw))
+    let target = decodeEncodedScheme(decodeParamValue(raw))
 
     if (!httpTargetRegex.test(target)) {
       continue
@@ -40,7 +40,7 @@ export const unwrapGenericCarrier: UrlUnwrapper = (url) => {
 
     // A raw target with a query of its own is not escaped, so every `&` after it is its own.
     if (httpTargetRegex.test(raw) && raw.includes('?')) {
-      return `${[raw, ...params.slice(index + 1)].join('&')}${url.hash}`
+      target = decodeParamValue([raw, ...params.slice(index + 1)].join('&'))
     }
 
     // An escaped target can hold its own `%23` fragment, which wins over the link's.
