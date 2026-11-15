@@ -71,6 +71,7 @@ import { unwrapBolPartner } from './unwraps/bolPartner.js'
 import { unwrapBridgyFed } from './unwraps/bridgyFed.js'
 import { unwrapBrightspot } from './unwraps/brightspot.js'
 import { unwrapBlueskyRedirect } from './unwraps/bsky.js'
+import { unwrapBuffer } from './unwraps/buffer.js'
 import { unwrapBusinessWire } from './unwraps/businessWire.js'
 import { unwrapButton } from './unwraps/button.js'
 import { unwrapBuyAt } from './unwraps/buyAt.js'
@@ -968,6 +969,7 @@ export const shareIntentUnwrappers: Array<UrlUnwrapper> = [
   unwrapAddToAny,
   unwrapBlinkList,
   unwrapBloggerBlogThis,
+  unwrapBuffer,
   unwrapDelicious,
   unwrapDiggSubmit,
   unwrapDiigoPost,
