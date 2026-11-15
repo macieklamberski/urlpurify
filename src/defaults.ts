@@ -327,6 +327,7 @@ import { unwrapPrweb } from './unwraps/prweb.js'
 import { unwrapPrxPlayer } from './unwraps/prxPlayer.js'
 import { unwrapQqMailReader } from './unwraps/qqMailReader.js'
 import { unwrapQualityClick } from './unwraps/qualityClick.js'
+import { unwrapQzoneShare } from './unwraps/qzoneShare.js'
 import { unwrapRakutenAffiliate } from './unwraps/rakutenAffiliate.js'
 import { unwrapRamblerMail } from './unwraps/ramblerMail.js'
 import { unwrapRecruitics } from './unwraps/recruitics.js'
@@ -983,6 +984,7 @@ export const shareIntentUnwrappers: Array<UrlUnwrapper> = [
   unwrapOkShare,
   unwrapPinterestPin,
   unwrapPocketSave,
+  unwrapQzoneShare,
   unwrapRedditSubmit,
   unwrapShareaholic,
   unwrapSlashdotBookmark,
