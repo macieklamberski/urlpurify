@@ -3,7 +3,6 @@ import type { UrlUnwrapper } from '../types.js'
 import { decodeEncodedScheme, decodeParamValue } from '../utils.js'
 
 const httpTargetRegex = /^https?:\/\//i
-const oembedPathRegex = /\/oembed(?:\/|$)/i
 
 const carriers = [
   'url',
@@ -23,11 +22,6 @@ const carriers = [
 // (<host>/<path>?url=<target>), the only unwrapper that names no path. The first http url wins.
 // Opt-in: on an unknown host the param may be an argument to the page, not where it leads.
 export const unwrapGenericCarrier: UrlUnwrapper = (url) => {
-  // An oEmbed endpoint's url names the page it describes or frames.
-  if (oembedPathRegex.test(url.pathname)) {
-    return
-  }
-
   const params = url.search.slice(1).split('&')
 
   for (const [index, param] of params.entries()) {

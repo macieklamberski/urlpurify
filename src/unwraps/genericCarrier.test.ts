@@ -45,6 +45,15 @@ describe('unwrapGenericCarrier', () => {
 
       expect(unwrapGenericCarrier(value)).toBe(expected)
     })
+
+    it('should cut an escaped target with a literal query of its own at the next param', () => {
+      const value = new URL(
+        'https://player.example.com/player/?url=https%3A//api.example.org/tracks/316457900?secret_token=s-KJKTw&color=%23ff5500&auto_play=false',
+      )
+      const expected = 'https://api.example.org/tracks/316457900?secret_token=s-KJKTw'
+
+      expect(unwrapGenericCarrier(value)).toBe(expected)
+    })
   })
 
   describe('feedurl carrier', () => {
@@ -190,30 +199,6 @@ describe('unwrapGenericCarrier', () => {
       const expected = 'https://a.example.org/x?feedurl=https://b.example.org/feed'
 
       expect(unwrapGenericCarrier(value)).toBe(expected)
-    })
-  })
-
-  describe('oEmbed endpoints', () => {
-    it('should return undefined for a WordPress oEmbed endpoint', () => {
-      const value = new URL(
-        'https://www.example.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.example.com%2F2012%2F06%2F15%2Fpodcast%2F&format=xml',
-      )
-
-      expect(unwrapGenericCarrier(value)).toBeUndefined()
-    })
-
-    it('should return undefined for a Drupal oEmbed frame', () => {
-      const value = new URL(
-        'https://www.example.com/media/oembed?url=https%3A//video.example.org/watch%3Fv%3Dabc&max_width=0&max_height=0&hash=a1b2c3',
-      )
-
-      expect(unwrapGenericCarrier(value)).toBeUndefined()
-    })
-
-    it('should match the oembed segment in any case', () => {
-      const value = new URL('https://www.example.com/OEmbed?url=https://www.example.org/post/')
-
-      expect(unwrapGenericCarrier(value)).toBeUndefined()
     })
   })
 

@@ -62,7 +62,7 @@ There are more than 400 unwrappers, each in its own file in [src/unwraps](src/un
 
 The intent categories, `shareIntentUnwrappers`, `subscribeIntentUnwrappers` and `feedToolUnwrappers`, hold links that never redirect to what they carry, so unwrapping one changes what a reader would open. They suit a caller collecting feeds or shared pages, not one cleaning links for a reader.
 
-`genericCarrierUnwrappers` reads those params on any host, so it also unwraps a feed generator or a feed that takes a url argument, such as `example.com/rss.php?url=<page>`. It skips a path with an `/oembed` segment. Exempt those links before calling it. Spread it last: the first unwrapper that matches wins, and a service's own unwrapper reads its real carrier better.
+`genericCarrierUnwrappers` reads those params on any host, so it also unwraps a feed generator or a feed that takes a url argument, such as `example.com/rss.php?url=<page>`. Exempt those links before calling it. Spread it last: the first unwrapper that matches wins, and a service's own unwrapper reads its real carrier better.
 
 To turn more on, see [Choosing unwrappers](#choosing-unwrappers).
 
