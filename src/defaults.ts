@@ -154,6 +154,7 @@ import { unwrapFireeye } from './unwraps/fireeye.js'
 import { unwrapFirstory } from './unwraps/firstory.js'
 import { unwrapFiveByFive } from './unwraps/fiveByFive.js'
 import { unwrapFiverr } from './unwraps/fiverr.js'
+import { unwrapFlattrSubmit } from './unwraps/flattrSubmit.js'
 import { unwrapFlexoffers } from './unwraps/flexoffers.js'
 import { unwrapFlipboard } from './unwraps/flipboard.js'
 import { unwrapFortimail } from './unwraps/fortimail.js'
@@ -924,6 +925,7 @@ export const embedProxyUnwrappers: Array<UrlUnwrapper> = [
 export const shareIntentUnwrappers: Array<UrlUnwrapper> = [
   unwrapAddToAny,
   unwrapFacebookShare,
+  unwrapFlattrSubmit,
   unwrapTwitterIntent,
 ]
 
