@@ -76,6 +76,16 @@ describe('unwrapPinterestPin', () => {
     expect(unwrapPinterestPin(value)).toBe(expected)
   })
 
+  it('should extract the target on a country domain', () => {
+    // Constructed from the live probe: pinterest.co.uk 308s to the form on uk.pinterest.com.
+    const value = new URL(
+      'https://pinterest.co.uk/pin/create/button/?url=https%3A%2F%2Fexample.com%2Fpost',
+    )
+    const expected = 'https://example.com/post'
+
+    expect(unwrapPinterestPin(value)).toBe(expected)
+  })
+
   it('should extract a twice-encoded target', () => {
     const value = new URL(
       'http://pinterest.com/pin/create/button/?url=https%253A%252F%252Fexample.com%252Fcandy_biscuits_and_pineapple_dish&description=candy%2520biscuits',
@@ -122,6 +132,22 @@ describe('unwrapPinterestPin', () => {
     expect(unwrapPinterestPin(value)).toBeUndefined()
   })
 
+  it('should return undefined for the save path under another path', () => {
+    const value = new URL(
+      'https://www.pinterest.com/example/pin/create/button/?url=https%3A%2F%2Fexample.com%2Fpost',
+    )
+
+    expect(unwrapPinterestPin(value)).toBeUndefined()
+  })
+
+  it('should return undefined for a path below the save path', () => {
+    const value = new URL(
+      'https://www.pinterest.com/pin/create/button/extra/?url=https%3A%2F%2Fexample.com%2Fpost',
+    )
+
+    expect(unwrapPinterestPin(value)).toBeUndefined()
+  })
+
   it('should return undefined for a host ending in a country host', () => {
     const value = new URL(
       'https://www.fr.pinterest.com/pin/create/button/?url=https%3A%2F%2Fexample.com%2Fpost',
@@ -141,6 +167,14 @@ describe('unwrapPinterestPin', () => {
   it('should return undefined for a lookalike country host', () => {
     const value = new URL(
       'https://frxpinterest.com/pin/create/button/?url=https%3A%2F%2Fexample.com%2Fpost',
+    )
+
+    expect(unwrapPinterestPin(value)).toBeUndefined()
+  })
+
+  it('should return undefined for a lookalike country host suffix', () => {
+    const value = new URL(
+      'https://fr.pinterestxcom/pin/create/button/?url=https%3A%2F%2Fexample.com%2Fpost',
     )
 
     expect(unwrapPinterestPin(value)).toBeUndefined()
