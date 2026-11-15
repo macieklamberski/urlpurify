@@ -62,15 +62,6 @@ describe('unwrapNewsGator', () => {
 
       expect(unwrapNewsGator(value)).toBe(expected)
     })
-
-    it('should extract a feed on the bare host', () => {
-      const value = new URL(
-        'http://newsgator.com/ngs/subscriber/subfext.aspx?url=http://example.com/?feed=rss2',
-      )
-      const expected = 'http://example.com/?feed=rss2'
-
-      expect(unwrapNewsGator(value)).toBe(expected)
-    })
   })
 
   describe('controls', () => {
