@@ -65,6 +65,20 @@ describe('unwrapGooglePlusShare', () => {
     expect(unwrapGooglePlusShare(value)).toBeUndefined()
   })
 
+  it('should return undefined for a path that starts with the share path', () => {
+    const value = new URL('https://plus.google.com/shares?url=https%3A%2F%2Fexample.com%2Fpost')
+
+    expect(unwrapGooglePlusShare(value)).toBeUndefined()
+  })
+
+  it('should return undefined for a path that ends with the share path', () => {
+    const value = new URL(
+      'https://plus.google.com/communities/share?url=https%3A%2F%2Fexample.com%2Fpost',
+    )
+
+    expect(unwrapGooglePlusShare(value)).toBeUndefined()
+  })
+
   it('should return undefined for the shape on another host', () => {
     const value = new URL('https://www.example.com/share?url=https%3A%2F%2Fexample.org%2Fpost')
 
