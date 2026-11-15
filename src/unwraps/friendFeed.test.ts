@@ -86,6 +86,12 @@ describe('unwrapFriendFeed', () => {
     expect(unwrapFriendFeed(value)).toBeUndefined()
   })
 
+  it('should never read the title param in the root form', () => {
+    const value = new URL('http://friendfeed.com/?title=https%3A%2F%2Fexample.com%2Fpost')
+
+    expect(unwrapFriendFeed(value)).toBeUndefined()
+  })
+
   it('should return undefined when the url param is empty', () => {
     const value = new URL('http://friendfeed.com/share?url=&title=Title')
 
@@ -101,7 +107,7 @@ describe('unwrapFriendFeed', () => {
   })
 
   it('should return undefined for a non-http value in the root form', () => {
-    const value = new URL('http://friendfeed.com/?url=settings')
+    const value = new URL('http://friendfeed.com/?url=example.com/post')
 
     expect(unwrapFriendFeed(value)).toBeUndefined()
   })
