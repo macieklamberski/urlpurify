@@ -4,10 +4,10 @@ import { unwrapTumblrShare } from './tumblrShare.js'
 describe('unwrapTumblrShare', () => {
   it('should extract the target from share with u', () => {
     const value = new URL(
-      'https://www.tumblr.com/share?v=3&u=https%3A%2F%2Fexample.blog.hu%2F2026%2F06%2F28%2Fszarajevoi_merenylet_ebbol_a_nezopontbol_meg_sosem_latta%3Futm_source%3Dbloghu_rss&t=Szarajev%C3%B3i%20mer%C3%A9nylet',
+      'https://www.tumblr.com/share?v=3&u=https%3A%2F%2Fblog.example.com%2F2026%2F06%2F28%2Fszarajevoi_merenylet_ebbol_a_nezopontbol_meg_sosem_latta%3Futm_source%3Dbloghu_rss&t=Szarajev%C3%B3i%20mer%C3%A9nylet',
     )
     const expected =
-      'https://example.blog.hu/2026/06/28/szarajevoi_merenylet_ebbol_a_nezopontbol_meg_sosem_latta?utm_source=bloghu_rss'
+      'https://blog.example.com/2026/06/28/szarajevoi_merenylet_ebbol_a_nezopontbol_meg_sosem_latta?utm_source=bloghu_rss'
 
     expect(unwrapTumblrShare(value)).toBe(expected)
   })
@@ -142,8 +142,9 @@ describe('unwrapTumblrShare', () => {
   })
 
   it('should return undefined for the photo share', () => {
+    // The u= is constructed: no photo share link in the walk carries it.
     const value = new URL(
-      'http://www.tumblr.com/share/photo?source=http%3A%2F%2Fexample.com%2Fimages%2Fpreview1500.jpg&caption=Why&click_thru=http%3A%2F%2Fexample.com%2Fpost',
+      'http://www.tumblr.com/share/photo?source=http%3A%2F%2Fexample.com%2Fimages%2Fpreview1500.jpg&caption=Why&u=https%3A%2F%2Fexample.com%2Fpost&click_thru=http%3A%2F%2Fexample.com%2Fpost',
     )
 
     expect(unwrapTumblrShare(value)).toBeUndefined()
