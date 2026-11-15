@@ -94,6 +94,14 @@ describe('unwrapThreadsIntent', () => {
     expect(unwrapThreadsIntent(value)).toBeUndefined()
   })
 
+  it('should return undefined for a longer path', () => {
+    const value = new URL(
+      'https://www.threads.com/intent/posts?url=https%3A%2F%2Fexample.com%2Fpost',
+    )
+
+    expect(unwrapThreadsIntent(value)).toBeUndefined()
+  })
+
   it('should return undefined for the shape on another host', () => {
     const value = new URL('https://example.com/intent/post?url=https%3A%2F%2Fexample.org%2Fpost')
 
