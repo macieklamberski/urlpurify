@@ -67,7 +67,8 @@ const matchesPattern = (text: string, pattern: RegExp): boolean => {
 
 const matchesEntry = (entry: TrackingEntry, name: string, value: string, host: string): boolean => {
   const isNameMatch = isString(entry.name)
-    ? entry.name.toLowerCase() === name
+    ? // biome-ignore lint/plugin/useAnyOfOrSameText: The caller folds the name once per param, and isAnyOf would fold and trim both sides per entry.
+      entry.name.toLowerCase() === name
     : matchesPattern(name, entry.name)
 
   if (!isNameMatch) {
