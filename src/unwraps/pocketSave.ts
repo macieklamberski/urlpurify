@@ -4,17 +4,11 @@ import { getParamTarget } from '../utils.js'
 
 const hosts = ['getpocket.com']
 const paths = ['/save', '/edit', '/edit.php']
-const widgetHosts = ['widgets.getpocket.com']
-const widgetPaths = ['/v1/button']
 
-// Pocket save links (getpocket.com/save?url=<page>, /edit?url= and /edit.php?url=) and the save
-// button frame (widgets.getpocket.com/v1/button?url=). Opt-in: unwrapping returns the saved page,
-// not the form that saves it.
+// Pocket save links (getpocket.com/save?url=<page>, /edit?url= and /edit.php?url=). Opt-in:
+// unwrapping returns the saved page, not the form that saves it.
 export const unwrapPocketSave: UrlUnwrapper = (url) => {
-  const isSave = isHostOf(url, hosts) && isAnyOf(url.pathname, paths)
-  const isWidget = isHostOf(url, widgetHosts) && isAnyOf(url.pathname, widgetPaths)
-
-  if (!isSave && !isWidget) {
+  if (!isHostOf(url, hosts) || !isAnyOf(url.pathname, paths)) {
     return
   }
 
