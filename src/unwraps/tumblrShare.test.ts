@@ -85,6 +85,24 @@ describe('unwrapTumblrShare', () => {
     expect(unwrapTumblrShare(value)).toBe(expected)
   })
 
+  it('should read canonicalUrl over url in the share tool', () => {
+    const value = new URL(
+      'https://www.tumblr.com/widgets/share/tool?shareSource=legacy&canonicalUrl=https%3A%2F%2Fexample.com%2Fcanonical&posttype=link&url=https%3A%2F%2Fexample.com%2Fother',
+    )
+    const expected = 'https://example.com/canonical'
+
+    expect(unwrapTumblrShare(value)).toBe(expected)
+  })
+
+  it('should read u over canonicalUrl in share', () => {
+    const value = new URL(
+      'https://www.tumblr.com/share?v=3&u=https%3A%2F%2Fexample.com%2Fu&canonicalUrl=https%3A%2F%2Fexample.com%2Fcanonical',
+    )
+    const expected = 'https://example.com/u'
+
+    expect(unwrapTumblrShare(value)).toBe(expected)
+  })
+
   it('should extract a twice-encoded target', () => {
     const value = new URL(
       'https://www.tumblr.com/share?v=3&u=https%253A%252F%252Fexample.com%252Fpost',
@@ -101,6 +119,22 @@ describe('unwrapTumblrShare', () => {
     expect(unwrapTumblrShare(value)).toBe(expected)
   })
 
+  it('should match the share path in any case', () => {
+    const value = new URL('https://www.tumblr.com/Share?u=https%3A%2F%2Fexample.com%2Fpost')
+    const expected = 'https://example.com/post'
+
+    expect(unwrapTumblrShare(value)).toBe(expected)
+  })
+
+  it('should match the share tool path in any case', () => {
+    const value = new URL(
+      'https://www.tumblr.com/Widgets/Share/Tool?canonicalUrl=https%3A%2F%2Fexample.com%2Fpost',
+    )
+    const expected = 'https://example.com/post'
+
+    expect(unwrapTumblrShare(value)).toBe(expected)
+  })
+
   it('should return undefined when the u param is empty', () => {
     const value = new URL('https://www.tumblr.com/share?v=3&u=&t=Title')
 
@@ -110,6 +144,44 @@ describe('unwrapTumblrShare', () => {
   it('should return undefined for the photo share', () => {
     const value = new URL(
       'http://www.tumblr.com/share/photo?source=http%3A%2F%2Fexample.com%2Fimages%2Fpreview1500.jpg&caption=Why&click_thru=http%3A%2F%2Fexample.com%2Fpost',
+    )
+
+    expect(unwrapTumblrShare(value)).toBeUndefined()
+  })
+
+  it('should return undefined for the share tool preview', () => {
+    const value = new URL(
+      'https://www.tumblr.com/widgets/share/tool/preview?shareSource=legacy&canonicalUrl&url=http%3A%2F%2Fexample.com%2F2018%2Ffilm%2Ffestivals%2Fsundance-film-festival-awards-2018-1202679213%2F&posttype=link&title=Sundance',
+    )
+
+    expect(unwrapTumblrShare(value)).toBeUndefined()
+  })
+
+  it('should return undefined for share under another path', () => {
+    const value = new URL('https://www.tumblr.com/example/share?u=https%3A%2F%2Fexample.com%2Fpost')
+
+    expect(unwrapTumblrShare(value)).toBeUndefined()
+  })
+
+  it('should return undefined for share/link under another path', () => {
+    const value = new URL(
+      'https://www.tumblr.com/example/share/link?url=https%3A%2F%2Fexample.com%2Fpost',
+    )
+
+    expect(unwrapTumblrShare(value)).toBeUndefined()
+  })
+
+  it('should return undefined for the share tool under another path', () => {
+    const value = new URL(
+      'https://www.tumblr.com/example/widgets/share/tool?canonicalUrl=https%3A%2F%2Fexample.com%2Fpost',
+    )
+
+    expect(unwrapTumblrShare(value)).toBeUndefined()
+  })
+
+  it('should return undefined for a path below share/link', () => {
+    const value = new URL(
+      'https://www.tumblr.com/share/link/example?url=https%3A%2F%2Fexample.com%2Fpost',
     )
 
     expect(unwrapTumblrShare(value)).toBeUndefined()
