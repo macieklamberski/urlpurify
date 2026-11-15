@@ -214,6 +214,7 @@ import { unwrapLazada } from './unwraps/lazada.js'
 import { unwrapLd246 } from './unwraps/ld246.js'
 import { unwrapLetscast } from './unwraps/letscast.js'
 import { unwrapLeverAnalytics } from './unwraps/leverAnalytics.js'
+import { unwrapLineShare } from './unwraps/lineShare.js'
 import { unwrapLinkA } from './unwraps/linkA.js'
 import { unwrapLinkconnector } from './unwraps/linkconnector.js'
 import { unwrapLinkedin } from './unwraps/linkedin.js'
@@ -924,6 +925,7 @@ export const embedProxyUnwrappers: Array<UrlUnwrapper> = [
 export const shareIntentUnwrappers: Array<UrlUnwrapper> = [
   unwrapAddToAny,
   unwrapFacebookShare,
+  unwrapLineShare,
   unwrapTwitterIntent,
 ]
 
