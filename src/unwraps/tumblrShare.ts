@@ -1,11 +1,9 @@
-import { isHostOf } from 'trousse'
+import { isAnyOf, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { getParamTarget } from '../utils.js'
 
 const hosts = ['www.tumblr.com', 'tumblr.com']
-const sharePathRegex = /^\/share$/i
 const linkPathRegex = /^\/share\/link\/?$/i
-const toolPathRegex = /^\/widgets\/share\/tool$/i
 
 // Tumblr share (tumblr.com/share?u=<target> or ?canonicalUrl=, /share/link?url=, and
 // /widgets/share/tool?canonicalUrl=, or ?url= when canonicalUrl is empty, on www. and bare
@@ -15,7 +13,7 @@ export const unwrapTumblrShare: UrlUnwrapper = (url) => {
     return
   }
 
-  if (sharePathRegex.test(url.pathname)) {
+  if (isAnyOf(url.pathname, '/share')) {
     return getParamTarget(url, 'u') ?? getParamTarget(url, 'canonicalUrl')
   }
 
@@ -23,7 +21,7 @@ export const unwrapTumblrShare: UrlUnwrapper = (url) => {
     return getParamTarget(url, 'url')
   }
 
-  if (toolPathRegex.test(url.pathname)) {
+  if (isAnyOf(url.pathname, '/widgets/share/tool')) {
     return getParamTarget(url, 'canonicalUrl') ?? getParamTarget(url, 'url')
   }
 }
