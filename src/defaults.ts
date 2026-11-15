@@ -110,6 +110,7 @@ import { unwrapDeployer } from './unwraps/deployer.js'
 import { unwrapDerefMail } from './unwraps/derefMail.js'
 import { unwrapDeviantartOutgoing } from './unwraps/deviantartOutgoing.js'
 import { unwrapDevToImage } from './unwraps/devToImage.js'
+import { unwrapDiasporaShare } from './unwraps/diasporaShare.js'
 import { unwrapDiggSubmit } from './unwraps/diggSubmit.js'
 import { unwrapDigidip } from './unwraps/digidip.js'
 import { unwrapDigikala } from './unwraps/digikala.js'
@@ -966,6 +967,7 @@ export const shareIntentUnwrappers: Array<UrlUnwrapper> = [
   unwrapBlinkList,
   unwrapBloggerBlogThis,
   unwrapDelicious,
+  unwrapDiasporaShare,
   unwrapDiggSubmit,
   unwrapDiigoPost,
   unwrapFacebookShare,
