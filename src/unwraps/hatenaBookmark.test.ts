@@ -34,6 +34,15 @@ describe('unwrapHatenaBookmark', () => {
 
       expect(unwrapHatenaBookmark(value)).toBe(expected)
     })
+
+    it('should read an escaped fragment in the page query as the page fragment', () => {
+      const value = new URL(
+        'http://b.hatena.ne.jp/entry/http://projects.example.com/kwc/?lang=jp%23chapter=intro',
+      )
+      const expected = 'http://projects.example.com/kwc/?lang=jp#chapter=intro'
+
+      expect(unwrapHatenaBookmark(value)).toBe(expected)
+    })
   })
 
   describe('entry page with an encoded page', () => {
@@ -67,6 +76,13 @@ describe('unwrapHatenaBookmark', () => {
     it('should extract a site root', () => {
       const value = new URL('https://b.hatena.ne.jp/entry/s/www.example.com/')
       const expected = 'https://www.example.com/'
+
+      expect(unwrapHatenaBookmark(value)).toBe(expected)
+    })
+
+    it('should keep the link fragment', () => {
+      const value = new URL('http://b.hatena.ne.jp/entry/example.fm/episode/v001/#tw?u=upamune')
+      const expected = 'http://example.fm/episode/v001/#tw?u=upamune'
 
       expect(unwrapHatenaBookmark(value)).toBe(expected)
     })
