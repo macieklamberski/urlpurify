@@ -163,6 +163,7 @@ import { unwrapFlattrSubmit } from './unwraps/flattrSubmit.js'
 import { unwrapFlexoffers } from './unwraps/flexoffers.js'
 import { unwrapFlipboard } from './unwraps/flipboard.js'
 import { unwrapFortimail } from './unwraps/fortimail.js'
+import { unwrapFriendFeed } from './unwraps/friendFeed.js'
 import { unwrapFtc } from './unwraps/ftc.js'
 import { unwrapGateSc } from './unwraps/gateSc.js'
 import { unwrapGeoriot } from './unwraps/georiot.js'
@@ -957,6 +958,7 @@ export const shareIntentUnwrappers: Array<UrlUnwrapper> = [
   unwrapDiggSubmit,
   unwrapFacebookShare,
   unwrapFlattrSubmit,
+  unwrapFriendFeed,
   unwrapGoogleBookmarks,
   unwrapGooglePlusShare,
   unwrapHackerNewsSubmit,
