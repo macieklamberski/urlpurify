@@ -265,6 +265,7 @@ import { unwrapMinistryCloud } from './unwraps/ministryCloud.js'
 import { unwrapMintDownloads } from './unwraps/mintDownloads.js'
 import { unwrapMintFeeder } from './unwraps/mintFeeder.js'
 import { unwrapMohtwize } from './unwraps/mohtwize.js'
+import { unwrapMorss } from './unwraps/morss.js'
 import { unwrapMoshimo } from './unwraps/moshimo.js'
 import { unwrapMozillaOutgoing } from './unwraps/mozillaOutgoing.js'
 import { unwrapMyNewsletterBuilder } from './unwraps/myNewsletterBuilder.js'
@@ -1025,6 +1026,7 @@ export const subscribeIntentUnwrappers: Array<UrlUnwrapper> = [
 export const feedToolUnwrappers: Array<UrlUnwrapper> = [
   unwrapFeed2js,
   unwrapFeedValidator,
+  unwrapMorss,
   unwrapRssBoardValidator,
   unwrapW3cFeedValidator,
 ]
