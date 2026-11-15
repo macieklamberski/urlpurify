@@ -1,4 +1,4 @@
-export { cleanUrl, stripTrackingParams, unwrapUrl } from './clean.js'
+export { cleanUrl, isTrackingParam, stripTrackingParams, unwrapUrl } from './clean.js'
 export {
   advertisingUnwrappers,
   affiliateParams,
@@ -16,10 +16,12 @@ export {
   genericCarrierUnwrappers,
   housekeepingParams,
   imageProxyUnwrappers,
+  knownTrackingParams,
   linkShimUnwrappers,
   pressReleaseUnwrappers,
   searchClickUnwrappers,
   securityGatewayUnwrappers,
+  sessionParams,
   shareIntentUnwrappers,
   signInShimUnwrappers,
   subscribeIntentUnwrappers,
@@ -27,7 +29,13 @@ export {
   trackingParamsPatterns,
   visitorIdParams,
 } from './defaults.js'
-export type { CleanUrlOptions, TrackingParam, UrlUnwrapper } from './types.js'
+export type {
+  CleanUrlOptions,
+  TrackingEntry,
+  TrackingParam,
+  TrackingValueTest,
+  UrlUnwrapper,
+} from './types.js'
 export { unwrap2performant } from './unwraps/2performant.js'
 export { unwrap4pda } from './unwraps/4pda.js'
 export { unwrap12ft } from './unwraps/12ft.js'
@@ -205,6 +213,7 @@ export { unwrapGoogle } from './unwraps/google.js'
 export { unwrapGoogleAds } from './unwraps/googleAds.js'
 export { unwrapGoogleAmpViewer } from './unwraps/googleAmpViewer.js'
 export { unwrapGoogleBookmarks } from './unwraps/googleBookmarks.js'
+export { unwrapGoogleBuzz } from './unwraps/googleBuzz.js'
 export { unwrapGoogleNews } from './unwraps/googleNews.js'
 export { unwrapGoogleNewsModern } from './unwraps/googleNewsModern.js'
 export { unwrapGooglePlusShare } from './unwraps/googlePlusShare.js'

@@ -3,6 +3,7 @@ import { affiliateParams } from './tracking/affiliate.js'
 import { campaignParams } from './tracking/campaign.js'
 import { clickAttributionParams } from './tracking/clickAttribution.js'
 import { housekeepingParams } from './tracking/housekeeping.js'
+import { sessionParams } from './tracking/session.js'
 import { visitorIdParams } from './tracking/visitorId.js'
 import type { TrackingParam, UrlUnwrapper } from './types.js'
 import { unwrap2performant } from './unwraps/2performant.js'
@@ -182,6 +183,7 @@ import { unwrapGoogle } from './unwraps/google.js'
 import { unwrapGoogleAds } from './unwraps/googleAds.js'
 import { unwrapGoogleAmpViewer } from './unwraps/googleAmpViewer.js'
 import { unwrapGoogleBookmarks } from './unwraps/googleBookmarks.js'
+import { unwrapGoogleBuzz } from './unwraps/googleBuzz.js'
 import { unwrapGoogleNews } from './unwraps/googleNews.js'
 import { unwrapGoogleNewsModern } from './unwraps/googleNewsModern.js'
 import { unwrapGooglePlusShare } from './unwraps/googlePlusShare.js'
@@ -484,6 +486,7 @@ export {
   campaignParams,
   clickAttributionParams,
   housekeepingParams,
+  sessionParams,
   visitorIdParams,
 }
 
@@ -492,16 +495,19 @@ export {
 export const defaultTrackingParams: Array<TrackingParam> = [
   ...clickAttributionParams,
   ...visitorIdParams,
+  ...sessionParams,
   ...housekeepingParams,
 ]
 
-const knownTrackingParams: Array<TrackingParam> = [
+// Every known param, opt-in categories included.
+export const knownTrackingParams: Array<TrackingParam> = [
   ...defaultTrackingParams,
   ...campaignParams,
   ...affiliateParams,
 ]
 
-// Every known param, opt-in categories included, split into names and patterns.
+// The known names and patterns that track on every host with every value. An entry is left out,
+// since its name alone would strip `sid` or `ref` everywhere.
 export const trackingParamsLiterals: Array<string> = []
 export const trackingParamsPatterns: Array<RegExp> = []
 
@@ -511,7 +517,9 @@ for (const param of knownTrackingParams) {
     continue
   }
 
-  trackingParamsPatterns.push(param)
+  if (param instanceof RegExp) {
+    trackingParamsPatterns.push(param)
+  }
 }
 
 // Search engine and aggregator result clicks: unwrapping removes only the click logging.
@@ -986,6 +994,7 @@ export const shareIntentUnwrappers: Array<UrlUnwrapper> = [
   unwrapFriendFeed,
   unwrapGabCompose,
   unwrapGoogleBookmarks,
+  unwrapGoogleBuzz,
   unwrapGooglePlusShare,
   unwrapHackerNewsSubmit,
   unwrapHatenaBookmark,
