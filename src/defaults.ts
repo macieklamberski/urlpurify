@@ -298,6 +298,7 @@ import { unwrapPinterestPin } from './unwraps/pinterestPin.js'
 import { unwrapPipedrive } from './unwraps/pipedrive.js'
 import { unwrapPlayerFm } from './unwraps/playerFm.js'
 import { unwrapPocket } from './unwraps/pocket.js'
+import { unwrapPocketSave } from './unwraps/pocketSave.js'
 import { unwrapPodcastAddict } from './unwraps/podcastAddict.js'
 import { unwrapPodcorn } from './unwraps/podcorn.js'
 import { unwrapPodder } from './unwraps/podder.js'
@@ -977,6 +978,7 @@ export const shareIntentUnwrappers: Array<UrlUnwrapper> = [
   unwrapMeweShare,
   unwrapOkShare,
   unwrapPinterestPin,
+  unwrapPocketSave,
   unwrapRedditSubmit,
   unwrapShareaholic,
   unwrapSlashdotBookmark,
