@@ -102,6 +102,7 @@ import { unwrapCse360 } from './unwraps/cse360.js'
 import { unwrapCuelinks } from './unwraps/cuelinks.js'
 import { unwrapDasBlog } from './unwraps/dasBlog.js'
 import { unwrapDatalifeEngine } from './unwraps/datalifeEngine.js'
+import { unwrapDelicious } from './unwraps/delicious.js'
 import { unwrapDeployer } from './unwraps/deployer.js'
 import { unwrapDerefMail } from './unwraps/derefMail.js'
 import { unwrapDeviantartOutgoing } from './unwraps/deviantartOutgoing.js'
@@ -923,6 +924,7 @@ export const embedProxyUnwrappers: Array<UrlUnwrapper> = [
 // Share and bookmark buttons: unwrapping returns the shared page, not the form that shares it.
 export const shareIntentUnwrappers: Array<UrlUnwrapper> = [
   unwrapAddToAny,
+  unwrapDelicious,
   unwrapFacebookShare,
   unwrapTwitterIntent,
 ]
