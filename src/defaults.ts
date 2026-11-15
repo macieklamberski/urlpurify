@@ -108,6 +108,7 @@ import { unwrapDeployer } from './unwraps/deployer.js'
 import { unwrapDerefMail } from './unwraps/derefMail.js'
 import { unwrapDeviantartOutgoing } from './unwraps/deviantartOutgoing.js'
 import { unwrapDevToImage } from './unwraps/devToImage.js'
+import { unwrapDiggSubmit } from './unwraps/diggSubmit.js'
 import { unwrapDigidip } from './unwraps/digidip.js'
 import { unwrapDigikala } from './unwraps/digikala.js'
 import { unwrapDirectMail } from './unwraps/directMail.js'
@@ -934,6 +935,7 @@ export const shareIntentUnwrappers: Array<UrlUnwrapper> = [
   unwrapAddThis,
   unwrapAddToAny,
   unwrapDelicious,
+  unwrapDiggSubmit,
   unwrapFacebookShare,
   unwrapGoogleBookmarks,
   unwrapGooglePlusShare,
