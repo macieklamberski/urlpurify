@@ -81,6 +81,14 @@ describe('unwrapInstapaperSave', () => {
     expect(unwrapInstapaperSave(value)).toBeUndefined()
   })
 
+  it('should return undefined for a page held only in the description', () => {
+    const value = new URL(
+      'https://www.instapaper.com/hello2?description=https%3A%2F%2Fexample.com%2Fpost',
+    )
+
+    expect(unwrapInstapaperSave(value)).toBeUndefined()
+  })
+
   it('should return undefined for the text view', () => {
     const value = new URL('https://www.instapaper.com/text?url=https%3A%2F%2Fexample.com%2Fpost')
 
