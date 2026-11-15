@@ -76,14 +76,6 @@ describe('unwrapFeedly', () => {
       expect(unwrapFeedly(value)).toBeUndefined()
     })
 
-    it('should return undefined for a url param', () => {
-      const value = new URL(
-        'https://feedly.com/i/subscription/feed?url=https://example.com/feed&via=TrendWebDesign',
-      )
-
-      expect(unwrapFeedly(value)).toBeUndefined()
-    })
-
     it('should return undefined for a feed path under another prefix', () => {
       const value = new URL('https://feedly.com/x/i/subscription/feed/https://example.com/feed/')
 
@@ -94,6 +86,45 @@ describe('unwrapFeedly', () => {
       const value = new URL(
         'https://examplefeedly.com/i/subscription/feed/https://example.com/feed',
       )
+
+      expect(unwrapFeedly(value)).toBeUndefined()
+    })
+  })
+
+  describe('subscription url param', () => {
+    it('should extract a raw feed', () => {
+      const value = new URL(
+        'https://feedly.com/i/subscription/feed?url=http://example.com/kiso/flow/&via=TrendWebDesign&related=TrendWebDesign&hashtags=web',
+      )
+      const expected = 'http://example.com/kiso/flow/'
+
+      expect(unwrapFeedly(value)).toBe(expected)
+    })
+
+    it('should decode a percent-encoded feed', () => {
+      const value = new URL(
+        'https://feedly.com/i/subscription/feed?url=https%3A%2F%2Fexample.com%2Ffeed%2F',
+      )
+      const expected = 'https://example.com/feed/'
+
+      expect(unwrapFeedly(value)).toBe(expected)
+    })
+
+    it('should match the path in any case', () => {
+      const value = new URL('https://feedly.com/I/Subscription/Feed?url=https://example.com/feed')
+      const expected = 'https://example.com/feed'
+
+      expect(unwrapFeedly(value)).toBe(expected)
+    })
+
+    it('should return undefined for an empty url param', () => {
+      const value = new URL('https://feedly.com/i/subscription/feed?url=')
+
+      expect(unwrapFeedly(value)).toBeUndefined()
+    })
+
+    it('should return undefined for a url param on another path', () => {
+      const value = new URL('https://feedly.com/i/latest?url=https://example.com/feed')
 
       expect(unwrapFeedly(value)).toBeUndefined()
     })
