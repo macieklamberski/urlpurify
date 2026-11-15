@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'bun:test'
 import { decodeBase64 } from 'trousse'
 import { cleanUrl, isTrackingParam, stripTrackingParams, unwrapUrl } from './clean.js'
-import { campaignParams, defaultTrackingParams } from './defaults.js'
+import { campaignParams, defaultTrackingParams, housekeepingParams } from './defaults.js'
 import type { TrackingParam, TrackingValueTest, UrlUnwrapper } from './types.js'
 import { unwrapWebArchive } from './unwraps/webArchive.js'
 import { createParamExtractor } from './utils.js'
@@ -1102,9 +1102,16 @@ describe('self-referential ref param', () => {
     expect(stripTrackingParams(value)).toBe(expected)
   })
 
-  it('should strip a self-referential ref even with a custom tracking list', () => {
+  it('should keep a self-referential ref with a custom list lacking housekeeping', () => {
     const value = 'https://example.com/post?ref=example.com&keep=1'
     const options = { trackingParams: ['utm_source'] }
+
+    expect(cleanUrl(value, options)).toBe(value)
+  })
+
+  it('should strip a self-referential ref with a custom list spreading housekeeping', () => {
+    const value = 'https://example.com/post?ref=example.com&keep=1'
+    const options = { trackingParams: [...housekeepingParams, 'utm_source'] }
     const expected = 'https://example.com/post?keep=1'
 
     expect(cleanUrl(value, options)).toBe(expected)

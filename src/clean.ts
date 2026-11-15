@@ -19,10 +19,6 @@ type TrackingMatcher = {
   entries: Array<TrackingEntry>
 }
 
-// A `ref` value with a url delimiter or whitespace is more than a host: `example.com/page` would
-// parse to the hostname `example.com`.
-const refDelimitersRegex = /[\s/?#\\:@]/
-
 // A signature covers the rest of the query, so dropping any param from it makes the server reject
 // the url, as a CDN answers 401 to a signed file url without its `ts`.
 const signatureParams = [
@@ -168,25 +164,7 @@ const deleteTrackingParams = (url: URL, trackingParams: Array<TrackingParam>): v
       return true
     }
 
-    if (isTrackedPair(matcher, name, value, host)) {
-      return false
-    }
-
-    // A `ref` holding the URL's own host is Ghost's self-referral, `?ref=example.com` on
-    // example.com. With any other value `ref` is often a real referral target.
-    if (name !== 'ref' || refDelimitersRegex.test(value)) {
-      return true
-    }
-
-    // The URL parser gives `url.hostname` in lowercase Punycode, so `ref` goes through the same
-    // host parsing: `?ref=bücher.example` names `xn--bcher-kva.example`.
-    const refUrl = parseUrl(`http://${value}`)
-
-    if (!refUrl) {
-      return true
-    }
-
-    return stripWww(refUrl.hostname) !== host
+    return !isTrackedPair(matcher, name, value, host)
   })
 
   if (keptPairs.length === pairs.length) {

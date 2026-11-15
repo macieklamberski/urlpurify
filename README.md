@@ -106,9 +106,8 @@ Runs one pass of the unwrappers and returns the first target, or `undefined`.
 
 ### `stripTrackingParams(url, trackingParams?)`
 
-Removes tracking parameters and returns the serialized URL. Both this and `cleanUrl` apply three rules on top of the list:
+Removes tracking parameters and returns the serialized URL. Both this and `cleanUrl` apply two rules on top of the list:
 
-- `ref` is dropped when it names the URL's own host, as in Ghost's `?ref=example.com`, and kept otherwise.
 - A query with a signature (`sig`, `signature`, `X-Amz-Signature` or `X-Goog-Signature`) stays whole, since dropping anything breaks the signature.
 - `ts` stays on Alibaba DirectMail click URLs, which fail without it.
 
