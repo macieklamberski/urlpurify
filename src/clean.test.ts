@@ -950,6 +950,19 @@ describe('cleanUrl with a malformed target', () => {
     expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(expected)
   })
 
+  it('should keep the wrapper when the target host ends in an ellipsis', () => {
+    const value = 'https://redirect.example.com/?target=http%3A%2F%2Fitem.example.co.j...'
+
+    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
+  })
+
+  it('should unwrap a target whose host label ends with a hyphen', () => {
+    const value = 'https://redirect.example.com/?target=https%3A%2F%2Fok-.example.com%2Fpost'
+    const expected = 'https://ok-.example.com/post'
+
+    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(expected)
+  })
+
   it('should resolve a chain whose inner target has a single slash', () => {
     const value =
       'https://redirect.example.com/?target=https://defense.example.net/v3/__https:/example.org/news/__;tail'
