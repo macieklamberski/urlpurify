@@ -1,5 +1,4 @@
 import {
-  coerceArray,
   isAnyOf,
   isHostname,
   isHostOf,
@@ -41,21 +40,17 @@ const getTrackingMatcher = (params: Array<TrackingParam>): TrackingMatcher => {
     const entries: Array<TrackingEntry> = []
 
     for (const param of params) {
-      const isEntry = !isString(param) && !(param instanceof RegExp)
-
-      if (isEntry && (param.value || param.hosts)) {
-        entries.push(param)
+      if (isString(param)) {
+        literals.add(param.toLowerCase())
         continue
       }
 
-      const name = isEntry ? param.name : param
-
-      if (name instanceof RegExp) {
-        patterns.push(name)
+      if (param instanceof RegExp) {
+        patterns.push(param)
         continue
       }
 
-      literals.add(name.toLowerCase())
+      entries.push(param)
     }
 
     cached = { literals, patterns, entries }
@@ -70,44 +65,32 @@ const matchesPattern = (text: string, pattern: RegExp): boolean => {
   return text.search(pattern) !== -1
 }
 
-const matchesName = (pattern: string | RegExp, name: string): boolean => {
-  if (isString(pattern)) {
-    return pattern.toLowerCase() === name
-  }
-
-  return matchesPattern(name, pattern)
-}
-
-const matchesHost = (hosts: TrackingEntry['hosts'], host: string): boolean => {
-  if (!hosts) {
-    return true
-  }
-
-  if (hosts instanceof RegExp) {
-    return matchesPattern(host, hosts)
-  }
-
-  return coerceArray(hosts).includes(host)
-}
-
-const matchesValue = (valueTest: TrackingEntry['value'], value: string, host: string): boolean => {
-  if (!valueTest) {
-    return true
-  }
-
-  if (valueTest instanceof RegExp) {
-    return matchesPattern(value, valueTest)
-  }
-
-  return valueTest(value, host)
-}
-
 const matchesEntry = (entry: TrackingEntry, name: string, value: string, host: string): boolean => {
-  return (
-    matchesName(entry.name, name) &&
-    matchesHost(entry.hosts, host) &&
-    matchesValue(entry.value, value, host)
-  )
+  const isNameMatch = isString(entry.name)
+    ? entry.name.toLowerCase() === name
+    : matchesPattern(name, entry.name)
+
+  if (!isNameMatch) {
+    return false
+  }
+
+  if (entry.hosts instanceof RegExp && !matchesPattern(host, entry.hosts)) {
+    return false
+  }
+
+  if (Array.isArray(entry.hosts) && !entry.hosts.includes(host)) {
+    return false
+  }
+
+  if (entry.value instanceof RegExp) {
+    return matchesPattern(value, entry.value)
+  }
+
+  if (entry.value) {
+    return entry.value(value, host)
+  }
+
+  return true
 }
 
 // Takes the lowercased name, the decoded value and the hostname without `www.`.

@@ -97,6 +97,6 @@ export const clickAttributionParams: Array<TrackingParam> = [
   { name: everyNameRegex, hosts: kuaishouHostRegex }, // Kuaishou
   { name: everyNameRegex, hosts: ['post.smzdm.com', 'smzdm.com'] }, // SMZDM
   { name: exceptJdProductRegex, hosts: ['item.jd.com', 'item.m.jd.com'] }, // JD product pages
-  { name: exceptIdRegex, hosts: 'y.music.163.com' }, // NetEase Cloud Music
+  { name: exceptIdRegex, hosts: ['y.music.163.com'] }, // NetEase Cloud Music
   { name: exceptXsecTokenRegex, hosts: xiaohongshuHostRegex }, // Xiaohongshu
 ]

@@ -1309,7 +1309,7 @@ describe('tracking entry', () => {
 
   it('should strip a param on a listed host', () => {
     const value = 'https://shop.example/item?from=list&id=42'
-    const trackingParams: Array<TrackingParam> = [{ name: 'from', hosts: 'shop.example' }]
+    const trackingParams: Array<TrackingParam> = [{ name: 'from', hosts: ['shop.example'] }]
     const expected = 'https://shop.example/item?id=42'
 
     expect(stripTrackingParams(value, trackingParams)).toBe(expected)
@@ -1317,14 +1317,14 @@ describe('tracking entry', () => {
 
   it('should keep a param on a host not listed', () => {
     const value = 'https://example.com/item?from=list&id=42'
-    const trackingParams: Array<TrackingParam> = [{ name: 'from', hosts: 'shop.example' }]
+    const trackingParams: Array<TrackingParam> = [{ name: 'from', hosts: ['shop.example'] }]
 
     expect(stripTrackingParams(value, trackingParams)).toBe(value)
   })
 
   it('should strip a param on the www form of a listed host', () => {
     const value = 'https://www.shop.example/item?from=list&id=42'
-    const trackingParams: Array<TrackingParam> = [{ name: 'from', hosts: 'shop.example' }]
+    const trackingParams: Array<TrackingParam> = [{ name: 'from', hosts: ['shop.example'] }]
     const expected = 'https://www.shop.example/item?id=42'
 
     expect(stripTrackingParams(value, trackingParams)).toBe(expected)
@@ -1358,7 +1358,7 @@ describe('tracking entry', () => {
   it('should keep a param matching the value pattern on a host not listed', () => {
     const value = 'https://example.com/post?sid=0123456789abcdef0123456789abcdef'
     const trackingParams: Array<TrackingParam> = [
-      { name: 'sid', value: longHexRegex, hosts: 'shop.example' },
+      { name: 'sid', value: longHexRegex, hosts: ['shop.example'] },
     ]
 
     expect(stripTrackingParams(value, trackingParams)).toBe(value)
@@ -1366,7 +1366,7 @@ describe('tracking entry', () => {
 
   it('should drop the whole query on a host with a pattern matching every name', () => {
     const value = 'https://shop.example/item?from=list&id=42'
-    const trackingParams: Array<TrackingParam> = [{ name: everyNameRegex, hosts: 'shop.example' }]
+    const trackingParams: Array<TrackingParam> = [{ name: everyNameRegex, hosts: ['shop.example'] }]
     const expected = 'https://shop.example/item'
 
     expect(stripTrackingParams(value, trackingParams)).toBe(expected)
@@ -1374,7 +1374,7 @@ describe('tracking entry', () => {
 
   it('should keep only the names a negative lookahead excludes', () => {
     const value = 'https://shop.example/item?from=list&id=42&user=7'
-    const trackingParams: Array<TrackingParam> = [{ name: exceptIdRegex, hosts: 'shop.example' }]
+    const trackingParams: Array<TrackingParam> = [{ name: exceptIdRegex, hosts: ['shop.example'] }]
     const expected = 'https://shop.example/item?id=42'
 
     expect(stripTrackingParams(value, trackingParams)).toBe(expected)
@@ -1382,7 +1382,7 @@ describe('tracking entry', () => {
 
   it('should keep a signed query whole on a host whose entry drops every name', () => {
     const value = 'https://shop.example/item?from=list&id=42&signature=abc'
-    const trackingParams: Array<TrackingParam> = [{ name: everyNameRegex, hosts: 'shop.example' }]
+    const trackingParams: Array<TrackingParam> = [{ name: everyNameRegex, hosts: ['shop.example'] }]
 
     expect(stripTrackingParams(value, trackingParams)).toBe(value)
   })
@@ -1422,19 +1422,19 @@ describe('isTrackingParam', () => {
   })
 
   it('should match a listed host given with www', () => {
-    const trackingParams: Array<TrackingParam> = [{ name: 'from', hosts: 'shop.example' }]
+    const trackingParams: Array<TrackingParam> = [{ name: 'from', hosts: ['shop.example'] }]
 
     expect(isTrackingParam('from', 'list', 'www.shop.example', trackingParams)).toBe(true)
   })
 
   it('should match a listed host given in uppercase', () => {
-    const trackingParams: Array<TrackingParam> = [{ name: 'from', hosts: 'shop.example' }]
+    const trackingParams: Array<TrackingParam> = [{ name: 'from', hosts: ['shop.example'] }]
 
     expect(isTrackingParam('from', 'list', 'SHOP.example', trackingParams)).toBe(true)
   })
 
   it('should answer through a query param predicate taking the url', () => {
-    const trackingParams: Array<TrackingParam> = [{ name: 'from', hosts: 'shop.example' }]
+    const trackingParams: Array<TrackingParam> = [{ name: 'from', hosts: ['shop.example'] }]
     const isQueryParamTracking = (name: string, value: string | undefined, url: URL): boolean => {
       return isTrackingParam(name, value, url.hostname, trackingParams)
     }

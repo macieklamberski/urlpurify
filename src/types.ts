@@ -7,11 +7,11 @@ export type TrackingValueTest = (value: string, host: string) => boolean
 
 // A param that is tracking only with some values or only on some hosts. `name` matches as a
 // literal or pattern does, `value` tests the decoded value, and `hosts` lists exact hostnames
-// without `www.` or holds a pattern tested against one.
+// without `www.` or is a pattern tested against one.
 export type TrackingEntry = {
   name: string | RegExp
   value?: RegExp | TrackingValueTest
-  hosts?: string | Array<string> | RegExp
+  hosts?: Array<string> | RegExp
 }
 
 // A literal param name (matched case-insensitively), a pattern tested against the lowercased
