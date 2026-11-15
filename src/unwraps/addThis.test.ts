@@ -56,6 +56,15 @@ describe('unwrapAddThis', () => {
     expect(unwrapAddThis(value)).toBe(expected)
   })
 
+  it('should match the offer path in any case', () => {
+    const value = new URL(
+      'https://api.addthis.com/OExchange/0.8/Forward/twitter/Offer?url=https%3A%2F%2Fexample.com%2Fpost',
+    )
+    const expected = 'https://example.com/post'
+
+    expect(unwrapAddThis(value)).toBe(expected)
+  })
+
   it('should return undefined when the url param is missing', () => {
     const value = new URL('http://www.addthis.com/bookmark.php?v=250&pub=ra-503b2408409d36d2')
 
