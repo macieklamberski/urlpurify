@@ -63,6 +63,7 @@ import { unwrapBitrix } from './unwraps/bitrix.js'
 import { unwrapBitrixBanner } from './unwraps/bitrixBanner.js'
 import { unwrapBizrate } from './unwraps/bizrate.js'
 import { unwrapBlinkList } from './unwraps/blinkList.js'
+import { unwrapBloggerBlogThis } from './unwraps/bloggerBlogThis.js'
 import { unwrapBloggerImageProxy } from './unwraps/bloggerImageProxy.js'
 import { unwrapBloglines } from './unwraps/bloglines.js'
 import { unwrapBlubrry } from './unwraps/blubrry.js'
@@ -950,6 +951,7 @@ export const shareIntentUnwrappers: Array<UrlUnwrapper> = [
   unwrapAddThis,
   unwrapAddToAny,
   unwrapBlinkList,
+  unwrapBloggerBlogThis,
   unwrapDelicious,
   unwrapDiggSubmit,
   unwrapFacebookShare,
