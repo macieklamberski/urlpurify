@@ -29,6 +29,22 @@ describe('unwrapMeneameSubmit', () => {
     expect(unwrapMeneameSubmit(value)).toBe(expected)
   })
 
+  it('should extract the target from submit with a trailing slash', () => {
+    const value = new URL('https://www.meneame.net/submit/?url=https%3A%2F%2Fexample.com%2Fpost')
+    const expected = 'https://example.com/post'
+
+    expect(unwrapMeneameSubmit(value)).toBe(expected)
+  })
+
+  it('should extract the target from submit.php with a trailing slash', () => {
+    const value = new URL(
+      'https://www.meneame.net/submit.php/?url=https%3A%2F%2Fexample.com%2Fpost',
+    )
+    const expected = 'https://example.com/post'
+
+    expect(unwrapMeneameSubmit(value)).toBe(expected)
+  })
+
   it('should end the target where the url param ends', () => {
     const value = new URL(
       'http://meneame.net/submit.php?url=http://example.com/2015/03/potencia-factorial-numero.html&title=Un%20premio%20galactico',
