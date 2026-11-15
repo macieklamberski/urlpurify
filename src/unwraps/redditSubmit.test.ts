@@ -30,6 +30,30 @@ describe('unwrapRedditSubmit', () => {
     expect(unwrapRedditSubmit(value)).toBe(expected)
   })
 
+  it('should extract the target on old.reddit.com', () => {
+    // Constructed from the live probe: old.reddit.com keeps the submit url through its login.
+    const value = new URL('https://old.reddit.com/submit?url=https%3A%2F%2Fexample.com%2Fpost')
+    const expected = 'https://example.com/post'
+
+    expect(unwrapRedditSubmit(value)).toBe(expected)
+  })
+
+  it('should extract the target on np.reddit.com', () => {
+    // Constructed from the live probe: np.reddit.com 301s to www. with the query kept.
+    const value = new URL('https://np.reddit.com/submit?url=https%3A%2F%2Fexample.com%2Fpost')
+    const expected = 'https://example.com/post'
+
+    expect(unwrapRedditSubmit(value)).toBe(expected)
+  })
+
+  it('should extract the target on m.reddit.com', () => {
+    // Constructed from the live probe: m.reddit.com 301s to www. with the query kept.
+    const value = new URL('https://m.reddit.com/submit?url=https%3A%2F%2Fexample.com%2Fpost')
+    const expected = 'https://example.com/post'
+
+    expect(unwrapRedditSubmit(value)).toBe(expected)
+  })
+
   it('should extract the target from /submit/ with a trailing slash', () => {
     const value = new URL(
       'https://reddit.com/submit/?url=https%3a%2f%2fexample.com%2fethics-of-war-ukraine-russia-1%2f&resubmit=true&title=The%20Ukraine%20Conflict',
@@ -78,6 +102,22 @@ describe('unwrapRedditSubmit', () => {
 
   it('should return undefined for another path on the host', () => {
     const value = new URL('https://www.reddit.com/media?url=https%3A%2F%2Fexample.com%2Fphoto.jpg')
+
+    expect(unwrapRedditSubmit(value)).toBeUndefined()
+  })
+
+  it('should return undefined for a subreddit submit path', () => {
+    const value = new URL(
+      'https://www.reddit.com/r/redditrequest/submit?url=https%3A%2F%2Fwww.reddit.com%2Fr%2Fexample%2F',
+    )
+
+    expect(unwrapRedditSubmit(value)).toBeUndefined()
+  })
+
+  it('should return undefined for a path below submit', () => {
+    const value = new URL(
+      'https://www.reddit.com/submit/example?url=https%3A%2F%2Fexample.com%2Fpost',
+    )
 
     expect(unwrapRedditSubmit(value)).toBeUndefined()
   })
