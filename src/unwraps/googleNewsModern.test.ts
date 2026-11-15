@@ -35,11 +35,9 @@ describe('unwrapGoogleNewsModern', () => {
   })
 
   it('should decode target from the /__i/rss/rd/articles/<base64> redirect path', () => {
-    const value = new URL(
-      'https://news.google.com/__i/rss/rd/articles/CBMiXmh0dHBzOi8vd3d3LnNjaWVuY2Vmb2N1cy5jb20vbmV3cy9saXZpbmctd2l0aC1jb3ZpZC1ob3ctY2FuLXdlLXN0YXktc2FmZS13aXRob3V0LXJlc3RyaWN0aW9ucy_SAQA?oc=5',
-    )
-    const expected =
-      'https://www.sciencefocus.com/news/living-with-covid-how-can-we-stay-safe-without-restrictions/'
+    const id = buildArticleId('https://example.com/article')
+    const value = new URL(`https://news.google.com/__i/rss/rd/articles/${id}?oc=5`)
+    const expected = 'https://example.com/article'
 
     expect(unwrapGoogleNewsModern(value)).toBe(expected)
   })
