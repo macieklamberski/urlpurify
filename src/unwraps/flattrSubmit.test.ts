@@ -68,7 +68,7 @@ describe('unwrapFlattrSubmit', () => {
   })
 
   it('should return undefined for another path on the host', () => {
-    const value = new URL('https://flattr.com/profile/https://flattr.com/profile/example')
+    const value = new URL('https://flattr.com/thing/31962?url=https%3A%2F%2Fexample.com%2Fpost')
 
     expect(unwrapFlattrSubmit(value)).toBeUndefined()
   })
