@@ -62,9 +62,9 @@ describe('unwrapGoogleBuzz', () => {
     expect(unwrapGoogleBuzz(value)).toBe(expected)
   })
 
-  it('should return undefined for a link carrying only an image and a message', () => {
+  it('should return undefined for a link with an empty url and an image and a message', () => {
     const value = new URL(
-      'http://www.google.com/buzz/post?imageurl=https%3A%2F%2Fexample.com%2Fphoto.jpg&message=https%3A%2F%2Fexample.com%2Fpost',
+      'http://www.google.com/buzz/post?url=&imageurl=https%3A%2F%2Fexample.com%2Fphoto.jpg&message=https%3A%2F%2Fexample.com%2Fpost',
     )
 
     expect(unwrapGoogleBuzz(value)).toBeUndefined()
