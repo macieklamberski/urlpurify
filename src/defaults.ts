@@ -325,6 +325,7 @@ import { unwrapShareit } from './unwraps/shareit.js'
 import { unwrapSkimlinks } from './unwraps/skimlinks.js'
 import { unwrapSkyrock } from './unwraps/skyrock.js'
 import { unwrapSlack } from './unwraps/slack.js'
+import { unwrapSlashdotBookmark } from './unwraps/slashdotBookmark.js'
 import { unwrapSlickdeals } from './unwraps/slickdeals.js'
 import { unwrapSmartAdserver } from './unwraps/smartAdserver.js'
 import { unwrapSmartredirect } from './unwraps/smartredirect.js'
@@ -924,6 +925,7 @@ export const embedProxyUnwrappers: Array<UrlUnwrapper> = [
 export const shareIntentUnwrappers: Array<UrlUnwrapper> = [
   unwrapAddToAny,
   unwrapFacebookShare,
+  unwrapSlashdotBookmark,
   unwrapTwitterIntent,
 ]
 
