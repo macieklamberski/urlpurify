@@ -73,15 +73,24 @@ describe('unwrapTechnoratiFaves', () => {
     expect(unwrapTechnoratiFaves(value)).toBeUndefined()
   })
 
-  it('should return undefined for a user faves page', () => {
+  it('should extract the page from a user faves page', () => {
     const value = new URL('http://technorati.com/faves/infodepot?add=http://example.blogspot.com/')
+    const expected = 'http://example.blogspot.com/'
+
+    expect(unwrapTechnoratiFaves(value)).toBe(expected)
+  })
+
+  it('should return undefined for a user faves tag page', () => {
+    const value = new URL(
+      'http://technorati.com/faves/infodepot/tag/news?add=http://example.blogspot.com/',
+    )
 
     expect(unwrapTechnoratiFaves(value)).toBeUndefined()
   })
 
   it('should return undefined for the cosmos search', () => {
     const value = new URL(
-      'http://www.technorati.com/cosmos/search.html?url=http://example.com/archives/2004/07/19/rss.html',
+      'http://www.technorati.com/cosmos/search.html?add=http://example.com/archives/2004/07/19/rss.html',
     )
 
     expect(unwrapTechnoratiFaves(value)).toBeUndefined()
