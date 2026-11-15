@@ -141,6 +141,7 @@ import { unwrapEpn } from './unwraps/epn.js'
 import { unwrapEsva } from './unwraps/esva.js'
 import { unwrapEulerian } from './unwraps/eulerian.js'
 import { unwrapEvernote } from './unwraps/evernote.js'
+import { unwrapEvernoteClip } from './unwraps/evernoteClip.js'
 import { unwrapExciteTranslate } from './unwraps/exciteTranslate.js'
 import { unwrapExpediaAffiliate } from './unwraps/expediaAffiliate.js'
 import { unwrapFacebookShim } from './unwraps/facebook.js'
@@ -266,6 +267,7 @@ import { unwrapMinistryCloud } from './unwraps/ministryCloud.js'
 import { unwrapMintDownloads } from './unwraps/mintDownloads.js'
 import { unwrapMintFeeder } from './unwraps/mintFeeder.js'
 import { unwrapMohtwize } from './unwraps/mohtwize.js'
+import { unwrapMorss } from './unwraps/morss.js'
 import { unwrapMoshimo } from './unwraps/moshimo.js'
 import { unwrapMozillaOutgoing } from './unwraps/mozillaOutgoing.js'
 import { unwrapMyAolFeeds } from './unwraps/myAolFeeds.js'
@@ -969,6 +971,7 @@ export const shareIntentUnwrappers: Array<UrlUnwrapper> = [
   unwrapDelicious,
   unwrapDiggSubmit,
   unwrapDiigoPost,
+  unwrapEvernoteClip,
   unwrapFacebookShare,
   unwrapFlattrSubmit,
   unwrapFlipboardShare,
@@ -1035,6 +1038,7 @@ export const subscribeIntentUnwrappers: Array<UrlUnwrapper> = [
 export const feedToolUnwrappers: Array<UrlUnwrapper> = [
   unwrapFeed2js,
   unwrapFeedValidator,
+  unwrapMorss,
   unwrapRssBoardValidator,
   unwrapW3cFeedValidator,
 ]
