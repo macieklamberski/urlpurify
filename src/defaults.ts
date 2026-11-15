@@ -357,6 +357,7 @@ import { unwrapStorify } from './unwraps/storify.js'
 import { unwrapStreak } from './unwraps/streak.js'
 import { unwrapStreamsend } from './unwraps/streamsend.js'
 import { unwrapStumbleupon } from './unwraps/stumbleupon.js'
+import { unwrapStumbleuponSubmit } from './unwraps/stumbleuponSubmit.js'
 import { unwrapSubscribeByEmail } from './unwraps/subscribeByEmail.js'
 import { unwrapSubscribeOnAndroid } from './unwraps/subscribeOnAndroid.js'
 import { unwrapSubscribeRu } from './unwraps/subscribeRu.js'
@@ -961,6 +962,7 @@ export const shareIntentUnwrappers: Array<UrlUnwrapper> = [
   unwrapRedditSubmit,
   unwrapShareaholic,
   unwrapSlashdotBookmark,
+  unwrapStumbleuponSubmit,
   unwrapTechnoratiFaves,
   unwrapTelegramShare,
   unwrapTumblrShare,
