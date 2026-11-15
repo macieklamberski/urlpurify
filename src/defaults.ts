@@ -179,6 +179,7 @@ import { unwrapGroupMail } from './unwraps/groupMail.js'
 import { unwrapGroupon } from './unwraps/groupon.js'
 import { unwrapGumball } from './unwraps/gumball.js'
 import { unwrapGurunavi } from './unwraps/gurunavi.js'
+import { unwrapHackerNewsSubmit } from './unwraps/hackerNewsSubmit.js'
 import { unwrapHackerone } from './unwraps/hackerone.js'
 import { unwrapHashnode } from './unwraps/hashnode.js'
 import { unwrapHasoffers } from './unwraps/hasoffers.js'
@@ -924,6 +925,7 @@ export const embedProxyUnwrappers: Array<UrlUnwrapper> = [
 export const shareIntentUnwrappers: Array<UrlUnwrapper> = [
   unwrapAddToAny,
   unwrapFacebookShare,
+  unwrapHackerNewsSubmit,
   unwrapTwitterIntent,
 ]
 
