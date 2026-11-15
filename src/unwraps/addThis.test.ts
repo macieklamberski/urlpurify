@@ -93,6 +93,38 @@ describe('unwrapAddThis', () => {
     expect(unwrapAddThis(value)).toBeUndefined()
   })
 
+  it('should return undefined for the offer path under another path', () => {
+    const value = new URL(
+      'https://api.addthis.com/example/oexchange/0.8/offer?url=https%3A%2F%2Fexample.com%2Fpost',
+    )
+
+    expect(unwrapAddThis(value)).toBeUndefined()
+  })
+
+  it('should return undefined for a path below the offer path', () => {
+    const value = new URL(
+      'https://api.addthis.com/oexchange/0.8/offer/example?url=https%3A%2F%2Fexample.com%2Fpost',
+    )
+
+    expect(unwrapAddThis(value)).toBeUndefined()
+  })
+
+  it('should return undefined for another oexchange version', () => {
+    const value = new URL(
+      'https://api.addthis.com/oexchange/0x8/offer?url=https%3A%2F%2Fexample.com%2Fpost',
+    )
+
+    expect(unwrapAddThis(value)).toBeUndefined()
+  })
+
+  it('should return undefined for a service path with an extra segment', () => {
+    const value = new URL(
+      'https://api.addthis.com/oexchange/0.8/forward/twitter/extra/offer?url=https%3A%2F%2Fexample.com%2Fpost',
+    )
+
+    expect(unwrapAddThis(value)).toBeUndefined()
+  })
+
   it('should return undefined for a carrier path on another addthis.com host', () => {
     const value = new URL(
       'https://api.addthis.com/bookmark.php?url=https%3A%2F%2Fexample.com%2Fpost',

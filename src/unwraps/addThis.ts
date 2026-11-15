@@ -5,7 +5,7 @@ import { getParamTarget } from '../utils.js'
 const bookmarkHosts = ['www.addthis.com']
 const apiHosts = ['api.addthis.com']
 
-const offerPathRegex = /^\/oexchange\/0\.8\/(?:forward\/[^/]+\/)?offer\/?$/i
+const offerPathRegex = /^\/oexchange\/0\.8\/(?:forward\/[^/]+\/)?offer$/i
 
 const isCarrierPath = (url: URL): boolean => {
   if (isHostOf(url, bookmarkHosts)) {
