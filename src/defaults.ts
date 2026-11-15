@@ -169,6 +169,7 @@ import { unwrapGodcaster } from './unwraps/godcaster.js'
 import { unwrapGoogle } from './unwraps/google.js'
 import { unwrapGoogleAds } from './unwraps/googleAds.js'
 import { unwrapGoogleAmpViewer } from './unwraps/googleAmpViewer.js'
+import { unwrapGoogleBookmarks } from './unwraps/googleBookmarks.js'
 import { unwrapGoogleNews } from './unwraps/googleNews.js'
 import { unwrapGoogleNewsModern } from './unwraps/googleNewsModern.js'
 import { unwrapGooglePlusShare } from './unwraps/googlePlusShare.js'
@@ -934,6 +935,7 @@ export const shareIntentUnwrappers: Array<UrlUnwrapper> = [
   unwrapAddToAny,
   unwrapDelicious,
   unwrapFacebookShare,
+  unwrapGoogleBookmarks,
   unwrapGooglePlusShare,
   unwrapLinkedinShare,
   unwrapPinterestPin,
