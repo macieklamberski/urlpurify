@@ -217,6 +217,7 @@ import { unwrapLeverAnalytics } from './unwraps/leverAnalytics.js'
 import { unwrapLinkA } from './unwraps/linkA.js'
 import { unwrapLinkconnector } from './unwraps/linkconnector.js'
 import { unwrapLinkedin } from './unwraps/linkedin.js'
+import { unwrapLinkedinShare } from './unwraps/linkedinShare.js'
 import { unwrapLinksynergy } from './unwraps/linksynergy.js'
 import { unwrapLinktrust } from './unwraps/linktrust.js'
 import { unwrapLinkwise } from './unwraps/linkwise.js'
@@ -274,6 +275,7 @@ import { unwrapPartnerAds } from './unwraps/partnerAds.js'
 import { unwrapPbs } from './unwraps/pbs.js'
 import { unwrapPhilpapers } from './unwraps/philpapers.js'
 import { unwrapPinterest } from './unwraps/pinterest.js'
+import { unwrapPinterestPin } from './unwraps/pinterestPin.js'
 import { unwrapPipedrive } from './unwraps/pipedrive.js'
 import { unwrapPlayerFm } from './unwraps/playerFm.js'
 import { unwrapPocket } from './unwraps/pocket.js'
@@ -369,6 +371,7 @@ import { unwrapTriplelift } from './unwraps/triplelift.js'
 import { unwrapTrustwaveScanmail } from './unwraps/trustwaveScanmail.js'
 import { unwrapTrxHub } from './unwraps/trxHub.js'
 import { unwrapTumblr } from './unwraps/tumblr.js'
+import { unwrapTumblrShare } from './unwraps/tumblrShare.js'
 import { unwrapTwitterIntent } from './unwraps/twitterIntent.js'
 import { unwrapTwitterRedirect } from './unwraps/twitterRedirect.js'
 import { unwrapTwoCheckout } from './unwraps/twoCheckout.js'
@@ -925,7 +928,10 @@ export const embedProxyUnwrappers: Array<UrlUnwrapper> = [
 export const shareIntentUnwrappers: Array<UrlUnwrapper> = [
   unwrapAddToAny,
   unwrapFacebookShare,
+  unwrapLinkedinShare,
+  unwrapPinterestPin,
   unwrapRedditSubmit,
+  unwrapTumblrShare,
   unwrapTwitterIntent,
 ]
 
