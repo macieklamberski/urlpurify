@@ -2,7 +2,7 @@ import { isAnyOf, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { getParamTarget } from '../utils.js'
 
-const hosts = ['getpocket.com']
+const hosts = ['getpocket.com', 'www.getpocket.com']
 const paths = ['/save', '/edit', '/edit.php']
 
 // Pocket save links (getpocket.com/save?url=<page>, /edit?url= and /edit.php?url=). Opt-in:
