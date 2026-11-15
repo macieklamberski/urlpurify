@@ -98,6 +98,72 @@ describe('unwrapGenericCarrier', () => {
     })
   })
 
+  describe('link carrier', () => {
+    it('should extract a target', () => {
+      const value = new URL(
+        'https://go.example.com/app/playmusic?ibi=com.example.PlayMusic&isi=691797987&link=https://music.example.org/m/Ixbwk7urvkmuxc42z7nf32jfgx4',
+      )
+      const expected = 'https://music.example.org/m/Ixbwk7urvkmuxc42z7nf32jfgx4'
+
+      expect(unwrapGenericCarrier(value)).toBe(expected)
+    })
+  })
+
+  describe('redirect carrier', () => {
+    it('should extract a target', () => {
+      const value = new URL(
+        'https://app.example.com/api/v1/messages/tracking/click/5337d7943b361f18edf62dc3/59b0e1ad58ac9c524d689385/?redirect=https%3A%2F%2Fconsultations.example.org%2F',
+      )
+      const expected = 'https://consultations.example.org/'
+
+      expect(unwrapGenericCarrier(value)).toBe(expected)
+    })
+  })
+
+  describe('to carrier', () => {
+    it('should extract a target', () => {
+      const value = new URL(
+        'https://social.example.com/away.php?utf=1&to=https%3A%2F%2Fpodcast.example.org%2F',
+      )
+      const expected = 'https://podcast.example.org/'
+
+      expect(unwrapGenericCarrier(value)).toBe(expected)
+    })
+  })
+
+  describe('go carrier', () => {
+    it('should extract a target', () => {
+      const value = new URL(
+        'https://www.example.com/files/links.php?go=https://clinic.example.org/surgery-turkey',
+      )
+      const expected = 'https://clinic.example.org/surgery-turkey'
+
+      expect(unwrapGenericCarrier(value)).toBe(expected)
+    })
+  })
+
+  describe('goto carrier', () => {
+    it('should extract a target', () => {
+      const value = new URL(
+        'https://www.example.com/bitrix/redirect.php?event1=click_to_call&event2=&event3=&goto=https://blog.example.org/2026/02/post.html',
+      )
+      const expected = 'https://blog.example.org/2026/02/post.html'
+
+      expect(unwrapGenericCarrier(value)).toBe(expected)
+    })
+  })
+
+  describe('out carrier', () => {
+    it('should extract a target', () => {
+      const value = new URL(
+        'https://my.example.com/username/link/link.php?out=https://www.example.org/',
+      )
+      const expected = 'https://www.example.org/'
+
+      expect(unwrapGenericCarrier(value)).toBe(expected)
+    })
+  })
+
   describe('raw target with a query of its own', () => {
     it('should read the target to the end', () => {
       const value = new URL(
@@ -187,6 +253,22 @@ describe('unwrapGenericCarrier', () => {
   it('should return undefined for a url in a free-text field', () => {
     const value = new URL(
       'https://chat.example.com/send?text=https%3A%2F%2Fwww.example.org%2Fpost%2F',
+    )
+
+    expect(unwrapGenericCarrier(value)).toBeUndefined()
+  })
+
+  it('should return undefined for an embed origin', () => {
+    const value = new URL(
+      'https://video.example.com/embed/GbQ6tzh15lQ?origin=https://www.example.org&wmode=opaque',
+    )
+
+    expect(unwrapGenericCarrier(value)).toBeUndefined()
+  })
+
+  it('should return undefined for a return url', () => {
+    const value = new URL(
+      'http://www.example.com/Legal/ChangeCulture?lang=en-US&returnUrl=https://www.example.org/post/',
     )
 
     expect(unwrapGenericCarrier(value)).toBeUndefined()

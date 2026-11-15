@@ -5,9 +5,21 @@ import { decodeEncodedScheme, decodeParamValue } from '../utils.js'
 const httpTargetRegex = /^https?:\/\//i
 const oembedPathRegex = /\/oembed(?:\/|$)/i
 
-const carriers = ['url', 'feedurl', 'moduleurl', 'feed.url', '.url']
+const carriers = [
+  'url',
+  'feedurl',
+  'moduleurl',
+  'feed.url',
+  '.url',
+  'link',
+  'redirect',
+  'to',
+  'go',
+  'goto',
+  'out',
+]
 
-// A url in a `url`, `feedurl`, `moduleurl`, `feed.url` or `.url` param on any host and any path
+// A url in a carrier param, such as `url`, `feedurl` or `goto`, on any host and any path
 // (<host>/<path>?url=<target>), the only unwrapper that names no path. The first http url wins.
 // Opt-in: on an unknown host the param may be an argument to the page, not where it leads.
 export const unwrapGenericCarrier: UrlUnwrapper = (url) => {
