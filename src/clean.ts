@@ -1,11 +1,11 @@
 import {
-  fixMalformedScheme,
   isAnyOf,
+  isHostname,
   isHostOf,
-  isHttpUrl,
   isIpAddress,
   normalizeUrl,
   parseUrl,
+  resolveUrl,
   stripWww,
 } from 'trousse'
 import { defaultTrackingParams, defaultUnwrappers } from './defaults.js'
@@ -127,25 +127,34 @@ const controlCharactersRegex = /[\p{Cc}\u2028\u2029]/u
 const dottedHostRegex = /[^.]\.[^.]/
 const fileExtensionHostRegex = /\.(?:asp|aspx|cgi|htm|html|jsp|jspa|php)$/
 
-// Repairs a malformed scheme such as `https:/host` or `https://https://host`, then drops a target
-// with a control character or a host without a dot between two labels, so it falls through. Such
-// a host is a cut-off link, a path or a scheme read as one: `https://www.`, `https://s3://bucket`.
-// A host ending in a page extension is a relative or cut-off link given a scheme, as Gmail writes
-// `http:///page.php`, which the scheme repair turns into the host `page.php`.
+// Repairs a scheme such as `http:// https://host` and a host such as `example.com)` through
+// `resolveUrl`, then drops a target that is not http, holds a control character or keeps a junk
+// host: not a hostname such as `,ccam.cc`, no dot between two labels, or a page extension.
 const cleanTarget = (target: string | undefined): string | undefined => {
   if (!target) {
     return
   }
 
-  const repaired = fixMalformedScheme(target.trim())
+  const trimmed = target.trim()
 
-  if (controlCharactersRegex.test(repaired)) {
+  // The url parser drops a tab or a line feed inside a url, so the check reads the raw target.
+  if (controlCharactersRegex.test(trimmed)) {
+    return
+  }
+
+  const repaired = resolveUrl(trimmed)
+
+  if (!repaired) {
     return
   }
 
   const hostname = parseUrl(repaired)?.hostname ?? ''
 
   if (!dottedHostRegex.test(hostname) && !isIpAddress(hostname)) {
+    return
+  }
+
+  if (!isHostname(hostname)) {
     return
   }
 
@@ -180,17 +189,8 @@ const addMissingScheme = (target: string | undefined): string | undefined => {
 
 const applyUnwrappers = (url: URL, unwrappers: Array<UrlUnwrapper>): string | undefined => {
   for (const unwrap of unwrappers) {
-    // A trailing no-break space, as YouTube descriptions carry, fails the http check untrimmed.
-    const unwrapped = addMissingScheme(unwrap(url)?.trim())
-    // A scheme a CMS mangled, as `http:// https://host` or `http://%20host`, fails the http check,
-    // so it is repaired before it.
-    const raw = unwrapped && !isHttpUrl(unwrapped) ? fixMalformedScheme(unwrapped) : unwrapped
-
-    if (!raw || !isHttpUrl(raw)) {
-      continue
-    }
-
-    const target = cleanTarget(raw)
+    // A trailing no-break space, as YouTube descriptions carry, hides a bare host untrimmed.
+    const target = cleanTarget(addMissingScheme(unwrap(url)?.trim()))
 
     if (target) {
       return target
