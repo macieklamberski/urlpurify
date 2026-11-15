@@ -389,6 +389,7 @@ import { unwrapViglink } from './unwraps/viglink.js'
 import { unwrapVirgool } from './unwraps/virgool.js'
 import { unwrapVisibli } from './unwraps/visibli.js'
 import { unwrapVkAway } from './unwraps/vkAway.js'
+import { unwrapVkShare } from './unwraps/vkShare.js'
 import { unwrapVocus } from './unwraps/vocus.js'
 import { unwrapVoxnest } from './unwraps/voxnest.js'
 import { unwrapVpixl } from './unwraps/vpixl.js'
@@ -925,6 +926,7 @@ export const shareIntentUnwrappers: Array<UrlUnwrapper> = [
   unwrapAddToAny,
   unwrapFacebookShare,
   unwrapTwitterIntent,
+  unwrapVkShare,
 ]
 
 // Subscribe buttons, and players and app pages carrying a feed: unwrapping returns the feed, not
