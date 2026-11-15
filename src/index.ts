@@ -1,4 +1,4 @@
-export { cleanUrl, stripTrackingParams, unwrapUrl } from './clean.js'
+export { cleanUrl, isTrackingParam, stripTrackingParams, unwrapUrl } from './clean.js'
 export {
   advertisingUnwrappers,
   affiliateParams,
@@ -15,6 +15,7 @@ export {
   feedToolUnwrappers,
   housekeepingParams,
   imageProxyUnwrappers,
+  knownTrackingParams,
   linkShimUnwrappers,
   pressReleaseUnwrappers,
   searchClickUnwrappers,
@@ -26,7 +27,13 @@ export {
   trackingParamsPatterns,
   visitorIdParams,
 } from './defaults.js'
-export type { CleanUrlOptions, TrackingParam, UrlUnwrapper } from './types.js'
+export type {
+  CleanUrlOptions,
+  TrackingEntry,
+  TrackingParam,
+  TrackingValueTest,
+  UrlUnwrapper,
+} from './types.js'
 export { unwrap2performant } from './unwraps/2performant.js'
 export { unwrap4pda } from './unwraps/4pda.js'
 export { unwrap12ft } from './unwraps/12ft.js'

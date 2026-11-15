@@ -1,19 +1,22 @@
 import {
+  coerceArray,
   isAnyOf,
   isHostname,
   isHostOf,
   isIpAddress,
+  isString,
   normalizeUrl,
   parseUrl,
   resolveUrl,
   stripWww,
 } from 'trousse'
 import { defaultTrackingParams, defaultUnwrappers } from './defaults.js'
-import type { CleanUrlOptions, TrackingParam, UrlUnwrapper } from './types.js'
+import type { CleanUrlOptions, TrackingEntry, TrackingParam, UrlUnwrapper } from './types.js'
 
 type TrackingMatcher = {
   literals: Set<string>
   patterns: Array<RegExp>
+  entries: Array<TrackingEntry>
 }
 
 // A `ref` value with a url delimiter or whitespace is more than a host: `example.com/page` would
@@ -37,20 +40,94 @@ const getTrackingMatcher = (params: Array<TrackingParam>): TrackingMatcher => {
   if (!cached) {
     const literals = new Set<string>()
     const patterns: Array<RegExp> = []
+    const entries: Array<TrackingEntry> = []
 
     for (const param of params) {
-      if (param instanceof RegExp) {
-        patterns.push(param)
-      } else {
-        literals.add(param.toLowerCase())
+      const isEntry = !isString(param) && !(param instanceof RegExp)
+
+      if (isEntry && (param.value || param.hosts)) {
+        entries.push(param)
+        continue
       }
+
+      const name = isEntry ? param.name : param
+
+      if (name instanceof RegExp) {
+        patterns.push(name)
+        continue
+      }
+
+      literals.add(name.toLowerCase())
     }
 
-    cached = { literals, patterns }
+    cached = { literals, patterns, entries }
     trackingMatcherCache.set(params, cached)
   }
 
   return cached
+}
+
+// `search` ignores `lastIndex`, so a caller's `g` or `y` pattern matches on every call.
+const matchesPattern = (text: string, pattern: RegExp): boolean => {
+  return text.search(pattern) !== -1
+}
+
+const matchesName = (pattern: string | RegExp, name: string): boolean => {
+  if (isString(pattern)) {
+    return pattern.toLowerCase() === name
+  }
+
+  return matchesPattern(name, pattern)
+}
+
+const matchesHost = (hosts: TrackingEntry['hosts'], host: string): boolean => {
+  if (!hosts) {
+    return true
+  }
+
+  if (hosts instanceof RegExp) {
+    return matchesPattern(host, hosts)
+  }
+
+  return coerceArray(hosts).includes(host)
+}
+
+const matchesValue = (valueTest: TrackingEntry['value'], value: string, host: string): boolean => {
+  if (!valueTest) {
+    return true
+  }
+
+  if (valueTest instanceof RegExp) {
+    return matchesPattern(value, valueTest)
+  }
+
+  return valueTest(value, host)
+}
+
+const matchesEntry = (entry: TrackingEntry, name: string, value: string, host: string): boolean => {
+  return (
+    matchesName(entry.name, name) &&
+    matchesHost(entry.hosts, host) &&
+    matchesValue(entry.value, value, host)
+  )
+}
+
+// Takes the lowercased name, the decoded value and the hostname without `www.`.
+const isTrackedPair = (
+  matcher: TrackingMatcher,
+  name: string,
+  value: string,
+  host: string,
+): boolean => {
+  if (matcher.literals.has(name)) {
+    return true
+  }
+
+  if (matcher.patterns.some((pattern) => matchesPattern(name, pattern))) {
+    return true
+  }
+
+  return matcher.entries.some((entry) => matchesEntry(entry, name, value, host))
 }
 
 // Delete tracking parameters in place. Literal names match case-insensitively, and patterns are
@@ -91,11 +168,7 @@ const deleteTrackingParams = (url: URL, trackingParams: Array<TrackingParam>): v
       return true
     }
 
-    // `search` ignores `lastIndex`, so a caller's `g` or `y` pattern matches on every call.
-    if (
-      matcher.literals.has(name) ||
-      matcher.patterns.some((pattern) => name.search(pattern) !== -1)
-    ) {
+    if (isTrackedPair(matcher, name, value, host)) {
       return false
     }
 
@@ -244,6 +317,21 @@ export const stripTrackingParams = (
   deleteTrackingParams(parsed, trackingParams)
 
   return parsed.href
+}
+
+// Answer whether one query pair is tracking on a url with this hostname, as cleanUrl decides it.
+// A single pair cannot see the rest of the url, so the signature rule and the Alibaba DirectMail
+// `ts` rule do not apply. `value` is the decoded value, or undefined for a pair with no `=`.
+export const isTrackingParam = (
+  name: string,
+  value: string | undefined,
+  hostname: string,
+  trackingParams: Array<TrackingParam> = defaultTrackingParams,
+): boolean => {
+  const matcher = getTrackingMatcher(trackingParams)
+  const host = stripWww(hostname.toLowerCase())
+
+  return isTrackedPair(matcher, name.toLowerCase(), value ?? '', host)
 }
 
 // Unwrap redirect/affiliate wrappers, then strip tracking parameters, and return the result in the
