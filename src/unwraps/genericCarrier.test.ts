@@ -220,6 +220,15 @@ describe('unwrapGenericCarrier', () => {
     expect(unwrapGenericCarrier(value)).toBe(expected)
   })
 
+  it('should extract a target from an oEmbed endpoint', () => {
+    const value = new URL(
+      'https://example.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fexample.com%2Fpost',
+    )
+    const expected = 'https://example.com/post'
+
+    expect(unwrapGenericCarrier(value)).toBe(expected)
+  })
+
   it('should return undefined for a target without a scheme', () => {
     const value = new URL('https://search.example.com/results?url=www.example.org/post/')
 
