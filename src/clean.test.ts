@@ -2,6 +2,7 @@ import { describe, expect, it } from 'bun:test'
 import { decodeBase64 } from 'trousse'
 import { cleanUrl, isTrackingParam, stripTrackingParams, unwrapUrl } from './clean.js'
 import { campaignParams, defaultTrackingParams, housekeepingParams } from './defaults.js'
+import { withScope } from './scope.js'
 import type { TrackingParam, TrackingValueTest, UrlUnwrapper } from './types.js'
 import { unwrapWebArchive } from './unwraps/webArchive.js'
 import { createParamExtractor } from './utils.js'
@@ -29,6 +30,53 @@ const base64Unwrapper: UrlUnwrapper = (url) => {
 
   return decodeBase64(url.searchParams.get('u') ?? '')
 }
+
+const domainUnwrapper = createParamExtractor({
+  domains: 'tracker.example',
+  params: ['url'],
+})
+
+const regexHostUnwrapper = createParamExtractor({
+  hosts: /^click-\d+\.example\.net$/,
+  params: ['url'],
+})
+
+const goPathRegex = /^\/go\/$/i
+
+// Runs on any host, so its scope is the path check alone.
+const anyHostUnwrapper: UrlUnwrapper = withScope(
+  (url) => {
+    if (!goPathRegex.test(url.pathname)) {
+      return
+    }
+
+    return url.searchParams.get('to') ?? undefined
+  },
+  { mayMatch: (url) => goPathRegex.test(url.pathname) },
+)
+
+// Reads `target` on any host, but its scope names one host, so other hosts never reach it.
+const narrowScopeUnwrapper: UrlUnwrapper = withScope(
+  (url) => url.searchParams.get('target') ?? undefined,
+  { hosts: ['redirect.example.com'] },
+)
+
+// Reads `to` on any path, but its test admits only `/go/`, so other paths never reach it.
+const narrowTestUnwrapper: UrlUnwrapper = withScope(
+  (url) => url.searchParams.get('to') ?? undefined,
+  { mayMatch: (url) => goPathRegex.test(url.pathname) },
+)
+
+const trackerDomainRegex = /^tracker\.example$/
+
+// Reads `url` on any host, scoped to a domain regex and its subdomains.
+const regexDomainUnwrapper: UrlUnwrapper = withScope(
+  (url) => url.searchParams.get('url') ?? undefined,
+  { domains: trackerDomainRegex },
+)
+
+// Reads `target` on any host and declares no scope.
+const unscopedUnwrapper: UrlUnwrapper = (url) => url.searchParams.get('target') ?? undefined
 
 const sessionParamRegex = /^session_[a-z]$/
 const emptyRegex = /^$/
@@ -267,6 +315,97 @@ describe('unwrapUrl', () => {
     const expected = 'https://example.com/post'
 
     expect(unwrapUrl(value, [exampleUnwrapper, exampleFallbackUnwrapper])).toBe(expected)
+  })
+})
+
+describe('unwrapUrl with scoped unwrappers', () => {
+  it('should skip an unwrapper whose scope leaves out the host', () => {
+    const value = 'https://other.example.com/?target=https%3A%2F%2Fexample.com%2Fpost'
+
+    expect(unwrapUrl(value, [narrowScopeUnwrapper])).toBeUndefined()
+  })
+
+  it('should run an unwrapper without a scope on any host', () => {
+    const value = 'https://other.example.com/?target=https%3A%2F%2Fexample.com%2Fpost'
+    const expected = 'https://example.com/post'
+
+    expect(unwrapUrl(value, [unscopedUnwrapper])).toBe(expected)
+  })
+
+  it('should keep array order between a scoped and an unscoped unwrapper', () => {
+    const value =
+      'https://redirect.example.com/?target=https%3A%2F%2Fexample.com%2Ffirst&fallback=https%3A%2F%2Fexample.com%2Fsecond'
+    const fallbackFirst: UrlUnwrapper = (url) => url.searchParams.get('fallback') ?? undefined
+    const expected = 'https://example.com/second'
+
+    expect(unwrapUrl(value, [fallbackFirst, exampleUnwrapper])).toBe(expected)
+  })
+
+  it('should match a listed host in any case and with a trailing dot', () => {
+    const value = 'https://Redirect.Example.com./?target=https%3A%2F%2Fexample.com%2Fpost'
+    const expected = 'https://example.com/post'
+
+    expect(unwrapUrl(value, [exampleUnwrapper])).toBe(expected)
+  })
+
+  it('should run a domain unwrapper on a subdomain', () => {
+    const value = 'https://eu.tracker.example/?url=https%3A%2F%2Fexample.com%2Fpost'
+    const expected = 'https://example.com/post'
+
+    expect(unwrapUrl(value, [domainUnwrapper])).toBe(expected)
+  })
+
+  it('should run a domain unwrapper on the domain itself', () => {
+    const value = 'https://tracker.example/?url=https%3A%2F%2Fexample.com%2Fpost'
+    const expected = 'https://example.com/post'
+
+    expect(unwrapUrl(value, [domainUnwrapper])).toBe(expected)
+  })
+
+  it('should run a domain regex unwrapper on a subdomain', () => {
+    const value = 'https://eu.tracker.example/?url=https%3A%2F%2Fexample.com%2Fpost'
+    const expected = 'https://example.com/post'
+
+    expect(unwrapUrl(value, [regexDomainUnwrapper])).toBe(expected)
+  })
+
+  it('should skip a domain regex unwrapper on another domain', () => {
+    const value = 'https://mytracker.example/?url=https%3A%2F%2Fexample.com%2Fpost'
+
+    expect(unwrapUrl(value, [regexDomainUnwrapper])).toBeUndefined()
+  })
+
+  it('should run a regex host unwrapper on a host the regex matches', () => {
+    const value = 'https://click-42.example.net/?url=https%3A%2F%2Fexample.com%2Fpost'
+    const expected = 'https://example.com/post'
+
+    expect(unwrapUrl(value, [regexHostUnwrapper])).toBe(expected)
+  })
+
+  it('should run an any-host unwrapper when its test passes', () => {
+    const value = 'https://forum.example.org/go/?to=https%3A%2F%2Fexample.com%2Fpost'
+    const expected = 'https://example.com/post'
+
+    expect(unwrapUrl(value, [anyHostUnwrapper])).toBe(expected)
+  })
+
+  it('should skip an any-host unwrapper when its test fails', () => {
+    const value = 'https://forum.example.org/topic/?to=https%3A%2F%2Fexample.com%2Fpost'
+
+    expect(unwrapUrl(value, [narrowTestUnwrapper])).toBeUndefined()
+  })
+
+  it('should return undefined for a hostname named like an object key', () => {
+    const value = 'https://__proto__/?target=https%3A%2F%2Fexample.com%2Fpost'
+
+    expect(unwrapUrl(value, [exampleUnwrapper, domainUnwrapper])).toBeUndefined()
+  })
+
+  it('should run a path test on the url with collapsed slashes', () => {
+    const value = 'https://forum.example.org//go/?to=https%3A%2F%2Fexample.com%2Fpost'
+    const expected = 'https://example.com/post'
+
+    expect(unwrapUrl(value, [anyHostUnwrapper])).toBe(expected)
   })
 })
 

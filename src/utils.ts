@@ -1,5 +1,13 @@
-import { decodePercent, getQueryParamValues, isAnyOf, isHostOf, isHostOrSubdomainOf } from 'trousse'
-import type { UrlUnwrapper } from './types.js'
+import {
+  coerceArray,
+  decodePercent,
+  getQueryParamValues,
+  isAnyOf,
+  isHostOf,
+  isHostOrSubdomainOf,
+} from 'trousse'
+import { withScope } from './scope.js'
+import type { UrlUnwrapper, UrlUnwrapperFunction } from './types.js'
 
 // `domains` also matches every subdomain. `hosts` matches a host exactly, or by regex, for a domain
 // where a third party can get a subdomain, such as a blog host.
@@ -69,7 +77,7 @@ export const createParamExtractor = (config: ParamExtractorConfig): UrlUnwrapper
     return isHostOf(url, config.hosts)
   }
 
-  return (url) => {
+  const unwrap: UrlUnwrapperFunction = (url) => {
     if (!isHostMatch(url)) {
       return
     }
@@ -86,6 +94,14 @@ export const createParamExtractor = (config: ParamExtractorConfig): UrlUnwrapper
       }
     }
   }
+
+  if (config.domains !== undefined) {
+    return withScope(unwrap, { domains: coerceArray(config.domains) })
+  }
+
+  return withScope(unwrap, {
+    hosts: config.hosts instanceof RegExp ? config.hosts : coerceArray(config.hosts),
+  })
 }
 
 const utf8Encoder = new TextEncoder()

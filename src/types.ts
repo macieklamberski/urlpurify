@@ -1,6 +1,22 @@
-// Extracts the wrapped target URL when the given URL matches a known
-// redirect or tracking wrapper. Returns undefined when it does not apply.
-export type UrlUnwrapper = (url: URL) => string | undefined
+export type UrlUnwrapperFunction = (url: URL) => string | undefined
+
+export type UrlUnwrapperTest = (url: URL) => boolean
+
+// The urls an unwrapper can return a target for: `hosts` matches a hostname exactly or by regex,
+// `domains` a host and its subdomains, and `mayMatch` is a cheap test for one that runs on any
+// host, such as its path check. A url matching none of the three never unwraps.
+export type UrlUnwrapperScope = {
+  hosts?: Array<string> | RegExp
+  domains?: Array<string> | RegExp
+  mayMatch?: UrlUnwrapperTest
+}
+
+// Extracts the wrapped target URL when the given URL matches a known redirect or tracking
+// wrapper. Returns undefined when it does not apply. An unwrapper without a `scope` may run on
+// any url.
+export type UrlUnwrapper = UrlUnwrapperFunction & {
+  scope?: UrlUnwrapperScope
+}
 
 // Answers whether a param's decoded value is tracking, given the url's hostname without `www.`.
 export type TrackingValueTest = (value: string, host: string) => boolean

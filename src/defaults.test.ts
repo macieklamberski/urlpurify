@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'bun:test'
 import * as urlpurify from './index.js'
+import type { UrlUnwrapper } from './types.js'
+import unscopedUnwrappers from './unscopedUnwrappers.json' with { type: 'json' }
 
 const exportedUnwrappers: Array<[string, unknown]> = Object.entries(urlpurify).filter(([name]) => {
   return name.startsWith('unwrap') && name !== 'unwrapUrl'
@@ -151,6 +153,31 @@ describe('unwrapper categories', () => {
     const placed = categories.flat()
 
     expect(new Set(placed).size).toBe(placed.length)
+  })
+})
+
+describe('unwrapper scopes', () => {
+  // The unwrappers still to be given a scope, by group, with how each checks its url.
+  const pendingNames = Object.values(unscopedUnwrappers).flatMap((group) => Object.keys(group))
+
+  it('should declare a scope on every unwrapper outside the unscoped list', () => {
+    const unscopedNames = exportedUnwrappers
+      .filter(([, unwrapper]) => !(unwrapper as UrlUnwrapper).scope)
+      .map(([name]) => name)
+      .toSorted((a, b) => a.localeCompare(b))
+    const listedNames = pendingNames.toSorted((a, b) => a.localeCompare(b))
+
+    expect(unscopedNames).toEqual(listedNames)
+  })
+
+  it('should give every scope hosts, domains or a test', () => {
+    const empty = exportedUnwrappers.filter(([, unwrapper]) => {
+      const scope = (unwrapper as UrlUnwrapper).scope
+
+      return scope && !scope.hosts && !scope.domains && !scope.mayMatch
+    })
+
+    expect(empty.map(([name]) => name)).toEqual([])
   })
 })
 
