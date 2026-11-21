@@ -57,7 +57,7 @@ There are more than 400 unwrappers, each in its own file in [src/unwraps](src/un
 | Share intents | `shareIntentUnwrappers` | The share or bookmark form: you get the page being shared | |
 | Subscribe intents | `subscribeIntentUnwrappers` | The reader's or app's subscribe page, or a player carrying a feed: you get the feed | |
 | Feed tools | `feedToolUnwrappers` | The validator's or proxy's view: you get the feed it was given | |
-| Generic carriers | `genericCarrierUnwrappers` | The page of any site carrying a url in a `url`, `feedurl`, `moduleurl`, `feed.url`, `.url`, `link`, `redirect`, `to`, `go`, `goto` or `out` param, whether it redirects there or takes the url as an argument | |
+| Generic carriers | `genericCarrierUnwrappers` | The page of any site carrying a url in a `url`, `feedurl`, `moduleurl`, `feed.url`, `.url`, `link`, `redirect`, `to`, `go`, `goto` or `out` param, or glued into its path as `<host>//<url>`, whether it redirects there or takes the url as an argument | |
 
 `defaultUnwrappers` combines the first two. Most of the others cost somebody something or change the page: a feed click counter tells a blog which posts get read, an affiliate link may pay for a small blog, and an archive link points at a copy on purpose.
 
