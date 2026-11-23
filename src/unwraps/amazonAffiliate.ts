@@ -1,14 +1,13 @@
-import { isAnyOf, isHttpUrl } from 'trousse'
+import { isAnyOf, isBrandDomainOf, isHttpUrl, startsWithAnyOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { getParamTarget } from '../utils.js'
 
 const amazonPathRegex = /^\/x\/c\/[^/]+\/(https?:\/\/.+)$/i
 const amazonHostRegex = /^aax(?:-[a-z]+)*\.amazon-adsystem\.com$|^aax-us-iad\.amazon\.com$/
-const storeHostRegex =
-  /^(?:www|smile|affiliate-program)\.amazon\.(?:ca|co\.jp|co\.uk|com|com\.au|com\.br|de|es|fr|it)$/
 const storeRedirectPathRegex = /^\/gp\/redirect\.html(?:\/ref=.+)?$/i
 const sponsoredRedirectPathRegex = /^\/gp\/slredirect\/picassoRedirect\.html\/ref=.+$/i
 
+const storeSubdomains = ['www.', 'smile.', 'affiliate-program.']
 const emailRedirectPaths = ['/gp/r.html', '/gp/f.html']
 
 // Amazon affiliate click tracker (aax-<region>.amazon-adsystem.com and aax-us-iad.amazon.com,
@@ -16,7 +15,7 @@ const emailRedirectPaths = ['/gp/r.html', '/gp/f.html']
 // /exec/obidos/redirect?path=<URL>, /gp/r.html and /gp/f.html?U=<URL>,
 // /gp/slredirect/picassoRedirect.html/ref=<ref>?url=<URL>.
 export const unwrapAmazonAffiliate: UrlUnwrapper = (url) => {
-  if (storeHostRegex.test(url.hostname)) {
+  if (isBrandDomainOf(url, 'amazon') && startsWithAnyOf(url.hostname, storeSubdomains)) {
     let target: string | undefined
 
     if (storeRedirectPathRegex.test(url.pathname)) {

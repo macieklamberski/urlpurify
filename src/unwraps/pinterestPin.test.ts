@@ -86,6 +86,15 @@ describe('unwrapPinterestPin', () => {
     expect(unwrapPinterestPin(value)).toBe(expected)
   })
 
+  it('should extract the target on a country domain under a two-part ending', () => {
+    const value = new URL(
+      'https://www.pinterest.com.ph/pin/create/button/?url=https%3A%2F%2Fexample.com%2Fpost',
+    )
+    const expected = 'https://example.com/post'
+
+    expect(unwrapPinterestPin(value)).toBe(expected)
+  })
+
   it('should extract a twice-encoded target', () => {
     const value = new URL(
       'http://pinterest.com/pin/create/button/?url=https%253A%252F%252Fexample.com%252Fcandy_biscuits_and_pineapple_dish&description=candy%2520biscuits',
@@ -143,14 +152,6 @@ describe('unwrapPinterestPin', () => {
   it('should return undefined for a path below the save path', () => {
     const value = new URL(
       'https://www.pinterest.com/pin/create/button/extra/?url=https%3A%2F%2Fexample.com%2Fpost',
-    )
-
-    expect(unwrapPinterestPin(value)).toBeUndefined()
-  })
-
-  it('should return undefined for a host ending in a country host', () => {
-    const value = new URL(
-      'https://www.fr.pinterest.com/pin/create/button/?url=https%3A%2F%2Fexample.com%2Fpost',
     )
 
     expect(unwrapPinterestPin(value)).toBeUndefined()

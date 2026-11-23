@@ -76,6 +76,15 @@ describe('unwrapAmazonAffiliate', () => {
     expect(unwrapAmazonAffiliate(url)).toBe('https://example.com/dp/4774123706')
   })
 
+  it('should extract the location param of a store redirect on a store of any ending', () => {
+    const value = new URL(
+      'https://www.amazon.nl/gp/redirect.html?location=https%3A%2F%2Fexample.com%2Fpage',
+    )
+    const expected = 'https://example.com/page'
+
+    expect(unwrapAmazonAffiliate(value)).toBe(expected)
+  })
+
   it('should extract the path param of a legacy store redirect', () => {
     const url = new URL(
       'http://www.amazon.com/exec/obidos/redirect?link_code=ur2&tag=example-20&camp=1789&creative=9325&path=http%3A%2F%2Fexample.com%2Fproduct%2F0142000280%3Fn%3D507846%26s%3Dbooks',
