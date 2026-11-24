@@ -3,10 +3,11 @@ import type { UrlUnwrapper } from './types.js'
 
 // `domains` also matches every subdomain. `hosts` matches a host exactly, or by regex, for a domain
 // where a third party can get a subdomain, such as a blog host.
-export type QueryUnwrapperConfig = (
+export type UnwrapperHosts =
   | { domains: string | Array<string>; hosts?: never }
   | { hosts: string | Array<string> | RegExp; domains?: never }
-) & {
+
+export type QueryUnwrapperConfig = UnwrapperHosts & {
   path?: string
   params: Array<string>
   ignoreLinkFragment?: boolean // The link opens a page, not a redirect, per `readParamTarget`
@@ -80,21 +81,21 @@ export const getParamTarget = (url: URL, name: string, index = 0): string | unde
   return appendLinkFragment(target, url)
 }
 
-export const createQueryUnwrapper = (config: QueryUnwrapperConfig): UrlUnwrapper => {
-  const isHostMatch = (url: URL): boolean => {
-    if (config.domains !== undefined) {
-      return isHostOrSubdomainOf(url, config.domains)
-    }
-
-    if (config.hosts instanceof RegExp) {
-      return isAnyOf(url.hostname, config.hosts)
-    }
-
-    return isHostOf(url, config.hosts)
+export const isUnwrapperHost = (url: URL, config: UnwrapperHosts): boolean => {
+  if (config.domains !== undefined) {
+    return isHostOrSubdomainOf(url, config.domains)
   }
 
+  if (config.hosts instanceof RegExp) {
+    return isAnyOf(url.hostname, config.hosts)
+  }
+
+  return isHostOf(url, config.hosts)
+}
+
+export const createQueryUnwrapper = (config: QueryUnwrapperConfig): UrlUnwrapper => {
   return (url) => {
-    if (!isHostMatch(url)) {
+    if (!isUnwrapperHost(url, config)) {
       return
     }
 

@@ -1,6 +1,4 @@
-import { isHostOf } from 'trousse'
-import { getPathTarget } from '../pathTarget.js'
-import type { UrlUnwrapper } from '../types.js'
+import { createPathUnwrapper } from '../pathTarget.js'
 
 // The show slug, an optional one-letter segment, and then the target, which starts with a scheme
 // or a host. A path with no host after the show is a file Blubrry hosts itself.
@@ -14,10 +12,8 @@ const hosts = ['media.blubrry.com', 'media.rawvoice.com', 'media.techpodcasts.co
 // content., ins. or mc.blubrry.com. RawVoice's media.rawvoice.com and media.techpodcasts.com run
 // the same redirect.
 // Not included in defaultUnwrappers: unwrapping removes the podcaster's download counts.
-export const unwrapBlubrry: UrlUnwrapper = (url) => {
-  if (!isHostOf(url, hosts)) {
-    return
-  }
-
-  return getPathTarget(url, showPrefixRegex, url.protocol)
-}
+export const unwrapBlubrry = createPathUnwrapper({
+  hosts,
+  prefix: showPrefixRegex,
+  scheme: 'link',
+})

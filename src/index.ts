@@ -30,6 +30,8 @@ export {
   trackingParamsPatterns,
   visitorIdParams,
 } from './defaults.js'
+export type { PathUnwrapperConfig } from './pathTarget.js'
+export { createPathUnwrapper } from './pathTarget.js'
 export type {
   CleanUrlOptions,
   TrackingEntry,
@@ -514,5 +516,5 @@ export { unwrapZencastr } from './unwraps/zencastr.js'
 export { unwrapZhihu } from './unwraps/zhihu.js'
 export { unwrapZix } from './unwraps/zix.js'
 export { unwrapZscalerIsolation } from './unwraps/zscalerIsolation.js'
-export type { ParamExtractorConfig, QueryUnwrapperConfig } from './utils.js'
+export type { ParamExtractorConfig, QueryUnwrapperConfig, UnwrapperHosts } from './utils.js'
 export { createParamExtractor, createQueryUnwrapper } from './utils.js'

@@ -1,6 +1,4 @@
-import { isHostOf } from 'trousse'
-import { getPathTarget } from '../pathTarget.js'
-import type { UrlUnwrapper } from '../types.js'
+import { createPathUnwrapper } from '../pathTarget.js'
 
 const hosts = [
   'tracking.swap.fm',
@@ -15,10 +13,7 @@ const trackPrefixRegex = /^\/track\/[^/]+\//i
 // Swap download measurement prefix (tracking.swap.fm/track/<show id>/<target>, also on swap.fm
 // and the dev., staging. and tracking-stage. hosts), where the target drops its scheme.
 // Not included in defaultUnwrappers: unwrapping removes the podcaster's download counts.
-export const unwrapSwap: UrlUnwrapper = (url) => {
-  if (!isHostOf(url, hosts)) {
-    return
-  }
-
-  return getPathTarget(url, trackPrefixRegex)
-}
+export const unwrapSwap = createPathUnwrapper({
+  hosts,
+  prefix: trackPrefixRegex,
+})
