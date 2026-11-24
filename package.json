@@ -1,12 +1,12 @@
 {
-  "name": "urlpurify",
+  "name": "urlpurifier",
   "description": "Unwrap redirect, affiliate, and tracking wrapper URLs and strip tracking parameters. Turn noisy links into clean, direct URLs.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/macieklamberski/urlpurify.git"
+    "url": "https://github.com/macieklamberski/urlpurifier.git"
   },
   "bugs": {
-    "url": "https://github.com/macieklamberski/urlpurify/issues"
+    "url": "https://github.com/macieklamberski/urlpurifier/issues"
   },
   "license": "MIT",
   "author": "Maciej Lamberski",
