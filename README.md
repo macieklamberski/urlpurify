@@ -4,15 +4,15 @@
 [![npm version](https://img.shields.io/npm/v/urlpurifier.svg)](https://www.npmjs.com/package/urlpurifier)
 [![license](https://img.shields.io/npm/l/urlpurifier.svg)](https://github.com/macieklamberski/urlpurifier/blob/main/LICENSE)
 
-Unwrap redirect, affiliate, and tracking wrapper URLs and strip tracking parameters. Turn noisy links into clean, direct URLs.
+Unwrap redirect, affiliate, and tracking wrapper URLs and strip tracking params. Turn noisy links into clean, direct URLs.
 
-Links from feeds, emails and social platforms rarely point straight at their destination. They pass through search redirects, link shims, email gateways and affiliate networks, and pick up tracking parameters on the way, the link decoration that follows a reader from site to site. urlpurifier unwraps 400+ known wrappers and strips 100+ known tracking parameters plus vendor families. Campaign tags like `utm_*` and affiliate ids stay by default: they serve the site, not a tracker. It has no dependencies and runs in any modern JavaScript runtime, browsers included.
+Links from feeds, emails and social platforms rarely point straight at their destination. They pass through search redirects, link shims, email gateways and affiliate networks, and pick up tracking params on the way, the link decoration that follows a reader from site to site. urlpurifier unwraps 400+ known wrappers and strips 100+ known tracking params plus vendor families. Campaign tags like `utm_*` and affiliate ids stay by default: they serve the site, not a tracker. It has no dependencies and runs in any modern JavaScript runtime, browsers included.
 
 [Quick start](#quick-start)
 &nbsp;&nbsp;·&nbsp;&nbsp;
 [Unwrappers](#unwrappers)
 &nbsp;&nbsp;·&nbsp;&nbsp;
-[Params](#params)
+[Tracking params](#tracking-params)
 &nbsp;&nbsp;·&nbsp;&nbsp;
 [API](#api)
 
@@ -67,9 +67,9 @@ The intent categories, `shareIntentUnwrappers`, `subscribeIntentUnwrappers` and 
 
 To turn more on, see [Choosing unwrappers](#choosing-unwrappers).
 
-## Params
+## Tracking params
 
-Tracking parameters are grouped like the unwrappers, by what stripping them takes away from someone:
+Tracking params are grouped like the unwrappers, by what stripping them takes away from someone:
 
 | Category | Export | Stripping removes | Default |
 | --- | --- | --- | :---: |
@@ -82,13 +82,13 @@ Tracking parameters are grouped like the unwrappers, by what stripping them take
 
 `defaultTrackingParams` combines the first four. A campaign tag carries the same value for every reader, so it tells the site where a visit came from and nothing about who made it.
 
-To strip more, see [Choosing tracking parameters](#choosing-tracking-parameters).
+To strip more, see [Choosing tracking params](#choosing-tracking-params).
 
 ## API
 
 ### `cleanUrl(url, options?)`
 
-Unwraps wrappers, repeatedly since they nest, then strips tracking parameters. The result is serialized per the URL Standard, and input that can't be parsed comes back unchanged, so the result is always safe to display.
+Unwraps wrappers, repeatedly since they nest, then strips tracking params. The result is serialized per the URL Standard, and input that can't be parsed comes back unchanged, so the result is always safe to display.
 
 ```typescript
 import { cleanUrl, defaultTrackingParams, defaultUnwrappers, unwrapWebArchive } from 'urlpurifier'
@@ -119,7 +119,7 @@ Runs one pass of the unwrappers and returns the first target, or `undefined`.
 
 ### `stripTrackingParams(url, trackingParams?)`
 
-Removes tracking parameters and returns the serialized URL. Both this and `cleanUrl` apply two rules on top of the list:
+Removes tracking params and returns the serialized URL. Both this and `cleanUrl` apply two rules on top of the list:
 
 - A query with a signature (`sig`, `signature`, `X-Amz-Signature` or `X-Goog-Signature`) stays whole, since dropping anything breaks the signature.
 - `ts` stays on Alibaba DirectMail click URLs, which fail without it.
@@ -172,7 +172,7 @@ import { affiliateUnwrappers, cleanUrl, defaultUnwrappers } from 'urlpurifier'
 cleanUrl(url, { unwrappers: [...defaultUnwrappers, ...affiliateUnwrappers] })
 ```
 
-### Choosing tracking parameters
+### Choosing tracking params
 
 Spread the categories you want next to the defaults:
 

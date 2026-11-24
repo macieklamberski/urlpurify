@@ -85,7 +85,7 @@ export const clickAttributionParams: Array<TrackingParam> = [
   'gs_l', // Google Search internal logging.
   'rb_clickid', // Unknown click ID.
   'spm', // Alibaba/AliExpress on-page click position.
-  'trk', // LinkedIn tracking parameter.
+  'trk', // LinkedIn tracking param.
   'wickedid', // Wicked Reports Facebook attribution.
 
   // HubSpot ads.

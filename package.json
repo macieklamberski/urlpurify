@@ -1,6 +1,6 @@
 {
   "name": "urlpurifier",
-  "description": "Unwrap redirect, affiliate, and tracking wrapper URLs and strip tracking parameters. Turn noisy links into clean, direct URLs.",
+  "description": "Unwrap redirect, affiliate, and tracking wrapper URLs and strip tracking params. Turn noisy links into clean, direct URLs.",
   "repository": {
     "type": "git",
     "url": "https://github.com/macieklamberski/urlpurifier.git"

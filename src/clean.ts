@@ -127,7 +127,7 @@ const deletePathParams = (url: URL, matcher: TrackingMatcher): void => {
   }
 }
 
-// Delete tracking parameters in place, from the query and from `;name=value` path params. Literal
+// Delete tracking params in place, from the query and from `;name=value` path params. Literal
 // names match case-insensitively, and patterns are tested against the lowercased name. A url
 // whose query carries a signature param is kept whole.
 const deleteTrackingParams = (url: URL, trackingParams: Array<TrackingParam>): void => {
@@ -285,7 +285,7 @@ export const unwrapUrl = (
   return parseUrl(target)?.href
 }
 
-// Remove tracking parameters, matching names case-insensitively, and return the cleaned URL in the
+// Remove tracking params, matching names case-insensitively, and return the cleaned URL in the
 // URL Standard serialization. Input that cannot be parsed is returned unchanged.
 export const stripTrackingParams = (
   url: string,
@@ -317,7 +317,7 @@ export const isTrackingParam = (
   return isTrackedPair(matcher, name.toLowerCase(), value ?? '', host)
 }
 
-// Unwrap redirect/affiliate wrappers, then strip tracking parameters, and return the result in the
+// Unwrap redirect/affiliate wrappers, then strip tracking params, and return the result in the
 // URL Standard serialization. Input that cannot be parsed is returned unchanged.
 export const cleanUrl = (url: string, options?: CleanUrlOptions): string => {
   const unwrappers = options?.unwrappers ?? defaultUnwrappers
