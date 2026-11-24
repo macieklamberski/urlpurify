@@ -1,7 +1,7 @@
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 // Mailpanion email click tracker (mailpanion.com/?destination=<target>).
-export const unwrapMailpanion = createParamExtractor({
+export const unwrapMailpanion = createQueryUnwrapper({
   hosts: 'mailpanion.com',
   path: '/',
   params: ['destination'],

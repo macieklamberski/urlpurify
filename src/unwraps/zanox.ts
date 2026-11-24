@@ -1,11 +1,11 @@
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 // Zanox writes an unencoded target between double brackets, so the target's own `&` splits the
 // outer query and only the raw query holds the whole target.
 const bracketRegex = /[?&]ulp=(?:\[\[|%5B%5B)(.+?)(?:\]\]|%5D%5D)/i
 
-const extractUlp = createParamExtractor({
+const extractUlp = createQueryUnwrapper({
   hosts: 'ad.zanox.com',
   path: '/ppc/',
   params: ['ULP', 'ulp'],

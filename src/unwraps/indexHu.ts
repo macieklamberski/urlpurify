@@ -1,11 +1,11 @@
 import { decodePercent, isAnyOf, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 const sectionParamRegex = /^index_[a-z]+_cikklink$/
 const encodedSchemeRegex = /^https?%3A/i
 
-const unwrapCounter = createParamExtractor({
+const unwrapCounter = createQueryUnwrapper({
   hosts: ['dex.hu', 'index.hu', 'vakbarat.index.hu'],
   path: '/x.php',
   params: ['url'],

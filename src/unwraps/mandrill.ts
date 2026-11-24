@@ -1,12 +1,12 @@
 import { decodeBase64Url, isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor, getParamValues } from '../utils.js'
+import { createQueryUnwrapper, getParamValues } from '../utils.js'
 
 const hosts = ['go.mnsvc.com', 'mandrillapp.com']
 
 const clickPathRegex = /^\/track\/click\/\d+\/[^/]+$/i
 
-const extractClickPhp = createParamExtractor({
+const extractClickPhp = createQueryUnwrapper({
   hosts,
   path: '/track/click.php',
   params: ['url'],

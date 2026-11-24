@@ -4,19 +4,19 @@ import { cleanUrl, isTrackingParam, stripTrackingParams, unwrapUrl } from './cle
 import { campaignParams, defaultTrackingParams, housekeepingParams } from './defaults.js'
 import type { TrackingParam, TrackingValueTest, UrlUnwrapper } from './types.js'
 import { unwrapWebArchive } from './unwraps/webArchive.js'
-import { createParamExtractor } from './utils.js'
+import { createQueryUnwrapper } from './utils.js'
 
-const exampleUnwrapper = createParamExtractor({
+const exampleUnwrapper = createQueryUnwrapper({
   hosts: 'redirect.example.com',
   params: ['target'],
 })
 
-const exampleFallbackUnwrapper = createParamExtractor({
+const exampleFallbackUnwrapper = createQueryUnwrapper({
   hosts: 'redirect.example.com',
   params: ['fallback'],
 })
 
-const nestedUnwrapper = createParamExtractor({
+const nestedUnwrapper = createQueryUnwrapper({
   hosts: 'outer.example.com',
   params: ['url'],
 })
@@ -711,7 +711,7 @@ describe('cleanUrl', () => {
 })
 
 describe('cleanUrl with a legacy-charset target', () => {
-  const legacyUnwrapper = createParamExtractor({
+  const legacyUnwrapper = createQueryUnwrapper({
     hosts: 'redirect.example.com',
     params: ['target'],
   })

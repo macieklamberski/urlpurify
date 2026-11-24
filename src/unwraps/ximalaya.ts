@@ -1,11 +1,11 @@
 import { parseUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 const filePathRegex = /^\/\/[^/]+$/
 const targetHostRegex = /\.xmcdn\.com$/
 
-const extractTarget = createParamExtractor({
+const extractTarget = createQueryUnwrapper({
   hosts: 'jt.ximalaya.com',
   params: ['jt'],
 })

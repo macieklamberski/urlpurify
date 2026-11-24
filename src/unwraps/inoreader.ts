@@ -1,12 +1,12 @@
 import { decodePercent, isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor, decodeEncodedScheme } from '../utils.js'
+import { createQueryUnwrapper, decodeEncodedScheme } from '../utils.js'
 
 const hosts = ['inoreader.com', 'www.inoreader.com', 'jp.inoreader.com']
 
 const feedPathRegex = /^\/feed\/(?<target>.+)$/i
 
-const extractAddFeed = createParamExtractor({
+const extractAddFeed = createQueryUnwrapper({
   hosts,
   path: '/',
   params: ['add_feed'],

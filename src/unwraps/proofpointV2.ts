@@ -1,8 +1,8 @@
 import { decodePercent } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
-const extractTarget = createParamExtractor({
+const extractTarget = createQueryUnwrapper({
   hosts: 'urldefense.proofpoint.com',
   path: '/v2/url',
   params: ['u'],

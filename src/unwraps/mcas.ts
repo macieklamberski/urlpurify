@@ -1,11 +1,11 @@
 import { parseUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 // The suffix each cloud's proxy appends to every target host.
 const proxySuffixes = ['.mcas.ms', '.mcas-gov.us', '.mcas-gov.ms']
 
-const extractTarget = createParamExtractor({
+const extractTarget = createQueryUnwrapper({
   hosts: ['mcas-proxyweb.mcas.ms', 'mcas-proxyweb.mcas-gov.us', 'mcas-proxyweb.mcas-gov.ms'],
   path: '/certificate-checker',
   params: ['originalUrl'],

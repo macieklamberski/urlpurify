@@ -1,13 +1,13 @@
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
-const extractChecklink = createParamExtractor({
+const extractChecklink = createQueryUnwrapper({
   hosts: 'checklink.mail.ru',
   path: '/proxy',
   params: ['url'],
 })
 
-const extractClick = createParamExtractor({
+const extractClick = createQueryUnwrapper({
   hosts: ['click.mail.ru', 'click.my.mail.ru'],
   path: '/redir',
   params: ['u'],

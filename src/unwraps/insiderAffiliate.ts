@@ -1,13 +1,13 @@
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
-const extractAffiliate = createParamExtractor({
+const extractAffiliate = createQueryUnwrapper({
   hosts: 'affiliate.insider.com',
   path: '/',
   params: ['u'],
 })
 
-const extractReviewsOut = createParamExtractor({
+const extractReviewsOut = createQueryUnwrapper({
   hosts: ['www.businessinsider.com', 'www.insider.com'],
   path: '/reviews/out',
   params: ['u'],

@@ -1,19 +1,19 @@
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
-const unwrapReferrerCleansing = createParamExtractor({
+const unwrapReferrerCleansing = createQueryUnwrapper({
   hosts: 'www.dropbox.com',
   path: '/referrer_cleansing_redirect',
   params: ['url'],
 })
 
-const unwrapPaperLink = createParamExtractor({
+const unwrapPaperLink = createQueryUnwrapper({
   hosts: 'www.dropbox.com',
   path: '/paper/ep/redirect/external-link',
   params: ['url'],
 })
 
-const unwrapLegacyPaperLink = createParamExtractor({
+const unwrapLegacyPaperLink = createQueryUnwrapper({
   hosts: 'paper.dropbox.com',
   path: '/ep/redirect/external-link',
   params: ['url'],

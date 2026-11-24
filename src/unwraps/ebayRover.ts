@@ -1,11 +1,11 @@
 import { isAnyOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 const roverHostRegex = /^rover\.ebay\.(?:com|[a-z]{2,3}(?:\.[a-z]{2,3})?)$/
 const roverPathRegex = /^\/rover\/\d+\/[\d-]+\/\d+$/i
 
-const extractTarget = createParamExtractor({
+const extractTarget = createQueryUnwrapper({
   hosts: roverHostRegex,
   params: ['mpre', 'loc'],
 })

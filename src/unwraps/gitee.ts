@@ -1,7 +1,7 @@
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 // Gitee external link redirect (gitee.com/link?target=<target>).
-export const unwrapGitee = createParamExtractor({
+export const unwrapGitee = createQueryUnwrapper({
   hosts: 'gitee.com',
   path: '/link',
   params: ['target'],

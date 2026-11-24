@@ -1,9 +1,9 @@
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 const pathRegex = /^\/z\/\d+-\d+\/CD\d+\/$/i
 
-const extractLink = createParamExtractor({
+const extractLink = createQueryUnwrapper({
   hosts: 'go.linkwi.se',
   params: ['lnkurl'],
 })

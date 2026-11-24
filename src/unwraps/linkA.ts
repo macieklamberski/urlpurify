@@ -1,15 +1,15 @@
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 const productLinkPathRegex = /^\/click_product_link\/[0-9a-f]+\/[0-9a-f]+\/?$/i
 
-const extractGateTarget = createParamExtractor({
+const extractGateTarget = createQueryUnwrapper({
   hosts: 'link-a.net',
   path: '/gate.php',
   params: ['mallurl1'],
 })
 
-const extractProductLinkTarget = createParamExtractor({
+const extractProductLinkTarget = createQueryUnwrapper({
   hosts: 'cl.link-ag.net',
   params: ['redirect_url'],
 })

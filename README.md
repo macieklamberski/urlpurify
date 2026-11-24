@@ -139,14 +139,14 @@ isTrackingParam('sid', '46551', 'example.com') // false
 isTrackingParam('utm_source', 'feed', url.hostname, knownTrackingParams) // true
 ```
 
-### `createParamExtractor(config)`
+### `createQueryUnwrapper(config)`
 
 Builds an unwrapper for a target that sits in a query parameter:
 
 ```typescript
-import { cleanUrl, createParamExtractor, defaultUnwrappers } from 'urlpurifier'
+import { cleanUrl, createQueryUnwrapper, defaultUnwrappers } from 'urlpurifier'
 
-const unwrapExample = createParamExtractor({
+const unwrapExample = createQueryUnwrapper({
   // The domain and every subdomain. Use `hosts` for exact hosts or a regex.
   domains: 'example.com',
   path: '/out',
@@ -159,6 +159,8 @@ cleanUrl(url, { unwrappers: [...defaultUnwrappers, unwrapExample] })
 A value still encoded after one decode, starting with `http%3A` or `https%3A`, is decoded once more. A malformed escape, or one in a legacy charset such as `%E9` for é in Latin-1, stays as written. For any other shape, write a plain `UrlUnwrapper`: a function that takes a `URL` and returns the target or `undefined`.
 
 The target takes the link's fragment, so `example.com/out?target=https://example.org/guide#install` gives `https://example.org/guide#install`. A browser following the redirect lands there too, since the server never sees the fragment. A fragment encoded inside the target wins. When the link opens a page instead of redirecting, such as a share button, pass `ignoreLinkFragment: true`, since the page reads only the query.
+
+`createParamExtractor` and `ParamExtractorConfig`, the names before 3.0, still work and are deprecated.
 
 ### Choosing unwrappers
 

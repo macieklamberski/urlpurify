@@ -1,11 +1,11 @@
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 const hosts = ['netvibes.com', 'www.netvibes.com']
 
 // Netvibes subscribe button (www.netvibes.com/subscribe.php?url=<feed>). Not in defaultUnwrappers:
 // the link added the feed to a Netvibes dashboard, it never redirected to it.
-export const unwrapNetvibes: UrlUnwrapper = createParamExtractor({
+export const unwrapNetvibes: UrlUnwrapper = createQueryUnwrapper({
   hosts,
   path: '/subscribe.php',
   params: ['url'],

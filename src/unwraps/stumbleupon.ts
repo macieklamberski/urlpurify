@@ -1,13 +1,13 @@
 import { isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 // A 6-character url id, an optional token holding a colon, then the target with no scheme. The
 // first segment of the target must be a host: a dot, no colon. A trailing `/r:t` is StumbleUpon's
 // own marker, left off the framed target.
 const pathRegex = /^\/su\/[a-z\d]{6}\/(?:[^/]*:[^/]*\/)?([^/:]*\.[^/:]*(?:\/.*?)?)(?:\/r:t)?$/i
 
-const extractRedirect = createParamExtractor({
+const extractRedirect = createQueryUnwrapper({
   hosts: 'www.stumbleupon.com',
   path: '/to/event/redir/',
   params: ['url'],

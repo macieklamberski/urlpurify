@@ -1,9 +1,9 @@
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 const pathRegex = /^\/world\/[a-z]+\/web(?:\/body)?\/?$/i
 
-const extractTarget = createParamExtractor({
+const extractTarget = createQueryUnwrapper({
   hosts: ['www.excite.co.jp', 'excite.co.jp', 'www.excite-webtl.jp'],
   params: ['wb_url'],
 })

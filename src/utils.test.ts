@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'bun:test'
 import {
-  createParamExtractor,
+  createQueryUnwrapper,
   getParamTarget,
   getUtf8ByteLength,
   readParamTarget,
@@ -8,9 +8,9 @@ import {
 
 const exampleSubdomainRegex = /\.example\.com$/
 
-describe('createParamExtractor', () => {
+describe('createQueryUnwrapper', () => {
   it('should extract the first present param for a matching host', () => {
-    const extract = createParamExtractor({
+    const extract = createQueryUnwrapper({
       hosts: 'redirect.example.com',
       params: ['url', 'target'],
     })
@@ -21,7 +21,7 @@ describe('createParamExtractor', () => {
   })
 
   it('should prefer the first listed param when several are present', () => {
-    const extract = createParamExtractor({
+    const extract = createQueryUnwrapper({
       hosts: 'redirect.example.com',
       params: ['url', 'target'],
     })
@@ -34,7 +34,7 @@ describe('createParamExtractor', () => {
   })
 
   it('should match hosts given as an array', () => {
-    const extract = createParamExtractor({
+    const extract = createQueryUnwrapper({
       hosts: ['a.example.com', 'b.example.com'],
       params: ['url'],
     })
@@ -45,7 +45,7 @@ describe('createParamExtractor', () => {
   })
 
   it('should match a host with a trailing dot when given as hosts', () => {
-    const extract = createParamExtractor({
+    const extract = createQueryUnwrapper({
       hosts: 'go.example.com',
       params: ['u'],
     })
@@ -56,7 +56,7 @@ describe('createParamExtractor', () => {
   })
 
   it('should match a host with a trailing dot when given as a hosts array', () => {
-    const extract = createParamExtractor({
+    const extract = createQueryUnwrapper({
       hosts: ['a.example.com', 'go.example.com'],
       params: ['u'],
     })
@@ -67,7 +67,7 @@ describe('createParamExtractor', () => {
   })
 
   it('should match hosts given as a regex', () => {
-    const extract = createParamExtractor({
+    const extract = createQueryUnwrapper({
       hosts: exampleSubdomainRegex,
       params: ['url'],
     })
@@ -78,7 +78,7 @@ describe('createParamExtractor', () => {
   })
 
   it('should match the domain itself when given as domains', () => {
-    const extract = createParamExtractor({
+    const extract = createQueryUnwrapper({
       domains: 'example.com',
       params: ['url'],
     })
@@ -89,7 +89,7 @@ describe('createParamExtractor', () => {
   })
 
   it('should match any subdomain of a domain given as domains', () => {
-    const extract = createParamExtractor({
+    const extract = createQueryUnwrapper({
       domains: 'example.com',
       params: ['url'],
     })
@@ -100,7 +100,7 @@ describe('createParamExtractor', () => {
   })
 
   it('should match domains given as an array', () => {
-    const extract = createParamExtractor({
+    const extract = createQueryUnwrapper({
       domains: ['example.com', 'example.net'],
       params: ['url'],
     })
@@ -111,7 +111,7 @@ describe('createParamExtractor', () => {
   })
 
   it('should return undefined for a host that only ends in a domain given as domains', () => {
-    const extract = createParamExtractor({
+    const extract = createQueryUnwrapper({
       domains: 'example.com',
       params: ['url'],
     })
@@ -121,7 +121,7 @@ describe('createParamExtractor', () => {
   })
 
   it('should return undefined for a host outside the domains', () => {
-    const extract = createParamExtractor({
+    const extract = createQueryUnwrapper({
       domains: 'example.com',
       params: ['url'],
     })
@@ -131,7 +131,7 @@ describe('createParamExtractor', () => {
   })
 
   it('should return undefined for an empty domain', () => {
-    const extract = createParamExtractor({
+    const extract = createQueryUnwrapper({
       domains: '',
       params: ['url'],
     })
@@ -141,7 +141,7 @@ describe('createParamExtractor', () => {
   })
 
   it('should return undefined for an empty host', () => {
-    const extract = createParamExtractor({
+    const extract = createQueryUnwrapper({
       hosts: '',
       params: ['url'],
     })
@@ -151,7 +151,7 @@ describe('createParamExtractor', () => {
   })
 
   it('should require the configured path when given', () => {
-    const extract = createParamExtractor({
+    const extract = createQueryUnwrapper({
       hosts: 'redirect.example.com',
       path: '/out',
       params: ['url'],
@@ -163,7 +163,7 @@ describe('createParamExtractor', () => {
   })
 
   it('should match the configured path in any case', () => {
-    const extract = createParamExtractor({
+    const extract = createQueryUnwrapper({
       hosts: 'redirect.example.com',
       path: '/out',
       params: ['url'],
@@ -175,7 +175,7 @@ describe('createParamExtractor', () => {
   })
 
   it('should return undefined for a non-matching path', () => {
-    const extract = createParamExtractor({
+    const extract = createQueryUnwrapper({
       hosts: 'redirect.example.com',
       path: '/out',
       params: ['url'],
@@ -186,7 +186,7 @@ describe('createParamExtractor', () => {
   })
 
   it('should return undefined for non-matching hosts', () => {
-    const extract = createParamExtractor({
+    const extract = createQueryUnwrapper({
       hosts: 'redirect.example.com',
       params: ['url'],
     })
@@ -196,7 +196,7 @@ describe('createParamExtractor', () => {
   })
 
   it('should return undefined when the param is missing', () => {
-    const extract = createParamExtractor({
+    const extract = createQueryUnwrapper({
       hosts: 'redirect.example.com',
       params: ['url'],
     })
@@ -206,7 +206,7 @@ describe('createParamExtractor', () => {
   })
 
   it('should return undefined when the param is empty', () => {
-    const extract = createParamExtractor({
+    const extract = createQueryUnwrapper({
       hosts: 'redirect.example.com',
       params: ['url'],
     })
@@ -216,7 +216,7 @@ describe('createParamExtractor', () => {
   })
 
   it('should match the param name in any case', () => {
-    const extract = createParamExtractor({
+    const extract = createQueryUnwrapper({
       hosts: 'redirect.example.com',
       params: ['url'],
     })
@@ -227,7 +227,7 @@ describe('createParamExtractor', () => {
   })
 
   describe('twice-encoded target', () => {
-    const extract = createParamExtractor({
+    const extract = createQueryUnwrapper({
       hosts: 'redirect.example.com',
       params: ['url'],
     })
@@ -291,7 +291,7 @@ describe('createParamExtractor', () => {
   })
 
   describe('plus in the target', () => {
-    const extract = createParamExtractor({
+    const extract = createQueryUnwrapper({
       hosts: 'redirect.example.com',
       params: ['wgtarget'],
     })
@@ -341,7 +341,7 @@ describe('createParamExtractor', () => {
   })
 
   describe('link fragment', () => {
-    const extract = createParamExtractor({
+    const extract = createQueryUnwrapper({
       hosts: 'redirect.example.com',
       params: ['url'],
     })
@@ -374,7 +374,7 @@ describe('createParamExtractor', () => {
     })
 
     it('should drop the link fragment for a link that opens a page', () => {
-      const extractOwned = createParamExtractor({
+      const extractOwned = createQueryUnwrapper({
         hosts: 'redirect.example.com',
         params: ['url'],
         ignoreLinkFragment: true,

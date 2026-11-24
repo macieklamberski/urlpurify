@@ -1,13 +1,13 @@
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
-const extractLiteUrl = createParamExtractor({
+const extractLiteUrl = createQueryUnwrapper({
   hosts: 'googleweblight.com',
   path: '/',
   params: ['lite_url'],
 })
 
-const extractPageUrl = createParamExtractor({
+const extractPageUrl = createQueryUnwrapper({
   hosts: 'googleweblight.com',
   path: '/i',
   params: ['u'],

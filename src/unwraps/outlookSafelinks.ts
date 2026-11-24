@@ -1,9 +1,9 @@
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 const linkPathRegex = /^\/(?:ap\/[a-z]+-[0-9a-f]+\/)?$/i
 
-const extractTarget = createParamExtractor({
+const extractTarget = createQueryUnwrapper({
   hosts:
     /(?:\.safelinks\.protection\.outlook\.com|^usg\d{2}\.safelinks\.protection\.office365\.us)$/,
   params: ['url'],
@@ -11,7 +11,7 @@ const extractTarget = createParamExtractor({
 
 // Outlook on the web's own Safe Links page, which needs a signed-in mailbox
 // (outlook.office.com/mail/safelink.html?url=<target>&corid=<id>).
-const extractWebTarget = createParamExtractor({
+const extractWebTarget = createQueryUnwrapper({
   hosts: 'outlook.office.com',
   path: '/mail/safelink.html',
   params: ['url'],

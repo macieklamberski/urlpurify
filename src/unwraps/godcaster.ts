@@ -1,13 +1,13 @@
 import { decodePercent, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 // The first number is the show, as in the show's feeds.godcaster.fm/player_<n>.xml.
 const episodePrefixRegex = /^\/act\/e\/\d+\/\d+\/\d+\//i
 const encodedSchemeRegex = /^https?%(?:25)?3A/i
 const supportPathRegex = /^\/act\/(?:sr\/\d+|fr\/\d+\/\d+)$/i
 
-const extractSupportTarget = createParamExtractor({
+const extractSupportTarget = createQueryUnwrapper({
   hosts: 'go.godcaster.fm',
   params: ['d'],
 })

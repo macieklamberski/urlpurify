@@ -1,8 +1,8 @@
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 // Duomai affiliate click (c.duomai.com/track.php?site_id=<id>&aid=<id>&t=<target>). Not included in
 // defaultUnwrappers: unwrapping drops the publisher's commission.
-export const unwrapDuomai = createParamExtractor({
+export const unwrapDuomai = createQueryUnwrapper({
   hosts: 'c.duomai.com',
   path: '/track.php',
   params: ['t'],

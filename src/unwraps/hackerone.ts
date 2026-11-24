@@ -1,7 +1,7 @@
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 // HackerOne outbound link redirect on reports (hackerone.com/redirect?signature=<sig>&url=<target>).
-export const unwrapHackerone = createParamExtractor({
+export const unwrapHackerone = createQueryUnwrapper({
   hosts: 'hackerone.com',
   path: '/redirect',
   params: ['url'],

@@ -1,13 +1,13 @@
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
-const extractFrame = createParamExtractor({
+const extractFrame = createQueryUnwrapper({
   domains: 'about.com',
   path: '/gi/dynamic/offsite.htm',
   params: ['zu', 'site'],
 })
 
-const extractLeaving = createParamExtractor({
+const extractLeaving = createQueryUnwrapper({
   domains: 'about.com',
   path: '/gi/o.htm',
   params: ['zu'],

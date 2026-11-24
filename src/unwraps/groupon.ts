@@ -1,9 +1,9 @@
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 // Groupon affiliate click (tracking.groupon.com/r?tsToken=<token>&url=<target>, and the
 // per-country hosts such as t.groupon.co.uk and t.grouponnz.co.nz). Not included in
 // defaultUnwrappers: unwrapping drops the publisher's commission.
-export const unwrapGroupon = createParamExtractor({
+export const unwrapGroupon = createQueryUnwrapper({
   hosts: [
     't.groupon.co.il',
     't.groupon.co.in',

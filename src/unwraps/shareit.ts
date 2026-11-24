@@ -1,13 +1,13 @@
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
-const extractAffiliate = createParamExtractor({
+const extractAffiliate = createQueryUnwrapper({
   hosts: ['www.shareit.com', 'esd.element5.com'],
   path: '/affiliate.html',
   params: ['target'],
 })
 
-const extractSecureAffiliate = createParamExtractor({
+const extractSecureAffiliate = createQueryUnwrapper({
   hosts: 'secure.shareit.com',
   path: '/shareit/affiliate.html',
   params: ['target'],

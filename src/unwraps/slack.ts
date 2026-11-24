@@ -1,7 +1,7 @@
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 // Slack link redirect (slack-redir.net/link?url=<target>).
-export const unwrapSlack = createParamExtractor({
+export const unwrapSlack = createQueryUnwrapper({
   hosts: 'slack-redir.net',
   path: '/link',
   params: ['url'],

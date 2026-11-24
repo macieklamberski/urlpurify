@@ -1,8 +1,8 @@
 import { decodeBase64, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
-const baseExtractor = createParamExtractor({
+const baseExtractor = createQueryUnwrapper({
   hosts: 'link.segmentfault.com',
   path: '/',
   params: ['enc'],
