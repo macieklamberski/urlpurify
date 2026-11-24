@@ -12,7 +12,7 @@ Links from feeds, emails and social platforms rarely point straight at their des
 &nbsp;&nbsp;·&nbsp;&nbsp;
 [Unwrappers](#unwrappers)
 &nbsp;&nbsp;·&nbsp;&nbsp;
-[Tracking parameters](#tracking-parameters)
+[Params](#params)
 &nbsp;&nbsp;·&nbsp;&nbsp;
 [API](#api)
 
@@ -67,7 +67,7 @@ The intent categories, `shareIntentUnwrappers`, `subscribeIntentUnwrappers` and 
 
 To turn more on, see [Choosing unwrappers](#choosing-unwrappers).
 
-## Tracking parameters
+## Params
 
 Tracking parameters are grouped like the unwrappers, by what stripping them takes away from someone:
 
