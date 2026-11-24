@@ -1,7 +1,7 @@
 import { decodePercent, isAnyOf, isHostOf, isHttpUrl } from 'trousse'
 import { getPathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
-import { decodeEncodedScheme, getParamTarget } from '../utils.js'
+import { decodeEncodedScheme, readParamTarget } from '../utils.js'
 
 const formPathRegex = /^\/sub\/?$/i
 const rawFeedPrefixRegex = /^\/sub\/(?=https?:)/i
@@ -18,7 +18,7 @@ export const unwrapBloglines: UrlUnwrapper = (url) => {
   }
 
   if (isAnyOf(url.pathname, formPathRegex)) {
-    return getParamTarget(url, 'url')
+    return readParamTarget(url, 'url')
   }
 
   const match = url.pathname.match(encodedFeedPathRegex)

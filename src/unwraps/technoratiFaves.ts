@@ -1,6 +1,6 @@
 import { isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamTarget } from '../utils.js'
+import { readParamTarget } from '../utils.js'
 
 const hosts = ['technorati.com', 'www.technorati.com']
 
@@ -14,5 +14,5 @@ export const unwrapTechnoratiFaves: UrlUnwrapper = (url) => {
     return
   }
 
-  return getParamTarget(url, 'add')
+  return readParamTarget(url, 'add')
 }

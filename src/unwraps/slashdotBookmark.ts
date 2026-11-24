@@ -1,6 +1,6 @@
 import { isAnyOf, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamTarget } from '../utils.js'
+import { readParamTarget } from '../utils.js'
 
 const hosts = ['slashdot.org', 'www.slashdot.org']
 
@@ -15,5 +15,5 @@ export const unwrapSlashdotBookmark: UrlUnwrapper = (url) => {
   }
 
   // The `title=` beside it is free text, even when it holds only a url.
-  return getParamTarget(url, 'url')
+  return readParamTarget(url, 'url')
 }

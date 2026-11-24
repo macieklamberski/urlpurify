@@ -1,6 +1,6 @@
 import { isAnyOf, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { decodeEncodedScheme, getParamTarget } from '../utils.js'
+import { decodeEncodedScheme, readParamTarget } from '../utils.js'
 
 const feedPathRegex =
   /^\/i\/(?:subscription|discover\/sources\/search)\/feed(?:\/|%2F)(?<target>.+)$/i
@@ -20,7 +20,7 @@ export const unwrapFeedly: UrlUnwrapper = (url) => {
   }
 
   if (isAnyOf(url.pathname, paramPath)) {
-    return getParamTarget(url, 'url')
+    return readParamTarget(url, 'url')
   }
 
   const pathMatch = url.pathname.match(feedPathRegex)

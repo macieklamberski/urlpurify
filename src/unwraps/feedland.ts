@@ -7,4 +7,5 @@ export const unwrapFeedland = createParamExtractor({
   hosts: ['feedland.org', 'blue.feedland.org', 'feedland.com'],
   path: '/',
   params: ['river', 'feedurl'],
+  ignoreLinkFragment: true,
 })

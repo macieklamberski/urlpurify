@@ -1,6 +1,6 @@
 import { isAnyOf, isHostOf, isHttpUrl, parseUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamTarget } from '../utils.js'
+import { readParamTarget } from '../utils.js'
 
 const hosts = ['friendfeed.com', 'www.friendfeed.com']
 
@@ -13,7 +13,7 @@ export const unwrapFriendFeed: UrlUnwrapper = (url) => {
   }
 
   if (isAnyOf(url.pathname, '/share')) {
-    return getParamTarget(url, 'url') ?? getParamTarget(url, 'link')
+    return readParamTarget(url, 'url') ?? readParamTarget(url, 'link')
   }
 
   // The bookmarklet frame's script reads its fragment, which the server never sees.
@@ -24,7 +24,7 @@ export const unwrapFriendFeed: UrlUnwrapper = (url) => {
       return
     }
 
-    return getParamTarget(fragment, 'url')
+    return readParamTarget(fragment, 'url')
   }
 
   // The root path serves every other page too, so only an http target counts.
@@ -32,7 +32,7 @@ export const unwrapFriendFeed: UrlUnwrapper = (url) => {
     return
   }
 
-  const target = getParamTarget(url, 'url')
+  const target = readParamTarget(url, 'url')
 
   if (target && isHttpUrl(target)) {
     return target

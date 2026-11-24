@@ -1,6 +1,6 @@
 import { isAnyOf, isBrandDomainOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamTarget } from '../utils.js'
+import { readParamTarget } from '../utils.js'
 
 const pathRegex = /^\/pin\/create\/(?:button|link|extension|bookmarklet|scraped)\/?$/i
 
@@ -14,5 +14,5 @@ export const unwrapPinterestPin: UrlUnwrapper = (url) => {
   }
 
   // The `media=` beside it is the image to pin and `description=` is the pin's text.
-  return getParamTarget(url, 'url')
+  return readParamTarget(url, 'url')
 }

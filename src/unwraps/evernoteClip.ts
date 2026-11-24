@@ -7,4 +7,5 @@ export const unwrapEvernoteClip = createParamExtractor({
   hosts: ['evernote.com', 'www.evernote.com'],
   path: '/clip.action',
   params: ['url'],
+  ignoreLinkFragment: true,
 })

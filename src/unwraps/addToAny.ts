@@ -1,6 +1,6 @@
 import { isAnyOf, isHostOf, isHttpUrl, parseUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamTarget } from '../utils.js'
+import { readParamTarget } from '../utils.js'
 
 const hosts = ['www.addtoany.com', 'addtoany.com']
 const servicePathRegex = /^\/add_to\/[^/]+$/i
@@ -9,7 +9,7 @@ const menuPaths = ['/share', '/share_save']
 // The target of a share menu page, read from `?linkurl=` or, as the share button writes it, from
 // `#url=`, which the page's script reads and the server never sees.
 const getMenuTarget = (url: URL): string | undefined => {
-  const target = getParamTarget(url, 'linkurl')
+  const target = readParamTarget(url, 'linkurl')
 
   if (target) {
     return target
@@ -17,7 +17,7 @@ const getMenuTarget = (url: URL): string | undefined => {
 
   const fragment = parseUrl(`?${url.hash.slice(1)}`, url)
 
-  return fragment && getParamTarget(fragment, 'url')
+  return fragment && readParamTarget(fragment, 'url')
 }
 
 // AddToAny share links (addtoany.com/add_to/<service>?linkurl=<page>, /email?linkurl=, which
@@ -31,7 +31,7 @@ export const unwrapAddToAny: UrlUnwrapper = (url) => {
   let target: string | undefined
 
   if (servicePathRegex.test(url.pathname) || isAnyOf(url.pathname, '/email')) {
-    target = getParamTarget(url, 'linkurl')
+    target = readParamTarget(url, 'linkurl')
   } else if (isAnyOf(url.pathname, menuPaths)) {
     target = getMenuTarget(url)
   }

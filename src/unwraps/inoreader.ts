@@ -6,7 +6,12 @@ const hosts = ['inoreader.com', 'www.inoreader.com', 'jp.inoreader.com']
 
 const feedPathRegex = /^\/feed\/(?<target>.+)$/i
 
-const extractAddFeed = createParamExtractor({ hosts, path: '/', params: ['add_feed'] })
+const extractAddFeed = createParamExtractor({
+  hosts,
+  path: '/',
+  params: ['add_feed'],
+  ignoreLinkFragment: true,
+})
 
 // Inoreader subscribe and feed preview links (www.inoreader.com/?add_feed=<feed>,
 // www.inoreader.com/feed/<feed>, also on inoreader.com and jp.inoreader.com). Not in

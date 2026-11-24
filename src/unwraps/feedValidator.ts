@@ -1,6 +1,6 @@
 import { isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamTarget } from '../utils.js'
+import { readParamTarget } from '../utils.js'
 
 const hosts = ['feedvalidator.org', 'www.feedvalidator.org']
 
@@ -22,5 +22,5 @@ export const unwrapFeedValidator: UrlUnwrapper = (url) => {
     return
   }
 
-  return getParamTarget(url, 'url')
+  return readParamTarget(url, 'url')
 }

@@ -7,11 +7,13 @@ const unwrapSubext = createParamExtractor({
   hosts,
   path: '/ngs/subscriber/subext.aspx',
   params: ['url'],
+  ignoreLinkFragment: true,
 })
 const unwrapSubfext = createParamExtractor({
   hosts,
   path: '/ngs/subscriber/subfext.aspx',
   params: ['url'],
+  ignoreLinkFragment: true,
 })
 
 // NewsGator subscribe button (www.newsgator.com/ngs/subscriber/subext.aspx?url=<feed>, also

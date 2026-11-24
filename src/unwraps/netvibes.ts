@@ -9,4 +9,5 @@ export const unwrapNetvibes: UrlUnwrapper = createParamExtractor({
   hosts,
   path: '/subscribe.php',
   params: ['url'],
+  ignoreLinkFragment: true,
 })

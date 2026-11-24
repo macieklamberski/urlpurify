@@ -7,4 +7,5 @@ export const unwrapQzoneShare = createParamExtractor({
   hosts: 'sns.qzone.qq.com',
   path: '/cgi-bin/qzshare/cgi_qzshare_onekey',
   params: ['url'],
+  ignoreLinkFragment: true,
 })

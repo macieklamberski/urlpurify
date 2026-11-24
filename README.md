@@ -158,6 +158,8 @@ cleanUrl(url, { unwrappers: [...defaultUnwrappers, unwrapExample] })
 
 A value still encoded after one decode, starting with `http%3A` or `https%3A`, is decoded once more. A malformed escape, or one in a legacy charset such as `%E9` for é in Latin-1, stays as written. For any other shape, write a plain `UrlUnwrapper`: a function that takes a `URL` and returns the target or `undefined`.
 
+The target takes the link's fragment, so `example.com/out?target=https://example.org/guide#install` gives `https://example.org/guide#install`. A browser following the redirect lands there too, since the server never sees the fragment. A fragment encoded inside the target wins. When the link opens a page instead of redirecting, such as a share button, pass `ignoreLinkFragment: true`, since the page reads only the query.
+
 ### Choosing unwrappers
 
 Spread the categories you want next to the defaults:

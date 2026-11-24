@@ -6,4 +6,5 @@ export const unwrapGoogleBuzz = createParamExtractor({
   hosts: ['google.com', 'www.google.com'],
   path: '/buzz/post',
   params: ['url'],
+  ignoreLinkFragment: true,
 })

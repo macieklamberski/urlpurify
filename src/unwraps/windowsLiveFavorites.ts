@@ -6,4 +6,5 @@ export const unwrapWindowsLiveFavorites = createParamExtractor({
   hosts: 'favorites.live.com',
   path: '/quickadd.aspx',
   params: ['url'],
+  ignoreLinkFragment: true,
 })

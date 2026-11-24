@@ -7,4 +7,5 @@ export const unwrapAddToAnySubscribe = createParamExtractor({
   hosts: ['addtoany.com', 'www.addtoany.com'],
   path: '/subscribe',
   params: ['linkurl', 'url'],
+  ignoreLinkFragment: true,
 })

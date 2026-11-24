@@ -6,4 +6,5 @@ export const unwrapW3cFeedValidator = createParamExtractor({
   hosts: 'validator.w3.org',
   path: '/feed/check.cgi',
   params: ['url'],
+  ignoreLinkFragment: true,
 })

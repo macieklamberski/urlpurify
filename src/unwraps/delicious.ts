@@ -1,6 +1,6 @@
 import { isAnyOf, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamTarget } from '../utils.js'
+import { readParamTarget } from '../utils.js'
 
 const hosts = ['del.icio.us', 'delicious.com', 'www.delicious.com']
 const paths = ['/post', '/save']
@@ -14,5 +14,5 @@ export const unwrapDelicious: UrlUnwrapper = (url) => {
   }
 
   // The `title=` and `notes=` beside it are free text, even when they hold only a url.
-  return getParamTarget(url, 'url')
+  return readParamTarget(url, 'url')
 }

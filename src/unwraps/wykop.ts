@@ -1,6 +1,6 @@
 import { isAnyOf, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamTarget } from '../utils.js'
+import { readParamTarget } from '../utils.js'
 
 const hosts = ['www.wykop.pl', 'wykop.pl']
 
@@ -15,5 +15,5 @@ export const unwrapWykop: UrlUnwrapper = (url) => {
   }
 
   // The `title=` and `desc=` beside it are the find's own text, never a carrier.
-  return getParamTarget(url, 'url')
+  return readParamTarget(url, 'url')
 }

@@ -1,6 +1,6 @@
 import { isAnyOf, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamTarget } from '../utils.js'
+import { readParamTarget } from '../utils.js'
 
 const hosts = ['www.tumblr.com', 'tumblr.com']
 const linkPathRegex = /^\/share\/link\/?$/i
@@ -14,14 +14,14 @@ export const unwrapTumblrShare: UrlUnwrapper = (url) => {
   }
 
   if (isAnyOf(url.pathname, '/share')) {
-    return getParamTarget(url, 'u') ?? getParamTarget(url, 'canonicalUrl')
+    return readParamTarget(url, 'u') ?? readParamTarget(url, 'canonicalUrl')
   }
 
   if (linkPathRegex.test(url.pathname)) {
-    return getParamTarget(url, 'url')
+    return readParamTarget(url, 'url')
   }
 
   if (isAnyOf(url.pathname, '/widgets/share/tool')) {
-    return getParamTarget(url, 'canonicalUrl') ?? getParamTarget(url, 'url')
+    return readParamTarget(url, 'canonicalUrl') ?? readParamTarget(url, 'url')
   }
 }

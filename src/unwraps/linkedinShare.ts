@@ -1,6 +1,6 @@
 import { isAnyOf, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamTarget } from '../utils.js'
+import { readParamTarget } from '../utils.js'
 
 const hosts = ['www.linkedin.com', 'linkedin.com', /^[a-z]{2}\.linkedin\.com$/]
 
@@ -16,5 +16,5 @@ export const unwrapLinkedinShare: UrlUnwrapper = (url) => {
   }
 
   // The `title=`, `summary=` and `source=` beside it are text fields, even when one holds a url.
-  return getParamTarget(url, 'url')
+  return readParamTarget(url, 'url')
 }

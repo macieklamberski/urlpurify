@@ -6,4 +6,5 @@ export const unwrapGoogleBookmarks = createParamExtractor({
   hosts: ['google.com', 'www.google.com'],
   path: '/bookmarks/mark',
   params: ['bkmk'],
+  ignoreLinkFragment: true,
 })

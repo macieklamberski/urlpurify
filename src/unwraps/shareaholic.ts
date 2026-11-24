@@ -6,6 +6,7 @@ const sharePathRegex = /^\/api\/share\/?$/i
 const extractTarget = createParamExtractor({
   hosts: ['www.shareaholic.com', 'shareaholic.com'],
   params: ['link'],
+  ignoreLinkFragment: true,
 })
 
 // Shareaholic share links (www.shareaholic.com/api/share/?link=<page>&service=<id>, also

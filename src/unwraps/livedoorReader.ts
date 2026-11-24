@@ -1,7 +1,7 @@
 import { isAnyOf, isHostOf } from 'trousse'
 import { getPathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamTarget } from '../utils.js'
+import { readParamTarget } from '../utils.js'
 
 const feedPrefixRegex = /^\/subscribe\/(?=https?:)/i
 
@@ -14,7 +14,7 @@ export const unwrapLivedoorReader: UrlUnwrapper = (url) => {
   }
 
   if (isAnyOf(url.pathname, '/subscribe/')) {
-    return getParamTarget(url, 'url')
+    return readParamTarget(url, 'url')
   }
 
   return getPathTarget(url, feedPrefixRegex)

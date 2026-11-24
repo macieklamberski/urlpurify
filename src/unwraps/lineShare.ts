@@ -1,6 +1,6 @@
 import { isAnyOf, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamTarget } from '../utils.js'
+import { readParamTarget } from '../utils.js'
 
 const sharePaths = [
   {
@@ -25,5 +25,5 @@ export const unwrapLineShare: UrlUnwrapper = (url) => {
   }
 
   // The `text=` beside it is the message, even when it holds only a url.
-  return getParamTarget(url, 'url')
+  return readParamTarget(url, 'url')
 }

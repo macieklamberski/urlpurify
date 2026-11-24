@@ -1,6 +1,6 @@
 import { decodePercent, isAnyOf, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamTarget } from '../utils.js'
+import { readParamTarget } from '../utils.js'
 
 const formPathRegex = /^\/(?:entry|add|entry\/panel)\/?$/i
 const schemePathRegex = /^\/entry\/(?<target>https?(?::|%3a).+)$/i
@@ -19,7 +19,7 @@ export const unwrapHatenaBookmark: UrlUnwrapper = (url) => {
   }
 
   if (isAnyOf(url.pathname, formPathRegex)) {
-    return getParamTarget(url, 'url')
+    return readParamTarget(url, 'url')
   }
 
   let target = url.pathname.match(schemePathRegex)?.groups?.target

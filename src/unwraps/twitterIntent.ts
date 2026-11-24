@@ -1,6 +1,6 @@
 import { isAnyOf, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamTarget } from '../utils.js'
+import { readParamTarget } from '../utils.js'
 
 const pathRegex = /^\/(?:intent\/(?:tweet|post)|share)\/?$/i
 
@@ -14,5 +14,5 @@ export const unwrapTwitterIntent: UrlUnwrapper = (url) => {
   }
 
   // The `text=` beside it is the post's message, even when it holds only a url.
-  return getParamTarget(url, 'url')
+  return readParamTarget(url, 'url')
 }

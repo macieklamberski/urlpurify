@@ -5,12 +5,14 @@ const extractImporter = createParamExtractor({
   hosts: 'player.fm',
   path: '/importer/feed',
   params: ['url'],
+  ignoreLinkFragment: true,
 })
 
 const extractSubscribe = createParamExtractor({
   hosts: 'player.fm',
   path: '/subscribe',
   params: ['id'],
+  ignoreLinkFragment: true,
 })
 
 // Player FM feed importer and subscribe link (player.fm/importer/feed?url=<feed>, also

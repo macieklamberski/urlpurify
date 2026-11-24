@@ -1,6 +1,6 @@
 import { isAnyOf, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamTarget } from '../utils.js'
+import { readParamTarget } from '../utils.js'
 
 const hosts = ['www.blogger.com', 'blogger.com', 'www2.blogger.com', 'draft.blogger.com']
 const paths = ['/blog_this.pyra', '/blog-this.g']
@@ -14,5 +14,5 @@ export const unwrapBloggerBlogThis: UrlUnwrapper = (url) => {
   }
 
   // The `t=` beside it is the quoted text and `n=` the title, free text even when it holds a url.
-  return getParamTarget(url, 'u')
+  return readParamTarget(url, 'u')
 }

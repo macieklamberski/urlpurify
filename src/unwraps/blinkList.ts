@@ -6,4 +6,5 @@ export const unwrapBlinkList = createParamExtractor({
   hosts: ['www.blinklist.com', 'blinklist.com'],
   path: '/index.php',
   params: ['Url'],
+  ignoreLinkFragment: true,
 })

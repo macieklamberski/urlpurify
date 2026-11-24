@@ -8,4 +8,5 @@ export const unwrapWeiboShare: UrlUnwrapper = createParamExtractor({
   hosts: ['service.weibo.com', 'v.t.sina.com.cn'],
   path: '/share/share.php',
   params: ['url'],
+  ignoreLinkFragment: true,
 })

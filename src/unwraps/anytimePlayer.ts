@@ -7,12 +7,14 @@ const extractSubscribe = createParamExtractor({
   hosts,
   path: '/subscribe',
   params: ['url'],
+  ignoreLinkFragment: true,
 })
 
 const extractSubscribeHtml = createParamExtractor({
   hosts,
   path: '/subscribe.html',
   params: ['url'],
+  ignoreLinkFragment: true,
 })
 
 // Anytime Player subscribe button (anytimeplayer.app/subscribe?url=<feed>, also /subscribe.html).

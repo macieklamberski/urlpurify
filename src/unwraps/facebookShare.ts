@@ -1,6 +1,6 @@
 import { isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamTarget } from '../utils.js'
+import { readParamTarget } from '../utils.js'
 
 const hosts = [
   'www.facebook.com',
@@ -24,21 +24,21 @@ export const unwrapFacebookShare: UrlUnwrapper = (url) => {
   }
 
   if (sharerPathRegex.test(url.pathname)) {
-    const target = getParamTarget(url, 'u')
+    const target = readParamTarget(url, 'u')
 
     if (target) {
       // One CMS writes its share link as `u=href=<target>`, the attribute name kept in the value.
       return target.replace(hrefPrefixRegex, '')
     }
 
-    return getParamTarget(url, 'p[url]')
+    return readParamTarget(url, 'p[url]')
   }
 
   if (shareDialogPathRegex.test(url.pathname)) {
-    return getParamTarget(url, 'href')
+    return readParamTarget(url, 'href')
   }
 
   if (linkDialogPathRegex.test(url.pathname)) {
-    return getParamTarget(url, 'link')
+    return readParamTarget(url, 'link')
   }
 }

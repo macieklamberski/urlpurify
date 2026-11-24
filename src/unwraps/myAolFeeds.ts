@@ -7,4 +7,5 @@ export const unwrapMyAolFeeds: UrlUnwrapper = createParamExtractor({
   hosts: ['feeds.my.aol.com'],
   path: '/add.jsp',
   params: ['url'],
+  ignoreLinkFragment: true,
 })
