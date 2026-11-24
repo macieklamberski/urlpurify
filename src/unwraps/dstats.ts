@@ -1,18 +1,18 @@
 import { isHostOf } from 'trousse'
 import { getPathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 // The target keeps its scheme, as in /download/http://example.com/file.pdf.
 const downloadPrefixRegex = /^\/download\/(?=https?:\/)/i
 
-const extractDownload = createParamExtractor({
+const extractDownload = createQueryUnwrapper({
   hosts: 'dstats.net',
   path: '/download.php',
   params: ['file'],
 })
 
-const extractForward = createParamExtractor({
+const extractForward = createQueryUnwrapper({
   hosts: 'dstats.net',
   path: '/fwd.php',
   params: ['url'],

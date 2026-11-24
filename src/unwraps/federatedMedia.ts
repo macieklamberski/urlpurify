@@ -1,9 +1,9 @@
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 // Federated Media ad click (r1.fmpub.net/?k1=<id>&k2=<id>&r=<target>). Not included in
 // defaultUnwrappers: an ad click pays the publisher.
-export const unwrapFederatedMedia: UrlUnwrapper = createParamExtractor({
+export const unwrapFederatedMedia: UrlUnwrapper = createQueryUnwrapper({
   hosts: 'r1.fmpub.net',
   path: '/',
   params: ['r'],

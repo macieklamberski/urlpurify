@@ -1,14 +1,14 @@
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
-const extractListen = createParamExtractor({
+const extractListen = createQueryUnwrapper({
   hosts: 'play.prx.org',
   path: '/listen',
   params: ['uf'],
   ignoreLinkFragment: true,
 })
 
-const extractEmbed = createParamExtractor({
+const extractEmbed = createQueryUnwrapper({
   hosts: 'play.prx.org',
   path: '/e',
   params: ['uf'],

@@ -1,8 +1,8 @@
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 // Ehub affiliate click (ehub.cz/system/scripts/click.php?a_aid=<id>&a_bid=<id>&desturl=<target>).
 // Not included in defaultUnwrappers: unwrapping drops the publisher's commission.
-export const unwrapEhub = createParamExtractor({
+export const unwrapEhub = createQueryUnwrapper({
   hosts: 'ehub.cz',
   path: '/system/scripts/click.php',
   params: ['desturl'],

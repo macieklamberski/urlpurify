@@ -1,7 +1,7 @@
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 // Juejin external link redirect (link.juejin.cn/?target=<target>), also on the old link.juejin.im.
-export const unwrapJuejin = createParamExtractor({
+export const unwrapJuejin = createQueryUnwrapper({
   hosts: ['link.juejin.cn', 'link.juejin.im'],
   path: '/',
   params: ['target'],

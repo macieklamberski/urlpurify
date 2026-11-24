@@ -1,9 +1,9 @@
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 const trackPathRegex = /^\/(?:(?:(?:trace\/)?link|l)\/[^/]+)?$/i
 
-const extractTarget = createParamExtractor({
+const extractTarget = createQueryUnwrapper({
   hosts: 'mailtrack.io',
   params: ['url'],
 })

@@ -1,6 +1,6 @@
 import { isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 const appPathRegex = /^\/app\/[\w-]+$/i
 
@@ -8,14 +8,14 @@ const appPathRegex = /^\/app\/[\w-]+$/i
 // See: https://firebase.google.com/docs/dynamic-links/create-manually.
 const params = ['ofl', 'link']
 
-const extractTarget = createParamExtractor({
+const extractTarget = createQueryUnwrapper({
   domains: ['app.goo.gl', 'page.link'],
   path: '/',
   params,
 })
 
 // goo.gl itself is the URL shortener, so it matches exactly and only on /app/<name>.
-const extractGooGlTarget = createParamExtractor({
+const extractGooGlTarget = createQueryUnwrapper({
   hosts: 'goo.gl',
   params,
 })

@@ -1,9 +1,9 @@
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 const pathRegex = /^\/linkclick_\d+_\d+$/i
 
-const extractUrl = createParamExtractor({
+const extractUrl = createQueryUnwrapper({
   hosts: 'go.buybox.click',
   params: ['url'],
 })

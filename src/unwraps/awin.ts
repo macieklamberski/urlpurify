@@ -1,13 +1,13 @@
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
-const unwrapAwinCread = createParamExtractor({
+const unwrapAwinCread = createQueryUnwrapper({
   hosts: ['www.awin1.com', 'awin1.com'],
   path: '/cread.php',
   params: ['ued', 'p'],
 })
 
-const unwrapAwinClick = createParamExtractor({
+const unwrapAwinClick = createQueryUnwrapper({
   hosts: 'www.awin1.com',
   path: '/awclick.php',
   params: ['ued', 'p'],

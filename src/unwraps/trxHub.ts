@@ -1,9 +1,9 @@
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 const clickPathRegex = /^\/(?:xid|syid)\/[^/]+$/i
 
-const extractTarget = createParamExtractor({
+const extractTarget = createQueryUnwrapper({
   hosts: 'clicks.trx-hub.com',
   params: ['q'],
 })

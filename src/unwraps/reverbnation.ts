@@ -1,9 +1,9 @@
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 const paths = ['/fan_reach/pt', '/c/fan_reach/pt', '/controller/fan_reach/pt']
 
-const extractTarget = createParamExtractor({
+const extractTarget = createQueryUnwrapper({
   hosts: ['www.rvrb.me', 'www.reverbnation.com'],
   params: ['url', 'rn_url'],
 })

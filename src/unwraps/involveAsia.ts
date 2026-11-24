@@ -1,14 +1,14 @@
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 const deepLinkPathRegex = /^\/deep_link\/\d+(?:\/\d+)?$/i
 
-const extractDeepLink = createParamExtractor({
+const extractDeepLink = createQueryUnwrapper({
   hosts: 'go.isclix.com',
   params: ['url'],
 })
 
-const extractAffiliateLink = createParamExtractor({
+const extractAffiliateLink = createQueryUnwrapper({
   hosts: 'invol.co',
   path: '/aff_m',
   params: ['url'],

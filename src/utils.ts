@@ -3,7 +3,7 @@ import type { UrlUnwrapper } from './types.js'
 
 // `domains` also matches every subdomain. `hosts` matches a host exactly, or by regex, for a domain
 // where a third party can get a subdomain, such as a blog host.
-export type ParamExtractorConfig = (
+export type QueryUnwrapperConfig = (
   | { domains: string | Array<string>; hosts?: never }
   | { hosts: string | Array<string> | RegExp; domains?: never }
 ) & {
@@ -80,7 +80,7 @@ export const getParamTarget = (url: URL, name: string, index = 0): string | unde
   return appendLinkFragment(target, url)
 }
 
-export const createParamExtractor = (config: ParamExtractorConfig): UrlUnwrapper => {
+export const createQueryUnwrapper = (config: QueryUnwrapperConfig): UrlUnwrapper => {
   const isHostMatch = (url: URL): boolean => {
     if (config.domains !== undefined) {
       return isHostOrSubdomainOf(url, config.domains)
@@ -117,6 +117,12 @@ export const createParamExtractor = (config: ParamExtractorConfig): UrlUnwrapper
     }
   }
 }
+
+/** @deprecated Use `QueryUnwrapperConfig` instead. */
+export type ParamExtractorConfig = QueryUnwrapperConfig
+
+/** @deprecated Use `createQueryUnwrapper` instead. */
+export const createParamExtractor = createQueryUnwrapper
 
 const utf8Encoder = new TextEncoder()
 

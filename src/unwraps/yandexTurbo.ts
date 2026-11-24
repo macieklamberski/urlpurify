@@ -1,5 +1,5 @@
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 const turbopagesHostRegex = /\.turbopages\.org$/
 // turbopages.org answers 404 as of 2026-09-27, so only archived feeds carry its links.
@@ -10,7 +10,7 @@ const turbopagesSlashSFirstRegex = /^\/s\/([^/]+)\/(.*)$/i
 const dashRegex = /-/g
 const yandexHostRegex = /^(?:www\.)?yandex\.(?:com\.tr|[a-z]{2,3})$/
 
-const extractTurboTarget = createParamExtractor({
+const extractTurboTarget = createQueryUnwrapper({
   hosts: yandexHostRegex,
   path: '/turbo',
   params: ['text'],

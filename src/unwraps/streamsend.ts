@@ -1,11 +1,11 @@
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 // Some senders left the recipient hash unrendered, such as `{{{tracking_hash}}}`, so the two
 // hash segments take any characters.
 const clickPathRegex = /^\/c\/\d+\/\d+\/[^/]+\/[^/]+$/i
 
-const extractTarget = createParamExtractor({
+const extractTarget = createQueryUnwrapper({
   hosts: 'app.streamsend.com',
   params: ['redirect_to'],
 })

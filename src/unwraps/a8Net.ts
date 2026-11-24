@@ -1,13 +1,13 @@
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
-const extractRedirectTarget = createParamExtractor({
+const extractRedirectTarget = createQueryUnwrapper({
   hosts: ['px.a8.net', 'rpx.a8.net', 'www.a8.net', 'px.moba8.net'],
   path: '/svt/ejp',
   params: ['a8ejpredirect'],
 })
 
-const extractDeeplinkTarget = createParamExtractor({
+const extractDeeplinkTarget = createQueryUnwrapper({
   hosts: 'ow.a8.net',
   params: ['url'],
 })

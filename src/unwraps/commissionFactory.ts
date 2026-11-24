@@ -1,9 +1,9 @@
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 const pathRegex = /^\/\d+\/[bt]\/\d+$/
 
-const extractUrl = createParamExtractor({
+const extractUrl = createQueryUnwrapper({
   hosts: 't.cfjump.com',
   params: ['Url'],
 })

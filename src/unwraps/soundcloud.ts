@@ -1,7 +1,7 @@
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 // SoundCloud exit link (exit.sc/?url=<target>).
-export const unwrapSoundcloud = createParamExtractor({
+export const unwrapSoundcloud = createQueryUnwrapper({
   hosts: 'exit.sc',
   path: '/',
   params: ['url'],

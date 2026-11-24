@@ -1,14 +1,14 @@
 import { getQueryParam } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
-const extractLogExternalLink = createParamExtractor({
+const extractLogExternalLink = createQueryUnwrapper({
   hosts: ['ok.ru', 'www.ok.ru', 'odnoklassniki.ru', 'www.odnoklassniki.ru'],
   path: '/dk',
   params: ['st.link'],
 })
 
-const extractOutLinkWarningTarget = createParamExtractor({
+const extractOutLinkWarningTarget = createQueryUnwrapper({
   hosts: ['m.ok.ru', 'm.odnoklassniki.ru'],
   path: '/dk',
   params: ['st.rfn'],

@@ -1,5 +1,5 @@
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 const redirectPathRegex = /^\/r\/?$/i
 const globalIdentityPathRegex = /^\/m\/global-identity(?:-2)?$/i
@@ -7,12 +7,12 @@ const globalIdentityPathRegex = /^\/m\/global-identity(?:-2)?$/i
 // Authors and publications get their own `<name>.medium.com`, so the hosts match exactly.
 const hosts = ['medium.com', 'gen.medium.com']
 
-const extractRedirectTarget = createParamExtractor({
+const extractRedirectTarget = createQueryUnwrapper({
   hosts,
   params: ['url'],
 })
 
-const extractGlobalIdentityTarget = createParamExtractor({
+const extractGlobalIdentityTarget = createQueryUnwrapper({
   hosts,
   params: ['redirectUrl'],
 })

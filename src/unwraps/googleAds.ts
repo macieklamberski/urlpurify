@@ -1,27 +1,27 @@
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 import { googleHostRegex } from './google.js'
 
 const extractors = [
-  createParamExtractor({ hosts: googleHostRegex, path: '/aclk', params: ['adurl'] }),
-  createParamExtractor({ hosts: googleHostRegex, path: '/pagead/iclk', params: ['adurl'] }),
-  createParamExtractor({ hosts: 'syndicatedsearch.goog', path: '/aclk', params: ['adurl'] }),
-  createParamExtractor({
+  createQueryUnwrapper({ hosts: googleHostRegex, path: '/aclk', params: ['adurl'] }),
+  createQueryUnwrapper({ hosts: googleHostRegex, path: '/pagead/iclk', params: ['adurl'] }),
+  createQueryUnwrapper({ hosts: 'syndicatedsearch.goog', path: '/aclk', params: ['adurl'] }),
+  createQueryUnwrapper({
     hosts: 'www.googleadservices.com',
     path: '/pagead/aclk',
     params: ['adurl'],
   }),
-  createParamExtractor({
+  createQueryUnwrapper({
     hosts: ['adclick.g.doubleclick.net', 'googleads.g.doubleclick.net'],
     path: '/aclk',
     params: ['adurl'],
   }),
-  createParamExtractor({
+  createQueryUnwrapper({
     hosts: ['googleads.g.doubleclick.net', 'pagead2.googlesyndication.com'],
     path: '/pagead/iclk',
     params: ['adurl'],
   }),
-  createParamExtractor({
+  createQueryUnwrapper({
     hosts: ['ad.doubleclick.net', 'adclick.g.doubleclick.net', 'googleads.g.doubleclick.net'],
     path: '/pcs/click',
     params: ['adurl'],

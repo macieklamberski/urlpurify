@@ -1,10 +1,10 @@
 import { decodePercent, isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 const derefPathRegex = /^\/deref\/(.+)$/i
 
-const unwrapDerefPage = createParamExtractor({
+const unwrapDerefPage = createQueryUnwrapper({
   hosts: 'www.researchgate.net',
   path: '/go.Deref.html',
   params: ['url'],

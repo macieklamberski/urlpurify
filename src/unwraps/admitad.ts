@@ -1,9 +1,9 @@
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 const clickPathRegex = /^\/(?:g|goto)\/[0-9a-z]+\/$/i
 
-const extractTarget = createParamExtractor({
+const extractTarget = createQueryUnwrapper({
   hosts: [
     'ad.admitad.com',
     'aflink.ru',

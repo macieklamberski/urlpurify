@@ -1,9 +1,9 @@
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 const clickPaths = ['/icp/relay.php', '/icp/rclick.php']
 
-const extractDestination = createParamExtractor({
+const extractDestination = createQueryUnwrapper({
   hosts: /^(?:click(?:-\d+)?|ic1)\.icptrack\.com$/,
   params: ['destination'],
 })

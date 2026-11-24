@@ -1,8 +1,8 @@
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 // FanBridge mailing-list click tracker (clicks.fanbridge.com/l.php?cid=<id>&sid=<id>&url=<target>).
 // Opt-in: an email click tracker, like the others in its group.
-export const unwrapFanbridge = createParamExtractor({
+export const unwrapFanbridge = createQueryUnwrapper({
   hosts: 'clicks.fanbridge.com',
   path: '/l.php',
   params: ['url'],

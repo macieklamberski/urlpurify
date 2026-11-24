@@ -1,6 +1,6 @@
 import { isAnyOf, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor, readParamTarget } from '../utils.js'
+import { createQueryUnwrapper, readParamTarget } from '../utils.js'
 
 const hosts = ['add.my.yahoo.com', 'add.my.yahoo.co.jp']
 
@@ -10,13 +10,13 @@ const usRedirectPathRegex =
 const jpRedirectPathRegex =
   /^\/myyahoo\/[^*]*\*https?:\/\/add\.my\.yahoo\.(?:com\/(?:rss|content)|co\.jp\/rss)$/i
 
-const unwrapRss = createParamExtractor({
+const unwrapRss = createQueryUnwrapper({
   hosts,
   path: '/rss',
   params: ['url'],
   ignoreLinkFragment: true,
 })
-const unwrapContent = createParamExtractor({
+const unwrapContent = createQueryUnwrapper({
   hosts: 'add.my.yahoo.com',
   path: '/content',
   params: ['url'],

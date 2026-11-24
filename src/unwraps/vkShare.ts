@@ -1,9 +1,9 @@
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 // VK share (vk.com/share.php?url=<page>, also on vk.ru, the www. and new. hosts, and the old
 // vkontakte.ru). The title=, description=, image= and comment= beside it never carry the page.
 // Opt-in: unwrapping returns the shared page, not the form that shares it.
-export const unwrapVkShare = createParamExtractor({
+export const unwrapVkShare = createQueryUnwrapper({
   hosts: [
     'vk.com',
     'www.vk.com',

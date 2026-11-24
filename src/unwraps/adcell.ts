@@ -1,9 +1,9 @@
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 const clickPathRegex = /^\/(?:p\/click|click\.php|promotion\/click\/promoId\/\d+\/slotId\/\d+)$/i
 
-const extractTarget = createParamExtractor({
+const extractTarget = createQueryUnwrapper({
   hosts: ['t.adcell.com', 'www.adcell.de'],
   params: ['param0'],
 })

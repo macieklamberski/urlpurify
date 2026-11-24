@@ -1,11 +1,11 @@
 import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor, getParamValues } from '../utils.js'
+import { createQueryUnwrapper, getParamValues } from '../utils.js'
 
 // The query opens with the click id as a bare key, such as `?P5139555780512191&redir=`.
 const merchantQueryRegex = /^\?P[0-9A-F]{13,16}&/i
 
-const extractTracker = createParamExtractor({
+const extractTracker = createQueryUnwrapper({
   hosts: 'action.metaffiliation.com',
   path: '/trk.php',
   params: ['redir'],

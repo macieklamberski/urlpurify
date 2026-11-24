@@ -1,15 +1,15 @@
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 const paths = ['/click', '/e3ds/mail_link.php']
 
 // Every subdomain of the two analytics domains runs the redirect, one per sender account.
-const extractFromAnalyticsDomain = createParamExtractor({
+const extractFromAnalyticsDomain = createQueryUnwrapper({
   domains: ['dmanalytics1.com', 'dmanalytics2.com'],
   params: ['u'],
 })
 
-const extractFromEthreemail = createParamExtractor({
+const extractFromEthreemail = createQueryUnwrapper({
   hosts: 'ethreemail.com',
   params: ['u'],
 })

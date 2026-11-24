@@ -1,16 +1,16 @@
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 const hosts = ['anytimeplayer.app', 'www.anytimeplayer.app']
 
-const extractSubscribe = createParamExtractor({
+const extractSubscribe = createQueryUnwrapper({
   hosts,
   path: '/subscribe',
   params: ['url'],
   ignoreLinkFragment: true,
 })
 
-const extractSubscribeHtml = createParamExtractor({
+const extractSubscribeHtml = createQueryUnwrapper({
   hosts,
   path: '/subscribe.html',
   params: ['url'],

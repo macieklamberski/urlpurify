@@ -1,9 +1,9 @@
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 const pathRegex = /^\/click\/[0-9a-f]{8}-[0-9a-f]{8}-[0-9a-f]{8}\/$/i
 
-const extractDeepLink = createParamExtractor({
+const extractDeepLink = createQueryUnwrapper({
   hosts: 'converti.se',
   params: ['deep_link'],
 })

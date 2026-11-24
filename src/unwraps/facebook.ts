@@ -1,13 +1,13 @@
 import { decodePercent, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 const legacyTargetRegex = /^\/l\/[\w-]+[/;]\/*([^/].*)$/i
 const legacyEncodedSchemeRegex = /^https?%(?:25)?3A/i
 const encodedSchemeRegex = /^https?%3A/i
 const schemeRegex = /^https?:/i
 
-const unwrapLinkPhp = createParamExtractor({
+const unwrapLinkPhp = createQueryUnwrapper({
   hosts: [
     'l.facebook.com',
     'lm.facebook.com',
@@ -27,13 +27,13 @@ const unwrapLinkPhp = createParamExtractor({
   params: ['u'],
 })
 
-const unwrapRoot = createParamExtractor({
+const unwrapRoot = createQueryUnwrapper({
   hosts: 'l.facebook.com',
   path: '/',
   params: ['u'],
 })
 
-const unwrapLsr = createParamExtractor({
+const unwrapLsr = createQueryUnwrapper({
   hosts: 'l.facebook.com',
   path: '/lsr.php',
   params: ['u'],

@@ -1,8 +1,8 @@
 import { decodeBase64Url, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
-const extractEncoded = createParamExtractor({
+const extractEncoded = createQueryUnwrapper({
   hosts: /^(?:us|eu|ca)-[a-z]+-\d\.protection\.sophos\.com$/,
   path: '/',
   params: ['u'],

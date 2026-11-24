@@ -1,22 +1,22 @@
 import { isAnyOf, isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor, readParamTarget } from '../utils.js'
+import { createQueryUnwrapper, readParamTarget } from '../utils.js'
 
 const submitPathRegex = /^\/submit\/?$/i
 
-const unwrapBookmarklet = createParamExtractor({
+const unwrapBookmarklet = createQueryUnwrapper({
   hosts: ['bookmarks.yahoo.com', 'myweb2.search.yahoo.com', 'myweb.yahoo.com'],
   path: '/myresults/bookmarklet',
   params: ['u'],
   ignoreLinkFragment: true,
 })
-const unwrapToolbar = createParamExtractor({
+const unwrapToolbar = createQueryUnwrapper({
   hosts: 'bookmarks.yahoo.com',
   path: '/toolbar/savebm',
   params: ['u'],
   ignoreLinkFragment: true,
 })
-const unwrapBuzz = createParamExtractor({
+const unwrapBuzz = createQueryUnwrapper({
   hosts: ['buzz.yahoo.com', 'fr.buzz.yahoo.com', 'uk.buzz.yahoo.com'],
   path: '/buzz',
   params: ['targetUrl', 'guid'],

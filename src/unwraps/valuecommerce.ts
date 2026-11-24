@@ -1,17 +1,17 @@
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 const dckPathRegex = /^\/dck\/[0-9a-f]+$/i
 
 // ck.jp.ap.valuecommerce.com/servlet/referral?vc_url=<target>
-const unwrapReferral = createParamExtractor({
+const unwrapReferral = createQueryUnwrapper({
   hosts: 'ck.jp.ap.valuecommerce.com',
   path: '/servlet/referral',
   params: ['vc_url'],
 })
 
 // atq.ck.valuecommerce.com/servlet/atq/referral?vc_url=<target>
-const unwrapAtqReferral = createParamExtractor({
+const unwrapAtqReferral = createQueryUnwrapper({
   hosts: 'atq.ck.valuecommerce.com',
   path: '/servlet/atq/referral',
   params: ['vc_url'],
@@ -19,7 +19,7 @@ const unwrapAtqReferral = createParamExtractor({
 
 // dalr.valuecommerce.com/dck/<id>?vcurl=<target>
 // `ckref` is the publisher's page that carried the link, not the target.
-const unwrapDck = createParamExtractor({
+const unwrapDck = createQueryUnwrapper({
   hosts: 'dalr.valuecommerce.com',
   params: ['vcurl'],
 })

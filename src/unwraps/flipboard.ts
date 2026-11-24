@@ -1,7 +1,7 @@
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 // Flipboard outbound redirect (flipboard.com/redirect?url=<target>).
-export const unwrapFlipboard = createParamExtractor({
+export const unwrapFlipboard = createQueryUnwrapper({
   hosts: 'flipboard.com',
   path: '/redirect',
   params: ['url'],
