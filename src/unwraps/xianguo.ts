@@ -6,4 +6,5 @@ export const unwrapXianguo = createParamExtractor({
   hosts: ['xianguo.com', 'www.xianguo.com'],
   path: '/subscribe.php',
   params: ['url'],
+  ignoreLinkFragment: true,
 })

@@ -1,6 +1,6 @@
 import { isAnyOf, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamTarget } from '../utils.js'
+import { readParamTarget } from '../utils.js'
 
 const hosts = ['digg.com', 'www.digg.com']
 
@@ -15,5 +15,5 @@ export const unwrapDiggSubmit: UrlUnwrapper = (url) => {
   }
 
   // The `title=`, `bodytext=` and `topic=` beside it are the story's text, never its target.
-  return getParamTarget(url, 'url')
+  return readParamTarget(url, 'url')
 }

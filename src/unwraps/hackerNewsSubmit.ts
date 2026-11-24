@@ -7,4 +7,5 @@ export const unwrapHackerNewsSubmit: UrlUnwrapper = createParamExtractor({
   hosts: 'news.ycombinator.com',
   path: '/submitlink',
   params: ['u'],
+  ignoreLinkFragment: true,
 })

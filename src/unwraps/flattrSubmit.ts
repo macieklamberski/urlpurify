@@ -7,4 +7,5 @@ export const unwrapFlattrSubmit = createParamExtractor({
   hosts: 'flattr.com',
   path: '/submit/auto',
   params: ['url'],
+  ignoreLinkFragment: true,
 })

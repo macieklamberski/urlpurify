@@ -7,4 +7,5 @@ export const unwrapGabCompose = createParamExtractor({
   hosts: ['gab.com', 'www.gab.com'],
   path: '/compose',
   params: ['url'],
+  ignoreLinkFragment: true,
 })

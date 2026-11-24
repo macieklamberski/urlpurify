@@ -8,4 +8,5 @@ export const unwrapPodcastReady: UrlUnwrapper = createParamExtractor({
   hosts: ['podcastready.com', 'www.podcastready.com'],
   path: '/oneclick_bookmark.php',
   params: ['url'],
+  ignoreLinkFragment: true,
 })

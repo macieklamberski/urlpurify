@@ -1,6 +1,6 @@
 import { isAnyOf, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamTarget } from '../utils.js'
+import { readParamTarget } from '../utils.js'
 
 const hosts = ['getpocket.com', 'www.getpocket.com']
 const paths = ['/save', '/edit', '/edit.php']
@@ -13,5 +13,5 @@ export const unwrapPocketSave: UrlUnwrapper = (url) => {
   }
 
   // The `title=` beside it is free text, even when it holds only a url.
-  return getParamTarget(url, 'url')
+  return readParamTarget(url, 'url')
 }

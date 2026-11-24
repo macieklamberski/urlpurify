@@ -7,4 +7,5 @@ export const unwrapRssBoardValidator: UrlUnwrapper = createParamExtractor({
   hosts: ['rssboard.org', 'www.rssboard.org'],
   path: '/rss-validator/check.cgi',
   params: ['url'],
+  ignoreLinkFragment: true,
 })

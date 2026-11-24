@@ -15,12 +15,5 @@ export const unwrapVocus: UrlUnwrapper = (url) => {
     return
   }
 
-  const target = extractTarget(url)
-
-  if (!target) {
-    return
-  }
-
-  // An unencoded target's fragment lands in the wrapper's own `hash`.
-  return `${target}${url.hash}`
+  return extractTarget(url)
 }

@@ -7,4 +7,5 @@ export const unwrapPageflakes: UrlUnwrapper = createParamExtractor({
   hosts: ['pageflakes.com', 'www.pageflakes.com'],
   path: '/subscribe.aspx',
   params: ['url'],
+  ignoreLinkFragment: true,
 })

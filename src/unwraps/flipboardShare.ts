@@ -1,6 +1,6 @@
 import { isAnyOf, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamTarget } from '../utils.js'
+import { readParamTarget } from '../utils.js'
 
 const pathRegex = /^\/bookmarklet\/popout\/?$/i
 
@@ -15,5 +15,5 @@ export const unwrapFlipboardShare: UrlUnwrapper = (url) => {
   }
 
   // The `title=` beside it is the story's free-text title, and `v=` is a version or a title.
-  return getParamTarget(url, 'url')
+  return readParamTarget(url, 'url')
 }

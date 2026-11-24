@@ -1,6 +1,6 @@
 import { getQueryParam, isAnyOf, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamTarget } from '../utils.js'
+import { readParamTarget } from '../utils.js'
 
 const hosts = ['odnoklassniki.ru', 'www.odnoklassniki.ru', 'ok.ru', 'www.ok.ru']
 const connectHosts = ['connect.ok.ru']
@@ -15,7 +15,7 @@ export const unwrapOkShare: UrlUnwrapper = (url) => {
 
   if (isHostOf(url, hosts)) {
     if (isAnyOf(url.pathname, '/dk') && isAnyOf(command, 'addShare')) {
-      return getParamTarget(url, 'st._surl')
+      return readParamTarget(url, 'st._surl')
     }
 
     return
@@ -26,10 +26,10 @@ export const unwrapOkShare: UrlUnwrapper = (url) => {
   }
 
   if (isAnyOf(url.pathname, '/offer')) {
-    return getParamTarget(url, 'url')
+    return readParamTarget(url, 'url')
   }
 
   if (isAnyOf(url.pathname, '/dk') && isAnyOf(command, widgetCommands)) {
-    return getParamTarget(url, 'st.shareUrl')
+    return readParamTarget(url, 'st.shareUrl')
   }
 }

@@ -1,6 +1,6 @@
 import { getPathSegments, isAnyOf, isHostOf, isLocale } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamTarget } from '../utils.js'
+import { readParamTarget } from '../utils.js'
 
 const hosts = ['antennapod.org', 'www.antennapod.org']
 
@@ -22,5 +22,5 @@ export const unwrapAntennaPod: UrlUnwrapper = (url) => {
     return
   }
 
-  return getParamTarget(url, 'url')
+  return readParamTarget(url, 'url')
 }

@@ -6,6 +6,7 @@ const extractAdd = createParamExtractor({
   hosts: ['live.com', 'www.live.com'],
   path: '/',
   params: ['add'],
+  ignoreLinkFragment: true,
 })
 
 // Windows Live subscribe button (www.live.com/?add=<feed>, also on live.com). Opt-in in the

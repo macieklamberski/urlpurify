@@ -1,6 +1,6 @@
 import { isAnyOf, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamTarget } from '../utils.js'
+import { readParamTarget } from '../utils.js'
 
 const hosts = ['www.instapaper.com', 'instapaper.com']
 const paths = ['/hello2', '/edit']
@@ -13,5 +13,5 @@ export const unwrapInstapaperSave: UrlUnwrapper = (url) => {
   }
 
   // The `title=` and `description=` beside it are free text, even when they hold only a url.
-  return getParamTarget(url, 'url')
+  return readParamTarget(url, 'url')
 }

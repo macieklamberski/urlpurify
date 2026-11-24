@@ -1,6 +1,6 @@
 import { isAnyOf, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor, getParamTarget } from '../utils.js'
+import { createParamExtractor, readParamTarget } from '../utils.js'
 
 const hosts = ['add.my.yahoo.com', 'add.my.yahoo.co.jp']
 
@@ -10,11 +10,17 @@ const usRedirectPathRegex =
 const jpRedirectPathRegex =
   /^\/myyahoo\/[^*]*\*https?:\/\/add\.my\.yahoo\.(?:com\/(?:rss|content)|co\.jp\/rss)$/i
 
-const unwrapRss = createParamExtractor({ hosts, path: '/rss', params: ['url'] })
+const unwrapRss = createParamExtractor({
+  hosts,
+  path: '/rss',
+  params: ['url'],
+  ignoreLinkFragment: true,
+})
 const unwrapContent = createParamExtractor({
   hosts: 'add.my.yahoo.com',
   path: '/content',
   params: ['url'],
+  ignoreLinkFragment: true,
 })
 
 // Add to My Yahoo subscribe button (add.my.yahoo.com/rss?url=<feed>, add.my.yahoo.co.jp/rss?url=
@@ -27,7 +33,7 @@ export const unwrapAddToMyYahoo: UrlUnwrapper = (url) => {
       return
     }
 
-    return getParamTarget(url, 'url')
+    return readParamTarget(url, 'url')
   }
 
   if (isHostOf(url, 'rd.yahoo.co.jp')) {
@@ -35,7 +41,7 @@ export const unwrapAddToMyYahoo: UrlUnwrapper = (url) => {
       return
     }
 
-    return getParamTarget(url, 'url')
+    return readParamTarget(url, 'url')
   }
 
   return unwrapRss(url) ?? unwrapContent(url)

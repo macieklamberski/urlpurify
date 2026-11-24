@@ -1,6 +1,6 @@
 import { decodePercent, isAnyOf, isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { decodeEncodedScheme, getParamTarget } from '../utils.js'
+import { decodeEncodedScheme, readParamTarget } from '../utils.js'
 import { googleHostRegex } from './google.js'
 
 const feedPathRegex = /^\/reader\/(?:view|m\/view|lite|preview\/\*)\/feed\/(?<target>.+)$/i
@@ -38,5 +38,5 @@ export const unwrapGoogleReader: UrlUnwrapper = (url) => {
     return
   }
 
-  return getParamTarget(url, 'feedurl')
+  return readParamTarget(url, 'feedurl')
 }

@@ -8,4 +8,5 @@ export const unwrapDiigoPost: UrlUnwrapper = createParamExtractor({
   hosts: ['www.diigo.com', 'diigo.com', 'secure.diigo.com'],
   path: '/post',
   params: ['url'],
+  ignoreLinkFragment: true,
 })

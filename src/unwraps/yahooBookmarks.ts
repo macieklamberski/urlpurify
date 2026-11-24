@@ -1,6 +1,6 @@
 import { isAnyOf, isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor, getParamTarget } from '../utils.js'
+import { createParamExtractor, readParamTarget } from '../utils.js'
 
 const submitPathRegex = /^\/submit\/?$/i
 
@@ -8,16 +8,19 @@ const unwrapBookmarklet = createParamExtractor({
   hosts: ['bookmarks.yahoo.com', 'myweb2.search.yahoo.com', 'myweb.yahoo.com'],
   path: '/myresults/bookmarklet',
   params: ['u'],
+  ignoreLinkFragment: true,
 })
 const unwrapToolbar = createParamExtractor({
   hosts: 'bookmarks.yahoo.com',
   path: '/toolbar/savebm',
   params: ['u'],
+  ignoreLinkFragment: true,
 })
 const unwrapBuzz = createParamExtractor({
   hosts: ['buzz.yahoo.com', 'fr.buzz.yahoo.com', 'uk.buzz.yahoo.com'],
   path: '/buzz',
   params: ['targetUrl', 'guid'],
+  ignoreLinkFragment: true,
 })
 
 const unwrapBuzzSubmit: UrlUnwrapper = (url) => {
@@ -25,14 +28,14 @@ const unwrapBuzzSubmit: UrlUnwrapper = (url) => {
     return
   }
 
-  const submitUrl = getParamTarget(url, 'submitUrl')
+  const submitUrl = readParamTarget(url, 'submitUrl')
 
   if (submitUrl && isHttpUrl(submitUrl)) {
     return submitUrl
   }
 
   // Some share links put the title in submitUrl= and the page in u=.
-  return getParamTarget(url, 'u')
+  return readParamTarget(url, 'u')
 }
 
 // Yahoo Bookmarks, MyWeb and Buzz share buttons

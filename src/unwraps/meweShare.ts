@@ -6,4 +6,5 @@ export const unwrapMeweShare = createParamExtractor({
   hosts: 'mewe.com',
   path: '/share',
   params: ['link'],
+  ignoreLinkFragment: true,
 })

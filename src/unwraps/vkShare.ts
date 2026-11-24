@@ -15,4 +15,5 @@ export const unwrapVkShare = createParamExtractor({
   ],
   path: '/share.php',
   params: ['url'],
+  ignoreLinkFragment: true,
 })

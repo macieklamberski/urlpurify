@@ -9,6 +9,7 @@ export type ParamExtractorConfig = (
 ) & {
   path?: string
   params: Array<string>
+  ignoreLinkFragment?: boolean // The link opens a page, not a redirect, per `readParamTarget`
 }
 
 const encodedSchemeRegex = /^https?%3A/i
@@ -43,9 +44,21 @@ export const getParamValues = (url: URL, name: string): Array<string> => {
   return raws.map(decodeParamValue)
 }
 
+// A redirect whose `Location` has no fragment lands on the link's own, so a target without one
+// takes the link's. An escaped target's own `%23` fragment wins.
+export const appendLinkFragment = (target: string, url: URL): string => {
+  if (target.includes('#')) {
+    return target
+  }
+
+  return `${target}${url.hash}`
+}
+
 // The target a carrier param holds, read as `getParamValues` reads it and decoded once more when
-// encoded twice: the first value, or the one at `index`, such as -1 for the last.
-export const getParamTarget = (url: URL, name: string, index = 0): string | undefined => {
+// encoded twice: the first value, or the one at `index`, such as -1 for the last. For a link that
+// opens a page, such as a share intent or an archive's own view: the page reads the carrier from
+// the query, so the link's fragment stays on that page.
+export const readParamTarget = (url: URL, name: string, index = 0): string | undefined => {
   const value = getParamValues(url, name).at(index)
 
   if (!value) {
@@ -53,6 +66,18 @@ export const getParamTarget = (url: URL, name: string, index = 0): string | unde
   }
 
   return decodeEncodedScheme(value)
+}
+
+// The target a redirect's carrier param holds, read by `readParamTarget`, with the link's fragment
+// per `appendLinkFragment`.
+export const getParamTarget = (url: URL, name: string, index = 0): string | undefined => {
+  const target = readParamTarget(url, name, index)
+
+  if (!target) {
+    return
+  }
+
+  return appendLinkFragment(target, url)
 }
 
 export const createParamExtractor = (config: ParamExtractorConfig): UrlUnwrapper => {
@@ -78,11 +103,17 @@ export const createParamExtractor = (config: ParamExtractorConfig): UrlUnwrapper
     }
 
     for (const param of config.params) {
-      const value = getParamValues(url, param).at(0)
+      const target = readParamTarget(url, param)
 
-      if (value) {
-        return decodeEncodedScheme(value)
+      if (!target) {
+        continue
       }
+
+      if (config.ignoreLinkFragment) {
+        return target
+      }
+
+      return appendLinkFragment(target, url)
     }
   }
 }

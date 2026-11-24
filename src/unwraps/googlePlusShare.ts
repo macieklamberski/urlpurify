@@ -1,6 +1,6 @@
 import { isAnyOf, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamTarget } from '../utils.js'
+import { readParamTarget } from '../utils.js'
 
 const hosts = ['plus.google.com']
 
@@ -14,5 +14,5 @@ export const unwrapGooglePlusShare: UrlUnwrapper = (url) => {
     return
   }
 
-  return getParamTarget(url, 'url')
+  return readParamTarget(url, 'url')
 }

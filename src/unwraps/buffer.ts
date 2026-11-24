@@ -1,6 +1,6 @@
 import { isAnyOf, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamTarget } from '../utils.js'
+import { readParamTarget } from '../utils.js'
 
 const hosts = ['bufferapp.com', 'www.bufferapp.com', 'buffer.com', 'www.buffer.com']
 const composeHosts = ['publish.buffer.com']
@@ -29,5 +29,5 @@ export const unwrapBuffer: UrlUnwrapper = (url) => {
   }
 
   // The `text=` and `title=` beside it are the post's message, even when they hold only a url.
-  return getParamTarget(url, 'url')
+  return readParamTarget(url, 'url')
 }

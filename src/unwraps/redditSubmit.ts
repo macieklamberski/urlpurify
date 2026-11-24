@@ -13,6 +13,7 @@ const extractTarget = createParamExtractor({
     'm.reddit.com',
   ],
   params: ['url'],
+  ignoreLinkFragment: true,
 })
 
 // Reddit share link (reddit.com/submit?url=<page>&title=<text>, also /submit/, on www., bare, en.,

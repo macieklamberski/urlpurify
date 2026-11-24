@@ -6,4 +6,5 @@ export const unwrapQqMailReader = createParamExtractor({
   hosts: 'mail.qq.com',
   path: '/cgi-bin/feed',
   params: ['u'],
+  ignoreLinkFragment: true,
 })

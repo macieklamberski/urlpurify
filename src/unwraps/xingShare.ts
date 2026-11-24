@@ -1,6 +1,6 @@
 import { isAnyOf, isHostOf, parseUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamTarget, getParamValues } from '../utils.js'
+import { getParamValues, readParamTarget } from '../utils.js'
 
 const hosts = ['www.xing.com', 'xing.com']
 
@@ -17,7 +17,7 @@ export const unwrapXingShare: UrlUnwrapper = (url) => {
   }
 
   if (isAnyOf(url.pathname, sharePathRegex)) {
-    return getParamTarget(url, 'url')
+    return readParamTarget(url, 'url')
   }
 
   if (!isAnyOf(url.pathname, appPathRegex)) {
@@ -32,5 +32,5 @@ export const unwrapXingShare: UrlUnwrapper = (url) => {
     return
   }
 
-  return getParamTarget(query, 'url')
+  return readParamTarget(query, 'url')
 }

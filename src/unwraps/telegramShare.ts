@@ -1,6 +1,6 @@
 import { isAnyOf, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamTarget } from '../utils.js'
+import { readParamTarget } from '../utils.js'
 
 const pathRegex = /^\/share(?:\/url|\/link\/add)?\/?$/i
 
@@ -22,5 +22,5 @@ export const unwrapTelegramShare: UrlUnwrapper = (url) => {
   }
 
   // The `text=` beside it is the message, even when it holds only a url.
-  return getParamTarget(url, 'url')
+  return readParamTarget(url, 'url')
 }
