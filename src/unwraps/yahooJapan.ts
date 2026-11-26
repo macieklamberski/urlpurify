@@ -1,4 +1,4 @@
-import { decodeBase64Url, isHostOf, isHttpUrl } from 'trousse'
+import { decodeBase64Url, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
@@ -7,10 +7,9 @@ const paddingRegex = /-+$/
 
 // Yahoo! JAPAN click redirect (rdsig.yahoo.co.jp/.../RV=1/RU=<base64url target>/RS=...). The
 // target ends the path or comes before /RK=, /RS= or ;_ylt=.
-export const unwrapYahooJapan: UrlUnwrapper = createUnwrapper(
-  'rdsig.yahoo.co.jp',
-  isHostOf,
-  (url) => {
+export const unwrapYahooJapan: UrlUnwrapper = createUnwrapper({
+  hosts: 'rdsig.yahoo.co.jp',
+  unwrap: (url) => {
     const match = pathRegex.exec(url.pathname)
 
     if (!match?.[1]) {
@@ -29,4 +28,4 @@ export const unwrapYahooJapan: UrlUnwrapper = createUnwrapper(
       return target
     }
   },
-)
+})

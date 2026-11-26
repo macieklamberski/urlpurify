@@ -1,4 +1,3 @@
-import { isHostOf } from 'trousse'
 import { getPathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
@@ -9,6 +8,9 @@ const redirPrefixRegex = /^\/(?:[\w-]+\/)+redir\/(?=https?:\/)/i
 // PBS download and click counter (www.pbs.org/<show path>/redir/<target>), such as
 // /wgbh/nova/rss/podcast/redir/ on podcast enclosures. The target keeps its scheme.
 // Not included in defaultUnwrappers: unwrapping removes PBS's download counts.
-export const unwrapPbs: UrlUnwrapper = createUnwrapper('www.pbs.org', isHostOf, (url) => {
-  return getPathTarget(url, redirPrefixRegex)
+export const unwrapPbs: UrlUnwrapper = createUnwrapper({
+  hosts: 'www.pbs.org',
+  unwrap: (url) => {
+    return getPathTarget(url, redirPrefixRegex)
+  },
 })

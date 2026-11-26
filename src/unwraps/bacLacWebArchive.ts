@@ -1,4 +1,4 @@
-import { isHostOf, isHttpUrl } from 'trousse'
+import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
@@ -8,10 +8,9 @@ const pathRegex = /^\/web\/\d{14}\/(.+)$/i
 // Library and Archives Canada web archive snapshot
 // (webarchiveweb.wayback.bac-lac.canada.ca/web/<timestamp>/<target>). Opt-in: unwrapping returns
 // the live page, which may have changed or be gone.
-export const unwrapBacLacWebArchive: UrlUnwrapper = createUnwrapper(
-  'webarchiveweb.wayback.bac-lac.canada.ca',
-  isHostOf,
-  (url) => {
+export const unwrapBacLacWebArchive: UrlUnwrapper = createUnwrapper({
+  hosts: 'webarchiveweb.wayback.bac-lac.canada.ca',
+  unwrap: (url) => {
     const match = pathRegex.exec(url.pathname)
 
     if (!match?.[1]) {
@@ -25,4 +24,4 @@ export const unwrapBacLacWebArchive: UrlUnwrapper = createUnwrapper(
       return target
     }
   },
-)
+})

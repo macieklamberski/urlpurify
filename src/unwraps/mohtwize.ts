@@ -1,4 +1,4 @@
-import { decodePercent, isAnyOf, isHostOf } from 'trousse'
+import { decodePercent, isAnyOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
@@ -9,10 +9,9 @@ const encodedSchemeRegex = /^https?%3A/i
 // Mohtwize download measurement prefix (stats.mohtwize.net/redirect.mp3?fileURL=/<target>), where
 // the target often drops its scheme.
 // Not included in defaultUnwrappers: unwrapping removes the podcaster's download counts.
-export const unwrapMohtwize: UrlUnwrapper = createUnwrapper(
-  'stats.mohtwize.net',
-  isHostOf,
-  (url) => {
+export const unwrapMohtwize: UrlUnwrapper = createUnwrapper({
+  hosts: 'stats.mohtwize.net',
+  unwrap: (url) => {
     if (!isAnyOf(url.pathname, '/redirect.mp3')) {
       return
     }
@@ -41,4 +40,4 @@ export const unwrapMohtwize: UrlUnwrapper = createUnwrapper(
 
     return `https://${target}`
   },
-)
+})

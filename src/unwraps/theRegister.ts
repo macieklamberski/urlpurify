@@ -1,4 +1,3 @@
-import { isHostOf } from 'trousse'
 import { getPathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
@@ -11,10 +10,9 @@ const prefixRegex =
 // The Register feed click counter (go.theregister.com/feed/<target>, also
 // go.theregister.com/i/cfa/<target>), where the target is an article on The Register or its
 // former sister sites, with or without its scheme. It answers 302 to the https article.
-export const unwrapTheRegister: UrlUnwrapper = createUnwrapper(
-  'go.theregister.com',
-  isHostOf,
-  (url) => {
+export const unwrapTheRegister: UrlUnwrapper = createUnwrapper({
+  hosts: 'go.theregister.com',
+  unwrap: (url) => {
     return getPathTarget(url, prefixRegex)
   },
-)
+})

@@ -164,22 +164,26 @@ The target takes the link's fragment, so `example.com/out?target=https://example
 
 `createParamExtractor` and `ParamExtractorConfig`, the names before 3.0, still work and are deprecated.
 
-### `createUnwrapper(hosts, isOnHost, unwrap)`
+### `createUnwrapper(config)`
 
-Builds an unwrapper from a host check and a function that takes a `URL` and returns the target or `undefined`. The function runs only on a url that `isOnHost` places on `hosts`:
+Builds an unwrapper from a host list and a function that takes a `URL` and returns the target or `undefined`. The function runs only on a url on one of the hosts:
 
 ```typescript
-import { isHostOf } from 'trousse'
 import { createUnwrapper } from 'urlpurifier'
 
-const unwrapExample = createUnwrapper('go.example.com', isHostOf, (url) => {
-  const [, target] = url.pathname.split('/out/')
+const unwrapExample = createUnwrapper({
+  // Exact hosts or a regex. Use `domains` to match every subdomain too,
+  // or `subdomains` to match only the subdomains.
+  hosts: ['go.example.com'],
+  unwrap: (url) => {
+    const [, target] = url.pathname.split('/out/')
 
-  return target
+    return target
+  },
 })
 ```
 
-`isOnHost` takes the url and `hosts` and returns a boolean, such as trousse's `isHostOf`, `isHostOrSubdomainOf` or `isSubdomainOf`. The built-in unwrappers pass the copies urlpurifier bundles, so the host index skips them on every other host. A plain `UrlUnwrapper` function still works and runs on every url.
+Pass exactly one of `hosts`, `domains` or `subdomains`. Each matches as trousse's `isHostOf`, `isHostOrSubdomainOf` or `isSubdomainOf` does. The unwrapper registers its hosts, so `cleanUrl` skips it on every other host. A host given as a regex registers nothing, so its unwrapper runs on every url, as a plain `UrlUnwrapper` function does.
 
 ### Choosing unwrappers
 

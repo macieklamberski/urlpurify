@@ -1,4 +1,4 @@
-import { decodePercent, isHostOf, isHttpUrl } from 'trousse'
+import { decodePercent, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
@@ -7,10 +7,9 @@ const httpPathRegex = /^\/amp\/(?!s\/)(.+)$/i
 
 // Yahoo! JAPAN AMP viewer (search.yahoo.co.jp/amp/s/<host>/<path> for https, or
 // /amp/<host>/<path> for http).
-export const unwrapYahooJapanAmpViewer: UrlUnwrapper = createUnwrapper(
-  'search.yahoo.co.jp',
-  isHostOf,
-  (url) => {
+export const unwrapYahooJapanAmpViewer: UrlUnwrapper = createUnwrapper({
+  hosts: 'search.yahoo.co.jp',
+  unwrap: (url) => {
     const httpsMatch = httpsPathRegex.exec(url.pathname)
     const match = httpsMatch ?? httpPathRegex.exec(url.pathname)
 
@@ -27,4 +26,4 @@ export const unwrapYahooJapanAmpViewer: UrlUnwrapper = createUnwrapper(
       return target
     }
   },
-)
+})

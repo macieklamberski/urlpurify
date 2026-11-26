@@ -1,4 +1,4 @@
-import { isHostOf, isHttpUrl } from 'trousse'
+import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
@@ -10,10 +10,9 @@ const schemeRegex = /^[a-z][a-z\d+-]*:/i
 // UK Government Web Archive snapshot (webarchive.nationalarchives.gov.uk/[ukgwa/]<timestamp>[mp_]/
 // <target>, or `+` for the latest), with or without the target's scheme. Opt-in: unwrapping
 // returns the live page, which may have changed or be gone.
-export const unwrapUkgwa: UrlUnwrapper = createUnwrapper(
-  'webarchive.nationalarchives.gov.uk',
-  isHostOf,
-  (url) => {
+export const unwrapUkgwa: UrlUnwrapper = createUnwrapper({
+  hosts: 'webarchive.nationalarchives.gov.uk',
+  unwrap: (url) => {
     const match = pathRegex.exec(url.pathname)
 
     if (!match?.[1]) {
@@ -32,4 +31,4 @@ export const unwrapUkgwa: UrlUnwrapper = createUnwrapper(
       return target
     }
   },
-)
+})

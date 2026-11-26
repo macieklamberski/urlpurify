@@ -1,13 +1,12 @@
-import { decodePercent, getQueryParamValues, isAnyOf, isHostOf } from 'trousse'
+import { decodePercent, getQueryParamValues, isAnyOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
 // Yahoo Mail image proxy (ecp.yusercontent.com/mail?url=<source>).
 // Not included in defaultUnwrappers: unwrapping swaps the proxied copy for the original image.
-export const unwrapYahooMailImage: UrlUnwrapper = createUnwrapper(
-  'ecp.yusercontent.com',
-  isHostOf,
-  (url) => {
+export const unwrapYahooMailImage: UrlUnwrapper = createUnwrapper({
+  hosts: 'ecp.yusercontent.com',
+  unwrap: (url) => {
     if (!isAnyOf(url.pathname, '/mail')) {
       return
     }
@@ -20,4 +19,4 @@ export const unwrapYahooMailImage: UrlUnwrapper = createUnwrapper(
 
     return decodePercent(value)
   },
-)
+})

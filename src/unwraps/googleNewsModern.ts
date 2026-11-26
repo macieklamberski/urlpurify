@@ -1,4 +1,4 @@
-import { decodeBase64UrlBinary, isHostOf } from 'trousse'
+import { decodeBase64UrlBinary } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
@@ -13,10 +13,9 @@ const protobufFramingRegex = /\x08\x13".+?(https?:\/\/[^\xd2]+)\xd2\x01/
 // containing the destination URL between known framing bytes. Some ids (typically post-2023)
 // require a server-side signature exchange and can only be resolved with a network call, those
 // return undefined silently.
-export const unwrapGoogleNewsModern: UrlUnwrapper = createUnwrapper(
-  'news.google.com',
-  isHostOf,
-  (url) => {
+export const unwrapGoogleNewsModern: UrlUnwrapper = createUnwrapper({
+  hosts: 'news.google.com',
+  unwrap: (url) => {
     const match = url.pathname.match(articleIdRegex)
     if (!match) {
       return
@@ -27,4 +26,4 @@ export const unwrapGoogleNewsModern: UrlUnwrapper = createUnwrapper(
 
     return inner?.[1]
   },
-)
+})

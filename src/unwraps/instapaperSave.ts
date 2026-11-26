@@ -1,4 +1,4 @@
-import { isAnyOf, isHostOf } from 'trousse'
+import { isAnyOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper, readParamTarget } from '../utils.js'
 
@@ -7,11 +7,14 @@ const paths = ['/hello2', '/edit']
 
 // Instapaper save links (instapaper.com/hello2?url=<target> and the signed-in form at /edit?url=).
 // Opt-in: unwrapping returns the saved page, not the form that saves it.
-export const unwrapInstapaperSave: UrlUnwrapper = createUnwrapper(hosts, isHostOf, (url) => {
-  if (!isAnyOf(url.pathname, paths)) {
-    return
-  }
+export const unwrapInstapaperSave: UrlUnwrapper = createUnwrapper({
+  hosts,
+  unwrap: (url) => {
+    if (!isAnyOf(url.pathname, paths)) {
+      return
+    }
 
-  // The `title=` and `description=` beside it are free text, even when they hold only a url.
-  return readParamTarget(url, 'url')
+    // The `title=` and `description=` beside it are free text, even when they hold only a url.
+    return readParamTarget(url, 'url')
+  },
 })

@@ -1,4 +1,3 @@
-import { isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
@@ -19,13 +18,16 @@ const pathRegex = /^\/rd\/[\d_]+\/([^/:]*\.[^/:]*(?:\/.*)?)$/i
 // Ebuzzing sponsored post click tracker (www.ebuzzing.com/rd/<ids>/<target>, also on its French,
 // Italian, Spanish and British domains), which answered 301 to the http target. Not included in
 // defaultUnwrappers: unwrapping removes the advertiser's click count.
-export const unwrapEbuzzing: UrlUnwrapper = createUnwrapper(hosts, isHostOf, (url) => {
-  const match = pathRegex.exec(url.pathname)
+export const unwrapEbuzzing: UrlUnwrapper = createUnwrapper({
+  hosts,
+  unwrap: (url) => {
+    const match = pathRegex.exec(url.pathname)
 
-  if (!match?.[1]) {
-    return
-  }
+    if (!match?.[1]) {
+      return
+    }
 
-  // An unencoded target's query and fragment land in the tracker URL's own `search` and `hash`.
-  return `http://${match[1]}${url.search}${url.hash}`
+    // An unencoded target's query and fragment land in the tracker URL's own `search` and `hash`.
+    return `http://${match[1]}${url.search}${url.hash}`
+  },
 })

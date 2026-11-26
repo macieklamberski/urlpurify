@@ -1,4 +1,3 @@
-import { isHostOf } from 'trousse'
 import { getPathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
@@ -21,6 +20,9 @@ const extractForward = createQueryUnwrapper({
 // DStats download and hit counter (dstats.net/download/<target>, /download.php?file=<target> and
 // /fwd.php?url=<target>), the target unencoded. Opt-in: unwrapping removes the publisher's
 // download count.
-export const unwrapDstats: UrlUnwrapper = createUnwrapper('dstats.net', isHostOf, (url) => {
-  return getPathTarget(url, downloadPrefixRegex) ?? extractDownload(url) ?? extractForward(url)
+export const unwrapDstats: UrlUnwrapper = createUnwrapper({
+  hosts: 'dstats.net',
+  unwrap: (url) => {
+    return getPathTarget(url, downloadPrefixRegex) ?? extractDownload(url) ?? extractForward(url)
+  },
 })

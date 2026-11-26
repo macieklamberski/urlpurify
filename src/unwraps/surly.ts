@@ -1,4 +1,4 @@
-import { decodePercent, isHostOf, isHttpUrl } from 'trousse'
+import { decodePercent, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
@@ -9,10 +9,9 @@ const schemeRegex = /^https?:\/\//i
 // Sur.ly link toolbar (sur.ly/o/<target>/<partner id>, also on www.sur.ly), with the target's
 // scheme usually dropped and the rest of it percent-encoded once.
 // Not included in defaultUnwrappers: unwrapping removes the partner's toolbar earnings.
-export const unwrapSurly: UrlUnwrapper = createUnwrapper(
-  ['sur.ly', 'www.sur.ly'],
-  isHostOf,
-  (url) => {
+export const unwrapSurly: UrlUnwrapper = createUnwrapper({
+  hosts: ['sur.ly', 'www.sur.ly'],
+  unwrap: (url) => {
     const match = pathRegex.exec(url.pathname)
 
     if (!match?.[1]) {
@@ -28,4 +27,4 @@ export const unwrapSurly: UrlUnwrapper = createUnwrapper(
       return target
     }
   },
-)
+})

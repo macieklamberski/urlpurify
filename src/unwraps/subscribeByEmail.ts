@@ -1,4 +1,3 @@
-import { isHostOf } from 'trousse'
 import { getPathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
@@ -13,6 +12,9 @@ const hosts = ['subscribebyemail.com', 'www.subscribebyemail.com']
 // scheme. The page reads the feed as https.
 // Not included in defaultUnwrappers: unwrapping returns the feed, not the page that subscribes
 // to it.
-export const unwrapSubscribeByEmail: UrlUnwrapper = createUnwrapper(hosts, isHostOf, (url) => {
-  return getPathTarget(url, feedPrefixRegex)
+export const unwrapSubscribeByEmail: UrlUnwrapper = createUnwrapper({
+  hosts,
+  unwrap: (url) => {
+    return getPathTarget(url, feedPrefixRegex)
+  },
 })

@@ -1,4 +1,4 @@
-import { isHostOf, isHttpUrl } from 'trousse'
+import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
@@ -8,17 +8,20 @@ const pathRegex = /^\/(?:peth\d{2}|congress\d+th)\/\d{14}\/(.+)$/i
 
 // NARA web harvest snapshot (webharvest.gov/<collection>/<timestamp>/<target>). Opt-in: unwrapping
 // returns the live page, which may have changed or be gone.
-export const unwrapWebharvest: UrlUnwrapper = createUnwrapper('webharvest.gov', isHostOf, (url) => {
-  const match = pathRegex.exec(url.pathname)
+export const unwrapWebharvest: UrlUnwrapper = createUnwrapper({
+  hosts: 'webharvest.gov',
+  unwrap: (url) => {
+    const match = pathRegex.exec(url.pathname)
 
-  if (!match?.[1]) {
-    return
-  }
+    if (!match?.[1]) {
+      return
+    }
 
-  // An unencoded target's query and fragment land in the snapshot URL's own `search` and `hash`.
-  const target = `${match[1]}${url.search}${url.hash}`
+    // An unencoded target's query and fragment land in the snapshot URL's own `search` and `hash`.
+    const target = `${match[1]}${url.search}${url.hash}`
 
-  if (isHttpUrl(target)) {
-    return target
-  }
+    if (isHttpUrl(target)) {
+      return target
+    }
+  },
 })

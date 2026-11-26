@@ -1,4 +1,3 @@
-import { isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
@@ -9,10 +8,9 @@ const proxyPathRegex = /^\/proxy_u\/[^/]+\/(?:(?<scheme>https?)\/)?(?<target>.+)
 // Yandex Translate page proxy (translated.turbopages.org/proxy_u/<langs>/[<scheme>/]<host>/<path>).
 // Not included in defaultUnwrappers: the proxy renders the target translated, so unwrapping
 // discards the translation the user wanted.
-export const unwrapYandexTranslate: UrlUnwrapper = createUnwrapper(
-  'translated.turbopages.org',
-  isHostOf,
-  (url) => {
+export const unwrapYandexTranslate: UrlUnwrapper = createUnwrapper({
+  hosts: 'translated.turbopages.org',
+  unwrap: (url) => {
     const match = url.pathname.match(proxyPathRegex)
 
     if (!match?.groups) {
@@ -21,4 +19,4 @@ export const unwrapYandexTranslate: UrlUnwrapper = createUnwrapper(
 
     return `${match.groups.scheme ?? 'http'}://${match.groups.target}${url.search}${url.hash}`
   },
-)
+})

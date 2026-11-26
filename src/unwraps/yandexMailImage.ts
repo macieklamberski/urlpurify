@@ -1,4 +1,4 @@
-import { decodePercent, getQueryParamValues, isHostOf } from 'trousse'
+import { decodePercent, getQueryParamValues } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
@@ -6,10 +6,9 @@ const resizePaths = ['/mailservice', '/orig']
 
 // Yandex image proxy (resize.yandex.net/mailservice?url=<source> or /orig?url=<source>).
 // Not included in defaultUnwrappers: unwrapping swaps the proxied copy for the original image.
-export const unwrapYandexMailImage: UrlUnwrapper = createUnwrapper(
-  'resize.yandex.net',
-  isHostOf,
-  (url) => {
+export const unwrapYandexMailImage: UrlUnwrapper = createUnwrapper({
+  hosts: 'resize.yandex.net',
+  unwrap: (url) => {
     if (!resizePaths.includes(url.pathname)) {
       return
     }
@@ -22,4 +21,4 @@ export const unwrapYandexMailImage: UrlUnwrapper = createUnwrapper(
 
     return decodePercent(value)
   },
-)
+})

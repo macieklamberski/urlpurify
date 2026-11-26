@@ -1,4 +1,4 @@
-import { isAnyOf, isHostOrSubdomainOf } from 'trousse'
+import { isAnyOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
@@ -11,10 +11,9 @@ const viewerParams = ['amp_gsa', 'amp_js_v', 'usqp']
 // publisher subdomain is a hint; the path always carries the canonical hostname. The viewer's
 // own query params are dropped, and on `/v/` so is the fragment, which holds the viewer's init
 // params rather than the target's.
-export const unwrapAmpCache: UrlUnwrapper = createUnwrapper(
-  'cdn.ampproject.org',
-  isHostOrSubdomainOf,
-  (url) => {
+export const unwrapAmpCache: UrlUnwrapper = createUnwrapper({
+  domains: 'cdn.ampproject.org',
+  unwrap: (url) => {
     const match = url.pathname.match(pathRegex)
 
     if (!match) {
@@ -32,4 +31,4 @@ export const unwrapAmpCache: UrlUnwrapper = createUnwrapper(
 
     return `${scheme}://${target}${search}${hash}`
   },
-)
+})

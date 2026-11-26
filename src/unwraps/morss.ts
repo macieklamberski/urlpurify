@@ -1,4 +1,4 @@
-import { isAnyOf, isHostOf } from 'trousse'
+import { isAnyOf } from 'trousse'
 import { getPathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
@@ -11,14 +11,17 @@ const hosts = ['morss.it', 'www.morss.it']
 
 // morss full-text feed proxy ([www.]morss.it/[:<options>/]<feed>, the feed raw, with or without
 // its scheme). Opt-in: the link returns the feed with full articles, not the feed itself.
-export const unwrapMorss: UrlUnwrapper = createUnwrapper(hosts, isHostOf, (url) => {
-  const options = url.pathname.match(optionsRegex)?.groups?.options ?? ''
+export const unwrapMorss: UrlUnwrapper = createUnwrapper({
+  hosts,
+  unwrap: (url) => {
+    const options = url.pathname.match(optionsRegex)?.groups?.options ?? ''
 
-  // The `items` option builds a feed out of an html page, so the target is a page, not a feed.
-  if (options.split(':').some((option) => isAnyOf(option.split('=')[0], 'items'))) {
-    return
-  }
+    // The `items` option builds a feed out of an html page, so the target is a page, not a feed.
+    if (options.split(':').some((option) => isAnyOf(option.split('=')[0], 'items'))) {
+      return
+    }
 
-  // morss fetches a target without a scheme over http.
-  return getPathTarget(url, targetPrefixRegex, 'http:')
+    // morss fetches a target without a scheme over http.
+    return getPathTarget(url, targetPrefixRegex, 'http:')
+  },
 })

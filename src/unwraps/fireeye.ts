@@ -1,4 +1,4 @@
-import { isHostOf, isHttpUrl } from 'trousse'
+import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper, getParamTarget } from '../utils.js'
 
@@ -7,10 +7,9 @@ const paths = ['/v1/url', '/url']
 // FireEye email link protection (protect2.fireeye.com/v1/url?u=<target> or /url?u=<target>).
 // Not included in defaultUnwrappers: the gateway checks the target when the link is clicked,
 // so unwrapping skips the check the recipient's organization put in place.
-export const unwrapFireeye: UrlUnwrapper = createUnwrapper(
-  'protect2.fireeye.com',
-  isHostOf,
-  (url) => {
+export const unwrapFireeye: UrlUnwrapper = createUnwrapper({
+  hosts: 'protect2.fireeye.com',
+  unwrap: (url) => {
     if (!paths.includes(url.pathname)) {
       return
     }
@@ -21,4 +20,4 @@ export const unwrapFireeye: UrlUnwrapper = createUnwrapper(
       return target
     }
   },
-)
+})

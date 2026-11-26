@@ -1,4 +1,3 @@
-import { isHostOf } from 'trousse'
 import { getPathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
@@ -9,10 +8,9 @@ const prefixRegex = /^\/track\/[0-9a-f]{24}\/[0-9a-f]{24}\/(?=media\.xyzcdn\.net
 // Xiaoyuzhou download measurement prefix
 // (dts-api.xiaoyuzhoufm.com/track/<show>/<episode>/<target>), where the target drops its scheme.
 // Not included in defaultUnwrappers: unwrapping removes the podcaster's download counts.
-export const unwrapXiaoyuzhou: UrlUnwrapper = createUnwrapper(
-  'dts-api.xiaoyuzhoufm.com',
-  isHostOf,
-  (url) => {
+export const unwrapXiaoyuzhou: UrlUnwrapper = createUnwrapper({
+  hosts: 'dts-api.xiaoyuzhoufm.com',
+  unwrap: (url) => {
     return getPathTarget(url, prefixRegex)
   },
-)
+})

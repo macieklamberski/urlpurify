@@ -1,4 +1,3 @@
-import { isHostOf } from 'trousse'
 import { getPathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
@@ -11,10 +10,9 @@ const noIdPrefixRegex = /^\/track\/(?=https?:\/)/i
 // chrt.fm/track/<id>/<target>), where the target often drops its scheme, and the same prefix
 // without an id (chtbl.com/track/<target>). Chartable closed in December 2024 and both hosts
 // answer 404, so a wrapped enclosure no longer plays.
-export const unwrapChartable: UrlUnwrapper = createUnwrapper(
-  ['chtbl.com', 'chrt.fm'],
-  isHostOf,
-  (url) => {
+export const unwrapChartable: UrlUnwrapper = createUnwrapper({
+  hosts: ['chtbl.com', 'chrt.fm'],
+  unwrap: (url) => {
     return getPathTarget(url, trackPrefixRegex) ?? getPathTarget(url, noIdPrefixRegex)
   },
-)
+})

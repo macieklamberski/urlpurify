@@ -1,4 +1,4 @@
-import { isAnyOf, isHostOf } from 'trousse'
+import { isAnyOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper, readParamTarget } from '../utils.js'
 
@@ -8,11 +8,14 @@ const pathRegex = /^\/intent\/post\/?$/i
 
 // Threads share intent (threads.com/intent/post?url=<target>, also /intent/post/, on www. and bare
 // threads.com and threads.net). Opt-in: unwrapping returns the shared page, not the post composer.
-export const unwrapThreadsIntent: UrlUnwrapper = createUnwrapper(hosts, isHostOf, (url) => {
-  if (!isAnyOf(url.pathname, pathRegex)) {
-    return
-  }
+export const unwrapThreadsIntent: UrlUnwrapper = createUnwrapper({
+  hosts,
+  unwrap: (url) => {
+    if (!isAnyOf(url.pathname, pathRegex)) {
+      return
+    }
 
-  // The `text=` beside it is the post's message, even when it holds only a url.
-  return readParamTarget(url, 'url')
+    // The `text=` beside it is the post's message, even when it holds only a url.
+    return readParamTarget(url, 'url')
+  },
 })

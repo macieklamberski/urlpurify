@@ -1,4 +1,3 @@
-import { isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
@@ -17,10 +16,9 @@ const extractRedirect = createQueryUnwrapper({
 // http target under StumbleUpon's toolbar, and its app promo redirect
 // (www.stumbleupon.com/to/event/redir/?url=<target>), which answered 302 to the target. The
 // service is gone and both paths answer 404.
-export const unwrapStumbleupon: UrlUnwrapper = createUnwrapper(
-  'www.stumbleupon.com',
-  isHostOf,
-  (url) => {
+export const unwrapStumbleupon: UrlUnwrapper = createUnwrapper({
+  hosts: 'www.stumbleupon.com',
+  unwrap: (url) => {
     const redirectTarget = extractRedirect(url)
 
     if (redirectTarget) {
@@ -36,4 +34,4 @@ export const unwrapStumbleupon: UrlUnwrapper = createUnwrapper(
     // An unencoded target's query and fragment land in the toolbar URL's own `search` and `hash`.
     return `http://${match[1]}${url.search}${url.hash}`
   },
-)
+})

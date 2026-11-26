@@ -1,4 +1,3 @@
-import { isHostOf } from 'trousse'
 import { getPathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
@@ -15,6 +14,9 @@ const hosts = ['media.blubrry.com', 'media.rawvoice.com', 'media.techpodcasts.co
 // content., ins. or mc.blubrry.com. RawVoice's media.rawvoice.com and media.techpodcasts.com run
 // the same redirect.
 // Not included in defaultUnwrappers: unwrapping removes the podcaster's download counts.
-export const unwrapBlubrry: UrlUnwrapper = createUnwrapper(hosts, isHostOf, (url) => {
-  return getPathTarget(url, showPrefixRegex, url.protocol)
+export const unwrapBlubrry: UrlUnwrapper = createUnwrapper({
+  hosts,
+  unwrap: (url) => {
+    return getPathTarget(url, showPrefixRegex, url.protocol)
+  },
 })

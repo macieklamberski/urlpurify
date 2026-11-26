@@ -1,4 +1,4 @@
-import { isHostOf, isHttpUrl } from 'trousse'
+import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
@@ -8,10 +8,9 @@ const pathRegex = /^\/webarchive\/\d{14}\/(.+)$/i
 // National Library of New Zealand web archive snapshot
 // (ndhadeliver.natlib.govt.nz/webarchive/<timestamp>/<target>). Opt-in: unwrapping returns the live
 // page, which may have changed or be gone.
-export const unwrapNatlibNz: UrlUnwrapper = createUnwrapper(
-  'ndhadeliver.natlib.govt.nz',
-  isHostOf,
-  (url) => {
+export const unwrapNatlibNz: UrlUnwrapper = createUnwrapper({
+  hosts: 'ndhadeliver.natlib.govt.nz',
+  unwrap: (url) => {
     const match = pathRegex.exec(url.pathname)
 
     if (!match?.[1]) {
@@ -25,4 +24,4 @@ export const unwrapNatlibNz: UrlUnwrapper = createUnwrapper(
       return target
     }
   },
-)
+})

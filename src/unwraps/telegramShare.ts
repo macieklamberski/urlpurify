@@ -1,4 +1,4 @@
-import { isAnyOf, isHostOf } from 'trousse'
+import { isAnyOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper, readParamTarget } from '../utils.js'
 
@@ -16,11 +16,14 @@ const hosts = [
 // Telegram share (t.me/share/url?url=<target>, also /share and /share/link/add, on t.me,
 // telegram.me, telegram.dog and their www. hosts). Opt-in: unwrapping returns the shared page, not
 // the share dialog.
-export const unwrapTelegramShare: UrlUnwrapper = createUnwrapper(hosts, isHostOf, (url) => {
-  if (!isAnyOf(url.pathname, pathRegex)) {
-    return
-  }
+export const unwrapTelegramShare: UrlUnwrapper = createUnwrapper({
+  hosts,
+  unwrap: (url) => {
+    if (!isAnyOf(url.pathname, pathRegex)) {
+      return
+    }
 
-  // The `text=` beside it is the message, even when it holds only a url.
-  return readParamTarget(url, 'url')
+    // The `text=` beside it is the message, even when it holds only a url.
+    return readParamTarget(url, 'url')
+  },
 })

@@ -1,4 +1,4 @@
-import { isHostOf, isHttpUrl } from 'trousse'
+import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
@@ -8,10 +8,9 @@ const pathRegex = /^\/\d{14}\/(.+)$/
 // UNHCR web archive snapshot, which holds the retired Refworld site
 // (webarchive.archive.unhcr.org/<timestamp>/<target>). Opt-in: unwrapping returns the live page,
 // which may have changed or be gone.
-export const unwrapUnhcrWebArchive: UrlUnwrapper = createUnwrapper(
-  'webarchive.archive.unhcr.org',
-  isHostOf,
-  (url) => {
+export const unwrapUnhcrWebArchive: UrlUnwrapper = createUnwrapper({
+  hosts: 'webarchive.archive.unhcr.org',
+  unwrap: (url) => {
     const match = pathRegex.exec(url.pathname)
 
     if (!match?.[1]) {
@@ -25,4 +24,4 @@ export const unwrapUnhcrWebArchive: UrlUnwrapper = createUnwrapper(
       return target
     }
   },
-)
+})

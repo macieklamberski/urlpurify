@@ -1,4 +1,4 @@
-import { isAnyOf, isHostOf, isHttpUrl } from 'trousse'
+import { isAnyOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
@@ -9,10 +9,9 @@ const clickQueryRegex = /^\?type=click&enid=[^&]+&&&\d+&&&(.+)$/i
 // GovDelivery legacy click tracker
 // (links.govdelivery.com/track?type=click&enid=<id>&&&<n>&&&<target>).
 // Opt-in: unwrapping removes the sender's click count.
-export const unwrapGovdelivery: UrlUnwrapper = createUnwrapper(
-  'links.govdelivery.com',
-  isHostOf,
-  (url) => {
+export const unwrapGovdelivery: UrlUnwrapper = createUnwrapper({
+  hosts: 'links.govdelivery.com',
+  unwrap: (url) => {
     if (!isAnyOf(url.pathname, '/track')) {
       return
     }
@@ -29,4 +28,4 @@ export const unwrapGovdelivery: UrlUnwrapper = createUnwrapper(
       return target
     }
   },
-)
+})

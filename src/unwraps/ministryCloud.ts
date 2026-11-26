@@ -1,4 +1,3 @@
-import { isHostOf } from 'trousse'
 import { getPathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
@@ -9,10 +8,9 @@ const mediaPrefixRegex = /^\/r\/[^/]+\//i
 // MinistryCloud sermon media download counter (historian.ministrycloud.com/r/<media id>/<target>),
 // where the target mostly keeps its scheme.
 // Not included in defaultUnwrappers: unwrapping removes the church's download counts.
-export const unwrapMinistryCloud: UrlUnwrapper = createUnwrapper(
-  'historian.ministrycloud.com',
-  isHostOf,
-  (url) => {
+export const unwrapMinistryCloud: UrlUnwrapper = createUnwrapper({
+  hosts: 'historian.ministrycloud.com',
+  unwrap: (url) => {
     return getPathTarget(url, mediaPrefixRegex, 'http:')
   },
-)
+})

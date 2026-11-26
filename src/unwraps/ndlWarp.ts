@@ -12,10 +12,9 @@ const schemeRegex = /^[a-z][a-z\d+.-]*:/i
 // also the persistent-id form (warp.ndl.go.jp/info:ndljp/pid/<id>/<target>, also on
 // warp.da.ndl.go.jp), with or without the target's scheme.
 // Opt-in: unwrapping returns the live page, which may have changed or be gone.
-export const unwrapNdlWarp: UrlUnwrapper = createUnwrapper(
-  ['warp.ndl.go.jp', 'warp.da.ndl.go.jp'],
-  isHostOf,
-  (url) => {
+export const unwrapNdlWarp: UrlUnwrapper = createUnwrapper({
+  hosts: ['warp.ndl.go.jp', 'warp.da.ndl.go.jp'],
+  unwrap: (url) => {
     const pidMatch = pidPathRegex.exec(url.pathname)
     const webMatch = isHostOf(url, 'warp.ndl.go.jp') ? webPathRegex.exec(url.pathname) : null
     const path = pidMatch?.[1] ?? webMatch?.[1]
@@ -35,4 +34,4 @@ export const unwrapNdlWarp: UrlUnwrapper = createUnwrapper(
       return unwrapped
     }
   },
-)
+})

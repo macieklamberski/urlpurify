@@ -1,5 +1,5 @@
 import { describe, expect, it, mock } from 'bun:test'
-import { decodeBase64, getQueryParam, isHostOf, isHostOrSubdomainOf, isSubdomainOf } from 'trousse'
+import { decodeBase64, getQueryParam } from 'trousse'
 import { cleanUrl, isTrackingParam, stripTrackingParams, unwrapUrl } from './clean.js'
 import { campaignParams, defaultTrackingParams, housekeepingParams } from './defaults.js'
 import type { TrackingParam, TrackingValueTest, UrlUnwrapper } from './types.js'
@@ -30,16 +30,25 @@ const handWrittenFallbackUnwrapper: UrlUnwrapper = (url) => {
   return getQueryParam(url, 'fallback')
 }
 
-const exampleDomainUnwrapper = createUnwrapper('example.com', isHostOrSubdomainOf, (url) => {
-  return getQueryParam(url, 'fallback')
+const exampleDomainUnwrapper = createUnwrapper({
+  domains: 'example.com',
+  unwrap: (url) => {
+    return getQueryParam(url, 'fallback')
+  },
 })
 
-const exampleSubdomainUnwrapper = createUnwrapper('example.com', isSubdomainOf, (url) => {
-  return getQueryParam(url, 'fallback')
+const exampleSubdomainUnwrapper = createUnwrapper({
+  subdomains: 'example.com',
+  unwrap: (url) => {
+    return getQueryParam(url, 'fallback')
+  },
 })
 
-const exampleHostUnwrapper = createUnwrapper('redirect.example.com', isHostOf, (url) => {
-  return getQueryParam(url, 'target')
+const exampleHostUnwrapper = createUnwrapper({
+  hosts: 'redirect.example.com',
+  unwrap: (url) => {
+    return getQueryParam(url, 'target')
+  },
 })
 
 // A base64 carrier holding the raw bytes of a legacy-charset target.
@@ -58,6 +67,7 @@ const everyNameRegex = /^/
 const exceptIdRegex = /^(?!id$)/
 const shopHostRegex = /(^|\.)shop\.example$/
 const utmFamilyRegex = /^utm_[a-z0-9_-]+$/
+const goHostRegex = /^go\d\.example\.org$/
 
 describe('unwrapUrl', () => {
   it('should return the target from the matching unwrapper', () => {
@@ -130,12 +140,16 @@ describe('unwrapUrl', () => {
     expect(unwrapUrl(value, unwrappers)).toBe(expected)
   })
 
-  it('should run a factory unwrapper with its own host check on every host', () => {
-    const value = 'https://example.org/?fallback=https%3A%2F%2Fexample.net%2Fpost'
-    const isAnyHost = () => true
+  it('should run a factory unwrapper with a regex host on a host the index lacks', () => {
+    const value = 'https://go1.example.org/?fallback=https%3A%2F%2Fexample.net%2Fpost'
     const unwrappers = [
       exampleHostUnwrapper,
-      createUnwrapper('redirect.example.com', isAnyHost, (url) => getQueryParam(url, 'fallback')),
+      createUnwrapper({
+        hosts: goHostRegex,
+        unwrap: (url) => {
+          return getQueryParam(url, 'fallback')
+        },
+      }),
     ]
     const expected = 'https://example.net/post'
 

@@ -1,4 +1,4 @@
-import { isAnyOf, isHostOf } from 'trousse'
+import { isAnyOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper, readParamTarget } from '../utils.js'
 
@@ -10,11 +10,14 @@ const pathRegex = /^\/(?:shareArticle|sharing\/share-offsite|cws\/share|share)\/
 // /cws/share?url= and /share?url=, each also with a trailing slash, on www., bare and the
 // two-letter country hosts such as uk.linkedin.com). Opt-in: unwrapping returns the shared page,
 // not the form that shares it.
-export const unwrapLinkedinShare: UrlUnwrapper = createUnwrapper(hosts, isHostOf, (url) => {
-  if (!isAnyOf(url.pathname, pathRegex)) {
-    return
-  }
+export const unwrapLinkedinShare: UrlUnwrapper = createUnwrapper({
+  hosts,
+  unwrap: (url) => {
+    if (!isAnyOf(url.pathname, pathRegex)) {
+      return
+    }
 
-  // The `title=`, `summary=` and `source=` beside it are text fields, even when one holds a url.
-  return readParamTarget(url, 'url')
+    // The `title=`, `summary=` and `source=` beside it are text fields, even when one holds a url.
+    return readParamTarget(url, 'url')
+  },
 })

@@ -1,4 +1,3 @@
-import { isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
@@ -7,10 +6,9 @@ const pathRegex = /^\/[^/]+\/outgoing$/i
 // DeviantArt outbound link shim (www.deviantart.com/<user>/outgoing?<target>). Only the www host
 // redirects: every user has a subdomain of deviantart.com. The target is the whole query string,
 // unencoded, so it is taken verbatim.
-export const unwrapDeviantartOutgoing: UrlUnwrapper = createUnwrapper(
-  ['www.deviantart.com', 'deviantart.com'],
-  isHostOf,
-  (url) => {
+export const unwrapDeviantartOutgoing: UrlUnwrapper = createUnwrapper({
+  hosts: ['www.deviantart.com', 'deviantart.com'],
+  unwrap: (url) => {
     if (!pathRegex.test(url.pathname)) {
       return
     }
@@ -24,4 +22,4 @@ export const unwrapDeviantartOutgoing: UrlUnwrapper = createUnwrapper(
     // The target's own fragment lands in the wrapper's `hash`.
     return `${target}${url.hash}`
   },
-)
+})
