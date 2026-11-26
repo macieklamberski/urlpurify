@@ -17,12 +17,6 @@ export const unwrapPostmark: UrlUnwrapper = createUnwrapper(
       return
     }
 
-    const target = decodePercent(match.groups.target)
-
-    if (!target) {
-      return
-    }
-
-    return `${match.groups.secure ? 'https' : 'http'}://${target}`
+    return `${match.groups.secure ? 'https' : 'http'}://${decodePercent(match.groups.target)}`
   },
 )
