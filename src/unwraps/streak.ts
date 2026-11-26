@@ -1,5 +1,6 @@
 import { decodePercent, isHostOrSubdomainOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
+import { createUnwrapper } from '../utils.js'
 
 const domains = ['streaklinks.com', 'streak-link.com']
 
@@ -7,11 +8,7 @@ const pathRegex = /^\/[\w-]{24}\/([^/]+)$/
 
 // Streak email click tracker (<id>.streak-link.com/<24 character id>/<target>).
 // Opt-in: unwrapping removes the sender's click count.
-export const unwrapStreak: UrlUnwrapper = (url) => {
-  if (!isHostOrSubdomainOf(url, domains)) {
-    return
-  }
-
+export const unwrapStreak: UrlUnwrapper = createUnwrapper(domains, isHostOrSubdomainOf, (url) => {
   const match = pathRegex.exec(url.pathname)
 
   if (!match?.[1]) {
@@ -23,4 +20,4 @@ export const unwrapStreak: UrlUnwrapper = (url) => {
   if (isHttpUrl(target)) {
     return target
   }
-}
+})

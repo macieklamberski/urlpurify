@@ -1,13 +1,13 @@
 import { decodePercent, isAnyOf, isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamValues } from '../utils.js'
+import { createUnwrapper, getParamValues } from '../utils.js'
 
 const encodedSchemeRegex = /^https?%3A/i
 
 // Apptrkr job-ad click tracker (apptrkr.com/get_redirect.php?id=<n>&targetURL=<target>).
 // Not included in defaultUnwrappers: unwrapping drops the job board's click count for the ad.
-export const unwrapApptrkr: UrlUnwrapper = (url) => {
-  if (!isHostOf(url, 'apptrkr.com') || !isAnyOf(url.pathname, '/get_redirect.php')) {
+export const unwrapApptrkr: UrlUnwrapper = createUnwrapper('apptrkr.com', isHostOf, (url) => {
+  if (!isAnyOf(url.pathname, '/get_redirect.php')) {
     return
   }
 
@@ -26,4 +26,4 @@ export const unwrapApptrkr: UrlUnwrapper = (url) => {
   if (isHttpUrl(target)) {
     return target
   }
-}
+})

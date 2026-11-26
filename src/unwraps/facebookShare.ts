@@ -1,6 +1,6 @@
 import { isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { readParamTarget } from '../utils.js'
+import { createUnwrapper, readParamTarget } from '../utils.js'
 
 const hosts = [
   'www.facebook.com',
@@ -18,11 +18,7 @@ const hrefPrefixRegex = /^href=(?=https?:)/i
 // Facebook share (facebook.com/sharer/sharer.php?u=<target>, /sharer.php, /share.php, /sharer,
 // p[url]=, /dialog/share?href=, /dialog/feed and /dialog/send ?link=, never redirect_uri, on www.,
 // bare, m., pt-br. and de.facebook.com). Opt-in: unwrapping returns the shared page, not the form.
-export const unwrapFacebookShare: UrlUnwrapper = (url) => {
-  if (!isHostOf(url, hosts)) {
-    return
-  }
-
+export const unwrapFacebookShare: UrlUnwrapper = createUnwrapper(hosts, isHostOf, (url) => {
   if (sharerPathRegex.test(url.pathname)) {
     const target = readParamTarget(url, 'u')
 
@@ -41,4 +37,4 @@ export const unwrapFacebookShare: UrlUnwrapper = (url) => {
   if (linkDialogPathRegex.test(url.pathname)) {
     return readParamTarget(url, 'link')
   }
-}
+})

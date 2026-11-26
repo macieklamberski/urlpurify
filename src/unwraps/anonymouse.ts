@@ -1,16 +1,13 @@
 import { isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
+import { createUnwrapper } from '../utils.js'
 
 // The proxy script, also in its German edition, then the target.
 const pathRegex = /^\/cgi-bin\/anon-www(?:_de)?\.cgi\/(.+)$/i
 
 // Anonymouse web proxy (anonymouse.org/cgi-bin/anon-www.cgi/<target>, also anon-www_de.cgi).
 // Opt-in: the proxy serves the page anonymously, which a reader may choose on purpose.
-export const unwrapAnonymouse: UrlUnwrapper = (url) => {
-  if (!isHostOf(url, 'anonymouse.org')) {
-    return
-  }
-
+export const unwrapAnonymouse: UrlUnwrapper = createUnwrapper('anonymouse.org', isHostOf, (url) => {
   const match = pathRegex.exec(url.pathname)
 
   if (!match?.[1]) {
@@ -23,4 +20,4 @@ export const unwrapAnonymouse: UrlUnwrapper = (url) => {
   if (isHttpUrl(target)) {
     return target
   }
-}
+})

@@ -1,16 +1,13 @@
 import { isHostOf } from 'trousse'
 import { getPathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
+import { createUnwrapper } from '../utils.js'
 
 const campaignPrefixRegex = /^\/p\/[A-Z0-9]{5}\//i
 
 // Arttrack download measurement prefix (arttrk.com/p/<campaign id>/<target>), where the target
 // drops its scheme.
 // Not included in defaultUnwrappers: unwrapping removes the podcaster's download counts.
-export const unwrapArttrack: UrlUnwrapper = (url) => {
-  if (!isHostOf(url, 'arttrk.com')) {
-    return
-  }
-
+export const unwrapArttrack: UrlUnwrapper = createUnwrapper('arttrk.com', isHostOf, (url) => {
   return getPathTarget(url, campaignPrefixRegex)
-}
+})

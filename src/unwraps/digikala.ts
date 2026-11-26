@@ -1,13 +1,13 @@
 import { decodeBase64, isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamValues } from '../utils.js'
+import { createUnwrapper, getParamValues } from '../utils.js'
 
 const pathRegex = /^\/api\/v1\/Click\/b\/[A-Za-z0-9]+$/i
 
 // Digikala affiliate click (dgkl.io/api/v1/Click/b/<link id>?b64=<base64 target>).
 // Not included in defaultUnwrappers: unwrapping drops the publisher's commission.
-export const unwrapDigikala: UrlUnwrapper = (url) => {
-  if (!isHostOf(url, 'dgkl.io') || !pathRegex.test(url.pathname)) {
+export const unwrapDigikala: UrlUnwrapper = createUnwrapper('dgkl.io', isHostOf, (url) => {
+  if (!pathRegex.test(url.pathname)) {
     return
   }
 
@@ -22,4 +22,4 @@ export const unwrapDigikala: UrlUnwrapper = (url) => {
   if (target && isHttpUrl(target)) {
     return target
   }
-}
+})

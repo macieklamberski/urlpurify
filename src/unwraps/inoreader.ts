@@ -1,6 +1,6 @@
 import { decodePercent, isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createQueryUnwrapper, decodeEncodedScheme } from '../utils.js'
+import { createQueryUnwrapper, createUnwrapper, decodeEncodedScheme } from '../utils.js'
 
 const hosts = ['inoreader.com', 'www.inoreader.com', 'jp.inoreader.com']
 
@@ -17,11 +17,7 @@ const extractAddFeed = createQueryUnwrapper({
 // www.inoreader.com/feed/<feed>, also on inoreader.com and jp.inoreader.com). Not in
 // defaultUnwrappers: the link adds the feed to a reader or previews it there, it never redirects
 // to it.
-export const unwrapInoreader: UrlUnwrapper = (url) => {
-  if (!isHostOf(url, hosts)) {
-    return
-  }
-
+export const unwrapInoreader: UrlUnwrapper = createUnwrapper(hosts, isHostOf, (url) => {
   const match = url.pathname.match(feedPathRegex)
 
   if (!match?.groups) {
@@ -35,4 +31,4 @@ export const unwrapInoreader: UrlUnwrapper = (url) => {
   if (isHttpUrl(target)) {
     return target
   }
-}
+})

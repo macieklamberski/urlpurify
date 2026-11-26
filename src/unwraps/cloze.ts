@@ -1,5 +1,6 @@
 import { isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
+import { createUnwrapper } from '../utils.js'
 
 // Some links put `n/<base64url link text>/` between the token and the target.
 const pathRegex = /^\/r\/[\w-]+\/(?:n\/[\w-]+\/)?(.+)$/i
@@ -7,11 +8,7 @@ const pathRegex = /^\/r\/[\w-]+\/(?:n\/[\w-]+\/)?(.+)$/i
 // Cloze email click tracker (circulate.it/r/<token>/<target>, also
 // circulate.it/r/<token>/n/<link text>/<target>), with the target's scheme dropped.
 // Not included in defaultUnwrappers: unwrapping removes the sender's click stats.
-export const unwrapCloze: UrlUnwrapper = (url) => {
-  if (!isHostOf(url, 'circulate.it')) {
-    return
-  }
-
+export const unwrapCloze: UrlUnwrapper = createUnwrapper('circulate.it', isHostOf, (url) => {
   const match = pathRegex.exec(url.pathname)
 
   if (!match?.[1]) {
@@ -24,4 +21,4 @@ export const unwrapCloze: UrlUnwrapper = (url) => {
   if (isHttpUrl(target)) {
     return target
   }
-}
+})

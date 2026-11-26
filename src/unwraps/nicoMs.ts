@@ -1,15 +1,12 @@
 import { isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
+import { createUnwrapper } from '../utils.js'
 
 const nicoMsRegex = /^\/((?:sm|nm|so|im|lv)\w+)$/i
 
 // nico.ms short link. `/sm`, `/nm` and `/so` route to the watch page, `/im` to the seiga
 // illustration page, `/lv` to the live broadcast page.
-export const unwrapNicoMs: UrlUnwrapper = (url) => {
-  if (!isHostOf(url, 'nico.ms')) {
-    return
-  }
-
+export const unwrapNicoMs: UrlUnwrapper = createUnwrapper('nico.ms', isHostOf, (url) => {
   const match = url.pathname.match(nicoMsRegex)
   if (!match) {
     return
@@ -26,4 +23,4 @@ export const unwrapNicoMs: UrlUnwrapper = (url) => {
   }
 
   return `https://www.nicovideo.jp/watch/${id}`
-}
+})

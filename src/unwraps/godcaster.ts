@@ -1,6 +1,6 @@
 import { decodePercent, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createQueryUnwrapper } from '../utils.js'
+import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
 // The first number is the show, as in the show's feeds.godcaster.fm/player_<n>.xml.
 const episodePrefixRegex = /^\/act\/e\/\d+\/\d+\/\d+\//i
@@ -16,11 +16,7 @@ const extractSupportTarget = createQueryUnwrapper({
 // target is percent-encoded twice, and its show-notes click counter
 // (go.godcaster.fm/act/sr/<show>?d=<target>, also /act/fr/<show>/<n>?d=<target>).
 // Not included in defaultUnwrappers: unwrapping removes the podcaster's download counts.
-export const unwrapGodcaster: UrlUnwrapper = (url) => {
-  if (!isHostOf(url, 'go.godcaster.fm')) {
-    return
-  }
-
+export const unwrapGodcaster: UrlUnwrapper = createUnwrapper('go.godcaster.fm', isHostOf, (url) => {
   if (supportPathRegex.test(url.pathname)) {
     return extractSupportTarget(url)
   }
@@ -38,4 +34,4 @@ export const unwrapGodcaster: UrlUnwrapper = (url) => {
   }
 
   return `${target}${url.hash}`
-}
+})

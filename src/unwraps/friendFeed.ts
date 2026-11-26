@@ -1,17 +1,13 @@
 import { isAnyOf, isHostOf, isHttpUrl, parseUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { readParamTarget } from '../utils.js'
+import { createUnwrapper, readParamTarget } from '../utils.js'
 
 const hosts = ['friendfeed.com', 'www.friendfeed.com']
 
 // FriendFeed share links (friendfeed.com/share?url=<page>, /share?link=, the bookmarklet frame at
 // /share/bookmarklet/frame#url=, and the root form /?url=). The `title=` beside them is free text.
 // Opt-in: unwrapping returns the shared page, not the form that shares it.
-export const unwrapFriendFeed: UrlUnwrapper = (url) => {
-  if (!isHostOf(url, hosts)) {
-    return
-  }
-
+export const unwrapFriendFeed: UrlUnwrapper = createUnwrapper(hosts, isHostOf, (url) => {
   if (isAnyOf(url.pathname, '/share')) {
     return readParamTarget(url, 'url') ?? readParamTarget(url, 'link')
   }
@@ -37,4 +33,4 @@ export const unwrapFriendFeed: UrlUnwrapper = (url) => {
   if (target && isHttpUrl(target)) {
     return target
   }
-}
+})

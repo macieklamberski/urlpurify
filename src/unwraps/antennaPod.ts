@@ -1,17 +1,13 @@
 import { getPathSegments, isAnyOf, isHostOf, isLocale } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { readParamTarget } from '../utils.js'
+import { createUnwrapper, readParamTarget } from '../utils.js'
 
 const hosts = ['antennapod.org', 'www.antennapod.org']
 
 // AntennaPod subscribe deep link (antennapod.org/deeplink/subscribe?url=<feed>&title=<title>, also
 // under a locale such as /fr/). Not included in defaultUnwrappers: unwrapping returns the feed, not
 // the page that subscribes to it.
-export const unwrapAntennaPod: UrlUnwrapper = (url) => {
-  if (!isHostOf(url, hosts)) {
-    return
-  }
-
+export const unwrapAntennaPod: UrlUnwrapper = createUnwrapper(hosts, isHostOf, (url) => {
   const segments = getPathSegments(url)
   const [locale] = segments
   // A locale copy of the page, such as /fr/ or /pt-br/, runs the same script.
@@ -23,4 +19,4 @@ export const unwrapAntennaPod: UrlUnwrapper = (url) => {
   }
 
   return readParamTarget(url, 'url')
-}
+})

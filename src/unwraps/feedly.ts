@@ -1,6 +1,6 @@
 import { isAnyOf, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { decodeEncodedScheme, readParamTarget } from '../utils.js'
+import { createUnwrapper, decodeEncodedScheme, readParamTarget } from '../utils.js'
 
 const feedPathRegex =
   /^\/i\/(?:subscription|discover\/sources\/search)\/feed(?:\/|%2F)(?<target>.+)$/i
@@ -14,11 +14,7 @@ const fragmentPaths = ['/', '/index.html', '/home']
 // /i/discover/sources/search/feed/<feed>, /#subscription/feed/<feed> also after /index.html or
 // /home, the slash after `feed`, and before it in the fragment, also as %2F). Opt-in: the link adds
 // the feed, it never redirects.
-export const unwrapFeedly: UrlUnwrapper = (url) => {
-  if (!isHostOf(url, hosts)) {
-    return
-  }
-
+export const unwrapFeedly: UrlUnwrapper = createUnwrapper(hosts, isHostOf, (url) => {
   if (isAnyOf(url.pathname, paramPath)) {
     return readParamTarget(url, 'url')
   }
@@ -41,4 +37,4 @@ export const unwrapFeedly: UrlUnwrapper = (url) => {
   }
 
   return decodeEncodedScheme(fragmentMatch.groups.target)
-}
+})

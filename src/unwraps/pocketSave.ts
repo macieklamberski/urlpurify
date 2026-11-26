@@ -1,17 +1,17 @@
 import { isAnyOf, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { readParamTarget } from '../utils.js'
+import { createUnwrapper, readParamTarget } from '../utils.js'
 
 const hosts = ['getpocket.com', 'www.getpocket.com']
 const paths = ['/save', '/edit', '/edit.php']
 
 // Pocket save links (getpocket.com/save?url=<page>, /edit?url= and /edit.php?url=). Opt-in:
 // unwrapping returns the saved page, not the form that saves it.
-export const unwrapPocketSave: UrlUnwrapper = (url) => {
-  if (!isHostOf(url, hosts) || !isAnyOf(url.pathname, paths)) {
+export const unwrapPocketSave: UrlUnwrapper = createUnwrapper(hosts, isHostOf, (url) => {
+  if (!isAnyOf(url.pathname, paths)) {
     return
   }
 
   // The `title=` beside it is free text, even when it holds only a url.
   return readParamTarget(url, 'url')
-}
+})

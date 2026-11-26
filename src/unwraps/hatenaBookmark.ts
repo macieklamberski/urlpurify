@@ -1,6 +1,6 @@
 import { decodePercent, isAnyOf, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { readParamTarget } from '../utils.js'
+import { createUnwrapper, readParamTarget } from '../utils.js'
 
 const formPathRegex = /^\/(?:entry|add|entry\/panel)\/?$/i
 const schemePathRegex = /^\/entry\/(?<target>https?(?::|%3a).+)$/i
@@ -13,11 +13,7 @@ const hosts = ['b.hatena.ne.jp']
 // without it as /entry/s/<host>/<path> for https and /entry/<host>/<path> for http), and the
 // bookmark form at /entry?url=, /add?url= and /entry/panel/?url=. Opt-in: unwrapping returns the
 // bookmarked page, not the Hatena page that bookmarks it.
-export const unwrapHatenaBookmark: UrlUnwrapper = (url) => {
-  if (!isHostOf(url, hosts)) {
-    return
-  }
-
+export const unwrapHatenaBookmark: UrlUnwrapper = createUnwrapper(hosts, isHostOf, (url) => {
   if (isAnyOf(url.pathname, formPathRegex)) {
     return readParamTarget(url, 'url')
   }
@@ -40,4 +36,4 @@ export const unwrapHatenaBookmark: UrlUnwrapper = (url) => {
 
   // Hatena reads an escaped `%23` in the path or query as the start of the page's fragment.
   return `${`${target}${url.search}`.replace('%23', '#')}${url.hash}`
-}
+})

@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'bun:test'
+import { getQueryParam, isHostOf } from 'trousse'
 import {
   createQueryUnwrapper,
+  createUnwrapper,
   getParamTarget,
   getUtf8ByteLength,
   readParamTarget,
@@ -384,6 +386,25 @@ describe('createQueryUnwrapper', () => {
 
       expect(extractOwned(value)).toBe(expected)
     })
+  })
+})
+
+describe('createUnwrapper', () => {
+  const unwrapExample = createUnwrapper('redirect.example.com', isHostOf, (url) => {
+    return getQueryParam(url, 'target')
+  })
+
+  it('should run the body on a host the check accepts', () => {
+    const value = new URL('https://redirect.example.com/?target=https://example.org/post')
+    const expected = 'https://example.org/post'
+
+    expect(unwrapExample(value)).toBe(expected)
+  })
+
+  it('should return undefined on a host the check rejects', () => {
+    const value = new URL('https://example.com/?target=https://example.org/post')
+
+    expect(unwrapExample(value)).toBeUndefined()
   })
 })
 

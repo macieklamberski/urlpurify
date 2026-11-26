@@ -1,5 +1,6 @@
 import { isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
+import { createUnwrapper } from '../utils.js'
 
 const pathRegex = /^\/\d+\/(?:banner\/|int\/)?(.+)$/i
 const schemeRegex = /^https?:/i
@@ -10,11 +11,7 @@ const hostRegex = /^[\da-z-]+(?:\.[\da-z-]+)+(?:[/:]|$)/i
 // adf.ly/<user id>/int/<target>, and the same on its q.gs domain), with or without the target's
 // scheme. Both now redirect to Linkvertise, so a wrapped link no longer reaches its target.
 // Not included in defaultUnwrappers: unwrapping removes the link owner's ad earnings.
-export const unwrapAdfly: UrlUnwrapper = (url) => {
-  if (!isHostOf(url, ['adf.ly', 'q.gs'])) {
-    return
-  }
-
+export const unwrapAdfly: UrlUnwrapper = createUnwrapper(['adf.ly', 'q.gs'], isHostOf, (url) => {
   const match = pathRegex.exec(url.pathname)
 
   if (!match?.[1]) {
@@ -36,4 +33,4 @@ export const unwrapAdfly: UrlUnwrapper = (url) => {
   if (isHttpUrl(unwrapped)) {
     return unwrapped
   }
-}
+})

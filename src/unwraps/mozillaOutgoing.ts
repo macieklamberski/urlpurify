@@ -1,5 +1,6 @@
 import { decodePercent, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
+import { createUnwrapper } from '../utils.js'
 
 const pathRegex = /^\/v1\/[0-9a-f]{64}\/(.+)$/i
 
@@ -11,15 +12,11 @@ const hosts = [
 
 // Mozilla outgoing-link redirector used on Mozilla mailing lists, blogs, and
 // support forums. Path: /v1/<sha256>/<URL-encoded-target>
-export const unwrapMozillaOutgoing: UrlUnwrapper = (url) => {
-  if (!isHostOf(url, hosts)) {
-    return
-  }
-
+export const unwrapMozillaOutgoing: UrlUnwrapper = createUnwrapper(hosts, isHostOf, (url) => {
   const match = url.pathname.match(pathRegex)
   if (!match) {
     return
   }
 
   return decodePercent(match[1])
-}
+})
