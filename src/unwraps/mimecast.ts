@@ -1,3 +1,4 @@
+import { isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { getParamTarget } from '../utils.js'
 
@@ -9,8 +10,7 @@ const mimecastPathRegex = /^\/s\/[^/]+$/i
 // url.<region>.m.mimecastprotect.com/s/<id>?url=<target>).
 // The ?domain=<host> form is left wrapped: Mimecast keeps the target's path on its server.
 export const unwrapMimecast: UrlUnwrapper = (url) => {
-  const isMimecastHost =
-    mimecastHostRegex.test(url.hostname) || mimecastProtectHostRegex.test(url.hostname)
+  const isMimecastHost = isHostOf(url, [mimecastHostRegex, mimecastProtectHostRegex])
 
   if (!isMimecastHost || !mimecastPathRegex.test(url.pathname)) {
     return
