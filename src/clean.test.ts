@@ -1,10 +1,10 @@
-import { describe, expect, it } from 'bun:test'
-import { decodeBase64 } from 'trousse'
+import { describe, expect, it, mock } from 'bun:test'
+import { decodeBase64, getQueryParam } from 'trousse'
 import { cleanUrl, isTrackingParam, stripTrackingParams, unwrapUrl } from './clean.js'
 import { campaignParams, defaultTrackingParams, housekeepingParams } from './defaults.js'
 import type { TrackingParam, TrackingValueTest, UrlUnwrapper } from './types.js'
 import { unwrapWebArchive } from './unwraps/webArchive.js'
-import { createQueryUnwrapper } from './utils.js'
+import { createQueryUnwrapper, unwrapperHosts } from './utils.js'
 
 const exampleUnwrapper = createQueryUnwrapper({
   hosts: 'redirect.example.com',
@@ -20,6 +20,15 @@ const nestedUnwrapper = createQueryUnwrapper({
   hosts: 'outer.example.com',
   params: ['url'],
 })
+
+// A hand-written unwrapper registers no hosts, so the host index runs it on every host.
+const handWrittenFallbackUnwrapper: UrlUnwrapper = (url) => {
+  if (url.hostname !== 'redirect.example.com') {
+    return
+  }
+
+  return getQueryParam(url, 'fallback')
+}
 
 // A base64 carrier holding the raw bytes of a legacy-charset target.
 const base64Unwrapper: UrlUnwrapper = (url) => {
@@ -52,6 +61,40 @@ describe('unwrapUrl', () => {
     const expected = 'https://example.com/first'
 
     expect(unwrapUrl(value, [exampleUnwrapper, exampleFallbackUnwrapper])).toBe(expected)
+  })
+
+  it('should keep an unregistered unwrapper ahead of a registered one on the same host', () => {
+    const value =
+      'https://redirect.example.com/?target=https%3A%2F%2Fexample.com%2Fsecond&fallback=https%3A%2F%2Fexample.com%2Ffirst'
+    const unwrappers = [handWrittenFallbackUnwrapper, exampleUnwrapper]
+    const expected = 'https://example.com/first'
+
+    unwrapUrl(value, unwrappers)
+
+    expect(unwrapUrl(value, unwrappers)).toBe(expected)
+  })
+
+  it('should run every registered unwrapper on a shared host once its list is indexed', () => {
+    const value = 'https://redirect.example.com/?fallback=https%3A%2F%2Fexample.com%2Fpost'
+    const unwrappers = [exampleUnwrapper, exampleFallbackUnwrapper]
+    const expected = 'https://example.com/post'
+
+    unwrapUrl(value, unwrappers)
+
+    expect(unwrapUrl(value, unwrappers)).toBe(expected)
+  })
+
+  it('should skip a registered unwrapper on another host once its list arrives a second time', () => {
+    const value = 'https://example.org/?target=https%3A%2F%2Fexample.com%2Fpost'
+    const unwrap = mock(exampleUnwrapper)
+    const unwrappers = [unwrap]
+    const expected = 1
+
+    unwrapperHosts.set(unwrap, ['redirect.example.com'])
+    unwrapUrl(value, unwrappers)
+    unwrapUrl(value, unwrappers)
+
+    expect(unwrap).toHaveBeenCalledTimes(expected)
   })
 
   it('should unwrap with default unwrappers when none are given', () => {
