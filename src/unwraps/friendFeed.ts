@@ -18,11 +18,7 @@ export const unwrapFriendFeed: UrlUnwrapper = createUnwrapper({
     if (isAnyOf(url.pathname, '/share/bookmarklet/frame')) {
       const fragment = parseUrl(`?${url.hash.slice(1)}`, url)
 
-      if (!fragment) {
-        return
-      }
-
-      return readParamTarget(fragment, 'url')
+      return fragment && readParamTarget(fragment, 'url')
     }
 
     // The root path serves every other page too, so only an http target counts.
