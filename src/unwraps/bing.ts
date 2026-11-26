@@ -1,4 +1,4 @@
-import { decodeBase64Url, isAnyOf, isHttpUrl } from 'trousse'
+import { decodeBase64Url, isAnyOf, isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { getParamTarget, getParamValues } from '../utils.js'
 
@@ -19,7 +19,7 @@ const bingPrefixRegex = /^a\d/
 //   URL prefixed by a two-byte version marker (`a1`, `a2`, ...).
 // - news click (www.bing.com/news/apiclick.aspx?url=<target>), the item link in Bing News RSS.
 export const unwrapBing: UrlUnwrapper = (url) => {
-  if (!isAnyOf(url.hostname, hosts)) {
+  if (!isHostOf(url, hosts)) {
     return
   }
 
