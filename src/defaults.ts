@@ -495,7 +495,7 @@ export {
 
 // Applied by cleanUrl and stripTrackingParams: what tracks a person or adds nothing. A pattern is
 // tested against the lowercased param name, so it must be lowercase and anchored.
-export const defaultTrackingParams: Array<TrackingParam> = [
+export const defaultTrackingParams: ReadonlyArray<TrackingParam> = [
   ...clickAttributionParams,
   ...visitorIdParams,
   ...sessionParams,
@@ -1076,7 +1076,7 @@ export const feedToolUnwrappers: Array<UrlUnwrapper> = [
 // whatever it is, a redirect or a page that takes the url as an argument.
 export const genericCarrierUnwrappers: Array<UrlUnwrapper> = [unwrapGenericCarrier]
 
-export const defaultUnwrappers: Array<UrlUnwrapper> = [
+export const defaultUnwrappers: ReadonlyArray<UrlUnwrapper> = [
   ...searchClickUnwrappers,
   ...linkShimUnwrappers,
 ]

@@ -150,10 +150,6 @@ export const createQueryUnwrapper = (config: QueryUnwrapperConfig): UrlUnwrapper
       return isHostOrSubdomainOf(url, config.domains)
     }
 
-    if (config.hosts instanceof RegExp) {
-      return isAnyOf(url.hostname, config.hosts)
-    }
-
     return isHostOf(url, config.hosts)
   }
 

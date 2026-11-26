@@ -13,7 +13,7 @@ const hosts = ['fusion.google.com']
 // google.<TLD>/ig/add?feedurl=<feed> and /ig/addtoreader, fusion.google.com/add?feedurl=<feed>).
 // Not in defaultUnwrappers: the link adds the feed to a reader, it does not redirect to it.
 export const unwrapGoogleReader: UrlUnwrapper = (url) => {
-  if (!isAnyOf(url.hostname, googleHostRegex)) {
+  if (!isHostOf(url, googleHostRegex)) {
     return
   }
 

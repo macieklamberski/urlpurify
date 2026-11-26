@@ -1,4 +1,4 @@
-import { isAnyOf } from 'trousse'
+import { isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createQueryUnwrapper } from '../utils.js'
 
@@ -13,7 +13,7 @@ const extractTarget = createQueryUnwrapper({
 // eBay Rover affiliate redirect (rover.ebay.<TLD>/rover/<n>/<campaign>/<n>?mpre=<target>, or the
 // older ?loc=<target>).
 export const unwrapEbayRover: UrlUnwrapper = (url) => {
-  if (!isAnyOf(url.hostname, roverHostRegex) || !roverPathRegex.test(url.pathname)) {
+  if (!isHostOf(url, roverHostRegex) || !roverPathRegex.test(url.pathname)) {
     return
   }
 

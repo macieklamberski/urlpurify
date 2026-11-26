@@ -1,4 +1,4 @@
-import { isAnyOf, isHttpUrl } from 'trousse'
+import { isAnyOf, isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { getParamTarget } from '../utils.js'
 
@@ -6,7 +6,7 @@ const hosts = ['c212.net', 'edge.prnewswire.com']
 
 // PR Newswire release click tracker (c212.net or edge.prnewswire.com /c/link/?u=<target>).
 export const unwrapPrNewswire: UrlUnwrapper = (url) => {
-  if (!isAnyOf(url.hostname, hosts) || !isAnyOf(url.pathname, '/c/link/')) {
+  if (!isHostOf(url, hosts) || !isAnyOf(url.pathname, '/c/link/')) {
     return
   }
 

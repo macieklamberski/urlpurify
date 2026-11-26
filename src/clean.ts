@@ -30,9 +30,9 @@ const signatureParams = [
 
 const pathParamRegex = /;([^;/=]+)=[^;/]*/g
 
-const trackingMatcherCache = new WeakMap<Array<TrackingParam>, TrackingMatcher>()
+const trackingMatcherCache = new WeakMap<ReadonlyArray<TrackingParam>, TrackingMatcher>()
 
-const getTrackingMatcher = (params: Array<TrackingParam>): TrackingMatcher => {
+const getTrackingMatcher = (params: ReadonlyArray<TrackingParam>): TrackingMatcher => {
   let cached = trackingMatcherCache.get(params)
 
   if (!cached) {
@@ -131,7 +131,7 @@ const deletePathParams = (url: URL, matcher: TrackingMatcher): void => {
 // Delete tracking params in place, from the query and from `;name=value` path params. Literal
 // names match case-insensitively, and patterns are tested against the lowercased name. A url
 // whose query carries a signature param is kept whole.
-const deleteTrackingParams = (url: URL, trackingParams: Array<TrackingParam>): void => {
+const deleteTrackingParams = (url: URL, trackingParams: ReadonlyArray<TrackingParam>): void => {
   const pairs = url.search.slice(1).split('&')
   const entries = pairs.map((pair) => new URLSearchParams(pair).entries().next().value)
 
@@ -228,7 +228,7 @@ const bareHostRegex = /^[\p{L}\p{N}-]+(?:\.[\p{L}\p{N}-]+)+(?:[/?#:]|$)/u
 // A target without a scheme fails the http check, so it gets `https`: a protocol-relative
 // `//host/path`, as Embedly writes for Issuu, and a bare `host.tld/path`, as ShareASale's
 // `urllink` and LinkedIn's `safety/go` carry.
-const addMissingScheme = (target: string | undefined): string | undefined => {
+const addTargetScheme = (target: string | undefined): string | undefined => {
   if (!target) {
     return
   }
@@ -252,12 +252,12 @@ type UnwrapperIndex = {
 
 // A list seen once maps to undefined and gets no index, so a caller passing a new array per call
 // pays no build. The second arrival of the same array builds it.
-const unwrapperIndexes = new WeakMap<Array<UrlUnwrapper>, UnwrapperIndex | undefined>()
+const unwrapperIndexes = new WeakMap<ReadonlyArray<UrlUnwrapper>, UnwrapperIndex | undefined>()
 
 // Each host, and each `.domain` that also matches its subdomains, maps to the unwrappers registered
 // for it plus every unregistered one, in list order, so the first match is the one a full scan
 // finds. Any other host gets only the unregistered ones.
-const buildUnwrapperIndex = (unwrappers: Array<UrlUnwrapper>): UnwrapperIndex => {
+const buildUnwrapperIndex = (unwrappers: ReadonlyArray<UrlUnwrapper>): UnwrapperIndex => {
   const byHost = new Map<string, Array<UrlUnwrapper>>()
   const rest: Array<UrlUnwrapper> = []
   let hasDomains = false
@@ -296,7 +296,7 @@ const buildUnwrapperIndex = (unwrappers: Array<UrlUnwrapper>): UnwrapperIndex =>
   return { byHost, rest, hasDomains }
 }
 
-const getUnwrapperIndex = (unwrappers: Array<UrlUnwrapper>): UnwrapperIndex | undefined => {
+const getUnwrapperIndex = (unwrappers: ReadonlyArray<UrlUnwrapper>): UnwrapperIndex | undefined => {
   if (!unwrapperIndexes.has(unwrappers)) {
     unwrapperIndexes.set(unwrappers, undefined)
     return
@@ -314,9 +314,9 @@ const getUnwrapperIndex = (unwrappers: Array<UrlUnwrapper>): UnwrapperIndex | un
 
 const getCandidates = (
   url: URL,
-  unwrappers: Array<UrlUnwrapper>,
+  unwrappers: ReadonlyArray<UrlUnwrapper>,
   index: UnwrapperIndex | undefined,
-): Array<UrlUnwrapper> => {
+): ReadonlyArray<UrlUnwrapper> => {
   if (!index) {
     return unwrappers
   }
@@ -356,12 +356,12 @@ const getCandidates = (
 
 const applyUnwrappers = (
   url: URL,
-  unwrappers: Array<UrlUnwrapper>,
+  unwrappers: ReadonlyArray<UrlUnwrapper>,
   index: UnwrapperIndex | undefined,
 ): string | undefined => {
   for (const unwrap of getCandidates(url, unwrappers, index)) {
     // A trailing no-break space, as YouTube descriptions carry, hides a bare host untrimmed.
-    const target = cleanTarget(addMissingScheme(unwrap(url)?.trim()))
+    const target = cleanTarget(addTargetScheme(unwrap(url)?.trim()))
 
     if (target) {
       return target
@@ -383,7 +383,7 @@ const applyUnwrappers = (
 // serialized as in cleanUrl, or undefined when none match or the input cannot be parsed.
 export const unwrapUrl = (
   url: string,
-  unwrappers: Array<UrlUnwrapper> = defaultUnwrappers,
+  unwrappers: ReadonlyArray<UrlUnwrapper> = defaultUnwrappers,
 ): string | undefined => {
   const parsed = parseUrl(url)
 
@@ -404,7 +404,7 @@ export const unwrapUrl = (
 // URL Standard serialization. Input that cannot be parsed is returned unchanged.
 export const stripTrackingParams = (
   url: string,
-  trackingParams: Array<TrackingParam> = defaultTrackingParams,
+  trackingParams: ReadonlyArray<TrackingParam> = defaultTrackingParams,
 ): string => {
   const parsed = parseUrl(url)
 
@@ -424,7 +424,7 @@ export const isTrackingParam = (
   name: string,
   value: string | undefined,
   hostname: string,
-  trackingParams: Array<TrackingParam> = defaultTrackingParams,
+  trackingParams: ReadonlyArray<TrackingParam> = defaultTrackingParams,
 ): boolean => {
   const matcher = getTrackingMatcher(trackingParams)
   const host = stripWww(hostname.toLowerCase())

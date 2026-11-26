@@ -1,4 +1,4 @@
-import { decodeBase64Url, isAnyOf, isHttpUrl } from 'trousse'
+import { decodeBase64Url, isAnyOf, isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { getParamValues } from '../utils.js'
 
@@ -7,7 +7,7 @@ const hosts = ['stats.newswire.com', 'stats.nwe.io', 'stats.mediadboutreach.com'
 // Newswire release and email click tracker (stats.newswire.com/x/html?final=<base64url>&sig=…,
 // also stats.nwe.io and stats.mediadboutreach.com).
 export const unwrapNewswire: UrlUnwrapper = (url) => {
-  if (!isAnyOf(url.hostname, hosts) || !isAnyOf(url.pathname, '/x/html')) {
+  if (!isHostOf(url, hosts) || !isAnyOf(url.pathname, '/x/html')) {
     return
   }
 

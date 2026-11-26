@@ -1,4 +1,4 @@
-import { decodePercent, isHttpUrl } from 'trousse'
+import { decodePercent, isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
 const hostRegex = /^(?:www\.)?archive\.(?:is|ph|today|md|fo|vn|li)$/
@@ -13,7 +13,7 @@ const selectionHashRegex = /^#selection-\d+\.\d+-\d+\.\d+$/i
 // Not included in defaultUnwrappers: a snapshot is a page at a point in time, and unwrapping
 // returns the live page, which may have changed or gone.
 export const unwrapArchiveToday: UrlUnwrapper = (url) => {
-  if (!hostRegex.test(url.hostname)) {
+  if (!isHostOf(url, hostRegex)) {
     return
   }
 

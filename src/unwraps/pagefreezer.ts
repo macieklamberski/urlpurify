@@ -15,7 +15,7 @@ const browsePathRegex = /^\/en-US\/wa\/browse\/[0-9a-f-]{36}$/i
 // <capture time>/<target> and us.pagefreezer.com/en-US/wa/browse/<archive id>?url=<target>).
 // Opt-in: unwrapping returns the live page, which may have changed or be gone.
 export const unwrapPagefreezer: UrlUnwrapper = (url) => {
-  if (publicHostRegex.test(url.hostname)) {
+  if (isHostOf(url, publicHostRegex)) {
     const match = publicPathRegex.exec(url.pathname)
 
     if (!match?.[1]) {

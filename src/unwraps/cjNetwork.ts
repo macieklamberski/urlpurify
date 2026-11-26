@@ -1,4 +1,4 @@
-import { decodePercent, isAnyOf } from 'trousse'
+import { decodePercent, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createQueryUnwrapper } from '../utils.js'
 
@@ -48,7 +48,7 @@ export const unwrapCjNetwork: UrlUnwrapper = (url) => {
     return extractUrlParam(url)
   }
 
-  if (!isAnyOf(url.hostname, hosts)) {
+  if (!isHostOf(url, hosts)) {
     return
   }
 
