@@ -29,9 +29,9 @@ const signatureParams = [
 
 const pathParamRegex = /;([^;/=]+)=[^;/]*/g
 
-const trackingMatcherCache = new WeakMap<Array<TrackingParam>, TrackingMatcher>()
+const trackingMatcherCache = new WeakMap<ReadonlyArray<TrackingParam>, TrackingMatcher>()
 
-const getTrackingMatcher = (params: Array<TrackingParam>): TrackingMatcher => {
+const getTrackingMatcher = (params: ReadonlyArray<TrackingParam>): TrackingMatcher => {
   let cached = trackingMatcherCache.get(params)
 
   if (!cached) {
@@ -130,7 +130,7 @@ const deletePathParams = (url: URL, matcher: TrackingMatcher): void => {
 // Delete tracking params in place, from the query and from `;name=value` path params. Literal
 // names match case-insensitively, and patterns are tested against the lowercased name. A url
 // whose query carries a signature param is kept whole.
-const deleteTrackingParams = (url: URL, trackingParams: Array<TrackingParam>): void => {
+const deleteTrackingParams = (url: URL, trackingParams: ReadonlyArray<TrackingParam>): void => {
   const pairs = url.search.slice(1).split('&')
   const entries = pairs.map((pair) => new URLSearchParams(pair).entries().next().value)
 
@@ -243,7 +243,7 @@ const addTargetScheme = (target: string | undefined): string | undefined => {
   return target
 }
 
-const applyUnwrappers = (url: URL, unwrappers: Array<UrlUnwrapper>): string | undefined => {
+const applyUnwrappers = (url: URL, unwrappers: ReadonlyArray<UrlUnwrapper>): string | undefined => {
   for (const unwrap of unwrappers) {
     // A trailing no-break space, as YouTube descriptions carry, hides a bare host untrimmed.
     const target = cleanTarget(addTargetScheme(unwrap(url)?.trim()))
@@ -268,7 +268,7 @@ const applyUnwrappers = (url: URL, unwrappers: Array<UrlUnwrapper>): string | un
 // serialized as in cleanUrl, or undefined when none match or the input cannot be parsed.
 export const unwrapUrl = (
   url: string,
-  unwrappers: Array<UrlUnwrapper> = defaultUnwrappers,
+  unwrappers: ReadonlyArray<UrlUnwrapper> = defaultUnwrappers,
 ): string | undefined => {
   const parsed = parseUrl(url)
 
@@ -289,7 +289,7 @@ export const unwrapUrl = (
 // URL Standard serialization. Input that cannot be parsed is returned unchanged.
 export const stripTrackingParams = (
   url: string,
-  trackingParams: Array<TrackingParam> = defaultTrackingParams,
+  trackingParams: ReadonlyArray<TrackingParam> = defaultTrackingParams,
 ): string => {
   const parsed = parseUrl(url)
 
@@ -309,7 +309,7 @@ export const isTrackingParam = (
   name: string,
   value: string | undefined,
   hostname: string,
-  trackingParams: Array<TrackingParam> = defaultTrackingParams,
+  trackingParams: ReadonlyArray<TrackingParam> = defaultTrackingParams,
 ): boolean => {
   const matcher = getTrackingMatcher(trackingParams)
   const host = stripWww(hostname.toLowerCase())
