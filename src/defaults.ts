@@ -174,6 +174,7 @@ import { unwrapFtc } from './unwraps/ftc.js'
 import { unwrapGabCompose } from './unwraps/gabCompose.js'
 import { unwrapGateSc } from './unwraps/gateSc.js'
 import { unwrapGenericCarrier } from './unwraps/genericCarrier.js'
+import { unwrapGenericPathCarrier } from './unwraps/genericPathCarrier.js'
 import { unwrapGeoriot } from './unwraps/georiot.js'
 import { unwrapGfnLinkProxy } from './unwraps/gfnLinkProxy.js'
 import { unwrapGitee } from './unwraps/gitee.js'
@@ -1074,9 +1075,12 @@ export const feedToolUnwrappers: Array<UrlUnwrapper> = [
   unwrapW3cFeedValidator,
 ]
 
-// Any host carrying an http url in a url-named param: unwrapping removes the link's own page,
-// whatever it is, a redirect or a page that takes the url as an argument.
-export const genericCarrierUnwrappers: Array<UrlUnwrapper> = [unwrapGenericCarrier]
+// Any host carrying an http url in a url-named param or glued into its path: unwrapping removes the
+// link's own page, whatever it is, a redirect or a page that takes the url as an argument.
+export const genericCarrierUnwrappers: Array<UrlUnwrapper> = [
+  unwrapGenericCarrier,
+  unwrapGenericPathCarrier,
+]
 
 export const defaultUnwrappers: ReadonlyArray<UrlUnwrapper> = [
   ...searchClickUnwrappers,
