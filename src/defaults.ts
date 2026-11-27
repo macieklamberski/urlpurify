@@ -199,6 +199,7 @@ import { unwrapGumball } from './unwraps/gumball.js'
 import { unwrapGurunavi } from './unwraps/gurunavi.js'
 import { unwrapHackerNewsSubmit } from './unwraps/hackerNewsSubmit.js'
 import { unwrapHackerone } from './unwraps/hackerone.js'
+import { unwrapHanweb } from './unwraps/hanweb.js'
 import { unwrapHashnode } from './unwraps/hashnode.js'
 import { unwrapHasoffers } from './unwraps/hasoffers.js'
 import { unwrapHatenaBookmark } from './unwraps/hatenaBookmark.js'
@@ -206,7 +207,6 @@ import { unwrapHatenaImage } from './unwraps/hatenaImage.js'
 import { unwrapHearthis } from './unwraps/hearthis.js'
 import { unwrapHellohq } from './unwraps/hellohq.js'
 import { unwrapHirkereso } from './unwraps/hirkereso.js'
-import { unwrapHongKongTunis } from './unwraps/hongKongTunis.js'
 import { unwrapHorde } from './unwraps/horde.js'
 import { unwrapHornetsecurity } from './unwraps/hornetsecurity.js'
 import { unwrapHrefLi } from './unwraps/hrefLi.js'
@@ -933,7 +933,7 @@ export const archiveProxyUnwrappers: Array<UrlUnwrapper> = [
   unwrapExciteTranslate,
   unwrapGoogleTranslate,
   unwrapGoogleWebLight,
-  unwrapHongKongTunis,
+  unwrapHanweb,
   unwrapLocWebArchive,
   unwrapMegalodon,
   unwrapNatlibNz,
