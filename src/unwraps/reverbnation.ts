@@ -1,3 +1,4 @@
+import { isAnyOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createQueryUnwrapper } from '../utils.js'
 
@@ -13,7 +14,7 @@ const extractTarget = createQueryUnwrapper({
 // /c/fan_reach/pt and /controller/fan_reach/pt, which forwarded the same way until 2021. Opt-in:
 // unwrapping removes the artist's click count.
 export const unwrapReverbnation: UrlUnwrapper = (url) => {
-  if (!paths.includes(url.pathname)) {
+  if (!isAnyOf(url.pathname, paths)) {
     return
   }
 

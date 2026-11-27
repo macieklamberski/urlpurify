@@ -3,7 +3,6 @@ import type { UrlUnwrapper } from '../types.js'
 import { appendLinkFragment, createUnwrapper } from '../utils.js'
 
 const pathRegex = /^(?:\/[^/]+)*\/RU=([\w-]+)(?:\/R[A-Z]=[^/]*)*(?:;.*)?$/i
-const paddingRegex = /-+$/
 
 // Yahoo! JAPAN click redirect (rdsig.yahoo.co.jp/.../RV=1/RU=<base64url target>/RS=...). The
 // target ends the path or comes before /RK=, /RS= or ;_ylt=.
@@ -16,8 +15,16 @@ export const unwrapYahooJapan: UrlUnwrapper = createUnwrapper({
       return
     }
 
-    // Yahoo! JAPAN pads the base64url target with `-` in place of `=`.
-    let target = decodeBase64Url(match[1].replace(paddingRegex, ''))
+    const encoded = match[1]
+    let end = encoded.length
+
+    // Yahoo! JAPAN pads the base64url target with `-` in place of `=`. A loop, since `/-+$/`
+    // rescans the run from every `-` and takes quadratic time on a long one.
+    while (end > 0 && encoded[end - 1] === '-') {
+      end -= 1
+    }
+
+    let target = decodeBase64Url(encoded.slice(0, end))
 
     // RV=2 links end the target with a NUL byte.
     if (target?.endsWith('\0')) {

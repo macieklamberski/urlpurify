@@ -26,7 +26,7 @@ export const unwrapAmazonAffiliate: UrlUnwrapper = (url) => {
       target = getParamTarget(url, 'path')
     }
 
-    if (emailRedirectPaths.includes(url.pathname)) {
+    if (isAnyOf(url.pathname, emailRedirectPaths)) {
       target = getParamTarget(url, 'U')
     }
 

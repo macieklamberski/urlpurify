@@ -1,3 +1,4 @@
+import { isAnyOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createQueryUnwrapper } from '../utils.js'
 
@@ -21,7 +22,7 @@ const extractLinkTarget = createQueryUnwrapper({
 // defaultUnwrappers: real-time auction bidding routes the click, so `url` may not be where it
 // lands.
 export const unwrapNarrativ: UrlUnwrapper = (url) => {
-  if (linkPaths.includes(url.pathname)) {
+  if (isAnyOf(url.pathname, linkPaths)) {
     return extractLinkTarget(url)
   }
 

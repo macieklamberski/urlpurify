@@ -22,6 +22,7 @@ import {
   videoExtensions,
 } from 'trousse'
 import { defaultTrackingParams, defaultUnwrappers } from './defaults.js'
+import { sessionParams } from './tracking/session.js'
 import type { CleanUrlOptions, TrackingEntry, TrackingParam, UrlUnwrapper } from './types.js'
 import { unwrapperHosts } from './utils.js'
 
@@ -41,6 +42,8 @@ const signatureParams = [
 ]
 
 const pathParamRegex = /;([^;/=]+)=[^;/]*/g
+
+const sessionLiterals = sessionParams.filter(isString).map((param) => param.toLowerCase())
 
 const trackingMatcherCache = new WeakMap<ReadonlyArray<TrackingParam>, TrackingMatcher>()
 
@@ -125,10 +128,13 @@ const isTrackedPair = (
   return matcher.entries.some((entry) => matchesEntry(entry, name, value, host))
 }
 
-// Java servlet containers write the session id into the path, `/page;jsessionid=<id>`.
+// Java servlet containers write the session id into the path, `/page;jsessionid=<id>`. Other
+// path params, as `;ts=1`, address the resource.
 const deletePathParams = (url: URL, matcher: TrackingMatcher): void => {
   const pathname = url.pathname.replace(pathParamRegex, (param, name: string) => {
-    if (matcher.literals.has(name.toLowerCase())) {
+    const lowerName = name.toLowerCase()
+
+    if (sessionLiterals.includes(lowerName) && matcher.literals.has(lowerName)) {
       return ''
     }
 
@@ -216,8 +222,9 @@ const fileExtensions = new Set(
 )
 
 // Repairs a scheme such as `http:// https://host` and a host such as `example.com)` through
-// `resolveUrl`, then drops a target that is not http, holds a control character or keeps a junk
-// host: not a hostname such as `,ccam.cc`, no dot between two labels, or a file extension.
+// `resolveUrl`, then drops a target that is not http, holds a control character, carries userinfo
+// or keeps a junk host: not a hostname such as `,ccam.cc`, no dot between two labels, or a file
+// extension.
 const cleanTarget = (target: string | undefined): string | undefined => {
   if (!target) {
     return
@@ -236,7 +243,14 @@ const cleanTarget = (target: string | undefined): string | undefined => {
     return
   }
 
-  const hostname = parseUrl(repaired)?.hostname ?? ''
+  const parsed = parseUrl(repaired)
+
+  // A target `https://example.com@example.net/` goes to example.net while reading as example.com.
+  if (parsed?.username || parsed?.password) {
+    return
+  }
+
+  const hostname = parsed?.hostname ?? ''
 
   if (!dottedHostRegex.test(hostname) && !isIpAddress(hostname)) {
     return
@@ -278,7 +292,7 @@ const addTargetScheme = (target: string | undefined): string | undefined => {
 type UnwrapperIndex = {
   byHost: Map<string, Array<UrlUnwrapper>>
   rest: Array<UrlUnwrapper>
-  hasDomains: boolean
+  domainLength: number // Longest registered `.domain`, 0 when none
 }
 
 // A list seen once maps to undefined and gets no index, so a caller passing a new array per call
@@ -291,7 +305,7 @@ const unwrapperIndexes = new WeakMap<ReadonlyArray<UrlUnwrapper>, UnwrapperIndex
 const buildUnwrapperIndex = (unwrappers: ReadonlyArray<UrlUnwrapper>): UnwrapperIndex => {
   const byHost = new Map<string, Array<UrlUnwrapper>>()
   const rest: Array<UrlUnwrapper> = []
-  let hasDomains = false
+  let domainLength = 0
 
   for (const unwrap of unwrappers) {
     const hosts = unwrapperHosts.get(unwrap)
@@ -310,7 +324,7 @@ const buildUnwrapperIndex = (unwrappers: ReadonlyArray<UrlUnwrapper>): Unwrapper
       const list = byHost.get(host)
 
       if (host.startsWith('.')) {
-        hasDomains = true
+        domainLength = Math.max(domainLength, host.length)
       }
 
       if (!list) {
@@ -324,7 +338,7 @@ const buildUnwrapperIndex = (unwrappers: ReadonlyArray<UrlUnwrapper>): Unwrapper
     }
   }
 
-  return { byHost, rest, hasDomains }
+  return { byHost, rest, domainLength }
 }
 
 const getUnwrapperIndex = (unwrappers: ReadonlyArray<UrlUnwrapper>): UnwrapperIndex | undefined => {
@@ -356,20 +370,28 @@ const getCandidates = (
   const host = hostname.endsWith('.') ? hostname.slice(0, -1) : hostname
   const exact = index.byHost.get(host)
 
-  if (!index.hasDomains) {
+  if (!index.domainLength) {
     return exact ?? index.rest
   }
 
-  const lists: Array<Array<UrlUnwrapper>> = exact ? [exact] : []
-  const labels = host.split('.')
+  const suffixLists: Array<Array<UrlUnwrapper>> = []
+  let start = host.length
 
-  for (let start = 0; start < labels.length; start++) {
-    const list = index.byHost.get(`.${labels.slice(start).join('.')}`)
+  // Walks the `.domain` suffixes from the right and stops past the longest registered one, so a
+  // host with thousands of labels costs as much as its last few.
+  while (start !== -1 && host.length - start < index.domainLength) {
+    start = start > 0 ? host.lastIndexOf('.', start - 1) : -1
+
+    const list = index.byHost.get(start === -1 ? `.${host}` : host.slice(start))
 
     if (list) {
-      lists.push(list)
+      suffixLists.push(list)
     }
   }
+
+  const lists: Array<Array<UrlUnwrapper>> = exact ? [exact] : []
+
+  lists.push(...suffixLists.reverse())
 
   if (lists.length === 0) {
     return index.rest

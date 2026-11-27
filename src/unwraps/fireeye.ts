@@ -1,4 +1,4 @@
-import { isHttpUrl } from 'trousse'
+import { isAnyOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper, getParamTarget } from '../utils.js'
 
@@ -10,7 +10,7 @@ const paths = ['/v1/url', '/url']
 export const unwrapFireeye: UrlUnwrapper = createUnwrapper({
   hosts: 'protect2.fireeye.com',
   unwrap: (url) => {
-    if (!paths.includes(url.pathname)) {
+    if (!isAnyOf(url.pathname, paths)) {
       return
     }
 
