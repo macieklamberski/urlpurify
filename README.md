@@ -128,13 +128,13 @@ Removes tracking params and returns the serialized URL. Both this and `purifyUrl
 - A query with a signature (`sig`, `signature`, `X-Amz-Signature` or `X-Goog-Signature`) stays whole, since dropping anything breaks the signature.
 - `ts` stays on Alibaba DirectMail click URLs, which fail without it.
 
-A literal name the list holds is also dropped as a path parameter, as in `/page;jsessionid=<id>`. An entry's `value` is a regex or a function `(value, host) => boolean` tested on the decoded value, and its `hosts` are exact hostnames or a regex, matched without `www.`.
+A session id name the list holds is also dropped as a path parameter, as in `/page;jsessionid=<id>`. A wrapper path carrying one, as in `/external-link.jspa;jsessionid=<id>?url=`, is tried again without it, by `purifyUrl` and `unwrapUrl` alike, so it still unwraps while a target carrying one keeps it. An entry's `value` is a regex or a function `(value, host) => boolean` tested on the percent-decoded value, where an escape that is not UTF-8, such as `%FC`, stays as written. Its `hosts` are exact hostnames or a regex, matched as trousse's `isHostOf` matches them, in any case and in Unicode or Punycode, with a host and its `www.` form matching alike.
 
 A tracking list is compiled on first use and cached per array. To change it, pass a new array.
 
 ### `isTrackingParam(name, value, hostname, trackingParams?)`
 
-Answers whether one query pair is tracking, for a caller filtering pairs itself. The list defaults to `defaultTrackingParams`. It sees one query pair and never the path, so the two rules above don't apply and a `;name=value` path param needs `purifyUrl` or `stripTrackingParams`.
+Answers whether one query pair is tracking, for a caller filtering pairs itself. The name and value arrive percent-decoded, as `purifyUrl` decodes them. The list defaults to `defaultTrackingParams`. It sees one query pair and never the path, so the two rules above don't apply and a `;name=value` path param needs `purifyUrl` or `stripTrackingParams`.
 
 ```typescript
 import { isTrackingParam, knownTrackingParams } from 'urlpurifier'

@@ -2,6 +2,7 @@ import {
   archiveExtensions,
   audioExtensions,
   codeExtensions,
+  decodePercent,
   documentExtensions,
   feedExtensions,
   flashExtensions,
@@ -32,6 +33,14 @@ type TrackingMatcher = {
   entries: Array<TrackingEntry>
 }
 
+// The hostname without `www.`, as a value test sees it, and the url an entry's hosts match.
+type PairHost = {
+  host: string
+  url: URL | undefined
+}
+
+type QueryPair = [name: string, value: string]
+
 // A signature covers the rest of the query, so dropping any param from it makes the server reject
 // the url, as a CDN answers 401 to a signed file url without its `ts`.
 const signatureParams = [
@@ -46,6 +55,14 @@ const pathParamRegex = /;([^;/=]+)=[^;/]*/g
 const sessionLiterals = sessionParams.filter(isString).map((param) => param.toLowerCase())
 
 const trackingMatcherCache = new WeakMap<Array<TrackingParam>, TrackingMatcher>()
+
+const alibabaDirectMailHosts = ['dm-cn.aliyuncs.com', 'www.dm-cn.aliyuncs.com']
+
+const getWwwPair = (host: string): Array<string> => {
+  const bare = stripWww(host.toLowerCase())
+
+  return [bare, `www.${bare}`]
+}
 
 const getTrackingMatcher = (params: Array<TrackingParam>): TrackingMatcher => {
   let cached = trackingMatcherCache.get(params)
@@ -66,6 +83,12 @@ const getTrackingMatcher = (params: Array<TrackingParam>): TrackingMatcher => {
         continue
       }
 
+      // A host and its `www.` form match alike, so `smzdm.com` covers `www.smzdm.com`.
+      if (Array.isArray(param.hosts)) {
+        entries.push({ ...param, hosts: param.hosts.flatMap(getWwwPair) })
+        continue
+      }
+
       entries.push(param)
     }
 
@@ -81,7 +104,26 @@ const matchesPattern = (text: string, pattern: RegExp): boolean => {
   return text.search(pattern) !== -1
 }
 
-const matchesEntry = (entry: TrackingEntry, name: string, value: string, host: string): boolean => {
+// An entry's hosts list carries each host's `www.` form, built once with the matcher. A host
+// pattern is also tested on the host without `www.`.
+const isPairHostOf = (pairHost: PairHost, hosts: RegExp | ReadonlyArray<string>): boolean => {
+  if (!pairHost.url) {
+    return false
+  }
+
+  if (isHostOf(pairHost.url, hosts)) {
+    return true
+  }
+
+  return hosts instanceof RegExp && matchesPattern(pairHost.host, hosts)
+}
+
+const matchesEntry = (
+  entry: TrackingEntry,
+  name: string,
+  value: string,
+  pairHost: PairHost,
+): boolean => {
   const isNameMatch = isString(entry.name)
     ? // biome-ignore lint/plugin/useAnyOfOrSameText: The caller folds the name once per param, and isAnyOf would fold and trim both sides per entry.
       entry.name.toLowerCase() === name
@@ -91,11 +133,7 @@ const matchesEntry = (entry: TrackingEntry, name: string, value: string, host: s
     return false
   }
 
-  if (entry.hosts instanceof RegExp && !matchesPattern(host, entry.hosts)) {
-    return false
-  }
-
-  if (Array.isArray(entry.hosts) && !entry.hosts.includes(host)) {
+  if (entry.hosts && !isPairHostOf(pairHost, entry.hosts)) {
     return false
   }
 
@@ -104,7 +142,7 @@ const matchesEntry = (entry: TrackingEntry, name: string, value: string, host: s
   }
 
   if (entry.value) {
-    return entry.value(value, host)
+    return entry.value(value, pairHost.host)
   }
 
   return true
@@ -118,12 +156,34 @@ const normalizeHost = (hostname: string): string => {
   return host.endsWith('.') ? host.slice(0, -1) : host
 }
 
-// Takes the lowercased name, the decoded value and the hostname without `www.`.
+const getPairHost = (url: URL): PairHost => {
+  return { host: stripWww(normalizeHost(url.hostname)), url }
+}
+
+// A query pair decoded as `URLSearchParams` decodes it, except that an escape that is not UTF-8,
+// such as `%FC`, stays as written.
+const readQueryPair = (pair: string): QueryPair | undefined => {
+  if (!pair) {
+    return
+  }
+
+  const separator = pair.indexOf('=')
+  const name = separator === -1 ? pair : pair.slice(0, separator)
+  const value = separator === -1 ? '' : pair.slice(separator + 1)
+
+  return [decodePercent(name.replaceAll('+', ' ')), decodePercent(value.replaceAll('+', ' '))]
+}
+
+const isSignaturePair = (pair: QueryPair | undefined): boolean => {
+  return isAnyOf(pair?.[0], signatureParams)
+}
+
+// Takes the lowercased name and the decoded value.
 const isTrackedPair = (
   matcher: TrackingMatcher,
   name: string,
   value: string,
-  host: string,
+  pairHost: PairHost,
 ): boolean => {
   if (matcher.literals.has(name)) {
     return true
@@ -133,7 +193,7 @@ const isTrackedPair = (
     return true
   }
 
-  return matcher.entries.some((entry) => matchesEntry(entry, name, value, host))
+  return matcher.entries.some((entry) => matchesEntry(entry, name, value, pairHost))
 }
 
 // Java servlet containers write the session id into the path, `/page;jsessionid=<id>`. Other
@@ -154,17 +214,29 @@ const deletePathParams = (url: URL, matcher: TrackingMatcher): void => {
   }
 }
 
+// A wrapper path can carry a session id, as `/external-link.jspa;jsessionid=<id>?url=`, which an
+// unwrapper matching the exact path misses. A signed url keeps its path whole.
+const deleteSessionPathParams = (url: URL, matcher: TrackingMatcher): void => {
+  if (!url.pathname.includes(';')) {
+    return
+  }
+
+  if (url.search.slice(1).split('&').map(readQueryPair).some(isSignaturePair)) {
+    return
+  }
+
+  deletePathParams(url, matcher)
+}
+
 // Delete tracking params in place, from the query and from `;name=value` path params. Literal
 // names match case-insensitively, and patterns are tested against the lowercased name. A url
 // whose query carries a signature param is kept whole.
 const deleteTrackingParams = (url: URL, trackingParams: Array<TrackingParam>): void => {
   const pairs = url.search.slice(1).split('&')
-  const entries = pairs.map((pair) => new URLSearchParams(pair).entries().next().value)
+  const entries = pairs.map(readQueryPair)
 
-  for (const entry of entries) {
-    if (entry && isAnyOf(entry[0], signatureParams)) {
-      return
-    }
+  if (entries.some(isSignaturePair)) {
+    return
   }
 
   const matcher = getTrackingMatcher(trackingParams)
@@ -175,10 +247,11 @@ const deleteTrackingParams = (url: URL, trackingParams: Array<TrackingParam>): v
     return
   }
 
-  const host = stripWww(normalizeHost(url.hostname))
+  const pairHost = getPairHost(url)
 
   // Alibaba DirectMail click urls answer 400 without their `ts` and do not check their `sign`.
-  const keepsTs = isHostOf(url, 'dm-cn.aliyuncs.com') && isAnyOf(url.pathname, '/trace/v1/report')
+  const keepsTs =
+    isAnyOf(url.pathname, '/trace/v1/report') && isPairHostOf(pairHost, alibabaDirectMailHosts)
 
   // Kept pairs stay byte-for-byte: re-serializing through URLSearchParams turns
   // `%20` into `+`, `flag` into `flag=` and escapes `;`, which servers can read differently.
@@ -196,7 +269,7 @@ const deleteTrackingParams = (url: URL, trackingParams: Array<TrackingParam>): v
       return true
     }
 
-    return !isTrackedPair(matcher, name, value, host)
+    return !isTrackedPair(matcher, name, value, pairHost)
   })
 
   if (keptPairs.length === pairs.length) {
@@ -412,6 +485,7 @@ const applyUnwrappers = (
   url: URL,
   unwrappers: Array<UrlUnwrapper>,
   index: UnwrapperIndex | undefined,
+  matcher: TrackingMatcher,
 ): string | undefined => {
   for (const unwrap of getCandidates(url, unwrappers, index)) {
     // A trailing no-break space, as YouTube descriptions carry, hides a bare host untrimmed.
@@ -426,11 +500,31 @@ const applyUnwrappers = (
   // written goes first, so a target whose own path holds `//` keeps it.
   const collapsed = parseUrl(normalizeUrl(url.href, { collapseSlashes: true }))
 
-  if (!collapsed || collapsed.href === url.href) {
+  if (collapsed && collapsed.href !== url.href) {
+    const target = applyUnwrappers(collapsed, unwrappers, index, matcher)
+
+    if (target) {
+      return target
+    }
+  }
+
+  // A session id in the wrapper's path, `/external-link.jspa;jsessionid=<id>`, hides its exact
+  // path. The url as written goes first, so a target carrying a session id keeps it.
+  if (!url.pathname.includes(';')) {
     return
   }
 
-  return applyUnwrappers(collapsed, unwrappers, index)
+  const sessionless = parseUrl(url.href)
+
+  if (sessionless) {
+    deleteSessionPathParams(sessionless, matcher)
+  }
+
+  if (!sessionless || sessionless.href === url.href) {
+    return
+  }
+
+  return applyUnwrappers(sessionless, unwrappers, index, matcher)
 }
 
 // Apply unwrappers in order and return the first extracted target URL that survives cleaning,
@@ -445,7 +539,9 @@ export const unwrapUrl = (
     return
   }
 
-  const target = applyUnwrappers(parsed, unwrappers, getUnwrapperIndex(unwrappers))
+  const index = getUnwrapperIndex(unwrappers)
+  const matcher = getTrackingMatcher(defaultTrackingParams)
+  const target = applyUnwrappers(parsed, unwrappers, index, matcher)
 
   if (!target) {
     return
@@ -473,7 +569,8 @@ export const stripTrackingParams = (
 
 // Answer whether one query pair is tracking on a url with this hostname, as purifyUrl decides it.
 // It never sees the path or the other pairs, so a `;name=value` path param, the signature rule and
-// the Alibaba DirectMail `ts` rule need purifyUrl. `value` is decoded, or undefined with no `=`.
+// the Alibaba DirectMail `ts` rule need purifyUrl. `name` and `value` arrive percent-decoded, as
+// purifyUrl decodes them, and `value` is undefined with no `=`.
 export const isTrackingParam = (
   name: string,
   value: string | undefined,
@@ -481,9 +578,12 @@ export const isTrackingParam = (
   trackingParams: Array<TrackingParam> = defaultTrackingParams,
 ): boolean => {
   const matcher = getTrackingMatcher(trackingParams)
-  const host = stripWww(normalizeHost(hostname))
+  const url = parseUrl(`https://${hostname}`)
+  const pairHost: PairHost = url
+    ? getPairHost(url)
+    : { host: stripWww(normalizeHost(hostname)), url: undefined }
 
-  return isTrackedPair(matcher, name.toLowerCase(), value ?? '', host)
+  return isTrackedPair(matcher, name.toLowerCase(), value ?? '', pairHost)
 }
 
 // Unwrap redirect/affiliate wrappers, then strip tracking params, and return the result in the
@@ -500,12 +600,13 @@ export const purifyUrl = (url: string, options?: PurifyUrlOptions): string => {
   }
 
   const index = getUnwrapperIndex(unwrappers)
+  const matcher = getTrackingMatcher(trackingParams)
   let currentParsed = parsed
 
   // Wrappers can nest (an email gateway wrapping a search redirect), so
   // unwrap repeatedly up to the depth limit.
   for (let depth = 0; depth < maxUnwrapDepth; depth += 1) {
-    const target = applyUnwrappers(currentParsed, unwrappers, index)
+    const target = applyUnwrappers(currentParsed, unwrappers, index, matcher)
 
     if (!target) {
       break
