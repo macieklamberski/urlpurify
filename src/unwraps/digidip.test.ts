@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'bun:test'
+import { unwrapperHosts } from '../utils.js'
 import { unwrapDigidip } from './digidip.js'
 
 describe('unwrapDigidip', () => {
@@ -44,5 +45,9 @@ describe('unwrapDigidip', () => {
     const url = new URL('https://exampledigidip.net/visit?url=https%3A%2F%2Fexample.com%2Fpage')
 
     expect(unwrapDigidip(url)).toBeUndefined()
+  })
+
+  it('should register its hosts so the host index skips it on other hosts', () => {
+    expect(unwrapperHosts.has(unwrapDigidip)).toBe(true)
   })
 })

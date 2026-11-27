@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'bun:test'
+import { unwrapperHosts } from '../utils.js'
 import { unwrapVgWort } from './vgWort.js'
 
 describe('unwrapVgWort', () => {
@@ -46,5 +47,9 @@ describe('unwrapVgWort', () => {
     )
 
     expect(unwrapVgWort(url)).toBeUndefined()
+  })
+
+  it('should register its hosts so the host index skips it on other hosts', () => {
+    expect(unwrapperHosts.has(unwrapVgWort)).toBe(true)
   })
 })

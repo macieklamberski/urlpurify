@@ -1,6 +1,5 @@
 import { isAnyOf } from 'trousse'
-import type { UrlUnwrapper } from '../types.js'
-import { createQueryUnwrapper } from '../utils.js'
+import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
 const paths = ['/visit', '/v1/redirect']
 
@@ -11,10 +10,13 @@ const extractTarget = createQueryUnwrapper({
 
 // digidip affiliate redirect (<publisher>.digidip.net/visit?url=<target> and
 // tracking.r.digidip.net/v1/redirect?url=<target>).
-export const unwrapDigidip: UrlUnwrapper = (url) => {
-  if (!isAnyOf(url.pathname, paths)) {
-    return
-  }
+export const unwrapDigidip = createUnwrapper({
+  subdomains: 'digidip.net',
+  unwrap: (url) => {
+    if (!isAnyOf(url.pathname, paths)) {
+      return
+    }
 
-  return extractTarget(url)
-}
+    return extractTarget(url)
+  },
+})

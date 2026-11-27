@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'bun:test'
+import { unwrapperHosts } from '../utils.js'
 import { unwrapIcptrack } from './icptrack.js'
 
 describe('unwrapIcptrack', () => {
@@ -152,5 +153,9 @@ describe('unwrapIcptrack', () => {
     )
 
     expect(unwrapIcptrack(url)).toBeUndefined()
+  })
+
+  it('should register its hosts so the host index skips it on other hosts', () => {
+    expect(unwrapperHosts.has(unwrapIcptrack)).toBe(true)
   })
 })

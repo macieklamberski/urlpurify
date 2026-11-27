@@ -1,5 +1,5 @@
 import { isHostOf, isHttpUrl } from 'trousse'
-import type { UrlUnwrapper } from '../types.js'
+import { createUnwrapper } from '../utils.js'
 
 // The main host and its numbered snapshot hosts, such as `s01.megalodon.jp`.
 const hostRegex = /^(?:s\d{2}\.)?megalodon\.jp$/
@@ -10,24 +10,27 @@ const schemeRegex = /^[a-z][a-z\d+.-]*:/i
 // Megalodon archive snapshot (megalodon.jp/<YYYY-MMDD-HHMM-SS>/<target>, also on the numbered
 // hosts s01 to s04.megalodon.jp). Not included in defaultUnwrappers: unwrapping returns the live
 // page, which may have changed or be gone.
-export const unwrapMegalodon: UrlUnwrapper = (url) => {
-  if (!isHostOf(url, hostRegex)) {
-    return
-  }
+export const unwrapMegalodon = createUnwrapper({
+  domains: 'megalodon.jp',
+  unwrap: (url) => {
+    if (!isHostOf(url, hostRegex)) {
+      return
+    }
 
-  const match = pathRegex.exec(url.pathname)
+    const match = pathRegex.exec(url.pathname)
 
-  if (!match?.[1]) {
-    return
-  }
+    if (!match?.[1]) {
+      return
+    }
 
-  // An http target is stored with no scheme, an https one with its scheme and `:443`.
-  const target = schemeRegex.test(match[1]) ? match[1] : `http://${match[1]}`
+    // An http target is stored with no scheme, an https one with its scheme and `:443`.
+    const target = schemeRegex.test(match[1]) ? match[1] : `http://${match[1]}`
 
-  // An unencoded target's query and fragment land in the snapshot URL's own `search` and `hash`.
-  const unwrapped = `${target}${url.search}${url.hash}`
+    // An unencoded target's query and fragment land in the snapshot URL's own `search` and `hash`.
+    const unwrapped = `${target}${url.search}${url.hash}`
 
-  if (isHttpUrl(unwrapped)) {
-    return unwrapped
-  }
-}
+    if (isHttpUrl(unwrapped)) {
+      return unwrapped
+    }
+  },
+})

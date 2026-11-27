@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'bun:test'
+import { unwrapperHosts } from '../utils.js'
 import { unwrapMegalodon } from './megalodon.js'
 
 describe('unwrapMegalodon', () => {
@@ -84,5 +85,9 @@ describe('unwrapMegalodon', () => {
     const url = new URL('https://example.com/2023-0213-1416-54/https://www.example.org/')
 
     expect(unwrapMegalodon(url)).toBeUndefined()
+  })
+
+  it('should register its hosts so the host index skips it on other hosts', () => {
+    expect(unwrapperHosts.has(unwrapMegalodon)).toBe(true)
   })
 })

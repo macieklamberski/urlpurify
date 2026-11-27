@@ -1,5 +1,4 @@
-import type { UrlUnwrapper } from '../types.js'
-import { createQueryUnwrapper } from '../utils.js'
+import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
 // The counting hosts are numbered, vg00 to vg08, with an ssl- variant.
 const hostRegex = /^(?:ssl-)?vg\d+\.met\.vgwort\.de$/
@@ -14,10 +13,13 @@ const extractTarget = createQueryUnwrapper({
 
 // VG Wort count-and-forward link for downloads (vg01.met.vgwort.de/na/<counter id>?l=<target>).
 // Opt-in: the count pays the author's VG Wort royalty, so unwrapping drops it.
-export const unwrapVgWort: UrlUnwrapper = (url) => {
-  if (!pathRegex.test(url.pathname)) {
-    return
-  }
+export const unwrapVgWort = createUnwrapper({
+  subdomains: 'met.vgwort.de',
+  unwrap: (url) => {
+    if (!pathRegex.test(url.pathname)) {
+      return
+    }
 
-  return extractTarget(url)
-}
+    return extractTarget(url)
+  },
+})

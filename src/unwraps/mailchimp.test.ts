@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'bun:test'
+import { unwrapperHosts } from '../utils.js'
 import { unwrapMailchimp } from './mailchimp.js'
 
 describe('unwrapMailchimp', () => {
@@ -102,5 +103,9 @@ describe('unwrapMailchimp', () => {
     )
 
     expect(unwrapMailchimp(url)).toBeUndefined()
+  })
+
+  it('should register its hosts so the host index skips it on other hosts', () => {
+    expect(unwrapperHosts.has(unwrapMailchimp)).toBe(true)
   })
 })

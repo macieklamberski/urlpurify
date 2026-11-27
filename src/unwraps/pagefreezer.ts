@@ -1,6 +1,5 @@
 import { isHostOf, isHttpUrl } from 'trousse'
-import type { UrlUnwrapper } from '../types.js'
-import { getParamTarget } from '../utils.js'
+import { createUnwrapper, getParamTarget } from '../utils.js'
 
 // Public archive replay hosts, numbered public3, public4 and so on.
 const publicHostRegex = /^public\d+\.pagefreezer\.com$/
@@ -14,25 +13,29 @@ const browsePathRegex = /^\/en-US\/wa\/browse\/[0-9a-f-]{36}$/i
 // PageFreezer public web archive snapshot (public<n>.pagefreezer.com/{browse,content}/<collection>/
 // <capture time>/<target> and us.pagefreezer.com/en-US/wa/browse/<archive id>?url=<target>).
 // Opt-in: unwrapping returns the live page, which may have changed or be gone.
-export const unwrapPagefreezer: UrlUnwrapper = (url) => {
-  if (isHostOf(url, publicHostRegex)) {
-    const match = publicPathRegex.exec(url.pathname)
+export const unwrapPagefreezer = createUnwrapper({
+  subdomains: 'pagefreezer.com',
+  unwrap: (url) => {
+    if (isHostOf(url, publicHostRegex)) {
+      const match = publicPathRegex.exec(url.pathname)
 
-    if (!match?.[1]) {
+      if (!match?.[1]) {
+        return
+      }
+
+      // An unencoded target's query and fragment land in the snapshot URL's own `search` and
+      // `hash`.
+      const target = `${match[1]}${url.search}${url.hash}`
+
+      if (isHttpUrl(target)) {
+        return target
+      }
+
       return
     }
 
-    // An unencoded target's query and fragment land in the snapshot URL's own `search` and `hash`.
-    const target = `${match[1]}${url.search}${url.hash}`
-
-    if (isHttpUrl(target)) {
-      return target
+    if (isHostOf(url, 'us.pagefreezer.com') && browsePathRegex.test(url.pathname)) {
+      return getParamTarget(url, 'url')
     }
-
-    return
-  }
-
-  if (isHostOf(url, 'us.pagefreezer.com') && browsePathRegex.test(url.pathname)) {
-    return getParamTarget(url, 'url')
-  }
-}
+  },
+})

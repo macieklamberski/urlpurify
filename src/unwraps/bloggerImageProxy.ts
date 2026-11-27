@@ -6,7 +6,7 @@ import {
   isHostOrSubdomainOf,
   isHttpUrl,
 } from 'trousse'
-import type { UrlUnwrapper } from '../types.js'
+import { createUnwrapper } from '../utils.js'
 
 const focusHostRegex = /^(?:images)?\d-focus-opensocial\.googleusercontent\.com$/
 
@@ -15,31 +15,34 @@ const focusHostRegex = /^(?:images)?\d-focus-opensocial\.googleusercontent\.com$
 // - images0-focus-opensocial.googleusercontent.com/gadgets/proxy?url=<source>
 // - <any>.gmodules.com/gadgets/proxy?container=<name>&url=<source>
 // Not included in defaultUnwrappers: unwrapping swaps the proxied copy for the original image.
-export const unwrapBloggerImageProxy: UrlUnwrapper = (url) => {
-  if (
-    !isHostOf(url, 'images-blogger-opensocial.googleusercontent.com') &&
-    !isHostOf(url, focusHostRegex) &&
-    !isHostOrSubdomainOf(url, 'gmodules.com')
-  ) {
-    return
-  }
+export const unwrapBloggerImageProxy = createUnwrapper({
+  domains: ['gmodules.com', 'googleusercontent.com'],
+  unwrap: (url) => {
+    if (
+      !isHostOf(url, 'images-blogger-opensocial.googleusercontent.com') &&
+      !isHostOf(url, focusHostRegex) &&
+      !isHostOrSubdomainOf(url, 'gmodules.com')
+    ) {
+      return
+    }
 
-  if (!isAnyOf(url.pathname, '/gadgets/proxy')) {
-    return
-  }
+    if (!isAnyOf(url.pathname, '/gadgets/proxy')) {
+      return
+    }
 
-  const value = getQueryParamValues(url, 'url', { decodeValues: false }).at(-1)
+    const value = getQueryParamValues(url, 'url', { decodeValues: false }).at(-1)
 
-  if (!value) {
-    return
-  }
+    if (!value) {
+      return
+    }
 
-  const source = decodePercent(value)
+    const source = decodePercent(value)
 
-  // gmodules.com matches on any subdomain, so only an http source tells the proxy apart.
-  if (!isHttpUrl(source)) {
-    return
-  }
+    // gmodules.com matches on any subdomain, so only an http source tells the proxy apart.
+    if (!isHttpUrl(source)) {
+      return
+    }
 
-  return source
-}
+    return source
+  },
+})

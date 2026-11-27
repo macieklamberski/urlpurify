@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'bun:test'
+import { unwrapperHosts } from '../utils.js'
 import { unwrapAdjust } from './adjust.js'
 
 describe('unwrapAdjust', () => {
@@ -190,5 +191,9 @@ describe('unwrapAdjust', () => {
     )
 
     expect(unwrapAdjust(url)).toBeUndefined()
+  })
+
+  it('should register its hosts so the host index skips it on other hosts', () => {
+    expect(unwrapperHosts.has(unwrapAdjust)).toBe(true)
   })
 })
