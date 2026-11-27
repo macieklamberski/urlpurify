@@ -2,6 +2,15 @@ import { describe, expect, it } from 'bun:test'
 import { unwrapGooglePodcasts } from './googlePodcasts.js'
 
 describe('unwrapGooglePodcasts', () => {
+  it('should keep a raw plus in a query feed', () => {
+    const value = new URL(
+      'https://www.google.com/podcasts?feed=aHR0cHM6Ly9leGFtcGxlLm9yZy9hP2I9fn5+Pg==',
+    )
+    const expected = 'https://example.org/a?b=~~~>'
+
+    expect(unwrapGooglePodcasts(value)).toBe(expected)
+  })
+
   it('should decode an unpadded base64 feed from www.google.com/podcasts', () => {
     const value = new URL('https://www.google.com/podcasts?feed=aHR0cDovL2V4YW1wbGUuY29tL3Jzcw')
     const expected = 'http://example.com/rss'
