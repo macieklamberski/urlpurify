@@ -1672,10 +1672,11 @@ describe('cache busters', () => {
     expect(cleanUrl(value)).toBe(value)
   })
 
-  it('should keep a hex word without a digit', () => {
+  it('should strip a hex value without a digit', () => {
     const value = 'https://example.com/menu?ts=cafe'
+    const expected = 'https://example.com/menu'
 
-    expect(cleanUrl(value)).toBe(value)
+    expect(cleanUrl(value)).toBe(expected)
   })
 
   it('should keep a word preview', () => {

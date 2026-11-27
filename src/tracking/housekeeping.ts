@@ -6,8 +6,8 @@ import type { TrackingParam, TrackingValueTest } from '../types.js'
 const refDelimitersRegex = /[\s/?#\\:@]/
 
 // A word value selects content, as `ts=posts` picks a comments feed's type and `cb` names a JSONP
-// callback. A cache buster is a timestamp or a hash, so it carries a digit.
-const cacheBusterValueRegex = /^(?=[a-f]*\d)[0-9a-f]+$/i
+// callback. A cache buster is a timestamp or a hash, so it is hex.
+const cacheBusterValueRegex = /^[0-9a-f]+$/i
 
 // A `ref` holding the URL's own host is Ghost's self-referral, `?ref=example.com` on example.com.
 // With any other value `ref` is often a real referral target.
