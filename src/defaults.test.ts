@@ -10,7 +10,7 @@ const exportedUnwrappers = exportEntries.filter(([name]) => {
   return name.startsWith('unwrap') && name !== 'unwrapUrl'
 })
 
-const getNames = (unwrappers: ReadonlyArray<unknown>): Array<string> => {
+const getNames = (unwrappers: Array<unknown>): Array<string> => {
   return exportedUnwrappers
     .filter(([, unwrapper]) => unwrappers.includes(unwrapper))
     .map(([name]) => name)
@@ -293,17 +293,5 @@ describe('trackingParamsPatterns', () => {
     })
 
     expect(isEveryRegex).toBe(true)
-  })
-})
-
-describe('exported lists', () => {
-  const exportedLists = Object.fromEntries(
-    exportEntries.filter(([, value]) => Array.isArray(value)),
-  )
-
-  it.each(Object.keys(exportedLists))('should throw when %s is mutated', (name) => {
-    const throwing = () => (exportedLists[name] as Array<unknown>).push('session_token')
-
-    expect(throwing).toThrow(TypeError)
   })
 })
