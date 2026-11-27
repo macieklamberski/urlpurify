@@ -79,6 +79,14 @@ describe('unwrapUrl', () => {
     expect(unwrapUrl(value, [nestedUnwrapper, exampleUnwrapper])).toBe(expected)
   })
 
+  it('should unwrap a wrapper whose path carries a jsessionid', () => {
+    const value =
+      'https://community.example.com/external-link.jspa;jsessionid=ABC123?url=https%3A%2F%2Fexample.org%2Fpage'
+    const expected = 'https://example.org/page'
+
+    expect(unwrapUrl(value)).toBe(expected)
+  })
+
   it('should return the first match when multiple unwrappers match', () => {
     const value =
       'https://redirect.example.com/?target=https%3A%2F%2Fexample.com%2Ffirst&fallback=https%3A%2F%2Fexample.com%2Fsecond'

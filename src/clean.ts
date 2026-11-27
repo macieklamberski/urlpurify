@@ -509,6 +509,9 @@ export const unwrapUrl = (
     return
   }
 
+  // A session id in the wrapper's path hides its exact path, as cleanUrl's loop reads it.
+  deleteSessionPathParams(parsed, getTrackingMatcher(defaultTrackingParams))
+
   const target = applyUnwrappers(parsed, unwrappers, getUnwrapperIndex(unwrappers))
 
   if (!target) {
