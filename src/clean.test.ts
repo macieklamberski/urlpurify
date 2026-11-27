@@ -66,6 +66,8 @@ const longHexRegex = /^[0-9a-f]{32}$/
 const everyNameRegex = /^/
 const exceptIdRegex = /^(?!id$)/
 const shopHostRegex = /(^|\.)shop\.example$/
+const wwwShopHostRegex = /^www\.shop\.example$/
+const legacyFromRegex = /^b%FCcher\.example$/
 const utmFamilyRegex = /^utm_[a-z0-9_-]+$/
 const goHostRegex = /^go\d\.example\.org$/
 
@@ -1390,6 +1392,13 @@ describe('Alibaba DirectMail click url', () => {
     expect(cleanUrl(value)).toBe(value)
   })
 
+  it('should keep ts on a click url on the www host', () => {
+    const value =
+      'https://www.dm-cn.aliyuncs.com/trace/v1/report?ts=1783913769&url=http%3A%2F%2Fwww.example.com%2F&sign=fed82fcd6b69c59fe6c6d8c46b34cfb4'
+
+    expect(cleanUrl(value)).toBe(value)
+  })
+
   it('should strip other tracking params from a click url', () => {
     const value =
       'https://dm-cn.aliyuncs.com/trace/v1/report?ts=1783913769&url=http%3A%2F%2Fwww.example.com%2F&fbclid=abc&sign=fed82fcd6b69c59fe6c6d8c46b34cfb4'
@@ -1535,6 +1544,46 @@ describe('tracking entry', () => {
     expect(stripTrackingParams(value, trackingParams)).toBe(value)
   })
 
+  it('should strip a param on a host listed in uppercase', () => {
+    const value = 'https://shop.example/item?from=list&id=42'
+    const trackingParams: Array<TrackingParam> = [{ name: 'from', hosts: ['Shop.example'] }]
+    const expected = 'https://shop.example/item?id=42'
+
+    expect(stripTrackingParams(value, trackingParams)).toBe(expected)
+  })
+
+  it('should strip a param on a host listed in Unicode', () => {
+    const value = 'https://xn--bcher-kva.example/item?from=list&id=42'
+    const trackingParams: Array<TrackingParam> = [{ name: 'from', hosts: ['bücher.example'] }]
+    const expected = 'https://xn--bcher-kva.example/item?id=42'
+
+    expect(stripTrackingParams(value, trackingParams)).toBe(expected)
+  })
+
+  it('should strip a param on the bare form of a host listed with www', () => {
+    const value = 'https://shop.example/item?from=list&id=42'
+    const trackingParams: Array<TrackingParam> = [{ name: 'from', hosts: ['www.shop.example'] }]
+    const expected = 'https://shop.example/item?id=42'
+
+    expect(stripTrackingParams(value, trackingParams)).toBe(expected)
+  })
+
+  it('should strip a param on a www host matching a host pattern with www', () => {
+    const value = 'https://www.shop.example/item?from=list&id=42'
+    const trackingParams: Array<TrackingParam> = [{ name: 'from', hosts: wwwShopHostRegex }]
+    const expected = 'https://www.shop.example/item?id=42'
+
+    expect(stripTrackingParams(value, trackingParams)).toBe(expected)
+  })
+
+  it('should test a value holding a legacy-charset escape as written', () => {
+    const value = 'https://example.com/post?from=b%FCcher.example&id=42'
+    const trackingParams: Array<TrackingParam> = [{ name: 'from', value: legacyFromRegex }]
+    const expected = 'https://example.com/post?id=42'
+
+    expect(stripTrackingParams(value, trackingParams)).toBe(expected)
+  })
+
   it('should keep a param matching the value pattern on a host not listed', () => {
     const value = 'https://example.com/post?sid=0123456789abcdef0123456789abcdef'
     const trackingParams: Array<TrackingParam> = [
@@ -1627,6 +1676,24 @@ describe('isTrackingParam', () => {
     const value = new URL('https://www.shop.example/item?from=list')
 
     expect(isQueryParamTracking('from', 'list', value)).toBe(true)
+  })
+
+  it('should match a self-referral ref on a hostname given in Unicode', () => {
+    expect(isTrackingParam('ref', 'bücher.example', 'bücher.example')).toBe(true)
+  })
+
+  it('should match a host listed in Punycode on a hostname given in Unicode', () => {
+    const trackingParams: Array<TrackingParam> = [
+      { name: 'from', hosts: ['xn--bcher-kva.example'] },
+    ]
+
+    expect(isTrackingParam('from', 'list', 'bücher.example', trackingParams)).toBe(true)
+  })
+
+  it('should not match a listed host on a hostname that does not parse', () => {
+    const trackingParams: Array<TrackingParam> = [{ name: 'from', hosts: ['shop example'] }]
+
+    expect(isTrackingParam('from', 'list', 'shop example', trackingParams)).toBe(false)
   })
 })
 
@@ -1814,6 +1881,22 @@ describe('path params', () => {
     const value = 'https://cdn.example.com/file;jsessionid=ABC123?Signature=abc'
 
     expect(cleanUrl(value)).toBe(value)
+  })
+
+  it('should unwrap a wrapper whose path carries a jsessionid', () => {
+    const value =
+      'https://community.example.com/external-link.jspa;jsessionid=ABC123?url=https%3A%2F%2Fexample.org%2Fpage'
+    const expected = 'https://example.org/page'
+
+    expect(cleanUrl(value)).toBe(expected)
+  })
+
+  it('should unwrap a nested wrapper whose path carries a jsessionid', () => {
+    const value =
+      'https://www.google.com/url?q=https%3A%2F%2Fcommunity.example.com%2Fexternal-link.jspa%3Bjsessionid%3DABC123%3Furl%3Dhttps%253A%252F%252Fexample.org%252Fpage'
+    const expected = 'https://example.org/page'
+
+    expect(cleanUrl(value)).toBe(expected)
   })
 
   it('should scan a long run of path params in linear time', () => {
