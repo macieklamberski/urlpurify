@@ -8,7 +8,7 @@ import {
   isUtf8Binary,
 } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamValues } from '../utils.js'
+import { createUnwrapper, getParamValues } from '../utils.js'
 
 const showPathRegex = /^\/(?:u\/\d+\/)?feed\/([\w%=-]+)(?:\/episode\/[\w%=-]+)?\/?$/i
 
@@ -39,24 +39,27 @@ const getEncodedFeed = (url: URL): string | undefined => {
 // /episode/<id> or under /u/<n>/, and ?feed=<base64 feed> on /, /subscribe-by-rss-feed and
 // google.com/podcasts with or without www). Not included in defaultUnwrappers: the link opens
 // the app's page.
-export const unwrapGooglePodcasts: UrlUnwrapper = (url) => {
-  const encoded = getEncodedFeed(url)
+export const unwrapGooglePodcasts: UrlUnwrapper = createUnwrapper({
+  hosts: [...appHosts, ...searchHosts],
+  unwrap: (url) => {
+    const encoded = getEncodedFeed(url)
 
-  if (!encoded) {
-    return
-  }
+    if (!encoded) {
+      return
+    }
 
-  const binary = decodeBase64UrlBinary(encoded)
+    const binary = decodeBase64UrlBinary(encoded)
 
-  // A feed url is UTF-8 text, so bytes that are not valid UTF-8 come from text glued after the
-  // base64 value, such as `…ZmVlZA--`, and the decoded url would be broken.
-  if (binary === undefined || !isUtf8Binary(binary)) {
-    return
-  }
+    // A feed url is UTF-8 text, so bytes that are not valid UTF-8 come from text glued after the
+    // base64 value, such as `…ZmVlZA--`, and the decoded url would be broken.
+    if (binary === undefined || !isUtf8Binary(binary)) {
+      return
+    }
 
-  const decoded = decodeBase64Url(encoded)
+    const decoded = decodeBase64Url(encoded)
 
-  if (decoded && isHttpUrl(decoded)) {
-    return decoded
-  }
-}
+    if (decoded && isHttpUrl(decoded)) {
+      return decoded
+    }
+  },
+})

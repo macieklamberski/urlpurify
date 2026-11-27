@@ -1,6 +1,6 @@
 import { isAnyOf, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { readParamTarget } from '../utils.js'
+import { createUnwrapper, readParamTarget } from '../utils.js'
 
 const hosts = ['bufferapp.com', 'www.bufferapp.com', 'buffer.com', 'www.buffer.com']
 const composeHosts = ['publish.buffer.com']
@@ -13,21 +13,20 @@ const isCarrierPath = (url: URL): boolean => {
     return isAnyOf(url.pathname, addPathRegex)
   }
 
-  if (isHostOf(url, composeHosts)) {
-    return isAnyOf(url.pathname, composePathRegex)
-  }
-
-  return false
+  return isAnyOf(url.pathname, composePathRegex)
 }
 
 // Buffer share form (bufferapp.com/add?url=<page>, also buffer.com/add, their www. hosts and
 // publish.buffer.com/compose, where /add redirects). Opt-in: unwrapping returns the shared page,
 // not the form that queues it.
-export const unwrapBuffer: UrlUnwrapper = (url) => {
-  if (!isCarrierPath(url)) {
-    return
-  }
+export const unwrapBuffer: UrlUnwrapper = createUnwrapper({
+  hosts: [...hosts, ...composeHosts],
+  unwrap: (url) => {
+    if (!isCarrierPath(url)) {
+      return
+    }
 
-  // The `text=` and `title=` beside it are the post's message, even when they hold only a url.
-  return readParamTarget(url, 'url')
-}
+    // The `text=` and `title=` beside it are the post's message, even when they hold only a url.
+    return readParamTarget(url, 'url')
+  },
+})

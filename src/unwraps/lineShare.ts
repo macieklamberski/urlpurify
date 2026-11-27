@@ -1,6 +1,6 @@
 import { isAnyOf, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { readParamTarget } from '../utils.js'
+import { createUnwrapper, readParamTarget } from '../utils.js'
 
 const sharePaths = [
   {
@@ -15,15 +15,18 @@ const sharePaths = [
 // it: social-plugins.line.me/lineit/share/ui and /social-plugin/share, lineit.line.me/share and
 // /share/ui, timeline.line.me/lineit/share and /social-plugin/share). Opt-in: unwrapping returns
 // the shared page, not the form that shares it.
-export const unwrapLineShare: UrlUnwrapper = (url) => {
-  const isSharePath = sharePaths.some(({ hosts, path }) => {
-    return isHostOf(url, hosts) && isAnyOf(url.pathname, path)
-  })
+export const unwrapLineShare: UrlUnwrapper = createUnwrapper({
+  hosts: sharePaths.flatMap(({ hosts }) => hosts),
+  unwrap: (url) => {
+    const isSharePath = sharePaths.some(({ hosts, path }) => {
+      return isHostOf(url, hosts) && isAnyOf(url.pathname, path)
+    })
 
-  if (!isSharePath) {
-    return
-  }
+    if (!isSharePath) {
+      return
+    }
 
-  // The `text=` beside it is the message, even when it holds only a url.
-  return readParamTarget(url, 'url')
-}
+    // The `text=` beside it is the message, even when it holds only a url.
+    return readParamTarget(url, 'url')
+  },
+})

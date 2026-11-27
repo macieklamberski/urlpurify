@@ -1,5 +1,8 @@
 import { isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
+import { createUnwrapper } from '../utils.js'
+
+const hosts = ['webarchive.nla.gov.au', 'web.archive.org.au']
 
 // A collection, then a 14-digit timestamp with an optional replay modifier.
 const pathRegex = /^\/(?:awa|gov|wayback)\/\d{14}(?:mp_)?\/(.+)$/i
@@ -14,32 +17,35 @@ const pandoraTitlePathRegex = /^\/pan\/\d+\/\d{8}(?:-\d{4})?\/([^/]*\..*)$/i
 // pandora.nla.gov.au/nph-wb/<timestamp>/<target>), and Pandora title snapshots
 // (pandora.nla.gov.au/pan/<id>/<YYYYMMDD>[-HHMM]/<target>). Not included in defaultUnwrappers:
 // unwrapping returns the live page, which may have changed or be gone.
-export const unwrapNlaWebarchive: UrlUnwrapper = (url) => {
-  let match: RegExpExecArray | null = null
-  let scheme = ''
+export const unwrapNlaWebarchive: UrlUnwrapper = createUnwrapper({
+  hosts: [...hosts, 'pandora.nla.gov.au'],
+  unwrap: (url) => {
+    let match: RegExpExecArray | null = null
+    let scheme = ''
 
-  if (isHostOf(url, ['webarchive.nla.gov.au', 'web.archive.org.au'])) {
-    match = pathRegex.exec(url.pathname)
-  }
-
-  if (isHostOf(url, 'pandora.nla.gov.au')) {
-    match = pandoraPathRegex.exec(url.pathname)
-
-    if (!match) {
-      match = pandoraTitlePathRegex.exec(url.pathname)
-      // Pandora's title page links the publisher's site as http beside its snapshot.
-      scheme = 'http://'
+    if (isHostOf(url, hosts)) {
+      match = pathRegex.exec(url.pathname)
     }
-  }
 
-  if (!match?.[1]) {
-    return
-  }
+    if (isHostOf(url, 'pandora.nla.gov.au')) {
+      match = pandoraPathRegex.exec(url.pathname)
 
-  // An unencoded target's query and fragment land in the snapshot URL's own `search` and `hash`.
-  const target = `${scheme}${match[1]}${url.search}${url.hash}`
+      if (!match) {
+        match = pandoraTitlePathRegex.exec(url.pathname)
+        // Pandora's title page links the publisher's site as http beside its snapshot.
+        scheme = 'http://'
+      }
+    }
 
-  if (isHttpUrl(target)) {
-    return target
-  }
-}
+    if (!match?.[1]) {
+      return
+    }
+
+    // An unencoded target's query and fragment land in the snapshot URL's own `search` and `hash`.
+    const target = `${scheme}${match[1]}${url.search}${url.hash}`
+
+    if (isHttpUrl(target)) {
+      return target
+    }
+  },
+})

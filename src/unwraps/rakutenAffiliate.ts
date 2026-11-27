@@ -1,6 +1,6 @@
 import { isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamTarget } from '../utils.js'
+import { createUnwrapper, getParamTarget } from '../utils.js'
 
 // hbb.afl.rakuten.co.jp/hgb/ carries `pc` too, but as an `<img src>` banner whose `pc` is the
 // thumbnail, not a destination.
@@ -15,20 +15,23 @@ const targetParams = ['pc', 'url']
 // Rakuten Japan affiliate redirect (hb.afl.rakuten.co.jp/{hgc,ichiba}/<ids>/?pc=<target>,
 // {pt.afl.rakuten.co.jp/c,mt.afl.rakuten.co.jp/mc}/<ids>/?url=<target>). Not in
 // defaultUnwrappers: unwrapping drops the publisher's affiliate commission.
-export const unwrapRakutenAffiliate: UrlUnwrapper = (url) => {
-  const isLink = linkShapes.some((shape) => {
-    return isHostOf(url, shape.host) && shape.pathRegex.test(url.pathname)
-  })
+export const unwrapRakutenAffiliate: UrlUnwrapper = createUnwrapper({
+  hosts: linkShapes.map((shape) => shape.host),
+  unwrap: (url) => {
+    const isLink = linkShapes.some((shape) => {
+      return isHostOf(url, shape.host) && shape.pathRegex.test(url.pathname)
+    })
 
-  if (!isLink) {
-    return
-  }
-
-  for (const param of targetParams) {
-    const value = getParamTarget(url, param)
-
-    if (value) {
-      return value
+    if (!isLink) {
+      return
     }
-  }
-}
+
+    for (const param of targetParams) {
+      const value = getParamTarget(url, param)
+
+      if (value) {
+        return value
+      }
+    }
+  },
+})

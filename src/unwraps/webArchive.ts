@@ -1,5 +1,6 @@
 import { decodePercent, isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
+import { createUnwrapper } from '../utils.js'
 
 const hosts = [
   'web.archive.org',
@@ -43,40 +44,43 @@ const schemelessRegex = /^(?![^/]*\.(?:jsp|php|jpg)(?:\/|$))[^/]*\./i
 // snapshot at a specific point in time, not a redirect; unwrapping returns
 // the live page, which may have changed or 404'd. Opt in by passing a custom
 // unwrappers array.
-export const unwrapWebArchive: UrlUnwrapper = (url) => {
-  let match: RegExpMatchArray | null = null
+export const unwrapWebArchive: UrlUnwrapper = createUnwrapper({
+  hosts: [...hosts, ...replayHosts, 'wayback.archive-it.org', 'scholar.archive.org'],
+  unwrap: (url) => {
+    let match: RegExpMatchArray | null = null
 
-  if (isHostOf(url, hosts)) {
-    match = url.pathname.match(pathRegex)
-  }
+    if (isHostOf(url, hosts)) {
+      match = url.pathname.match(pathRegex)
+    }
 
-  if (!match && isHostOf(url, replayHosts)) {
-    match = url.pathname.match(replayPathRegex)
-  }
+    if (!match && isHostOf(url, replayHosts)) {
+      match = url.pathname.match(replayPathRegex)
+    }
 
-  if (isHostOf(url, 'wayback.archive-it.org')) {
-    match = url.pathname.match(archiveItPathRegex)
-  }
+    if (isHostOf(url, 'wayback.archive-it.org')) {
+      match = url.pathname.match(archiveItPathRegex)
+    }
 
-  if (isHostOf(url, 'scholar.archive.org')) {
-    match = url.pathname.match(scholarPathRegex)
-  }
+    if (isHostOf(url, 'scholar.archive.org')) {
+      match = url.pathname.match(scholarPathRegex)
+    }
 
-  if (!match) {
-    return
-  }
+    if (!match) {
+      return
+    }
 
-  let target = decodePercent(match[1])
+    let target = decodePercent(match[1])
 
-  // Wayback answers a target with no scheme with its http snapshot.
-  if (target && !schemeRegex.test(target) && schemelessRegex.test(target)) {
-    target = `http://${target}`
-  }
+    // Wayback answers a target with no scheme with its http snapshot.
+    if (target && !schemeRegex.test(target) && schemelessRegex.test(target)) {
+      target = `http://${target}`
+    }
 
-  if (!target || !isHttpUrl(target)) {
-    return
-  }
+    if (!target || !isHttpUrl(target)) {
+      return
+    }
 
-  // An unencoded target's query and fragment land in the snapshot URL's own `search` and `hash`.
-  return `${target}${url.search}${url.hash}`
-}
+    // An unencoded target's query and fragment land in the snapshot URL's own `search` and `hash`.
+    return `${target}${url.search}${url.hash}`
+  },
+})
