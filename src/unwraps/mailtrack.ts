@@ -1,19 +1,23 @@
-import type { UrlUnwrapper } from '../types.js'
-import { createQueryUnwrapper } from '../utils.js'
+import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
 const trackPathRegex = /^\/(?:(?:(?:trace\/)?link|l)\/[^/]+)?$/i
 
+const hosts = ['mailtrack.io']
+
 const extractTarget = createQueryUnwrapper({
-  hosts: 'mailtrack.io',
+  hosts,
   params: ['url'],
 })
 
 // Mailtrack email click tracker (mailtrack.io/{trace/link,link,l}/<id>?url=<target>, also
 // mailtrack.io/?url=<target>).
-export const unwrapMailtrack: UrlUnwrapper = (url) => {
-  if (!trackPathRegex.test(url.pathname)) {
-    return
-  }
+export const unwrapMailtrack = createUnwrapper({
+  hosts,
+  unwrap: (url) => {
+    if (!trackPathRegex.test(url.pathname)) {
+      return
+    }
 
-  return extractTarget(url)
-}
+    return extractTarget(url)
+  },
+})

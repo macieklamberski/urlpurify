@@ -1,5 +1,4 @@
-import type { UrlUnwrapper } from '../types.js'
-import { createQueryUnwrapper } from '../utils.js'
+import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
 const redirectPathRegex = /^\/r\/?$/i
 const globalIdentityPathRegex = /^\/m\/global-identity(?:-2)?$/i
@@ -20,12 +19,15 @@ const extractGlobalIdentityTarget = createQueryUnwrapper({
 // Medium outbound redirect (/r/?url=<target>, also /r) and the sign-in hop to a custom-domain
 // publication (/m/global-identity?redirectUrl=<target>, also -2), on medium.com and
 // gen.medium.com only.
-export const unwrapMedium: UrlUnwrapper = (url) => {
-  if (redirectPathRegex.test(url.pathname)) {
-    return extractRedirectTarget(url)
-  }
+export const unwrapMedium = createUnwrapper({
+  hosts,
+  unwrap: (url) => {
+    if (redirectPathRegex.test(url.pathname)) {
+      return extractRedirectTarget(url)
+    }
 
-  if (globalIdentityPathRegex.test(url.pathname)) {
-    return extractGlobalIdentityTarget(url)
-  }
-}
+    if (globalIdentityPathRegex.test(url.pathname)) {
+      return extractGlobalIdentityTarget(url)
+    }
+  },
+})

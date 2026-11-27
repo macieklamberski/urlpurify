@@ -1,21 +1,25 @@
 import { decodePercent } from 'trousse'
-import type { UrlUnwrapper } from '../types.js'
-import { createQueryUnwrapper } from '../utils.js'
+import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
+
+const hosts = ['urldefense.proofpoint.com']
 
 const extractTarget = createQueryUnwrapper({
-  hosts: 'urldefense.proofpoint.com',
+  hosts,
   path: '/v2/url',
   params: ['u'],
 })
 
 // Proofpoint URLDefense v2 (urldefense.proofpoint.com/v2/url?u=<encoded>). The encoded URL
 // substitutes `_` for `/` and `-` for `%`, then is URL-decoded.
-export const unwrapProofpointV2: UrlUnwrapper = (url) => {
-  const raw = extractTarget(url)
+export const unwrapProofpointV2 = createUnwrapper({
+  hosts,
+  unwrap: (url) => {
+    const raw = extractTarget(url)
 
-  if (!raw) {
-    return
-  }
+    if (!raw) {
+      return
+    }
 
-  return decodePercent(raw.replaceAll('-', '%').replaceAll('_', '/'))
-}
+    return decodePercent(raw.replaceAll('-', '%').replaceAll('_', '/'))
+  },
+})

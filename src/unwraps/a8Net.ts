@@ -1,5 +1,4 @@
-import type { UrlUnwrapper } from '../types.js'
-import { createQueryUnwrapper } from '../utils.js'
+import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
 const extractRedirectTarget = createQueryUnwrapper({
   hosts: ['px.a8.net', 'rpx.a8.net', 'www.a8.net', 'px.moba8.net'],
@@ -17,10 +16,13 @@ const deeplinkPathRegex = /^\/s\d+\/redirect_v2\.php$/i
 // A8.net affiliate redirect (px.a8.net, rpx.a8.net, www.a8.net and px.moba8.net,
 // /svt/ejp?a8ejpredirect=<target>) and deep link (ow.a8.net/s<id>/redirect_v2.php?url=<target>).
 // Not included in defaultUnwrappers: unwrapping drops the publisher's affiliate commission.
-export const unwrapA8Net: UrlUnwrapper = (url) => {
-  if (deeplinkPathRegex.test(url.pathname)) {
-    return extractDeeplinkTarget(url)
-  }
+export const unwrapA8Net = createUnwrapper({
+  hosts: ['px.a8.net', 'rpx.a8.net', 'www.a8.net', 'px.moba8.net', 'ow.a8.net'],
+  unwrap: (url) => {
+    if (deeplinkPathRegex.test(url.pathname)) {
+      return extractDeeplinkTarget(url)
+    }
 
-  return extractRedirectTarget(url)
-}
+    return extractRedirectTarget(url)
+  },
+})

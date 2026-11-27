@@ -1,10 +1,11 @@
-import type { UrlUnwrapper } from '../types.js'
-import { createQueryUnwrapper } from '../utils.js'
+import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
 const sharePathRegex = /^\/api\/share\/?$/i
 
+const hosts = ['www.shareaholic.com', 'shareaholic.com']
+
 const extractTarget = createQueryUnwrapper({
-  hosts: ['www.shareaholic.com', 'shareaholic.com'],
+  hosts,
   params: ['link'],
   ignoreLinkFragment: true,
 })
@@ -13,10 +14,13 @@ const extractTarget = createQueryUnwrapper({
 // /api/share and the bare host, which redirects to www.). The endpoint answers 302 to the chosen
 // service's own share form. Opt-in: unwrapping returns the shared page, not the form that shares
 // it.
-export const unwrapShareaholic: UrlUnwrapper = (url) => {
-  if (!sharePathRegex.test(url.pathname)) {
-    return
-  }
+export const unwrapShareaholic = createUnwrapper({
+  hosts,
+  unwrap: (url) => {
+    if (!sharePathRegex.test(url.pathname)) {
+      return
+    }
 
-  return extractTarget(url)
-}
+    return extractTarget(url)
+  },
+})

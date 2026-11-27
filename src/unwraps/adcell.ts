@@ -1,10 +1,11 @@
-import type { UrlUnwrapper } from '../types.js'
-import { createQueryUnwrapper } from '../utils.js'
+import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
 const clickPathRegex = /^\/(?:p\/click|click\.php|promotion\/click\/promoId\/\d+\/slotId\/\d+)$/i
 
+const hosts = ['t.adcell.com', 'www.adcell.de']
+
 const extractTarget = createQueryUnwrapper({
-  hosts: ['t.adcell.com', 'www.adcell.de'],
+  hosts,
   params: ['param0'],
 })
 
@@ -12,10 +13,13 @@ const extractTarget = createQueryUnwrapper({
 // with encodingId, also /click.php, and
 // www.adcell.de/promotion/click/promoId/<n>/slotId/<n>?param0=<target>, also /click.php).
 // Not included in defaultUnwrappers: unwrapping drops the publisher's commission.
-export const unwrapAdcell: UrlUnwrapper = (url) => {
-  if (!clickPathRegex.test(url.pathname)) {
-    return
-  }
+export const unwrapAdcell = createUnwrapper({
+  hosts,
+  unwrap: (url) => {
+    if (!clickPathRegex.test(url.pathname)) {
+      return
+    }
 
-  return extractTarget(url)
-}
+    return extractTarget(url)
+  },
+})

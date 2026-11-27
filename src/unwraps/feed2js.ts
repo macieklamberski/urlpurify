@@ -1,5 +1,4 @@
-import type { UrlUnwrapper } from '../types.js'
-import { createQueryUnwrapper } from '../utils.js'
+import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
 const unwrapFeed2jsOrg = createQueryUnwrapper({
   hosts: ['feed2js.org', 'www.feed2js.org'],
@@ -18,6 +17,9 @@ const unwrapFeedroll = createQueryUnwrapper({
 // Feed2JS feed widget ([www.]feed2js.org/feed2js.php?src=<feed>, and its copy on
 // [www.]feedroll.com/rssviewer/feed2js.php?src=<feed>). Opt-in: the link returns a script that
 // writes the feed into a page, not the feed.
-export const unwrapFeed2js: UrlUnwrapper = (url) => {
-  return unwrapFeed2jsOrg(url) ?? unwrapFeedroll(url)
-}
+export const unwrapFeed2js = createUnwrapper({
+  hosts: ['feed2js.org', 'www.feed2js.org', 'feedroll.com', 'www.feedroll.com'],
+  unwrap: (url) => {
+    return unwrapFeed2jsOrg(url) ?? unwrapFeedroll(url)
+  },
+})

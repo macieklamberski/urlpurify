@@ -1,5 +1,4 @@
-import type { UrlUnwrapper } from '../types.js'
-import { createQueryUnwrapper } from '../utils.js'
+import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
 const extractCacheTarget = createQueryUnwrapper({
   hosts: ['archive.wikiwix.com', 'wikiwix.com'],
@@ -19,6 +18,9 @@ const extractIndexTarget = createQueryUnwrapper({
 // Wikiwix archive snapshot (archive.wikiwix.com/cache/?url=<target> or /cache/index2.php?url=
 // <target>, and wikiwix.com/cache/?url=<target>). Opt-in: unwrapping returns the live page,
 // which may have changed or be gone.
-export const unwrapWikiwix: UrlUnwrapper = (url) => {
-  return extractCacheTarget(url) ?? extractIndexTarget(url)
-}
+export const unwrapWikiwix = createUnwrapper({
+  hosts: ['archive.wikiwix.com', 'wikiwix.com'],
+  unwrap: (url) => {
+    return extractCacheTarget(url) ?? extractIndexTarget(url)
+  },
+})

@@ -1,15 +1,16 @@
-import type { UrlUnwrapper } from '../types.js'
-import { createQueryUnwrapper } from '../utils.js'
+import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
+
+const hosts = ['play.prx.org']
 
 const extractListen = createQueryUnwrapper({
-  hosts: 'play.prx.org',
+  hosts,
   path: '/listen',
   params: ['uf'],
   ignoreLinkFragment: true,
 })
 
 const extractEmbed = createQueryUnwrapper({
-  hosts: 'play.prx.org',
+  hosts,
   path: '/e',
   params: ['uf'],
   ignoreLinkFragment: true,
@@ -17,6 +18,9 @@ const extractEmbed = createQueryUnwrapper({
 
 // PRX Play podcast player and its embed (play.prx.org/listen?ge=<episode guid>&uf=<feed>, also
 // /e). Opt-in: unwrapping returns the show's feed, not the player page a reader would open.
-export const unwrapPrxPlayer: UrlUnwrapper = (url) => {
-  return extractListen(url) ?? extractEmbed(url)
-}
+export const unwrapPrxPlayer = createUnwrapper({
+  hosts,
+  unwrap: (url) => {
+    return extractListen(url) ?? extractEmbed(url)
+  },
+})

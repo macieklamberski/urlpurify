@@ -1,5 +1,4 @@
-import type { UrlUnwrapper } from '../types.js'
-import { createQueryUnwrapper } from '../utils.js'
+import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
 const extractAffiliate = createQueryUnwrapper({
   hosts: 'affiliate.insider.com',
@@ -17,6 +16,9 @@ const extractReviewsOut = createQueryUnwrapper({
 // older one on its own sites (www.businessinsider.com/reviews/out?type=<kind>&u=<target>, also
 // www.insider.com). Not included in defaultUnwrappers: unwrapping drops the publisher's affiliate
 // commission.
-export const unwrapInsiderAffiliate: UrlUnwrapper = (url) => {
-  return extractAffiliate(url) ?? extractReviewsOut(url)
-}
+export const unwrapInsiderAffiliate = createUnwrapper({
+  hosts: ['affiliate.insider.com', 'www.businessinsider.com', 'www.insider.com'],
+  unwrap: (url) => {
+    return extractAffiliate(url) ?? extractReviewsOut(url)
+  },
+})

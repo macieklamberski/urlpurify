@@ -1,6 +1,5 @@
-import { decodePercent, isHostOf } from 'trousse'
-import type { UrlUnwrapper } from '../types.js'
-import { createQueryUnwrapper } from '../utils.js'
+import { decodePercent } from 'trousse'
+import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
 const hosts = [
   'www.dpbolvw.net',
@@ -37,23 +36,22 @@ const extractUrlParam = createQueryUnwrapper({
 // Commission Junction / CJ affiliate network redirects on rotating brand domains and their
 // subdomains (/click-<pid>-<aid>?url=<target>, also the older loc=<target>, and the deep link
 // /links/<pid>/type/dlg/[sid/<x>/][fragment/<x>/]<target>, also type/am).
-export const unwrapCjNetwork: UrlUnwrapper = (url) => {
-  const match = url.pathname.match(deepLinkPathRegex)
+export const unwrapCjNetwork = createUnwrapper({
+  hosts,
+  unwrap: (url) => {
+    const match = url.pathname.match(deepLinkPathRegex)
 
-  if (!match) {
-    if (!clickPathRegex.test(url.pathname)) {
-      return
+    if (!match) {
+      if (!clickPathRegex.test(url.pathname)) {
+        return
+      }
+
+      return extractUrlParam(url)
     }
 
-    return extractUrlParam(url)
-  }
+    const [, fragment, scheme, target] = match
+    const hash = url.hash || (fragment ? `#${decodePercent(fragment)}` : '')
 
-  if (!isHostOf(url, hosts)) {
-    return
-  }
-
-  const [, fragment, scheme, target] = match
-  const hash = url.hash || (fragment ? `#${decodePercent(fragment)}` : '')
-
-  return `${scheme}://${target}${url.search}${hash}`
-}
+    return `${scheme}://${target}${url.search}${hash}`
+  },
+})

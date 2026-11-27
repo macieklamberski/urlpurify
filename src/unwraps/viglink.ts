@@ -1,5 +1,4 @@
-import type { UrlUnwrapper } from '../types.js'
-import { createQueryUnwrapper } from '../utils.js'
+import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
 // An exact host: i.viglink.com serves the same root path as an impression beacon.
 const unwrapRedirect = createQueryUnwrapper({
@@ -18,6 +17,14 @@ const unwrapClickApi = createQueryUnwrapper({
 // (api.viglink.com/api/click?out=<target>, also on apicdn.viglink.com and, through the LinkWithin
 // widget, on lwlink3.linkwithin.com).
 // The click query also carries `loc`, the page the link sat on, which is never the target.
-export const unwrapViglink: UrlUnwrapper = (url) => {
-  return unwrapRedirect(url) ?? unwrapClickApi(url)
-}
+export const unwrapViglink = createUnwrapper({
+  hosts: [
+    'redirect.viglink.com',
+    'api.viglink.com',
+    'apicdn.viglink.com',
+    'lwlink3.linkwithin.com',
+  ],
+  unwrap: (url) => {
+    return unwrapRedirect(url) ?? unwrapClickApi(url)
+  },
+})

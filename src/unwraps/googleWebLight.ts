@@ -1,20 +1,24 @@
-import type { UrlUnwrapper } from '../types.js'
-import { createQueryUnwrapper } from '../utils.js'
+import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
+
+const hosts = ['googleweblight.com']
 
 const extractLiteUrl = createQueryUnwrapper({
-  hosts: 'googleweblight.com',
+  hosts,
   path: '/',
   params: ['lite_url'],
 })
 
 const extractPageUrl = createQueryUnwrapper({
-  hosts: 'googleweblight.com',
+  hosts,
   path: '/i',
   params: ['u'],
 })
 
 // Google Web Light page proxy for slow connections (googleweblight.com/?lite_url=<target>, also
 // /i?u=<target>). Opt-in, as the other proxies.
-export const unwrapGoogleWebLight: UrlUnwrapper = (url) => {
-  return extractLiteUrl(url) ?? extractPageUrl(url)
-}
+export const unwrapGoogleWebLight = createUnwrapper({
+  hosts,
+  unwrap: (url) => {
+    return extractLiteUrl(url) ?? extractPageUrl(url)
+  },
+})

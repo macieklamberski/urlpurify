@@ -1,5 +1,4 @@
-import type { UrlUnwrapper } from '../types.js'
-import { createQueryUnwrapper } from '../utils.js'
+import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
 const hosts = ['newsgator.com', 'www.newsgator.com']
 
@@ -19,6 +18,9 @@ const unwrapSubfext = createQueryUnwrapper({
 // NewsGator subscribe button (www.newsgator.com/ngs/subscriber/subext.aspx?url=<feed>, also
 // /ngs/subscriber/subfext.aspx?url=). Not in defaultUnwrappers: the link adds the feed to a
 // NewsGator account, it does not redirect to it.
-export const unwrapNewsGator: UrlUnwrapper = (url) => {
-  return unwrapSubext(url) ?? unwrapSubfext(url)
-}
+export const unwrapNewsGator = createUnwrapper({
+  hosts,
+  unwrap: (url) => {
+    return unwrapSubext(url) ?? unwrapSubfext(url)
+  },
+})
