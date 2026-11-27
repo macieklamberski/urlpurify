@@ -1,13 +1,25 @@
 import {
+  archiveExtensions,
+  audioExtensions,
+  codeExtensions,
+  documentExtensions,
+  feedExtensions,
+  flashExtensions,
+  fontExtensions,
+  imageExtensions,
+  installerExtensions,
   isAnyOf,
   isHostname,
   isHostOf,
   isIpAddress,
   isString,
   normalizeUrl,
+  pageExtensions,
   parseUrl,
   resolveUrl,
   stripWww,
+  subtitleExtensions,
+  videoExtensions,
 } from 'trousse'
 import { defaultTrackingParams, defaultUnwrappers } from './defaults.js'
 import type { CleanUrlOptions, TrackingEntry, TrackingParam, UrlUnwrapper } from './types.js'
@@ -182,11 +194,30 @@ const deleteTrackingParams = (url: URL, trackingParams: ReadonlyArray<TrackingPa
 
 const controlCharactersRegex = /[\p{Cc}\u2028\u2029]/u
 const dottedHostRegex = /[^.]\.[^.]/
-const fileExtensionHostRegex = /\.(?:asp|aspx|cgi|htm|html|jsp|jspa|php)$/
+
+// Extensions that are also TLDs, such as `example.zip`, stay valid hosts.
+const tldExtensions = ['mobi', 'mov', 'zip']
+
+const fileExtensions = new Set(
+  [
+    ...archiveExtensions,
+    ...audioExtensions,
+    ...codeExtensions,
+    ...documentExtensions,
+    ...feedExtensions,
+    ...flashExtensions,
+    ...fontExtensions,
+    ...imageExtensions,
+    ...installerExtensions,
+    ...pageExtensions,
+    ...subtitleExtensions,
+    ...videoExtensions,
+  ].filter((extension) => !tldExtensions.includes(extension)),
+)
 
 // Repairs a scheme such as `http:// https://host` and a host such as `example.com)` through
 // `resolveUrl`, then drops a target that is not http, holds a control character or keeps a junk
-// host: not a hostname such as `,ccam.cc`, no dot between two labels, or a page extension.
+// host: not a hostname such as `,ccam.cc`, no dot between two labels, or a file extension.
 const cleanTarget = (target: string | undefined): string | undefined => {
   if (!target) {
     return
@@ -215,7 +246,7 @@ const cleanTarget = (target: string | undefined): string | undefined => {
     return
   }
 
-  if (fileExtensionHostRegex.test(hostname)) {
+  if (fileExtensions.has(hostname.slice(hostname.lastIndexOf('.') + 1))) {
     return
   }
 

@@ -928,6 +928,24 @@ describe('cleanUrl with a malformed target', () => {
     expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
   })
 
+  it('should keep the wrapper when a site file glued into the path reads as the host', () => {
+    const value = 'https://redirect.example.com/?target=//sitemap.xml/news'
+
+    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
+  })
+
+  it('should keep the wrapper when a script name reads as the host', () => {
+    const value = 'https://redirect.example.com/?target=https://jquery.min.js/'
+
+    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
+  })
+
+  it('should unwrap a target on a zip TLD', () => {
+    const value = 'https://redirect.example.com/?target=https://example.zip/x'
+
+    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe('https://example.zip/x')
+  })
+
   it('should unwrap a target whose host has a php label before its last', () => {
     const value = 'https://redirect.example.com/?target=https://www.php.net/manual/'
 
