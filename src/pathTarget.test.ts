@@ -2,6 +2,7 @@ import { describe, expect, it } from 'bun:test'
 import { createPathUnwrapper } from './pathTarget.js'
 
 const prefixRegex = /^\/r\/\d+\//
+const prefixHostRegex = /^prefix\.example\.com$/
 
 describe('createPathUnwrapper', () => {
   const unwrap = createPathUnwrapper({
@@ -87,5 +88,28 @@ describe('createPathUnwrapper', () => {
     const expected = 'https://www.example.org/episode.mp3'
 
     expect(unwrapDomain(value)).toBe(expected)
+  })
+
+  it('should return undefined on a listed host that match does not match', () => {
+    const unwrapMatched = createPathUnwrapper({
+      subdomains: 'example.com',
+      match: prefixHostRegex,
+      prefix: prefixRegex,
+    })
+    const value = new URL('https://www.example.com/r/42/www.example.org/episode.mp3')
+
+    expect(unwrapMatched(value)).toBeUndefined()
+  })
+
+  it('should return the target on a host that match matches', () => {
+    const unwrapMatched = createPathUnwrapper({
+      subdomains: 'example.com',
+      match: prefixHostRegex,
+      prefix: prefixRegex,
+    })
+    const value = new URL('https://prefix.example.com/r/42/www.example.org/episode.mp3')
+    const expected = 'https://www.example.org/episode.mp3'
+
+    expect(unwrapMatched(value)).toBe(expected)
   })
 })

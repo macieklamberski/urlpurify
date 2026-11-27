@@ -1,14 +1,5 @@
-import {
-  decodePercent,
-  getQueryParamValues,
-  isAnyOf,
-  isHostOf,
-  isHostOrSubdomainOf,
-  isHttpUrl,
-} from 'trousse'
+import { decodePercent, getQueryParamValues, isAnyOf, isHttpUrl } from 'trousse'
 import { createUnwrapper } from '../utils.js'
-
-const focusHostRegex = /^(?:images)?\d-focus-opensocial\.googleusercontent\.com$/
 
 // Google gadget image proxy, as Blogger serves it, on three host shapes:
 // - images-blogger-opensocial.googleusercontent.com/gadgets/proxy?url=<source>
@@ -17,17 +8,11 @@ const focusHostRegex = /^(?:images)?\d-focus-opensocial\.googleusercontent\.com$
 // Not included in defaultUnwrappers: unwrapping swaps the proxied copy for the original image.
 export const unwrapBloggerImageProxy = createUnwrapper({
   domains: ['gmodules.com', 'googleusercontent.com'],
+  // Every gmodules.com host proxies, but on googleusercontent.com only the two gadget hosts do.
+  match:
+    /(?:^|\.)gmodules\.com$|^images-blogger-opensocial\.googleusercontent\.com$|^(?:images)?\d-focus-opensocial\.googleusercontent\.com$/,
   ignoreLinkFragment: true,
   unwrap: (url) => {
-    // Every gmodules.com host proxies, but on googleusercontent.com only the two gadget hosts do.
-    if (
-      isHostOrSubdomainOf(url, 'googleusercontent.com') &&
-      !isHostOf(url, 'images-blogger-opensocial.googleusercontent.com') &&
-      !isHostOf(url, focusHostRegex)
-    ) {
-      return
-    }
-
     if (!isAnyOf(url.pathname, '/gadgets/proxy')) {
       return
     }

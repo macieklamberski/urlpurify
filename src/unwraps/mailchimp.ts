@@ -1,20 +1,11 @@
-import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 const clicksPathRegex = /^\/mctx\/clicks?$/i
 
-const extractTarget = createQueryUnwrapper({
-  hosts: /^us\d+\.mailchimp\.com$/,
-  params: ['url'],
-})
-
 // Mailchimp click tracker (us<n>.mailchimp.com/mctx/clicks?url=<target>, also /mctx/click).
-export const unwrapMailchimp = createUnwrapper({
+export const unwrapMailchimp = createQueryUnwrapper({
   subdomains: 'mailchimp.com',
-  unwrap: (url) => {
-    if (!clicksPathRegex.test(url.pathname)) {
-      return
-    }
-
-    return extractTarget(url)
-  },
+  match: /^us\d+\.mailchimp\.com$/,
+  path: clicksPathRegex,
+  params: ['url'],
 })

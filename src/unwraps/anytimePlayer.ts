@@ -1,27 +1,10 @@
-import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
-
-const hosts = ['anytimeplayer.app', 'www.anytimeplayer.app']
-
-const extractSubscribe = createQueryUnwrapper({
-  hosts,
-  path: '/subscribe',
-  params: ['url'],
-  ignoreLinkFragment: true,
-})
-
-const extractSubscribeHtml = createQueryUnwrapper({
-  hosts,
-  path: '/subscribe.html',
-  params: ['url'],
-  ignoreLinkFragment: true,
-})
+import { createQueryUnwrapper } from '../utils.js'
 
 // Anytime Player subscribe button (anytimeplayer.app/subscribe?url=<feed>, also /subscribe.html).
 // Opt-in: unwrapping returns the show's feed, not the page that opens it in the app.
-export const unwrapAnytimePlayer = createUnwrapper({
-  hosts,
+export const unwrapAnytimePlayer = createQueryUnwrapper({
+  hosts: ['anytimeplayer.app', 'www.anytimeplayer.app'],
+  path: ['/subscribe', '/subscribe.html'],
+  params: ['url'],
   ignoreLinkFragment: true,
-  unwrap: (url) => {
-    return extractSubscribe(url) ?? extractSubscribeHtml(url)
-  },
 })

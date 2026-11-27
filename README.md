@@ -161,6 +161,13 @@ const unwrapExample = createQueryUnwrapper({
 purifyUrl(url, { unwrappers: [...defaultUnwrappers, unwrapExample] })
 ```
 
+`path` is optional. It takes an exact path or a list of them, both compared in any case, or a regex, tested as written. `params` are tried in order, and the first that holds a value wins.
+
+Two options read a carrier that holds more than a plain value:
+
+- **`index`** picks which value of a repeated param to read, such as `-1` for the last. A tracker nested unencoded in the carrier repeats the param, and the last value is the target.
+- **`decode`** decodes the value, such as trousse's `decodeBase64` or `decodeBase64Url` for a base64 carrier. A decoded value that is not an http url is skipped, and the next param is tried.
+
 A value still encoded after one decode, starting with `http%3A` or `https%3A`, is decoded once more. A malformed escape, or one in a legacy charset such as `%E9` for é in Latin-1, stays as written.
 
 The target takes the link's fragment as `createUnwrapper` describes, so `example.com/out?target=https://example.org/guide#install` gives `https://example.org/guide#install`.
@@ -207,6 +214,8 @@ const unwrapExample = createUnwrapper({
 ```
 
 Pass exactly one of `hosts`, `domains` or `subdomains`. Each matches as trousse's `isHostOf`, `isHostOrSubdomainOf` or `isSubdomainOf` does. The unwrapper registers its hosts, so `purifyUrl` skips it on every other host. A host given as a regex registers nothing, so its unwrapper runs on every url, as a plain `UrlUnwrapper` function does.
+
+To claim only some subdomains and still register, pass a host key with `match`, a regex the host must also match: `subdomains: 'example.com', match: /^click\d+\.example\.com$/` registers `.example.com` and runs only on `click<n>.example.com`. All three factories take it.
 
 The target takes the link's fragment, unless it holds a fragment of its own. A browser following a redirect lands there too, since the server never sees the fragment. When the link opens a page instead of redirecting, such as a share button, or the wrapper's page reads the fragment itself, pass `ignoreLinkFragment: true`. All three factories take it.
 

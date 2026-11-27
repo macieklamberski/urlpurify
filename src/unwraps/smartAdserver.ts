@@ -1,13 +1,11 @@
-import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 // Smart AdServer, now Equativ, ad click
 // (<host>.smartadserver.com/click?imgid=<id>&insid=<id>&go=<target>). Not included in
 // defaultUnwrappers: an ad click pays the publisher.
-export const unwrapSmartAdserver = createUnwrapper({
+export const unwrapSmartAdserver = createQueryUnwrapper({
   subdomains: 'smartadserver.com',
-  unwrap: createQueryUnwrapper({
-    hosts: /^(?:www\d+|ww\d+|euw\d+|diff)\.smartadserver\.com$/,
-    path: '/click',
-    params: ['go'],
-  }),
+  match: /^(?:www\d+|ww\d+|euw\d+|diff)\.smartadserver\.com$/,
+  path: '/click',
+  params: ['go'],
 })

@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'bun:test'
+import { cleanUrl } from '../clean.js'
 import { unwrapApptrkr } from './apptrkr.js'
 
 describe('unwrapApptrkr', () => {
@@ -58,12 +59,11 @@ describe('unwrapApptrkr', () => {
     expect(unwrapApptrkr(url)).toBe('http://pathology.example.edu/100%')
   })
 
-  it('should return undefined for a non-http target', () => {
-    const url = new URL(
-      'https://apptrkr.com/get_redirect.php?id=1&targetURL=mailto:jobs@example.edu',
-    )
+  it('should keep the link for a non-http target', () => {
+    const value = 'https://apptrkr.com/get_redirect.php?id=1&targetURL=mailto:jobs@example.edu'
+    const expected = 'https://apptrkr.com/get_redirect.php?id=1&targetURL=mailto:jobs@example.edu'
 
-    expect(unwrapApptrkr(url)).toBeUndefined()
+    expect(cleanUrl(value, { unwrappers: [unwrapApptrkr] })).toBe(expected)
   })
 
   it('should return undefined when targetURL param is missing', () => {

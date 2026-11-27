@@ -1,21 +1,13 @@
-import { isAnyOf } from 'trousse'
-import type { UrlUnwrapper } from '../types.js'
-import { createUnwrapper, getParamTarget } from '../utils.js'
-
-const affiliatePaths = ['/Turnstile/AffiliateLink', '/af.aspx']
+import { createQueryUnwrapper } from '../utils.js'
 
 // World Nomads affiliate link (www.worldnomads.com/Turnstile/AffiliateLink?partnerCode=<id>&path=
 // <target>, also /af.aspx?affiliate=<id>&path=<target>). Not included in defaultUnwrappers:
 // unwrapping drops the publisher's commission.
-export const unwrapWorldNomads: UrlUnwrapper = createUnwrapper({
+export const unwrapWorldNomads = createQueryUnwrapper({
   hosts: 'www.worldnomads.com',
-  unwrap: (url) => {
-    if (!isAnyOf(url.pathname, affiliatePaths)) {
-      return
-    }
-
-    // A Turnstile link nested unencoded in `path` spills its own `path` into this query, so the
-    // last one holds the target.
-    return getParamTarget(url, 'path', -1)
-  },
+  path: ['/Turnstile/AffiliateLink', '/af.aspx'],
+  params: ['path'],
+  // A Turnstile link nested unencoded in `path` spills its own `path` into this query, so the
+  // last one holds the target.
+  index: -1,
 })

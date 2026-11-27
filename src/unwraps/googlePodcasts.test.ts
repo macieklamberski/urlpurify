@@ -2,9 +2,27 @@ import { describe, expect, it } from 'bun:test'
 import { unwrapGooglePodcasts } from './googlePodcasts.js'
 
 describe('unwrapGooglePodcasts', () => {
+  it('should keep a raw plus in a query feed', () => {
+    const value = new URL(
+      'https://www.google.com/podcasts?feed=aHR0cHM6Ly9leGFtcGxlLm9yZy9hP2I9fn5+Pg==',
+    )
+    const expected = 'https://example.org/a?b=~~~>'
+
+    expect(unwrapGooglePodcasts(value)).toBe(expected)
+  })
+
   it('should decode an unpadded base64 feed from www.google.com/podcasts', () => {
     const value = new URL('https://www.google.com/podcasts?feed=aHR0cDovL2V4YW1wbGUuY29tL3Jzcw')
     const expected = 'http://example.com/rss'
+
+    expect(unwrapGooglePodcasts(value)).toBe(expected)
+  })
+
+  it('should decode a query feed with an encoded space inside it', () => {
+    const value = new URL(
+      'https://www.google.com/podcasts?feed=aHR0cHM6Ly9hbmNob3IuZm0vcy9lZT%20EzODhjL3BvZGNhc3QvcnNz',
+    )
+    const expected = 'https://anchor.fm/s/ee1388c/podcast/rss'
 
     expect(unwrapGooglePodcasts(value)).toBe(expected)
   })
@@ -73,6 +91,15 @@ describe('unwrapGooglePodcasts', () => {
   it('should decode a feed from the show page path', () => {
     const value = new URL('https://podcasts.google.com/feed/aHR0cHM6Ly9leGFtcGxlLmNvbS9mZWVk')
     const expected = 'https://example.com/feed'
+
+    expect(unwrapGooglePodcasts(value)).toBe(expected)
+  })
+
+  it('should decode a feed from the show page path with a trailing encoded space', () => {
+    const value = new URL(
+      'https://podcasts.google.com/feed/aHR0cHM6Ly9tYW5hZ2Uyd2luLmxpYnN5bi5jb20vcnNz%20',
+    )
+    const expected = 'https://manage2win.libsyn.com/rss'
 
     expect(unwrapGooglePodcasts(value)).toBe(expected)
   })

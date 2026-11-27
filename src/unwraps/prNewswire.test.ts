@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'bun:test'
+import { cleanUrl } from '../clean.js'
 import { unwrapPrNewswire } from './prNewswire.js'
 
 describe('unwrapPrNewswire', () => {
@@ -64,16 +65,18 @@ describe('unwrapPrNewswire', () => {
     expect(unwrapPrNewswire(url)).toBeUndefined()
   })
 
-  it('should return undefined for a non-http target', () => {
-    const url = new URL('https://c212.net/c/link/?t=0&u=javascript%3Aalert(1)')
+  it('should keep the link for a non-http target', () => {
+    const value = 'https://c212.net/c/link/?t=0&u=javascript%3Aalert(1)'
+    const expected = 'https://c212.net/c/link/?t=0&u=javascript%3Aalert(1)'
 
-    expect(unwrapPrNewswire(url)).toBeUndefined()
+    expect(cleanUrl(value, { unwrappers: [unwrapPrNewswire] })).toBe(expected)
   })
 
-  it('should return undefined for a malformed twice-encoded target', () => {
-    const url = new URL('https://c212.net/c/link/?t=0&u=https%253A%252F%252Fexample.com%25')
+  it('should keep the link for a malformed twice-encoded target', () => {
+    const value = 'https://c212.net/c/link/?t=0&u=https%253A%252F%252Fexample.com%25'
+    const expected = 'https://c212.net/c/link/?t=0&u=https%253A%252F%252Fexample.com%25'
 
-    expect(unwrapPrNewswire(url)).toBeUndefined()
+    expect(cleanUrl(value, { unwrappers: [unwrapPrNewswire] })).toBe(expected)
   })
 
   it('should return undefined for other paths on the tracker host', () => {
