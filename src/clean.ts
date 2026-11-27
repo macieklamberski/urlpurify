@@ -45,9 +45,9 @@ const pathParamRegex = /;([^;/=]+)=[^;/]*/g
 
 const sessionLiterals = sessionParams.filter(isString).map((param) => param.toLowerCase())
 
-const trackingMatcherCache = new WeakMap<ReadonlyArray<TrackingParam>, TrackingMatcher>()
+const trackingMatcherCache = new WeakMap<Array<TrackingParam>, TrackingMatcher>()
 
-const getTrackingMatcher = (params: ReadonlyArray<TrackingParam>): TrackingMatcher => {
+const getTrackingMatcher = (params: Array<TrackingParam>): TrackingMatcher => {
   let cached = trackingMatcherCache.get(params)
 
   if (!cached) {
@@ -157,7 +157,7 @@ const deletePathParams = (url: URL, matcher: TrackingMatcher): void => {
 // Delete tracking params in place, from the query and from `;name=value` path params. Literal
 // names match case-insensitively, and patterns are tested against the lowercased name. A url
 // whose query carries a signature param is kept whole.
-const deleteTrackingParams = (url: URL, trackingParams: ReadonlyArray<TrackingParam>): void => {
+const deleteTrackingParams = (url: URL, trackingParams: Array<TrackingParam>): void => {
   const pairs = url.search.slice(1).split('&')
   const entries = pairs.map((pair) => new URLSearchParams(pair).entries().next().value)
 
@@ -299,12 +299,12 @@ type UnwrapperIndex = {
 
 // A list seen once maps to undefined and gets no index, so a caller passing a new array per call
 // pays no build. The second arrival of the same array builds it.
-const unwrapperIndexes = new WeakMap<ReadonlyArray<UrlUnwrapper>, UnwrapperIndex | undefined>()
+const unwrapperIndexes = new WeakMap<Array<UrlUnwrapper>, UnwrapperIndex | undefined>()
 
 // Each host, and each `.domain` that also matches its subdomains, maps to the unwrappers registered
 // for it plus every unregistered one, in list order, so the first match is the one a full scan
 // finds. Any other host gets only the unregistered ones.
-const buildUnwrapperIndex = (unwrappers: ReadonlyArray<UrlUnwrapper>): UnwrapperIndex => {
+const buildUnwrapperIndex = (unwrappers: Array<UrlUnwrapper>): UnwrapperIndex => {
   const byHost = new Map<string, Array<UrlUnwrapper>>()
   const rest: Array<UrlUnwrapper> = []
   let domainLength = 0
@@ -343,7 +343,7 @@ const buildUnwrapperIndex = (unwrappers: ReadonlyArray<UrlUnwrapper>): Unwrapper
   return { byHost, rest, domainLength }
 }
 
-const getUnwrapperIndex = (unwrappers: ReadonlyArray<UrlUnwrapper>): UnwrapperIndex | undefined => {
+const getUnwrapperIndex = (unwrappers: Array<UrlUnwrapper>): UnwrapperIndex | undefined => {
   if (!unwrapperIndexes.has(unwrappers)) {
     unwrapperIndexes.set(unwrappers, undefined)
     return
@@ -361,9 +361,9 @@ const getUnwrapperIndex = (unwrappers: ReadonlyArray<UrlUnwrapper>): UnwrapperIn
 
 const getCandidates = (
   url: URL,
-  unwrappers: ReadonlyArray<UrlUnwrapper>,
+  unwrappers: Array<UrlUnwrapper>,
   index: UnwrapperIndex | undefined,
-): ReadonlyArray<UrlUnwrapper> => {
+): Array<UrlUnwrapper> => {
   if (!index) {
     return unwrappers
   }
@@ -410,7 +410,7 @@ const getCandidates = (
 
 const applyUnwrappers = (
   url: URL,
-  unwrappers: ReadonlyArray<UrlUnwrapper>,
+  unwrappers: Array<UrlUnwrapper>,
   index: UnwrapperIndex | undefined,
 ): string | undefined => {
   for (const unwrap of getCandidates(url, unwrappers, index)) {
@@ -437,7 +437,7 @@ const applyUnwrappers = (
 // serialized as in cleanUrl, or undefined when none match or the input cannot be parsed.
 export const unwrapUrl = (
   url: string,
-  unwrappers: ReadonlyArray<UrlUnwrapper> = defaultUnwrappers,
+  unwrappers: Array<UrlUnwrapper> = defaultUnwrappers,
 ): string | undefined => {
   const parsed = parseUrl(url)
 
@@ -458,7 +458,7 @@ export const unwrapUrl = (
 // URL Standard serialization. Input that cannot be parsed is returned unchanged.
 export const stripTrackingParams = (
   url: string,
-  trackingParams: ReadonlyArray<TrackingParam> = defaultTrackingParams,
+  trackingParams: Array<TrackingParam> = defaultTrackingParams,
 ): string => {
   const parsed = parseUrl(url)
 
@@ -478,7 +478,7 @@ export const isTrackingParam = (
   name: string,
   value: string | undefined,
   hostname: string,
-  trackingParams: ReadonlyArray<TrackingParam> = defaultTrackingParams,
+  trackingParams: Array<TrackingParam> = defaultTrackingParams,
 ): boolean => {
   const matcher = getTrackingMatcher(trackingParams)
   const host = stripWww(normalizeHost(hostname))
