@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'bun:test'
-import { getQueryParam } from 'trousse'
+import { decodeBase64, getQueryParam } from 'trousse'
 import type { UrlUnwrapper } from './types.js'
 import {
   createQueryUnwrapper,
@@ -11,6 +11,8 @@ import {
 } from './utils.js'
 
 const exampleSubdomainRegex = /\.example\.com$/
+const clickPathRegex = /^\/click\/\d+$/
+const lowercasePathRegex = /^\/[a-z]+$/
 
 describe('createQueryUnwrapper', () => {
   it('should extract the first present param for a matching host', () => {
@@ -228,6 +230,160 @@ describe('createQueryUnwrapper', () => {
     const expected = 'https://example.com'
 
     expect(extract(value)).toBe(expected)
+  })
+
+  describe('path', () => {
+    it('should match any path of a list', () => {
+      const extract = createQueryUnwrapper({
+        hosts: 'redirect.example.com',
+        path: ['/out', '/out/'],
+        params: ['url'],
+      })
+      const value = new URL('https://redirect.example.com/out/?url=https%3A%2F%2Fexample.com')
+      const expected = 'https://example.com'
+
+      expect(extract(value)).toBe(expected)
+    })
+
+    it('should return undefined for a path outside the list', () => {
+      const extract = createQueryUnwrapper({
+        hosts: 'redirect.example.com',
+        path: ['/out', '/out/'],
+        params: ['url'],
+      })
+      const value = new URL('https://redirect.example.com/in?url=https%3A%2F%2Fexample.com')
+
+      expect(extract(value)).toBeUndefined()
+    })
+
+    it('should match a path regex', () => {
+      const extract = createQueryUnwrapper({
+        hosts: 'redirect.example.com',
+        path: clickPathRegex,
+        params: ['url'],
+      })
+      const value = new URL('https://redirect.example.com/click/42?url=https%3A%2F%2Fexample.com')
+      const expected = 'https://example.com'
+
+      expect(extract(value)).toBe(expected)
+    })
+
+    it('should return undefined for a path the regex does not match', () => {
+      const extract = createQueryUnwrapper({
+        hosts: 'redirect.example.com',
+        path: clickPathRegex,
+        params: ['url'],
+      })
+      const value = new URL('https://redirect.example.com/click/abc?url=https%3A%2F%2Fexample.com')
+
+      expect(extract(value)).toBeUndefined()
+    })
+
+    it('should match a path regex in the case it is written', () => {
+      const extract = createQueryUnwrapper({
+        hosts: 'redirect.example.com',
+        path: lowercasePathRegex,
+        params: ['url'],
+      })
+      const value = new URL('https://redirect.example.com/OUT?url=https%3A%2F%2Fexample.com')
+
+      expect(extract(value)).toBeUndefined()
+    })
+  })
+
+  describe('index', () => {
+    it('should read the value at the index', () => {
+      const extract = createQueryUnwrapper({
+        hosts: 'redirect.example.com',
+        params: ['url'],
+        index: -1,
+      })
+      const value = new URL(
+        'https://redirect.example.com/?url=https://redirect.example.com/?id=1&url=https%3A%2F%2Fexample.com%2Fpost',
+      )
+      const expected = 'https://example.com/post'
+
+      expect(extract(value)).toBe(expected)
+    })
+
+    it('should return undefined when the value at the index is empty', () => {
+      const extract = createQueryUnwrapper({
+        hosts: 'redirect.example.com',
+        params: ['url'],
+        index: -1,
+      })
+      const value = new URL('https://redirect.example.com/?url=https%3A%2F%2Fexample.com&url=')
+
+      expect(extract(value)).toBeUndefined()
+    })
+  })
+
+  describe('decode', () => {
+    it('should decode the target', () => {
+      const extract = createQueryUnwrapper({
+        hosts: 'redirect.example.com',
+        params: ['enc'],
+        decode: decodeBase64,
+      })
+      const value = new URL('https://redirect.example.com/?enc=aHR0cHM6Ly9leGFtcGxlLmNvbS9wb3N0')
+      const expected = 'https://example.com/post'
+
+      expect(extract(value)).toBe(expected)
+    })
+
+    it('should read a raw plus of the base64 alphabet as a plus', () => {
+      const extract = createQueryUnwrapper({
+        hosts: 'redirect.example.com',
+        params: ['to'],
+        decode: decodeBase64,
+      })
+      const value = new URL(
+        'https://redirect.example.com/?to=aHR0cHM6Ly93d3cuZXhhbXBsZS5vcmcvIzp+OnRleHQ9VGhl',
+      )
+      const expected = 'https://www.example.org/#:~:text=The'
+
+      expect(extract(value)).toBe(expected)
+    })
+
+    it('should return undefined for a decoded target that is not http', () => {
+      const extract = createQueryUnwrapper({
+        hosts: 'redirect.example.com',
+        params: ['enc'],
+        decode: decodeBase64,
+      })
+      const value = new URL('https://redirect.example.com/?enc=bWFpbHRvOmpvYnNAZXhhbXBsZS5jb20=')
+
+      expect(extract(value)).toBeUndefined()
+    })
+
+    it('should try the next param when a value does not decode', () => {
+      const extract = createQueryUnwrapper({
+        hosts: 'redirect.example.com',
+        params: ['enc', 'enc2'],
+        decode: decodeBase64,
+      })
+      const value = new URL(
+        'https://redirect.example.com/?enc=%25%25%25&enc2=aHR0cHM6Ly9leGFtcGxlLmNvbS9wb3N0',
+      )
+      const expected = 'https://example.com/post'
+
+      expect(extract(value)).toBe(expected)
+    })
+
+    it('should decode the value at the index', () => {
+      const extract = createQueryUnwrapper({
+        hosts: 'redirect.example.com',
+        params: ['enc'],
+        index: -1,
+        decode: decodeBase64,
+      })
+      const value = new URL(
+        'https://redirect.example.com/?enc=aHR0cHM6Ly9leGFtcGxlLm9yZy8=&enc=aHR0cHM6Ly9leGFtcGxlLmNvbS9wb3N0',
+      )
+      const expected = 'https://example.com/post'
+
+      expect(extract(value)).toBe(expected)
+    })
   })
 
   describe('twice-encoded target', () => {

@@ -1,4 +1,4 @@
-import { decodeBase64, hasQueryParam, isAnyOf, isHostOf } from 'trousse'
+import { hasQueryParam, isAnyOf, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { getBase64Target } from '../utils.js'
 
@@ -17,6 +17,5 @@ export const unwrapDeployer: UrlUnwrapper = (url) => {
     return
   }
 
-  // A `+` of the base64 alphabet, left unencoded, reads as a space.
-  return getBase64Target(url, 'drurl', (value) => decodeBase64(value.replaceAll(' ', '+')))
+  return getBase64Target(url, 'drurl')
 }

@@ -30,8 +30,10 @@ export type UnwrapperConfig = UnwrapperOptions & {
 }
 
 export type QueryUnwrapperConfig = UnwrapperOptions & {
-  path?: string
+  path?: string | RegExp | ReadonlyArray<string>
   params: Array<string>
+  index?: number // The value of a repeated param to read, such as -1 for the last
+  decode?: TargetDecoder // The carrier holds the target encoded, such as in base64
 }
 
 const encodedSchemeRegex = /^https?%3A/i
@@ -103,16 +105,17 @@ export const getParamTarget = (url: URL, name: string, index = 0): string | unde
   return appendLinkFragment(target, url)
 }
 
-export type Base64Decoder = (value: string) => string | undefined
+export type TargetDecoder = (value: string) => string | undefined
 
-// The http target a carrier param holds in base64, read raw by `readParamTarget`, decoded by
-// `decode`, with the link's fragment per `appendLinkFragment`.
-export const getBase64Target = (
+// The http target a carrier param holds encoded, such as in base64, read raw by `readParamTarget`
+// at `index` and decoded by `decode`.
+export const readDecodedTarget = (
   url: URL,
   name: string,
-  decode: Base64Decoder = decodeBase64,
+  decode: TargetDecoder,
+  index = 0,
 ): string | undefined => {
-  const value = readParamTarget(url, name)
+  const value = readParamTarget(url, name, index)
 
   if (!value) {
     return
@@ -121,6 +124,22 @@ export const getBase64Target = (
   const target = decode(value)
 
   if (!target || !isHttpUrl(target)) {
+    return
+  }
+
+  return target
+}
+
+// The http target a carrier param holds in base64, read by `readDecodedTarget`, with the link's
+// fragment per `appendLinkFragment`.
+export const getBase64Target = (
+  url: URL,
+  name: string,
+  decode: TargetDecoder = decodeBase64,
+): string | undefined => {
+  const target = readDecodedTarget(url, name, decode)
+
+  if (!target) {
     return
   }
 
@@ -215,19 +234,34 @@ export const createUnwrapper = (config: UnwrapperConfig): UrlUnwrapper => {
 }
 
 // An unwrapper for a target in the first of `params` that holds one, on a url on the hosts
-// `createUnwrapper` takes, and on `path` when given.
+// `createUnwrapper` takes, and on `path` when given: an exact path or a list, compared in any case,
+// or a regex. `index` and `decode` read the target as `readDecodedTarget` does.
 export const createQueryUnwrapper = (config: QueryUnwrapperConfig): UrlUnwrapper => {
-  const { path, params, ...options } = config
+  const { path, params, index, decode, ...options } = config
+
+  const isOnPath = (url: URL): boolean => {
+    if (!path) {
+      return true
+    }
+
+    if (path instanceof RegExp) {
+      return path.test(url.pathname)
+    }
+
+    return isAnyOf(url.pathname, path)
+  }
 
   return createUnwrapper({
     ...options,
     unwrap: (url) => {
-      if (path && !isAnyOf(url.pathname, path)) {
+      if (!isOnPath(url)) {
         return
       }
 
       for (const param of params) {
-        const target = readParamTarget(url, param)
+        const target = decode
+          ? readDecodedTarget(url, param, decode, index)
+          : readParamTarget(url, param, index)
 
         if (target) {
           return target

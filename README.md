@@ -161,6 +161,13 @@ const unwrapExample = createQueryUnwrapper({
 purifyUrl(url, { unwrappers: [...defaultUnwrappers, unwrapExample] })
 ```
 
+`path` is optional. It takes an exact path or a list of them, both compared in any case, or a regex, tested as written. `params` are tried in order, and the first that holds a value wins.
+
+Two options read a carrier that holds more than a plain value:
+
+- **`index`** picks which value of a repeated param to read, such as `-1` for the last. A tracker nested unencoded in the carrier repeats the param, and the last value is the target.
+- **`decode`** decodes the value, such as trousse's `decodeBase64` or `decodeBase64Url` for a base64 carrier. A decoded value that is not an http url is skipped, and the next param is tried.
+
 A value still encoded after one decode, starting with `http%3A` or `https%3A`, is decoded once more. A malformed escape, or one in a legacy charset such as `%E9` for é in Latin-1, stays as written.
 
 The target takes the link's fragment as `createUnwrapper` describes, so `example.com/out?target=https://example.org/guide#install` gives `https://example.org/guide#install`.
