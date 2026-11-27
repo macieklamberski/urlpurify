@@ -12,6 +12,7 @@ import {
 
 const exampleSubdomainRegex = /\.example\.com$/
 const clickPathRegex = /^\/click\/\d+$/
+const clickHostRegex = /^click\d+\.example\.com$/
 const lowercasePathRegex = /^\/[a-z]+$/
 
 describe('createQueryUnwrapper', () => {
@@ -666,6 +667,58 @@ describe('createUnwrapper', () => {
     const expected = 'https://example.org/post'
 
     expect(unwrapIgnoring(value)).toBe(expected)
+  })
+})
+
+describe('match', () => {
+  const getTarget: UrlUnwrapper = (url) => {
+    return getQueryParam(url, 'target')
+  }
+  const unwrapMatched = createUnwrapper({
+    subdomains: 'example.com',
+    match: clickHostRegex,
+    unwrap: getTarget,
+  })
+
+  it('should run the body on a host the regex matches', () => {
+    const value = new URL('https://click7.example.com/?target=https://example.org/post')
+    const expected = 'https://example.org/post'
+
+    expect(unwrapMatched(value)).toBe(expected)
+  })
+
+  it('should return undefined on a listed host the regex does not match', () => {
+    const value = new URL('https://www.example.com/?target=https://example.org/post')
+
+    expect(unwrapMatched(value)).toBeUndefined()
+  })
+
+  it('should return undefined on a host the regex matches outside the listed hosts', () => {
+    const unwrap = createUnwrapper({
+      subdomains: 'example.net',
+      match: clickHostRegex,
+      unwrap: getTarget,
+    })
+    const value = new URL('https://click7.example.com/?target=https://example.org/post')
+
+    expect(unwrap(value)).toBeUndefined()
+  })
+
+  it('should register the listed hosts in the host index', () => {
+    const expected = ['.example.com']
+
+    expect(unwrapperHosts.get(unwrapMatched)).toEqual(expected)
+  })
+
+  it('should narrow the hosts of a query unwrapper', () => {
+    const unwrap = createQueryUnwrapper({
+      subdomains: 'example.com',
+      match: clickHostRegex,
+      params: ['target'],
+    })
+    const value = new URL('https://www.example.com/?target=https://example.org/post')
+
+    expect(unwrap(value)).toBeUndefined()
   })
 })
 

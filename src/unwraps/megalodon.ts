@@ -1,8 +1,6 @@
-import { isHostOf, isHttpUrl } from 'trousse'
+import { isHttpUrl } from 'trousse'
 import { createUnwrapper } from '../utils.js'
 
-// The main host and its numbered snapshot hosts, such as `s01.megalodon.jp`.
-const hostRegex = /^(?:s\d{2}\.)?megalodon\.jp$/
 // The snapshot is its capture time, `YYYY-MMDD-HHMM-SS`.
 const pathRegex = /^\/\d{4}-\d{4}-\d{4}-\d{2}\/(.+)$/
 const schemeRegex = /^[a-z][a-z\d+.-]*:/i
@@ -12,11 +10,9 @@ const schemeRegex = /^[a-z][a-z\d+.-]*:/i
 // page, which may have changed or be gone.
 export const unwrapMegalodon = createUnwrapper({
   domains: 'megalodon.jp',
+  // The main host and its numbered snapshot hosts, such as `s01.megalodon.jp`.
+  match: /^(?:s\d{2}\.)?megalodon\.jp$/,
   unwrap: (url) => {
-    if (!isHostOf(url, hostRegex)) {
-      return
-    }
-
     const match = pathRegex.exec(url.pathname)
 
     if (!match?.[1]) {

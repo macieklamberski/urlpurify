@@ -21,6 +21,7 @@ export type UnwrapperHosts =
   | { subdomains: HostList; hosts?: never; domains?: never }
 
 export type UnwrapperOptions = UnwrapperHosts & {
+  match?: RegExp // Narrows the hosts above to those it matches, while the hosts feed the host index
   ignoreLinkFragment?: boolean // The link opens a page, or the page reads the fragment itself
 }
 
@@ -190,10 +191,15 @@ const registerHosts = (unwrap: UrlUnwrapper, hosts: HostList, prefix = ''): void
 }
 
 // An unwrapper that runs `unwrap` only on a url on `hosts`, matched exactly or by regex, on
-// `domains` or any of their subdomains, or only on `subdomains` of the domains given. The target
+// `domains` or any of their subdomains, or only on `subdomains` of the domains given, and on a
+// host `match` matches when given. The target
 // takes the link's fragment per `appendLinkFragment`, unless `ignoreLinkFragment` is set.
 export const createUnwrapper = (config: UnwrapperConfig): UrlUnwrapper => {
   const isOnHost = (url: URL): boolean => {
+    if (config.match && !isHostOf(url, config.match)) {
+      return false
+    }
+
     if (config.domains !== undefined) {
       return isHostOrSubdomainOf(url, config.domains)
     }

@@ -215,6 +215,8 @@ const unwrapExample = createUnwrapper({
 
 Pass exactly one of `hosts`, `domains` or `subdomains`. Each matches as trousse's `isHostOf`, `isHostOrSubdomainOf` or `isSubdomainOf` does. The unwrapper registers its hosts, so `purifyUrl` skips it on every other host. A host given as a regex registers nothing, so its unwrapper runs on every url, as a plain `UrlUnwrapper` function does.
 
+To claim only some subdomains and still register, pass a host key with `match`, a regex the host must also match: `subdomains: 'example.com', match: /^click\d+\.example\.com$/` registers `.example.com` and runs only on `click<n>.example.com`. All three factories take it.
+
 The target takes the link's fragment, unless it holds a fragment of its own. A browser following a redirect lands there too, since the server never sees the fragment. When the link opens a page instead of redirecting, such as a share button, or the wrapper's page reads the fragment itself, pass `ignoreLinkFragment: true`. All three factories take it.
 
 ### Choosing unwrappers
