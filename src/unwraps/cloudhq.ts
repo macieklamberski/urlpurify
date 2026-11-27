@@ -8,8 +8,8 @@ const extractTarget = createQueryUnwrapper({
   params: ['url'],
 })
 
-// cloudHQ Gmail mail-merge click tracker (cloudhq-mkt<n>.net/mail_track/link/<id>?url=<target>, also
-// www. and cloudhq-mkt<n>.us). Opt-in: unwrapping removes the sender's click count.
+// cloudHQ Gmail mail-merge click tracker (cloudhq-mkt<n>.net/mail_track/link/<id>?url=<target>,
+// also www. and cloudhq-mkt<n>.us). Opt-in: unwrapping removes the sender's click count.
 export const unwrapCloudhq: UrlUnwrapper = (url) => {
   if (!clickPathRegex.test(url.pathname)) {
     return

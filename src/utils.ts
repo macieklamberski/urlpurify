@@ -31,7 +31,7 @@ export type UnwrapperConfig = UnwrapperOptions & {
 
 export type QueryUnwrapperConfig = UnwrapperOptions & {
   path?: string
-  params: ReadonlyArray<string>
+  params: Array<string>
 }
 
 const encodedSchemeRegex = /^https?%3A/i

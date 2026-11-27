@@ -11,7 +11,7 @@ export type TrackingValueTest = (value: string, host: string) => boolean
 export type TrackingEntry = {
   name: string | RegExp
   value?: RegExp | TrackingValueTest
-  hosts?: ReadonlyArray<string> | RegExp
+  hosts?: Array<string> | RegExp
 }
 
 // A literal param name (matched case-insensitively), a pattern tested against the lowercased
@@ -19,7 +19,7 @@ export type TrackingEntry = {
 export type TrackingParam = string | RegExp | TrackingEntry
 
 export type CleanUrlOptions = {
-  unwrappers?: ReadonlyArray<UrlUnwrapper>
-  trackingParams?: ReadonlyArray<TrackingParam>
+  unwrappers?: Array<UrlUnwrapper>
+  trackingParams?: Array<TrackingParam>
   maxUnwrapDepth?: number
 }

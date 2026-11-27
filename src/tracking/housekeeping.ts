@@ -28,7 +28,7 @@ const isSelfReferral: TrackingValueTest = (value, host) => {
 }
 
 // Cache busters, previews and redirect leftovers. Stripping them costs nobody anything.
-export const housekeepingParams: ReadonlyArray<TrackingParam> = Object.freeze([
+export const housekeepingParams: Array<TrackingParam> = [
   // Google Search Results.
   'usqp', // AMP cache serving artifact.
 
@@ -72,4 +72,4 @@ export const housekeepingParams: ReadonlyArray<TrackingParam> = Object.freeze([
 
   // Ghost.
   { name: 'ref', value: isSelfReferral }, // Self-referral naming the url's own host.
-])
+]
