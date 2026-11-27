@@ -71,4 +71,11 @@ describe('unwrapGfnLinkProxy', () => {
 
     expect(unwrapGfnLinkProxy(url)).toBeUndefined()
   })
+
+  it('should keep the fragment the target carries', () => {
+    const value = new URL('https://www.example.com/redirect/?to=aHR0cHM6Ly9leGFtcGxlLm9yZy8jdG9w')
+    const expected = 'https://example.org/#top'
+
+    expect(unwrapGfnLinkProxy(value)).toBe(expected)
+  })
 })

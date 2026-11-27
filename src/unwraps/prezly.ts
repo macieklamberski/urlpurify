@@ -1,6 +1,6 @@
 import { decodePercent, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { appendLinkFragment, createUnwrapper } from '../utils.js'
+import { createUnwrapper } from '../utils.js'
 
 // The campaign id, a link hash, then the target percent-encoded as one path segment.
 const pathRegex = /^\/c\/[0-9a-f-]{36}\/[0-9a-f]{8}\/([^/]+)$/i
@@ -19,7 +19,7 @@ export const unwrapPrezly: UrlUnwrapper = createUnwrapper({
     const target = decodePercent(match[1])
 
     if (isHttpUrl(target)) {
-      return appendLinkFragment(target, url)
+      return target
     }
   },
 })

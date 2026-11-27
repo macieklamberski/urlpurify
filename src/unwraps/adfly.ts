@@ -29,8 +29,8 @@ export const unwrapAdfly: UrlUnwrapper = createUnwrapper({
     // Adfly forwarded a scheme-less target over http.
     const target = hasScheme ? match[1] : `http://${match[1]}`
 
-    // An unencoded target's query and fragment land in the wrapper's own `search` and `hash`.
-    const unwrapped = `${target}${url.search}${url.hash}`
+    // An unencoded target's query lands in the wrapper's own `search`.
+    const unwrapped = `${target}${url.search}`
 
     if (isHttpUrl(unwrapped)) {
       return unwrapped

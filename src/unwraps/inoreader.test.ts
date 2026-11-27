@@ -50,6 +50,15 @@ describe('unwrapInoreader', () => {
 
       expect(unwrapInoreader(value)).toBeUndefined()
     })
+
+    it('should drop the link fragment', () => {
+      const value = new URL(
+        'https://www.inoreader.com/?add_feed=https%3A%2F%2Fexample.com%2Ffeed%2F#comments',
+      )
+      const expected = 'https://example.com/feed/'
+
+      expect(unwrapInoreader(value)).toBe(expected)
+    })
   })
 
   describe('feed path', () => {
@@ -135,6 +144,22 @@ describe('unwrapInoreader', () => {
       const value = new URL('https://www.inoreader.com/x/feed/https%3A%2F%2Fexample.com%2Ffeed%2F')
 
       expect(unwrapInoreader(value)).toBeUndefined()
+    })
+
+    it('should keep the link fragment after a raw feed', () => {
+      const value = new URL('https://www.inoreader.com/feed/https://example.com/feed/#comments')
+      const expected = 'https://example.com/feed/#comments'
+
+      expect(unwrapInoreader(value)).toBe(expected)
+    })
+
+    it('should drop the link fragment after an encoded feed', () => {
+      const value = new URL(
+        'https://www.inoreader.com/feed/https%3A%2F%2Fexample.com%2Ffeed%2F#comments',
+      )
+      const expected = 'https://example.com/feed/'
+
+      expect(unwrapInoreader(value)).toBe(expected)
     })
   })
 

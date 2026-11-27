@@ -11,6 +11,6 @@ export const unwrapPodup: UrlUnwrapper = createUnwrapper({
   hosts: 'traffic.podup.com',
   unwrap: (url) => {
     // Podup forwards to the path alone on https, dropping the query.
-    return getPathTarget(url, mediaPrefixRegex, 'https:', url.hash)
+    return getPathTarget(url, mediaPrefixRegex, 'https:', '')
   },
 })

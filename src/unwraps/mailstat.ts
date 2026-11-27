@@ -17,6 +17,6 @@ export const unwrapMailstat: UrlUnwrapper = createUnwrapper({
       return
     }
 
-    return `${match[1]}${url.search}${url.hash}`
+    return `${match[1]}${url.search}`
   },
 })

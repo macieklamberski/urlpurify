@@ -75,4 +75,13 @@ describe('unwrapAugure', () => {
 
     expect(unwrapAugure(url)).toBeUndefined()
   })
+
+  it('should keep the fragment the target carries', () => {
+    const value = new URL(
+      'http://web-engage.augure.com/pub/tracking/675251/046070112134991421687249019607-hlcom-presse.com?id1=aHR0cHMlM0ElMkYlMkZ3d3cuZXhhbXBsZS5ldSUyRm5ld3MlMkZmciUyRmhlYWRsaW5lcyUyRnNvY2lldHklMkYyMDIzMDYwMVNUTzkzODA0JTIzdG9w',
+    )
+    const expected = 'https://www.example.eu/news/fr/headlines/society/20230601STO93804#top'
+
+    expect(unwrapAugure(value)).toBe(expected)
+  })
 })

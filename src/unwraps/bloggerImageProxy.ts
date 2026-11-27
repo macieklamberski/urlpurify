@@ -17,6 +17,7 @@ const focusHostRegex = /^(?:images)?\d-focus-opensocial\.googleusercontent\.com$
 // Not included in defaultUnwrappers: unwrapping swaps the proxied copy for the original image.
 export const unwrapBloggerImageProxy = createUnwrapper({
   domains: ['gmodules.com', 'googleusercontent.com'],
+  ignoreLinkFragment: true,
   unwrap: (url) => {
     // Every gmodules.com host proxies, but on googleusercontent.com only the two gadget hosts do.
     if (

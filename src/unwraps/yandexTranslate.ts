@@ -17,6 +17,6 @@ export const unwrapYandexTranslate: UrlUnwrapper = createUnwrapper({
       return
     }
 
-    return `${match.groups.scheme ?? 'http'}://${match.groups.target}${url.search}${url.hash}`
+    return `${match.groups.scheme ?? 'http'}://${match.groups.target}${url.search}`
   },
 })

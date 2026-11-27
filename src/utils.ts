@@ -21,14 +21,17 @@ export type UnwrapperHosts =
   | { domains: HostList; hosts?: never; subdomains?: never }
   | { subdomains: HostList; hosts?: never; domains?: never }
 
-export type UnwrapperConfig = UnwrapperHosts & {
+export type UnwrapperOptions = UnwrapperHosts & {
+  ignoreLinkFragment?: boolean // The link opens a page, or the page reads the fragment itself
+}
+
+export type UnwrapperConfig = UnwrapperOptions & {
   unwrap: UrlUnwrapper
 }
 
-export type QueryUnwrapperConfig = UnwrapperHosts & {
+export type QueryUnwrapperConfig = UnwrapperOptions & {
   path?: string
   params: Array<string>
-  ignoreLinkFragment?: boolean // The link opens a page, not a redirect, per `readParamTarget`
 }
 
 const encodedSchemeRegex = /^https?%3A/i
@@ -167,7 +170,8 @@ const registerHosts = (unwrap: UrlUnwrapper, hosts: HostList, prefix = ''): void
 }
 
 // An unwrapper that runs `unwrap` only on a url on `hosts`, matched exactly or by regex, on
-// `domains` or any of their subdomains, or only on `subdomains` of the domains given.
+// `domains` or any of their subdomains, or only on `subdomains` of the domains given. The target
+// takes the link's fragment per `appendLinkFragment`, unless `ignoreLinkFragment` is set.
 export const createUnwrapper = (config: UnwrapperConfig): UrlUnwrapper => {
   const isOnHost = (url: URL): boolean => {
     if (config.domains !== undefined) {
@@ -186,7 +190,13 @@ export const createUnwrapper = (config: UnwrapperConfig): UrlUnwrapper => {
       return
     }
 
-    return config.unwrap(url)
+    const target = config.unwrap(url)
+
+    if (!target || config.ignoreLinkFragment) {
+      return target
+    }
+
+    return appendLinkFragment(target, url)
   }
 
   if (config.hosts !== undefined) {
@@ -207,10 +217,10 @@ export const createUnwrapper = (config: UnwrapperConfig): UrlUnwrapper => {
 // An unwrapper for a target in the first of `params` that holds one, on a url on the hosts
 // `createUnwrapper` takes, and on `path` when given.
 export const createQueryUnwrapper = (config: QueryUnwrapperConfig): UrlUnwrapper => {
-  const { path, params, ignoreLinkFragment, ...hosts } = config
+  const { path, params, ...options } = config
 
   return createUnwrapper({
-    ...hosts,
+    ...options,
     unwrap: (url) => {
       if (path && !isAnyOf(url.pathname, path)) {
         return
@@ -219,15 +229,9 @@ export const createQueryUnwrapper = (config: QueryUnwrapperConfig): UrlUnwrapper
       for (const param of params) {
         const target = readParamTarget(url, param)
 
-        if (!target) {
-          continue
-        }
-
-        if (ignoreLinkFragment) {
+        if (target) {
           return target
         }
-
-        return appendLinkFragment(target, url)
       }
     },
   })

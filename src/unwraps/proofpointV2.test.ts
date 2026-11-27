@@ -55,4 +55,13 @@ describe('unwrapProofpointV2', () => {
 
     expect(unwrapProofpointV2(url)).toBeUndefined()
   })
+
+  it('should keep the fragment the target carries', () => {
+    const value = new URL(
+      'https://urldefense.proofpoint.com/v2/url?u=https-3A__example.com_article-23top&d=DwMFAg&c=abc',
+    )
+    const expected = 'https://example.com/article#top'
+
+    expect(unwrapProofpointV2(value)).toBe(expected)
+  })
 })

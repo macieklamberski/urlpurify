@@ -34,4 +34,13 @@ describe('unwrapSegmentfault', () => {
 
     expect(unwrapSegmentfault(url)).toBeUndefined()
   })
+
+  it('should keep the fragment the target carries', () => {
+    const value = new URL(
+      'https://link.segmentfault.com/?enc=aHR0cHM6Ly9leGFtcGxlLmNvbS9hcnRpY2xlI3RvcA%3D%3D',
+    )
+    const expected = 'https://example.com/article#top'
+
+    expect(unwrapSegmentfault(value)).toBe(expected)
+  })
 })

@@ -151,4 +151,13 @@ describe('unwrapFirstory', () => {
 
     expect(unwrapFirstory(url)).toBeUndefined()
   })
+
+  it('should keep the fragment the target carries', () => {
+    const value = new URL(
+      'https://m.cdn.firstory.me/track/ckc6eqqt8kc010918u9vibolz/ckjcz4urh60mt0889kp7cdkvm/https%3A%2F%2Fexample.com%2FRecord%2Fckc6eqqt8kc010918u9vibolz%2F1609426748358.m4a%23top',
+    )
+    const expected = 'https://example.com/Record/ckc6eqqt8kc010918u9vibolz/1609426748358.m4a#top'
+
+    expect(unwrapFirstory(value)).toBe(expected)
+  })
 })

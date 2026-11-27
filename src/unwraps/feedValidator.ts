@@ -14,6 +14,7 @@ const archivePathRegex = /^\/validator\/check(?:\.cgi)?$/i
 // Not in defaultUnwrappers: the link opens the validator's report on the feed, not the feed.
 export const unwrapFeedValidator: UrlUnwrapper = createUnwrapper({
   hosts: [...hosts, 'www.atomenabled.org', 'feeds.archive.org'],
+  ignoreLinkFragment: true,
   unwrap: (url) => {
     const isCheckPath =
       (isHostOf(url, hosts) && pathRegex.test(url.pathname)) ||

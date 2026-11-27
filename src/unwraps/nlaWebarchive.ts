@@ -41,8 +41,8 @@ export const unwrapNlaWebarchive: UrlUnwrapper = createUnwrapper({
       return
     }
 
-    // An unencoded target's query and fragment land in the snapshot URL's own `search` and `hash`.
-    const target = `${scheme}${match[1]}${url.search}${url.hash}`
+    // An unencoded target's query lands in the snapshot URL's own `search`.
+    const target = `${scheme}${match[1]}${url.search}`
 
     if (isHttpUrl(target)) {
       return target

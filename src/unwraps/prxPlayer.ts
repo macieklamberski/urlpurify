@@ -20,6 +20,7 @@ const extractEmbed = createQueryUnwrapper({
 // /e). Opt-in: unwrapping returns the show's feed, not the player page a reader would open.
 export const unwrapPrxPlayer = createUnwrapper({
   hosts,
+  ignoreLinkFragment: true,
   unwrap: (url) => {
     return extractListen(url) ?? extractEmbed(url)
   },

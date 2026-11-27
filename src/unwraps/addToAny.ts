@@ -25,6 +25,7 @@ const getMenuTarget = (url: URL): string | undefined => {
 // Opt-in: unwrapping returns the shared page, not the form that shares it.
 export const unwrapAddToAny: UrlUnwrapper = createUnwrapper({
   hosts,
+  ignoreLinkFragment: true,
   unwrap: (url) => {
     let target: string | undefined
 

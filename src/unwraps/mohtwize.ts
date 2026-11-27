@@ -23,7 +23,7 @@ export const unwrapMohtwize: UrlUnwrapper = createUnwrapper({
 
     // The target's own query follows unencoded, and the service forwarded to all of it.
     // An encoded target, as in `https%3A%2F%2F…`, which the service decoded before forwarding.
-    const target = decodeEncodedScheme(`${url.search.slice(prefix[0].length)}${url.hash}`)
+    const target = decodeEncodedScheme(url.search.slice(prefix[0].length))
 
     if (!target) {
       return

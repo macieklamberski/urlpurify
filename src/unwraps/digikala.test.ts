@@ -45,4 +45,13 @@ describe('unwrapDigikala', () => {
 
     expect(unwrapDigikala(url)).toBeUndefined()
   })
+
+  it('should keep the fragment the target carries', () => {
+    const value = new URL(
+      'https://dgkl.io/api/v1/Click/b/iMcDp?b64=aHR0cHM6Ly93d3cuZXhhbXBsZS5jb20vcHJvZHVjdC9ka3AtNDAxMDk5I3RvcA%3D%3D',
+    )
+    const expected = 'https://www.example.com/product/dkp-401099#top'
+
+    expect(unwrapDigikala(value)).toBe(expected)
+  })
 })

@@ -11,6 +11,7 @@ const hosts = ['share.flipboard.com', 'flipboard.com', 'www.flipboard.com']
 // returns the shared page, not the form that flips it into a magazine.
 export const unwrapFlipboardShare: UrlUnwrapper = createUnwrapper({
   hosts,
+  ignoreLinkFragment: true,
   unwrap: (url) => {
     if (!isAnyOf(url.pathname, pathRegex)) {
       return

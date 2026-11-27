@@ -75,4 +75,13 @@ describe('unwrapYahooJapanAmpViewer', () => {
 
     expect(unwrapYahooJapanAmpViewer(url)).toBeUndefined()
   })
+
+  it('should drop the viewer fragment', () => {
+    const value = new URL(
+      'https://search.yahoo.co.jp/amp/s/example.com/news/308550#aoh=17000000000000&amp_tf=From',
+    )
+    const expected = 'https://example.com/news/308550'
+
+    expect(unwrapYahooJapanAmpViewer(value)).toBe(expected)
+  })
 })

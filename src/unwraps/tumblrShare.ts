@@ -10,6 +10,7 @@ const linkPathRegex = /^\/share\/link\/?$/i
 // tumblr.com). Opt-in: unwrapping returns the shared page, not the form that shares it.
 export const unwrapTumblrShare: UrlUnwrapper = createUnwrapper({
   hosts,
+  ignoreLinkFragment: true,
   unwrap: (url) => {
     if (isAnyOf(url.pathname, '/share')) {
       return readParamTarget(url, 'u') ?? readParamTarget(url, 'canonicalUrl')

@@ -21,6 +21,7 @@ const extractSubscribe = createQueryUnwrapper({
 // FM account, it never redirects to it.
 export const unwrapPlayerFm = createUnwrapper({
   hosts,
+  ignoreLinkFragment: true,
   unwrap: (url) => {
     return extractImporter(url) ?? extractSubscribe(url)
   },

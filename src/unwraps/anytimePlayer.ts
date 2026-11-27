@@ -20,6 +20,7 @@ const extractSubscribeHtml = createQueryUnwrapper({
 // Opt-in: unwrapping returns the show's feed, not the page that opens it in the app.
 export const unwrapAnytimePlayer = createUnwrapper({
   hosts,
+  ignoreLinkFragment: true,
   unwrap: (url) => {
     return extractSubscribe(url) ?? extractSubscribeHtml(url)
   },

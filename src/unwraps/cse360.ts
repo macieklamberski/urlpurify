@@ -1,6 +1,6 @@
 import { decodePercent, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { appendLinkFragment, createUnwrapper, decodeEncodedScheme } from '../utils.js'
+import { createUnwrapper, decodeEncodedScheme } from '../utils.js'
 
 // The target sits percent-encoded once or twice in one segment, between the campaign id and the
 // recipient's id and email address.
@@ -22,7 +22,7 @@ export const unwrapCse360: UrlUnwrapper = createUnwrapper({
     const target = decodeEncodedScheme(decodePercent(match[1]))
 
     if (isHttpUrl(target)) {
-      return appendLinkFragment(target, url)
+      return target
     }
   },
 })

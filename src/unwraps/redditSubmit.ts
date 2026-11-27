@@ -22,6 +22,7 @@ const extractTarget = createQueryUnwrapper({
 // page, not the form that posts it.
 export const unwrapRedditSubmit = createUnwrapper({
   hosts,
+  ignoreLinkFragment: true,
   unwrap: (url) => {
     if (!submitPathRegex.test(url.pathname)) {
       return

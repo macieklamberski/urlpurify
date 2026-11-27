@@ -9,6 +9,7 @@ const hosts = ['friendfeed.com', 'www.friendfeed.com']
 // Opt-in: unwrapping returns the shared page, not the form that shares it.
 export const unwrapFriendFeed: UrlUnwrapper = createUnwrapper({
   hosts,
+  ignoreLinkFragment: true,
   unwrap: (url) => {
     if (isAnyOf(url.pathname, '/share')) {
       return readParamTarget(url, 'url') ?? readParamTarget(url, 'link')

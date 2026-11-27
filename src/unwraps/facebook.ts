@@ -1,6 +1,6 @@
-import { decodePercent, isHostOf } from 'trousse'
+import { decodePercent } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createQueryUnwrapper, decodeEncodedScheme } from '../utils.js'
+import { createQueryUnwrapper, createUnwrapper, decodeEncodedScheme } from '../utils.js'
 
 const legacyTargetRegex = /^\/l\/[\w-]+[/;]\/*([^/].*)$/i
 const legacyEncodedSchemeRegex = /^https?%(?:25)?3A/i
@@ -38,35 +38,30 @@ const unwrapLsr = createQueryUnwrapper({
   params: ['u'],
 })
 
-const unwrapLegacy: UrlUnwrapper = (url) => {
-  if (!isHostOf(url, ['www.facebook.com', 'l.facebook.com'])) {
-    return
-  }
+const unwrapLegacy = createUnwrapper({
+  hosts: ['www.facebook.com', 'l.facebook.com'],
+  unwrap: (url) => {
+    const match = url.pathname.match(legacyTargetRegex)
 
-  const match = url.pathname.match(legacyTargetRegex)
+    if (!match) {
+      return
+    }
 
-  if (!match) {
-    return
-  }
+    // A target with its scheme kept is percent-encoded once, twice or half-encoded as `https%3A//`.
+    const path = legacyEncodedSchemeRegex.test(match[1])
+      ? decodeEncodedScheme(decodePercent(match[1]))
+      : match[1]
 
-  // A target with its scheme kept is percent-encoded once, twice or half-encoded as `https%3A//`.
-  const path = legacyEncodedSchemeRegex.test(match[1])
-    ? decodeEncodedScheme(decodePercent(match[1]))
-    : match[1]
+    const target = `${path}${url.search}`
 
-  if (!path) {
-    return
-  }
+    if (schemeRegex.test(target)) {
+      return target
+    }
 
-  const target = `${path}${url.search}${url.hash}`
-
-  if (schemeRegex.test(target)) {
-    return target
-  }
-
-  // Facebook's leaving page and its 302 into l.php both gave a target without a scheme `http://`.
-  return `http://${target}`
-}
+    // Facebook's leaving page and its 302 into l.php both gave a target without a scheme `http://`.
+    return `http://${target}`
+  },
+})
 
 // Meta link shim (l.facebook.com/l.php?u=<target>, also lm., www., upload., m., web., pt-br.,
 // free., business., 0. and bare facebook.com, l.messenger.com and l.workplace.com), on / and

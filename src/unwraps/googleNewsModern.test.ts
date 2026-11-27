@@ -129,4 +129,13 @@ describe('unwrapGoogleNewsModern', () => {
 
     expect(unwrapGoogleNewsModern(value)).toBe(expected)
   })
+
+  it('should keep the fragment the target carries', () => {
+    const value = new URL(
+      'https://news.google.com/rss/articles/CBMiH2h0dHBzOi8vZXhhbXBsZS5jb20vYXJ0aWNsZSN0b3DSAQA',
+    )
+    const expected = 'https://example.com/article#top'
+
+    expect(unwrapGoogleNewsModern(value)).toBe(expected)
+  })
 })

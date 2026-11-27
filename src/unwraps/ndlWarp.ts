@@ -27,8 +27,8 @@ export const unwrapNdlWarp: UrlUnwrapper = createUnwrapper({
     // WE11.jsp?originalUrl=http://, and such an id now redirects to the scheme-less snapshot.
     const target = schemeRegex.test(path) ? path : `http://${path}`
 
-    // An unencoded target's query and fragment land in the snapshot URL's own `search` and `hash`.
-    const unwrapped = `${target}${url.search}${url.hash}`
+    // An unencoded target's query lands in the snapshot URL's own `search`.
+    const unwrapped = `${target}${url.search}`
 
     if (isHttpUrl(unwrapped)) {
       return unwrapped

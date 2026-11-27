@@ -10,6 +10,7 @@ const paths = ['/blog_this.pyra', '/blog-this.g']
 // form.
 export const unwrapBloggerBlogThis: UrlUnwrapper = createUnwrapper({
   hosts,
+  ignoreLinkFragment: true,
   unwrap: (url) => {
     if (!isAnyOf(url.pathname, paths)) {
       return

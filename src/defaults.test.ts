@@ -258,18 +258,58 @@ describe('redirect and proxy unwrappers', () => {
       }
     }
 
-    const expected = [
-      // An escaped %23 in the target and the link's fragment both stay.
-      'unwrapArchiveToday https://archive.is/o/NTGoD/https://www.example.com/standard%23:~:text=Congress',
-      'unwrapArchiveToday https://archive.is/20121211084659/http://www.example.com/search%3Fq=a%3Fb%23top%23x',
-      // The link's fragment replaces the anchor CJ's fragment/<x>/ segment sets.
-      'unwrapCjNetwork http://www.anrdoezrs.net/links/8919635/type/dlg/fragment/REVIEWS/https://www.example.com/Hotel_Review-g499380',
-      'unwrapCjNetwork https://www.anrdoezrs.net/links/8946794/type/dlg/sid/UUwpUdUnU57440/fragment/internal%3D1/https://www.example.com/search/',
-      'unwrapCjNetwork https://www.anrdoezrs.net/links/7768368/type/dlg/fragment/q%3Dsleepy%252Bcrib%26lang%3Den_US%26start%3D1/https://www.example.com/nursery/1043.html?dwvar_1043_color=100',
-      'unwrapCjNetwork https://www.anrdoezrs.net/links/7768368/type/dlg/fragment/sale-50%-off/https://www.example.com/nursery/1043.html',
-    ]
+    const expected: Array<string> = []
 
     expect(dropped).toEqual(expected)
+  })
+})
+
+describe('intent unwrappers', () => {
+  const intentUnwrappers: Array<[string, UrlUnwrapper]> = []
+
+  for (const [name, unwrapper] of exportedUnwrappers) {
+    const entry = intentCategories.flat().find((candidate) => candidate === unwrapper)
+
+    if (entry) {
+      intentUnwrappers.push([name, entry])
+    }
+  }
+
+  it('should drop the fragment appended to a fixture url, except after a target in the path', () => {
+    const hrefs = readFixtureUrls()
+    const kept: Array<string> = []
+
+    for (const [name, unwrap] of intentUnwrappers) {
+      const isKept = hrefs.some((href) => {
+        const plain = unwrap(new URL(href))
+
+        if (!plain) {
+          return false
+        }
+
+        return unwrap(new URL(`${href}#x`)) !== plain
+      })
+
+      if (isKept) {
+        kept.push(name)
+      }
+    }
+
+    // A target written into the link's path ends where the link's fragment starts.
+    const expected = [
+      'unwrapBloglines',
+      'unwrapFeedly',
+      'unwrapGoogleReader',
+      'unwrapHatenaBookmark',
+      'unwrapInoreader',
+      'unwrapLivedoorReader',
+      'unwrapMorss',
+      'unwrapPodcastAddict',
+      'unwrapSubscribeByEmail',
+      'unwrapSubscribeOnAndroid',
+    ]
+
+    expect(kept).toEqual(expected)
   })
 })
 

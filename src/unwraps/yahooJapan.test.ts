@@ -98,4 +98,13 @@ describe('unwrapYahooJapan', () => {
 
     expect(performance.now() - start).toBeLessThan(50)
   })
+
+  it('should keep the fragment the target carries', () => {
+    const value = new URL(
+      'http://rdsig.yahoo.co.jp/rss/l/headlines/life/it_nlab/RV=1/RU=aHR0cDovL2hlYWRsaW5lcy5leGFtcGxlLmpwL2hsP2E9MjAxNjAzMTUtMDAwMDAxMTUtaXRfbmxhYi1saWZlI3RvcA',
+    )
+    const expected = 'http://headlines.example.jp/hl?a=20160315-00000115-it_nlab-life#top'
+
+    expect(unwrapYahooJapan(value)).toBe(expected)
+  })
 })

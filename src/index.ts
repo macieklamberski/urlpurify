@@ -524,5 +524,6 @@ export type {
   QueryUnwrapperConfig,
   UnwrapperConfig,
   UnwrapperHosts,
+  UnwrapperOptions,
 } from './utils.js'
 export { createParamExtractor, createQueryUnwrapper, createUnwrapper } from './utils.js'

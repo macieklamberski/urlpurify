@@ -19,8 +19,8 @@ export const unwrapUkgwa: UrlUnwrapper = createUnwrapper({
       return
     }
 
-    // An unencoded target's query and fragment land in the snapshot URL's own `search` and `hash`.
-    let target = `${match[1]}${url.search}${url.hash}`
+    // An unencoded target's query lands in the snapshot URL's own `search`.
+    let target = `${match[1]}${url.search}`
 
     // The archive's replay page names a target stored with no scheme as an http url.
     if (!schemeRegex.test(match[1])) {

@@ -81,4 +81,14 @@ describe('unwrapAnchor', () => {
 
     expect(unwrapAnchor(url)).toBeUndefined()
   })
+
+  it('should keep the fragment the target carries', () => {
+    const value = new URL(
+      'https://anchor.fm/s/102d2c870/podcast/play/100291057/https%3A%2F%2Fexample.com%2Fstaging%2F2025-2-24%2F397125898-44100-2-0b086fce0cdf073a.mp3%23top',
+    )
+    const expected =
+      'https://example.com/staging/2025-2-24/397125898-44100-2-0b086fce0cdf073a.mp3#top'
+
+    expect(unwrapAnchor(value)).toBe(expected)
+  })
 })

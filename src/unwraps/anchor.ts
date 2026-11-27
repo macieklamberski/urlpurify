@@ -20,6 +20,6 @@ export const unwrapAnchor: UrlUnwrapper = createUnwrapper({
     const path = url.pathname.slice(match[0].length)
     const target = isHttpUrl(path) ? path : decodeEncodedScheme(decodePercent(path))
 
-    return `${target}${url.hash}`
+    return target
   },
 })

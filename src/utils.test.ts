@@ -483,6 +483,34 @@ describe('createUnwrapper', () => {
 
     expect(unwrapSubdomain(value)).toBeUndefined()
   })
+
+  it('should keep the link fragment on the target', () => {
+    const value = new URL('https://redirect.example.com/?target=https://example.org/post#comments')
+    const expected = 'https://example.org/post#comments'
+
+    expect(unwrapHost(value)).toBe(expected)
+  })
+
+  it('should prefer the fragment of the target over the link fragment', () => {
+    const value = new URL(
+      'https://redirect.example.com/?target=https%3A%2F%2Fexample.org%2Fpost%23intro#comments',
+    )
+    const expected = 'https://example.org/post#intro'
+
+    expect(unwrapHost(value)).toBe(expected)
+  })
+
+  it('should drop the link fragment when ignoreLinkFragment is set', () => {
+    const unwrapIgnoring = createUnwrapper({
+      hosts: 'redirect.example.com',
+      unwrap: getTarget,
+      ignoreLinkFragment: true,
+    })
+    const value = new URL('https://redirect.example.com/?target=https://example.org/post#comments')
+    const expected = 'https://example.org/post'
+
+    expect(unwrapIgnoring(value)).toBe(expected)
+  })
 })
 
 describe('readParamTarget', () => {

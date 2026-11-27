@@ -24,6 +24,6 @@ export const unwrapPodcastAddict: UrlUnwrapper = createUnwrapper({
       return
     }
 
-    return `${feed}${url.search}${url.hash}`
+    return `${feed}${url.search}`
   },
 })
