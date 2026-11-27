@@ -1,6 +1,6 @@
 import { decodePercent } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createUnwrapper } from '../utils.js'
+import { createUnwrapper, matchPathSource } from '../utils.js'
 
 const sourcePathRegex = /^\/.*?\/api\/res\/.*?(?<source>https?(?::|%3a).+)$/i
 
@@ -9,7 +9,7 @@ const sourcePathRegex = /^\/.*?\/api\/res\/.*?(?<source>https?(?::|%3a).+)$/i
 export const unwrapYahooImage: UrlUnwrapper = createUnwrapper({
   subdomains: 'yimg.com',
   unwrap: (url) => {
-    const source = url.pathname.match(sourcePathRegex)?.groups?.source
+    const source = matchPathSource(url.pathname, sourcePathRegex)
 
     if (!source) {
       return

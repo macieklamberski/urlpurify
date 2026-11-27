@@ -1,3 +1,4 @@
+import { isAnyOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createQueryUnwrapper } from '../utils.js'
 
@@ -10,7 +11,7 @@ const extractTarget = createQueryUnwrapper({
 
 // Yelp outbound link redirect (www.yelp.com/biz_redir?url=<target>, also /redir).
 export const unwrapYelp: UrlUnwrapper = (url) => {
-  if (!redirectPaths.includes(url.pathname)) {
+  if (!isAnyOf(url.pathname, redirectPaths)) {
     return
   }
 

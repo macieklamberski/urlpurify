@@ -1,3 +1,4 @@
+import { isAnyOf } from 'trousse'
 import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
 const paths = ['/click', '/e3ds/mail_link.php']
@@ -19,7 +20,7 @@ const extractFromEthreemail = createQueryUnwrapper({
 export const unwrapDirectMail = createUnwrapper({
   domains: ['dmanalytics1.com', 'dmanalytics2.com', 'ethreemail.com'],
   unwrap: (url) => {
-    if (!paths.includes(url.pathname)) {
+    if (!isAnyOf(url.pathname, paths)) {
       return
     }
 

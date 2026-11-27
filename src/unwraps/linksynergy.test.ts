@@ -27,6 +27,15 @@ describe('unwrapLinksynergy', () => {
       expect(unwrapLinksynergy(url)).toBe('https://www.example.com/a+b')
     })
 
+    it('should match the path in any case', () => {
+      const value = new URL(
+        'https://click.linksynergy.com/DeepLink?id=abc&mid=12345&murl=https%3A%2F%2Fexample.com%2Fproduct',
+      )
+      const expected = 'https://example.com/product'
+
+      expect(unwrapLinksynergy(value)).toBe(expected)
+    })
+
     it('should return undefined when murl param is missing', () => {
       const url = new URL('https://click.linksynergy.com/deeplink?id=abc&mid=12345')
 
