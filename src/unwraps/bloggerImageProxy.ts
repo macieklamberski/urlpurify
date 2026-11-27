@@ -18,10 +18,11 @@ const focusHostRegex = /^(?:images)?\d-focus-opensocial\.googleusercontent\.com$
 export const unwrapBloggerImageProxy = createUnwrapper({
   domains: ['gmodules.com', 'googleusercontent.com'],
   unwrap: (url) => {
+    // Every gmodules.com host proxies, but on googleusercontent.com only the two gadget hosts do.
     if (
+      isHostOrSubdomainOf(url, 'googleusercontent.com') &&
       !isHostOf(url, 'images-blogger-opensocial.googleusercontent.com') &&
-      !isHostOf(url, focusHostRegex) &&
-      !isHostOrSubdomainOf(url, 'gmodules.com')
+      !isHostOf(url, focusHostRegex)
     ) {
       return
     }
