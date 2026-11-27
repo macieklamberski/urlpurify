@@ -99,6 +99,24 @@ describe('unwrapAdjust', () => {
     expect(unwrapAdjust(url)).toBe('https://example.com/post')
   })
 
+  it('should return a tracker redirect without a scheme over the fallback', () => {
+    const value = new URL(
+      'https://app.adjust.com/abc123?redirect=www.example.com%2Fpost&fallback=https%3A%2F%2Fexample.com%2Fapp',
+    )
+    const expected = 'www.example.com/post'
+
+    expect(unwrapAdjust(value)).toBe(expected)
+  })
+
+  it('should skip a custom-scheme universal link redirect for the fallback', () => {
+    const value = new URL(
+      'https://abcd.adj.st/open?adj_redirect=myapp://open&adj_fallback=https://example.com/app',
+    )
+    const expected = 'https://example.com/app'
+
+    expect(unwrapAdjust(value)).toBe(expected)
+  })
+
   it('should extract target from a universal link fallback', () => {
     const url = new URL(
       'https://8xws.adj.st/?utm_source=news&utm_medium=in_article_banner&adj_t=1m4i69ak_1mazzg55&adj_fallback=https%3A%2F%2Fexample.com%2F%3Fintent%3Dregister%26lan%3Dnl',

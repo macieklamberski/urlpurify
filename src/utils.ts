@@ -8,6 +8,7 @@ import {
   isString,
   isSubdomainOf,
   type Pattern,
+  resolveUrl,
 } from 'trousse'
 import type { UrlUnwrapper } from './types.js'
 
@@ -240,8 +241,21 @@ export const createUnwrapper = (config: UnwrapperConfig): UrlUnwrapper => {
   return unwrap
 }
 
-// An unwrapper for a target in the first of `params` that holds one, on a url on the hosts
-// `createUnwrapper` takes, and on `path` when given: an exact path or a list, compared in any case,
+const schemeRegex = /^[a-z][a-z\d+.-]*:/i
+const httpSchemeRegex = /^https?:/i
+
+// A target in a scheme `cleanUrl` cannot read as http, such as an app's own `myapp://open`. A
+// host with a port, `example.com:8080/`, reads as http.
+const hasOtherScheme = (target: string): boolean => {
+  if (!schemeRegex.test(target) || httpSchemeRegex.test(target)) {
+    return false
+  }
+
+  return !resolveUrl(target)
+}
+
+// An unwrapper for a target in the first of `params` that holds one in http or with no scheme, on
+// a url on the hosts `createUnwrapper` takes, and on `path` when given: an exact path or a list, compared in any case,
 // or a regex. `index` and `decode` read the target as `readDecodedTarget` does.
 export const createQueryUnwrapper = (config: QueryUnwrapperConfig): UrlUnwrapper => {
   const { path, params, index, decode, ...options } = config
@@ -270,7 +284,7 @@ export const createQueryUnwrapper = (config: QueryUnwrapperConfig): UrlUnwrapper
           ? readDecodedTarget(url, param, decode, index)
           : readParamTarget(url, param, index)
 
-        if (target) {
+        if (target && !hasOtherScheme(target)) {
           return target
         }
       }
