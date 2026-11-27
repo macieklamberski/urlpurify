@@ -5,6 +5,10 @@ import type { TrackingParam, TrackingValueTest } from '../types.js'
 // parse to the hostname `example.com`.
 const refDelimitersRegex = /[\s/?#\\:@]/
 
+// A word value selects content, as `ts=posts` picks a comments feed's type and `cb` names a JSONP
+// callback. A cache buster is a timestamp or a hash, so it carries a digit.
+const cacheBusterValueRegex = /^(?=[a-f]*\d)[0-9a-f]+$/i
+
 // A `ref` holding the URL's own host is Ghost's self-referral, `?ref=example.com` on example.com.
 // With any other value `ref` is often a real referral target.
 const isSelfReferral: TrackingValueTest = (value, host) => {
@@ -35,16 +39,16 @@ export const housekeepingParams: Array<TrackingParam> = [
 
   // WordPress. Safe in feed context: feeds only serve published content, never drafts.
   'doing_wp_cron', // Triggers WP scheduled tasks. Feeds ignore this.
-  'preview', // Enables draft preview. Feeds never include drafts.
+  { name: 'preview', value: cacheBusterValueRegex }, // Enables draft preview. Feeds never include drafts.
   'preview_id', // Post ID for preview. Feeds never include drafts.
   'preview_nonce', // Security token for preview. Feeds never include drafts.
   'replytocom', // Comment reply form positioning. Feeds have no comments.
 
   // Cache busters.
-  '_', // jQuery/generic timestamp cache buster.
+  { name: '_', value: cacheBusterValueRegex }, // jQuery/generic timestamp cache buster.
   'timestamp', // Generic timestamp.
-  'ts', // Timestamp shorthand.
-  'cb', // Cache buster shorthand.
+  { name: 'ts', value: cacheBusterValueRegex }, // Timestamp shorthand.
+  { name: 'cb', value: cacheBusterValueRegex }, // Cache buster shorthand.
   'cachebuster', // Generic cache buster.
   // 'cHash', // TYPO3 security hash. Required for TYPO3 pages to render.
   'nocache', // Force bypass cache.
