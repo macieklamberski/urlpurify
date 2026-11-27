@@ -1,4 +1,4 @@
-import { decodePercent } from 'trousse'
+import { decodePercent, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 
 const jetpackHostRegex = /^i[0-3]\.wp\.com$/
@@ -8,7 +8,7 @@ const sourcePathRegex = /^\/(?<source>.+)$/
 // only resize options. Not included in defaultUnwrappers: unwrapping swaps the resized copy for
 // the original image.
 export const unwrapJetpack: UrlUnwrapper = (url) => {
-  if (!jetpackHostRegex.test(url.hostname)) {
+  if (!isHostOf(url, jetpackHostRegex)) {
     return
   }
 

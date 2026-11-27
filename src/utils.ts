@@ -1,14 +1,32 @@
-import { decodePercent, getQueryParamValues, isAnyOf, isHostOf, isHostOrSubdomainOf } from 'trousse'
+import {
+  decodePercent,
+  getQueryParamValues,
+  isAnyOf,
+  isHostOf,
+  isHostOrSubdomainOf,
+  isString,
+  isSubdomainOf,
+  type Pattern,
+} from 'trousse'
 import type { UrlUnwrapper } from './types.js'
 
-// `domains` also matches every subdomain. `hosts` matches a host exactly, or by regex, for a domain
-// where a third party can get a subdomain, such as a blog host.
-export type ParamExtractorConfig = (
-  | { domains: string | Array<string>; hosts?: never }
-  | { hosts: string | Array<string> | RegExp; domains?: never }
-) & {
+type HostList = Pattern | ReadonlyArray<Pattern>
+
+// `hosts` matches a host exactly, or by regex. `domains` also matches every subdomain, and
+// `subdomains` matches only the subdomains, never the domain itself.
+export type UnwrapperHosts =
+  | { hosts: HostList; domains?: never; subdomains?: never }
+  | { domains: HostList; hosts?: never; subdomains?: never }
+  | { subdomains: HostList; hosts?: never; domains?: never }
+
+export type UnwrapperConfig = UnwrapperHosts & {
+  unwrap: UrlUnwrapper
+}
+
+export type QueryUnwrapperConfig = UnwrapperHosts & {
   path?: string
   params: Array<string>
+  ignoreLinkFragment?: boolean // The link opens a page, not a redirect, per `readParamTarget`
 }
 
 const encodedSchemeRegex = /^https?%3A/i
@@ -43,9 +61,21 @@ export const getParamValues = (url: URL, name: string): Array<string> => {
   return raws.map(decodeParamValue)
 }
 
+// A redirect whose `Location` has no fragment lands on the link's own, so a target without one
+// takes the link's. An escaped target's own `%23` fragment wins.
+export const appendLinkFragment = (target: string, url: URL): string => {
+  if (target.includes('#')) {
+    return target
+  }
+
+  return `${target}${url.hash}`
+}
+
 // The target a carrier param holds, read as `getParamValues` reads it and decoded once more when
-// encoded twice: the first value, or the one at `index`, such as -1 for the last.
-export const getParamTarget = (url: URL, name: string, index = 0): string | undefined => {
+// encoded twice: the first value, or the one at `index`, such as -1 for the last. For a link that
+// opens a page, such as a share intent or an archive's own view: the page reads the carrier from
+// the query, so the link's fragment stays on that page.
+export const readParamTarget = (url: URL, name: string, index = 0): string | undefined => {
   const value = getParamValues(url, name).at(index)
 
   if (!value) {
@@ -55,37 +85,111 @@ export const getParamTarget = (url: URL, name: string, index = 0): string | unde
   return decodeEncodedScheme(value)
 }
 
-export const createParamExtractor = (config: ParamExtractorConfig): UrlUnwrapper => {
-  const isHostMatch = (url: URL): boolean => {
+// The target a redirect's carrier param holds, read by `readParamTarget`, with the link's fragment
+// per `appendLinkFragment`.
+export const getParamTarget = (url: URL, name: string, index = 0): string | undefined => {
+  const target = readParamTarget(url, name, index)
+
+  if (!target) {
+    return
+  }
+
+  return appendLinkFragment(target, url)
+}
+
+// The hostnames a factory unwrapper can match, read by `applyUnwrappers` to skip it on any other
+// host. A domain whose subdomains match registers as `.domain`. Only lowercase ascii hosts
+// register: the index compares them as written, where `isHostOf` also folds case and punycode.
+export const unwrapperHosts = new WeakMap<UrlUnwrapper, Array<string>>()
+
+const plainHostRegex = /^[a-z0-9-]+(?:\.[a-z0-9-]+)+$/
+
+// Registers `hosts` when every one is a plain host, each behind `prefix`.
+const registerHosts = (unwrap: UrlUnwrapper, hosts: HostList, prefix = ''): void => {
+  const list = isString(hosts) ? [hosts] : hosts
+
+  if (!Array.isArray(list) || !list.every((host) => isString(host) && plainHostRegex.test(host))) {
+    return
+  }
+
+  unwrapperHosts.set(
+    unwrap,
+    list.map((host) => `${prefix}${host}`),
+  )
+}
+
+// An unwrapper that runs `unwrap` only on a url on `hosts`, matched exactly or by regex, on
+// `domains` or any of their subdomains, or only on `subdomains` of the domains given.
+export const createUnwrapper = (config: UnwrapperConfig): UrlUnwrapper => {
+  const isOnHost = (url: URL): boolean => {
     if (config.domains !== undefined) {
       return isHostOrSubdomainOf(url, config.domains)
     }
 
-    if (config.hosts instanceof RegExp) {
-      return isAnyOf(url.hostname, config.hosts)
+    if (config.subdomains !== undefined) {
+      return isSubdomainOf(url, config.subdomains)
     }
 
     return isHostOf(url, config.hosts)
   }
 
-  return (url) => {
-    if (!isHostMatch(url)) {
+  const unwrap: UrlUnwrapper = (url) => {
+    if (!isOnHost(url)) {
       return
     }
 
-    if (config.path && !isAnyOf(url.pathname, config.path)) {
-      return
-    }
-
-    for (const param of config.params) {
-      const value = getParamValues(url, param).at(0)
-
-      if (value) {
-        return decodeEncodedScheme(value)
-      }
-    }
+    return config.unwrap(url)
   }
+
+  if (config.hosts !== undefined) {
+    registerHosts(unwrap, config.hosts)
+  }
+
+  if (config.domains !== undefined) {
+    registerHosts(unwrap, config.domains, '.')
+  }
+
+  if (config.subdomains !== undefined) {
+    registerHosts(unwrap, config.subdomains, '.')
+  }
+
+  return unwrap
 }
+
+// An unwrapper for a target in the first of `params` that holds one, on a url on the hosts
+// `createUnwrapper` takes, and on `path` when given.
+export const createQueryUnwrapper = (config: QueryUnwrapperConfig): UrlUnwrapper => {
+  const { path, params, ignoreLinkFragment, ...hosts } = config
+
+  return createUnwrapper({
+    ...hosts,
+    unwrap: (url) => {
+      if (path && !isAnyOf(url.pathname, path)) {
+        return
+      }
+
+      for (const param of params) {
+        const target = readParamTarget(url, param)
+
+        if (!target) {
+          continue
+        }
+
+        if (ignoreLinkFragment) {
+          return target
+        }
+
+        return appendLinkFragment(target, url)
+      }
+    },
+  })
+}
+
+/** @deprecated Use `QueryUnwrapperConfig` instead. */
+export type ParamExtractorConfig = QueryUnwrapperConfig
+
+/** @deprecated Use `createQueryUnwrapper` instead. */
+export const createParamExtractor = createQueryUnwrapper
 
 const utf8Encoder = new TextEncoder()
 

@@ -1,13 +1,13 @@
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
-const unwrapRedirect = createParamExtractor({
+const unwrapRedirect = createQueryUnwrapper({
   hosts: 'tp.media',
   path: '/r',
   params: ['u'],
 })
 
-const unwrapClick = createParamExtractor({
+const unwrapClick = createQueryUnwrapper({
   hosts: /^c\d+\.travelpayouts\.com$/,
   path: '/click',
   params: ['custom_url'],

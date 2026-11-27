@@ -1,11 +1,11 @@
 import { isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 // Links written without the `?` carry their params in the path.
 const pathLinkRegex = /^\/cl\/aaid=.*?&link=(.+)$/i
 
-const extractQueryLink = createParamExtractor({
+const extractQueryLink = createQueryUnwrapper({
   hosts: 'td.oo34.net',
   path: '/cl/',
   params: ['link'],

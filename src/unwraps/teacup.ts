@@ -1,11 +1,11 @@
 import { getQueryParam } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 const hostRegex = /^\d+\.teacup\.com$/
 const pathRegex = /^\/[^/]+\/bbs$/i
 
-const extractTarget = createParamExtractor({
+const extractTarget = createQueryUnwrapper({
   hosts: hostRegex,
   params: ['JUR'],
 })

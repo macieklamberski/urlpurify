@@ -1,9 +1,9 @@
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 const clickPaths = ['/g.ashx', '/a.ashx']
 
-const extractUrl = createParamExtractor({
+const extractUrl = createQueryUnwrapper({
   hosts: 'track.flexlinkspro.com',
   params: ['url'],
 })

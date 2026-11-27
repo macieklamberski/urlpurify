@@ -1,7 +1,7 @@
+import { getSubdomain, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
-const turbopagesHostRegex = /\.turbopages\.org$/
 // turbopages.org answers 404 as of 2026-09-27, so only archived feeds carry its links.
 const turbopagesPathRegex = /^\/[^/]+\/s\/(.+)$/i
 const hostInPathRegex = /^\/turbo\/([^/]+)\/s\/(.+)$/i
@@ -10,7 +10,7 @@ const turbopagesSlashSFirstRegex = /^\/s\/([^/]+)\/(.*)$/i
 const dashRegex = /-/g
 const yandexHostRegex = /^(?:www\.)?yandex\.(?:com\.tr|[a-z]{2,3})$/
 
-const extractTurboTarget = createParamExtractor({
+const extractTurboTarget = createQueryUnwrapper({
   hosts: yandexHostRegex,
   path: '/turbo',
   params: ['text'],
@@ -33,9 +33,10 @@ export const unwrapYandexTurbo: UrlUnwrapper = (url) => {
     return turboTarget
   }
 
-  const isTurbopagesHost = turbopagesHostRegex.test(url.hostname)
+  const turbopagesSubdomain = getSubdomain(url, 'turbopages.org')
+  const isTurbopagesHost = turbopagesSubdomain !== undefined
 
-  if (!isTurbopagesHost && !yandexHostRegex.test(url.hostname)) {
+  if (!isTurbopagesHost && !isHostOf(url, yandexHostRegex)) {
     return
   }
 
@@ -53,7 +54,7 @@ export const unwrapYandexTurbo: UrlUnwrapper = (url) => {
     return `https://${hostInPathMatch[1]}/${hostInPathMatch[2]}`
   }
 
-  if (!isTurbopagesHost) {
+  if (!turbopagesSubdomain) {
     return
   }
 
@@ -62,7 +63,7 @@ export const unwrapYandexTurbo: UrlUnwrapper = (url) => {
     return
   }
 
-  const sourceHost = url.hostname.replace(turbopagesHostRegex, '').replace(dashRegex, '.')
+  const sourceHost = turbopagesSubdomain.replace(dashRegex, '.')
 
   return `https://${sourceHost}/${match[1]}`
 }

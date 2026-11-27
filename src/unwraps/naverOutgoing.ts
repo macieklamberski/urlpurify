@@ -1,13 +1,13 @@
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
-const unwrapLoginfra = createParamExtractor({
+const unwrapLoginfra = createQueryUnwrapper({
   hosts: 'cc.loginfra.com',
   path: '/cc',
   params: ['u'],
 })
 
-const unwrapSearchClick = createParamExtractor({
+const unwrapSearchClick = createQueryUnwrapper({
   hosts: ['search.naver.com', 'm.search.naver.com'],
   path: '/p/crd/rd',
   params: ['u'],

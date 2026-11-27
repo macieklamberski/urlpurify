@@ -1,11 +1,12 @@
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 const sharePathRegex = /^\/api\/share\/?$/i
 
-const extractTarget = createParamExtractor({
+const extractTarget = createQueryUnwrapper({
   hosts: ['www.shareaholic.com', 'shareaholic.com'],
   params: ['link'],
+  ignoreLinkFragment: true,
 })
 
 // Shareaholic share links (www.shareaholic.com/api/share/?link=<page>&service=<id>, also

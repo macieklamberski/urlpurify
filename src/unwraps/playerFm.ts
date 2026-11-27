@@ -1,16 +1,18 @@
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
-const extractImporter = createParamExtractor({
+const extractImporter = createQueryUnwrapper({
   hosts: 'player.fm',
   path: '/importer/feed',
   params: ['url'],
+  ignoreLinkFragment: true,
 })
 
-const extractSubscribe = createParamExtractor({
+const extractSubscribe = createQueryUnwrapper({
   hosts: 'player.fm',
   path: '/subscribe',
   params: ['id'],
+  ignoreLinkFragment: true,
 })
 
 // Player FM feed importer and subscribe link (player.fm/importer/feed?url=<feed>, also

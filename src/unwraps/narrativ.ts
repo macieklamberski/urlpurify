@@ -1,16 +1,16 @@
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 const redirectPathRegex = /^\/api\/v\d+\/(?:client_)?redirect\/?$/i
 
 const linkPaths = ['/link', '/link/']
 
-const extractTarget = createParamExtractor({
+const extractTarget = createQueryUnwrapper({
   hosts: ['narrativ.com', 'api.narrativ.com', 'events.release.narrativ.com'],
   params: ['url'],
 })
 
-const extractLinkTarget = createParamExtractor({
+const extractLinkTarget = createQueryUnwrapper({
   hosts: ['howl.link', 'howl.me', 'shop-links.co'],
   params: ['url'],
 })

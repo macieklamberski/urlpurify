@@ -1,24 +1,54 @@
-import { describe, expect, it } from 'bun:test'
-import { decodeBase64 } from 'trousse'
+import { describe, expect, it, mock } from 'bun:test'
+import { decodeBase64, getQueryParam } from 'trousse'
 import { cleanUrl, isTrackingParam, stripTrackingParams, unwrapUrl } from './clean.js'
 import { campaignParams, defaultTrackingParams, housekeepingParams } from './defaults.js'
 import type { TrackingParam, TrackingValueTest, UrlUnwrapper } from './types.js'
 import { unwrapWebArchive } from './unwraps/webArchive.js'
-import { createParamExtractor } from './utils.js'
+import { createQueryUnwrapper, createUnwrapper, unwrapperHosts } from './utils.js'
 
-const exampleUnwrapper = createParamExtractor({
+const exampleUnwrapper = createQueryUnwrapper({
   hosts: 'redirect.example.com',
   params: ['target'],
 })
 
-const exampleFallbackUnwrapper = createParamExtractor({
+const exampleFallbackUnwrapper = createQueryUnwrapper({
   hosts: 'redirect.example.com',
   params: ['fallback'],
 })
 
-const nestedUnwrapper = createParamExtractor({
+const nestedUnwrapper = createQueryUnwrapper({
   hosts: 'outer.example.com',
   params: ['url'],
+})
+
+// A hand-written unwrapper registers no hosts, so the host index runs it on every host.
+const handWrittenFallbackUnwrapper: UrlUnwrapper = (url) => {
+  if (url.hostname !== 'redirect.example.com') {
+    return
+  }
+
+  return getQueryParam(url, 'fallback')
+}
+
+const exampleDomainUnwrapper = createUnwrapper({
+  domains: 'example.com',
+  unwrap: (url) => {
+    return getQueryParam(url, 'fallback')
+  },
+})
+
+const exampleSubdomainUnwrapper = createUnwrapper({
+  subdomains: 'example.com',
+  unwrap: (url) => {
+    return getQueryParam(url, 'fallback')
+  },
+})
+
+const exampleHostUnwrapper = createUnwrapper({
+  hosts: 'redirect.example.com',
+  unwrap: (url) => {
+    return getQueryParam(url, 'target')
+  },
 })
 
 // A base64 carrier holding the raw bytes of a legacy-charset target.
@@ -37,6 +67,7 @@ const everyNameRegex = /^/
 const exceptIdRegex = /^(?!id$)/
 const shopHostRegex = /(^|\.)shop\.example$/
 const utmFamilyRegex = /^utm_[a-z0-9_-]+$/
+const goHostRegex = /^go\d\.example\.org$/
 
 describe('unwrapUrl', () => {
   it('should return the target from the matching unwrapper', () => {
@@ -52,6 +83,79 @@ describe('unwrapUrl', () => {
     const expected = 'https://example.com/first'
 
     expect(unwrapUrl(value, [exampleUnwrapper, exampleFallbackUnwrapper])).toBe(expected)
+  })
+
+  it('should keep an unregistered unwrapper ahead of a registered one on the same host', () => {
+    const value =
+      'https://redirect.example.com/?target=https%3A%2F%2Fexample.com%2Fsecond&fallback=https%3A%2F%2Fexample.com%2Ffirst'
+    const unwrappers = [handWrittenFallbackUnwrapper, exampleUnwrapper]
+    const expected = 'https://example.com/first'
+
+    unwrapUrl(value, unwrappers)
+
+    expect(unwrapUrl(value, unwrappers)).toBe(expected)
+  })
+
+  it('should run every registered unwrapper on a shared host once its list is indexed', () => {
+    const value = 'https://redirect.example.com/?fallback=https%3A%2F%2Fexample.com%2Fpost'
+    const unwrappers = [exampleUnwrapper, exampleFallbackUnwrapper]
+    const expected = 'https://example.com/post'
+
+    unwrapUrl(value, unwrappers)
+
+    expect(unwrapUrl(value, unwrappers)).toBe(expected)
+  })
+
+  it('should skip a registered unwrapper on another host once its list arrives a second time', () => {
+    const value = 'https://example.org/?target=https%3A%2F%2Fexample.com%2Fpost'
+    const unwrap = mock(exampleUnwrapper)
+    const unwrappers = [unwrap]
+    const expected = 1
+
+    unwrapperHosts.set(unwrap, ['redirect.example.com'])
+    unwrapUrl(value, unwrappers)
+    unwrapUrl(value, unwrappers)
+
+    expect(unwrap).toHaveBeenCalledTimes(expected)
+  })
+
+  it('should run a domain unwrapper on its subdomain once its list arrives a second time', () => {
+    const value = 'https://go.example.com/?fallback=https%3A%2F%2Fexample.org%2Fpost'
+    const unwrappers = [exampleHostUnwrapper, exampleSubdomainUnwrapper]
+    const expected = 'https://example.org/post'
+
+    unwrapUrl(value, unwrappers)
+
+    expect(unwrapUrl(value, unwrappers)).toBe(expected)
+  })
+
+  it('should keep list order on a host matched by a domain and an exact host', () => {
+    const value =
+      'https://redirect.example.com/?target=https%3A%2F%2Fexample.org%2Fsecond&fallback=https%3A%2F%2Fexample.org%2Ffirst'
+    const unwrappers = [exampleDomainUnwrapper, exampleHostUnwrapper]
+    const expected = 'https://example.org/first'
+
+    unwrapUrl(value, unwrappers)
+
+    expect(unwrapUrl(value, unwrappers)).toBe(expected)
+  })
+
+  it('should run a factory unwrapper with a regex host on a host the index lacks', () => {
+    const value = 'https://go1.example.org/?fallback=https%3A%2F%2Fexample.net%2Fpost'
+    const unwrappers = [
+      exampleHostUnwrapper,
+      createUnwrapper({
+        hosts: goHostRegex,
+        unwrap: (url) => {
+          return getQueryParam(url, 'fallback')
+        },
+      }),
+    ]
+    const expected = 'https://example.net/post'
+
+    unwrapUrl(value, unwrappers)
+
+    expect(unwrapUrl(value, unwrappers)).toBe(expected)
   })
 
   it('should unwrap with default unwrappers when none are given', () => {
@@ -711,7 +815,7 @@ describe('cleanUrl', () => {
 })
 
 describe('cleanUrl with a legacy-charset target', () => {
-  const legacyUnwrapper = createParamExtractor({
+  const legacyUnwrapper = createQueryUnwrapper({
     hosts: 'redirect.example.com',
     params: ['target'],
   })

@@ -1,35 +1,37 @@
 import { describe, expect, it } from 'bun:test'
-import * as urlpurify from './index.js'
+import * as urlpurifier from './index.js'
 
-const exportedUnwrappers: Array<[string, unknown]> = Object.entries(urlpurify).filter(([name]) => {
+const exportEntries: Array<[string, unknown]> = Object.entries(urlpurifier)
+
+const exportedUnwrappers = exportEntries.filter(([name]) => {
   return name.startsWith('unwrap') && name !== 'unwrapUrl'
 })
 
-const getNames = (unwrappers: Array<unknown>): Array<string> => {
+const getNames = (unwrappers: ReadonlyArray<unknown>): Array<string> => {
   return exportedUnwrappers
     .filter(([, unwrapper]) => unwrappers.includes(unwrapper))
     .map(([name]) => name)
 }
 
 const categories = [
-  urlpurify.searchClickUnwrappers,
-  urlpurify.linkShimUnwrappers,
-  urlpurify.pressReleaseUnwrappers,
-  urlpurify.signInShimUnwrappers,
-  urlpurify.securityGatewayUnwrappers,
-  urlpurify.emailTrackingUnwrappers,
-  urlpurify.affiliateUnwrappers,
-  urlpurify.advertisingUnwrappers,
-  urlpurify.clickCounterUnwrappers,
-  urlpurify.downloadMeasurementUnwrappers,
-  urlpurify.archiveProxyUnwrappers,
-  urlpurify.imageProxyUnwrappers,
-  urlpurify.embedProxyUnwrappers,
-  urlpurify.embedApiUnwrappers,
-  urlpurify.shareIntentUnwrappers,
-  urlpurify.subscribeIntentUnwrappers,
-  urlpurify.feedToolUnwrappers,
-  urlpurify.genericCarrierUnwrappers,
+  urlpurifier.searchClickUnwrappers,
+  urlpurifier.linkShimUnwrappers,
+  urlpurifier.pressReleaseUnwrappers,
+  urlpurifier.signInShimUnwrappers,
+  urlpurifier.securityGatewayUnwrappers,
+  urlpurifier.emailTrackingUnwrappers,
+  urlpurifier.affiliateUnwrappers,
+  urlpurifier.advertisingUnwrappers,
+  urlpurifier.clickCounterUnwrappers,
+  urlpurifier.downloadMeasurementUnwrappers,
+  urlpurifier.archiveProxyUnwrappers,
+  urlpurifier.imageProxyUnwrappers,
+  urlpurifier.embedProxyUnwrappers,
+  urlpurifier.embedApiUnwrappers,
+  urlpurifier.shareIntentUnwrappers,
+  urlpurifier.subscribeIntentUnwrappers,
+  urlpurifier.feedToolUnwrappers,
+  urlpurifier.genericCarrierUnwrappers,
 ]
 
 describe('defaultUnwrappers', () => {
@@ -120,11 +122,13 @@ describe('defaultUnwrappers', () => {
       'unwrapTiktok',
       'unwrapTumblr',
       'unwrapTwitterRedirect',
+      'unwrapUcoz',
       'unwrapVanilla',
       'unwrapVbulletin',
       'unwrapVirgool',
       'unwrapVisibli',
       'unwrapVkAway',
+      'unwrapWikidot',
       'unwrapWpPoczta',
       'unwrapXengentr',
       'unwrapYahooJapan',
@@ -137,7 +141,7 @@ describe('defaultUnwrappers', () => {
       'unwrapZhihu',
     ]
 
-    expect(getNames(urlpurify.defaultUnwrappers)).toEqual(expected)
+    expect(getNames(urlpurifier.defaultUnwrappers)).toEqual(expected)
   })
 })
 
@@ -158,20 +162,20 @@ describe('unwrapper categories', () => {
 
 describe('trackingParamsLiterals', () => {
   it('should include names from the opt-in categories', () => {
-    expect(urlpurify.trackingParamsLiterals).toContain('utm_source')
+    expect(urlpurifier.trackingParamsLiterals).toContain('utm_source')
   })
   it('should leave out a name only an entry holds', () => {
-    expect(urlpurify.trackingParamsLiterals).not.toContain('sid')
+    expect(urlpurifier.trackingParamsLiterals).not.toContain('sid')
   })
 
   it('should leave out the self-referral ref', () => {
-    expect(urlpurify.trackingParamsLiterals).not.toContain('ref')
+    expect(urlpurifier.trackingParamsLiterals).not.toContain('ref')
   })
 })
 
 describe('trackingParamsPatterns', () => {
   it('should hold only regexes', () => {
-    const isEveryRegex = urlpurify.trackingParamsPatterns.every((pattern) => {
+    const isEveryRegex = urlpurifier.trackingParamsPatterns.every((pattern) => {
       return pattern instanceof RegExp
     })
 

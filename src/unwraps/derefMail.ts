@@ -1,6 +1,6 @@
 import { isAnyOf, isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor, getParamTarget } from '../utils.js'
+import { createQueryUnwrapper, getParamTarget } from '../utils.js'
 
 const hosts = [
   'deref-1und1.de',
@@ -31,28 +31,28 @@ const pathRegex = /^\/mail\/client\/(?:[\w-]+\/)?dereferrer\/$/i
 const lightmailerPathRegex = /^\/[\w-]+\/deref\/$/i
 
 // The older GMX dereferrer (service.gmx.net/de/cgi/derefer?TYPE=3&DEST=<target>).
-const extractLegacy = createParamExtractor({
+const extractLegacy = createQueryUnwrapper({
   hosts: 'service.gmx.net',
   path: '/de/cgi/derefer',
   params: ['DEST'],
 })
 
 // The leaving page on mail.com and GMX (service.mail.com/dereferrer/?target=<target>).
-const extractLeaving = createParamExtractor({
+const extractLeaving = createQueryUnwrapper({
   hosts: ['service.mail.com', 'www.gmx.com', 'www.gmx.es'],
   path: '/dereferrer/',
   params: ['target'],
 })
 
 // The United Internet leaving page (www.ui-deref.de/r/?to=<target>).
-const extractUiDeref = createParamExtractor({
+const extractUiDeref = createQueryUnwrapper({
   hosts: 'www.ui-deref.de',
   path: '/r/',
   params: ['to'],
 })
 
 // The old WEB.DE FreeMail jump (freemailng<n>.web.de/jump.htm?goto=<target>).
-const extractFreemailJump = createParamExtractor({
+const extractFreemailJump = createQueryUnwrapper({
   hosts: /^freemailng\d+\.web\.de$/,
   path: '/jump.htm',
   params: ['goto'],

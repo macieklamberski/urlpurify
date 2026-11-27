@@ -1,9 +1,9 @@
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 const linkPathRegex = /^\/m?link$/i
 
-const extractTarget = createParamExtractor({
+const extractTarget = createQueryUnwrapper({
   hosts: 'tracking.vocus.io',
   params: ['url'],
 })
@@ -15,12 +15,5 @@ export const unwrapVocus: UrlUnwrapper = (url) => {
     return
   }
 
-  const target = extractTarget(url)
-
-  if (!target) {
-    return
-  }
-
-  // An unencoded target's fragment lands in the wrapper's own `hash`.
-  return `${target}${url.hash}`
+  return extractTarget(url)
 }

@@ -1,6 +1,6 @@
 import { isAnyOf, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamTarget } from '../utils.js'
+import { readParamTarget } from '../utils.js'
 
 const bookmarkHosts = ['www.addthis.com']
 const apiHosts = ['api.addthis.com']
@@ -28,5 +28,5 @@ export const unwrapAddThis: UrlUnwrapper = (url) => {
   }
 
   // The `title=` and `description=` beside it are free text, even when they hold only a url.
-  return getParamTarget(url, 'url')
+  return readParamTarget(url, 'url')
 }

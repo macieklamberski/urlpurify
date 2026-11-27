@@ -1,8 +1,8 @@
 import { decodeBase64, decodePercent, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
-const baseExtractor = createParamExtractor({
+const baseExtractor = createQueryUnwrapper({
   hosts: ['web-engage.augure.com', 'web-profilepr.engage.augure.com', 'wpp.engage.augure.com'],
   params: ['id1'],
 })

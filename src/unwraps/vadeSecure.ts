@@ -1,15 +1,15 @@
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 const safeproxyPathRegex = /^\/safeproxy\/v[34]$/i
 
-const extractAntiphishing = createParamExtractor({
+const extractAntiphishing = createQueryUnwrapper({
   hosts: 'antiphishing.vadesecure.com',
   path: '/v4',
   params: ['u'],
 })
 
-const extractSafeproxy = createParamExtractor({
+const extractSafeproxy = createQueryUnwrapper({
   hosts: ['m365.eu.vadesecure.com', 'm365.us.vadesecure.com', 'gws.eu.vadesecure.com'],
   params: ['u'],
 })

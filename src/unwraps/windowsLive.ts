@@ -1,11 +1,12 @@
 import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
-const extractAdd = createParamExtractor({
+const extractAdd = createQueryUnwrapper({
   hosts: ['live.com', 'www.live.com'],
   path: '/',
   params: ['add'],
+  ignoreLinkFragment: true,
 })
 
 // Windows Live subscribe button (www.live.com/?add=<feed>, also on live.com). Opt-in in the

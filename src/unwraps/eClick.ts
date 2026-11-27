@@ -1,9 +1,9 @@
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 const pathRegex = /^\/redirects\/direct\/\d+\/\d+\/$/i
 
-const extractUrl = createParamExtractor({
+const extractUrl = createQueryUnwrapper({
   hosts: 'www.e-click.jp',
   params: ['url'],
 })

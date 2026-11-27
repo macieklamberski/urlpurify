@@ -1,18 +1,18 @@
-# urlpurify
+# urlpurifier
 
-[![codecov](https://codecov.io/gh/macieklamberski/urlpurify/branch/main/graph/badge.svg)](https://codecov.io/gh/macieklamberski/urlpurify)
-[![npm version](https://img.shields.io/npm/v/urlpurify.svg)](https://www.npmjs.com/package/urlpurify)
-[![license](https://img.shields.io/npm/l/urlpurify.svg)](https://github.com/macieklamberski/urlpurify/blob/main/LICENSE)
+[![codecov](https://codecov.io/gh/macieklamberski/urlpurifier/branch/main/graph/badge.svg)](https://codecov.io/gh/macieklamberski/urlpurifier)
+[![npm version](https://img.shields.io/npm/v/urlpurifier.svg)](https://www.npmjs.com/package/urlpurifier)
+[![license](https://img.shields.io/npm/l/urlpurifier.svg)](https://github.com/macieklamberski/urlpurifier/blob/main/LICENSE)
 
-Unwrap redirect, affiliate, and tracking wrapper URLs and strip tracking parameters. Turn noisy links into clean, direct URLs.
+Unwrap redirect, affiliate, and tracking wrapper URLs and strip tracking params. Turn noisy links into clean, direct URLs.
 
-Links from feeds, emails and social platforms rarely point straight at their destination. They pass through search redirects, link shims, email gateways and affiliate networks, and pick up tracking parameters on the way, the link decoration that follows a reader from site to site. urlpurify unwraps 400+ known wrappers and strips 100+ known tracking parameters plus vendor families. Campaign tags like `utm_*` and affiliate ids stay by default: they serve the site, not a tracker. It has no dependencies and runs in any modern JavaScript runtime, browsers included.
+Links from feeds, emails and social platforms rarely point straight at their destination. They pass through search redirects, link shims, email gateways and affiliate networks, and pick up tracking params on the way, the link decoration that follows a reader from site to site. urlpurifier unwraps 400+ known wrappers and strips 100+ known tracking params plus vendor families. Campaign tags like `utm_*` and affiliate ids stay by default: they serve the site, not a tracker. It has no dependencies and runs in any modern JavaScript runtime, browsers included.
 
 [Quick start](#quick-start)
 &nbsp;&nbsp;·&nbsp;&nbsp;
 [Unwrappers](#unwrappers)
 &nbsp;&nbsp;·&nbsp;&nbsp;
-[Tracking parameters](#tracking-parameters)
+[Tracking params](#tracking-params)
 &nbsp;&nbsp;·&nbsp;&nbsp;
 [API](#api)
 
@@ -21,13 +21,13 @@ Links from feeds, emails and social platforms rarely point straight at their des
 ## Quick start
 
 ```bash
-npm install urlpurify
+npm install urlpurifier
 ```
 
 Then:
 
 ```typescript
-import { cleanUrl } from 'urlpurify'
+import { cleanUrl } from 'urlpurifier'
 
 const url = 'https://www.google.com/url?q=https%3A%2F%2Fexample.com%2Fpost%3Ffbclid%3Dabc'
 
@@ -67,9 +67,9 @@ The intent categories, `shareIntentUnwrappers`, `subscribeIntentUnwrappers` and 
 
 To turn more on, see [Choosing unwrappers](#choosing-unwrappers).
 
-## Tracking parameters
+## Tracking params
 
-Tracking parameters are grouped like the unwrappers, by what stripping them takes away from someone:
+Tracking params are grouped like the unwrappers, by what stripping them takes away from someone:
 
 | Category | Export | Stripping removes | Default |
 | --- | --- | --- | :---: |
@@ -82,16 +82,16 @@ Tracking parameters are grouped like the unwrappers, by what stripping them take
 
 `defaultTrackingParams` combines the first four. A campaign tag carries the same value for every reader, so it tells the site where a visit came from and nothing about who made it.
 
-To strip more, see [Choosing tracking parameters](#choosing-tracking-parameters).
+To strip more, see [Choosing tracking params](#choosing-tracking-params).
 
 ## API
 
 ### `cleanUrl(url, options?)`
 
-Unwraps wrappers, repeatedly since they nest, then strips tracking parameters. The result is serialized per the URL Standard, and input that can't be parsed comes back unchanged, so the result is always safe to display.
+Unwraps wrappers, repeatedly since they nest, then strips tracking params. The result is serialized per the URL Standard, and input that can't be parsed comes back unchanged, so the result is always safe to display.
 
 ```typescript
-import { cleanUrl, defaultTrackingParams, defaultUnwrappers, unwrapWebArchive } from 'urlpurify'
+import { cleanUrl, defaultTrackingParams, defaultUnwrappers, unwrapWebArchive } from 'urlpurifier'
 
 cleanUrl(url, {
   // First match wins per pass.
@@ -117,9 +117,11 @@ An unwrapped target that isn't a usable URL is ignored, and the wrapper is kept.
 
 Runs one pass of the unwrappers and returns the first target, or `undefined`.
 
+An unwrapper list that arrives a second time is indexed by host and cached per array, so a url runs only the unwrappers that can match its host. To change a list, pass a new array.
+
 ### `stripTrackingParams(url, trackingParams?)`
 
-Removes tracking parameters and returns the serialized URL. Both this and `cleanUrl` apply two rules on top of the list:
+Removes tracking params and returns the serialized URL. Both this and `cleanUrl` apply two rules on top of the list:
 
 - A query with a signature (`sig`, `signature`, `X-Amz-Signature` or `X-Goog-Signature`) stays whole, since dropping anything breaks the signature.
 - `ts` stays on Alibaba DirectMail click URLs, which fail without it.
@@ -133,21 +135,22 @@ A tracking list is compiled on first use and cached per array. To change it, pas
 Answers whether one query pair is tracking, for a caller filtering pairs itself. The list defaults to `defaultTrackingParams`. It sees one query pair and never the path, so the two rules above don't apply and a `;name=value` path param needs `cleanUrl` or `stripTrackingParams`.
 
 ```typescript
-import { isTrackingParam, knownTrackingParams } from 'urlpurify'
+import { isTrackingParam, knownTrackingParams } from 'urlpurifier'
 
 isTrackingParam('sid', '46551', 'example.com') // false
 isTrackingParam('utm_source', 'feed', url.hostname, knownTrackingParams) // true
 ```
 
-### `createParamExtractor(config)`
+### `createQueryUnwrapper(config)`
 
 Builds an unwrapper for a target that sits in a query parameter:
 
 ```typescript
-import { cleanUrl, createParamExtractor, defaultUnwrappers } from 'urlpurify'
+import { cleanUrl, createQueryUnwrapper, defaultUnwrappers } from 'urlpurifier'
 
-const unwrapExample = createParamExtractor({
-  // The domain and every subdomain. Use `hosts` for exact hosts or a regex.
+const unwrapExample = createQueryUnwrapper({
+  // The domain and every subdomain. Use `hosts` for exact hosts or a regex,
+  // or `subdomains` to match only the subdomains.
   domains: 'example.com',
   path: '/out',
   params: ['target'],
@@ -156,24 +159,69 @@ const unwrapExample = createParamExtractor({
 cleanUrl(url, { unwrappers: [...defaultUnwrappers, unwrapExample] })
 ```
 
-A value still encoded after one decode, starting with `http%3A` or `https%3A`, is decoded once more. A malformed escape, or one in a legacy charset such as `%E9` for é in Latin-1, stays as written. For any other shape, write a plain `UrlUnwrapper`: a function that takes a `URL` and returns the target or `undefined`.
+A value still encoded after one decode, starting with `http%3A` or `https%3A`, is decoded once more. A malformed escape, or one in a legacy charset such as `%E9` for é in Latin-1, stays as written.
+
+The target takes the link's fragment, so `example.com/out?target=https://example.org/guide#install` gives `https://example.org/guide#install`. A browser following the redirect lands there too, since the server never sees the fragment. A fragment encoded inside the target wins. When the link opens a page instead of redirecting, such as a share button, pass `ignoreLinkFragment: true`, since the page reads only the query.
+
+`createParamExtractor` and `ParamExtractorConfig`, the names before 3.0, still work and are deprecated.
+
+### `createPathUnwrapper(config)`
+
+Builds an unwrapper for a target glued into the path behind a prefix, as podcast analytics services do. It takes the same `hosts`, `domains` or `subdomains` as `createUnwrapper`:
+
+```typescript
+import { cleanUrl, createPathUnwrapper, defaultUnwrappers } from 'urlpurifier'
+
+// prefix.example.com/r/42/www.example.org/episode.mp3 → https://www.example.org/episode.mp3
+const unwrapExample = createPathUnwrapper({
+  hosts: 'prefix.example.com',
+  prefix: /^\/r\/\d+\//,
+})
+
+cleanUrl(url, { unwrappers: [...defaultUnwrappers, unwrapExample] })
+```
+
+The target keeps the link's query and fragment, which the service forwards with it. A target without a scheme gets `https`. Pass `scheme: 'http'` for a service that forwards to http, or `scheme: 'link'` for one that forwards with the link's own.
+
+For any other shape, use `createUnwrapper`.
+
+### `createUnwrapper(config)`
+
+Builds an unwrapper from a host list and a function that takes a `URL` and returns the target or `undefined`. The function runs only on a url on one of the hosts:
+
+```typescript
+import { createUnwrapper } from 'urlpurifier'
+
+const unwrapExample = createUnwrapper({
+  // Exact hosts or a regex. Use `domains` to match every subdomain too,
+  // or `subdomains` to match only the subdomains.
+  hosts: ['go.example.com'],
+  unwrap: (url) => {
+    const [, target] = url.pathname.split('/out/')
+
+    return target
+  },
+})
+```
+
+Pass exactly one of `hosts`, `domains` or `subdomains`. Each matches as trousse's `isHostOf`, `isHostOrSubdomainOf` or `isSubdomainOf` does. The unwrapper registers its hosts, so `cleanUrl` skips it on every other host. A host given as a regex registers nothing, so its unwrapper runs on every url, as a plain `UrlUnwrapper` function does.
 
 ### Choosing unwrappers
 
 Spread the categories you want next to the defaults:
 
 ```typescript
-import { affiliateUnwrappers, cleanUrl, defaultUnwrappers } from 'urlpurify'
+import { affiliateUnwrappers, cleanUrl, defaultUnwrappers } from 'urlpurifier'
 
 cleanUrl(url, { unwrappers: [...defaultUnwrappers, ...affiliateUnwrappers] })
 ```
 
-### Choosing tracking parameters
+### Choosing tracking params
 
 Spread the categories you want next to the defaults:
 
 ```typescript
-import { campaignParams, defaultTrackingParams, stripTrackingParams } from 'urlpurify'
+import { campaignParams, defaultTrackingParams, stripTrackingParams } from 'urlpurifier'
 
 stripTrackingParams(url, [...defaultTrackingParams, ...campaignParams])
 ```

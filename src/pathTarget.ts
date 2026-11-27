@@ -1,3 +1,11 @@
+import type { UrlUnwrapper } from './types.js'
+import { createUnwrapper, type UnwrapperHosts } from './utils.js'
+
+export type PathUnwrapperConfig = UnwrapperHosts & {
+  prefix: RegExp
+  scheme?: 'https' | 'http' | 'link' // What a target without a scheme forwards to, https by default
+}
+
 const leadingSlashesRegex = /^\/+/
 const schemeRegex = /^https?:/i
 
@@ -32,4 +40,17 @@ export const getPathTarget = (
   }
 
   return `${scheme}//${target}`
+}
+
+// An unwrapper for a target glued into the path behind a prefix, read by `getPathTarget`. A `link`
+// scheme forwards with the link's own.
+export const createPathUnwrapper = (config: PathUnwrapperConfig): UrlUnwrapper => {
+  const { prefix, scheme = 'https', ...hosts } = config
+
+  return createUnwrapper({
+    ...hosts,
+    unwrap: (url) => {
+      return getPathTarget(url, prefix, scheme === 'link' ? url.protocol : `${scheme}:`)
+    },
+  })
 }

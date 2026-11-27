@@ -1,13 +1,13 @@
 import { isAnyOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 const paths = ['/', '/url']
 
 // A colon and 27 base64url characters, an unpadded 20-byte digest.
 const signatureRegex = /:[\w-]{27}$/
 
-const extractTarget = createParamExtractor({
+const extractTarget = createQueryUnwrapper({
   hosts: 'disq.us',
   params: ['url'],
 })

@@ -1,13 +1,13 @@
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
-const unwrapGo = createParamExtractor({
+const unwrapGo = createQueryUnwrapper({
   hosts: 'links.jianshu.com',
   path: '/go',
   params: ['to'],
 })
 
-const unwrapLink = createParamExtractor({
+const unwrapLink = createQueryUnwrapper({
   hosts: 'link.jianshu.com',
   path: '/',
   params: ['t'],

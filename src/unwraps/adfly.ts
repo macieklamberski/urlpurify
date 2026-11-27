@@ -1,5 +1,6 @@
-import { isHostOf, isHttpUrl } from 'trousse'
+import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
+import { createUnwrapper } from '../utils.js'
 
 const pathRegex = /^\/\d+\/(?:banner\/|int\/)?(.+)$/i
 const schemeRegex = /^https?:/i
@@ -10,30 +11,29 @@ const hostRegex = /^[\da-z-]+(?:\.[\da-z-]+)+(?:[/:]|$)/i
 // adf.ly/<user id>/int/<target>, and the same on its q.gs domain), with or without the target's
 // scheme. Both now redirect to Linkvertise, so a wrapped link no longer reaches its target.
 // Not included in defaultUnwrappers: unwrapping removes the link owner's ad earnings.
-export const unwrapAdfly: UrlUnwrapper = (url) => {
-  if (!isHostOf(url, ['adf.ly', 'q.gs'])) {
-    return
-  }
+export const unwrapAdfly: UrlUnwrapper = createUnwrapper({
+  hosts: ['adf.ly', 'q.gs'],
+  unwrap: (url) => {
+    const match = pathRegex.exec(url.pathname)
 
-  const match = pathRegex.exec(url.pathname)
+    if (!match?.[1]) {
+      return
+    }
 
-  if (!match?.[1]) {
-    return
-  }
+    const hasScheme = schemeRegex.test(match[1])
 
-  const hasScheme = schemeRegex.test(match[1])
+    if (!hasScheme && !hostRegex.test(match[1])) {
+      return
+    }
 
-  if (!hasScheme && !hostRegex.test(match[1])) {
-    return
-  }
+    // Adfly forwarded a scheme-less target over http.
+    const target = hasScheme ? match[1] : `http://${match[1]}`
 
-  // Adfly forwarded a scheme-less target over http.
-  const target = hasScheme ? match[1] : `http://${match[1]}`
+    // An unencoded target's query and fragment land in the wrapper's own `search` and `hash`.
+    const unwrapped = `${target}${url.search}${url.hash}`
 
-  // An unencoded target's query and fragment land in the wrapper's own `search` and `hash`.
-  const unwrapped = `${target}${url.search}${url.hash}`
-
-  if (isHttpUrl(unwrapped)) {
-    return unwrapped
-  }
-}
+    if (isHttpUrl(unwrapped)) {
+      return unwrapped
+    }
+  },
+})

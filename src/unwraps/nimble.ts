@@ -1,10 +1,10 @@
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 const clickPathRegex =
   /^\/api\/v1\/messages\/tracking\/click\/[0-9a-f]{24}\/[0-9a-f]{24}\/[0-9a-f]{24}\/$/i
 
-const extractTarget = createParamExtractor({
+const extractTarget = createQueryUnwrapper({
   hosts: 'app.nimble.com',
   params: ['redirect'],
 })

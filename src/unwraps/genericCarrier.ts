@@ -1,6 +1,6 @@
 import { isAnyOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { decodeEncodedScheme, decodeParamValue } from '../utils.js'
+import { appendLinkFragment, decodeEncodedScheme, decodeParamValue } from '../utils.js'
 
 const httpTargetRegex = /^https?:\/\//i
 
@@ -43,11 +43,6 @@ export const unwrapGenericCarrier: UrlUnwrapper = (url) => {
       target = decodeParamValue([raw, ...params.slice(index + 1)].join('&'))
     }
 
-    // An escaped target can hold its own `%23` fragment, which wins over the link's.
-    if (target.includes('#')) {
-      return target
-    }
-
-    return `${target}${url.hash}`
+    return appendLinkFragment(target, url)
   }
 }

@@ -1,9 +1,9 @@
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 const sessionPathRegex = /^\/profile\/[0-9a-f-]{36}\/zia-session\/$/i
 
-const extractTarget = createParamExtractor({
+const extractTarget = createQueryUnwrapper({
   hosts: /^[0-9a-f]{8}\.isolation\.zscaler\.com$/,
   params: ['original_url'],
 })

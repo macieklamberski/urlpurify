@@ -1,9 +1,9 @@
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 const linkPathRegex = /^\/[0-9a-f]{16}\/$/
 
-const extractTarget = createParamExtractor({
+const extractTarget = createQueryUnwrapper({
   hosts: [
     'landsurveyorsunited.visibli.com',
     'magpiesrecipes.visibli.com',

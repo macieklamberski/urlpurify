@@ -1,6 +1,6 @@
-import { isAnyOf, isHostOf } from 'trousse'
+import { isAnyOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { decodeEncodedScheme, getParamTarget } from '../utils.js'
+import { createUnwrapper, decodeEncodedScheme, readParamTarget } from '../utils.js'
 
 const feedPathRegex =
   /^\/i\/(?:subscription|discover\/sources\/search)\/feed(?:\/|%2F)(?<target>.+)$/i
@@ -14,31 +14,30 @@ const fragmentPaths = ['/', '/index.html', '/home']
 // /i/discover/sources/search/feed/<feed>, /#subscription/feed/<feed> also after /index.html or
 // /home, the slash after `feed`, and before it in the fragment, also as %2F). Opt-in: the link adds
 // the feed, it never redirects.
-export const unwrapFeedly: UrlUnwrapper = (url) => {
-  if (!isHostOf(url, hosts)) {
-    return
-  }
+export const unwrapFeedly: UrlUnwrapper = createUnwrapper({
+  hosts,
+  unwrap: (url) => {
+    if (isAnyOf(url.pathname, paramPath)) {
+      return readParamTarget(url, 'url')
+    }
 
-  if (isAnyOf(url.pathname, paramPath)) {
-    return getParamTarget(url, 'url')
-  }
+    const pathMatch = url.pathname.match(feedPathRegex)
 
-  const pathMatch = url.pathname.match(feedPathRegex)
+    if (pathMatch?.groups) {
+      return `${decodeEncodedScheme(pathMatch.groups.target)}${url.search}${url.hash}`
+    }
 
-  if (pathMatch?.groups) {
-    return `${decodeEncodedScheme(pathMatch.groups.target)}${url.search}${url.hash}`
-  }
+    if (!isAnyOf(url.pathname, fragmentPaths)) {
+      return
+    }
 
-  if (!isAnyOf(url.pathname, fragmentPaths)) {
-    return
-  }
+    // The feed's own query sits inside the fragment, after Feedly's route.
+    const fragmentMatch = url.hash.match(feedFragmentRegex)
 
-  // The feed's own query sits inside the fragment, after Feedly's route.
-  const fragmentMatch = url.hash.match(feedFragmentRegex)
+    if (!fragmentMatch?.groups) {
+      return
+    }
 
-  if (!fragmentMatch?.groups) {
-    return
-  }
-
-  return decodeEncodedScheme(fragmentMatch.groups.target)
-}
+    return decodeEncodedScheme(fragmentMatch.groups.target)
+  },
+})

@@ -1,30 +1,30 @@
-import { decodePercent, isHostOf, isHttpUrl } from 'trousse'
+import { decodePercent, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
+import { createUnwrapper } from '../utils.js'
 
 const pathRegex = /^\/[\w-]+\/(https?(?:%3A|%253A)(?:%2F|%252F){2}[^/]*)$/i
 
 // Cisco Secure Email link rewriting (secure-web.cisco.com/<token>/<percent-encoded target>).
 // Not included in defaultUnwrappers: the gateway checks the target when the link is clicked,
 // so unwrapping skips the check the recipient's organization put in place.
-export const unwrapCiscoSecureWeb: UrlUnwrapper = (url) => {
-  if (!isHostOf(url, 'secure-web.cisco.com')) {
-    return
-  }
+export const unwrapCiscoSecureWeb: UrlUnwrapper = createUnwrapper({
+  hosts: 'secure-web.cisco.com',
+  unwrap: (url) => {
+    const match = pathRegex.exec(url.pathname)
 
-  const match = pathRegex.exec(url.pathname)
+    if (!match?.[1]) {
+      return
+    }
 
-  if (!match?.[1]) {
-    return
-  }
+    let target = decodePercent(match[1])
 
-  let target = decodePercent(match[1])
+    // Some links encode the target twice.
+    if (!isHttpUrl(target)) {
+      target = decodePercent(target)
+    }
 
-  // Some links encode the target twice.
-  if (!isHttpUrl(target)) {
-    target = decodePercent(target)
-  }
-
-  if (isHttpUrl(target)) {
-    return target
-  }
-}
+    if (isHttpUrl(target)) {
+      return target
+    }
+  },
+})

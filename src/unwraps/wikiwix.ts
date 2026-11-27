@@ -1,17 +1,19 @@
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
-const extractCacheTarget = createParamExtractor({
+const extractCacheTarget = createQueryUnwrapper({
   hosts: ['archive.wikiwix.com', 'wikiwix.com'],
   path: '/cache/',
   params: ['url'],
+  ignoreLinkFragment: true,
 })
 
 // wikiwix.com answers /cache/index2.php with a 404.
-const extractIndexTarget = createParamExtractor({
+const extractIndexTarget = createQueryUnwrapper({
   hosts: 'archive.wikiwix.com',
   path: '/cache/index2.php',
   params: ['url'],
+  ignoreLinkFragment: true,
 })
 
 // Wikiwix archive snapshot (archive.wikiwix.com/cache/?url=<target> or /cache/index2.php?url=

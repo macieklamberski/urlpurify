@@ -1,6 +1,6 @@
-import { decodeBase64Url, isHostOf } from 'trousse'
+import { decodeBase64Url } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getUtf8ByteLength } from '../utils.js'
+import { createUnwrapper, getUtf8ByteLength } from '../utils.js'
 
 const v3PathRegex = /^\/v3\/__(.+)__;([^!]*)!/i
 
@@ -98,15 +98,14 @@ const positionInChars = (source: string, codeUnitIndex: number): number => {
 
 // Proofpoint URLDefense v3 (urldefense.com/v3/__<mangled>__;<b64>!!<sig>$).
 // `*` and `**X` runs in the mangled URL are restored from the base64 segment.
-export const unwrapProofpointV3: UrlUnwrapper = (url) => {
-  if (!isHostOf(url, v3Hosts)) {
-    return
-  }
+export const unwrapProofpointV3: UrlUnwrapper = createUnwrapper({
+  hosts: v3Hosts,
+  unwrap: (url) => {
+    const match = v3PathRegex.exec(`${url.pathname}${url.search}`)
+    if (!match) {
+      return
+    }
 
-  const match = v3PathRegex.exec(`${url.pathname}${url.search}`)
-  if (!match) {
-    return
-  }
-
-  return decodeReplacements(match[1], match[2])
-}
+    return decodeReplacements(match[1], match[2])
+  },
+})

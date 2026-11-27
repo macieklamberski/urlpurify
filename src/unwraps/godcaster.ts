@@ -1,13 +1,13 @@
-import { decodePercent, isHostOf } from 'trousse'
+import { decodePercent } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
 // The first number is the show, as in the show's feeds.godcaster.fm/player_<n>.xml.
 const episodePrefixRegex = /^\/act\/e\/\d+\/\d+\/\d+\//i
 const encodedSchemeRegex = /^https?%(?:25)?3A/i
 const supportPathRegex = /^\/act\/(?:sr\/\d+|fr\/\d+\/\d+)$/i
 
-const extractSupportTarget = createParamExtractor({
+const extractSupportTarget = createQueryUnwrapper({
   hosts: 'go.godcaster.fm',
   params: ['d'],
 })
@@ -16,26 +16,25 @@ const extractSupportTarget = createParamExtractor({
 // target is percent-encoded twice, and its show-notes click counter
 // (go.godcaster.fm/act/sr/<show>?d=<target>, also /act/fr/<show>/<n>?d=<target>).
 // Not included in defaultUnwrappers: unwrapping removes the podcaster's download counts.
-export const unwrapGodcaster: UrlUnwrapper = (url) => {
-  if (!isHostOf(url, 'go.godcaster.fm')) {
-    return
-  }
+export const unwrapGodcaster: UrlUnwrapper = createUnwrapper({
+  hosts: 'go.godcaster.fm',
+  unwrap: (url) => {
+    if (supportPathRegex.test(url.pathname)) {
+      return extractSupportTarget(url)
+    }
 
-  if (supportPathRegex.test(url.pathname)) {
-    return extractSupportTarget(url)
-  }
+    const match = url.pathname.match(episodePrefixRegex)
 
-  const match = url.pathname.match(episodePrefixRegex)
+    if (!match) {
+      return
+    }
 
-  if (!match) {
-    return
-  }
+    let target = url.pathname.slice(match[0].length)
 
-  let target = url.pathname.slice(match[0].length)
+    while (encodedSchemeRegex.test(target)) {
+      target = decodePercent(target)
+    }
 
-  while (encodedSchemeRegex.test(target)) {
-    target = decodePercent(target)
-  }
-
-  return `${target}${url.hash}`
-}
+    return `${target}${url.hash}`
+  },
+})

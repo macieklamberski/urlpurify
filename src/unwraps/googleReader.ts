@@ -1,6 +1,6 @@
 import { decodePercent, isAnyOf, isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { decodeEncodedScheme, getParamTarget } from '../utils.js'
+import { decodeEncodedScheme, readParamTarget } from '../utils.js'
 import { googleHostRegex } from './google.js'
 
 const feedPathRegex = /^\/reader\/(?:view|m\/view|lite|preview\/\*)\/feed\/(?<target>.+)$/i
@@ -13,7 +13,7 @@ const hosts = ['fusion.google.com']
 // google.<TLD>/ig/add?feedurl=<feed> and /ig/addtoreader, fusion.google.com/add?feedurl=<feed>).
 // Not in defaultUnwrappers: the link adds the feed to a reader, it does not redirect to it.
 export const unwrapGoogleReader: UrlUnwrapper = (url) => {
-  if (!isAnyOf(url.hostname, googleHostRegex)) {
+  if (!isHostOf(url, googleHostRegex)) {
     return
   }
 
@@ -38,5 +38,5 @@ export const unwrapGoogleReader: UrlUnwrapper = (url) => {
     return
   }
 
-  return getParamTarget(url, 'feedurl')
+  return readParamTarget(url, 'feedurl')
 }

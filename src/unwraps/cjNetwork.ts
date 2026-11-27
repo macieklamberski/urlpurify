@@ -1,6 +1,6 @@
-import { decodePercent, isAnyOf } from 'trousse'
+import { decodePercent, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 const hosts = [
   'www.dpbolvw.net',
@@ -29,7 +29,7 @@ const clickPathRegex = /^\/(?:t\/)?[^/]+$/i
 const deepLinkPathRegex =
   /^\/links\/\d+\/type\/(?:dlg|am)\/(?:sid\/[^/]*\/)?(?:fragment\/([^/]*)\/)?(https?):\/\/?(.+)$/i
 
-const extractUrlParam = createParamExtractor({
+const extractUrlParam = createQueryUnwrapper({
   hosts,
   params: ['url', 'loc'],
 })
@@ -48,7 +48,7 @@ export const unwrapCjNetwork: UrlUnwrapper = (url) => {
     return extractUrlParam(url)
   }
 
-  if (!isAnyOf(url.hostname, hosts)) {
+  if (!isHostOf(url, hosts)) {
     return
   }
 

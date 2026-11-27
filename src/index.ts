@@ -30,6 +30,8 @@ export {
   trackingParamsPatterns,
   visitorIdParams,
 } from './defaults.js'
+export type { PathUnwrapperConfig } from './pathTarget.js'
+export { createPathUnwrapper } from './pathTarget.js'
 export type {
   CleanUrlOptions,
   TrackingEntry,
@@ -446,6 +448,7 @@ export { unwrapTumblrShare } from './unwraps/tumblrShare.js'
 export { unwrapTwitterIntent } from './unwraps/twitterIntent.js'
 export { unwrapTwitterRedirect } from './unwraps/twitterRedirect.js'
 export { unwrapTwoCheckout } from './unwraps/twoCheckout.js'
+export { unwrapUcoz } from './unwraps/ucoz.js'
 export { unwrapUinterbox } from './unwraps/uinterbox.js'
 export { unwrapUkgwa } from './unwraps/ukgwa.js'
 export { unwrapUkWebArchive } from './unwraps/ukWebArchive.js'
@@ -476,6 +479,7 @@ export { unwrapWebgains } from './unwraps/webgains.js'
 export { unwrapWebharvest } from './unwraps/webharvest.js'
 export { unwrapWeiboShare } from './unwraps/weiboShare.js'
 export { unwrapWeserv } from './unwraps/weserv.js'
+export { unwrapWikidot } from './unwraps/wikidot.js'
 export { unwrapWikiwix } from './unwraps/wikiwix.js'
 export { unwrapWikizero } from './unwraps/wikizero.js'
 export { unwrapWindowsLive } from './unwraps/windowsLive.js'
@@ -513,5 +517,10 @@ export { unwrapZencastr } from './unwraps/zencastr.js'
 export { unwrapZhihu } from './unwraps/zhihu.js'
 export { unwrapZix } from './unwraps/zix.js'
 export { unwrapZscalerIsolation } from './unwraps/zscalerIsolation.js'
-export type { ParamExtractorConfig } from './utils.js'
-export { createParamExtractor } from './utils.js'
+export type {
+  ParamExtractorConfig,
+  QueryUnwrapperConfig,
+  UnwrapperConfig,
+  UnwrapperHosts,
+} from './utils.js'
+export { createParamExtractor, createQueryUnwrapper, createUnwrapper } from './utils.js'

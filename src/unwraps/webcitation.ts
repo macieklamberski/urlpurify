@@ -1,10 +1,10 @@
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 // `/query` looks a snapshot up by url and date, `/<id>` names one snapshot.
 const pathRegex = /^\/(?:query|[0-9A-Za-z]{9})$/i
 
-const extractTarget = createParamExtractor({
+const extractTarget = createQueryUnwrapper({
   hosts: 'www.webcitation.org',
   params: ['url'],
 })

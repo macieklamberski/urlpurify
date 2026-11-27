@@ -1,13 +1,14 @@
+import { isHostOrSubdomainOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
-const hostRegex = /(?:^|\.)partner-ads\.com$/
+const domains = ['partner-ads.com']
 const clickPathRegex = /^\/(?:dk\/klikbanner\.php)?$/i
 // Optional u1 and u2 segments hold the partner's own sub ids.
 const deepLinkPathRegex = /^\/dk\/c\/p\/\d+\/b\/\d+\/(?:u\d\/[^/]+\/)*(https?:\/\/.+)$/i
 
-const extractTarget = createParamExtractor({
-  hosts: hostRegex,
+const extractTarget = createQueryUnwrapper({
+  domains,
   params: ['htmlurl'],
 })
 
@@ -17,7 +18,7 @@ const extractTarget = createParamExtractor({
 export const unwrapPartnerAds: UrlUnwrapper = (url) => {
   const deepLinkMatch = url.pathname.match(deepLinkPathRegex)
 
-  if (deepLinkMatch && hostRegex.test(url.hostname)) {
+  if (deepLinkMatch && isHostOrSubdomainOf(url, domains)) {
     return `${deepLinkMatch[1]}${url.search}${url.hash}`
   }
 

@@ -1,8 +1,8 @@
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 // DMM and FANZA affiliate link (al.dmm.co.jp, al.dmm.com and al.fanza.co.jp, /?lurl=<target>).
 // Not included in defaultUnwrappers: unwrapping drops the publisher's affiliate commission.
-export const unwrapDmmAffiliate = createParamExtractor({
+export const unwrapDmmAffiliate = createQueryUnwrapper({
   hosts: ['al.dmm.co.jp', 'al.dmm.com', 'al.fanza.co.jp'],
   path: '/',
   params: ['lurl'],

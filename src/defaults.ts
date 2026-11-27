@@ -415,6 +415,7 @@ import { unwrapTumblrShare } from './unwraps/tumblrShare.js'
 import { unwrapTwitterIntent } from './unwraps/twitterIntent.js'
 import { unwrapTwitterRedirect } from './unwraps/twitterRedirect.js'
 import { unwrapTwoCheckout } from './unwraps/twoCheckout.js'
+import { unwrapUcoz } from './unwraps/ucoz.js'
 import { unwrapUinterbox } from './unwraps/uinterbox.js'
 import { unwrapUkgwa } from './unwraps/ukgwa.js'
 import { unwrapUkWebArchive } from './unwraps/ukWebArchive.js'
@@ -445,6 +446,7 @@ import { unwrapWebgains } from './unwraps/webgains.js'
 import { unwrapWebharvest } from './unwraps/webharvest.js'
 import { unwrapWeiboShare } from './unwraps/weiboShare.js'
 import { unwrapWeserv } from './unwraps/weserv.js'
+import { unwrapWikidot } from './unwraps/wikidot.js'
 import { unwrapWikiwix } from './unwraps/wikiwix.js'
 import { unwrapWikizero } from './unwraps/wikizero.js'
 import { unwrapWindowsLive } from './unwraps/windowsLive.js'
@@ -494,7 +496,7 @@ export {
 
 // Applied by cleanUrl and stripTrackingParams: what tracks a person or adds nothing. A pattern is
 // tested against the lowercased param name, so it must be lowercase and anchored.
-export const defaultTrackingParams: Array<TrackingParam> = [
+export const defaultTrackingParams: ReadonlyArray<TrackingParam> = [
   ...clickAttributionParams,
   ...visitorIdParams,
   ...sessionParams,
@@ -618,11 +620,13 @@ export const linkShimUnwrappers: Array<UrlUnwrapper> = [
   unwrapTiktok,
   unwrapTumblr,
   unwrapTwitterRedirect,
+  unwrapUcoz,
   unwrapVanilla,
   unwrapVbulletin,
   unwrapVirgool,
   unwrapVisibli,
   unwrapVkAway,
+  unwrapWikidot,
   unwrapWpPoczta,
   unwrapXengentr,
   unwrapYahooJapanAmpViewer,
@@ -1076,7 +1080,7 @@ export const genericCarrierUnwrappers: Array<UrlUnwrapper> = [
   unwrapGenericPathCarrier,
 ]
 
-export const defaultUnwrappers: Array<UrlUnwrapper> = [
+export const defaultUnwrappers: ReadonlyArray<UrlUnwrapper> = [
   ...searchClickUnwrappers,
   ...linkShimUnwrappers,
 ]

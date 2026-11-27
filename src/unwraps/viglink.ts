@@ -1,14 +1,14 @@
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 // An exact host: i.viglink.com serves the same root path as an impression beacon.
-const unwrapRedirect = createParamExtractor({
+const unwrapRedirect = createQueryUnwrapper({
   hosts: 'redirect.viglink.com',
   path: '/',
   params: ['u', 'out'],
 })
 
-const unwrapClickApi = createParamExtractor({
+const unwrapClickApi = createQueryUnwrapper({
   hosts: ['api.viglink.com', 'apicdn.viglink.com', 'lwlink3.linkwithin.com'],
   path: '/api/click',
   params: ['out'],

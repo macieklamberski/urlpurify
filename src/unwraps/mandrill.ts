@@ -1,12 +1,12 @@
-import { decodeBase64Url, isHostOf, isHttpUrl } from 'trousse'
+import { decodeBase64Url, isHostOf, isHttpUrl, isString, parseJson } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor, getParamValues } from '../utils.js'
+import { createQueryUnwrapper, getParamValues } from '../utils.js'
 
 const hosts = ['go.mnsvc.com', 'mandrillapp.com']
 
 const clickPathRegex = /^\/track\/click\/\d+\/[^/]+$/i
 
-const extractClickPhp = createParamExtractor({
+const extractClickPhp = createQueryUnwrapper({
   hosts,
   path: '/track/click.php',
   params: ['url'],
@@ -14,13 +14,12 @@ const extractClickPhp = createParamExtractor({
 
 // The p param is base64url JSON whose own p field is a JSON string holding the target as url.
 const decodePayload = (value: string): string | undefined => {
-  try {
-    const target = JSON.parse(JSON.parse(decodeBase64Url(value) ?? '').p).url
+  const payload = parseJson<{ p?: string }>(decodeBase64Url(value))?.p
+  const target = parseJson<{ url?: unknown }>(payload)?.url
 
-    if (isHttpUrl(target)) {
-      return target
-    }
-  } catch {}
+  if (isString(target) && isHttpUrl(target)) {
+    return target
+  }
 }
 
 // Mandrill, Mailchimp Transactional, click tracker (mandrillapp.com/track/click.php?url=<target>,

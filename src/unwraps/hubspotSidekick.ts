@@ -1,9 +1,9 @@
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 const clickPathRegex = /^\/(?:e1t|s[12]t)\/c\/5\/[^/]+$/i
 
-const extractTarget = createParamExtractor({
+const extractTarget = createQueryUnwrapper({
   hosts:
     /^t\.(?:sidekickopen\d+|senalquatro|signaledue|signalecinque|signaletre|signauxdeux|signauxdix|signauxquatre|signauxsept|signauxtrois)\.com$/,
   params: ['t'],

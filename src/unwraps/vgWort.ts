@@ -1,5 +1,5 @@
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 // The counting hosts are numbered, vg00 to vg08, with an ssl- variant.
 const hostRegex = /^(?:ssl-)?vg\d+\.met\.vgwort\.de$/
@@ -7,7 +7,7 @@ const hostRegex = /^(?:ssl-)?vg\d+\.met\.vgwort\.de$/
 // The counter id.
 const pathRegex = /^\/na\/[0-9a-f]+$/i
 
-const extractTarget = createParamExtractor({
+const extractTarget = createQueryUnwrapper({
   hosts: hostRegex,
   params: ['l'],
 })

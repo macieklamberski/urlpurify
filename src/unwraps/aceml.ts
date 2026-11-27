@@ -1,10 +1,10 @@
 import { decodeBase64, decodePercent, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createParamExtractor } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 const encodedSchemeRegex = /^https?%3A/i
 
-const baseExtractor = createParamExtractor({
+const baseExtractor = createQueryUnwrapper({
   hosts: /\.acemln[a-d]\.com$/,
   path: '/Prod/link-tracker',
   params: ['redirectUrl'],
