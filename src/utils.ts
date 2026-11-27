@@ -1,16 +1,37 @@
-import { decodePercent, getQueryParamValues, isAnyOf, isHostOf, isHostOrSubdomainOf } from 'trousse'
+import {
+  decodePercent,
+  getQueryParamValues,
+  isAnyOf,
+  isHostOf,
+  isHostOrSubdomainOf,
+  isString,
+  isSubdomainOf,
+  type Pattern,
+} from 'trousse'
 import type { UrlUnwrapper } from './types.js'
 
 // `domains` also matches every subdomain. `hosts` matches a host exactly, or by regex, for a domain
 // where a third party can get a subdomain, such as a blog host.
-export type UnwrapperHosts =
+export type QueryUnwrapperConfig = (
   | { domains: string | Array<string>; hosts?: never }
   | { hosts: string | Array<string> | RegExp; domains?: never }
-
-export type QueryUnwrapperConfig = UnwrapperHosts & {
+) & {
   path?: string
   params: Array<string>
   ignoreLinkFragment?: boolean // The link opens a page, not a redirect, per `readParamTarget`
+}
+
+type HostList = Pattern | ReadonlyArray<Pattern>
+
+// `hosts` matches a host exactly, or by regex. `domains` also matches every subdomain, and
+// `subdomains` matches only the subdomains, never the domain itself.
+export type UnwrapperHosts =
+  | { hosts: HostList; domains?: never; subdomains?: never }
+  | { domains: HostList; hosts?: never; subdomains?: never }
+  | { subdomains: HostList; hosts?: never; domains?: never }
+
+export type UnwrapperConfig = UnwrapperHosts & {
+  unwrap: UrlUnwrapper
 }
 
 const encodedSchemeRegex = /^https?%3A/i
@@ -81,21 +102,76 @@ export const getParamTarget = (url: URL, name: string, index = 0): string | unde
   return appendLinkFragment(target, url)
 }
 
-export const isUnwrapperHost = (url: URL, config: UnwrapperHosts): boolean => {
+// The hostnames a factory unwrapper can match, read by `applyUnwrappers` to skip it on any other
+// host. A domain whose subdomains match registers as `.domain`. Only lowercase ascii hosts
+// register: the index compares them as written, where `isHostOf` also folds case and punycode.
+export const unwrapperHosts = new WeakMap<UrlUnwrapper, Array<string>>()
+
+const plainHostRegex = /^[a-z0-9-]+(?:\.[a-z0-9-]+)+$/
+
+// Registers `hosts` when every one is a plain host, each behind `prefix`.
+const registerHosts = (unwrap: UrlUnwrapper, hosts: HostList, prefix = ''): void => {
+  const list = isString(hosts) ? [hosts] : hosts
+
+  if (!Array.isArray(list) || !list.every((host) => isString(host) && plainHostRegex.test(host))) {
+    return
+  }
+
+  unwrapperHosts.set(
+    unwrap,
+    list.map((host) => `${prefix}${host}`),
+  )
+}
+
+// An unwrapper that runs `unwrap` only on a url on `hosts`, matched exactly or by regex, on
+// `domains` or any of their subdomains, or only on `subdomains` of the domains given.
+export const createUnwrapper = (config: UnwrapperConfig): UrlUnwrapper => {
+  const isOnHost = (url: URL): boolean => {
+    if (config.domains !== undefined) {
+      return isHostOrSubdomainOf(url, config.domains)
+    }
+
+    if (config.subdomains !== undefined) {
+      return isSubdomainOf(url, config.subdomains)
+    }
+
+    return isHostOf(url, config.hosts)
+  }
+
+  const unwrap: UrlUnwrapper = (url) => {
+    if (!isOnHost(url)) {
+      return
+    }
+
+    return config.unwrap(url)
+  }
+
+  if (config.hosts !== undefined) {
+    registerHosts(unwrap, config.hosts)
+  }
+
   if (config.domains !== undefined) {
-    return isHostOrSubdomainOf(url, config.domains)
+    registerHosts(unwrap, config.domains, '.')
   }
 
-  if (config.hosts instanceof RegExp) {
-    return isAnyOf(url.hostname, config.hosts)
+  if (config.subdomains !== undefined) {
+    registerHosts(unwrap, config.subdomains, '.')
   }
 
-  return isHostOf(url, config.hosts)
+  return unwrap
 }
 
 export const createQueryUnwrapper = (config: QueryUnwrapperConfig): UrlUnwrapper => {
-  return (url) => {
-    if (!isUnwrapperHost(url, config)) {
+  const isHostMatch = (url: URL): boolean => {
+    if (config.domains !== undefined) {
+      return isHostOrSubdomainOf(url, config.domains)
+    }
+
+    return isHostOf(url, config.hosts)
+  }
+
+  const unwrap: UrlUnwrapper = (url) => {
+    if (!isHostMatch(url)) {
       return
     }
 
@@ -117,6 +193,12 @@ export const createQueryUnwrapper = (config: QueryUnwrapperConfig): UrlUnwrapper
       return appendLinkFragment(target, url)
     }
   }
+
+  if (config.hosts !== undefined) {
+    registerHosts(unwrap, config.hosts)
+  }
+
+  return unwrap
 }
 
 /** @deprecated Use `QueryUnwrapperConfig` instead. */

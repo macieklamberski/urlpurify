@@ -117,6 +117,8 @@ An unwrapped target that isn't a usable URL is ignored, and the wrapper is kept.
 
 Runs one pass of the unwrappers and returns the first target, or `undefined`.
 
+An unwrapper list that arrives a second time is indexed by host and cached per array, so a url runs only the unwrappers that can match its host. To change a list, pass a new array.
+
 ### `stripTrackingParams(url, trackingParams?)`
 
 Removes tracking params and returns the serialized URL. Both this and `cleanUrl` apply two rules on top of the list:
@@ -164,7 +166,7 @@ The target takes the link's fragment, so `example.com/out?target=https://example
 
 ### `createPathUnwrapper(config)`
 
-Builds an unwrapper for a target glued into the path behind a prefix, as podcast analytics services do:
+Builds an unwrapper for a target glued into the path behind a prefix, as podcast analytics services do. It takes the same `hosts`, `domains` or `subdomains` as `createUnwrapper`:
 
 ```typescript
 import { cleanUrl, createPathUnwrapper, defaultUnwrappers } from 'urlpurifier'
@@ -180,7 +182,28 @@ cleanUrl(url, { unwrappers: [...defaultUnwrappers, unwrapExample] })
 
 The target keeps the link's query and fragment, which the service forwards with it. A target without a scheme gets `https`. Pass `scheme: 'http'` for a service that forwards to http, or `scheme: 'link'` for one that forwards with the link's own.
 
-For any other shape, write a plain `UrlUnwrapper`: a function that takes a `URL` and returns the target or `undefined`.
+For any other shape, use `createUnwrapper`.
+
+### `createUnwrapper(config)`
+
+Builds an unwrapper from a host list and a function that takes a `URL` and returns the target or `undefined`. The function runs only on a url on one of the hosts:
+
+```typescript
+import { createUnwrapper } from 'urlpurifier'
+
+const unwrapExample = createUnwrapper({
+  // Exact hosts or a regex. Use `domains` to match every subdomain too,
+  // or `subdomains` to match only the subdomains.
+  hosts: ['go.example.com'],
+  unwrap: (url) => {
+    const [, target] = url.pathname.split('/out/')
+
+    return target
+  },
+})
+```
+
+Pass exactly one of `hosts`, `domains` or `subdomains`. Each matches as trousse's `isHostOf`, `isHostOrSubdomainOf` or `isSubdomainOf` does. The unwrapper registers its hosts, so `cleanUrl` skips it on every other host. A host given as a regex registers nothing, so its unwrapper runs on every url, as a plain `UrlUnwrapper` function does.
 
 ### Choosing unwrappers
 

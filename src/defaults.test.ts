@@ -7,7 +7,7 @@ const exportedUnwrappers = exportEntries.filter(([name]) => {
   return name.startsWith('unwrap') && name !== 'unwrapUrl'
 })
 
-const getNames = (unwrappers: Array<unknown>): Array<string> => {
+const getNames = (unwrappers: ReadonlyArray<unknown>): Array<string> => {
   return exportedUnwrappers
     .filter(([, unwrapper]) => unwrappers.includes(unwrapper))
     .map(([name]) => name)

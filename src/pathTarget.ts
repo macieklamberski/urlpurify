@@ -1,5 +1,5 @@
 import type { UrlUnwrapper } from './types.js'
-import { isUnwrapperHost, type UnwrapperHosts } from './utils.js'
+import { createUnwrapper, type UnwrapperHosts } from './utils.js'
 
 export type PathUnwrapperConfig = UnwrapperHosts & {
   prefix: RegExp
@@ -45,15 +45,12 @@ export const getPathTarget = (
 // An unwrapper for a target glued into the path behind a prefix, read by `getPathTarget`. A `link`
 // scheme forwards with the link's own.
 export const createPathUnwrapper = (config: PathUnwrapperConfig): UrlUnwrapper => {
-  return (url) => {
-    if (!isUnwrapperHost(url, config)) {
-      return
-    }
+  const { prefix, scheme = 'https', ...hosts } = config
 
-    if (config.scheme === 'link') {
-      return getPathTarget(url, config.prefix, url.protocol)
-    }
-
-    return getPathTarget(url, config.prefix, `${config.scheme ?? 'https'}:`)
-  }
+  return createUnwrapper({
+    ...hosts,
+    unwrap: (url) => {
+      return getPathTarget(url, prefix, scheme === 'link' ? url.protocol : `${scheme}:`)
+    },
+  })
 }

@@ -1,18 +1,21 @@
-import { isAnyOf, isHostOf, isHttpUrl } from 'trousse'
+import { isAnyOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamTarget } from '../utils.js'
+import { createUnwrapper, getParamTarget } from '../utils.js'
 
 // Klook affiliate redirect (affiliate.klook.com/redirect?k_site=<target>).
 // Not included in defaultUnwrappers: unwrapping drops the publisher's affiliate commission.
-export const unwrapKlook: UrlUnwrapper = (url) => {
-  if (!isHostOf(url, 'affiliate.klook.com') || !isAnyOf(url.pathname, '/redirect')) {
-    return
-  }
+export const unwrapKlook: UrlUnwrapper = createUnwrapper({
+  hosts: 'affiliate.klook.com',
+  unwrap: (url) => {
+    if (!isAnyOf(url.pathname, '/redirect')) {
+      return
+    }
 
-  // A link pasted into another one leaves a second `k_site`, and the last holds the clean target.
-  const target = getParamTarget(url, 'k_site', -1)
+    // A link pasted into another one leaves a second `k_site`, and the last holds the clean target.
+    const target = getParamTarget(url, 'k_site', -1)
 
-  if (target && isHttpUrl(target)) {
-    return target
-  }
-}
+    if (target && isHttpUrl(target)) {
+      return target
+    }
+  },
+})

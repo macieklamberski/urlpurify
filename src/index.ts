@@ -516,5 +516,10 @@ export { unwrapZencastr } from './unwraps/zencastr.js'
 export { unwrapZhihu } from './unwraps/zhihu.js'
 export { unwrapZix } from './unwraps/zix.js'
 export { unwrapZscalerIsolation } from './unwraps/zscalerIsolation.js'
-export type { ParamExtractorConfig, QueryUnwrapperConfig, UnwrapperHosts } from './utils.js'
-export { createParamExtractor, createQueryUnwrapper } from './utils.js'
+export type {
+  ParamExtractorConfig,
+  QueryUnwrapperConfig,
+  UnwrapperConfig,
+  UnwrapperHosts,
+} from './utils.js'
+export { createParamExtractor, createQueryUnwrapper, createUnwrapper } from './utils.js'

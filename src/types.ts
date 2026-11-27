@@ -19,7 +19,7 @@ export type TrackingEntry = {
 export type TrackingParam = string | RegExp | TrackingEntry
 
 export type CleanUrlOptions = {
-  unwrappers?: Array<UrlUnwrapper>
-  trackingParams?: Array<TrackingParam>
+  unwrappers?: ReadonlyArray<UrlUnwrapper>
+  trackingParams?: ReadonlyArray<TrackingParam>
   maxUnwrapDepth?: number
 }

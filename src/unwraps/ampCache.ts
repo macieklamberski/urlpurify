@@ -1,5 +1,6 @@
-import { isAnyOf, isHostOrSubdomainOf } from 'trousse'
+import { isAnyOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
+import { createUnwrapper } from '../utils.js'
 
 const pathRegex = /^\/([cv])\/(s\/)?(.+)$/i
 
@@ -10,25 +11,24 @@ const viewerParams = ['amp_gsa', 'amp_js_v', 'usqp']
 // publisher subdomain is a hint; the path always carries the canonical hostname. The viewer's
 // own query params are dropped, and on `/v/` so is the fragment, which holds the viewer's init
 // params rather than the target's.
-export const unwrapAmpCache: UrlUnwrapper = (url) => {
-  if (!isHostOrSubdomainOf(url, 'cdn.ampproject.org')) {
-    return
-  }
+export const unwrapAmpCache: UrlUnwrapper = createUnwrapper({
+  domains: 'cdn.ampproject.org',
+  unwrap: (url) => {
+    const match = url.pathname.match(pathRegex)
 
-  const match = url.pathname.match(pathRegex)
+    if (!match) {
+      return
+    }
 
-  if (!match) {
-    return
-  }
+    const [, type, secure, target] = match
+    const scheme = secure ? 'https' : 'http'
+    const params = url.search
+      .slice(1)
+      .split('&')
+      .filter((pair) => pair && !isAnyOf(pair.split('=')[0], viewerParams))
+    const search = params.length ? `?${params.join('&')}` : ''
+    const hash = isAnyOf(type, 'v') ? '' : url.hash
 
-  const [, type, secure, target] = match
-  const scheme = secure ? 'https' : 'http'
-  const params = url.search
-    .slice(1)
-    .split('&')
-    .filter((pair) => pair && !isAnyOf(pair.split('=')[0], viewerParams))
-  const search = params.length ? `?${params.join('&')}` : ''
-  const hash = isAnyOf(type, 'v') ? '' : url.hash
-
-  return `${scheme}://${target}${search}${hash}`
-}
+    return `${scheme}://${target}${search}${hash}`
+  },
+})
