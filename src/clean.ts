@@ -15,7 +15,6 @@ import {
   isIpAddress,
   isString,
   normalizeUrl,
-  type Pattern,
   pageExtensions,
   parseUrl,
   resolveUrl,
@@ -34,11 +33,10 @@ type TrackingMatcher = {
   entries: Array<TrackingEntry>
 }
 
-// The hostname without `www.`, as a value test sees it, and the urls an entry's hosts match: the
-// url and, on a `www.` host, the url without it.
+// The hostname without `www.`, as a value test sees it, and the url an entry's hosts match.
 type PairHost = {
   host: string
-  urls: Array<URL>
+  url: URL | undefined
 }
 
 type QueryPair = [name: string, value: string]
@@ -57,6 +55,14 @@ const pathParamRegex = /;([^;/=]+)=[^;/]*/g
 const sessionLiterals = sessionParams.filter(isString).map((param) => param.toLowerCase())
 
 const trackingMatcherCache = new WeakMap<Array<TrackingParam>, TrackingMatcher>()
+
+const alibabaDirectMailHosts = ['dm-cn.aliyuncs.com', 'www.dm-cn.aliyuncs.com']
+
+const getWwwPair = (host: string): Array<string> => {
+  const bare = stripWww(host.toLowerCase())
+
+  return [bare, `www.${bare}`]
+}
 
 const getTrackingMatcher = (params: Array<TrackingParam>): TrackingMatcher => {
   let cached = trackingMatcherCache.get(params)
@@ -77,8 +83,9 @@ const getTrackingMatcher = (params: Array<TrackingParam>): TrackingMatcher => {
         continue
       }
 
+      // A host and its `www.` form match alike, so `smzdm.com` covers `www.smzdm.com`.
       if (Array.isArray(param.hosts)) {
-        entries.push({ ...param, hosts: param.hosts.map((host) => stripWww(host.toLowerCase())) })
+        entries.push({ ...param, hosts: param.hosts.flatMap(getWwwPair) })
         continue
       }
 
@@ -97,9 +104,18 @@ const matchesPattern = (text: string, pattern: RegExp): boolean => {
   return text.search(pattern) !== -1
 }
 
-// An entry host and the url's host match without `www.`, so `smzdm.com` covers `www.smzdm.com`.
-const isPairHostOf = (pairHost: PairHost, hosts: Pattern | ReadonlyArray<Pattern>): boolean => {
-  return pairHost.urls.some((url) => isHostOf(url, hosts))
+// An entry's hosts list carries each host's `www.` form, built once with the matcher. A host
+// pattern is also tested on the host without `www.`.
+const isPairHostOf = (pairHost: PairHost, hosts: RegExp | ReadonlyArray<string>): boolean => {
+  if (!pairHost.url) {
+    return false
+  }
+
+  if (isHostOf(pairHost.url, hosts)) {
+    return true
+  }
+
+  return hosts instanceof RegExp && matchesPattern(pairHost.host, hosts)
 }
 
 const matchesEntry = (
@@ -141,14 +157,7 @@ const normalizeHost = (hostname: string): string => {
 }
 
 const getPairHost = (url: URL): PairHost => {
-  const hostname = normalizeHost(url.hostname)
-  const host = stripWww(hostname)
-
-  if (host === hostname) {
-    return { host, urls: [url] }
-  }
-
-  return { host, urls: [url, parseUrl(`https://${host}`) ?? url] }
+  return { host: stripWww(normalizeHost(url.hostname)), url }
 }
 
 // A query pair decoded as `URLSearchParams` decodes it, except that an escape that is not UTF-8,
@@ -242,7 +251,7 @@ const deleteTrackingParams = (url: URL, trackingParams: Array<TrackingParam>): v
 
   // Alibaba DirectMail click urls answer 400 without their `ts` and do not check their `sign`.
   const keepsTs =
-    isPairHostOf(pairHost, 'dm-cn.aliyuncs.com') && isAnyOf(url.pathname, '/trace/v1/report')
+    isAnyOf(url.pathname, '/trace/v1/report') && isPairHostOf(pairHost, alibabaDirectMailHosts)
 
   // Kept pairs stay byte-for-byte: re-serializing through URLSearchParams turns
   // `%20` into `+`, `flag` into `flag=` and escapes `;`, which servers can read differently.
@@ -568,7 +577,7 @@ export const isTrackingParam = (
   const url = parseUrl(`https://${hostname}`)
   const pairHost: PairHost = url
     ? getPairHost(url)
-    : { host: stripWww(normalizeHost(hostname)), urls: [] }
+    : { host: stripWww(normalizeHost(hostname)), url: undefined }
 
   return isTrackedPair(matcher, name.toLowerCase(), value ?? '', pairHost)
 }
