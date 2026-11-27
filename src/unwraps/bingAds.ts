@@ -1,4 +1,4 @@
-import { decodeBase64Url, decodePercent, isHostOf, isHttpUrl } from 'trousse'
+import { decodeBase64Url, decodePercent, isAnyOf, isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { getParamValues } from '../utils.js'
 import { hosts as bingHosts } from './bing.js'
@@ -9,7 +9,7 @@ const adPaths = ['/aclk', '/aclick']
 // Not included in defaultUnwrappers: an ad click pays the publisher who showed the ad, and
 // unwrapping removes that payment, the same cost as an affiliate wrapper.
 export const unwrapBingAds: UrlUnwrapper = (url) => {
-  if (!isHostOf(url, bingHosts) || !adPaths.includes(url.pathname)) {
+  if (!isHostOf(url, bingHosts) || !isAnyOf(url.pathname, adPaths)) {
     return
   }
 

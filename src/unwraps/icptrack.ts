@@ -1,3 +1,4 @@
+import { isAnyOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createQueryUnwrapper } from '../utils.js'
 
@@ -11,7 +12,7 @@ const extractDestination = createQueryUnwrapper({
 // ICPTrack email click tracker (click.icptrack.com/icp/relay.php?...&destination=<target>, also
 // /icp/rclick.php, the account hosts click-<n>.icptrack.com and ic1.icptrack.com).
 export const unwrapIcptrack: UrlUnwrapper = (url) => {
-  if (!clickPaths.includes(url.pathname)) {
+  if (!isAnyOf(url.pathname, clickPaths)) {
     return
   }
 

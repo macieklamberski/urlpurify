@@ -1,3 +1,4 @@
+import { isAnyOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createQueryUnwrapper } from '../utils.js'
 
@@ -11,7 +12,7 @@ const extractUrl = createQueryUnwrapper({
 // FlexOffers affiliate click (track.flexlinkspro.com/g.ashx?foid=<id>&url=<target>, also /a.ashx).
 // Not included in defaultUnwrappers: unwrapping drops the publisher's commission.
 export const unwrapFlexoffers: UrlUnwrapper = (url) => {
-  if (!clickPaths.includes(url.pathname)) {
+  if (!isAnyOf(url.pathname, clickPaths)) {
     return
   }
 

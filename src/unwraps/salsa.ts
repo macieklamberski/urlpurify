@@ -1,4 +1,4 @@
-import { isHttpUrl } from 'trousse'
+import { isAnyOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { getParamValues } from '../utils.js'
 
@@ -8,7 +8,7 @@ const paths = ['/dia/track.jsp', '/salsa/track.jsp']
 // url=<target>, also /salsa/track.jsp on senders' own domains). Opt-in: unwrapping removes the
 // sender's click count.
 export const unwrapSalsa: UrlUnwrapper = (url) => {
-  if (!paths.includes(url.pathname)) {
+  if (!isAnyOf(url.pathname, paths)) {
     return
   }
 

@@ -15,7 +15,7 @@ const extractTarget = createQueryUnwrapper({
 // Disqus outbound link redirect (disq.us/url?url=<target>:<signature> and
 // disq.us/?url=<target>).
 export const unwrapDisqus: UrlUnwrapper = (url) => {
-  if (!paths.includes(url.pathname)) {
+  if (!isAnyOf(url.pathname, paths)) {
     return
   }
 

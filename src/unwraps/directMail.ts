@@ -1,3 +1,4 @@
+import { isAnyOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createQueryUnwrapper } from '../utils.js'
 
@@ -18,7 +19,7 @@ const extractFromEthreemail = createQueryUnwrapper({
 // dmanalytics1.com, and /e3ds/mail_link.php?u=<target> on those and ethreemail.com).
 // Not included in defaultUnwrappers: an email click tracker, like Mailchimp.
 export const unwrapDirectMail: UrlUnwrapper = (url) => {
-  if (!paths.includes(url.pathname)) {
+  if (!isAnyOf(url.pathname, paths)) {
     return
   }
 
