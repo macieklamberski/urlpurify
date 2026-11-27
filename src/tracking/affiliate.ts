@@ -1,7 +1,7 @@
 import type { TrackingParam } from '../types.js'
 
 // Affiliate network ids. Stripping them removes the publisher's commission.
-export const affiliateParams: ReadonlyArray<TrackingParam> = Object.freeze([
+export const affiliateParams: Array<TrackingParam> = [
   // Affiliate networks.
   'awinaffid', // Awin affiliate/publisher ID.
   'awinmid', // Awin merchant/advertiser ID.
@@ -16,4 +16,4 @@ export const affiliateParams: ReadonlyArray<TrackingParam> = Object.freeze([
   'ir_adid', // Impact Radius ad ID.
   'ir_campaignid', // Impact Radius campaign ID.
   'ir_partnerid', // Impact Radius partner ID.
-])
+]

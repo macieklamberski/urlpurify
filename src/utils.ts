@@ -27,7 +27,7 @@ export type UnwrapperConfig = UnwrapperHosts & {
 
 export type QueryUnwrapperConfig = UnwrapperHosts & {
   path?: string
-  params: ReadonlyArray<string>
+  params: Array<string>
   ignoreLinkFragment?: boolean // The link opens a page, not a redirect, per `readParamTarget`
 }
 

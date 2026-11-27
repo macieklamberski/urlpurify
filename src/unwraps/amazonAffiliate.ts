@@ -11,9 +11,9 @@ const storeSubdomains = ['www.', 'smile.', 'affiliate-program.']
 const emailRedirectPaths = ['/gp/r.html', '/gp/f.html']
 
 // Amazon affiliate click tracker (aax-<region>.amazon-adsystem.com and aax-us-iad.amazon.com,
-// /x/c/<id>/<URL>) and store redirects on amazon.<tld>: /gp/redirect.html[/ref=<ref>]?location=<URL>,
-// /exec/obidos/redirect?path=<URL>, /gp/r.html and /gp/f.html?U=<URL>,
-// /gp/slredirect/picassoRedirect.html/ref=<ref>?url=<URL>.
+// /x/c/<id>/<URL>) and store redirects on amazon.<tld>:
+// /gp/redirect.html[/ref=<ref>]?location=<URL>, /exec/obidos/redirect?path=<URL>, /gp/r.html and
+// /gp/f.html?U=<URL>, /gp/slredirect/picassoRedirect.html/ref=<ref>?url=<URL>.
 export const unwrapAmazonAffiliate: UrlUnwrapper = (url) => {
   if (isBrandDomainOf(url, 'amazon') && startsWithAnyOf(url.hostname, storeSubdomains)) {
     let target: string | undefined

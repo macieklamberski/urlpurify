@@ -84,8 +84,6 @@ Tracking params are grouped like the unwrappers, by what stripping them takes aw
 
 To strip more, see [Choosing tracking params](#choosing-tracking-params).
 
-Every exported list, unwrappers and tracking params alike, is frozen and read once on first use. Extend one by spreading it into a new array, as in `[...defaultUnwrappers, unwrapWebArchive]`.
-
 ## API
 
 ### `purifyUrl(url, options?)`
