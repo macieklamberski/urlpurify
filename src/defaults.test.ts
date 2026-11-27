@@ -48,10 +48,10 @@ const fixtureUrlRegex = /https?:\/\/[^\s'"`<>\\]+/g
 
 const readFixtureUrls = (): Array<string> => {
   const urls: Array<string> = []
-  const testFiles = new Glob('unwraps/*.test.ts').scanSync({
-    cwd: import.meta.dirname,
-    absolute: true,
-  })
+  // The glob yields files in filesystem order, which differs between machines.
+  const testFiles = [
+    ...new Glob('unwraps/*.test.ts').scanSync({ cwd: import.meta.dirname, absolute: true }),
+  ].sort((a, b) => a.localeCompare(b))
 
   for (const file of testFiles) {
     for (const [href] of readFileSync(file, 'utf8').matchAll(fixtureUrlRegex)) {
