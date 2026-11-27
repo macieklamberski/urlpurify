@@ -8,11 +8,11 @@ const aspSessionIdRegex = /^aspsessionid[a-z]{8}$/
 const sessionIdValueRegex = /^(?=[a-z]*\d)[0-9a-z]{26,}(?:\?|$)/i
 
 // Server session ids, which never change what the page shows.
-export const sessionParams: Array<TrackingParam> = [
+export const sessionParams: ReadonlyArray<TrackingParam> = Object.freeze([
   'phpsessid', // PHP
   'jsessionid', // Java servlet containers
   aspSessionIdRegex, // Classic ASP
   'cfid', // ColdFusion
   'cftoken', // ColdFusion
   { name: 'sid', value: sessionIdValueRegex }, // Generic session id
-]
+])

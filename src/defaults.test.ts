@@ -182,3 +182,15 @@ describe('trackingParamsPatterns', () => {
     expect(isEveryRegex).toBe(true)
   })
 })
+
+describe('exported lists', () => {
+  const exportedLists = Object.fromEntries(
+    exportEntries.filter(([, value]) => Array.isArray(value)),
+  )
+
+  it.each(Object.keys(exportedLists))('should throw when %s is mutated', (name) => {
+    const throwing = () => (exportedLists[name] as Array<unknown>).push('session_token')
+
+    expect(throwing).toThrow(TypeError)
+  })
+})

@@ -1,7 +1,7 @@
 import type { TrackingParam } from '../types.js'
 
 // Ids of one person: a visitor, a session, a browser or an email recipient.
-export const visitorIdParams: Array<TrackingParam> = [
+export const visitorIdParams: ReadonlyArray<TrackingParam> = Object.freeze([
   // Google Analytics / UTM.
   'utm_cid', // Client ID for cross-device tracking.
 
@@ -62,4 +62,4 @@ export const visitorIdParams: Array<TrackingParam> = [
 
   // Wunderkind email.
   /^oft_[a-z0-9_]+$/,
-]
+])

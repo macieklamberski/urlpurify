@@ -12,7 +12,7 @@ const kuaishouHostRegex = /(?:^|\.)(?:kuaishou\.com|m\.chenzhongtech\.com)$|^m\.
 const xiaohongshuHostRegex = /(?:^|\.)xiaohongshu\.com$/
 
 // Ad, search and platform click attribution, added by the platform and not by the site.
-export const clickAttributionParams: Array<TrackingParam> = [
+export const clickAttributionParams: ReadonlyArray<TrackingParam> = Object.freeze([
   // Google Ads.
   'gclid', // Google Click ID for conversion tracking.
   'dclid', // DoubleClick/Display & Video 360 click ID.
@@ -99,4 +99,4 @@ export const clickAttributionParams: Array<TrackingParam> = [
   { name: exceptJdProductRegex, hosts: ['item.jd.com', 'item.m.jd.com'] }, // JD product pages
   { name: exceptIdRegex, hosts: ['y.music.163.com'] }, // NetEase Cloud Music
   { name: exceptXsecTokenRegex, hosts: xiaohongshuHostRegex }, // Xiaohongshu
-]
+])

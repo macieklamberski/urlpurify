@@ -11,7 +11,7 @@ export type TrackingValueTest = (value: string, host: string) => boolean
 export type TrackingEntry = {
   name: string | RegExp
   value?: RegExp | TrackingValueTest
-  hosts?: Array<string> | RegExp
+  hosts?: ReadonlyArray<string> | RegExp
 }
 
 // A literal param name (matched case-insensitively), a pattern tested against the lowercased
