@@ -71,4 +71,13 @@ describe('unwrapPrezly', () => {
 
     expect(unwrapPrezly(url)).toBeUndefined()
   })
+
+  it('should keep the fragment the target carries', () => {
+    const value = new URL(
+      'https://prezlymail.com/c/264cd01e-3f4c-475e-87a2-4d7f7c7ddc7d/4535aa6c/https%3A%2F%2Fwww.example.org%2Fen%2Fhuman-trafficking%23top',
+    )
+    const expected = 'https://www.example.org/en/human-trafficking#top'
+
+    expect(unwrapPrezly(value)).toBe(expected)
+  })
 })

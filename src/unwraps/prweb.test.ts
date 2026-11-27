@@ -43,4 +43,13 @@ describe('unwrapPrweb', () => {
 
     expect(unwrapPrweb(url)).toBeUndefined()
   })
+
+  it('should keep the fragment the target carries', () => {
+    const value = new URL(
+      'http://www.prweb.net/Redirect.aspx?id=aHR0cDovL3d3dy5leGFtcGxlLmNvbSN0b3A%3D',
+    )
+    const expected = 'http://www.example.com#top'
+
+    expect(unwrapPrweb(value)).toBe(expected)
+  })
 })

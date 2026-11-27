@@ -30,6 +30,18 @@ describe('createPathUnwrapper', () => {
     expect(unwrap(value)).toBe(expected)
   })
 
+  it('should drop the link fragment when ignoreLinkFragment is set', () => {
+    const unwrapIgnoring = createPathUnwrapper({
+      hosts: 'prefix.example.com',
+      prefix: prefixRegex,
+      ignoreLinkFragment: true,
+    })
+    const value = new URL('https://prefix.example.com/r/42/www.example.org/episode.mp3?t=60#notes')
+    const expected = 'https://www.example.org/episode.mp3?t=60'
+
+    expect(unwrapIgnoring(value)).toBe(expected)
+  })
+
   it('should return undefined for another host', () => {
     const value = new URL('https://other.example.com/r/42/www.example.org/episode.mp3')
 

@@ -159,4 +159,13 @@ describe('unwrapBingAds', () => {
 
     expect(unwrapBingAds(url)).toBeUndefined()
   })
+
+  it('should keep the fragment the target carries', () => {
+    const value = new URL(
+      'https://www.bing.com/aclk?ld=e8v53HweaYYJO4-AI3B9EQTjVUCUw_PMEVmStLE-Ak7-miCUGacAv4rlEWkyDU3pP48rH2hc&u=aHR0cHMlM2ElMmYlMmZ3d3cuZXhhbXBsZS5jb20lMmZib29raW5nJTJmMTIzNDUlMjN0b3A&rlid=d9a7f0c1b2e44d5a8c3b6e1f0a2d4c7b&ntb=1',
+    )
+    const expected = 'https://www.example.com/booking/12345#top'
+
+    expect(unwrapBingAds(value)).toBe(expected)
+  })
 })

@@ -69,4 +69,13 @@ describe('unwrapYahooSearch', () => {
 
     expect(unwrapYahooSearch(url)).toBeUndefined()
   })
+
+  it('should keep the fragment the target carries', () => {
+    const value = new URL(
+      'https://r.search.yahoo.com/_ylt=AAA/SIG=BBB/EXP=CCC/RU=https%3A%2F%2Fexample.com%2Farticle%23top/RK=2/RS=DDD-',
+    )
+    const expected = 'https://example.com/article#top'
+
+    expect(unwrapYahooSearch(value)).toBe(expected)
+  })
 })

@@ -50,7 +50,7 @@ export const unwrapCjNetwork = createUnwrapper({
     }
 
     const [, fragment, scheme, target] = match
-    const hash = url.hash || (fragment ? `#${decodePercent(fragment)}` : '')
+    const hash = fragment ? `#${decodePercent(fragment)}` : ''
 
     return `${scheme}://${target}${url.search}${hash}`
   },

@@ -80,7 +80,7 @@ export const unwrapWebArchive: UrlUnwrapper = createUnwrapper({
       return
     }
 
-    // An unencoded target's query and fragment land in the snapshot URL's own `search` and `hash`.
-    return `${target}${url.search}${url.hash}`
+    // An unencoded target's query lands in the snapshot URL's own `search`.
+    return `${target}${url.search}`
   },
 })

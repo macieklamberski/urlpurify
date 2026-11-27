@@ -39,7 +39,7 @@ export const unwrapPodtrac: UrlUnwrapper = createUnwrapper({
       ptsQueryPathRegex.test(url.pathname) &&
       httpQueryRegex.test(url.search)
     ) {
-      return `${url.search.slice(1)}${url.hash}`
+      return url.search.slice(1)
     }
 
     return getPathTarget(url, ptsPrefixRegex, url.protocol)

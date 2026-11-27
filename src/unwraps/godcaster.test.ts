@@ -107,4 +107,13 @@ describe('unwrapGodcaster', () => {
 
     expect(unwrapGodcaster(url)).toBeUndefined()
   })
+
+  it('should keep the fragment the target carries', () => {
+    const value = new URL(
+      'https://go.godcaster.fm/act/e/147/285278/59424742195/https%253A%252F%252Fexample.com%252FOURNE3401812353.mp3%23top',
+    )
+    const expected = 'https://example.com/OURNE3401812353.mp3#top'
+
+    expect(unwrapGodcaster(value)).toBe(expected)
+  })
 })

@@ -71,4 +71,11 @@ describe('unwrapSurly', () => {
 
     expect(unwrapSurly(url)).toBe('https://example.com/go?u=http://example.org')
   })
+
+  it('should keep the fragment the target carries', () => {
+    const value = new URL('http://sur.ly/o/example.com/AA044639%23top')
+    const expected = 'https://example.com/AA044639#top'
+
+    expect(unwrapSurly(value)).toBe(expected)
+  })
 })

@@ -15,6 +15,6 @@ export const unwrapImagekit: UrlUnwrapper = createUnwrapper({
       return
     }
 
-    return decodePercent(`${source}${url.search}${url.hash}`)
+    return decodePercent(`${source}${url.search}`)
   },
 })

@@ -15,8 +15,8 @@ export const unwrapToucharcade: UrlUnwrapper = createUnwrapper({
       return
     }
 
-    // An unencoded target's query and fragment land in the link's own `search` and `hash`.
-    const target = `${match[1]}${url.search}${url.hash}`
+    // An unencoded target's query lands in the link's own `search`.
+    const target = `${match[1]}${url.search}`
 
     if (isHttpUrl(target)) {
       return target

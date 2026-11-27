@@ -99,4 +99,13 @@ describe('unwrapMailinblack', () => {
 
     expect(unwrapMailinblack(url)).toBeUndefined()
   })
+
+  it('should keep the fragment the target carries', () => {
+    const value = new URL(
+      'https://mibc-fr-11.mailinblack.com/securelink/?url=https://www.example.com&key=eyJsYW5nIjoiRlIiLCJ1cmwiOiJodHRwczovL3d3dy5leGFtcGxlLmNvbS9ldmVuZW1lbnQvdGhlYXRyZS1ldC1ib3R0ZXMtZGUtcGFpbGxlLyN0b3AiLCJ0b2tlbiI6ImdBQUFBQUJuVTJIYVBFbC1DTFdNcWZXQndaWWhBVkMxWEFNZkszaWkifQ',
+    )
+    const expected = 'https://www.example.com/evenement/theatre-et-bottes-de-paille/#top'
+
+    expect(unwrapMailinblack(value)).toBe(expected)
+  })
 })

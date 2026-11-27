@@ -31,4 +31,13 @@ describe('unwrapXengentr', () => {
 
     expect(unwrapXengentr(url)).toBeUndefined()
   })
+
+  it('should keep the fragment the target carries', () => {
+    const value = new URL(
+      'https://www.example.net/yonlendirme?to=aHR0cHM6Ly95YWRpLmV4YW1wbGUuY29tL2QvY19IN1VWS3lhcDNpQkEjdG9w',
+    )
+    const expected = 'https://yadi.example.com/d/c_H7UVKyap3iBA#top'
+
+    expect(unwrapXengentr(value)).toBe(expected)
+  })
 })

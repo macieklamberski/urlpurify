@@ -11,6 +11,7 @@ const paths = ['/', '/index', '/index/', '/index.html']
 // it from.
 export const unwrapDiasporaShare: UrlUnwrapper = createUnwrapper({
   hosts,
+  ignoreLinkFragment: true,
   unwrap: (url) => {
     if (!isAnyOf(url.pathname, paths)) {
       return

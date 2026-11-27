@@ -9,6 +9,7 @@ const httpPathRegex = /^\/amp\/(?!s\/)(.+)$/i
 // /amp/<host>/<path> for http).
 export const unwrapYahooJapanAmpViewer: UrlUnwrapper = createUnwrapper({
   hosts: 'search.yahoo.co.jp',
+  ignoreLinkFragment: true,
   unwrap: (url) => {
     const httpsMatch = httpsPathRegex.exec(url.pathname)
     const match = httpsMatch ?? httpPathRegex.exec(url.pathname)

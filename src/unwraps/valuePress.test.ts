@@ -69,4 +69,13 @@ describe('unwrapValuePress', () => {
 
     expect(unwrapValuePress(url)).toBeUndefined()
   })
+
+  it('should keep the fragment the target carries', () => {
+    const value = new URL(
+      'https://www.value-press.com/bin/tools/link_counter?a=wzvsijkdsbe&l=YUhSMGNITTZMeTkzZDNjdVpYaGhiWEJzWlM1amIyMHZjMmh2Y25SekwwVnhRMFpMVVZOelFUWTBJM1J2Y0E9PQ%3D%3D',
+    )
+    const expected = 'https://www.example.com/shorts/EqCFKQSsA64#top'
+
+    expect(unwrapValuePress(value)).toBe(expected)
+  })
 })

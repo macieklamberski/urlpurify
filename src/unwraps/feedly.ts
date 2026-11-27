@@ -16,6 +16,7 @@ const fragmentPaths = ['/', '/index.html', '/home']
 // the feed, it never redirects.
 export const unwrapFeedly: UrlUnwrapper = createUnwrapper({
   hosts,
+  ignoreLinkFragment: true,
   unwrap: (url) => {
     if (isAnyOf(url.pathname, paramPath)) {
       return readParamTarget(url, 'url')

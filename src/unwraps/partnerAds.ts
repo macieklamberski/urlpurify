@@ -19,7 +19,7 @@ export const unwrapPartnerAds = createUnwrapper({
     const deepLinkMatch = url.pathname.match(deepLinkPathRegex)
 
     if (deepLinkMatch) {
-      return `${deepLinkMatch[1]}${url.search}${url.hash}`
+      return `${deepLinkMatch[1]}${url.search}`
     }
 
     if (!clickPathRegex.test(url.pathname)) {

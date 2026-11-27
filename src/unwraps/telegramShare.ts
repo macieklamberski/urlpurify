@@ -18,6 +18,7 @@ const hosts = [
 // the share dialog.
 export const unwrapTelegramShare: UrlUnwrapper = createUnwrapper({
   hosts,
+  ignoreLinkFragment: true,
   unwrap: (url) => {
     if (!isAnyOf(url.pathname, pathRegex)) {
       return

@@ -10,6 +10,7 @@ const hosts = ['twitter.com', 'www.twitter.com', 'mobile.twitter.com', 'x.com', 
 // on twitter.com and x.com). Opt-in: unwrapping returns the shared page, not the post composer.
 export const unwrapTwitterIntent: UrlUnwrapper = createUnwrapper({
   hosts,
+  ignoreLinkFragment: true,
   unwrap: (url) => {
     if (!isAnyOf(url.pathname, pathRegex)) {
       return

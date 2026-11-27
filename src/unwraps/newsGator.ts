@@ -20,6 +20,7 @@ const unwrapSubfext = createQueryUnwrapper({
 // NewsGator account, it does not redirect to it.
 export const unwrapNewsGator = createUnwrapper({
   hosts,
+  ignoreLinkFragment: true,
   unwrap: (url) => {
     return unwrapSubext(url) ?? unwrapSubfext(url)
   },

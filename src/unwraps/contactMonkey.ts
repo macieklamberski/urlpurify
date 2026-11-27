@@ -24,6 +24,6 @@ export const unwrapContactMonkey: UrlUnwrapper = createUnwrapper({
       return
     }
 
-    return `${url.search.slice(match.index + match[0].length)}${url.hash}`
+    return url.search.slice(match.index + match[0].length)
   },
 })

@@ -57,4 +57,13 @@ describe('unwrapSerendipity', () => {
 
     expect(unwrapSerendipity(url)).toBeUndefined()
   })
+
+  it('should keep the fragment the target carries', () => {
+    const value = new URL(
+      'http://www.example.net/blog/exit.php?url=aHR0cDovL3d3dy5leGFtcGxlLmNvbS93YXRjaD92PXliamkwYXhwNnMwJmZlYXR1cmU9cmVsYXRlZCN0b3A%3D&entry_id=455',
+    )
+    const expected = 'http://www.example.com/watch?v=ybji0axp6s0&feature=related#top'
+
+    expect(unwrapSerendipity(value)).toBe(expected)
+  })
 })

@@ -368,4 +368,13 @@ describe('unwrapAmazonSes', () => {
 
     expect(unwrapAmazonSes(value)).toBe(expected)
   })
+
+  it('should keep the fragment the target carries', () => {
+    const value = new URL(
+      'https://abcd1234.r.us-east-1.awstrack.me/L0/https:%2F%2Fwww.example.com%2Fnews%23top/1/0100019819a7eb85-8577ee14-6ff8-44f5-9af0-008f7ce611bd-000000/c2lnbmF0dXJl_x-y=473',
+    )
+    const expected = 'https://www.example.com/news#top'
+
+    expect(unwrapAmazonSes(value)).toBe(expected)
+  })
 })

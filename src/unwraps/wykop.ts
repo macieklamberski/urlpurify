@@ -11,6 +11,7 @@ const pathRegex = /^\/(?:remotelink|dodaj(?:\/link|-link)?)\/?$/i
 // the form.
 export const unwrapWykop: UrlUnwrapper = createUnwrapper({
   hosts,
+  ignoreLinkFragment: true,
   unwrap: (url) => {
     if (!isAnyOf(url.pathname, pathRegex)) {
       return

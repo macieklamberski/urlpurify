@@ -20,6 +20,7 @@ const isCarrierPath = (url: URL): boolean => {
 // the form that shares it.
 export const unwrapAddThis: UrlUnwrapper = createUnwrapper({
   hosts: [...bookmarkHosts, ...apiHosts],
+  ignoreLinkFragment: true,
   unwrap: (url) => {
     if (!isCarrierPath(url)) {
       return

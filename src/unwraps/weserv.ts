@@ -8,6 +8,7 @@ const hosts = ['images.weserv.nl', 'wsrv.nl']
 // Not included in defaultUnwrappers: unwrapping swaps the resized copy for the original image.
 export const unwrapWeserv: UrlUnwrapper = createUnwrapper({
   hosts,
+  ignoreLinkFragment: true,
   unwrap: (url) => {
     if (url.pathname !== '/') {
       return

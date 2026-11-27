@@ -22,7 +22,7 @@ export const unwrapGovdelivery: UrlUnwrapper = createUnwrapper({
       return
     }
 
-    const target = `${match[1]}${url.hash}`
+    const target = match[1]
 
     if (isHttpUrl(target)) {
       return target

@@ -177,4 +177,13 @@ describe('unwrapFacebookShim', () => {
 
     expect(unwrapFacebookShim(url)).toBeUndefined()
   })
+
+  it('should keep the fragment the target carries', () => {
+    const value = new URL(
+      'https://www.facebook.com/l/tAQGrQpNyAQGcNugK26MJo6I7u13EWjMs-gm8qDRbwkVYhQ/https%3A%2F%2Fwww.example.com%2Fdonate%23top',
+    )
+    const expected = 'https://www.example.com/donate#top'
+
+    expect(unwrapFacebookShim(value)).toBe(expected)
+  })
 })

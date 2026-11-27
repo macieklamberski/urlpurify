@@ -94,6 +94,15 @@ describe('unwrapGoogleReader', () => {
 
       expect(unwrapGoogleReader(value)).toBeUndefined()
     })
+
+    it('should drop the link fragment', () => {
+      const value = new URL(
+        'https://www.google.com/ig/add?feedurl=http://example.com/feed#comments',
+      )
+      const expected = 'http://example.com/feed'
+
+      expect(unwrapGoogleReader(value)).toBe(expected)
+    })
   })
 
   describe('Reader feed path', () => {
@@ -215,6 +224,15 @@ describe('unwrapGoogleReader', () => {
       const value = new URL('https://www.google.com/x/reader/view/feed/http://example.com/rss')
 
       expect(unwrapGoogleReader(value)).toBeUndefined()
+    })
+
+    it('should keep the link fragment after a raw feed', () => {
+      const value = new URL(
+        'https://www.google.com/reader/view/feed/http://feeds.example.com/freeapp#comments',
+      )
+      const expected = 'http://feeds.example.com/freeapp#comments'
+
+      expect(unwrapGoogleReader(value)).toBe(expected)
     })
   })
 })

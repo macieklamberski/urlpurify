@@ -28,6 +28,7 @@ const unwrapContent = createQueryUnwrapper({
 // opens My Yahoo's page that adds the feed, not the feed.
 export const unwrapAddToMyYahoo = createUnwrapper({
   hosts: [...hosts, 'us.rd.yahoo.com', 'rd.yahoo.co.jp'],
+  ignoreLinkFragment: true,
   unwrap: (url) => {
     if (isHostOf(url, 'us.rd.yahoo.com')) {
       if (!isAnyOf(url.pathname, usRedirectPathRegex)) {

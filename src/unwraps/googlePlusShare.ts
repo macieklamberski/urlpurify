@@ -11,6 +11,7 @@ const pathRegex = /^\/(?:u\/\d+\/)?share$/i
 // the share form.
 export const unwrapGooglePlusShare: UrlUnwrapper = createUnwrapper({
   hosts,
+  ignoreLinkFragment: true,
   unwrap: (url) => {
     if (!isAnyOf(url.pathname, pathRegex)) {
       return

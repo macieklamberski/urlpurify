@@ -9,6 +9,7 @@ const paths = ['/hello2', '/edit']
 // Opt-in: unwrapping returns the saved page, not the form that saves it.
 export const unwrapInstapaperSave: UrlUnwrapper = createUnwrapper({
   hosts,
+  ignoreLinkFragment: true,
   unwrap: (url) => {
     if (!isAnyOf(url.pathname, paths)) {
       return

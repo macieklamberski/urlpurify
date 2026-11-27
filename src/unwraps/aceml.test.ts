@@ -112,4 +112,13 @@ describe('unwrapAceml', () => {
 
     expect(unwrapAceml(url)).toBeUndefined()
   })
+
+  it('should keep the fragment the target carries', () => {
+    const value = new URL(
+      'https://example.lt.acemlnb.com/Prod/link-tracker?redirectUrl=https://example.com/terms/a/annualized-rate.asp%23top&a=90105704&s=192ad911b220e2320a3c7e3da8b45b6e&i=77A73A1A506',
+    )
+    const expected = 'https://example.com/terms/a/annualized-rate.asp#top'
+
+    expect(unwrapAceml(value)).toBe(expected)
+  })
 })

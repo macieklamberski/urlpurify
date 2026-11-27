@@ -79,4 +79,13 @@ describe('unwrapMohtwize', () => {
 
     expect(unwrapMohtwize(url)).toBe('https://example.com/%E0%A4%A')
   })
+
+  it('should keep the fragment the target carries', () => {
+    const value = new URL(
+      'https://stats.mohtwize.net/redirect.mp3?fileURL=/https%3A%2F%2Fexample.com%2Fepisode.mp3%23top',
+    )
+    const expected = 'https://example.com/episode.mp3#top'
+
+    expect(unwrapMohtwize(value)).toBe(expected)
+  })
 })

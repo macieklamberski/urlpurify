@@ -20,6 +20,7 @@ const extractIndexTarget = createQueryUnwrapper({
 // which may have changed or be gone.
 export const unwrapWikiwix = createUnwrapper({
   hosts: ['archive.wikiwix.com', 'wikiwix.com'],
+  ignoreLinkFragment: true,
   unwrap: (url) => {
     return extractCacheTarget(url) ?? extractIndexTarget(url)
   },

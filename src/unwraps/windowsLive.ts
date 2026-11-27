@@ -15,6 +15,7 @@ const extractAdd = createQueryUnwrapper({
 // redirected to it.
 export const unwrapWindowsLive = createUnwrapper({
   hosts,
+  ignoreLinkFragment: true,
   unwrap: (url) => {
     const target = extractAdd(url)
 

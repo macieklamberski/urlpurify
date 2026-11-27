@@ -97,4 +97,13 @@ describe('unwrapSophos', () => {
 
     expect(unwrapSophos(url)).toBeUndefined()
   })
+
+  it('should keep the fragment the target carries', () => {
+    const value = new URL(
+      'https://eu-central-1.protection.sophos.com/?d=example.com&u=aHR0cDovL3d3dy5leGFtcGxlLmNvbS9Fbi9EYXRhL1ZpZXcvMzk3MiN0b3A%3D&i=NjA5NDA5OTI5NmUwM2YzNzEwODdhNzM3&t=MnQ4UUR5Q0lwa3pvL0pQWUozMXdJQlRKdExQWG01RkxXM1llVEUzakJ2az0=&h=b05e70cb6982454e9fe217d143786902',
+    )
+    const expected = 'http://www.example.com/En/Data/View/3972#top'
+
+    expect(unwrapSophos(value)).toBe(expected)
+  })
 })

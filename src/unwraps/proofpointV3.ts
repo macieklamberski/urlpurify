@@ -1,6 +1,6 @@
 import { decodeBase64Url } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { appendLinkFragment, createUnwrapper, getUtf8ByteLength } from '../utils.js'
+import { createUnwrapper, getUtf8ByteLength } from '../utils.js'
 
 const v3PathRegex = /^\/v3\/__(.+)__;([^!]*)!/i
 
@@ -109,7 +109,7 @@ export const unwrapProofpointV3: UrlUnwrapper = createUnwrapper({
     const target = decodeReplacements(match[1], match[2])
 
     if (target) {
-      return appendLinkFragment(target, url)
+      return target
     }
   },
 })

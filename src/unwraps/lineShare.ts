@@ -17,6 +17,7 @@ const sharePaths = [
 // the shared page, not the form that shares it.
 export const unwrapLineShare: UrlUnwrapper = createUnwrapper({
   hosts: sharePaths.flatMap(({ hosts }) => hosts),
+  ignoreLinkFragment: true,
   unwrap: (url) => {
     const isSharePath = sharePaths.some(({ hosts, path }) => {
       return isHostOf(url, hosts) && isAnyOf(url.pathname, path)
