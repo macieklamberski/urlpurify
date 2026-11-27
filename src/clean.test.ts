@@ -1555,6 +1555,12 @@ describe('isTrackingParam', () => {
     expect(isTrackingParam('from', 'list', 'SHOP.example', trackingParams)).toBe(true)
   })
 
+  it('should match a listed host given with a trailing dot', () => {
+    const trackingParams: Array<TrackingParam> = [{ name: 'from', hosts: ['shop.example'] }]
+
+    expect(isTrackingParam('from', 'list', 'shop.example.', trackingParams)).toBe(true)
+  })
+
   it('should answer through a query param predicate taking the url', () => {
     const trackingParams: Array<TrackingParam> = [{ name: 'from', hosts: ['shop.example'] }]
     const isQueryParamTracking = (name: string, value: string | undefined, url: URL): boolean => {
@@ -1750,6 +1756,13 @@ describe('host-scoped click attribution', () => {
   it('should drop the query of an SMZDM post', () => {
     const value = 'https://post.smzdm.com/p/ar6kpg7g/?send_by=3716913905&from=other'
     const expected = 'https://post.smzdm.com/p/ar6kpg7g/'
+
+    expect(cleanUrl(value)).toBe(expected)
+  })
+
+  it('should drop the query of an SMZDM post on a host with a trailing dot', () => {
+    const value = 'https://post.smzdm.com./p/ar6kpg7g/?send_by=3716913905&from=other'
+    const expected = 'https://post.smzdm.com./p/ar6kpg7g/'
 
     expect(cleanUrl(value)).toBe(expected)
   })

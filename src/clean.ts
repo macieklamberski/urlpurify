@@ -107,6 +107,14 @@ const matchesEntry = (entry: TrackingEntry, name: string, value: string, host: s
   return true
 }
 
+// A hostname in lowercase without its trailing dot, as `isHostOf` compares it: `example.com.` names
+// the same host as `example.com`.
+const normalizeHost = (hostname: string): string => {
+  const host = hostname.toLowerCase()
+
+  return host.endsWith('.') ? host.slice(0, -1) : host
+}
+
 // Takes the lowercased name, the decoded value and the hostname without `www.`.
 const isTrackedPair = (
   matcher: TrackingMatcher,
@@ -161,7 +169,7 @@ const deleteTrackingParams = (url: URL, trackingParams: ReadonlyArray<TrackingPa
     return
   }
 
-  const host = stripWww(url.hostname)
+  const host = stripWww(normalizeHost(url.hostname))
 
   // Alibaba DirectMail click urls answer 400 without their `ts` and do not check their `sign`.
   const keepsTs = isHostOf(url, 'dm-cn.aliyuncs.com') && isAnyOf(url.pathname, '/trace/v1/report')
@@ -352,8 +360,7 @@ const getCandidates = (
     return unwrappers
   }
 
-  const hostname = url.hostname.toLowerCase()
-  const host = hostname.endsWith('.') ? hostname.slice(0, -1) : hostname
+  const host = normalizeHost(url.hostname)
   const exact = index.byHost.get(host)
 
   if (!index.hasDomains) {
@@ -458,7 +465,7 @@ export const isTrackingParam = (
   trackingParams: ReadonlyArray<TrackingParam> = defaultTrackingParams,
 ): boolean => {
   const matcher = getTrackingMatcher(trackingParams)
-  const host = stripWww(hostname.toLowerCase())
+  const host = stripWww(normalizeHost(hostname))
 
   return isTrackedPair(matcher, name.toLowerCase(), value ?? '', host)
 }
