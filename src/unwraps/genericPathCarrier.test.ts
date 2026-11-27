@@ -49,6 +49,28 @@ describe('unwrapGenericPathCarrier', () => {
     expect(unwrapGenericPathCarrier(value)).toBeUndefined()
   })
 
+  it('should return undefined for a url glued after markup written into the path', () => {
+    const value = new URL(
+      'https://www.example.com/%3Cscript%20src=%22//cdn.example.org/embed.js%22%3E%3C/script%3E',
+    )
+
+    expect(unwrapGenericPathCarrier(value)).toBeUndefined()
+  })
+
+  it('should return undefined for a glued url that runs into markup', () => {
+    const value = new URL('http://http//www.example.org/wiki/Page%3ETitle%3C/a%3E')
+
+    expect(unwrapGenericPathCarrier(value)).toBeUndefined()
+  })
+
+  it('should return undefined for a url glued after a query written into the path', () => {
+    const value = new URL(
+      'https://blog.example.com/2022/09/post.html&media=//cdn.example.org/img/photo.jpg',
+    )
+
+    expect(unwrapGenericPathCarrier(value)).toBeUndefined()
+  })
+
   it('should return undefined for a host behind a single slash', () => {
     const value = new URL('https://cache.example.com/c/s/www.example.org/post/')
 
