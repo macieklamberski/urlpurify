@@ -25,11 +25,12 @@ type HostList = Pattern | ReadonlyArray<Pattern>
 
 // `hosts` matches a host exactly, or by regex. `domains` also matches every subdomain, and
 // `subdomains` matches only the subdomains, never the domain itself.
-export type UnwrapperConfig = (
+export type UnwrapperHosts =
   | { hosts: HostList; domains?: never; subdomains?: never }
   | { domains: HostList; hosts?: never; subdomains?: never }
   | { subdomains: HostList; hosts?: never; domains?: never }
-) & {
+
+export type UnwrapperConfig = UnwrapperHosts & {
   unwrap: UrlUnwrapper
 }
 

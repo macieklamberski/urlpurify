@@ -1,6 +1,4 @@
-import { getPathTarget } from '../pathTarget.js'
-import type { UrlUnwrapper } from '../types.js'
-import { createUnwrapper } from '../utils.js'
+import { createPathUnwrapper } from '../pathTarget.js'
 
 const hosts = [
   'tracking.swap.fm',
@@ -15,9 +13,7 @@ const trackPrefixRegex = /^\/track\/[^/]+\//i
 // Swap download measurement prefix (tracking.swap.fm/track/<show id>/<target>, also on swap.fm
 // and the dev., staging. and tracking-stage. hosts), where the target drops its scheme.
 // Not included in defaultUnwrappers: unwrapping removes the podcaster's download counts.
-export const unwrapSwap: UrlUnwrapper = createUnwrapper({
+export const unwrapSwap = createPathUnwrapper({
   hosts,
-  unwrap: (url) => {
-    return getPathTarget(url, trackPrefixRegex)
-  },
+  prefix: trackPrefixRegex,
 })
