@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'bun:test'
+import { unwrapperHosts } from '../utils.js'
 import { unwrapDirectMail } from './directMail.js'
 
 describe('unwrapDirectMail', () => {
@@ -56,5 +57,9 @@ describe('unwrapDirectMail', () => {
     const url = new URL('https://example.com/click?u=https%3A%2F%2Fexample.org%2F')
 
     expect(unwrapDirectMail(url)).toBeUndefined()
+  })
+
+  it('should register its hosts so the host index skips it on other hosts', () => {
+    expect(unwrapperHosts.has(unwrapDirectMail)).toBe(true)
   })
 })

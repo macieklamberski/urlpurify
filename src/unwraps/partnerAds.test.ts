@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'bun:test'
+import { unwrapperHosts } from '../utils.js'
 import { unwrapPartnerAds } from './partnerAds.js'
 
 describe('unwrapPartnerAds', () => {
@@ -106,5 +107,9 @@ describe('unwrapPartnerAds', () => {
     const url = new URL('https://example.com/dk/c/p/51339/b/38484/https://www.example.org/post')
 
     expect(unwrapPartnerAds(url)).toBeUndefined()
+  })
+
+  it('should register its hosts so the host index skips it on other hosts', () => {
+    expect(unwrapperHosts.has(unwrapPartnerAds)).toBe(true)
   })
 })

@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'bun:test'
+import { unwrapperHosts } from '../utils.js'
 import { unwrapFirebaseDynamicLinks } from './firebaseDynamicLinks.js'
 
 describe('unwrapFirebaseDynamicLinks', () => {
@@ -114,5 +115,9 @@ describe('unwrapFirebaseDynamicLinks', () => {
     const url = new URL('https://app.goo.gl/?link=https://example.com/page')
 
     expect(unwrapFirebaseDynamicLinks(url)).toBe('https://example.com/page')
+  })
+
+  it('should register its hosts so the host index skips it on other hosts', () => {
+    expect(unwrapperHosts.has(unwrapFirebaseDynamicLinks)).toBe(true)
   })
 })

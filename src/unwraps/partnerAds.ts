@@ -1,6 +1,4 @@
-import { isHostOrSubdomainOf } from 'trousse'
-import type { UrlUnwrapper } from '../types.js'
-import { createQueryUnwrapper } from '../utils.js'
+import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
 const domains = ['partner-ads.com']
 const clickPathRegex = /^\/(?:dk\/klikbanner\.php)?$/i
@@ -15,16 +13,19 @@ const extractTarget = createQueryUnwrapper({
 // partner-ads.com Danish affiliate network (partner-ads.com/dk/klikbanner.php?htmlurl=<target>,
 // also on the root), and its deep link with the target in the path
 // (partner-ads.com/dk/c/p/<partner>/b/<banner>/<target>).
-export const unwrapPartnerAds: UrlUnwrapper = (url) => {
-  const deepLinkMatch = url.pathname.match(deepLinkPathRegex)
+export const unwrapPartnerAds = createUnwrapper({
+  domains,
+  unwrap: (url) => {
+    const deepLinkMatch = url.pathname.match(deepLinkPathRegex)
 
-  if (deepLinkMatch && isHostOrSubdomainOf(url, domains)) {
-    return `${deepLinkMatch[1]}${url.search}${url.hash}`
-  }
+    if (deepLinkMatch) {
+      return `${deepLinkMatch[1]}${url.search}${url.hash}`
+    }
 
-  if (!clickPathRegex.test(url.pathname)) {
-    return
-  }
+    if (!clickPathRegex.test(url.pathname)) {
+      return
+    }
 
-  return extractTarget(url)
-}
+    return extractTarget(url)
+  },
+})

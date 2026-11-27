@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'bun:test'
+import { unwrapperHosts } from '../utils.js'
 import { unwrapAboutCom } from './aboutCom.js'
 
 describe('unwrapAboutCom', () => {
@@ -42,5 +43,9 @@ describe('unwrapAboutCom', () => {
     const url = new URL('http://notabout.com/gi/dynamic/offsite.htm?zu=http%3A%2F%2Fexample.com%2F')
 
     expect(unwrapAboutCom(url)).toBeUndefined()
+  })
+
+  it('should register its hosts so the host index skips it on other hosts', () => {
+    expect(unwrapperHosts.has(unwrapAboutCom)).toBe(true)
   })
 })
