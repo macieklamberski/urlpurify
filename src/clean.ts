@@ -278,7 +278,7 @@ const addTargetScheme = (target: string | undefined): string | undefined => {
 type UnwrapperIndex = {
   byHost: Map<string, Array<UrlUnwrapper>>
   rest: Array<UrlUnwrapper>
-  hasDomains: boolean
+  domainLength: number // Longest registered `.domain`, 0 when none
 }
 
 // A list seen once maps to undefined and gets no index, so a caller passing a new array per call
@@ -291,7 +291,7 @@ const unwrapperIndexes = new WeakMap<ReadonlyArray<UrlUnwrapper>, UnwrapperIndex
 const buildUnwrapperIndex = (unwrappers: ReadonlyArray<UrlUnwrapper>): UnwrapperIndex => {
   const byHost = new Map<string, Array<UrlUnwrapper>>()
   const rest: Array<UrlUnwrapper> = []
-  let hasDomains = false
+  let domainLength = 0
 
   for (const unwrap of unwrappers) {
     const hosts = unwrapperHosts.get(unwrap)
@@ -310,7 +310,7 @@ const buildUnwrapperIndex = (unwrappers: ReadonlyArray<UrlUnwrapper>): Unwrapper
       const list = byHost.get(host)
 
       if (host.startsWith('.')) {
-        hasDomains = true
+        domainLength = Math.max(domainLength, host.length)
       }
 
       if (!list) {
@@ -324,7 +324,7 @@ const buildUnwrapperIndex = (unwrappers: ReadonlyArray<UrlUnwrapper>): Unwrapper
     }
   }
 
-  return { byHost, rest, hasDomains }
+  return { byHost, rest, domainLength }
 }
 
 const getUnwrapperIndex = (unwrappers: ReadonlyArray<UrlUnwrapper>): UnwrapperIndex | undefined => {
@@ -356,20 +356,28 @@ const getCandidates = (
   const host = hostname.endsWith('.') ? hostname.slice(0, -1) : hostname
   const exact = index.byHost.get(host)
 
-  if (!index.hasDomains) {
+  if (!index.domainLength) {
     return exact ?? index.rest
   }
 
-  const lists: Array<Array<UrlUnwrapper>> = exact ? [exact] : []
-  const labels = host.split('.')
+  const suffixLists: Array<Array<UrlUnwrapper>> = []
+  let start = host.length
 
-  for (let start = 0; start < labels.length; start++) {
-    const list = index.byHost.get(`.${labels.slice(start).join('.')}`)
+  // Walks the `.domain` suffixes from the right and stops past the longest registered one, so a
+  // host with thousands of labels costs as much as its last few.
+  while (start !== -1 && host.length - start < index.domainLength) {
+    start = start > 0 ? host.lastIndexOf('.', start - 1) : -1
+
+    const list = index.byHost.get(start === -1 ? `.${host}` : host.slice(start))
 
     if (list) {
-      lists.push(list)
+      suffixLists.push(list)
     }
   }
+
+  const lists: Array<Array<UrlUnwrapper>> = exact ? [exact] : []
+
+  lists.push(...suffixLists.reverse())
 
   if (lists.length === 0) {
     return index.rest

@@ -97,6 +97,27 @@ export const getParamTarget = (url: URL, name: string, index = 0): string | unde
   return appendLinkFragment(target, url)
 }
 
+const lastSchemeRegex = /^.*https?(?::|%3a)./i
+
+// The `source` group of a path regex whose lazy `.*?` searches for a source scheme after a prefix.
+// Matching only up to the last scheme keeps one ahead of every prefix the regex tries, so it never
+// rescans the rest of the path per prefix, which is quadratic on a path with no source.
+export const matchPathSource = (path: string, regex: RegExp): string | undefined => {
+  const head = lastSchemeRegex.exec(path)?.[0]
+
+  if (!head) {
+    return
+  }
+
+  const source = regex.exec(head)?.groups?.source
+
+  if (!source) {
+    return
+  }
+
+  return `${source}${path.slice(head.length)}`
+}
+
 // The hostnames a factory unwrapper can match, read by `applyUnwrappers` to skip it on any other
 // host. A domain whose subdomains match registers as `.domain`. Only lowercase ascii hosts
 // register: the index compares them as written, where `isHostOf` also folds case and punycode.
