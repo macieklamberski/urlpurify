@@ -263,6 +263,7 @@ const cleanTarget = (target: string | undefined): string | undefined => {
 
 const protocolRelativeRegex = /^\/\/[^/]/
 const bareHostRegex = /^[\p{L}\p{N}-]+(?:\.[\p{L}\p{N}-]+)+(?:[/?#:]|$)/u
+const appSchemeRegex = /^[\p{L}\p{N}-]+(?:\.[\p{L}\p{N}-]+)+:(?!\d)/u
 
 // A target without a scheme fails the http check, so it gets `https`: a protocol-relative
 // `//host/path`, as Embedly writes for Issuu, and a bare `host.tld/path`, as ShareASale's
@@ -274,6 +275,12 @@ const addTargetScheme = (target: string | undefined): string | undefined => {
 
   if (protocolRelativeRegex.test(target)) {
     return `https:${target}`
+  }
+
+  // A dotted name before a colon is a host only when a port follows. `resolveUrl` reads an app
+  // scheme such as `com.example.app://open` as a host.
+  if (appSchemeRegex.test(target)) {
+    return
   }
 
   if (bareHostRegex.test(target)) {

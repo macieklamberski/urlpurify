@@ -245,6 +245,19 @@ describe('unwrapUrl', () => {
     expect(unwrapUrl(value, [exampleUnwrapper])).toBe(expected)
   })
 
+  it('should give a bare host target with a port the https scheme', () => {
+    const value = 'https://redirect.example.com/?target=example.com%3A8080%2Fpost'
+    const expected = 'https://example.com:8080/post'
+
+    expect(unwrapUrl(value, [exampleUnwrapper])).toBe(expected)
+  })
+
+  it('should return undefined for a target with a reverse-DNS app scheme', () => {
+    const value = 'https://redirect.example.com/?target=com.example.app%3A%2F%2Fopen%2Fpost'
+
+    expect(unwrapUrl(value, [exampleUnwrapper])).toBeUndefined()
+  })
+
   it('should return undefined for a target without a scheme or a dotted host', () => {
     const value = 'https://redirect.example.com/?target=relative%2Fpath'
 
