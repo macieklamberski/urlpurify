@@ -1,6 +1,11 @@
 import { decodeBase64, isAnyOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createUnwrapper, decodeEncodedScheme, getBase64Target, readParamTarget } from '../utils.js'
+import {
+  createUnwrapper,
+  decodeEncodedScheme,
+  getDecodedParamTarget,
+  readParamTarget,
+} from '../utils.js'
 
 const hostRegex = /\.acemln[a-d]\.com$/
 
@@ -24,7 +29,7 @@ export const unwrapAceml: UrlUnwrapper = createUnwrapper({
       return
     }
 
-    const target = getBase64Target(url, 'redirectUrl', decodeTarget)
+    const target = getDecodedParamTarget(url, 'redirectUrl', decodeTarget)
 
     if (target) {
       return target

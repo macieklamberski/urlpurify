@@ -8,7 +8,7 @@ import {
   isUtf8Binary,
 } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createUnwrapper, getParamValues } from '../utils.js'
+import { createUnwrapper, readDecodedTarget } from '../utils.js'
 
 const showPathRegex = /^\/(?:u\/\d+\/)?feed\/([\w%=-]+)(?:\/episode\/[\w%=-]+)?\/?$/i
 
@@ -16,23 +16,16 @@ const appHosts = ['podcasts.google.com']
 const appPaths = ['/', '/subscribe-by-rss-feed']
 const searchHosts = ['google.com', 'www.google.com']
 
-const getEncodedFeed = (url: URL): string | undefined => {
-  if (isHostOf(url, appHosts)) {
-    const showMatch = url.pathname.match(showPathRegex)
+// A feed url is UTF-8 text, so bytes that are not valid UTF-8 come from text glued after the
+// base64 value, such as `…ZmVlZA--`, and the decoded url would be broken.
+const decodeFeed = (encoded: string): string | undefined => {
+  const binary = decodeBase64UrlBinary(encoded)
 
-    if (showMatch) {
-      return decodePercent(showMatch[1])
-    }
-  }
-
-  const isApp = isHostOf(url, appHosts) && isAnyOf(url.pathname, appPaths)
-  const isSearch = isHostOf(url, searchHosts) && isAnyOf(url.pathname, '/podcasts')
-
-  if (!isApp && !isSearch) {
+  if (binary === undefined || !isUtf8Binary(binary)) {
     return
   }
 
-  return getParamValues(url, 'feed').at(0)
+  return decodeBase64Url(encoded)
 }
 
 // Google Podcasts show, episode and app pages (podcasts.google.com/feed/<base64 feed>, with
@@ -43,24 +36,27 @@ export const unwrapGooglePodcasts: UrlUnwrapper = createUnwrapper({
   hosts: [...appHosts, ...searchHosts],
   ignoreLinkFragment: true,
   unwrap: (url) => {
-    const encoded = getEncodedFeed(url)
+    if (isHostOf(url, appHosts)) {
+      const showMatch = url.pathname.match(showPathRegex)
 
-    if (!encoded) {
+      if (showMatch) {
+        const decoded = decodeFeed(decodePercent(showMatch[1]))
+
+        if (decoded && isHttpUrl(decoded)) {
+          return decoded
+        }
+
+        return
+      }
+    }
+
+    const isApp = isHostOf(url, appHosts) && isAnyOf(url.pathname, appPaths)
+    const isSearch = isHostOf(url, searchHosts) && isAnyOf(url.pathname, '/podcasts')
+
+    if (!isApp && !isSearch) {
       return
     }
 
-    const binary = decodeBase64UrlBinary(encoded)
-
-    // A feed url is UTF-8 text, so bytes that are not valid UTF-8 come from text glued after the
-    // base64 value, such as `…ZmVlZA--`, and the decoded url would be broken.
-    if (binary === undefined || !isUtf8Binary(binary)) {
-      return
-    }
-
-    const decoded = decodeBase64Url(encoded)
-
-    if (decoded && isHttpUrl(decoded)) {
-      return decoded
-    }
+    return readDecodedTarget(url, 'feed', decodeFeed)
   },
 })

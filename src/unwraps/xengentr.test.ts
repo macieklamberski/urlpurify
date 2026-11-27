@@ -10,6 +10,15 @@ describe('unwrapXengentr', () => {
     expect(unwrapXengentr(url)).toBe('https://yadi.example.com/d/c_H7UVKyap3iBA')
   })
 
+  it('should read a raw plus of the base64 alphabet as a plus', () => {
+    const value = new URL(
+      'https://www.example.net/yonlendirme?to=aHR0cHM6Ly93d3cuZXhhbXBsZS5vcmcvIzp+OnRleHQ9VGhl',
+    )
+    const expected = 'https://www.example.org/#:~:text=The'
+
+    expect(unwrapXengentr(value)).toBe(expected)
+  })
+
   it('should return undefined for a non-http target', () => {
     const url = new URL(
       'https://www.example.net/yonlendirme?to=ZnRwOi8vZXhhbXBsZS5jb20vZmlsZS50eHQ=',

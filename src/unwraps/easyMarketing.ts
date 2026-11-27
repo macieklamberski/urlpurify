@@ -1,6 +1,6 @@
 import { decodeBase64Url } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createUnwrapper, getBase64Target, getParamTarget } from '../utils.js'
+import { createUnwrapper, getDecodedParamTarget, getParamTarget } from '../utils.js'
 
 const pathRegex = /^\/trck\/eclick\/[0-9a-f]{32}$/i
 
@@ -22,6 +22,6 @@ export const unwrapEasyMarketing: UrlUnwrapper = createUnwrapper({
       return target
     }
 
-    return getBase64Target(url, 'url64fb', decodeBase64Url)
+    return getDecodedParamTarget(url, 'url64fb', decodeBase64Url)
   },
 })
