@@ -68,6 +68,7 @@ const exceptIdRegex = /^(?!id$)/
 const shopHostRegex = /(^|\.)shop\.example$/
 const wwwShopHostRegex = /^www\.shop\.example$/
 const legacyFromRegex = /^b%FCcher\.example$/
+const spacedFromRegex = /^a b$/
 const utmFamilyRegex = /^utm_[a-z0-9_-]+$/
 const goHostRegex = /^go\d\.example\.org$/
 
@@ -85,6 +86,14 @@ describe('unwrapUrl', () => {
     const expected = 'https://example.org/page'
 
     expect(unwrapUrl(value)).toBe(expected)
+  })
+
+  it('should keep a session id the target carries', () => {
+    const value =
+      'https://web.archive.org/web/20220504074956/https://www.example.com/page.html;jsessionid=C946'
+    const expected = 'https://www.example.com/page.html;jsessionid=C946'
+
+    expect(unwrapUrl(value, [unwrapWebArchive])).toBe(expected)
   })
 
   it('should return the first match when multiple unwrappers match', () => {
@@ -1412,7 +1421,7 @@ describe('Alibaba DirectMail click url', () => {
     const value =
       'https://www.dm-cn.aliyuncs.com/trace/v1/report?ts=1783913769&url=http%3A%2F%2Fwww.example.com%2F&sign=fed82fcd6b69c59fe6c6d8c46b34cfb4'
 
-    expect(cleanUrl(value)).toBe(value)
+    expect(purifyUrl(value)).toBe(value)
   })
 
   it('should strip other tracking params from a click url', () => {
@@ -1595,6 +1604,14 @@ describe('tracking entry', () => {
   it('should test a value holding a legacy-charset escape as written', () => {
     const value = 'https://example.com/post?from=b%FCcher.example&id=42'
     const trackingParams: Array<TrackingParam> = [{ name: 'from', value: legacyFromRegex }]
+    const expected = 'https://example.com/post?id=42'
+
+    expect(stripTrackingParams(value, trackingParams)).toBe(expected)
+  })
+
+  it('should test a value with a plus read as a space', () => {
+    const value = 'https://example.com/post?from=a+b&id=42'
+    const trackingParams: Array<TrackingParam> = [{ name: 'from', value: spacedFromRegex }]
     const expected = 'https://example.com/post?id=42'
 
     expect(stripTrackingParams(value, trackingParams)).toBe(expected)
@@ -1904,7 +1921,7 @@ describe('path params', () => {
       'https://community.example.com/external-link.jspa;jsessionid=ABC123?url=https%3A%2F%2Fexample.org%2Fpage'
     const expected = 'https://example.org/page'
 
-    expect(cleanUrl(value)).toBe(expected)
+    expect(purifyUrl(value)).toBe(expected)
   })
 
   it('should unwrap a nested wrapper whose path carries a jsessionid', () => {
@@ -1912,7 +1929,7 @@ describe('path params', () => {
       'https://www.google.com/url?q=https%3A%2F%2Fcommunity.example.com%2Fexternal-link.jspa%3Bjsessionid%3DABC123%3Furl%3Dhttps%253A%252F%252Fexample.org%252Fpage'
     const expected = 'https://example.org/page'
 
-    expect(cleanUrl(value)).toBe(expected)
+    expect(purifyUrl(value)).toBe(expected)
   })
 
   it('should scan a long run of path params in linear time', () => {

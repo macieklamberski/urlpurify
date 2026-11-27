@@ -476,6 +476,7 @@ const applyUnwrappers = (
   url: URL,
   unwrappers: Array<UrlUnwrapper>,
   index: UnwrapperIndex | undefined,
+  matcher: TrackingMatcher,
 ): string | undefined => {
   for (const unwrap of getCandidates(url, unwrappers, index)) {
     // A trailing no-break space, as YouTube descriptions carry, hides a bare host untrimmed.
@@ -490,11 +491,27 @@ const applyUnwrappers = (
   // written goes first, so a target whose own path holds `//` keeps it.
   const collapsed = parseUrl(normalizeUrl(url.href, { collapseSlashes: true }))
 
-  if (!collapsed || collapsed.href === url.href) {
+  if (collapsed && collapsed.href !== url.href) {
+    const target = applyUnwrappers(collapsed, unwrappers, index, matcher)
+
+    if (target) {
+      return target
+    }
+  }
+
+  // A session id in the wrapper's path, `/external-link.jspa;jsessionid=<id>`, hides its exact
+  // path. The url as written goes first, so a target carrying a session id keeps it.
+  const sessionless = parseUrl(url.href)
+
+  if (sessionless) {
+    deleteSessionPathParams(sessionless, matcher)
+  }
+
+  if (!sessionless || sessionless.href === url.href) {
     return
   }
 
-  return applyUnwrappers(collapsed, unwrappers, index)
+  return applyUnwrappers(sessionless, unwrappers, index, matcher)
 }
 
 // Apply unwrappers in order and return the first extracted target URL that survives cleaning,
@@ -509,10 +526,9 @@ export const unwrapUrl = (
     return
   }
 
-  // A session id in the wrapper's path hides its exact path, as cleanUrl's loop reads it.
-  deleteSessionPathParams(parsed, getTrackingMatcher(defaultTrackingParams))
-
-  const target = applyUnwrappers(parsed, unwrappers, getUnwrapperIndex(unwrappers))
+  const index = getUnwrapperIndex(unwrappers)
+  const matcher = getTrackingMatcher(defaultTrackingParams)
+  const target = applyUnwrappers(parsed, unwrappers, index, matcher)
 
   if (!target) {
     return
@@ -577,9 +593,7 @@ export const purifyUrl = (url: string, options?: PurifyUrlOptions): string => {
   // Wrappers can nest (an email gateway wrapping a search redirect), so
   // unwrap repeatedly up to the depth limit.
   for (let depth = 0; depth < maxUnwrapDepth; depth += 1) {
-    deleteSessionPathParams(currentParsed, matcher)
-
-    const target = applyUnwrappers(currentParsed, unwrappers, index)
+    const target = applyUnwrappers(currentParsed, unwrappers, index, matcher)
 
     if (!target) {
       break

@@ -128,7 +128,7 @@ Removes tracking params and returns the serialized URL. Both this and `purifyUrl
 - A query with a signature (`sig`, `signature`, `X-Amz-Signature` or `X-Goog-Signature`) stays whole, since dropping anything breaks the signature.
 - `ts` stays on Alibaba DirectMail click URLs, which fail without it.
 
-A session id name the list holds is also dropped as a path parameter, as in `/page;jsessionid=<id>`. `cleanUrl` drops it before each unwrap pass too, so a wrapper path carrying one still unwraps. An entry's `value` is a regex or a function `(value, host) => boolean` tested on the percent-decoded value, where an escape that is not UTF-8, such as `%FC`, stays as written. Its `hosts` are exact hostnames or a regex, matched as trousse's `isHostOf` matches them, in any case and in Unicode or Punycode, with a host and its `www.` form matching alike.
+A session id name the list holds is also dropped as a path parameter, as in `/page;jsessionid=<id>`. A wrapper path carrying one, as in `/external-link.jspa;jsessionid=<id>?url=`, is tried again without it, by `purifyUrl` and `unwrapUrl` alike, so it still unwraps while a target carrying one keeps it. An entry's `value` is a regex or a function `(value, host) => boolean` tested on the percent-decoded value, where an escape that is not UTF-8, such as `%FC`, stays as written. Its `hosts` are exact hostnames or a regex, matched as trousse's `isHostOf` matches them, in any case and in Unicode or Punycode, with a host and its `www.` form matching alike.
 
 A tracking list is compiled on first use and cached per array. To change it, pass a new array.
 
