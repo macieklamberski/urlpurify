@@ -206,6 +206,7 @@ import { unwrapHatenaImage } from './unwraps/hatenaImage.js'
 import { unwrapHearthis } from './unwraps/hearthis.js'
 import { unwrapHellohq } from './unwraps/hellohq.js'
 import { unwrapHirkereso } from './unwraps/hirkereso.js'
+import { unwrapHongKongTunis } from './unwraps/hongKongTunis.js'
 import { unwrapHorde } from './unwraps/horde.js'
 import { unwrapHornetsecurity } from './unwraps/hornetsecurity.js'
 import { unwrapHrefLi } from './unwraps/hrefLi.js'
@@ -932,6 +933,7 @@ export const archiveProxyUnwrappers: Array<UrlUnwrapper> = [
   unwrapExciteTranslate,
   unwrapGoogleTranslate,
   unwrapGoogleWebLight,
+  unwrapHongKongTunis,
   unwrapLocWebArchive,
   unwrapMegalodon,
   unwrapNatlibNz,
