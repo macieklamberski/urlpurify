@@ -149,7 +149,8 @@ Builds an unwrapper for a target that sits in a query parameter:
 import { cleanUrl, createQueryUnwrapper, defaultUnwrappers } from 'urlpurifier'
 
 const unwrapExample = createQueryUnwrapper({
-  // The domain and every subdomain. Use `hosts` for exact hosts or a regex.
+  // The domain and every subdomain. Use `hosts` for exact hosts or a regex,
+  // or `subdomains` to match only the subdomains.
   domains: 'example.com',
   path: '/out',
   params: ['target'],
