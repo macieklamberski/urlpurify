@@ -1,36 +1,45 @@
-import { decodeBase64, decodePercent, isHttpUrl } from 'trousse'
+import { decodeBase64, isAnyOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createQueryUnwrapper } from '../utils.js'
+import {
+  appendLinkFragment,
+  createUnwrapper,
+  decodeEncodedScheme,
+  getBase64Target,
+  readParamTarget,
+} from '../utils.js'
 
-const encodedSchemeRegex = /^https?%3A/i
+const hostRegex = /\.acemln[a-d]\.com$/
 
-const baseExtractor = createQueryUnwrapper({
-  hosts: /\.acemln[a-d]\.com$/,
-  path: '/Prod/link-tracker',
-  params: ['redirectUrl'],
-})
+const decodeTarget = (value: string): string | undefined => {
+  const decoded = decodeBase64(value)
+
+  if (!decoded) {
+    return
+  }
+
+  return decodeEncodedScheme(decoded)
+}
 
 // ActiveCampaign ACEML link tracker (<host>.acemln[a-d].com/Prod/link-tracker
 // ?redirectUrl=<base64>). The redirectUrl param is base64 of the target, plain or percent-encoded,
 // or the plain target itself.
-export const unwrapAceml: UrlUnwrapper = (url) => {
-  const raw = baseExtractor(url)
+export const unwrapAceml: UrlUnwrapper = createUnwrapper({
+  hosts: hostRegex,
+  unwrap: (url) => {
+    if (!isAnyOf(url.pathname, '/Prod/link-tracker')) {
+      return
+    }
 
-  if (!raw) {
-    return
-  }
+    const target = getBase64Target(url, 'redirectUrl', decodeTarget)
 
-  let decoded = decodeBase64(raw)
+    if (target) {
+      return target
+    }
 
-  if (decoded && encodedSchemeRegex.test(decoded)) {
-    decoded = decodePercent(decoded)
-  }
+    const raw = readParamTarget(url, 'redirectUrl')
 
-  if (decoded && isHttpUrl(decoded)) {
-    return decoded
-  }
-
-  if (isHttpUrl(raw)) {
-    return raw
-  }
-}
+    if (raw && isHttpUrl(raw)) {
+      return appendLinkFragment(raw, url)
+    }
+  },
+})

@@ -1,6 +1,6 @@
 import { decodeBase64Url, isAnyOf, isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamTarget, getParamValues } from '../utils.js'
+import { getBase64Target, getParamTarget } from '../utils.js'
 
 export const hosts = [
   'bing.com',
@@ -13,6 +13,14 @@ export const hosts = [
 ]
 
 const bingPrefixRegex = /^a\d/
+
+const decodeClickValue = (value: string): string | undefined => {
+  if (!bingPrefixRegex.test(value)) {
+    return
+  }
+
+  return decodeBase64Url(value.slice(2))
+}
 
 // Bing redirects, in two shapes:
 // - search result (www.bing.com/ck/a?u=a1<base64url>). The `u` parameter is a base64url-encoded
@@ -37,16 +45,5 @@ export const unwrapBing: UrlUnwrapper = (url) => {
     return
   }
 
-  const value = getParamValues(url, 'u').at(0)
-  if (!value || !bingPrefixRegex.test(value)) {
-    return
-  }
-
-  const decoded = decodeBase64Url(value.slice(2))
-
-  if (!decoded || !isHttpUrl(decoded)) {
-    return
-  }
-
-  return decoded
+  return getBase64Target(url, 'u', decodeClickValue)
 }

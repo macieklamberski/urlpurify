@@ -1,6 +1,5 @@
-import { decodeBase64, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamValues } from '../utils.js'
+import { getBase64Target } from '../utils.js'
 
 // A forum root prefix, such as /forum/.
 const pathRegex = /^(?:\/[^/]+)?\/redirect\/?$/i
@@ -13,15 +12,5 @@ export const unwrapGfnLinkProxy: UrlUnwrapper = (url) => {
     return
   }
 
-  const raw = getParamValues(url, 'to').at(0)
-
-  if (!raw) {
-    return
-  }
-
-  const decoded = decodeBase64(raw)
-
-  if (decoded && isHttpUrl(decoded)) {
-    return decoded
-  }
+  return getBase64Target(url, 'to')
 }

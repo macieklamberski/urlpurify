@@ -1,6 +1,6 @@
 import { getQueryParam, isAnyOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamValues } from '../utils.js'
+import { getParamTarget } from '../utils.js'
 
 // H|<n>|<n>|<n> on a campaign send, TH|teste|<n>|<n> on a test send.
 const idRegex = /^T?H\|(?:\d+|teste)\|\d+\|\d+$/
@@ -16,5 +16,5 @@ export const unwrapLocaweb: UrlUnwrapper = (url) => {
     return
   }
 
-  return getParamValues(url, 'url').at(0)
+  return getParamTarget(url, 'url')
 }

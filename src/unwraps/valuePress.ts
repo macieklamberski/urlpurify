@@ -1,33 +1,26 @@
-import { decodeBase64, isHttpUrl } from 'trousse'
+import { decodeBase64, isAnyOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createQueryUnwrapper } from '../utils.js'
+import { createUnwrapper, getBase64Target } from '../utils.js'
 
-const baseExtractor = createQueryUnwrapper({
-  hosts: 'www.value-press.com',
-  path: '/bin/tools/link_counter',
-  params: ['l'],
-})
-
-// value press release click counter (www.value-press.com/bin/tools/link_counter?a=<id>&l=<base64>).
-// The l param is the target url base64-encoded twice.
-export const unwrapValuePress: UrlUnwrapper = (url) => {
-  const raw = baseExtractor(url)
-
-  if (!raw) {
-    return
-  }
-
-  const decodedOnce = decodeBase64(raw)
+const decodeTwice = (value: string): string | undefined => {
+  const decodedOnce = decodeBase64(value)
 
   if (!decodedOnce) {
     return
   }
 
-  const target = decodeBase64(decodedOnce)
-
-  if (!target || !isHttpUrl(target)) {
-    return
-  }
-
-  return target
+  return decodeBase64(decodedOnce)
 }
+
+// value press release click counter (www.value-press.com/bin/tools/link_counter?a=<id>&l=<base64>).
+// The l param is the target url base64-encoded twice.
+export const unwrapValuePress: UrlUnwrapper = createUnwrapper({
+  hosts: 'www.value-press.com',
+  unwrap: (url) => {
+    if (!isAnyOf(url.pathname, '/bin/tools/link_counter')) {
+      return
+    }
+
+    return getBase64Target(url, 'l', decodeTwice)
+  },
+})

@@ -1,32 +1,25 @@
-import { decodeBase64Url, isHttpUrl } from 'trousse'
+import { decodeBase64Url, isAnyOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createQueryUnwrapper } from '../utils.js'
+import { createUnwrapper, getBase64Target } from '../utils.js'
 
-const baseExtractor = createQueryUnwrapper({
-  hosts: [
-    'www.wikizero.biz',
-    'www.wikizero.net',
-    'www.wikizeroo.com',
-    'www.wikizeroo.net',
-    'www.wikizeroo.org',
-  ],
-  path: '/index.php',
-  params: ['q'],
-})
+const hosts = [
+  'www.wikizero.biz',
+  'www.wikizero.net',
+  'www.wikizeroo.com',
+  'www.wikizeroo.net',
+  'www.wikizeroo.org',
+]
 
 // WikiZero Wikipedia mirror proxy (www.wikizero.biz/index.php?q=<base64url>). The q param is a
 // base64url-encoded Wikipedia URL without padding. Opt-in: the mirror serves Wikipedia where the
 // reader may not reach it directly.
-export const unwrapWikizero: UrlUnwrapper = (url) => {
-  const raw = baseExtractor(url)
+export const unwrapWikizero: UrlUnwrapper = createUnwrapper({
+  hosts,
+  unwrap: (url) => {
+    if (!isAnyOf(url.pathname, '/index.php')) {
+      return
+    }
 
-  if (!raw) {
-    return
-  }
-
-  const decoded = decodeBase64Url(raw)
-
-  if (decoded && isHttpUrl(decoded)) {
-    return decoded
-  }
-}
+    return getBase64Target(url, 'q', decodeBase64Url)
+  },
+})

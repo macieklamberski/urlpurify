@@ -1,6 +1,6 @@
 import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamValues } from '../utils.js'
+import { getParamTarget } from '../utils.js'
 
 const paths = ['/dia/track.jsp', '/salsa/track.jsp']
 
@@ -12,7 +12,7 @@ export const unwrapSalsa: UrlUnwrapper = (url) => {
     return
   }
 
-  const target = getParamValues(url, 'url').at(0)
+  const target = getParamTarget(url, 'url')
 
   if (!target || !isHttpUrl(target)) {
     return

@@ -1,6 +1,5 @@
-import { decodeBase64, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createUnwrapper, getParamValues } from '../utils.js'
+import { createUnwrapper, getBase64Target } from '../utils.js'
 
 const pathRegex = /^\/api\/v1\/Click\/b\/[A-Za-z0-9]+$/i
 
@@ -13,16 +12,6 @@ export const unwrapDigikala: UrlUnwrapper = createUnwrapper({
       return
     }
 
-    const encoded = getParamValues(url, 'b64').at(0)
-
-    if (!encoded) {
-      return
-    }
-
-    const target = decodeBase64(encoded)
-
-    if (target && isHttpUrl(target)) {
-      return target
-    }
+    return getBase64Target(url, 'b64')
   },
 })

@@ -1,39 +1,33 @@
-import { decodeBase64, decodePercent, isHttpUrl } from 'trousse'
+import { decodeBase64, decodePercent } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createQueryUnwrapper } from '../utils.js'
+import { createUnwrapper, getBase64Target } from '../utils.js'
 
-const baseExtractor = createQueryUnwrapper({
-  hosts: ['web-engage.augure.com', 'web-profilepr.engage.augure.com', 'wpp.engage.augure.com'],
-  params: ['id1'],
-})
+const hosts = ['web-engage.augure.com', 'web-profilepr.engage.augure.com', 'wpp.engage.augure.com']
 
 // The account id, then a message id joined to the sender's domain.
 const pathRegex = /^\/(?:pub|www)\/tracking\/\d+\/[^/]+$/i
 
-// Augure, now Launchmetrics, email click tracker
-// (web-engage.augure.com/pub/tracking/<account>/<message>?id1=<base64>). The id1 param is a
-// percent-encoded target URL in MIME base64, whose line breaks atob skips. Opt-in: unwrapping
-// drops the sender's click count, as with the other email trackers.
-export const unwrapAugure: UrlUnwrapper = (url) => {
-  if (!pathRegex.test(url.pathname)) {
-    return
-  }
-
-  const raw = baseExtractor(url)
-
-  if (!raw) {
-    return
-  }
-
-  const decoded = decodeBase64(raw)
+const decodeTarget = (value: string): string | undefined => {
+  const decoded = decodeBase64(value)
 
   if (!decoded) {
     return
   }
 
-  const target = decodePercent(decoded)
-
-  if (isHttpUrl(target)) {
-    return target
-  }
+  return decodePercent(decoded)
 }
+
+// Augure, now Launchmetrics, email click tracker
+// (web-engage.augure.com/pub/tracking/<account>/<message>?id1=<base64>). The id1 param is a
+// percent-encoded target URL in MIME base64, whose line breaks atob skips. Opt-in: unwrapping
+// drops the sender's click count, as with the other email trackers.
+export const unwrapAugure: UrlUnwrapper = createUnwrapper({
+  hosts,
+  unwrap: (url) => {
+    if (!pathRegex.test(url.pathname)) {
+      return
+    }
+
+    return getBase64Target(url, 'id1', decodeTarget)
+  },
+})

@@ -1,6 +1,6 @@
 import { decodeBase64Url, isHostOf, isHttpUrl, isString, parseJson } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createQueryUnwrapper, getParamValues } from '../utils.js'
+import { appendLinkFragment, createQueryUnwrapper, readParamTarget } from '../utils.js'
 
 const hosts = ['go.mnsvc.com', 'mandrillapp.com']
 
@@ -36,11 +36,17 @@ export const unwrapMandrill: UrlUnwrapper = (url) => {
     return
   }
 
-  const payload = getParamValues(url, 'p').at(0)
+  const payload = readParamTarget(url, 'p')
 
   if (!payload) {
     return
   }
 
-  return decodePayload(payload)
+  const decoded = decodePayload(payload)
+
+  if (!decoded) {
+    return
+  }
+
+  return appendLinkFragment(decoded, url)
 }

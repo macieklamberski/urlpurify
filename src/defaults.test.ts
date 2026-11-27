@@ -1,5 +1,8 @@
 import { describe, expect, it } from 'bun:test'
+import { readFileSync } from 'node:fs'
+import { Glob } from 'bun'
 import * as urlpurifier from './index.js'
+import type { UrlUnwrapper } from './types.js'
 
 const exportEntries: Array<[string, unknown]> = Object.entries(urlpurifier)
 
@@ -33,6 +36,35 @@ const categories = [
   urlpurifier.feedToolUnwrappers,
   urlpurifier.genericCarrierUnwrappers,
 ]
+
+// A share, subscribe or feed tool link opens a page that reads only the query.
+const intentCategories = [
+  urlpurifier.shareIntentUnwrappers,
+  urlpurifier.subscribeIntentUnwrappers,
+  urlpurifier.feedToolUnwrappers,
+]
+
+const fixtureUrlRegex = /https?:\/\/[^\s'"`<>\\]+/g
+
+const readFixtureUrls = (): Array<string> => {
+  const urls: Array<string> = []
+  const testFiles = new Glob('unwraps/*.test.ts').scanSync({
+    cwd: import.meta.dirname,
+    absolute: true,
+  })
+
+  for (const file of testFiles) {
+    for (const [href] of readFileSync(file, 'utf8').matchAll(fixtureUrlRegex)) {
+      if (href.includes('#') || href.includes('${') || !URL.canParse(href)) {
+        continue
+      }
+
+      urls.push(href)
+    }
+  }
+
+  return [...new Set(urls)]
+}
 
 describe('defaultUnwrappers', () => {
   it('should hold exactly the default set', () => {
@@ -157,6 +189,37 @@ describe('unwrapper categories', () => {
     const placed = categories.flat()
 
     expect(new Set(placed).size).toBe(placed.length)
+  })
+})
+
+describe('redirect and proxy unwrappers', () => {
+  it('should still unwrap a fixture url with a fragment appended', () => {
+    const redirectCategories = categories.filter((category) => {
+      return !intentCategories.includes(category)
+    })
+    const redirectUnwrappers: Array<[string, UrlUnwrapper]> = []
+
+    for (const [name, unwrapper] of exportedUnwrappers) {
+      const entry = redirectCategories.flat().find((candidate) => candidate === unwrapper)
+
+      if (entry) {
+        redirectUnwrappers.push([name, entry])
+      }
+    }
+
+    const stopped: Array<string> = []
+
+    for (const href of readFixtureUrls()) {
+      for (const [name, unwrap] of redirectUnwrappers) {
+        if (unwrap(new URL(href)) && !unwrap(new URL(`${href}#x`))) {
+          stopped.push(`${name} ${href}`)
+        }
+      }
+    }
+
+    const expected: Array<string> = []
+
+    expect(stopped).toEqual(expected)
   })
 })
 

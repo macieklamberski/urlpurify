@@ -1,9 +1,8 @@
-import { decodePercent, isHttpUrl } from 'trousse'
+import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamValues } from '../utils.js'
+import { getParamTarget } from '../utils.js'
 
 const pathRegex = /^\/(?:[^/]+\/)*scripts\/click\.php$/i
-const encodedSchemeRegex = /^https?%3A/i
 
 // Post Affiliate Pro click script, run by each merchant on its own host under any install folder
 // (<host>/<folder>/scripts/click.php?a_aid=<affiliate>&a_bid=<banner>&desturl=<target>). The
@@ -15,12 +14,7 @@ export const unwrapPostAffiliatePro: UrlUnwrapper = (url) => {
     return
   }
 
-  let target = getParamValues(url, 'desturl').at(0)
-
-  // A target encoded twice still holds an encoded scheme after one decode.
-  if (target && encodedSchemeRegex.test(target)) {
-    target = decodePercent(target)
-  }
+  const target = getParamTarget(url, 'desturl')
 
   if (target && isHttpUrl(target)) {
     return target

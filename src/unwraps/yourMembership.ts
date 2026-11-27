@@ -1,9 +1,8 @@
-import { decodePercent, getQueryParam, isAnyOf, isHttpUrl } from 'trousse'
+import { getQueryParam, isAnyOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamValues } from '../utils.js'
+import { getParamTarget } from '../utils.js'
 
 const ymlinkRegex = /^\d+$/
-const encodedSchemeRegex = /^https?%3A/i
 
 // YourMembership association email click tracker, served from each association's own domain
 // (<association>/link.asp?e=<email>&job=<n>&ymlink=<n>&finalurl=<target>). A numeric `ymlink` and
@@ -16,12 +15,7 @@ export const unwrapYourMembership: UrlUnwrapper = (url) => {
     return
   }
 
-  let target = getParamValues(url, 'finalurl').at(0)
-
-  // A target encoded twice still holds an encoded scheme after one decode.
-  if (target && encodedSchemeRegex.test(target)) {
-    target = decodePercent(target)
-  }
+  const target = getParamTarget(url, 'finalurl')
 
   if (target && isHttpUrl(target)) {
     return target

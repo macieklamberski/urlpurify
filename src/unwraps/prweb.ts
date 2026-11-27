@@ -1,25 +1,16 @@
-import { decodeBase64, isHttpUrl } from 'trousse'
+import { isAnyOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createQueryUnwrapper } from '../utils.js'
-
-const baseExtractor = createQueryUnwrapper({
-  hosts: 'www.prweb.net',
-  path: '/Redirect.aspx',
-  params: ['id'],
-})
+import { createUnwrapper, getBase64Target } from '../utils.js'
 
 // PRWeb release click tracker (www.prweb.net/Redirect.aspx?id=<base64>). The id param is a
 // base64-encoded target URL.
-export const unwrapPrweb: UrlUnwrapper = (url) => {
-  const raw = baseExtractor(url)
+export const unwrapPrweb: UrlUnwrapper = createUnwrapper({
+  hosts: 'www.prweb.net',
+  unwrap: (url) => {
+    if (!isAnyOf(url.pathname, '/Redirect.aspx')) {
+      return
+    }
 
-  if (!raw) {
-    return
-  }
-
-  const decoded = decodeBase64(raw)
-
-  if (decoded && isHttpUrl(decoded)) {
-    return decoded
-  }
-}
+    return getBase64Target(url, 'id')
+  },
+})

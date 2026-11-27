@@ -1,8 +1,6 @@
-import { decodePercent, hasQueryParam, isAnyOf, isHttpUrl } from 'trousse'
+import { hasQueryParam, isAnyOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamValues } from '../utils.js'
-
-const encodedSchemeRegex = /^https?%3A/i
+import { getParamTarget } from '../utils.js'
 
 // QUALITYCLICK partner software by NetSlave, run by each merchant on its own host
 // (<host>/go.cgi?pid=<partner>&wmid=<id>&cpid=<id>&target=<target>). Other scripts also answer on
@@ -17,12 +15,7 @@ export const unwrapQualityClick: UrlUnwrapper = (url) => {
     return
   }
 
-  let target = getParamValues(url, 'target').at(0)
-
-  // A target encoded twice still holds an encoded scheme after one decode.
-  if (target && encodedSchemeRegex.test(target)) {
-    target = decodePercent(target)
-  }
+  const target = getParamTarget(url, 'target')
 
   if (target && isHttpUrl(target)) {
     return target

@@ -1,27 +1,20 @@
-import { decodeBase64Url, isHttpUrl } from 'trousse'
+import { decodeBase64Url } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createQueryUnwrapper } from '../utils.js'
+import { createUnwrapper, getBase64Target } from '../utils.js'
 
-const extractEncoded = createQueryUnwrapper({
-  hosts: /^(?:us|eu|ca)-[a-z]+-\d\.protection\.sophos\.com$/,
-  path: '/',
-  params: ['u'],
-})
+const hostRegex = /^(?:us|eu|ca)-[a-z]+-\d\.protection\.sophos\.com$/
 
 // Sophos Email time-of-click protection (<region>.protection.sophos.com/?d=<domain>&u=<base64url>),
 // on regional hosts such as eu-central-1 and us-west-2. The `d` param holds only the target domain.
 // Not included in defaultUnwrappers: the gateway checks the target when the link is clicked,
 // so unwrapping skips the check the recipient's organization put in place.
-export const unwrapSophos: UrlUnwrapper = (url) => {
-  const encoded = extractEncoded(url)
+export const unwrapSophos: UrlUnwrapper = createUnwrapper({
+  hosts: hostRegex,
+  unwrap: (url) => {
+    if (url.pathname !== '/') {
+      return
+    }
 
-  if (!encoded) {
-    return
-  }
-
-  const decoded = decodeBase64Url(encoded)
-
-  if (decoded && isHttpUrl(decoded)) {
-    return decoded
-  }
-}
+    return getBase64Target(url, 'u', decodeBase64Url)
+  },
+})
