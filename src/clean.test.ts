@@ -1638,6 +1638,61 @@ describe('session ids', () => {
   })
 })
 
+describe('cache busters', () => {
+  it('should strip a timestamp ts', () => {
+    const value = 'https://example.com/feed?id=7&ts=1746842972'
+    const expected = 'https://example.com/feed?id=7'
+
+    expect(cleanUrl(value)).toBe(expected)
+  })
+
+  it('should strip a millisecond timestamp _', () => {
+    const value = 'https://example.com/feed?id=7&_=1699999999999'
+    const expected = 'https://example.com/feed?id=7'
+
+    expect(cleanUrl(value)).toBe(expected)
+  })
+
+  it('should strip a hex cb', () => {
+    const value = 'https://example.com/feed?id=7&cb=8f3a2c'
+    const expected = 'https://example.com/feed?id=7'
+
+    expect(cleanUrl(value)).toBe(expected)
+  })
+
+  it('should keep a ts selecting the content type', () => {
+    const value = 'https://example.com/rss/feed/comments?tc=content&ts=posts&ti=5124'
+
+    expect(cleanUrl(value)).toBe(value)
+  })
+
+  it('should keep a JSONP callback cb', () => {
+    const value = 'https://example.com/translate_a/element.js?cb=googleTranslateElementInit'
+
+    expect(cleanUrl(value)).toBe(value)
+  })
+
+  it('should strip a hex value without a digit', () => {
+    const value = 'https://example.com/menu?ts=cafe'
+    const expected = 'https://example.com/menu'
+
+    expect(cleanUrl(value)).toBe(expected)
+  })
+
+  it('should keep a word preview', () => {
+    const value = 'https://example.com/kp/card?asin=B0C1234567&preview=inline'
+
+    expect(cleanUrl(value)).toBe(value)
+  })
+
+  it('should strip a numeric preview', () => {
+    const value = 'https://example.com/post?p=42&preview=1'
+    const expected = 'https://example.com/post?p=42'
+
+    expect(cleanUrl(value)).toBe(expected)
+  })
+})
+
 describe('path params', () => {
   it('should strip a jsessionid path param', () => {
     const value = 'https://example.com/site/Donation2;jsessionid=00000000.app20023b?idb=682725718'
@@ -1671,6 +1726,12 @@ describe('path params', () => {
     const expected = 'https://example.com/shop/item/42'
 
     expect(cleanUrl(value)).toBe(expected)
+  })
+
+  it('should keep a path param a non-session literal names', () => {
+    const value = 'https://example.com/a;fbclid=1;x=2/b'
+
+    expect(cleanUrl(value)).toBe(value)
   })
 
   it('should keep a path param whose name only an entry holds', () => {

@@ -22,6 +22,7 @@ import {
   videoExtensions,
 } from 'trousse'
 import { defaultTrackingParams, defaultUnwrappers } from './defaults.js'
+import { sessionParams } from './tracking/session.js'
 import type { CleanUrlOptions, TrackingEntry, TrackingParam, UrlUnwrapper } from './types.js'
 import { unwrapperHosts } from './utils.js'
 
@@ -41,6 +42,8 @@ const signatureParams = [
 ]
 
 const pathParamRegex = /;([^;/=]+)=[^;/]*/g
+
+const sessionLiterals = sessionParams.filter(isString).map((param) => param.toLowerCase())
 
 const trackingMatcherCache = new WeakMap<ReadonlyArray<TrackingParam>, TrackingMatcher>()
 
@@ -125,10 +128,13 @@ const isTrackedPair = (
   return matcher.entries.some((entry) => matchesEntry(entry, name, value, host))
 }
 
-// Java servlet containers write the session id into the path, `/page;jsessionid=<id>`.
+// Java servlet containers write the session id into the path, `/page;jsessionid=<id>`. Other
+// path params, as `;ts=1`, address the resource.
 const deletePathParams = (url: URL, matcher: TrackingMatcher): void => {
   const pathname = url.pathname.replace(pathParamRegex, (param, name: string) => {
-    if (matcher.literals.has(name.toLowerCase())) {
+    const lowerName = name.toLowerCase()
+
+    if (sessionLiterals.includes(lowerName) && matcher.literals.has(lowerName)) {
       return ''
     }
 
