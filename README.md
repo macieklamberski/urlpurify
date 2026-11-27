@@ -115,7 +115,7 @@ purifyUrl(url, {
 
 An unwrapped target that isn't a usable URL is ignored, and the wrapper is kept.
 
-`cleanUrl` and `CleanUrlOptions`, the earlier names, still work and are deprecated until the next major.
+The earlier names, `cleanUrl` and `CleanUrlOptions`, still work. Both are deprecated and go away in the next major.
 
 ### `unwrapUrl(url, unwrappers?)`
 
