@@ -1,6 +1,6 @@
 import { isAnyOf, isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createQueryUnwrapper, readParamTarget } from '../utils.js'
+import { createQueryUnwrapper, createUnwrapper, readParamTarget } from '../utils.js'
 
 const submitPathRegex = /^\/submit\/?$/i
 
@@ -44,6 +44,16 @@ const unwrapBuzzSubmit: UrlUnwrapper = (url) => {
 // when targetUrl= is empty, also on fr. and uk.buzz.yahoo.com, and buzz.yahoo.com/submit?submitUrl=
 // or u= when submitUrl= holds the title), never the t=, d=, headline= or submitHeadline= text.
 // Opt-in: unwrapping returns the shared page, not the form that saves or votes for it.
-export const unwrapYahooBookmarks: UrlUnwrapper = (url) => {
-  return unwrapBookmarklet(url) ?? unwrapToolbar(url) ?? unwrapBuzz(url) ?? unwrapBuzzSubmit(url)
-}
+export const unwrapYahooBookmarks = createUnwrapper({
+  hosts: [
+    'bookmarks.yahoo.com',
+    'myweb2.search.yahoo.com',
+    'myweb.yahoo.com',
+    'buzz.yahoo.com',
+    'fr.buzz.yahoo.com',
+    'uk.buzz.yahoo.com',
+  ],
+  unwrap: (url) => {
+    return unwrapBookmarklet(url) ?? unwrapToolbar(url) ?? unwrapBuzz(url) ?? unwrapBuzzSubmit(url)
+  },
+})

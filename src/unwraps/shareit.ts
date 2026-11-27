@@ -1,5 +1,4 @@
-import type { UrlUnwrapper } from '../types.js'
-import { createQueryUnwrapper } from '../utils.js'
+import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
 const extractAffiliate = createQueryUnwrapper({
   hosts: ['www.shareit.com', 'esd.element5.com'],
@@ -16,6 +15,9 @@ const extractSecureAffiliate = createQueryUnwrapper({
 // MyCommerce Share-it affiliate link (www.shareit.com/affiliate.html?affiliateid=<id>&target=
 // <target>, also on esd.element5.com and secure.shareit.com/shareit/affiliate.html). Opt-in:
 // unwrapping drops the publisher's affiliate commission.
-export const unwrapShareit: UrlUnwrapper = (url) => {
-  return extractAffiliate(url) ?? extractSecureAffiliate(url)
-}
+export const unwrapShareit = createUnwrapper({
+  hosts: ['www.shareit.com', 'esd.element5.com', 'secure.shareit.com'],
+  unwrap: (url) => {
+    return extractAffiliate(url) ?? extractSecureAffiliate(url)
+  },
+})

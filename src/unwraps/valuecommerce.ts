@@ -1,5 +1,4 @@
-import type { UrlUnwrapper } from '../types.js'
-import { createQueryUnwrapper } from '../utils.js'
+import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
 const dckPathRegex = /^\/dck\/[0-9a-f]+$/i
 
@@ -25,10 +24,13 @@ const unwrapDck = createQueryUnwrapper({
 })
 
 // ValueCommerce affiliate redirect, in the three shapes above.
-export const unwrapValuecommerce: UrlUnwrapper = (url) => {
-  if (dckPathRegex.test(url.pathname)) {
-    return unwrapDck(url)
-  }
+export const unwrapValuecommerce = createUnwrapper({
+  hosts: ['ck.jp.ap.valuecommerce.com', 'atq.ck.valuecommerce.com', 'dalr.valuecommerce.com'],
+  unwrap: (url) => {
+    if (dckPathRegex.test(url.pathname)) {
+      return unwrapDck(url)
+    }
 
-  return unwrapReferral(url) ?? unwrapAtqReferral(url)
-}
+    return unwrapReferral(url) ?? unwrapAtqReferral(url)
+  },
+})

@@ -1,19 +1,23 @@
-import type { UrlUnwrapper } from '../types.js'
-import { createQueryUnwrapper } from '../utils.js'
+import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
 const clickPathRegex = /^\/h\/(?:i\/[A-Za-z0-9]+\/)?[A-Za-z0-9]+$/i
 
+const hosts = ['s.bl-1.com', 's2.bl-1.com', 'microsoft.bl-1.com']
+
 const extractTarget = createQueryUnwrapper({
-  hosts: ['s.bl-1.com', 's2.bl-1.com', 'microsoft.bl-1.com'],
+  hosts,
   params: ['url'],
 })
 
 // Bananatag email click tracker (s.bl-1.com/h/<id>?url=<target>, also /h/i/<id>/<id>).
 // Opt-in: unwrapping removes the sender's click count.
-export const unwrapBananatag: UrlUnwrapper = (url) => {
-  if (!clickPathRegex.test(url.pathname)) {
-    return
-  }
+export const unwrapBananatag = createUnwrapper({
+  hosts,
+  unwrap: (url) => {
+    if (!clickPathRegex.test(url.pathname)) {
+      return
+    }
 
-  return extractTarget(url)
-}
+    return extractTarget(url)
+  },
+})

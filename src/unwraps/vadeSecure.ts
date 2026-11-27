@@ -1,5 +1,4 @@
-import type { UrlUnwrapper } from '../types.js'
-import { createQueryUnwrapper } from '../utils.js'
+import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
 const safeproxyPathRegex = /^\/safeproxy\/v[34]$/i
 
@@ -19,10 +18,18 @@ const extractSafeproxy = createQueryUnwrapper({
 // m365.us and gws.eu). The `f`, `i`, `k`, `r` and `s` params authenticate the wrapper.
 // Not included in defaultUnwrappers: the gateway checks the target when the link is clicked,
 // so unwrapping skips the check the recipient's organization put in place.
-export const unwrapVadeSecure: UrlUnwrapper = (url) => {
-  if (safeproxyPathRegex.test(url.pathname)) {
-    return extractSafeproxy(url)
-  }
+export const unwrapVadeSecure = createUnwrapper({
+  hosts: [
+    'antiphishing.vadesecure.com',
+    'm365.eu.vadesecure.com',
+    'm365.us.vadesecure.com',
+    'gws.eu.vadesecure.com',
+  ],
+  unwrap: (url) => {
+    if (safeproxyPathRegex.test(url.pathname)) {
+      return extractSafeproxy(url)
+    }
 
-  return extractAntiphishing(url)
-}
+    return extractAntiphishing(url)
+  },
+})

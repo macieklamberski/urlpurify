@@ -1,5 +1,4 @@
-import type { UrlUnwrapper } from '../types.js'
-import { createQueryUnwrapper } from '../utils.js'
+import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
 const deepLinkPathRegex = /^\/deep_link\/\d+(?:\/\d+)?$/i
 
@@ -17,10 +16,13 @@ const extractAffiliateLink = createQueryUnwrapper({
 // Involve Asia affiliate deep link (go.isclix.com/deep_link/<id>[/<id>]?url=<target>, and
 // invol.co/aff_m?offer_id=<id>&aff_id=<id>&url=<target>). Not included in defaultUnwrappers:
 // unwrapping drops the publisher's commission.
-export const unwrapInvolveAsia: UrlUnwrapper = (url) => {
-  if (deepLinkPathRegex.test(url.pathname)) {
-    return extractDeepLink(url)
-  }
+export const unwrapInvolveAsia = createUnwrapper({
+  hosts: ['go.isclix.com', 'invol.co'],
+  unwrap: (url) => {
+    if (deepLinkPathRegex.test(url.pathname)) {
+      return extractDeepLink(url)
+    }
 
-  return extractAffiliateLink(url)
-}
+    return extractAffiliateLink(url)
+  },
+})

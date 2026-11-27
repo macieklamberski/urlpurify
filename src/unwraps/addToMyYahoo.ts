@@ -1,6 +1,5 @@
 import { isAnyOf, isHostOf } from 'trousse'
-import type { UrlUnwrapper } from '../types.js'
-import { createQueryUnwrapper, readParamTarget } from '../utils.js'
+import { createQueryUnwrapper, createUnwrapper, readParamTarget } from '../utils.js'
 
 const hosts = ['add.my.yahoo.com', 'add.my.yahoo.co.jp']
 
@@ -27,22 +26,25 @@ const unwrapContent = createQueryUnwrapper({
 // and add.my.yahoo.com/content?url=), also behind Yahoo's click redirect
 // (us.rd.yahoo.com/my/.../*<add link>, rd.yahoo.co.jp/myyahoo/.../*<add link>). Opt-in: the button
 // opens My Yahoo's page that adds the feed, not the feed.
-export const unwrapAddToMyYahoo: UrlUnwrapper = (url) => {
-  if (isHostOf(url, 'us.rd.yahoo.com')) {
-    if (!isAnyOf(url.pathname, usRedirectPathRegex)) {
-      return
+export const unwrapAddToMyYahoo = createUnwrapper({
+  hosts: [...hosts, 'us.rd.yahoo.com', 'rd.yahoo.co.jp'],
+  unwrap: (url) => {
+    if (isHostOf(url, 'us.rd.yahoo.com')) {
+      if (!isAnyOf(url.pathname, usRedirectPathRegex)) {
+        return
+      }
+
+      return readParamTarget(url, 'url')
     }
 
-    return readParamTarget(url, 'url')
-  }
+    if (isHostOf(url, 'rd.yahoo.co.jp')) {
+      if (!isAnyOf(url.pathname, jpRedirectPathRegex)) {
+        return
+      }
 
-  if (isHostOf(url, 'rd.yahoo.co.jp')) {
-    if (!isAnyOf(url.pathname, jpRedirectPathRegex)) {
-      return
+      return readParamTarget(url, 'url')
     }
 
-    return readParamTarget(url, 'url')
-  }
-
-  return unwrapRss(url) ?? unwrapContent(url)
-}
+    return unwrapRss(url) ?? unwrapContent(url)
+  },
+})

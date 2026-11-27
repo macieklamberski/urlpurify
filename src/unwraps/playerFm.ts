@@ -1,15 +1,16 @@
-import type { UrlUnwrapper } from '../types.js'
-import { createQueryUnwrapper } from '../utils.js'
+import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
+
+const hosts = ['player.fm']
 
 const extractImporter = createQueryUnwrapper({
-  hosts: 'player.fm',
+  hosts,
   path: '/importer/feed',
   params: ['url'],
   ignoreLinkFragment: true,
 })
 
 const extractSubscribe = createQueryUnwrapper({
-  hosts: 'player.fm',
+  hosts,
   path: '/subscribe',
   params: ['id'],
   ignoreLinkFragment: true,
@@ -18,6 +19,9 @@ const extractSubscribe = createQueryUnwrapper({
 // Player FM feed importer and subscribe link (player.fm/importer/feed?url=<feed>, also
 // /subscribe?id=<feed>). Opt-in in the subscribe intent group: the link adds the feed to a Player
 // FM account, it never redirects to it.
-export const unwrapPlayerFm: UrlUnwrapper = (url) => {
-  return extractImporter(url) ?? extractSubscribe(url)
-}
+export const unwrapPlayerFm = createUnwrapper({
+  hosts,
+  unwrap: (url) => {
+    return extractImporter(url) ?? extractSubscribe(url)
+  },
+})
