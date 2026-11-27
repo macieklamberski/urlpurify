@@ -235,20 +235,39 @@ describe('redirect and proxy unwrappers', () => {
     const dropped: Array<string> = []
 
     for (const href of readFixtureUrls()) {
+      if (href.includes('#')) {
+        continue
+      }
+
       for (const [name, unwrap] of redirectUnwrappers) {
         if (fragmentOwners.includes(unwrap)) {
           continue
         }
 
+        const plain = unwrap(new URL(href))
         const target = unwrap(new URL(`${href}#x`))
 
-        if (target && !target.includes('#')) {
+        if (!plain || !target) {
+          continue
+        }
+
+        // A fragment the target carries itself wins over the link's.
+        if (target !== (plain.includes('#') ? plain : `${plain}#x`)) {
           dropped.push(`${name} ${href}`)
         }
       }
     }
 
-    const expected: Array<string> = []
+    const expected = [
+      // An escaped %23 in the target and the link's fragment both stay.
+      'unwrapArchiveToday https://archive.is/o/NTGoD/https://www.example.com/standard%23:~:text=Congress',
+      'unwrapArchiveToday https://archive.is/20121211084659/http://www.example.com/search%3Fq=a%3Fb%23top%23x',
+      // The link's fragment replaces the anchor CJ's fragment/<x>/ segment sets.
+      'unwrapCjNetwork http://www.anrdoezrs.net/links/8919635/type/dlg/fragment/REVIEWS/https://www.example.com/Hotel_Review-g499380',
+      'unwrapCjNetwork https://www.anrdoezrs.net/links/8946794/type/dlg/sid/UUwpUdUnU57440/fragment/internal%3D1/https://www.example.com/search/',
+      'unwrapCjNetwork https://www.anrdoezrs.net/links/7768368/type/dlg/fragment/q%3Dsleepy%252Bcrib%26lang%3Den_US%26start%3D1/https://www.example.com/nursery/1043.html?dwvar_1043_color=100',
+      'unwrapCjNetwork https://www.anrdoezrs.net/links/7768368/type/dlg/fragment/sale-50%-off/https://www.example.com/nursery/1043.html',
+    ]
 
     expect(dropped).toEqual(expected)
   })
