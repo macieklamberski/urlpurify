@@ -216,8 +216,9 @@ const fileExtensions = new Set(
 )
 
 // Repairs a scheme such as `http:// https://host` and a host such as `example.com)` through
-// `resolveUrl`, then drops a target that is not http, holds a control character or keeps a junk
-// host: not a hostname such as `,ccam.cc`, no dot between two labels, or a file extension.
+// `resolveUrl`, then drops a target that is not http, holds a control character, carries userinfo
+// or keeps a junk host: not a hostname such as `,ccam.cc`, no dot between two labels, or a file
+// extension.
 const cleanTarget = (target: string | undefined): string | undefined => {
   if (!target) {
     return
@@ -236,7 +237,14 @@ const cleanTarget = (target: string | undefined): string | undefined => {
     return
   }
 
-  const hostname = parseUrl(repaired)?.hostname ?? ''
+  const parsed = parseUrl(repaired)
+
+  // A target `https://example.com@example.net/` goes to example.net while reading as example.com.
+  if (parsed?.username || parsed?.password) {
+    return
+  }
+
+  const hostname = parsed?.hostname ?? ''
 
   if (!dottedHostRegex.test(hostname) && !isIpAddress(hostname)) {
     return

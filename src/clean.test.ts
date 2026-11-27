@@ -1098,6 +1098,39 @@ describe('cleanUrl with a malformed target', () => {
       'https://example.org/news/',
     )
   })
+
+  it('should keep the wrapper when the target host is preceded by a username', () => {
+    const value = 'https://redirect.example.com/?target=https://example.com@example.net/'
+
+    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
+  })
+
+  it('should keep the wrapper when the target carries a username and password', () => {
+    const value = 'https://redirect.example.com/?target=https://user:secret@example.net/'
+
+    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
+  })
+
+  it('should keep the wrapper when an entity-encoded at sign decodes into a username', () => {
+    const value =
+      'https://redirect.example.com/?target=https%3A%2F%2Fexample.com%26%2364%3Bexample.net%2F%26page%3D1'
+
+    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
+  })
+
+  it('should keep the wrapper when an archived target is preceded by a username', () => {
+    const value = 'https://web.archive.org/web/20200101000000/example.com@example.net'
+
+    expect(cleanUrl(value, { unwrappers: [unwrapWebArchive] })).toBe(value)
+  })
+
+  it('should unwrap a target with an at sign in its path and query', () => {
+    const value =
+      'https://redirect.example.com/?target=https%3A%2F%2Fexample.net%2F%40author%3Fmail%3Dreader%40example.com'
+    const expected = 'https://example.net/@author?mail=reader@example.com'
+
+    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(expected)
+  })
 })
 
 describe('self-referential ref param', () => {
