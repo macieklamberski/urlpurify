@@ -334,6 +334,36 @@ describe('createQueryUnwrapper', () => {
       expect(extract(value)).toBe(expected)
     })
 
+    it('should keep a plus in an unencoded target without a scheme', () => {
+      const value = new URL('https://redirect.example.com/?wgtarget=www.example.com/a+b')
+      const expected = 'www.example.com/a+b'
+
+      expect(extract(value)).toBe(expected)
+    })
+
+    it('should keep a plus in an unencoded protocol-relative target', () => {
+      const value = new URL('https://redirect.example.com/?wgtarget=//www.example.com/a+b')
+      const expected = '//www.example.com/a+b'
+
+      expect(extract(value)).toBe(expected)
+    })
+
+    it('should keep a plus in an unencoded target with one slash after the scheme', () => {
+      const value = new URL('https://redirect.example.com/?wgtarget=https:/www.example.com/a+b')
+      const expected = 'https:/www.example.com/a+b'
+
+      expect(extract(value)).toBe(expected)
+    })
+
+    it('should read a plus in an encoded target without a scheme as a space', () => {
+      const value = new URL(
+        'https://redirect.example.com/?wgtarget=www.example.com%2Fsearch%3Fq%3DFreet+Tanga',
+      )
+      const expected = 'www.example.com/search?q=Freet Tanga'
+
+      expect(extract(value)).toBe(expected)
+    })
+
     it('should read the first copy of the param', () => {
       const value = new URL(
         'https://redirect.example.com/?wgtarget=https://www.example.com/a+b&wgtarget=https://www.example.com/c',

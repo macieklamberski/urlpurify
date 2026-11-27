@@ -41,11 +41,12 @@ export const decodeEncodedScheme = (value: string): string => {
   return decodePercent(value)
 }
 
-const unencodedTargetRegex = /^https?:\/\//i
+const unencodedTargetRegex = /^(?:https?:\/|\/\/|[\p{L}\p{N}-]+(?:\.[\p{L}\p{N}-]+)+(?::\d+)?\/)/iu
 
 // A raw query param value decoded as `URLSearchParams` does, except that a malformed escape stays
 // as written, and a `+` stays in an unencoded target, as in `wgtarget=https://example.com/a+b/`,
-// which `URLSearchParams` reads as a space.
+// which `URLSearchParams` reads as a space. Form encoding escapes `/`, so a target whose scheme,
+// `//` or host is followed by a raw `/` was not form-encoded.
 export const decodeParamValue = (raw: string): string => {
   if (!unencodedTargetRegex.test(raw)) {
     return decodePercent(raw.replaceAll('+', ' '))
