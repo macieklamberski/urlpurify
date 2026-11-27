@@ -510,6 +510,10 @@ const applyUnwrappers = (
 
   // A session id in the wrapper's path, `/external-link.jspa;jsessionid=<id>`, hides its exact
   // path. The url as written goes first, so a target carrying a session id keeps it.
+  if (!url.pathname.includes(';')) {
+    return
+  }
+
   const sessionless = parseUrl(url.href)
 
   if (sessionless) {
