@@ -55,4 +55,13 @@ describe('unwrapWikiwix', () => {
 
     expect(unwrapWikiwix(url)).toBeUndefined()
   })
+
+  it('should drop the archive fragment', () => {
+    const value = new URL(
+      'https://archive.wikiwix.com/cache/?url=https://example.com/page#federation=archive.wikiwix.com',
+    )
+    const expected = 'https://example.com/page'
+
+    expect(unwrapWikiwix(value)).toBe(expected)
+  })
 })

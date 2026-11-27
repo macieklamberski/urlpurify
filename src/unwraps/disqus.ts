@@ -1,6 +1,6 @@
 import { isAnyOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { appendLinkFragment, createUnwrapper, readParamTarget } from '../utils.js'
+import { createUnwrapper, readParamTarget } from '../utils.js'
 
 const paths = ['/', '/url']
 
@@ -24,10 +24,10 @@ export const unwrapDisqus: UrlUnwrapper = createUnwrapper({
 
     // A root-form target is unsigned and can itself end in a colon and 27 characters.
     if (!isAnyOf(url.pathname, '/url')) {
-      return appendLinkFragment(target, url)
+      return target
     }
 
     // Disqus redirects to the target with its signature cut off.
-    return appendLinkFragment(target.replace(signatureRegex, ''), url)
+    return target.replace(signatureRegex, '')
   },
 })

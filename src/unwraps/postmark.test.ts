@@ -61,4 +61,13 @@ describe('unwrapPostmark', () => {
 
     expect(unwrapPostmark(url)).toBe('https://example.com/100%ZZ')
   })
+
+  it('should keep the fragment the target carries', () => {
+    const value = new URL(
+      'https://click.pstmrk.it/3s/form.example.com%2F243155719717059%23top/cO-A/IXy7AQ/AQ/bd8ddcde-fdf5-460e-a83c-a1ab0ec88814/1/Ts-zTNfg7F',
+    )
+    const expected = 'https://form.example.com/243155719717059#top'
+
+    expect(unwrapPostmark(value)).toBe(expected)
+  })
 })

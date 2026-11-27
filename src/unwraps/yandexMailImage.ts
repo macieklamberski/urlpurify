@@ -8,6 +8,7 @@ const resizePaths = ['/mailservice', '/orig']
 // Not included in defaultUnwrappers: unwrapping swaps the proxied copy for the original image.
 export const unwrapYandexMailImage: UrlUnwrapper = createUnwrapper({
   hosts: 'resize.yandex.net',
+  ignoreLinkFragment: true,
   unwrap: (url) => {
     if (!isAnyOf(url.pathname, resizePaths)) {
       return

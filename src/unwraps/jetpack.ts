@@ -11,6 +11,7 @@ const sourcePathRegex = /^\/(?<source>.+)$/
 // the original image.
 export const unwrapJetpack: UrlUnwrapper = createUnwrapper({
   hosts,
+  ignoreLinkFragment: true,
   unwrap: (url) => {
     const source = url.pathname.match(sourcePathRegex)?.groups?.source
 

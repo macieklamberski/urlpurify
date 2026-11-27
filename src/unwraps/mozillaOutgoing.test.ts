@@ -51,4 +51,13 @@ describe('unwrapMozillaOutgoing', () => {
 
     expect(unwrapMozillaOutgoing(value)).toBe(expected)
   })
+
+  it('should keep the fragment the target carries', () => {
+    const value = new URL(
+      'https://outgoing.prod.mozaws.net/v1/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/https%3A%2F%2Fexample.com%2Farticle%23top',
+    )
+    const expected = 'https://example.com/article#top'
+
+    expect(unwrapMozillaOutgoing(value)).toBe(expected)
+  })
 })

@@ -10,6 +10,7 @@ const pathRegex = /^\/(?:submit(?:\.php)?|refer\.php|badge\/?)$/i
 // same url=. Opt-in: unwrapping returns the shared page, not the form.
 export const unwrapStumbleuponSubmit: UrlUnwrapper = createUnwrapper({
   hosts,
+  ignoreLinkFragment: true,
   unwrap: (url) => {
     if (!pathRegex.test(url.pathname)) {
       return

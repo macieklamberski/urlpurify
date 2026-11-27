@@ -1,5 +1,6 @@
 import { getPathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
+import { appendLinkFragment } from '../utils.js'
 
 // Stops before a run of slashes followed by a host. A run after `:` belongs to a url carried in
 // the path, such as a web archive's, and a run after `=` to a query written into the path, as in
@@ -19,5 +20,11 @@ export const unwrapGenericPathCarrier: UrlUnwrapper = (url) => {
     return
   }
 
-  return getPathTarget(url, gluedUrlRegex)
+  const target = getPathTarget(url, gluedUrlRegex)
+
+  if (!target) {
+    return
+  }
+
+  return appendLinkFragment(target, url)
 }

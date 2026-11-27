@@ -10,6 +10,7 @@ const pathRegex = /^\/faves(?:\/[^/]*)?$/i
 // faved page, not the form that faves it.
 export const unwrapTechnoratiFaves: UrlUnwrapper = createUnwrapper({
   hosts,
+  ignoreLinkFragment: true,
   unwrap: (url) => {
     if (!pathRegex.test(url.pathname)) {
       return

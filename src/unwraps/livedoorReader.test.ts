@@ -48,6 +48,15 @@ describe('unwrapLivedoorReader', () => {
 
       expect(unwrapLivedoorReader(value)).toBeUndefined()
     })
+
+    it('should drop the link fragment', () => {
+      const value = new URL(
+        'http://reader.livedoor.com/subscribe/?url=http://example.com/rss.xml#comments',
+      )
+      const expected = 'http://example.com/rss.xml'
+
+      expect(unwrapLivedoorReader(value)).toBe(expected)
+    })
   })
 
   describe('feed path', () => {
@@ -93,6 +102,15 @@ describe('unwrapLivedoorReader', () => {
       const value = new URL('http://reader.livedoor.com/subscribe/ftp://example.com/rss.xml')
 
       expect(unwrapLivedoorReader(value)).toBeUndefined()
+    })
+
+    it('should keep the link fragment', () => {
+      const value = new URL(
+        'http://reader.livedoor.com/subscribe/http://example.com/rss.xml#comments',
+      )
+      const expected = 'http://example.com/rss.xml#comments'
+
+      expect(unwrapLivedoorReader(value)).toBe(expected)
     })
   })
 

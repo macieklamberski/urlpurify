@@ -21,6 +21,7 @@ const isCarrierPath = (url: URL): boolean => {
 // not the form that queues it.
 export const unwrapBuffer: UrlUnwrapper = createUnwrapper({
   hosts: [...hosts, ...composeHosts],
+  ignoreLinkFragment: true,
   unwrap: (url) => {
     if (!isCarrierPath(url)) {
       return

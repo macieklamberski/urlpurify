@@ -495,43 +495,40 @@ export {
   visitorIdParams,
 }
 
-// Applied by cleanUrl and stripTrackingParams: what tracks a person or adds nothing. A pattern is
+// Applied by purifyUrl and stripTrackingParams: what tracks a person or adds nothing. A pattern is
 // tested against the lowercased param name, so it must be lowercase and anchored.
-export const defaultTrackingParams: ReadonlyArray<TrackingParam> = Object.freeze([
+export const defaultTrackingParams: Array<TrackingParam> = [
   ...clickAttributionParams,
   ...visitorIdParams,
   ...sessionParams,
   ...housekeepingParams,
-])
+]
 
 // Every known param, opt-in categories included.
-export const knownTrackingParams: ReadonlyArray<TrackingParam> = Object.freeze([
+export const knownTrackingParams: Array<TrackingParam> = [
   ...defaultTrackingParams,
   ...campaignParams,
   ...affiliateParams,
-])
+]
 
 // The known names and patterns that track on every host with every value. An entry is left out,
 // since its name alone would strip `sid` or `ref` everywhere.
-const literals: Array<string> = []
-const patterns: Array<RegExp> = []
+export const trackingParamsLiterals: Array<string> = []
+export const trackingParamsPatterns: Array<RegExp> = []
 
 for (const param of knownTrackingParams) {
   if (isString(param)) {
-    literals.push(param)
+    trackingParamsLiterals.push(param)
     continue
   }
 
   if (param instanceof RegExp) {
-    patterns.push(param)
+    trackingParamsPatterns.push(param)
   }
 }
 
-export const trackingParamsLiterals: ReadonlyArray<string> = Object.freeze(literals)
-export const trackingParamsPatterns: ReadonlyArray<RegExp> = Object.freeze(patterns)
-
 // Search engine and aggregator result clicks: unwrapping removes only the click logging.
-export const searchClickUnwrappers: ReadonlyArray<UrlUnwrapper> = Object.freeze([
+export const searchClickUnwrappers: Array<UrlUnwrapper> = [
   unwrapAllblog,
   unwrapAsk,
   unwrapBing,
@@ -546,10 +543,10 @@ export const searchClickUnwrappers: ReadonlyArray<UrlUnwrapper> = Object.freeze(
   unwrapYahooJapan,
   unwrapYahooSearch,
   unwrapZemanta,
-])
+]
 
 // Link shims and leaving pages: unwrapping removes at most a platform's click count.
-export const linkShimUnwrappers: ReadonlyArray<UrlUnwrapper> = Object.freeze([
+export const linkShimUnwrappers: Array<UrlUnwrapper> = [
   unwrap4pda,
   unwrapAboutCom,
   unwrapAliyun,
@@ -638,28 +635,28 @@ export const linkShimUnwrappers: ReadonlyArray<UrlUnwrapper> = Object.freeze([
   unwrapYelp,
   unwrapYouTube,
   unwrapZhihu,
-])
+]
 
 // Press release wire click trackers: unwrapping removes the wire's click stats.
-export const pressReleaseUnwrappers: ReadonlyArray<UrlUnwrapper> = Object.freeze([
+export const pressReleaseUnwrappers: Array<UrlUnwrapper> = [
   unwrapBusinessWire,
   unwrapMarketwire,
   unwrapNewswire,
   unwrapPrNewswire,
   unwrapPrweb,
   unwrapValuePress,
-])
+]
 
 // Link shims that answer only behind a sign-in: unwrapping removes nothing.
-export const signInShimUnwrappers: ReadonlyArray<UrlUnwrapper> = Object.freeze([
+export const signInShimUnwrappers: Array<UrlUnwrapper> = [
   unwrapAxigen,
   unwrapMailRuLink,
   unwrapOrkut,
   unwrapOutlookWebAccess,
-])
+]
 
 // Security gateways: unwrapping skips the gateway's click-time check.
-export const securityGatewayUnwrappers: ReadonlyArray<UrlUnwrapper> = Object.freeze([
+export const securityGatewayUnwrappers: Array<UrlUnwrapper> = [
   unwrapBarracudaLinkProtect,
   unwrapCheckPointHarmony,
   unwrapCiscoSecureWeb,
@@ -685,10 +682,10 @@ export const securityGatewayUnwrappers: ReadonlyArray<UrlUnwrapper> = Object.fre
   unwrapVadeSecure,
   unwrapZix,
   unwrapZscalerIsolation,
-])
+]
 
 // Email and newsletter click trackers: unwrapping removes the sender's click stats.
-export const emailTrackingUnwrappers: ReadonlyArray<UrlUnwrapper> = Object.freeze([
+export const emailTrackingUnwrappers: Array<UrlUnwrapper> = [
   unwrapAceml,
   unwrapAmazonSes,
   unwrapAugure,
@@ -747,10 +744,10 @@ export const emailTrackingUnwrappers: ReadonlyArray<UrlUnwrapper> = Object.freez
   unwrapYamm,
   unwrapYesware,
   unwrapYourMembership,
-])
+]
 
 // Affiliate links: unwrapping removes the publisher's commission.
-export const affiliateUnwrappers: ReadonlyArray<UrlUnwrapper> = Object.freeze([
+export const affiliateUnwrappers: Array<UrlUnwrapper> = [
   unwrap2performant,
   unwrapA8Net,
   unwrapAccesstrade,
@@ -846,10 +843,10 @@ export const affiliateUnwrappers: ReadonlyArray<UrlUnwrapper> = Object.freeze([
   unwrapWordpressGo2,
   unwrapWorldNomads,
   unwrapZanox,
-])
+]
 
 // Ad clicks and app attribution links: unwrapping removes the click attribution.
-export const advertisingUnwrappers: ReadonlyArray<UrlUnwrapper> = Object.freeze([
+export const advertisingUnwrappers: Array<UrlUnwrapper> = [
   unwrapAdjust,
   unwrapAppsflyerOnelink,
   unwrapApptrkr,
@@ -867,10 +864,10 @@ export const advertisingUnwrappers: ReadonlyArray<UrlUnwrapper> = Object.freeze(
   unwrapReviveAdserver,
   unwrapSmartAdserver,
   unwrapTriplelift,
-])
+]
 
 // Site and feed click counters: unwrapping removes the site's count of which links get clicked.
-export const clickCounterUnwrappers: ReadonlyArray<UrlUnwrapper> = Object.freeze([
+export const clickCounterUnwrappers: Array<UrlUnwrapper> = [
   unwrapBitrix,
   unwrapDasBlog,
   unwrapFeedblitz,
@@ -879,10 +876,10 @@ export const clickCounterUnwrappers: ReadonlyArray<UrlUnwrapper> = Object.freeze
   unwrapIndexHu,
   unwrapSerendipity,
   unwrapTheRegister,
-])
+]
 
 // Download measurement: unwrapping removes the count of whoever is measured.
-export const downloadMeasurementUnwrappers: ReadonlyArray<UrlUnwrapper> = Object.freeze([
+export const downloadMeasurementUnwrappers: Array<UrlUnwrapper> = [
   unwrapAcast,
   unwrapAnchor,
   unwrapArttrack,
@@ -924,10 +921,10 @@ export const downloadMeasurementUnwrappers: ReadonlyArray<UrlUnwrapper> = Object
   unwrapXimalaya,
   unwrapZayads,
   unwrapZencastr,
-])
+]
 
 // Archives, proxies and viewers: unwrapping returns the live page, not the copy.
-export const archiveProxyUnwrappers: ReadonlyArray<UrlUnwrapper> = Object.freeze([
+export const archiveProxyUnwrappers: Array<UrlUnwrapper> = [
   unwrap12ft,
   unwrapAnonymouse,
   unwrapArchiveToday, // Snapshot of a page at a point in time, not a redirect
@@ -958,10 +955,10 @@ export const archiveProxyUnwrappers: ReadonlyArray<UrlUnwrapper> = Object.freeze
   unwrapWikizero,
   unwrapYandexTranslate,
   unwrapYandexTurbo,
-])
+]
 
 // Image proxies and resizers: unwrapping swaps the resized or optimized copy for the original image.
-export const imageProxyUnwrappers: ReadonlyArray<UrlUnwrapper> = Object.freeze([
+export const imageProxyUnwrappers: Array<UrlUnwrapper> = [
   unwrapAmpCacheImage,
   unwrapBloggerImageProxy,
   unwrapBrightspot,
@@ -978,23 +975,21 @@ export const imageProxyUnwrappers: ReadonlyArray<UrlUnwrapper> = Object.freeze([
   unwrapYahooImage,
   unwrapYahooMailImage,
   unwrapYandexMailImage,
-])
+]
 
 // Embed proxies: unwrapping returns the provider's page, not the site's frame around it.
-export const embedProxyUnwrappers: ReadonlyArray<UrlUnwrapper> = Object.freeze([
+export const embedProxyUnwrappers: Array<UrlUnwrapper> = [
   unwrapDrupalOembed,
   unwrapEmbedly,
   unwrapIframely,
-])
+]
 
 // Embed APIs, endpoints that return data about a page: unwrapping returns the page, not the data
 // about it.
-export const embedApiUnwrappers: ReadonlyArray<UrlUnwrapper> = Object.freeze([
-  unwrapWordpressOembed,
-])
+export const embedApiUnwrappers: Array<UrlUnwrapper> = [unwrapWordpressOembed]
 
 // Share and bookmark buttons: unwrapping returns the shared page, not the form that shares it.
-export const shareIntentUnwrappers: ReadonlyArray<UrlUnwrapper> = Object.freeze([
+export const shareIntentUnwrappers: Array<UrlUnwrapper> = [
   unwrapAddThis,
   unwrapAddToAny,
   unwrapBlinkList,
@@ -1039,11 +1034,11 @@ export const shareIntentUnwrappers: ReadonlyArray<UrlUnwrapper> = Object.freeze(
   unwrapWykop,
   unwrapXingShare,
   unwrapYahooBookmarks,
-])
+]
 
 // Subscribe buttons, and players and app pages carrying a feed: unwrapping returns the feed, not
 // the reader's or app's page that adds or plays it.
-export const subscribeIntentUnwrappers: ReadonlyArray<UrlUnwrapper> = Object.freeze([
+export const subscribeIntentUnwrappers: Array<UrlUnwrapper> = [
   unwrapAddToAnySubscribe,
   unwrapAddToMyYahoo,
   unwrapAntennaPod,
@@ -1068,26 +1063,26 @@ export const subscribeIntentUnwrappers: ReadonlyArray<UrlUnwrapper> = Object.fre
   unwrapSubscribeOnAndroid,
   unwrapWindowsLive,
   unwrapXianguo,
-])
+]
 
 // Feed validators, viewers and full-text proxies: unwrapping returns the feed the tool was
 // given, not the tool's view of it.
-export const feedToolUnwrappers: ReadonlyArray<UrlUnwrapper> = Object.freeze([
+export const feedToolUnwrappers: Array<UrlUnwrapper> = [
   unwrapFeed2js,
   unwrapFeedValidator,
   unwrapMorss,
   unwrapRssBoardValidator,
   unwrapW3cFeedValidator,
-])
+]
 
 // Any host carrying an http url in a url-named param or glued into its path: unwrapping removes the
 // link's own page, whatever it is, a redirect or a page that takes the url as an argument.
-export const genericCarrierUnwrappers: ReadonlyArray<UrlUnwrapper> = Object.freeze([
+export const genericCarrierUnwrappers: Array<UrlUnwrapper> = [
   unwrapGenericCarrier,
   unwrapGenericPathCarrier,
-])
+]
 
-export const defaultUnwrappers: ReadonlyArray<UrlUnwrapper> = Object.freeze([
+export const defaultUnwrappers: Array<UrlUnwrapper> = [
   ...searchClickUnwrappers,
   ...linkShimUnwrappers,
-])
+]

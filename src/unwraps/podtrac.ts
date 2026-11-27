@@ -14,10 +14,9 @@ const httpQueryRegex = /^\?https?:/i
 // The first segment on play.podtrac.com is a free-form show slug, such as `npr-510253`.
 const playPrefixRegex = /^\/[^/]*\//
 
-// Podtrac download measurement prefix (dts.podtrac.com/redirect.<ext>/<target>, also under /pts/
-// and on dts.podtrac.nytimes.com, [www.]podtrac.com/pts/redirect.<ext>/<target>, also on
-// www.podtrac.net, www.podtrac.com/pts/redirect.<ext>?<target> and play.podtrac.com/<show>/<target>).
-// Not included in defaultUnwrappers: unwrapping removes the podcaster's download counts.
+// Podtrac download prefix: dts.podtrac.com/[pts/]redirect.<ext>/<target>, also on
+// dts.podtrac.nytimes.com, [www.]podtrac.com/pts/redirect.<ext>[/?]<target>, www.podtrac.net and
+// play.podtrac.com/<show>/<target>. Opt-in: unwrapping removes the podcaster's download counts.
 export const unwrapPodtrac: UrlUnwrapper = createUnwrapper({
   hosts: ['dts.podtrac.nytimes.com', 'dts.podtrac.com', 'play.podtrac.com', ...ptsHosts],
   unwrap: (url) => {
@@ -39,7 +38,7 @@ export const unwrapPodtrac: UrlUnwrapper = createUnwrapper({
       ptsQueryPathRegex.test(url.pathname) &&
       httpQueryRegex.test(url.search)
     ) {
-      return `${url.search.slice(1)}${url.hash}`
+      return url.search.slice(1)
     }
 
     return getPathTarget(url, ptsPrefixRegex, url.protocol)

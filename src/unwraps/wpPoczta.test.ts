@@ -49,4 +49,13 @@ describe('unwrapWpPoczta', () => {
 
     expect(unwrapWpPoczta(url)).toBeUndefined()
   })
+
+  it('should keep the fragment the target carries', () => {
+    const value = new URL(
+      'https://zasobygwp.pl/redirect?sig=d15c2806b9283629641d93356884877ad6838ff8ce78b3b4a57be1a9d4e843c3&url=aHR0cHM6Ly93d3cuZXhhbXBsZS5wbC9hcnR5a3VsP2lkPTQyI3RvcA%3D%3D&brand=wp',
+    )
+    const expected = 'https://www.example.pl/artykul?id=42#top'
+
+    expect(unwrapWpPoczta(value)).toBe(expected)
+  })
 })

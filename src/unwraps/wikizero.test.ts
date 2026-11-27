@@ -43,4 +43,13 @@ describe('unwrapWikizero', () => {
 
     expect(unwrapWikizero(url)).toBeUndefined()
   })
+
+  it('should keep the fragment the target carries', () => {
+    const value = new URL(
+      'http://www.wikizero.biz/index.php?q=aHR0cHM6Ly9leGFtcGxlLm9yZy93aWtpL0dhbWVfRGV2ZWxvcGVyc19Db25mZXJlbmNlI3RvcA%3D%3D',
+    )
+    const expected = 'https://example.org/wiki/Game_Developers_Conference#top'
+
+    expect(unwrapWikizero(value)).toBe(expected)
+  })
 })

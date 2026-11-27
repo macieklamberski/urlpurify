@@ -81,4 +81,13 @@ describe('unwrapFeedStatistics', () => {
 
     expect(unwrapFeedStatistics(url)).toBeUndefined()
   })
+
+  it('should keep the fragment the target carries', () => {
+    const value = new URL(
+      'https://americapodcast.com.br/?feed-stats-url=aHR0cHM6Ly93d3cuZXhhbXBsZS5jb20vZXBpc29kZXMvNDIjdG9w&feed-stats-url-post-id=1362',
+    )
+    const expected = 'https://www.example.com/episodes/42#top'
+
+    expect(unwrapFeedStatistics(value)).toBe(expected)
+  })
 })

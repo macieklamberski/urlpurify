@@ -19,6 +19,7 @@ const hrefPrefixRegex = /^href=(?=https?:)/i
 // bare, m., pt-br. and de.facebook.com). Opt-in: unwrapping returns the shared page, not the form.
 export const unwrapFacebookShare: UrlUnwrapper = createUnwrapper({
   hosts,
+  ignoreLinkFragment: true,
   unwrap: (url) => {
     if (sharerPathRegex.test(url.pathname)) {
       const target = readParamTarget(url, 'u')

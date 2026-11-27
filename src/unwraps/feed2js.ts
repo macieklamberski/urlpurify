@@ -19,6 +19,7 @@ const unwrapFeedroll = createQueryUnwrapper({
 // writes the feed into a page, not the feed.
 export const unwrapFeed2js = createUnwrapper({
   hosts: ['feed2js.org', 'www.feed2js.org', 'feedroll.com', 'www.feedroll.com'],
+  ignoreLinkFragment: true,
   unwrap: (url) => {
     return unwrapFeed2jsOrg(url) ?? unwrapFeedroll(url)
   },

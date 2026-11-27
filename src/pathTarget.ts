@@ -1,7 +1,7 @@
 import type { UrlUnwrapper } from './types.js'
-import { createUnwrapper, type UnwrapperHosts } from './utils.js'
+import { createUnwrapper, type UnwrapperOptions } from './utils.js'
 
-export type PathUnwrapperConfig = UnwrapperHosts & {
+export type PathUnwrapperConfig = UnwrapperOptions & {
   prefix: RegExp
   scheme?: 'https' | 'http' | 'link' // What a target without a scheme forwards to, https by default
 }
@@ -9,16 +9,16 @@ export type PathUnwrapperConfig = UnwrapperHosts & {
 const leadingSlashesRegex = /^\/+/
 const schemeRegex = /^https?:/i
 
-// The target that follows a prefix at the start of the path, with the url's own query and
-// fragment. Podcast analytics prefixes mostly drop the target's scheme and forward to https. A
-// prefix that forwards with its own scheme passes `url.protocol`, and one that forwards to http
-// passes `http:`. A prefix that drops the url's query and fragment on forwarding passes an empty
-// `suffix`.
+// The target that follows a prefix at the start of the path, with the url's own query. The link's
+// fragment is the factory's, per `createUnwrapper`. Podcast analytics prefixes mostly drop the
+// target's scheme and forward to https. A prefix that forwards with its own scheme passes
+// `url.protocol`, and one that forwards to http passes `http:`. A prefix that drops the url's query
+// on forwarding passes an empty `suffix`.
 export const getPathTarget = (
   url: URL,
   prefixRegex: RegExp,
   scheme = 'https:',
-  suffix = `${url.search}${url.hash}`,
+  suffix = url.search,
 ): string | undefined => {
   const match = url.pathname.match(prefixRegex)
 
@@ -45,10 +45,10 @@ export const getPathTarget = (
 // An unwrapper for a target glued into the path behind a prefix, read by `getPathTarget`. A `link`
 // scheme forwards with the link's own.
 export const createPathUnwrapper = (config: PathUnwrapperConfig): UrlUnwrapper => {
-  const { prefix, scheme = 'https', ...hosts } = config
+  const { prefix, scheme = 'https', ...options } = config
 
   return createUnwrapper({
-    ...hosts,
+    ...options,
     unwrap: (url) => {
       return getPathTarget(url, prefix, scheme === 'link' ? url.protocol : `${scheme}:`)
     },

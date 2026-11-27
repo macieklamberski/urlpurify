@@ -17,6 +17,6 @@ export const unwrapAmpCacheImage: UrlUnwrapper = createUnwrapper({
 
     const scheme = match.groups.secure ? 'https' : 'http'
 
-    return `${scheme}://${match.groups.target}${url.search}${url.hash}`
+    return `${scheme}://${match.groups.target}${url.search}`
   },
 })

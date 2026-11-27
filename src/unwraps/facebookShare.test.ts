@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'bun:test'
-import { cleanUrl } from '../clean.js'
+import { purifyUrl } from '../clean.js'
 import { unwrapFacebookShare } from './facebookShare.js'
 
 describe('unwrapFacebookShare', () => {
@@ -145,7 +145,7 @@ describe('unwrapFacebookShare', () => {
     const value = 'http://facebook.com/sharer/sharer.php?u=href=www.example.com/blog/post'
     const expected = 'http://facebook.com/sharer/sharer.php?u=href=www.example.com/blog/post'
 
-    expect(cleanUrl(value, { unwrappers: [unwrapFacebookShare] })).toBe(expected)
+    expect(purifyUrl(value, { unwrappers: [unwrapFacebookShare] })).toBe(expected)
   })
 
   it('should match the path in any case', () => {

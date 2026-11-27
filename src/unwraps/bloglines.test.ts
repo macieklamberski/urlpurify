@@ -39,6 +39,15 @@ describe('unwrapBloglines', () => {
 
       expect(unwrapBloglines(value)).toBe(expected)
     })
+
+    it('should keep the link fragment', () => {
+      const value = new URL(
+        'http://www.bloglines.com/sub/http://feeds.example.com/michperu#comments',
+      )
+      const expected = 'http://feeds.example.com/michperu#comments'
+
+      expect(unwrapBloglines(value)).toBe(expected)
+    })
   })
 
   describe('encoded feed in the path', () => {
@@ -70,6 +79,13 @@ describe('unwrapBloglines', () => {
 
       expect(unwrapBloglines(value)).toBeUndefined()
     })
+
+    it('should drop the link fragment', () => {
+      const value = new URL('http://www.bloglines.com/sub/http%3A%2F%2Fexample.com%2Ffeed#comments')
+      const expected = 'http://example.com/feed'
+
+      expect(unwrapBloglines(value)).toBe(expected)
+    })
   })
 
   describe('url param', () => {
@@ -86,6 +102,15 @@ describe('unwrapBloglines', () => {
       const value = new URL('http://www.bloglines.com/sub/')
 
       expect(unwrapBloglines(value)).toBeUndefined()
+    })
+
+    it('should drop the link fragment', () => {
+      const value = new URL(
+        'http://www.bloglines.com/sub/?url=http%3A%2F%2Fexample.com%2Ffeed#comments',
+      )
+      const expected = 'http://example.com/feed'
+
+      expect(unwrapBloglines(value)).toBe(expected)
     })
   })
 

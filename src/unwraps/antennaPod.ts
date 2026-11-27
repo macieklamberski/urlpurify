@@ -9,6 +9,7 @@ const hosts = ['antennapod.org', 'www.antennapod.org']
 // the page that subscribes to it.
 export const unwrapAntennaPod: UrlUnwrapper = createUnwrapper({
   hosts,
+  ignoreLinkFragment: true,
   unwrap: (url) => {
     const segments = getPathSegments(url)
     const [locale] = segments

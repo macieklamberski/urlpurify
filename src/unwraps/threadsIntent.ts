@@ -10,6 +10,7 @@ const pathRegex = /^\/intent\/post\/?$/i
 // threads.com and threads.net). Opt-in: unwrapping returns the shared page, not the post composer.
 export const unwrapThreadsIntent: UrlUnwrapper = createUnwrapper({
   hosts,
+  ignoreLinkFragment: true,
   unwrap: (url) => {
     if (!isAnyOf(url.pathname, pathRegex)) {
       return

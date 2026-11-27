@@ -1,6 +1,6 @@
 import { decodePercent, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { appendLinkFragment, createUnwrapper } from '../utils.js'
+import { createUnwrapper } from '../utils.js'
 
 const domains = ['streaklinks.com', 'streak-link.com']
 
@@ -20,7 +20,7 @@ export const unwrapStreak: UrlUnwrapper = createUnwrapper({
     const target = decodePercent(match[1])
 
     if (isHttpUrl(target)) {
-      return appendLinkFragment(target, url)
+      return target
     }
   },
 })

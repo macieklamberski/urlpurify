@@ -83,4 +83,13 @@ describe('unwrapEasyMarketing', () => {
 
     expect(unwrapEasyMarketing(url)).toBeUndefined()
   })
+
+  it('should keep the fragment the target carries', () => {
+    const value = new URL(
+      'https://pvn.saturn.de/trck/eclick/ea7f1008243bc25a1c4ec20941e8fae8?url=https%3A%2F%2Fwww.example.com%2F%23top&subid=rss',
+    )
+    const expected = 'https://www.example.com/#top'
+
+    expect(unwrapEasyMarketing(value)).toBe(expected)
+  })
 })

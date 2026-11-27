@@ -29,7 +29,7 @@ export const unwrapYesware = createUnwrapper({
 
     // Yesware keeps the scheme server-side: http on links archived before 2019, https on nearly
     // all since.
-    const target = `https://${match[1]}${url.search}${url.hash}`
+    const target = `https://${match[1]}${url.search}`
 
     if (isHttpUrl(target)) {
       return target

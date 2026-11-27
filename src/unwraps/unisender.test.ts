@@ -161,4 +161,13 @@ describe('unwrapUnisender', () => {
 
     expect(unwrapUnisender(url)).toBeUndefined()
   })
+
+  it('should keep the fragment the target carries', () => {
+    const value = new URL(
+      'http://usndr.com/ru/mail_link_tracker?hash=5ophjexcycqe5wnr3ykwqf6hro5uuxtmkosu775oodnd8ro&url=http%253A%252F%252Fexample.org%252Fevent%252F294092%252F%253Ft%253D52829%23top',
+    )
+    const expected = 'http://example.org/event/294092/?t=52829#top'
+
+    expect(unwrapUnisender(value)).toBe(expected)
+  })
 })

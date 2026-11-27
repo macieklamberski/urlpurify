@@ -1,6 +1,7 @@
 import { isBrandDomainOf, isHostOrSubdomainOf } from 'trousse'
 import { getPathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
+import { appendLinkFragment } from '../utils.js'
 
 // The free domains a site may also live on, beside the brand's own domains.
 const domains = ['3dn.ru', 'at.ua', 'clan.su', 'do.am', 'moy.su', 'my1.ru', 'narod.ru', 'usite.pro']
@@ -14,5 +15,11 @@ export const unwrapUcoz: UrlUnwrapper = (url) => {
     return
   }
 
-  return getPathTarget(url, gluedHostRegex)
+  const target = getPathTarget(url, gluedHostRegex)
+
+  if (!target) {
+    return
+  }
+
+  return appendLinkFragment(target, url)
 }

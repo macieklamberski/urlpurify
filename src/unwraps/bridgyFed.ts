@@ -16,7 +16,7 @@ export const unwrapBridgyFed: UrlUnwrapper = createUnwrapper({
       return
     }
 
-    // An unencoded target's query and fragment land in the redirect URL's own `search` and `hash`.
-    return `${match[1]}${url.search}${url.hash}`
+    // An unencoded target's query lands in the redirect URL's own `search`.
+    return `${match[1]}${url.search}`
   },
 })

@@ -91,4 +91,13 @@ describe('unwrapMandrill', () => {
 
     expect(unwrapMandrill(url)).toBeUndefined()
   })
+
+  it('should keep the fragment the target carries', () => {
+    const value = new URL(
+      'http://mandrillapp.com/track/click.php?u=3541274&id=acd0abe879a143b4a5ed32beba272b35&url=http%3A%2F%2Fexample.com%2Fsign_up%3Freferrer_id%3D3055614%23top&url_id=8f1d5a3c',
+    )
+    const expected = 'http://example.com/sign_up?referrer_id=3055614#top'
+
+    expect(unwrapMandrill(value)).toBe(expected)
+  })
 })

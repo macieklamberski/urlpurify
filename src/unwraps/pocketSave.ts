@@ -9,6 +9,7 @@ const paths = ['/save', '/edit', '/edit.php']
 // unwrapping returns the saved page, not the form that saves it.
 export const unwrapPocketSave: UrlUnwrapper = createUnwrapper({
   hosts,
+  ignoreLinkFragment: true,
   unwrap: (url) => {
     if (!isAnyOf(url.pathname, paths)) {
       return

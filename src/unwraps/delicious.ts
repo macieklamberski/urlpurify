@@ -10,6 +10,7 @@ const paths = ['/post', '/save']
 // returns the bookmarked page, not the form that saves it.
 export const unwrapDelicious: UrlUnwrapper = createUnwrapper({
   hosts,
+  ignoreLinkFragment: true,
   unwrap: (url) => {
     if (!isAnyOf(url.pathname, paths)) {
       return

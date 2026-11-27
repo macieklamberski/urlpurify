@@ -11,6 +11,7 @@ const pathRegex = /^\/(?:bookmark|slashdot-it)\.pl$/i
 // shared page, not the form that bookmarks or submits it.
 export const unwrapSlashdotBookmark: UrlUnwrapper = createUnwrapper({
   hosts,
+  ignoreLinkFragment: true,
   unwrap: (url) => {
     if (!isAnyOf(url.pathname, pathRegex)) {
       return

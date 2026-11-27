@@ -18,7 +18,7 @@ export const unwrapSubscribeRu: UrlUnwrapper = createUnwrapper({
       return
     }
 
-    // An unencoded target's query and fragment land in the tracker URL's own `search` and `hash`.
-    return `http://${match[1]}${url.search}${url.hash}`
+    // An unencoded target's query lands in the tracker URL's own `search`.
+    return `http://${match[1]}${url.search}`
   },
 })
