@@ -247,17 +247,20 @@ const addTargetScheme = (target: string | undefined): string | undefined => {
 type UnwrapperIndex = {
   byHost: Map<string, Array<UrlUnwrapper>>
   rest: Array<UrlUnwrapper>
+  hasDomains: boolean
 }
 
 // A list seen once maps to undefined and gets no index, so a caller passing a new array per call
 // pays no build. The second arrival of the same array builds it.
 const unwrapperIndexes = new WeakMap<ReadonlyArray<UrlUnwrapper>, UnwrapperIndex | undefined>()
 
-// Each host maps to the unwrappers registered for it plus every unregistered one, in list order, so
-// the first match is the one a full scan finds. Any other host gets only the unregistered ones.
+// Each host, and each `.domain` that also matches its subdomains, maps to the unwrappers registered
+// for it plus every unregistered one, in list order, so the first match is the one a full scan
+// finds. Any other host gets only the unregistered ones.
 const buildUnwrapperIndex = (unwrappers: ReadonlyArray<UrlUnwrapper>): UnwrapperIndex => {
   const byHost = new Map<string, Array<UrlUnwrapper>>()
   const rest: Array<UrlUnwrapper> = []
+  let hasDomains = false
 
   for (const unwrap of unwrappers) {
     const hosts = unwrapperHosts.get(unwrap)
@@ -275,6 +278,10 @@ const buildUnwrapperIndex = (unwrappers: ReadonlyArray<UrlUnwrapper>): Unwrapper
     for (const host of hosts) {
       const list = byHost.get(host)
 
+      if (host.startsWith('.')) {
+        hasDomains = true
+      }
+
       if (!list) {
         byHost.set(host, [...rest, unwrap])
         continue
@@ -286,7 +293,7 @@ const buildUnwrapperIndex = (unwrappers: ReadonlyArray<UrlUnwrapper>): Unwrapper
     }
   }
 
-  return { byHost, rest }
+  return { byHost, rest, hasDomains }
 }
 
 const getUnwrapperIndex = (unwrappers: ReadonlyArray<UrlUnwrapper>): UnwrapperIndex | undefined => {
@@ -316,8 +323,35 @@ const getCandidates = (
 
   const hostname = url.hostname.toLowerCase()
   const host = hostname.endsWith('.') ? hostname.slice(0, -1) : hostname
+  const exact = index.byHost.get(host)
 
-  return index.byHost.get(host) ?? index.rest
+  if (!index.hasDomains) {
+    return exact ?? index.rest
+  }
+
+  const lists: Array<Array<UrlUnwrapper>> = exact ? [exact] : []
+  const labels = host.split('.')
+
+  for (let start = 0; start < labels.length; start++) {
+    const list = index.byHost.get(`.${labels.slice(start).join('.')}`)
+
+    if (list) {
+      lists.push(list)
+    }
+  }
+
+  if (lists.length === 0) {
+    return index.rest
+  }
+
+  if (lists.length === 1) {
+    return lists[0]
+  }
+
+  // A host under several registered domains runs their unwrappers merged back into list order.
+  const matched = new Set(lists.flat())
+
+  return unwrappers.filter((unwrap) => matched.has(unwrap))
 }
 
 const applyUnwrappers = (

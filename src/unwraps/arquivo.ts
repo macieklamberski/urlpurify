@@ -1,26 +1,26 @@
-import { isHostOf, isHttpUrl } from 'trousse'
+import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
+import { createUnwrapper } from '../utils.js'
 
 // A 14-digit timestamp after the replay prefix.
 const pathRegex = /^\/wayback\/\d{14}\/(.+)$/i
 
 // Arquivo.pt, the Portuguese web archive, snapshot (arquivo.pt/wayback/<timestamp>/<target>).
 // Opt-in: unwrapping returns the live page, which may have changed or be gone.
-export const unwrapArquivo: UrlUnwrapper = (url) => {
-  if (!isHostOf(url, 'arquivo.pt')) {
-    return
-  }
+export const unwrapArquivo: UrlUnwrapper = createUnwrapper({
+  hosts: 'arquivo.pt',
+  unwrap: (url) => {
+    const match = pathRegex.exec(url.pathname)
 
-  const match = pathRegex.exec(url.pathname)
+    if (!match?.[1]) {
+      return
+    }
 
-  if (!match?.[1]) {
-    return
-  }
+    // An unencoded target's query and fragment land in the snapshot URL's own `search` and `hash`.
+    const target = `${match[1]}${url.search}${url.hash}`
 
-  // An unencoded target's query and fragment land in the snapshot URL's own `search` and `hash`.
-  const target = `${match[1]}${url.search}${url.hash}`
-
-  if (isHttpUrl(target)) {
-    return target
-  }
-}
+    if (isHttpUrl(target)) {
+      return target
+    }
+  },
+})

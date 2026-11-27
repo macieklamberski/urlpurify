@@ -1,6 +1,9 @@
 import { describe, expect, it } from 'bun:test'
+import { getQueryParam } from 'trousse'
+import type { UrlUnwrapper } from './types.js'
 import {
   createQueryUnwrapper,
+  createUnwrapper,
   getParamTarget,
   getUtf8ByteLength,
   readParamTarget,
@@ -384,6 +387,55 @@ describe('createQueryUnwrapper', () => {
 
       expect(extractOwned(value)).toBe(expected)
     })
+  })
+})
+
+describe('createUnwrapper', () => {
+  const getTarget: UrlUnwrapper = (url) => {
+    return getQueryParam(url, 'target')
+  }
+  const unwrapHost = createUnwrapper({ hosts: 'redirect.example.com', unwrap: getTarget })
+  const unwrapDomain = createUnwrapper({ domains: 'example.com', unwrap: getTarget })
+  const unwrapSubdomain = createUnwrapper({ subdomains: 'example.com', unwrap: getTarget })
+
+  it('should run the body on a listed host', () => {
+    const value = new URL('https://redirect.example.com/?target=https://example.org/post')
+    const expected = 'https://example.org/post'
+
+    expect(unwrapHost(value)).toBe(expected)
+  })
+
+  it('should return undefined on a host not listed', () => {
+    const value = new URL('https://example.com/?target=https://example.org/post')
+
+    expect(unwrapHost(value)).toBeUndefined()
+  })
+
+  it('should run the body on a domain itself', () => {
+    const value = new URL('https://example.com/?target=https://example.org/post')
+    const expected = 'https://example.org/post'
+
+    expect(unwrapDomain(value)).toBe(expected)
+  })
+
+  it('should run the body on a subdomain of a domain', () => {
+    const value = new URL('https://go.example.com/?target=https://example.org/post')
+    const expected = 'https://example.org/post'
+
+    expect(unwrapDomain(value)).toBe(expected)
+  })
+
+  it('should run the body on a subdomain', () => {
+    const value = new URL('https://go.example.com/?target=https://example.org/post')
+    const expected = 'https://example.org/post'
+
+    expect(unwrapSubdomain(value)).toBe(expected)
+  })
+
+  it('should return undefined on the domain itself for subdomains', () => {
+    const value = new URL('https://example.com/?target=https://example.org/post')
+
+    expect(unwrapSubdomain(value)).toBeUndefined()
   })
 })
 

@@ -1,5 +1,6 @@
-import { decodePercent, isHostOf, isHttpUrl } from 'trousse'
+import { decodePercent, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
+import { createUnwrapper } from '../utils.js'
 
 const encodedSchemeRegex = /^https?%3A/i
 
@@ -11,24 +12,23 @@ const clickPathRegex =
 // CSE360 email click tracker
 // (click.cse360.com.br/Click/AddCampaignEmailClick/<id>/<target>/<id>/<email>/<True|False>).
 // Opt-in: unwrapping removes the sender's click count.
-export const unwrapCse360: UrlUnwrapper = (url) => {
-  if (!isHostOf(url, 'click.cse360.com.br')) {
-    return
-  }
+export const unwrapCse360: UrlUnwrapper = createUnwrapper({
+  hosts: 'click.cse360.com.br',
+  unwrap: (url) => {
+    const match = clickPathRegex.exec(url.pathname)
 
-  const match = clickPathRegex.exec(url.pathname)
+    if (!match?.[1]) {
+      return
+    }
 
-  if (!match?.[1]) {
-    return
-  }
+    let target = decodePercent(match[1])
 
-  let target = decodePercent(match[1])
+    if (encodedSchemeRegex.test(target)) {
+      target = decodePercent(target)
+    }
 
-  if (encodedSchemeRegex.test(target)) {
-    target = decodePercent(target)
-  }
-
-  if (isHttpUrl(target)) {
-    return target
-  }
-}
+    if (isHttpUrl(target)) {
+      return target
+    }
+  },
+})

@@ -1,6 +1,6 @@
-import { decodePercent, isHostOf, isHttpUrl } from 'trousse'
+import { decodePercent, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamValues } from '../utils.js'
+import { createUnwrapper, getParamValues } from '../utils.js'
 
 // linksynergy.jrs5.com and linksynergy.walmart.com sit on a merchant's own domain.
 const hosts = ['click.linksynergy.com', 'linksynergy.jrs5.com', 'linksynergy.walmart.com']
@@ -15,31 +15,30 @@ const carrierParams: Record<string, string> = {
 // LinkSynergy (Rakuten) affiliate redirect on click.linksynergy.com and two merchant hosts:
 // /deeplink?murl=<target>, /link?murl=<target> and /fs-bin/{click,stat}?RD_PARM1=<target>. Not in
 // defaultUnwrappers: it is an affiliate link.
-export const unwrapLinksynergy: UrlUnwrapper = (url) => {
-  if (!isHostOf(url, hosts)) {
-    return
-  }
+export const unwrapLinksynergy: UrlUnwrapper = createUnwrapper({
+  hosts,
+  unwrap: (url) => {
+    const param = carrierParams[url.pathname]
 
-  const param = carrierParams[url.pathname]
+    if (!param) {
+      return
+    }
 
-  if (!param) {
-    return
-  }
+    const target = getParamValues(url, param).at(0)
 
-  const target = getParamValues(url, param).at(0)
+    if (!target) {
+      return
+    }
 
-  if (!target) {
-    return
-  }
+    if (isHttpUrl(target)) {
+      return target
+    }
 
-  if (isHttpUrl(target)) {
-    return target
-  }
+    // The target is often percent-encoded twice.
+    const decoded = decodePercent(target)
 
-  // The target is often percent-encoded twice.
-  const decoded = decodePercent(target)
-
-  if (isHttpUrl(decoded)) {
-    return decoded
-  }
-}
+    if (isHttpUrl(decoded)) {
+      return decoded
+    }
+  },
+})
