@@ -1,6 +1,6 @@
 import { getQueryParam, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamValues } from '../utils.js'
+import { getParamTarget } from '../utils.js'
 
 const pathRegex = /^(?:\/[^/]+)*\/media\/oembed$/i
 
@@ -20,7 +20,7 @@ export const unwrapDrupalOembed: UrlUnwrapper = (url) => {
     return
   }
 
-  const target = getParamValues(url, 'url').at(-1)
+  const target = getParamTarget(url, 'url', -1)
 
   if (!target || !isHttpUrl(target)) {
     return

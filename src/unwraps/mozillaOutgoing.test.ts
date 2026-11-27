@@ -41,4 +41,14 @@ describe('unwrapMozillaOutgoing', () => {
 
     expect(unwrapMozillaOutgoing(url)).toBe('https://example.com/100%ZZ')
   })
+
+  it('should keep the link fragment', () => {
+    const sha = 'a'.repeat(64)
+    const value = new URL(
+      `https://outgoing.prod.mozaws.net/v1/${sha}/https%3A%2F%2Fexample.com%2Farticle#x`,
+    )
+    const expected = 'https://example.com/article#x'
+
+    expect(unwrapMozillaOutgoing(value)).toBe(expected)
+  })
 })

@@ -1,9 +1,11 @@
 import {
+  decodeBase64,
   decodePercent,
   getQueryParamValues,
   isAnyOf,
   isHostOf,
   isHostOrSubdomainOf,
+  isHttpUrl,
   isString,
   isSubdomainOf,
   type Pattern,
@@ -92,6 +94,30 @@ export const getParamTarget = (url: URL, name: string, index = 0): string | unde
   const target = readParamTarget(url, name, index)
 
   if (!target) {
+    return
+  }
+
+  return appendLinkFragment(target, url)
+}
+
+export type Base64Decoder = (value: string) => string | undefined
+
+// The http target a carrier param holds in base64, read raw by `readParamTarget`, decoded by
+// `decode`, with the link's fragment per `appendLinkFragment`.
+export const getBase64Target = (
+  url: URL,
+  name: string,
+  decode: Base64Decoder = decodeBase64,
+): string | undefined => {
+  const value = readParamTarget(url, name)
+
+  if (!value) {
+    return
+  }
+
+  const target = decode(value)
+
+  if (!target || !isHttpUrl(target)) {
     return
   }
 

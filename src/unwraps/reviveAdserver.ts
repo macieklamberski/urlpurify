@@ -1,6 +1,6 @@
 import { decodePercent, hasQueryParam, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamTarget } from '../utils.js'
+import { appendLinkFragment, getParamTarget } from '../utils.js'
 
 // The delivery directory varies per install, such as /www/delivery/ or /openx/www/delivery/.
 // ck.php is the click script, cl.php the signed one.
@@ -32,7 +32,7 @@ export const unwrapReviveAdserver: UrlUnwrapper = (url) => {
     const target = decodePercent(url.search.slice(index + marker.length))
 
     if (isHttpUrl(target)) {
-      return target
+      return appendLinkFragment(target, url)
     }
 
     return

@@ -121,4 +121,12 @@ describe('unwrapGoogleNewsModern', () => {
 
     expect(unwrapGoogleNewsModern(url)).toBeUndefined()
   })
+
+  it('should keep the link fragment', () => {
+    const id = buildArticleId('https://example.com/article')
+    const value = new URL(`https://news.google.com/rss/articles/${id}#x`)
+    const expected = 'https://example.com/article#x'
+
+    expect(unwrapGoogleNewsModern(value)).toBe(expected)
+  })
 })

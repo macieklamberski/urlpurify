@@ -45,13 +45,13 @@ export const unwrapYandexTurbo: UrlUnwrapper = (url) => {
 
   // The query on these links is Turbo's own, such as parent-reqid or trbsrc.
   if (slashSFirstMatch) {
-    return `https://${slashSFirstMatch[1]}/${slashSFirstMatch[2]}`
+    return `https://${slashSFirstMatch[1]}/${slashSFirstMatch[2]}${url.hash}`
   }
 
   const hostInPathMatch = url.pathname.match(hostInPathRegex)
 
   if (hostInPathMatch) {
-    return `https://${hostInPathMatch[1]}/${hostInPathMatch[2]}`
+    return `https://${hostInPathMatch[1]}/${hostInPathMatch[2]}${url.hash}`
   }
 
   if (!turbopagesSubdomain) {
@@ -65,5 +65,5 @@ export const unwrapYandexTurbo: UrlUnwrapper = (url) => {
 
   const sourceHost = turbopagesSubdomain.replace(dashRegex, '.')
 
-  return `https://${sourceHost}/${match[1]}`
+  return `https://${sourceHost}/${match[1]}${url.hash}`
 }

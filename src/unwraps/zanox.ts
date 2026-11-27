@@ -1,5 +1,5 @@
 import type { UrlUnwrapper } from '../types.js'
-import { createQueryUnwrapper } from '../utils.js'
+import { appendLinkFragment, createQueryUnwrapper } from '../utils.js'
 
 // Zanox writes an unencoded target between double brackets, so the target's own `&` splits the
 // outer query and only the raw query holds the whole target.
@@ -24,7 +24,7 @@ export const unwrapZanox: UrlUnwrapper = (url) => {
   const bracketed = url.search.match(bracketRegex)
 
   if (bracketed) {
-    return bracketed[1]
+    return appendLinkFragment(bracketed[1], url)
   }
 
   return target

@@ -1,11 +1,9 @@
-import { decodePercent, isHttpUrl } from 'trousse'
+import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamValues } from '../utils.js'
+import { getParamTarget } from '../utils.js'
 
 // A forum root prefix, such as /forum/ or /en/.
 const pathRegex = /^(?:\/[^/]+)?\/redirect\/$/i
-
-const encodedSchemeRegex = /^https?%3A/i
 
 // No External Links plugin for Invision Community, its redirect or leaving page
 // (<forum host>/redirect/?to=<target>). Each forum runs on its own host, so the exact path and an
@@ -15,12 +13,7 @@ export const unwrapInvisionNoExternalLinks: UrlUnwrapper = (url) => {
     return
   }
 
-  let target = getParamValues(url, 'to').at(0)
-
-  // A target encoded twice still holds an encoded scheme after one decode.
-  if (target && encodedSchemeRegex.test(target)) {
-    target = decodePercent(target)
-  }
+  const target = getParamTarget(url, 'to')
 
   if (!target || !isHttpUrl(target)) {
     return

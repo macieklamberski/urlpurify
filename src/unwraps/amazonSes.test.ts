@@ -359,4 +359,13 @@ describe('unwrapAmazonSes', () => {
 
     expect(unwrapAmazonSes(url)).toBeUndefined()
   })
+
+  it('should keep the link fragment', () => {
+    const value = new URL(
+      `https://abcd1234.r.us-east-1.awstrack.me/L0/https:%2F%2Fwww.example.com%2Fnews${tail}#x`,
+    )
+    const expected = 'https://www.example.com/news#x'
+
+    expect(unwrapAmazonSes(value)).toBe(expected)
+  })
 })

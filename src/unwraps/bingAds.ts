@@ -1,9 +1,19 @@
-import { decodeBase64Url, decodePercent, isAnyOf, isHostOf, isHttpUrl } from 'trousse'
+import { decodeBase64Url, decodePercent, isAnyOf, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamValues } from '../utils.js'
+import { getBase64Target } from '../utils.js'
 import { hosts as bingHosts } from './bing.js'
 
 const adPaths = ['/aclk', '/aclick']
+
+const decodeTarget = (value: string): string | undefined => {
+  const decoded = decodeBase64Url(value)
+
+  if (!decoded) {
+    return
+  }
+
+  return decodePercent(decoded)
+}
 
 // Bing Ads click redirect (www.bing.com/{aclk,aclick}?u=<base64 of the percent-encoded target>).
 // Not included in defaultUnwrappers: an ad click pays the publisher who showed the ad, and
@@ -13,17 +23,5 @@ export const unwrapBingAds: UrlUnwrapper = (url) => {
     return
   }
 
-  const value = getParamValues(url, 'u').at(0)
-
-  if (!value) {
-    return
-  }
-
-  const decoded = decodeBase64Url(value) ?? ''
-
-  const target = decodePercent(decoded)
-
-  if (isHttpUrl(target)) {
-    return target
-  }
+  return getBase64Target(url, 'u', decodeTarget)
 }

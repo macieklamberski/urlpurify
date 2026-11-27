@@ -1,6 +1,6 @@
-import { decodeBase64, hasQueryParam, isAnyOf, isHostOf, isHttpUrl } from 'trousse'
+import { decodeBase64, hasQueryParam, isAnyOf, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamValues } from '../utils.js'
+import { getBase64Target } from '../utils.js'
 
 const hosts = [
   'daily.news.humanevents.com',
@@ -18,15 +18,5 @@ export const unwrapDeployer: UrlUnwrapper = (url) => {
   }
 
   // A `+` of the base64 alphabet, left unencoded, reads as a space.
-  const value = getParamValues(url, 'drurl').at(0)?.replaceAll(' ', '+')
-
-  if (!value) {
-    return
-  }
-
-  const target = decodeBase64(value)
-
-  if (target && isHttpUrl(target)) {
-    return target
-  }
+  return getBase64Target(url, 'drurl', (value) => decodeBase64(value.replaceAll(' ', '+')))
 }

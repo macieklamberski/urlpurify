@@ -1,6 +1,5 @@
-import { decodeBase64, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamValues } from '../utils.js'
+import { getBase64Target } from '../utils.js'
 
 // The blog home, or a WordPress install under up to two path segments, such as /blog/.
 const pathRegex = /^\/(?:[^/]+\/){0,2}$/
@@ -13,11 +12,5 @@ export const unwrapFeedStatistics: UrlUnwrapper = (url) => {
     return
   }
 
-  const target = decodeBase64(getParamValues(url, 'feed-stats-url').at(0) ?? '')
-
-  if (!target || !isHttpUrl(target)) {
-    return
-  }
-
-  return target
+  return getBase64Target(url, 'feed-stats-url')
 }

@@ -1,6 +1,6 @@
-import { decodeBase64Url, isAnyOf, isHostOf, isHttpUrl } from 'trousse'
+import { decodeBase64Url, isAnyOf, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamValues } from '../utils.js'
+import { getBase64Target } from '../utils.js'
 
 const hosts = ['stats.newswire.com', 'stats.nwe.io', 'stats.mediadboutreach.com']
 
@@ -11,17 +11,5 @@ export const unwrapNewswire: UrlUnwrapper = (url) => {
     return
   }
 
-  const value = getParamValues(url, 'final').at(0)
-
-  if (!value) {
-    return
-  }
-
-  const decoded = decodeBase64Url(value)
-
-  if (!decoded || !isHttpUrl(decoded)) {
-    return
-  }
-
-  return decoded
+  return getBase64Target(url, 'final', decodeBase64Url)
 }

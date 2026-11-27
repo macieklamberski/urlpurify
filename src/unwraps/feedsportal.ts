@@ -1,5 +1,6 @@
 import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
+import { appendLinkFragment } from '../utils.js'
 
 const feedsportalPathRegex = /\/([0-9A-Za-z]{20,})\/story01\.htm$/i
 
@@ -57,5 +58,5 @@ export const unwrapFeedsportal: UrlUnwrapper = (url) => {
     return
   }
 
-  return decoded
+  return appendLinkFragment(decoded, url)
 }

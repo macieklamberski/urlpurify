@@ -1,6 +1,6 @@
 import { isAnyOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getBitrixTarget } from './bitrix.js'
+import { getParamTarget } from '../utils.js'
 
 // 1C-Bitrix advertising module banner click on each site's own host
 // (<host>/bitrix/rk.php?id=<banner>&event1=banner&event2=click&goto=<target>).
@@ -10,5 +10,5 @@ export const unwrapBitrixBanner: UrlUnwrapper = (url) => {
     return
   }
 
-  return getBitrixTarget(url)
+  return getParamTarget(url, 'goto')
 }

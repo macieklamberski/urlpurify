@@ -74,4 +74,14 @@ describe('unwrapSubstack', () => {
 
     expect(unwrapSubstack(url)).toBeUndefined()
   })
+
+  it('should keep the link fragment', () => {
+    const value = new URL(
+      `https://substack.com/redirect/2/${payload}.boTvkXxD1YyQj5AE-vQ99eFrlRv8o1k11cm2mcsnzRQ#x`,
+    )
+    const expected =
+      'https://example.substack.com/p/leading-teams?utm_campaign=email-post&r=abc123#x'
+
+    expect(unwrapSubstack(value)).toBe(expected)
+  })
 })

@@ -16,13 +16,13 @@ export const unwrapNicoMs: UrlUnwrapper = createUnwrapper({
     const id = match[1]
 
     if (id.startsWith('im')) {
-      return `https://seiga.nicovideo.jp/seiga/${id}`
+      return `https://seiga.nicovideo.jp/seiga/${id}${url.hash}`
     }
 
     if (id.startsWith('lv')) {
-      return `https://live.nicovideo.jp/watch/${id}`
+      return `https://live.nicovideo.jp/watch/${id}${url.hash}`
     }
 
-    return `https://www.nicovideo.jp/watch/${id}`
+    return `https://www.nicovideo.jp/watch/${id}${url.hash}`
   },
 })

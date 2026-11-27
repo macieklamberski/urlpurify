@@ -1,11 +1,10 @@
-import { decodePercent, isAnyOf } from 'trousse'
+import { isAnyOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createUnwrapper, readParamTarget } from '../utils.js'
+import { createUnwrapper, decodeEncodedScheme, readParamTarget } from '../utils.js'
 
 const formPathRegex = /^\/(?:entry|add|entry\/panel)\/?$/i
 const schemePathRegex = /^\/entry\/(?<target>https?(?::|%3a).+)$/i
 const hostPathRegex = /^\/entry\/(?<secure>s\/)?(?<target>[^/.]+(?:\.[^/.]+)+(?:\/.*)?)$/i
-const encodedSchemeRegex = /^https?%3a/i
 
 const hosts = ['b.hatena.ne.jp']
 
@@ -20,11 +19,8 @@ export const unwrapHatenaBookmark: UrlUnwrapper = createUnwrapper({
       return readParamTarget(url, 'url')
     }
 
-    let target = url.pathname.match(schemePathRegex)?.groups?.target
-
-    if (target && encodedSchemeRegex.test(target)) {
-      target = decodePercent(target)
-    }
+    const schemeTarget = url.pathname.match(schemePathRegex)?.groups?.target
+    let target = schemeTarget && decodeEncodedScheme(schemeTarget)
 
     if (!target) {
       const match = url.pathname.match(hostPathRegex)

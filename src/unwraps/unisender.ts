@@ -1,6 +1,6 @@
 import { decodeBase64Url, isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamTarget } from '../utils.js'
+import { appendLinkFragment, readParamTarget } from '../utils.js'
 
 const hosts = [
   'emlblog.com',
@@ -32,20 +32,20 @@ export const unwrapUnisender: UrlUnwrapper = (url) => {
 
   // An unencoded nested tracker repeats `url`, so the first value is a stub and the last one is
   // the target.
-  const value = getParamTarget(url, 'url', -1)
+  const value = readParamTarget(url, 'url', -1)
 
   if (!value) {
     return
   }
 
   if (isHttpUrl(value)) {
-    return value
+    return appendLinkFragment(value, url)
   }
 
   // Some senders encode the target as base64url with `~` as the padding character.
   const decoded = decodeBase64Url(value.replaceAll('~', '='))
 
   if (decoded && isHttpUrl(decoded)) {
-    return decoded
+    return appendLinkFragment(decoded, url)
   }
 }

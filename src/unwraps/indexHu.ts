@@ -1,9 +1,8 @@
-import { decodePercent, isAnyOf, isHostOf } from 'trousse'
+import { isAnyOf, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createQueryUnwrapper } from '../utils.js'
+import { createQueryUnwrapper, getParamTarget } from '../utils.js'
 
 const sectionParamRegex = /^index_[a-z]+_cikklink$/
-const encodedSchemeRegex = /^https?%3A/i
 
 const unwrapCounter = createQueryUnwrapper({
   hosts: ['dex.hu', 'index.hu', 'vakbarat.index.hu'],
@@ -16,16 +15,16 @@ const unwrapSectionCounter: UrlUnwrapper = (url) => {
     return
   }
 
-  for (const [key, value] of url.searchParams) {
-    if (!sectionParamRegex.test(key) || !value) {
+  for (const key of url.searchParams.keys()) {
+    if (!sectionParamRegex.test(key)) {
       continue
     }
 
-    if (!encodedSchemeRegex.test(value)) {
-      return value
-    }
+    const target = getParamTarget(url, key)
 
-    return decodePercent(value)
+    if (target) {
+      return target
+    }
   }
 }
 

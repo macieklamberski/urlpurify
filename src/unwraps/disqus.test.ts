@@ -50,6 +50,15 @@ describe('unwrapDisqus', () => {
     expect(unwrapDisqus(url)).toBe('http://example.com/post.html#comment-4269334078')
   })
 
+  it('should drop the signature and keep the link fragment', () => {
+    const value = new URL(
+      'https://disq.us/url?url=https%3A%2F%2Fexample.com%2F2026%2F06%2Fpost.html%3Aouxfjrpf22Z5p2zEB5xmkNm6Jx8&cuid=391019#top',
+    )
+    const expected = 'https://example.com/2026/06/post.html#top'
+
+    expect(unwrapDisqus(value)).toBe(expected)
+  })
+
   it('should keep a colon inside the target path', () => {
     const url = new URL(
       'https://disq.us/url?url=https%3A%2F%2Fexample.com%2Fwiki%2FTalk%3AUniform_Resource_Locator',

@@ -1,10 +1,9 @@
-import { decodePercent, isAnyOf } from 'trousse'
+import { isAnyOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createUnwrapper } from '../utils.js'
+import { createUnwrapper, decodeEncodedScheme } from '../utils.js'
 
 const carrierPrefixRegex = /^\?fileURL=\//i
 const schemeRegex = /^https?:/i
-const encodedSchemeRegex = /^https?%3A/i
 
 // Mohtwize download measurement prefix (stats.mohtwize.net/redirect.mp3?fileURL=/<target>), where
 // the target often drops its scheme.
@@ -23,12 +22,8 @@ export const unwrapMohtwize: UrlUnwrapper = createUnwrapper({
     }
 
     // The target's own query follows unencoded, and the service forwarded to all of it.
-    let target = `${url.search.slice(prefix[0].length)}${url.hash}`
-
     // An encoded target, as in `https%3A%2F%2F…`, which the service decoded before forwarding.
-    if (encodedSchemeRegex.test(target)) {
-      target = decodePercent(target)
-    }
+    const target = decodeEncodedScheme(`${url.search.slice(prefix[0].length)}${url.hash}`)
 
     if (!target) {
       return

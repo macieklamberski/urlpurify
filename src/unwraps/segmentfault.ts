@@ -1,25 +1,15 @@
-import { decodeBase64, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createQueryUnwrapper } from '../utils.js'
-
-const baseExtractor = createQueryUnwrapper({
-  hosts: 'link.segmentfault.com',
-  path: '/',
-  params: ['enc'],
-})
+import { createUnwrapper, getBase64Target } from '../utils.js'
 
 // Segmentfault external link redirect (link.segmentfault.com/?enc=<base64>). The enc param is a
 // base64-encoded target URL.
-export const unwrapSegmentfault: UrlUnwrapper = (url) => {
-  const raw = baseExtractor(url)
+export const unwrapSegmentfault: UrlUnwrapper = createUnwrapper({
+  hosts: 'link.segmentfault.com',
+  unwrap: (url) => {
+    if (url.pathname !== '/') {
+      return
+    }
 
-  if (!raw) {
-    return
-  }
-
-  const decoded = decodeBase64(raw)
-
-  if (decoded && isHttpUrl(decoded)) {
-    return decoded
-  }
-}
+    return getBase64Target(url, 'enc')
+  },
+})
