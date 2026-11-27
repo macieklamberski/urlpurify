@@ -257,6 +257,19 @@ describe('unwrapUrl', () => {
     expect(unwrapUrl(value, [exampleUnwrapper])).toBe(expected)
   })
 
+  it('should give a bare host target with a port the https scheme', () => {
+    const value = 'https://redirect.example.com/?target=example.com%3A8080%2Fpost'
+    const expected = 'https://example.com:8080/post'
+
+    expect(unwrapUrl(value, [exampleUnwrapper])).toBe(expected)
+  })
+
+  it('should return undefined for a target with a reverse-DNS app scheme', () => {
+    const value = 'https://redirect.example.com/?target=com.example.app%3A%2F%2Fopen%2Fpost'
+
+    expect(unwrapUrl(value, [exampleUnwrapper])).toBeUndefined()
+  })
+
   it('should return undefined for a target without a scheme or a dotted host', () => {
     const value = 'https://redirect.example.com/?target=relative%2Fpath'
 
@@ -1600,6 +1613,12 @@ describe('isTrackingParam', () => {
     expect(isTrackingParam('from', 'list', 'SHOP.example', trackingParams)).toBe(true)
   })
 
+  it('should match a listed host given with a trailing dot', () => {
+    const trackingParams: Array<TrackingParam> = [{ name: 'from', hosts: ['shop.example'] }]
+
+    expect(isTrackingParam('from', 'list', 'shop.example.', trackingParams)).toBe(true)
+  })
+
   it('should answer through a query param predicate taking the url', () => {
     const trackingParams: Array<TrackingParam> = [{ name: 'from', hosts: ['shop.example'] }]
     const isQueryParamTracking = (name: string, value: string | undefined, url: URL): boolean => {
@@ -1856,6 +1875,13 @@ describe('host-scoped click attribution', () => {
   it('should drop the query of an SMZDM post', () => {
     const value = 'https://post.smzdm.com/p/ar6kpg7g/?send_by=3716913905&from=other'
     const expected = 'https://post.smzdm.com/p/ar6kpg7g/'
+
+    expect(cleanUrl(value)).toBe(expected)
+  })
+
+  it('should drop the query of an SMZDM post on a host with a trailing dot', () => {
+    const value = 'https://post.smzdm.com./p/ar6kpg7g/?send_by=3716913905&from=other'
+    const expected = 'https://post.smzdm.com./p/ar6kpg7g/'
 
     expect(cleanUrl(value)).toBe(expected)
   })

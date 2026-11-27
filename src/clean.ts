@@ -110,6 +110,14 @@ const matchesEntry = (entry: TrackingEntry, name: string, value: string, host: s
   return true
 }
 
+// A hostname in lowercase without its trailing dot, as `isHostOf` compares it: `example.com.` names
+// the same host as `example.com`.
+const normalizeHost = (hostname: string): string => {
+  const host = hostname.toLowerCase()
+
+  return host.endsWith('.') ? host.slice(0, -1) : host
+}
+
 // Takes the lowercased name, the decoded value and the hostname without `www.`.
 const isTrackedPair = (
   matcher: TrackingMatcher,
@@ -167,7 +175,7 @@ const deleteTrackingParams = (url: URL, trackingParams: ReadonlyArray<TrackingPa
     return
   }
 
-  const host = stripWww(url.hostname)
+  const host = stripWww(normalizeHost(url.hostname))
 
   // Alibaba DirectMail click urls answer 400 without their `ts` and do not check their `sign`.
   const keepsTs = isHostOf(url, 'dm-cn.aliyuncs.com') && isAnyOf(url.pathname, '/trace/v1/report')
@@ -269,6 +277,7 @@ const cleanTarget = (target: string | undefined): string | undefined => {
 
 const protocolRelativeRegex = /^\/\/[^/]/
 const bareHostRegex = /^[\p{L}\p{N}-]+(?:\.[\p{L}\p{N}-]+)+(?:[/?#:]|$)/u
+const appSchemeRegex = /^[\p{L}\p{N}-]+(?:\.[\p{L}\p{N}-]+)+:(?!\d)/u
 
 // A target without a scheme fails the http check, so it gets `https`: a protocol-relative
 // `//host/path`, as Embedly writes for Issuu, and a bare `host.tld/path`, as ShareASale's
@@ -280,6 +289,12 @@ const addTargetScheme = (target: string | undefined): string | undefined => {
 
   if (protocolRelativeRegex.test(target)) {
     return `https:${target}`
+  }
+
+  // A dotted name before a colon is a host only when a port follows. `resolveUrl` reads an app
+  // scheme such as `com.example.app://open` as a host.
+  if (appSchemeRegex.test(target)) {
+    return
   }
 
   if (bareHostRegex.test(target)) {
@@ -366,8 +381,7 @@ const getCandidates = (
     return unwrappers
   }
 
-  const hostname = url.hostname.toLowerCase()
-  const host = hostname.endsWith('.') ? hostname.slice(0, -1) : hostname
+  const host = normalizeHost(url.hostname)
   const exact = index.byHost.get(host)
 
   if (!index.domainLength) {
@@ -480,7 +494,7 @@ export const isTrackingParam = (
   trackingParams: ReadonlyArray<TrackingParam> = defaultTrackingParams,
 ): boolean => {
   const matcher = getTrackingMatcher(trackingParams)
-  const host = stripWww(hostname.toLowerCase())
+  const host = stripWww(normalizeHost(hostname))
 
   return isTrackedPair(matcher, name.toLowerCase(), value ?? '', host)
 }
