@@ -129,6 +129,18 @@ describe('unwrapUrl', () => {
     expect(unwrapUrl(value, unwrappers)).toBe(expected)
   })
 
+  it('should match a host with thousands of labels against the index in linear time', () => {
+    const value = `https://${'a.'.repeat(8000)}example.com/`
+
+    unwrapUrl(value)
+
+    const start = performance.now()
+
+    unwrapUrl(value)
+
+    expect(performance.now() - start).toBeLessThan(50)
+  })
+
   it('should keep list order on a host matched by a domain and an exact host', () => {
     const value =
       'https://redirect.example.com/?target=https%3A%2F%2Fexample.org%2Fsecond&fallback=https%3A%2F%2Fexample.org%2Ffirst'
@@ -1098,6 +1110,39 @@ describe('cleanUrl with a malformed target', () => {
       'https://example.org/news/',
     )
   })
+
+  it('should keep the wrapper when the target host is preceded by a username', () => {
+    const value = 'https://redirect.example.com/?target=https://example.com@example.net/'
+
+    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
+  })
+
+  it('should keep the wrapper when the target carries a username and password', () => {
+    const value = 'https://redirect.example.com/?target=https://user:secret@example.net/'
+
+    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
+  })
+
+  it('should keep the wrapper when an entity-encoded at sign decodes into a username', () => {
+    const value =
+      'https://redirect.example.com/?target=https%3A%2F%2Fexample.com%26%2364%3Bexample.net%2F%26page%3D1'
+
+    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
+  })
+
+  it('should keep the wrapper when an archived target is preceded by a username', () => {
+    const value = 'https://web.archive.org/web/20200101000000/example.com@example.net'
+
+    expect(cleanUrl(value, { unwrappers: [unwrapWebArchive] })).toBe(value)
+  })
+
+  it('should unwrap a target with an at sign in its path and query', () => {
+    const value =
+      'https://redirect.example.com/?target=https%3A%2F%2Fexample.net%2F%40author%3Fmail%3Dreader%40example.com'
+    const expected = 'https://example.net/@author?mail=reader@example.com'
+
+    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(expected)
+  })
 })
 
 describe('self-referential ref param', () => {
@@ -1638,6 +1683,61 @@ describe('session ids', () => {
   })
 })
 
+describe('cache busters', () => {
+  it('should strip a timestamp ts', () => {
+    const value = 'https://example.com/feed?id=7&ts=1746842972'
+    const expected = 'https://example.com/feed?id=7'
+
+    expect(cleanUrl(value)).toBe(expected)
+  })
+
+  it('should strip a millisecond timestamp _', () => {
+    const value = 'https://example.com/feed?id=7&_=1699999999999'
+    const expected = 'https://example.com/feed?id=7'
+
+    expect(cleanUrl(value)).toBe(expected)
+  })
+
+  it('should strip a hex cb', () => {
+    const value = 'https://example.com/feed?id=7&cb=8f3a2c'
+    const expected = 'https://example.com/feed?id=7'
+
+    expect(cleanUrl(value)).toBe(expected)
+  })
+
+  it('should keep a ts selecting the content type', () => {
+    const value = 'https://example.com/rss/feed/comments?tc=content&ts=posts&ti=5124'
+
+    expect(cleanUrl(value)).toBe(value)
+  })
+
+  it('should keep a JSONP callback cb', () => {
+    const value = 'https://example.com/translate_a/element.js?cb=googleTranslateElementInit'
+
+    expect(cleanUrl(value)).toBe(value)
+  })
+
+  it('should strip a hex value without a digit', () => {
+    const value = 'https://example.com/menu?ts=cafe'
+    const expected = 'https://example.com/menu'
+
+    expect(cleanUrl(value)).toBe(expected)
+  })
+
+  it('should keep a word preview', () => {
+    const value = 'https://example.com/kp/card?asin=B0C1234567&preview=inline'
+
+    expect(cleanUrl(value)).toBe(value)
+  })
+
+  it('should strip a numeric preview', () => {
+    const value = 'https://example.com/post?p=42&preview=1'
+    const expected = 'https://example.com/post?p=42'
+
+    expect(cleanUrl(value)).toBe(expected)
+  })
+})
+
 describe('path params', () => {
   it('should strip a jsessionid path param', () => {
     const value = 'https://example.com/site/Donation2;jsessionid=00000000.app20023b?idb=682725718'
@@ -1671,6 +1771,12 @@ describe('path params', () => {
     const expected = 'https://example.com/shop/item/42'
 
     expect(cleanUrl(value)).toBe(expected)
+  })
+
+  it('should keep a path param a non-session literal names', () => {
+    const value = 'https://example.com/a;fbclid=1;x=2/b'
+
+    expect(cleanUrl(value)).toBe(value)
   })
 
   it('should keep a path param whose name only an entry holds', () => {

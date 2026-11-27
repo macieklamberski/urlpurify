@@ -18,7 +18,7 @@ const carrierParams: Record<string, string> = {
 export const unwrapLinksynergy: UrlUnwrapper = createUnwrapper({
   hosts,
   unwrap: (url) => {
-    const param = carrierParams[url.pathname]
+    const param = carrierParams[url.pathname.toLowerCase()]
 
     if (!param) {
       return

@@ -1,3 +1,4 @@
+import { isAnyOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createQueryUnwrapper } from '../utils.js'
 
@@ -11,7 +12,7 @@ const extractTarget = createQueryUnwrapper({
 // digidip affiliate redirect (<publisher>.digidip.net/visit?url=<target> and
 // tracking.r.digidip.net/v1/redirect?url=<target>).
 export const unwrapDigidip: UrlUnwrapper = (url) => {
-  if (!paths.includes(url.pathname)) {
+  if (!isAnyOf(url.pathname, paths)) {
     return
   }
 

@@ -12,7 +12,7 @@ const signatureRegex = /:[\w-]{27}$/
 export const unwrapDisqus: UrlUnwrapper = createUnwrapper({
   hosts: 'disq.us',
   unwrap: (url) => {
-    if (!paths.includes(url.pathname)) {
+    if (!isAnyOf(url.pathname, paths)) {
       return
     }
 

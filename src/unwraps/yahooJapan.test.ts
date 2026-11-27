@@ -89,4 +89,13 @@ describe('unwrapYahooJapan', () => {
 
     expect(unwrapYahooJapan(url)).toBeUndefined()
   })
+
+  it('should trim a long run of padding in linear time', () => {
+    const value = new URL(`https://rdsig.yahoo.co.jp/RV=1/RU=${'-'.repeat(40000)}a`)
+    const start = performance.now()
+
+    unwrapYahooJapan(value)
+
+    expect(performance.now() - start).toBeLessThan(50)
+  })
 })

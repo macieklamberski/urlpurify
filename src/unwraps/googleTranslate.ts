@@ -66,7 +66,7 @@ export const unwrapGoogleTranslate: UrlUnwrapper = (url) => {
   }
 
   const isTranslatePage =
-    isHostOf(url, googleTranslateHostRegex) && googleTranslatePaths.includes(url.pathname)
+    isHostOf(url, googleTranslateHostRegex) && isAnyOf(url.pathname, googleTranslatePaths)
   // googleusercontent.com gives third parties subdomains, such as Apps Script web apps.
   const isTranslateFrame =
     isHostOf(url, 'translate.googleusercontent.com') && isAnyOf(url.pathname, '/translate_c')

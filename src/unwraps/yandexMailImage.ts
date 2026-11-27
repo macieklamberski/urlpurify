@@ -1,4 +1,4 @@
-import { decodePercent, getQueryParamValues } from 'trousse'
+import { decodePercent, getQueryParamValues, isAnyOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
@@ -9,7 +9,7 @@ const resizePaths = ['/mailservice', '/orig']
 export const unwrapYandexMailImage: UrlUnwrapper = createUnwrapper({
   hosts: 'resize.yandex.net',
   unwrap: (url) => {
-    if (!resizePaths.includes(url.pathname)) {
+    if (!isAnyOf(url.pathname, resizePaths)) {
       return
     }
 

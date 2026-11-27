@@ -18,6 +18,13 @@ describe('unwrapYelp', () => {
     expect(unwrapYelp(url)).toBe('http://www.example.com')
   })
 
+  it('should match the path in any case', () => {
+    const value = new URL('https://www.yelp.com/BIZ_REDIR?url=https%3A%2F%2Fwww.example.com%2F')
+    const expected = 'https://www.example.com/'
+
+    expect(unwrapYelp(value)).toBe(expected)
+  })
+
   it('should return undefined when url param is missing', () => {
     const url = new URL('http://www.yelp.com/biz_redir?src_bizid=LmIUmXKyaWJw-KXHlyeBkA')
 
