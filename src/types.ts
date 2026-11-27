@@ -18,8 +18,11 @@ export type TrackingEntry = {
 // param name, or an entry. Patterns should be anchored (^...$).
 export type TrackingParam = string | RegExp | TrackingEntry
 
-export type CleanUrlOptions = {
+export type PurifyUrlOptions = {
   unwrappers?: ReadonlyArray<UrlUnwrapper>
   trackingParams?: ReadonlyArray<TrackingParam>
   maxUnwrapDepth?: number
 }
+
+/** @deprecated Use `PurifyUrlOptions` instead. */
+export type CleanUrlOptions = PurifyUrlOptions

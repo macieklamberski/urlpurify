@@ -27,11 +27,11 @@ npm install urlpurifier
 Then:
 
 ```typescript
-import { cleanUrl } from 'urlpurifier'
+import { purifyUrl } from 'urlpurifier'
 
 const url = 'https://www.google.com/url?q=https%3A%2F%2Fexample.com%2Fpost%3Ffbclid%3Dabc'
 
-cleanUrl(url) // => 'https://example.com/post'
+purifyUrl(url) // => 'https://example.com/post'
 ```
 
 ## Unwrappers
@@ -88,14 +88,14 @@ Every exported list, unwrappers and tracking params alike, is frozen and read on
 
 ## API
 
-### `cleanUrl(url, options?)`
+### `purifyUrl(url, options?)`
 
 Unwraps wrappers, repeatedly since they nest, then strips tracking params. The result is serialized per the URL Standard, and input that can't be parsed comes back unchanged, so the result is always safe to display.
 
 ```typescript
-import { cleanUrl, defaultTrackingParams, defaultUnwrappers, unwrapWebArchive } from 'urlpurifier'
+import { defaultTrackingParams, defaultUnwrappers, purifyUrl, unwrapWebArchive } from 'urlpurifier'
 
-cleanUrl(url, {
+purifyUrl(url, {
   // First match wins per pass.
   unwrappers: [...defaultUnwrappers, unwrapWebArchive],
   // Names, regexes tested on the lowercased name, or entries.
@@ -115,6 +115,8 @@ cleanUrl(url, {
 
 An unwrapped target that isn't a usable URL is ignored, and the wrapper is kept.
 
+`cleanUrl` and `CleanUrlOptions`, the earlier names, still work and are deprecated until the next major.
+
 ### `unwrapUrl(url, unwrappers?)`
 
 Runs one pass of the unwrappers and returns the first target, or `undefined`.
@@ -123,7 +125,7 @@ An unwrapper list that arrives a second time is indexed by host and cached per a
 
 ### `stripTrackingParams(url, trackingParams?)`
 
-Removes tracking params and returns the serialized URL. Both this and `cleanUrl` apply two rules on top of the list:
+Removes tracking params and returns the serialized URL. Both this and `purifyUrl` apply two rules on top of the list:
 
 - A query with a signature (`sig`, `signature`, `X-Amz-Signature` or `X-Goog-Signature`) stays whole, since dropping anything breaks the signature.
 - `ts` stays on Alibaba DirectMail click URLs, which fail without it.
@@ -134,7 +136,7 @@ A tracking list is compiled on first use and cached per array. To change it, pas
 
 ### `isTrackingParam(name, value, hostname, trackingParams?)`
 
-Answers whether one query pair is tracking, for a caller filtering pairs itself. The list defaults to `defaultTrackingParams`. It sees one query pair and never the path, so the two rules above don't apply and a `;name=value` path param needs `cleanUrl` or `stripTrackingParams`.
+Answers whether one query pair is tracking, for a caller filtering pairs itself. The list defaults to `defaultTrackingParams`. It sees one query pair and never the path, so the two rules above don't apply and a `;name=value` path param needs `purifyUrl` or `stripTrackingParams`.
 
 ```typescript
 import { isTrackingParam, knownTrackingParams } from 'urlpurifier'
@@ -148,7 +150,7 @@ isTrackingParam('utm_source', 'feed', url.hostname, knownTrackingParams) // true
 Builds an unwrapper for a target that sits in a query parameter:
 
 ```typescript
-import { cleanUrl, createQueryUnwrapper, defaultUnwrappers } from 'urlpurifier'
+import { createQueryUnwrapper, defaultUnwrappers, purifyUrl } from 'urlpurifier'
 
 const unwrapExample = createQueryUnwrapper({
   // The domain and every subdomain. Use `hosts` for exact hosts or a regex,
@@ -158,7 +160,7 @@ const unwrapExample = createQueryUnwrapper({
   params: ['target'],
 })
 
-cleanUrl(url, { unwrappers: [...defaultUnwrappers, unwrapExample] })
+purifyUrl(url, { unwrappers: [...defaultUnwrappers, unwrapExample] })
 ```
 
 A value still encoded after one decode, starting with `http%3A` or `https%3A`, is decoded once more. A malformed escape, or one in a legacy charset such as `%E9` for é in Latin-1, stays as written.
@@ -172,7 +174,7 @@ The target takes the link's fragment, so `example.com/out?target=https://example
 Builds an unwrapper for a target glued into the path behind a prefix, as podcast analytics services do. It takes the same `hosts`, `domains` or `subdomains` as `createUnwrapper`:
 
 ```typescript
-import { cleanUrl, createPathUnwrapper, defaultUnwrappers } from 'urlpurifier'
+import { createPathUnwrapper, defaultUnwrappers, purifyUrl } from 'urlpurifier'
 
 // prefix.example.com/r/42/www.example.org/episode.mp3 → https://www.example.org/episode.mp3
 const unwrapExample = createPathUnwrapper({
@@ -180,7 +182,7 @@ const unwrapExample = createPathUnwrapper({
   prefix: /^\/r\/\d+\//,
 })
 
-cleanUrl(url, { unwrappers: [...defaultUnwrappers, unwrapExample] })
+purifyUrl(url, { unwrappers: [...defaultUnwrappers, unwrapExample] })
 ```
 
 The target keeps the link's query and fragment, which the service forwards with it. A target without a scheme gets `https`. Pass `scheme: 'http'` for a service that forwards to http, or `scheme: 'link'` for one that forwards with the link's own.
@@ -206,16 +208,16 @@ const unwrapExample = createUnwrapper({
 })
 ```
 
-Pass exactly one of `hosts`, `domains` or `subdomains`. Each matches as trousse's `isHostOf`, `isHostOrSubdomainOf` or `isSubdomainOf` does. The unwrapper registers its hosts, so `cleanUrl` skips it on every other host. A host given as a regex registers nothing, so its unwrapper runs on every url, as a plain `UrlUnwrapper` function does.
+Pass exactly one of `hosts`, `domains` or `subdomains`. Each matches as trousse's `isHostOf`, `isHostOrSubdomainOf` or `isSubdomainOf` does. The unwrapper registers its hosts, so `purifyUrl` skips it on every other host. A host given as a regex registers nothing, so its unwrapper runs on every url, as a plain `UrlUnwrapper` function does.
 
 ### Choosing unwrappers
 
 Spread the categories you want next to the defaults:
 
 ```typescript
-import { affiliateUnwrappers, cleanUrl, defaultUnwrappers } from 'urlpurifier'
+import { affiliateUnwrappers, defaultUnwrappers, purifyUrl } from 'urlpurifier'
 
-cleanUrl(url, { unwrappers: [...defaultUnwrappers, ...affiliateUnwrappers] })
+purifyUrl(url, { unwrappers: [...defaultUnwrappers, ...affiliateUnwrappers] })
 ```
 
 ### Choosing tracking params

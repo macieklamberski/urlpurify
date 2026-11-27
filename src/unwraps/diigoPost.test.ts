@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'bun:test'
-import { cleanUrl } from '../clean.js'
+import { purifyUrl } from '../clean.js'
 import { unwrapDiigoPost } from './diigoPost.js'
 
 describe('unwrapDiigoPost', () => {
@@ -73,7 +73,7 @@ describe('unwrapDiigoPost', () => {
   it('should keep the wrapper for a non-http page', () => {
     const value = 'https://www.diigo.com/post?url=javascript%3Aalert(1)'
 
-    expect(cleanUrl(value, { unwrappers: [unwrapDiigoPost] })).toBe(value)
+    expect(purifyUrl(value, { unwrappers: [unwrapDiigoPost] })).toBe(value)
   })
 
   it('should return undefined for the url param on another path', () => {

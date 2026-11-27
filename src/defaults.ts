@@ -495,7 +495,7 @@ export {
   visitorIdParams,
 }
 
-// Applied by cleanUrl and stripTrackingParams: what tracks a person or adds nothing. A pattern is
+// Applied by purifyUrl and stripTrackingParams: what tracks a person or adds nothing. A pattern is
 // tested against the lowercased param name, so it must be lowercase and anchored.
 export const defaultTrackingParams: ReadonlyArray<TrackingParam> = Object.freeze([
   ...clickAttributionParams,

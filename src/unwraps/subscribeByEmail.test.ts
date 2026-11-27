@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'bun:test'
-import { cleanUrl } from '../clean.js'
+import { purifyUrl } from '../clean.js'
 import { unwrapSubscribeByEmail } from './subscribeByEmail.js'
 
 describe('unwrapSubscribeByEmail', () => {
@@ -40,11 +40,11 @@ describe('unwrapSubscribeByEmail', () => {
     expect(unwrapSubscribeByEmail(value)).toBe(expected)
   })
 
-  it('should resolve a feed that kept a single-slash scheme through cleanUrl', () => {
+  it('should resolve a feed that kept a single-slash scheme through purifyUrl', () => {
     const value = 'https://www.subscribebyemail.com/https:/example.com/s/8901fef8/podcast/rss'
     const expected = 'https://example.com/s/8901fef8/podcast/rss'
 
-    expect(cleanUrl(value, { unwrappers: [unwrapSubscribeByEmail] })).toBe(expected)
+    expect(purifyUrl(value, { unwrappers: [unwrapSubscribeByEmail] })).toBe(expected)
   })
 
   it('should return undefined for a page of the site', () => {

@@ -23,7 +23,7 @@ import {
 } from 'trousse'
 import { defaultTrackingParams, defaultUnwrappers } from './defaults.js'
 import { sessionParams } from './tracking/session.js'
-import type { CleanUrlOptions, TrackingEntry, TrackingParam, UrlUnwrapper } from './types.js'
+import type { PurifyUrlOptions, TrackingEntry, TrackingParam, UrlUnwrapper } from './types.js'
 import { unwrapperHosts } from './utils.js'
 
 type TrackingMatcher = {
@@ -434,7 +434,7 @@ const applyUnwrappers = (
 }
 
 // Apply unwrappers in order and return the first extracted target URL that survives cleaning,
-// serialized as in cleanUrl, or undefined when none match or the input cannot be parsed.
+// serialized as in purifyUrl, or undefined when none match or the input cannot be parsed.
 export const unwrapUrl = (
   url: string,
   unwrappers: ReadonlyArray<UrlUnwrapper> = defaultUnwrappers,
@@ -471,9 +471,9 @@ export const stripTrackingParams = (
   return parsed.href
 }
 
-// Answer whether one query pair is tracking on a url with this hostname, as cleanUrl decides it.
+// Answer whether one query pair is tracking on a url with this hostname, as purifyUrl decides it.
 // It never sees the path or the other pairs, so a `;name=value` path param, the signature rule and
-// the Alibaba DirectMail `ts` rule need cleanUrl. `value` is decoded, or undefined with no `=`.
+// the Alibaba DirectMail `ts` rule need purifyUrl. `value` is decoded, or undefined with no `=`.
 export const isTrackingParam = (
   name: string,
   value: string | undefined,
@@ -488,7 +488,7 @@ export const isTrackingParam = (
 
 // Unwrap redirect/affiliate wrappers, then strip tracking params, and return the result in the
 // URL Standard serialization. Input that cannot be parsed is returned unchanged.
-export const cleanUrl = (url: string, options?: CleanUrlOptions): string => {
+export const purifyUrl = (url: string, options?: PurifyUrlOptions): string => {
   const unwrappers = options?.unwrappers ?? defaultUnwrappers
   const trackingParams = options?.trackingParams ?? defaultTrackingParams
   const maxUnwrapDepth = options?.maxUnwrapDepth ?? 12
@@ -524,3 +524,6 @@ export const cleanUrl = (url: string, options?: CleanUrlOptions): string => {
 
   return currentParsed.href
 }
+
+/** @deprecated Use `purifyUrl` instead. */
+export const cleanUrl = purifyUrl
