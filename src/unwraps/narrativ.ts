@@ -1,18 +1,21 @@
 import { isAnyOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createQueryUnwrapper } from '../utils.js'
+import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
 const redirectPathRegex = /^\/api\/v\d+\/(?:client_)?redirect\/?$/i
 
 const linkPaths = ['/link', '/link/']
 
+const redirectHosts = ['narrativ.com', 'api.narrativ.com', 'events.release.narrativ.com']
+const linkHosts = ['howl.link', 'howl.me', 'shop-links.co']
+
 const extractTarget = createQueryUnwrapper({
-  hosts: ['narrativ.com', 'api.narrativ.com', 'events.release.narrativ.com'],
+  hosts: redirectHosts,
   params: ['url'],
 })
 
 const extractLinkTarget = createQueryUnwrapper({
-  hosts: ['howl.link', 'howl.me', 'shop-links.co'],
+  hosts: linkHosts,
   params: ['url'],
 })
 
@@ -21,14 +24,17 @@ const extractLinkTarget = createQueryUnwrapper({
 // (howl.link/link?url=<target>, also /link/, howl.me and shop-links.co). Not in
 // defaultUnwrappers: real-time auction bidding routes the click, so `url` may not be where it
 // lands.
-export const unwrapNarrativ: UrlUnwrapper = (url) => {
-  if (isAnyOf(url.pathname, linkPaths)) {
-    return extractLinkTarget(url)
-  }
+export const unwrapNarrativ: UrlUnwrapper = createUnwrapper({
+  hosts: [...redirectHosts, ...linkHosts],
+  unwrap: (url) => {
+    if (isAnyOf(url.pathname, linkPaths)) {
+      return extractLinkTarget(url)
+    }
 
-  if (!redirectPathRegex.test(url.pathname)) {
-    return
-  }
+    if (!redirectPathRegex.test(url.pathname)) {
+      return
+    }
 
-  return extractTarget(url)
-}
+    return extractTarget(url)
+  },
+})
