@@ -11,6 +11,7 @@ import {
 } from 'trousse'
 import { defaultTrackingParams, defaultUnwrappers } from './defaults.js'
 import type { CleanUrlOptions, TrackingEntry, TrackingParam, UrlUnwrapper } from './types.js'
+import { unwrapperHosts } from './utils.js'
 
 type TrackingMatcher = {
   literals: Set<string>
@@ -243,8 +244,88 @@ const addTargetScheme = (target: string | undefined): string | undefined => {
   return target
 }
 
-const applyUnwrappers = (url: URL, unwrappers: ReadonlyArray<UrlUnwrapper>): string | undefined => {
+type UnwrapperIndex = {
+  byHost: Map<string, Array<UrlUnwrapper>>
+  rest: Array<UrlUnwrapper>
+}
+
+// A list seen once maps to undefined and gets no index, so a caller passing a new array per call
+// pays no build. The second arrival of the same array builds it.
+const unwrapperIndexes = new WeakMap<ReadonlyArray<UrlUnwrapper>, UnwrapperIndex | undefined>()
+
+// Each host maps to the unwrappers registered for it plus every unregistered one, in list order, so
+// the first match is the one a full scan finds. Any other host gets only the unregistered ones.
+const buildUnwrapperIndex = (unwrappers: ReadonlyArray<UrlUnwrapper>): UnwrapperIndex => {
+  const byHost = new Map<string, Array<UrlUnwrapper>>()
+  const rest: Array<UrlUnwrapper> = []
+
   for (const unwrap of unwrappers) {
+    const hosts = unwrapperHosts.get(unwrap)
+
+    if (!hosts) {
+      rest.push(unwrap)
+
+      for (const list of byHost.values()) {
+        list.push(unwrap)
+      }
+
+      continue
+    }
+
+    for (const host of hosts) {
+      const list = byHost.get(host)
+
+      if (!list) {
+        byHost.set(host, [...rest, unwrap])
+        continue
+      }
+
+      if (list.at(-1) !== unwrap) {
+        list.push(unwrap)
+      }
+    }
+  }
+
+  return { byHost, rest }
+}
+
+const getUnwrapperIndex = (unwrappers: ReadonlyArray<UrlUnwrapper>): UnwrapperIndex | undefined => {
+  if (!unwrapperIndexes.has(unwrappers)) {
+    unwrapperIndexes.set(unwrappers, undefined)
+    return
+  }
+
+  let index = unwrapperIndexes.get(unwrappers)
+
+  if (!index) {
+    index = buildUnwrapperIndex(unwrappers)
+    unwrapperIndexes.set(unwrappers, index)
+  }
+
+  return index
+}
+
+const getCandidates = (
+  url: URL,
+  unwrappers: ReadonlyArray<UrlUnwrapper>,
+  index: UnwrapperIndex | undefined,
+): ReadonlyArray<UrlUnwrapper> => {
+  if (!index) {
+    return unwrappers
+  }
+
+  const hostname = url.hostname.toLowerCase()
+  const host = hostname.endsWith('.') ? hostname.slice(0, -1) : hostname
+
+  return index.byHost.get(host) ?? index.rest
+}
+
+const applyUnwrappers = (
+  url: URL,
+  unwrappers: ReadonlyArray<UrlUnwrapper>,
+  index: UnwrapperIndex | undefined,
+): string | undefined => {
+  for (const unwrap of getCandidates(url, unwrappers, index)) {
     // A trailing no-break space, as YouTube descriptions carry, hides a bare host untrimmed.
     const target = cleanTarget(addTargetScheme(unwrap(url)?.trim()))
 
@@ -261,7 +342,7 @@ const applyUnwrappers = (url: URL, unwrappers: ReadonlyArray<UrlUnwrapper>): str
     return
   }
 
-  return applyUnwrappers(collapsed, unwrappers)
+  return applyUnwrappers(collapsed, unwrappers, index)
 }
 
 // Apply unwrappers in order and return the first extracted target URL that survives cleaning,
@@ -276,7 +357,7 @@ export const unwrapUrl = (
     return
   }
 
-  const target = applyUnwrappers(parsed, unwrappers)
+  const target = applyUnwrappers(parsed, unwrappers, getUnwrapperIndex(unwrappers))
 
   if (!target) {
     return
@@ -330,12 +411,13 @@ export const cleanUrl = (url: string, options?: CleanUrlOptions): string => {
     return url
   }
 
+  const index = getUnwrapperIndex(unwrappers)
   let currentParsed = parsed
 
   // Wrappers can nest (an email gateway wrapping a search redirect), so
   // unwrap repeatedly up to the depth limit.
   for (let depth = 0; depth < maxUnwrapDepth; depth += 1) {
-    const target = applyUnwrappers(currentParsed, unwrappers)
+    const target = applyUnwrappers(currentParsed, unwrappers, index)
 
     if (!target) {
       break

@@ -117,6 +117,8 @@ An unwrapped target that isn't a usable URL is ignored, and the wrapper is kept.
 
 Runs one pass of the unwrappers and returns the first target, or `undefined`.
 
+An unwrapper list that arrives a second time is indexed by host and cached per array, so a url runs only the unwrappers that can match its host. To change a list, pass a new array.
+
 ### `stripTrackingParams(url, trackingParams?)`
 
 Removes tracking params and returns the serialized URL. Both this and `cleanUrl` apply two rules on top of the list:

@@ -1,4 +1,11 @@
-import { decodePercent, getQueryParamValues, isAnyOf, isHostOf, isHostOrSubdomainOf } from 'trousse'
+import {
+  decodePercent,
+  getQueryParamValues,
+  isAnyOf,
+  isHostOf,
+  isHostOrSubdomainOf,
+  isString,
+} from 'trousse'
 import type { UrlUnwrapper } from './types.js'
 
 // `domains` also matches every subdomain. `hosts` matches a host exactly, or by regex, for a domain
@@ -80,6 +87,13 @@ export const getParamTarget = (url: URL, name: string, index = 0): string | unde
   return appendLinkFragment(target, url)
 }
 
+// The exact hostnames a factory unwrapper can match, read by `applyUnwrappers` to skip it on any
+// other host. Only lowercase ascii hosts register: the index compares them as written with the
+// lowercased hostname, where `isHostOf` also folds case and punycode.
+export const unwrapperHosts = new WeakMap<UrlUnwrapper, Array<string>>()
+
+const plainHostRegex = /^[a-z0-9-]+(?:\.[a-z0-9-]+)+$/
+
 export const createQueryUnwrapper = (config: QueryUnwrapperConfig): UrlUnwrapper => {
   const isHostMatch = (url: URL): boolean => {
     if (config.domains !== undefined) {
@@ -89,7 +103,7 @@ export const createQueryUnwrapper = (config: QueryUnwrapperConfig): UrlUnwrapper
     return isHostOf(url, config.hosts)
   }
 
-  return (url) => {
+  const unwrap: UrlUnwrapper = (url) => {
     if (!isHostMatch(url)) {
       return
     }
@@ -112,6 +126,14 @@ export const createQueryUnwrapper = (config: QueryUnwrapperConfig): UrlUnwrapper
       return appendLinkFragment(target, url)
     }
   }
+
+  const hosts = isString(config.hosts) ? [config.hosts] : config.hosts
+
+  if (Array.isArray(hosts) && hosts.every((host) => plainHostRegex.test(host))) {
+    unwrapperHosts.set(unwrap, hosts)
+  }
+
+  return unwrap
 }
 
 /** @deprecated Use `QueryUnwrapperConfig` instead. */
