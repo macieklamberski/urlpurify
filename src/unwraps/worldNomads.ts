@@ -1,3 +1,4 @@
+import { isAnyOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper, getParamTarget } from '../utils.js'
 
@@ -9,7 +10,7 @@ const affiliatePaths = ['/Turnstile/AffiliateLink', '/af.aspx']
 export const unwrapWorldNomads: UrlUnwrapper = createUnwrapper({
   hosts: 'www.worldnomads.com',
   unwrap: (url) => {
-    if (!affiliatePaths.includes(url.pathname)) {
+    if (!isAnyOf(url.pathname, affiliatePaths)) {
       return
     }
 
