@@ -1,13 +1,25 @@
 import {
+  archiveExtensions,
+  audioExtensions,
+  codeExtensions,
+  documentExtensions,
+  feedExtensions,
+  flashExtensions,
+  fontExtensions,
+  imageExtensions,
+  installerExtensions,
   isAnyOf,
   isHostname,
   isHostOf,
   isIpAddress,
   isString,
   normalizeUrl,
+  pageExtensions,
   parseUrl,
   resolveUrl,
   stripWww,
+  subtitleExtensions,
+  videoExtensions,
 } from 'trousse'
 import { defaultTrackingParams, defaultUnwrappers } from './defaults.js'
 import type { CleanUrlOptions, TrackingEntry, TrackingParam, UrlUnwrapper } from './types.js'
@@ -183,10 +195,25 @@ const deleteTrackingParams = (url: URL, trackingParams: ReadonlyArray<TrackingPa
 const controlCharactersRegex = /[\p{Cc}\u2028\u2029]/u
 const dottedHostRegex = /[^.]\.[^.]/
 
-// Page, feed, script, style and media extensions, none of them a TLD. `.zip` and `.mov` are TLDs
-// and stay.
-const fileExtensionHostRegex =
-  /\.(?:asp|aspx|atom|cgi|css|gif|htm|html|jpeg|jpg|js|json|jsp|jspa|m4a|mp3|mp4|ogg|pdf|php|png|rss|svg|txt|wav|webm|webp|xml)$/
+// Extensions that are also TLDs, such as `example.zip`, stay valid hosts.
+const tldExtensions = ['mobi', 'mov', 'zip']
+
+const fileExtensions = new Set(
+  [
+    ...archiveExtensions,
+    ...audioExtensions,
+    ...codeExtensions,
+    ...documentExtensions,
+    ...feedExtensions,
+    ...flashExtensions,
+    ...fontExtensions,
+    ...imageExtensions,
+    ...installerExtensions,
+    ...pageExtensions,
+    ...subtitleExtensions,
+    ...videoExtensions,
+  ].filter((extension) => !tldExtensions.includes(extension)),
+)
 
 // Repairs a scheme such as `http:// https://host` and a host such as `example.com)` through
 // `resolveUrl`, then drops a target that is not http, holds a control character or keeps a junk
@@ -219,7 +246,7 @@ const cleanTarget = (target: string | undefined): string | undefined => {
     return
   }
 
-  if (fileExtensionHostRegex.test(hostname)) {
+  if (fileExtensions.has(hostname.slice(hostname.lastIndexOf('.') + 1))) {
     return
   }
 
