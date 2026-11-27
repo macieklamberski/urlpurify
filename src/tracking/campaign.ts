@@ -2,7 +2,7 @@ import type { TrackingParam } from '../types.js'
 
 // Campaign tags a site puts on its own links. The value is the same for every reader and tells the
 // site where the visit came from, so stripping it removes the creator's traffic stats.
-export const campaignParams: Array<TrackingParam> = [
+export const campaignParams: ReadonlyArray<TrackingParam> = Object.freeze([
   // Google Analytics / UTM.
   'utm_source', // Traffic source (e.g., google, newsletter).
   'utm_medium', // Marketing medium (e.g., cpc, email).
@@ -117,4 +117,4 @@ export const campaignParams: Array<TrackingParam> = [
 
   // Coremetrics (cm_mmc, cm_mmca1..15).
   /^cm_mmca?\d*$/,
-]
+])
