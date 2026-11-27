@@ -1,6 +1,5 @@
 import { isHostOf } from 'trousse'
-import type { UrlUnwrapper } from '../types.js'
-import { createQueryUnwrapper } from '../utils.js'
+import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
 const appPathRegex = /^\/app\/[\w-]+$/i
 
@@ -24,15 +23,18 @@ const extractGooGlTarget = createQueryUnwrapper({
 // goo.gl hosts (<name>.app.goo.gl/?link=<canonical> and goo.gl/app/<name>?link=<canonical>).
 // A deeper path on page.link or app.goo.gl is a short link or another service, such as
 // maps.app.goo.gl/<id>, and is left alone.
-export const unwrapFirebaseDynamicLinks: UrlUnwrapper = (url) => {
-  if (!isHostOf(url, 'goo.gl')) {
-    return extractTarget(url)
-  }
+export const unwrapFirebaseDynamicLinks = createUnwrapper({
+  domains: ['goo.gl', 'page.link'],
+  unwrap: (url) => {
+    if (!isHostOf(url, 'goo.gl')) {
+      return extractTarget(url)
+    }
 
-  // Every other goo.gl path is the URL shortener, which holds only an id.
-  if (!appPathRegex.test(url.pathname)) {
-    return
-  }
+    // Every other goo.gl path is the URL shortener, which holds only an id.
+    if (!appPathRegex.test(url.pathname)) {
+      return
+    }
 
-  return extractGooGlTarget(url)
-}
+    return extractGooGlTarget(url)
+  },
+})
