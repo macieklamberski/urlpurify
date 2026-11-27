@@ -1,6 +1,5 @@
 import { isAnyOf, isHostOf, isHttpUrl } from 'trousse'
-import type { UrlUnwrapper } from '../types.js'
-import { createQueryUnwrapper, getParamTarget } from '../utils.js'
+import { createQueryUnwrapper, createUnwrapper, getParamTarget } from '../utils.js'
 
 const hosts = [
   'deref-1und1.de',
@@ -61,26 +60,29 @@ const extractFreemailJump = createQueryUnwrapper({
 // GMX, WEB.DE, mail.com and 1&1 webmail dereferrer (deref-gmx.net/mail/client/[<token>/]
 // dereferrer/?redirectUrl=<target>, slashless on the 3c client hosts, and
 // lightmailer.mail.com/<token>/deref/?redirectUrl=<target>), plus the older shapes above.
-export const unwrapDerefMail: UrlUnwrapper = (url) => {
-  const isDerefHost = isHostOf(url, hosts) && pathRegex.test(url.pathname)
-  const isClientHost =
-    isHostOf(url, clientHosts) && isAnyOf(url.pathname, '/mail/client/dereferrer')
-  const isLightmailerHost =
-    isHostOf(url, lightmailerHosts) && lightmailerPathRegex.test(url.pathname)
+export const unwrapDerefMail = createUnwrapper({
+  domains: [...hosts, 'gmx.com', 'gmx.es', 'gmx.net', 'mail.com', 'ui-deref.de', 'web.de'],
+  unwrap: (url) => {
+    const isDerefHost = isHostOf(url, hosts) && pathRegex.test(url.pathname)
+    const isClientHost =
+      isHostOf(url, clientHosts) && isAnyOf(url.pathname, '/mail/client/dereferrer')
+    const isLightmailerHost =
+      isHostOf(url, lightmailerHosts) && lightmailerPathRegex.test(url.pathname)
 
-  if (!isDerefHost && !isClientHost && !isLightmailerHost) {
-    return (
-      extractLegacy(url) ?? extractLeaving(url) ?? extractUiDeref(url) ?? extractFreemailJump(url)
-    )
-  }
+    if (!isDerefHost && !isClientHost && !isLightmailerHost) {
+      return (
+        extractLegacy(url) ?? extractLeaving(url) ?? extractUiDeref(url) ?? extractFreemailJump(url)
+      )
+    }
 
-  const target = getParamTarget(url, 'redirectUrl')
+    const target = getParamTarget(url, 'redirectUrl')
 
-  if (!target) {
-    return
-  }
+    if (!target) {
+      return
+    }
 
-  if (isHttpUrl(target)) {
-    return target
-  }
-}
+    if (isHttpUrl(target)) {
+      return target
+    }
+  },
+})

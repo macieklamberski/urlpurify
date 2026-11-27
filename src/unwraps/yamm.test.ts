@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'bun:test'
+import { unwrapperHosts } from '../utils.js'
 import { unwrapYamm } from './yamm.js'
 
 describe('unwrapYamm', () => {
@@ -96,5 +97,9 @@ describe('unwrapYamm', () => {
     )
 
     expect(unwrapYamm(url)).toBeUndefined()
+  })
+
+  it('should register its hosts so the host index skips it on other hosts', () => {
+    expect(unwrapperHosts.has(unwrapYamm)).toBe(true)
   })
 })

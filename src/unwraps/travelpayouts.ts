@@ -1,5 +1,4 @@
-import type { UrlUnwrapper } from '../types.js'
-import { createQueryUnwrapper } from '../utils.js'
+import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
 const unwrapRedirect = createQueryUnwrapper({
   hosts: 'tp.media',
@@ -16,6 +15,9 @@ const unwrapClick = createQueryUnwrapper({
 // Travelpayouts affiliate redirect (tp.media/r?u=<target>) and its older custom link
 // (c<n>.travelpayouts.com/click?custom_url=<target>).
 // Not included in defaultUnwrappers: unwrapping drops the publisher's affiliate commission.
-export const unwrapTravelpayouts: UrlUnwrapper = (url) => {
-  return unwrapRedirect(url) ?? unwrapClick(url)
-}
+export const unwrapTravelpayouts = createUnwrapper({
+  domains: ['tp.media', 'travelpayouts.com'],
+  unwrap: (url) => {
+    return unwrapRedirect(url) ?? unwrapClick(url)
+  },
+})

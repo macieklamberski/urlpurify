@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'bun:test'
+import { unwrapperHosts } from '../utils.js'
 import { unwrapSmartAdserver } from './smartAdserver.js'
 
 describe('unwrapSmartAdserver', () => {
@@ -58,5 +59,9 @@ describe('unwrapSmartAdserver', () => {
     const url = new URL('https://xwww5.smartadserver.com/click?go=https%3a%2f%2fwww.example.org%2f')
 
     expect(unwrapSmartAdserver(url)).toBeUndefined()
+  })
+
+  it('should register its hosts so the host index skips it on other hosts', () => {
+    expect(unwrapperHosts.has(unwrapSmartAdserver)).toBe(true)
   })
 })

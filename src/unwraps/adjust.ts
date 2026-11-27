@@ -1,6 +1,6 @@
 import { isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createQueryUnwrapper, getParamTarget } from '../utils.js'
+import { createQueryUnwrapper, createUnwrapper, getParamTarget } from '../utils.js'
 
 const hosts = ['app.adjust.com', 'app.adjust.net.in']
 
@@ -35,6 +35,9 @@ const unwrapTracker: UrlUnwrapper = (url) => {
 // values. Also Adjust universal links
 // (<id>.adj.st/<path>?adj_fallback=<target>, also on <id>.tr.adj.st), whose web destination is in
 // adj_redirect_windows, adj_redirect, the older adjust_fallback or adj_fallback.
-export const unwrapAdjust: UrlUnwrapper = (url) => {
-  return unwrapTracker(url) ?? unwrapUniversalLink(url)
-}
+export const unwrapAdjust = createUnwrapper({
+  subdomains: ['adj.st', 'adjust.com', 'adjust.net.in'],
+  unwrap: (url) => {
+    return unwrapTracker(url) ?? unwrapUniversalLink(url)
+  },
+})

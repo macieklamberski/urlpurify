@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'bun:test'
+import { unwrapperHosts } from '../utils.js'
 import { unwrapHellohq } from './hellohq.js'
 
 describe('unwrapHellohq', () => {
@@ -64,5 +65,9 @@ describe('unwrapHellohq', () => {
     )
 
     expect(unwrapHellohq(url)).toBeUndefined()
+  })
+
+  it('should register its hosts so the host index skips it on other hosts', () => {
+    expect(unwrapperHosts.has(unwrapHellohq)).toBe(true)
   })
 })

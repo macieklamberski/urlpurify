@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'bun:test'
+import { unwrapperHosts } from '../utils.js'
 import { unwrapAppsflyerOnelink } from './appsflyerOnelink.js'
 
 describe('unwrapAppsflyerOnelink', () => {
@@ -60,5 +61,9 @@ describe('unwrapAppsflyerOnelink', () => {
     )
 
     expect(unwrapAppsflyerOnelink(url)).toBeUndefined()
+  })
+
+  it('should register its hosts so the host index skips it on other hosts', () => {
+    expect(unwrapperHosts.has(unwrapAppsflyerOnelink)).toBe(true)
   })
 })
