@@ -6,6 +6,7 @@ import { createUnwrapper } from '../utils.js'
 // Not included in defaultUnwrappers: unwrapping swaps the proxied copy for the original image.
 export const unwrapYahooMailImage: UrlUnwrapper = createUnwrapper({
   hosts: 'ecp.yusercontent.com',
+  ignoreLinkFragment: true,
   unwrap: (url) => {
     if (!isAnyOf(url.pathname, '/mail')) {
       return

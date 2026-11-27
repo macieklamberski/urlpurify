@@ -41,6 +41,7 @@ const getEncodedFeed = (url: URL): string | undefined => {
 // the app's page.
 export const unwrapGooglePodcasts: UrlUnwrapper = createUnwrapper({
   hosts: [...appHosts, ...searchHosts],
+  ignoreLinkFragment: true,
   unwrap: (url) => {
     const encoded = getEncodedFeed(url)
 

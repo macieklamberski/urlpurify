@@ -12,6 +12,7 @@ const pathRegex = /^\/(?:shareArticle|sharing\/share-offsite|cws\/share|share)\/
 // not the form that shares it.
 export const unwrapLinkedinShare: UrlUnwrapper = createUnwrapper({
   hosts,
+  ignoreLinkFragment: true,
   unwrap: (url) => {
     if (!isAnyOf(url.pathname, pathRegex)) {
       return

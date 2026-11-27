@@ -11,6 +11,7 @@ const widgetCommands = ['WidgetShare', 'WidgetSharePreview']
 // Opt-in: unwrapping returns the shared page, not the form that shares it.
 export const unwrapOkShare: UrlUnwrapper = createUnwrapper({
   hosts: [...hosts, ...connectHosts],
+  ignoreLinkFragment: true,
   unwrap: (url) => {
     // `/dk` serves every OK.ru action, such as the `logExternal` link shim, so the command decides.
     const command = getQueryParam(url, 'st.cmd')

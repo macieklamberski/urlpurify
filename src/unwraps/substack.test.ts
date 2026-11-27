@@ -84,4 +84,13 @@ describe('unwrapSubstack', () => {
 
     expect(unwrapSubstack(value)).toBe(expected)
   })
+
+  it('should keep the fragment the target carries', () => {
+    const value = new URL(
+      'https://substack.com/redirect/2/eyJlIjoiaHR0cHM6Ly9leGFtcGxlLnN1YnN0YWNrLmNvbS9wL2xlYWRpbmctdGVhbXMjdG9wIiwicCI6MSwiaXNzIjoicHViLTAiLCJzdWIiOiJsaW5rLXJlZGlyZWN0In0.boTvkXxD1YyQj5AE-vQ99eFrlRv8o1k11cm2mcsnzRQ',
+    )
+    const expected = 'https://example.substack.com/p/leading-teams#top'
+
+    expect(unwrapSubstack(value)).toBe(expected)
+  })
 })

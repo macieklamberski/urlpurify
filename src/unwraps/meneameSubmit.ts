@@ -11,6 +11,7 @@ const hosts = ['meneame.net', 'www.meneame.net']
 // Opt-in: unwrapping returns the shared page, not the submit form.
 export const unwrapMeneameSubmit: UrlUnwrapper = createUnwrapper({
   hosts,
+  ignoreLinkFragment: true,
   unwrap: (url) => {
     if (!isAnyOf(url.pathname, pathRegex)) {
       return

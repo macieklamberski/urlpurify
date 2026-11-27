@@ -1,6 +1,6 @@
 import { decodeBase64UrlBinary } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { appendLinkFragment, createUnwrapper } from '../utils.js'
+import { createUnwrapper } from '../utils.js'
 
 const articleIdRegex = /^\/(?:__i\/rss\/rd\/|rss\/)?articles\/([\w-]+)$/i
 // Protobuf framing around the destination URL: 0x08 0x13 + length-prefixed
@@ -25,7 +25,7 @@ export const unwrapGoogleNewsModern: UrlUnwrapper = createUnwrapper({
     const target = decoded?.match(protobufFramingRegex)?.[1]
 
     if (target) {
-      return appendLinkFragment(target, url)
+      return target
     }
   },
 })

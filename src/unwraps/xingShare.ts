@@ -13,6 +13,7 @@ const appPathRegex = /^\/app\/user\/?$/i
 // bare xing.com). Opt-in: unwrapping returns the shared page, not the share form.
 export const unwrapXingShare: UrlUnwrapper = createUnwrapper({
   hosts,
+  ignoreLinkFragment: true,
   unwrap: (url) => {
     if (isAnyOf(url.pathname, sharePathRegex)) {
       return readParamTarget(url, 'url')

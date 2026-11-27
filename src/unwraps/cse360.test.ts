@@ -81,4 +81,13 @@ describe('unwrapCse360', () => {
 
     expect(unwrapCse360(url)).toBeUndefined()
   })
+
+  it('should keep the fragment the target carries', () => {
+    const value = new URL(
+      'https://click.cse360.com.br/Click/AddCampaignEmailClick/91cb06fe-2319-45d2-6cbd-08da221b4c0d/https%253a%252f%252fwww.example.com%252fin%252fmauricioconti%252f%2523top/db795461-4748-41b3-a554-cb5aed11d7b0/reporter@example.com.br/True',
+    )
+    const expected = 'https://www.example.com/in/mauricioconti/#top'
+
+    expect(unwrapCse360(value)).toBe(expected)
+  })
 })

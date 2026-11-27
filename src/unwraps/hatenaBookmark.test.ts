@@ -66,6 +66,15 @@ describe('unwrapHatenaBookmark', () => {
 
       expect(unwrapHatenaBookmark(value)).toBeUndefined()
     })
+
+    it('should keep the escaped fragment over the link fragment', () => {
+      const value = new URL(
+        'https://b.hatena.ne.jp/entry/https://example.com/sport/eisschnelllauf-a-5f0efe99%23ref=rss#comments',
+      )
+      const expected = 'https://example.com/sport/eisschnelllauf-a-5f0efe99#ref=rss'
+
+      expect(unwrapHatenaBookmark(value)).toBe(expected)
+    })
   })
 
   describe('entry page with an encoded page', () => {
@@ -172,6 +181,15 @@ describe('unwrapHatenaBookmark', () => {
       const value = new URL('http://b.hatena.ne.jp/add?mode=confirm&title=XVX+MU68+FujiWave')
 
       expect(unwrapHatenaBookmark(value)).toBeUndefined()
+    })
+
+    it('should drop the link fragment', () => {
+      const value = new URL(
+        'http://b.hatena.ne.jp/add?mode=confirm&url=https%3A%2F%2Fexample.com%2F#comments',
+      )
+      const expected = 'https://example.com/'
+
+      expect(unwrapHatenaBookmark(value)).toBe(expected)
     })
   })
 

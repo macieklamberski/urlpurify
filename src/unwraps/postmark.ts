@@ -1,6 +1,6 @@
 import { decodePercent } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { appendLinkFragment, createUnwrapper } from '../utils.js'
+import { createUnwrapper } from '../utils.js'
 
 const postmarkPathRegex = /^\/[23][mt]?(?<secure>s?)\/(?<target>[^/]+)\//i
 
@@ -18,6 +18,6 @@ export const unwrapPostmark: UrlUnwrapper = createUnwrapper({
 
     const target = `${match.groups.secure ? 'https' : 'http'}://${decodePercent(match.groups.target)}`
 
-    return appendLinkFragment(target, url)
+    return target
   },
 })

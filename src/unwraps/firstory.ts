@@ -36,6 +36,6 @@ export const unwrapFirstory: UrlUnwrapper = createUnwrapper({
       return
     }
 
-    return `${decodePercent(url.pathname.slice(match[0].length))}${url.search}${url.hash}`
+    return `${decodePercent(url.pathname.slice(match[0].length))}${url.search}`
   },
 })

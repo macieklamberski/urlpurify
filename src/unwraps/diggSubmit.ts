@@ -11,6 +11,7 @@ const pathRegex = /^\/(?:submit|share|tools\/diggthis\/login)\/?$/i
 // page, not the form that submits it.
 export const unwrapDiggSubmit: UrlUnwrapper = createUnwrapper({
   hosts,
+  ignoreLinkFragment: true,
   unwrap: (url) => {
     if (!isAnyOf(url.pathname, pathRegex)) {
       return

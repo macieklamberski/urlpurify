@@ -26,8 +26,8 @@ export const unwrapMegalodon = createUnwrapper({
     // An http target is stored with no scheme, an https one with its scheme and `:443`.
     const target = schemeRegex.test(match[1]) ? match[1] : `http://${match[1]}`
 
-    // An unencoded target's query and fragment land in the snapshot URL's own `search` and `hash`.
-    const unwrapped = `${target}${url.search}${url.hash}`
+    // An unencoded target's query lands in the snapshot URL's own `search`.
+    const unwrapped = `${target}${url.search}`
 
     if (isHttpUrl(unwrapped)) {
       return unwrapped

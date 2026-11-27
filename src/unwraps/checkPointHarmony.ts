@@ -18,6 +18,7 @@ const starEscapeRegex = /\*([0-9a-f]{2})/gi
 // check of the target at click time, which the recipient's organization put in place.
 export const unwrapCheckPointHarmony: UrlUnwrapper = createUnwrapper({
   hosts: [...hosts, 'protect.checkpoint.com'],
+  ignoreLinkFragment: true,
   unwrap: (url) => {
     if (isHostOf(url, 'protect.checkpoint.com')) {
       // The v2 format writes a percent escape in the target's path as `*`, such as `*2F` for `%2F`.

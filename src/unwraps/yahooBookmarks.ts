@@ -53,6 +53,7 @@ export const unwrapYahooBookmarks = createUnwrapper({
     'fr.buzz.yahoo.com',
     'uk.buzz.yahoo.com',
   ],
+  ignoreLinkFragment: true,
   unwrap: (url) => {
     return unwrapBookmarklet(url) ?? unwrapToolbar(url) ?? unwrapBuzz(url) ?? unwrapBuzzSubmit(url)
   },

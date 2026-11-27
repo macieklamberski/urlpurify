@@ -89,4 +89,13 @@ describe('unwrapDatalifeEngine', () => {
 
     expect(unwrapDatalifeEngine(url)).toBeUndefined()
   })
+
+  it('should keep the fragment the target carries', () => {
+    const value = new URL(
+      'https://www.example.com/engine/go.php?url=aHR0cHM6Ly93d3cuZXhhbXBsZS5vcmcvbC80NTkwMjg1MTM0ODQyMDgwLyN0b3A%3D',
+    )
+    const expected = 'https://www.example.org/l/4590285134842080/#top'
+
+    expect(unwrapDatalifeEngine(value)).toBe(expected)
+  })
 })

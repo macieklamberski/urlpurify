@@ -19,7 +19,6 @@ export const unwrapDeviantartOutgoing: UrlUnwrapper = createUnwrapper({
       return
     }
 
-    // The target's own fragment lands in the wrapper's `hash`.
-    return `${target}${url.hash}`
+    return target
   },
 })

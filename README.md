@@ -161,7 +161,7 @@ cleanUrl(url, { unwrappers: [...defaultUnwrappers, unwrapExample] })
 
 A value still encoded after one decode, starting with `http%3A` or `https%3A`, is decoded once more. A malformed escape, or one in a legacy charset such as `%E9` for é in Latin-1, stays as written.
 
-The target takes the link's fragment, so `example.com/out?target=https://example.org/guide#install` gives `https://example.org/guide#install`. A browser following the redirect lands there too, since the server never sees the fragment. A fragment encoded inside the target wins. When the link opens a page instead of redirecting, such as a share button, pass `ignoreLinkFragment: true`, since the page reads only the query.
+The target takes the link's fragment as `createUnwrapper` describes, so `example.com/out?target=https://example.org/guide#install` gives `https://example.org/guide#install`.
 
 `createParamExtractor` and `ParamExtractorConfig`, the names before 3.0, still work and are deprecated.
 
@@ -181,7 +181,7 @@ const unwrapExample = createPathUnwrapper({
 cleanUrl(url, { unwrappers: [...defaultUnwrappers, unwrapExample] })
 ```
 
-The target keeps the link's query and fragment, which the service forwards with it. A target without a scheme gets `https`. Pass `scheme: 'http'` for a service that forwards to http, or `scheme: 'link'` for one that forwards with the link's own.
+The target keeps the link's query, which the service forwards with it, and takes the link's fragment as `createUnwrapper` describes. A target without a scheme gets `https`. Pass `scheme: 'http'` for a service that forwards to http, or `scheme: 'link'` for one that forwards with the link's own.
 
 For any other shape, use `createUnwrapper`.
 
@@ -205,6 +205,8 @@ const unwrapExample = createUnwrapper({
 ```
 
 Pass exactly one of `hosts`, `domains` or `subdomains`. Each matches as trousse's `isHostOf`, `isHostOrSubdomainOf` or `isSubdomainOf` does. The unwrapper registers its hosts, so `cleanUrl` skips it on every other host. A host given as a regex registers nothing, so its unwrapper runs on every url, as a plain `UrlUnwrapper` function does.
+
+The target takes the link's fragment, unless it holds a fragment of its own. A browser following a redirect lands there too, since the server never sees the fragment. When the link opens a page instead of redirecting, such as a share button, or the wrapper's page reads the fragment itself, pass `ignoreLinkFragment: true`. All three factories take it.
 
 ### Choosing unwrappers
 

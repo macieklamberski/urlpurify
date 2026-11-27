@@ -5,6 +5,7 @@ import { createQueryUnwrapper, createUnwrapper, decodeEncodedScheme } from '../u
 const hosts = ['inoreader.com', 'www.inoreader.com', 'jp.inoreader.com']
 
 const feedPathRegex = /^\/feed\/(?<target>.+)$/i
+const rawFeedPathRegex = /^\/feed\/https?:/i
 
 const extractAddFeed = createQueryUnwrapper({
   hosts,
@@ -13,25 +14,42 @@ const extractAddFeed = createQueryUnwrapper({
   ignoreLinkFragment: true,
 })
 
+// The query after a feed path is Inoreader's own: the feed's own query sits encoded inside the
+// path.
+const readFeedPath: UrlUnwrapper = (url) => {
+  const match = url.pathname.match(feedPathRegex)
+
+  if (!match?.groups) {
+    return
+  }
+
+  const target = decodeEncodedScheme(decodePercent(match.groups.target))
+
+  if (isHttpUrl(target)) {
+    return target
+  }
+}
+
+// A raw feed's fragment lands in the link's own `hash`.
+const unwrapRawFeedPath = createUnwrapper({
+  hosts,
+  unwrap: (url) => {
+    if (!rawFeedPathRegex.test(url.pathname)) {
+      return
+    }
+
+    return readFeedPath(url)
+  },
+})
+
 // Inoreader subscribe and feed preview links (www.inoreader.com/?add_feed=<feed>,
 // www.inoreader.com/feed/<feed>, also on inoreader.com and jp.inoreader.com). Not in
 // defaultUnwrappers: the link adds the feed to a reader or previews it there, it never redirects
 // to it.
 export const unwrapInoreader: UrlUnwrapper = createUnwrapper({
   hosts,
+  ignoreLinkFragment: true, // A raw feed takes it through `unwrapRawFeedPath`
   unwrap: (url) => {
-    const match = url.pathname.match(feedPathRegex)
-
-    if (!match?.groups) {
-      return extractAddFeed(url)
-    }
-
-    // The query and fragment after a feed path are Inoreader's own: the feed's own query sits
-    // encoded inside the path.
-    const target = decodeEncodedScheme(decodePercent(match.groups.target))
-
-    if (isHttpUrl(target)) {
-      return target
-    }
+    return unwrapRawFeedPath(url) ?? readFeedPath(url) ?? extractAddFeed(url)
   },
 })

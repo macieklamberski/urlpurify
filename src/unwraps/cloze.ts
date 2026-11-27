@@ -18,7 +18,7 @@ export const unwrapCloze: UrlUnwrapper = createUnwrapper({
     }
 
     // Cloze keeps the scheme server-side, and an https site redirects from http.
-    const target = `http://${match[1]}${url.search}${url.hash}`
+    const target = `http://${match[1]}${url.search}`
 
     if (isHttpUrl(target)) {
       return target

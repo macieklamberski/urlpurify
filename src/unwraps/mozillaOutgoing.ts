@@ -1,6 +1,6 @@
 import { decodePercent } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { appendLinkFragment, createUnwrapper } from '../utils.js'
+import { createUnwrapper } from '../utils.js'
 
 const pathRegex = /^\/v1\/[0-9a-f]{64}\/(.+)$/i
 
@@ -20,6 +20,6 @@ export const unwrapMozillaOutgoing: UrlUnwrapper = createUnwrapper({
       return
     }
 
-    return appendLinkFragment(decodePercent(match[1]), url)
+    return decodePercent(match[1])
   },
 })

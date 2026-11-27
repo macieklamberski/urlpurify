@@ -89,4 +89,13 @@ describe('unwrapResearchgate', () => {
 
     expect(unwrapResearchgate(url)).toBeUndefined()
   })
+
+  it('should keep the fragment the target carries', () => {
+    const value = new URL(
+      'https://www.researchgate.net/deref/http%3A%2F%2Fwww.example.com%2Fpubmed%2F16884344%23top',
+    )
+    const expected = 'http://www.example.com/pubmed/16884344#top'
+
+    expect(unwrapResearchgate(value)).toBe(expected)
+  })
 })

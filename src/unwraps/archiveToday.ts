@@ -1,6 +1,6 @@
 import { isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { decodeEncodedScheme } from '../utils.js'
+import { appendLinkFragment, decodeEncodedScheme } from '../utils.js'
 
 const hostRegex = /^(?:www\.)?archive\.(?:is|ph|today|md|fo|vn|li)$/
 const pathRegex = /^\/(?:\d{14}|\d{4}\.\d{2}\.\d{2}-\d{6}|o\/[^/]+|newest)\/(.+)$/i
@@ -37,14 +37,17 @@ export const unwrapArchiveToday: UrlUnwrapper = (url) => {
   // A link can escape the target's own `?` and `#` as `%3F` and `%23` in the path.
   target = target.replace(escapedQueryRegex, '?').replace('%23', '#')
 
-  // An unencoded target's query and fragment land in the snapshot URL's own `search` and `hash`,
-  // except archive.today's own `#selection-` highlight, which points into the snapshot.
-  const hash = selectionHashRegex.test(url.hash) ? '' : url.hash
-  const unwrapped = `${target}${url.search}${hash}`
+  // An unencoded target's query lands in the snapshot URL's own `search`.
+  const unwrapped = `${target}${url.search}`
 
   if (!isHttpUrl(unwrapped)) {
     return
   }
 
-  return unwrapped
+  // archive.today's own `#selection-` highlight points into the snapshot.
+  if (selectionHashRegex.test(url.hash)) {
+    return unwrapped
+  }
+
+  return appendLinkFragment(unwrapped, url)
 }

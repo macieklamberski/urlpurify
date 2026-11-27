@@ -16,6 +16,7 @@ const extractTarget = createQueryUnwrapper({
 // it.
 export const unwrapShareaholic = createUnwrapper({
   hosts,
+  ignoreLinkFragment: true,
   unwrap: (url) => {
     if (!sharePathRegex.test(url.pathname)) {
       return

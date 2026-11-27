@@ -169,4 +169,13 @@ describe('unwrapReviveAdserver', () => {
 
     expect(unwrapReviveAdserver(url)).toBeUndefined()
   })
+
+  it('should keep the fragment the target carries', () => {
+    const value = new URL(
+      'http://underconsideration.com/oa_x/www/delivery/ck.php?oaparams=2__bannerid=19__zoneid=0__cb=6fb431d12d__oadest=http%3A%2F%2Fbranding.example.com%2F%23top',
+    )
+    const expected = 'http://branding.example.com/#top'
+
+    expect(unwrapReviveAdserver(value)).toBe(expected)
+  })
 })
