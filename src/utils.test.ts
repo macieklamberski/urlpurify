@@ -7,6 +7,7 @@ import {
   getParamTarget,
   getUtf8ByteLength,
   readParamTarget,
+  unwrapperHosts,
 } from './utils.js'
 
 const exampleSubdomainRegex = /\.example\.com$/
@@ -387,6 +388,21 @@ describe('createQueryUnwrapper', () => {
 
       expect(extractOwned(value)).toBe(expected)
     })
+  })
+})
+
+describe('createQueryUnwrapper host index', () => {
+  it('should register the hosts of a domain', () => {
+    const unwrap = createQueryUnwrapper({ domains: 'example.com', params: ['target'] })
+
+    expect(unwrapperHosts.get(unwrap)).toEqual(['.example.com'])
+  })
+
+  it('should return undefined on the domain itself for subdomains', () => {
+    const unwrap = createQueryUnwrapper({ subdomains: 'example.com', params: ['target'] })
+    const value = new URL('https://example.com/?target=https://example.org/post')
+
+    expect(unwrap(value)).toBeUndefined()
   })
 })
 

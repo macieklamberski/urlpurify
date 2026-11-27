@@ -10,17 +10,6 @@ import {
 } from 'trousse'
 import type { UrlUnwrapper } from './types.js'
 
-// `domains` also matches every subdomain. `hosts` matches a host exactly, or by regex, for a domain
-// where a third party can get a subdomain, such as a blog host.
-export type QueryUnwrapperConfig = (
-  | { domains: string | Array<string>; hosts?: never }
-  | { hosts: string | Array<string> | RegExp; domains?: never }
-) & {
-  path?: string
-  params: Array<string>
-  ignoreLinkFragment?: boolean // The link opens a page, not a redirect, per `readParamTarget`
-}
-
 type HostList = Pattern | ReadonlyArray<Pattern>
 
 // `hosts` matches a host exactly, or by regex. `domains` also matches every subdomain, and
@@ -32,6 +21,12 @@ export type UnwrapperHosts =
 
 export type UnwrapperConfig = UnwrapperHosts & {
   unwrap: UrlUnwrapper
+}
+
+export type QueryUnwrapperConfig = UnwrapperHosts & {
+  path?: string
+  params: Array<string>
+  ignoreLinkFragment?: boolean // The link opens a page, not a redirect, per `readParamTarget`
 }
 
 const encodedSchemeRegex = /^https?%3A/i
@@ -161,44 +156,33 @@ export const createUnwrapper = (config: UnwrapperConfig): UrlUnwrapper => {
   return unwrap
 }
 
+// An unwrapper for a target in the first of `params` that holds one, on a url on the hosts
+// `createUnwrapper` takes, and on `path` when given.
 export const createQueryUnwrapper = (config: QueryUnwrapperConfig): UrlUnwrapper => {
-  const isHostMatch = (url: URL): boolean => {
-    if (config.domains !== undefined) {
-      return isHostOrSubdomainOf(url, config.domains)
-    }
+  const { path, params, ignoreLinkFragment, ...hosts } = config
 
-    return isHostOf(url, config.hosts)
-  }
-
-  const unwrap: UrlUnwrapper = (url) => {
-    if (!isHostMatch(url)) {
-      return
-    }
-
-    if (config.path && !isAnyOf(url.pathname, config.path)) {
-      return
-    }
-
-    for (const param of config.params) {
-      const target = readParamTarget(url, param)
-
-      if (!target) {
-        continue
+  return createUnwrapper({
+    ...hosts,
+    unwrap: (url) => {
+      if (path && !isAnyOf(url.pathname, path)) {
+        return
       }
 
-      if (config.ignoreLinkFragment) {
-        return target
+      for (const param of params) {
+        const target = readParamTarget(url, param)
+
+        if (!target) {
+          continue
+        }
+
+        if (ignoreLinkFragment) {
+          return target
+        }
+
+        return appendLinkFragment(target, url)
       }
-
-      return appendLinkFragment(target, url)
-    }
-  }
-
-  if (config.hosts !== undefined) {
-    registerHosts(unwrap, config.hosts)
-  }
-
-  return unwrap
+    },
+  })
 }
 
 /** @deprecated Use `QueryUnwrapperConfig` instead. */
