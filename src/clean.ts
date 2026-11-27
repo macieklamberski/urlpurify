@@ -182,11 +182,15 @@ const deleteTrackingParams = (url: URL, trackingParams: ReadonlyArray<TrackingPa
 
 const controlCharactersRegex = /[\p{Cc}\u2028\u2029]/u
 const dottedHostRegex = /[^.]\.[^.]/
-const fileExtensionHostRegex = /\.(?:asp|aspx|cgi|htm|html|jsp|jspa|php)$/
+
+// Page, feed, script, style and media extensions, none of them a TLD. `.zip` and `.mov` are TLDs
+// and stay.
+const fileExtensionHostRegex =
+  /\.(?:asp|aspx|atom|cgi|css|gif|htm|html|jpeg|jpg|js|json|jsp|jspa|m4a|mp3|mp4|ogg|pdf|php|png|rss|svg|txt|wav|webm|webp|xml)$/
 
 // Repairs a scheme such as `http:// https://host` and a host such as `example.com)` through
 // `resolveUrl`, then drops a target that is not http, holds a control character or keeps a junk
-// host: not a hostname such as `,ccam.cc`, no dot between two labels, or a page extension.
+// host: not a hostname such as `,ccam.cc`, no dot between two labels, or a file extension.
 const cleanTarget = (target: string | undefined): string | undefined => {
   if (!target) {
     return
