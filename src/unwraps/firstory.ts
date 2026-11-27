@@ -1,7 +1,7 @@
 import { decodePercent, isHostOf } from 'trousse'
 import { getPathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamTarget } from '../utils.js'
+import { createUnwrapper, getParamTarget } from '../utils.js'
 
 const trackPrefixRegex = /^\/track\/[^/]+\/[^/]+\//i
 const playPathRegex = /^\/play\.[a-z0-9]+$/i
@@ -15,24 +15,27 @@ const playHosts = [...trackHosts, 'backend.endpoints.firstory-709db.cloud.goog']
 // play.<ext>?url=<target> on backend.endpoints.firstory-709db.cloud.goog, and
 // track.fstry.me/p/<id>/<target>, where the target often drops its scheme.
 // Not included in defaultUnwrappers: unwrapping removes the podcaster's download counts.
-export const unwrapFirstory: UrlUnwrapper = (url) => {
-  if (isHostOf(url, 'track.fstry.me')) {
-    return getPathTarget(url, shortPrefixRegex)
-  }
+export const unwrapFirstory: UrlUnwrapper = createUnwrapper({
+  hosts: [...playHosts, 'track.fstry.me'],
+  unwrap: (url) => {
+    if (isHostOf(url, 'track.fstry.me')) {
+      return getPathTarget(url, shortPrefixRegex)
+    }
 
-  if (isHostOf(url, playHosts) && playPathRegex.test(url.pathname)) {
-    return getParamTarget(url, 'url')
-  }
+    if (playPathRegex.test(url.pathname)) {
+      return getParamTarget(url, 'url')
+    }
 
-  if (!isHostOf(url, trackHosts)) {
-    return
-  }
+    if (!isHostOf(url, trackHosts)) {
+      return
+    }
 
-  const match = url.pathname.match(trackPrefixRegex)
+    const match = url.pathname.match(trackPrefixRegex)
 
-  if (!match) {
-    return
-  }
+    if (!match) {
+      return
+    }
 
-  return `${decodePercent(url.pathname.slice(match[0].length))}${url.search}${url.hash}`
-}
+    return `${decodePercent(url.pathname.slice(match[0].length))}${url.search}${url.hash}`
+  },
+})
