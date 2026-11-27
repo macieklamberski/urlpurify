@@ -1,6 +1,6 @@
 import { decodePercent, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createUnwrapper } from '../utils.js'
+import { appendLinkFragment, createUnwrapper } from '../utils.js'
 
 // The partner's toolbar id, `AA` and six digits, may follow the target.
 const pathRegex = /^\/o\/([^/].*?)(?:\/AA\d{6})?$/i
@@ -24,7 +24,7 @@ export const unwrapSurly: UrlUnwrapper = createUnwrapper({
     const target = `https://${path.replace(schemeRegex, '')}`
 
     if (isHttpUrl(target)) {
-      return target
+      return appendLinkFragment(target, url)
     }
   },
 })

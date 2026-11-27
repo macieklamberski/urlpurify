@@ -1,6 +1,6 @@
 import { decodePercent, isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createQueryUnwrapper } from '../utils.js'
+import { appendLinkFragment, createQueryUnwrapper } from '../utils.js'
 
 const derefPathRegex = /^\/deref\/(.+)$/i
 
@@ -38,6 +38,6 @@ export const unwrapResearchgate: UrlUnwrapper = (url) => {
   const target = decodePercent(match[1])
 
   if (isHttpUrl(target)) {
-    return target
+    return appendLinkFragment(target, url)
   }
 }

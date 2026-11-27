@@ -1,6 +1,6 @@
 import { decodeBase64Url, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createUnwrapper } from '../utils.js'
+import { appendLinkFragment, createUnwrapper } from '../utils.js'
 
 const pathRegex = /^(?:\/[^/]+)*\/RU=([\w-]+)(?:\/R[A-Z]=[^/]*)*(?:;.*)?$/i
 const paddingRegex = /-+$/
@@ -25,7 +25,7 @@ export const unwrapYahooJapan: UrlUnwrapper = createUnwrapper({
     }
 
     if (target && isHttpUrl(target)) {
-      return target
+      return appendLinkFragment(target, url)
     }
   },
 })

@@ -192,21 +192,30 @@ describe('unwrapper categories', () => {
   })
 })
 
+// A link whose fragment the wrapper's own page reads, or an image, where a fragment means nothing.
+const fragmentOwners: Array<unknown> = [
+  ...urlpurifier.imageProxyUnwrappers,
+  urlpurifier.unwrapAmpCache, // The /v/ viewer's init params
+  urlpurifier.unwrapGoogleAmpViewer,
+  urlpurifier.unwrapWikiwix, // #federation=
+  urlpurifier.unwrapYahooJapanAmpViewer,
+]
+
 describe('redirect and proxy unwrappers', () => {
-  it('should still unwrap a fixture url with a fragment appended', () => {
-    const redirectCategories = categories.filter((category) => {
-      return !intentCategories.includes(category)
-    })
-    const redirectUnwrappers: Array<[string, UrlUnwrapper]> = []
+  const redirectCategories = categories.filter((category) => {
+    return !intentCategories.includes(category)
+  })
+  const redirectUnwrappers: Array<[string, UrlUnwrapper]> = []
 
-    for (const [name, unwrapper] of exportedUnwrappers) {
-      const entry = redirectCategories.flat().find((candidate) => candidate === unwrapper)
+  for (const [name, unwrapper] of exportedUnwrappers) {
+    const entry = redirectCategories.flat().find((candidate) => candidate === unwrapper)
 
-      if (entry) {
-        redirectUnwrappers.push([name, entry])
-      }
+    if (entry) {
+      redirectUnwrappers.push([name, entry])
     }
+  }
 
+  it('should still unwrap a fixture url with a fragment appended', () => {
     const stopped: Array<string> = []
 
     for (const href of readFixtureUrls()) {
@@ -220,6 +229,28 @@ describe('redirect and proxy unwrappers', () => {
     const expected: Array<string> = []
 
     expect(stopped).toEqual(expected)
+  })
+
+  it('should keep the fragment appended to a fixture url', () => {
+    const dropped: Array<string> = []
+
+    for (const href of readFixtureUrls()) {
+      for (const [name, unwrap] of redirectUnwrappers) {
+        if (fragmentOwners.includes(unwrap)) {
+          continue
+        }
+
+        const target = unwrap(new URL(`${href}#x`))
+
+        if (target && !target.includes('#')) {
+          dropped.push(`${name} ${href}`)
+        }
+      }
+    }
+
+    const expected: Array<string> = []
+
+    expect(dropped).toEqual(expected)
   })
 })
 

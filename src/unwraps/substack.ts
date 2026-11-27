@@ -1,6 +1,6 @@
 import { decodeBase64Url, isHttpUrl, isString, parseJson } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createUnwrapper } from '../utils.js'
+import { appendLinkFragment, createUnwrapper } from '../utils.js'
 
 const redirectPathRegex = /^\/redirect\/2\/([A-Za-z0-9_-]+)\.[A-Za-z0-9_-]+$/i
 
@@ -18,7 +18,7 @@ export const unwrapSubstack: UrlUnwrapper = createUnwrapper({
     const target = parseJson<{ e?: unknown }>(decodeBase64Url(payload))?.e
 
     if (isString(target) && isHttpUrl(target)) {
-      return target
+      return appendLinkFragment(target, url)
     }
   },
 })

@@ -1,10 +1,9 @@
-import { decodePercent } from 'trousse'
+import { decodePercent, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createUnwrapper } from '../utils.js'
+import { createUnwrapper, decodeEncodedScheme } from '../utils.js'
 
 // Ad-inserted episodes carry `sponsor/<ids>/` before the target.
 const playPrefixRegex = /^\/s\/[^/]+\/podcast\/play\/[^/]+\/(?:sponsor\/[^/]+\/)?/i
-const encodedSchemeRegex = /^https?%(?:25)?3A/i
 
 // Spotify for Podcasters download prefix (anchor.fm/s/<show>/podcast/play/<episode>/<target>,
 // also with sponsor/<ids>/ before the target), where the target is percent-encoded once or twice.
@@ -18,11 +17,8 @@ export const unwrapAnchor: UrlUnwrapper = createUnwrapper({
       return
     }
 
-    let target = url.pathname.slice(match[0].length)
-
-    while (encodedSchemeRegex.test(target)) {
-      target = decodePercent(target)
-    }
+    const path = url.pathname.slice(match[0].length)
+    const target = isHttpUrl(path) ? path : decodeEncodedScheme(decodePercent(path))
 
     return `${target}${url.hash}`
   },

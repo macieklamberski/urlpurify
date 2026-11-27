@@ -1,10 +1,9 @@
-import { decodePercent } from 'trousse'
+import { decodePercent, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
+import { createQueryUnwrapper, createUnwrapper, decodeEncodedScheme } from '../utils.js'
 
 // The first number is the show, as in the show's feeds.godcaster.fm/player_<n>.xml.
 const episodePrefixRegex = /^\/act\/e\/\d+\/\d+\/\d+\//i
-const encodedSchemeRegex = /^https?%(?:25)?3A/i
 const supportPathRegex = /^\/act\/(?:sr\/\d+|fr\/\d+\/\d+)$/i
 
 const extractSupportTarget = createQueryUnwrapper({
@@ -29,11 +28,8 @@ export const unwrapGodcaster: UrlUnwrapper = createUnwrapper({
       return
     }
 
-    let target = url.pathname.slice(match[0].length)
-
-    while (encodedSchemeRegex.test(target)) {
-      target = decodePercent(target)
-    }
+    const path = url.pathname.slice(match[0].length)
+    const target = isHttpUrl(path) ? path : decodeEncodedScheme(decodePercent(path))
 
     return `${target}${url.hash}`
   },

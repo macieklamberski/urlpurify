@@ -1,10 +1,9 @@
 import { decodePercent, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createQueryUnwrapper } from '../utils.js'
+import { createQueryUnwrapper, decodeEncodedScheme } from '../utils.js'
 
 const legacyTargetRegex = /^\/l\/[\w-]+[/;]\/*([^/].*)$/i
 const legacyEncodedSchemeRegex = /^https?%(?:25)?3A/i
-const encodedSchemeRegex = /^https?%3A/i
 const schemeRegex = /^https?:/i
 
 const unwrapLinkPhp = createQueryUnwrapper({
@@ -39,17 +38,6 @@ const unwrapLsr = createQueryUnwrapper({
   params: ['u'],
 })
 
-// A target with its scheme kept is percent-encoded once or twice, or half-encoded as `https%3A//`.
-const decodeLegacyTarget = (value: string): string => {
-  const decoded = decodePercent(value)
-
-  if (!encodedSchemeRegex.test(decoded)) {
-    return decoded
-  }
-
-  return decodePercent(decoded)
-}
-
 const unwrapLegacy: UrlUnwrapper = (url) => {
   if (!isHostOf(url, ['www.facebook.com', 'l.facebook.com'])) {
     return
@@ -61,7 +49,10 @@ const unwrapLegacy: UrlUnwrapper = (url) => {
     return
   }
 
-  const path = legacyEncodedSchemeRegex.test(match[1]) ? decodeLegacyTarget(match[1]) : match[1]
+  // A target with its scheme kept is percent-encoded once, twice or half-encoded as `https%3A//`.
+  const path = legacyEncodedSchemeRegex.test(match[1])
+    ? decodeEncodedScheme(decodePercent(match[1]))
+    : match[1]
 
   if (!path) {
     return

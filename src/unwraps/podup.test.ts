@@ -22,10 +22,11 @@ describe('unwrapPodup', () => {
     )
   })
 
-  it('should drop a fragment', () => {
-    const url = new URL('https://traffic.podup.com/media/example.com/episode.mp3#t=30')
+  it('should keep the link fragment', () => {
+    const value = new URL('https://traffic.podup.com/media/example.com/episode.mp3#t=30')
+    const expected = 'https://example.com/episode.mp3#t=30'
 
-    expect(unwrapPodup(url)).toBe('https://example.com/episode.mp3')
+    expect(unwrapPodup(value)).toBe(expected)
   })
 
   it('should return undefined when the media prefix has no target', () => {

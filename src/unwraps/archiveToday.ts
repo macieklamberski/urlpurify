@@ -1,9 +1,9 @@
-import { decodePercent, isHostOf, isHttpUrl } from 'trousse'
+import { isHostOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
+import { decodeEncodedScheme } from '../utils.js'
 
 const hostRegex = /^(?:www\.)?archive\.(?:is|ph|today|md|fo|vn|li)$/
 const pathRegex = /^\/(?:\d{14}|\d{4}\.\d{2}\.\d{2}-\d{6}|o\/[^/]+|newest)\/(.+)$/i
-const encodedSchemeRegex = /^https?%3A/i
 const schemeRegex = /^[a-z][a-z\d+.-]*:/i
 const escapedQueryRegex = /%3F/i
 const selectionHashRegex = /^#selection-\d+\.\d+-\d+\.\d+$/i
@@ -23,11 +23,7 @@ export const unwrapArchiveToday: UrlUnwrapper = (url) => {
     return
   }
 
-  let target: string | undefined = match[1]
-
-  if (encodedSchemeRegex.test(target)) {
-    target = decodePercent(target)
-  }
+  let target = decodeEncodedScheme(match[1])
 
   if (!target) {
     return
