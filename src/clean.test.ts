@@ -129,6 +129,18 @@ describe('unwrapUrl', () => {
     expect(unwrapUrl(value, unwrappers)).toBe(expected)
   })
 
+  it('should match a host with thousands of labels against the index in linear time', () => {
+    const value = `https://${'a.'.repeat(8000)}example.com/`
+
+    unwrapUrl(value)
+
+    const start = performance.now()
+
+    unwrapUrl(value)
+
+    expect(performance.now() - start).toBeLessThan(50)
+  })
+
   it('should keep list order on a host matched by a domain and an exact host', () => {
     const value =
       'https://redirect.example.com/?target=https%3A%2F%2Fexample.org%2Fsecond&fallback=https%3A%2F%2Fexample.org%2Ffirst'

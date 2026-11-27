@@ -42,4 +42,13 @@ describe('unwrapYahooImage', () => {
 
     expect(unwrapYahooImage(value)).toBeUndefined()
   })
+
+  it('should scan a long run of api prefixes without a source in linear time', () => {
+    const value = new URL(`https://s.yimg.com${'/api/res/x'.repeat(10000)}`)
+    const start = performance.now()
+
+    unwrapYahooImage(value)
+
+    expect(performance.now() - start).toBeLessThan(50)
+  })
 })

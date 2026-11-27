@@ -43,4 +43,13 @@ describe('unwrapCloudinaryFetch', () => {
 
     expect(unwrapCloudinaryFetch(value)).toBe(expected)
   })
+
+  it('should scan a long run of fetch prefixes without a source in linear time', () => {
+    const value = new URL(`https://res.cloudinary.com${'/image/fetch/x'.repeat(7000)}`)
+    const start = performance.now()
+
+    unwrapCloudinaryFetch(value)
+
+    expect(performance.now() - start).toBeLessThan(50)
+  })
 })
