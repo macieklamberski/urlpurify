@@ -4,21 +4,21 @@ import { unwrapGenericPathCarrier } from './genericPathCarrier.js'
 describe('unwrapGenericPathCarrier', () => {
   it('should extract a target glued after the host', () => {
     const value = new URL('https://city.example.com//www.example.org/embed/MLANv9VJ5Ws')
-    const expected = '//www.example.org/embed/MLANv9VJ5Ws'
+    const expected = 'https://www.example.org/embed/MLANv9VJ5Ws'
 
     expect(unwrapGenericPathCarrier(value)).toBe(expected)
   })
 
   it('should extract a target glued with a third slash', () => {
     const value = new URL('https://city.example.com///www.example.org/embed/MLANv9VJ5Ws')
-    const expected = '//www.example.org/embed/MLANv9VJ5Ws'
+    const expected = 'https://www.example.org/embed/MLANv9VJ5Ws'
 
     expect(unwrapGenericPathCarrier(value)).toBe(expected)
   })
 
   it('should extract a target glued behind the site directory', () => {
     const value = new URL('https://city.example.com/news//www.example.org/embed/MLANv9VJ5Ws')
-    const expected = '//www.example.org/embed/MLANv9VJ5Ws'
+    const expected = 'https://www.example.org/embed/MLANv9VJ5Ws'
 
     expect(unwrapGenericPathCarrier(value)).toBe(expected)
   })
@@ -28,7 +28,7 @@ describe('unwrapGenericPathCarrier', () => {
       'https://needlework.example.com//maps.example.org/services/constructor/1.0/js/?sid=qMkqdbHN9XKY&width=800#map',
     )
     const expected =
-      '//maps.example.org/services/constructor/1.0/js/?sid=qMkqdbHN9XKY&width=800#map'
+      'https://maps.example.org/services/constructor/1.0/js/?sid=qMkqdbHN9XKY&width=800#map'
 
     expect(unwrapGenericPathCarrier(value)).toBe(expected)
   })
