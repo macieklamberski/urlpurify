@@ -1,12 +1,13 @@
-import { createPathUnwrapper } from '../pathTarget.js'
+import { getPathTarget } from '../pathTarget.js'
+import type { UrlUnwrapper } from '../types.js'
 
-const tunisPrefixRegex = /^\/tunis\//i
+// The converter path, then the target host, with a doubled slash or the target's scheme kept.
+const tunisPrefixRegex = /^\/tunis\/(?=\/?(?:https?:\/+)?[a-z0-9-]+(?:\.[a-z0-9-]+)+(?:\/|$))/i
 
-// Hong Kong government Simplified Chinese converter (sc.isd.gov.hk/TuniS/<target host>/<path>,
-// often with a doubled slash or the target's scheme kept), which serves a government page
-// converted from Traditional Chinese.
+// Simplified Chinese converter of Hong Kong government and public sites
+// (<host>/TuniS/<target host>/<path>), which serves the page converted from Traditional Chinese.
+// Each site runs it on a host of its own, such as sc.isd.gov.hk, sc.news.gov.hk or gbcode.rthk.hk.
 // Not included in defaultUnwrappers: unwrapping returns the original page, not the converted copy.
-export const unwrapHongKongTunis = createPathUnwrapper({
-  hosts: 'sc.isd.gov.hk',
-  prefix: tunisPrefixRegex,
-})
+export const unwrapHongKongTunis: UrlUnwrapper = (url) => {
+  return getPathTarget(url, tunisPrefixRegex)
+}

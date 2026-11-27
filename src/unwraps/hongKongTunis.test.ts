@@ -37,8 +37,15 @@ describe('unwrapHongKongTunis', () => {
     expect(unwrapHongKongTunis(value)).toBeUndefined()
   })
 
-  it('should return undefined for the same path on another host', () => {
-    const value = new URL('https://www.example.com/TuniS/www.info.gov.hk/gia/general/today.htm')
+  it('should extract the target from the converter on another site', () => {
+    const value = new URL('https://gbcode.rthk.hk/TuniS/news.rthk.hk/rthk/ch/latest-news.htm')
+    const expected = 'https://news.rthk.hk/rthk/ch/latest-news.htm'
+
+    expect(unwrapHongKongTunis(value)).toBe(expected)
+  })
+
+  it('should return undefined for a path segment that is not a host', () => {
+    const value = new URL('https://travel.example.com/tunis/medina/hotels/')
 
     expect(unwrapHongKongTunis(value)).toBeUndefined()
   })
