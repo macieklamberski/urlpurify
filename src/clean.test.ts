@@ -1,6 +1,6 @@
 import { describe, expect, it, mock } from 'bun:test'
 import { decodeBase64, getQueryParam } from 'trousse'
-import { cleanUrl, isTrackingParam, stripTrackingParams, unwrapUrl } from './clean.js'
+import { cleanUrl, isTrackingParam, purifyUrl, stripTrackingParams, unwrapUrl } from './clean.js'
 import { campaignParams, defaultTrackingParams, housekeepingParams } from './defaults.js'
 import type { TrackingParam, TrackingValueTest, UrlUnwrapper } from './types.js'
 import { unwrapWebArchive } from './unwraps/webArchive.js'
@@ -590,18 +590,26 @@ describe('stripTrackingParams', () => {
 })
 
 describe('cleanUrl', () => {
+  it('should be the same function as purifyUrl', () => {
+    const expected = purifyUrl
+
+    expect(cleanUrl).toBe(expected)
+  })
+})
+
+describe('purifyUrl', () => {
   it('should unwrap and strip tracking params with defaults', () => {
     const value = 'https://www.google.com/url?q=https%3A%2F%2Fexample.com%2Fpost%3Ffbclid%3Dabc'
     const expected = 'https://example.com/post'
 
-    expect(cleanUrl(value)).toBe(expected)
+    expect(purifyUrl(value)).toBe(expected)
   })
 
   it('should strip default tracking params without unwrapping', () => {
     const value = 'https://example.com/post?fbclid=abc&gclid=abc&id=42'
     const expected = 'https://example.com/post?id=42'
 
-    expect(cleanUrl(value)).toBe(expected)
+    expect(purifyUrl(value)).toBe(expected)
   })
 
   it('should unwrap with custom unwrappers and strip tracking params', () => {
@@ -610,7 +618,7 @@ describe('cleanUrl', () => {
     const options = { unwrappers: [exampleUnwrapper] }
     const expected = 'https://example.com/post?id=42'
 
-    expect(cleanUrl(value, options)).toBe(expected)
+    expect(purifyUrl(value, options)).toBe(expected)
   })
 
   it('should unwrap nested wrappers up to the depth limit', () => {
@@ -619,7 +627,7 @@ describe('cleanUrl', () => {
     const value = `https://outer.example.com/?url=${encodeURIComponent(inner)}`
     const options = { unwrappers: [exampleUnwrapper, nestedUnwrapper] }
 
-    expect(cleanUrl(value, options)).toBe(target)
+    expect(purifyUrl(value, options)).toBe(target)
   })
 
   it('should unwrap a chain twelve wrappers deep by default', () => {
@@ -635,7 +643,7 @@ describe('cleanUrl', () => {
 
     const options = { unwrappers: [exampleUnwrapper, nestedUnwrapper] }
 
-    expect(cleanUrl(value, options)).toBe(target)
+    expect(purifyUrl(value, options)).toBe(target)
   })
 
   // Tumblr nests the two: the signed t.umblr.com redirect wraps an href.li referrer
@@ -645,7 +653,7 @@ describe('cleanUrl', () => {
     const inner = `https://href.li/?${target}`
     const value = `https://t.umblr.com/redirect?z=${encodeURIComponent(inner)}&t=signature`
 
-    expect(cleanUrl(value)).toBe(target)
+    expect(purifyUrl(value)).toBe(target)
   })
 
   // Zhihu wraps every outbound link in a post body, not just cards, so the redirector
@@ -654,67 +662,67 @@ describe('cleanUrl', () => {
     const target = 'https://finagle.github.io/'
     const value = `https://link.zhihu.com/?target=${encodeURIComponent(target)}`
 
-    expect(cleanUrl(value)).toBe(target)
+    expect(purifyUrl(value)).toBe(target)
   })
 
   it('should unwrap an anonym.to redirect', () => {
     const target = 'https://example.com/post'
     const value = `https://anonym.to/?${target}`
 
-    expect(cleanUrl(value)).toBe(target)
+    expect(purifyUrl(value)).toBe(target)
   })
 
   it('should unwrap a deviantart outgoing redirect', () => {
     const target = 'https://example.com/post'
     const value = `https://www.deviantart.com/someuser/outgoing?${target}`
 
-    expect(cleanUrl(value)).toBe(target)
+    expect(purifyUrl(value)).toBe(target)
   })
 
   it('should return an anonym.to URL without a target unchanged', () => {
     const value = 'https://anonym.to/'
 
-    expect(cleanUrl(value)).toBe(value)
+    expect(purifyUrl(value)).toBe(value)
   })
 
   it('should return a deviantart outgoing URL without a target unchanged', () => {
     const value = 'https://www.deviantart.com/someuser/outgoing'
 
-    expect(cleanUrl(value)).toBe(value)
+    expect(purifyUrl(value)).toBe(value)
   })
 
   it('should keep the target fragment through an anonym.to redirect', () => {
     const target = 'https://example.com/post#section'
     const value = `https://anonym.to/?${target}`
 
-    expect(cleanUrl(value)).toBe(target)
+    expect(purifyUrl(value)).toBe(target)
   })
 
   it('should keep the target fragment through a deviantart outgoing redirect', () => {
     const target = 'https://example.com/post#section'
     const value = `https://www.deviantart.com/someuser/outgoing?${target}`
 
-    expect(cleanUrl(value)).toBe(target)
+    expect(purifyUrl(value)).toBe(target)
   })
 
   it('should not unwrap an outgoing path on a host that only ends with deviantart.com', () => {
     const value = 'https://evildeviantart.com/someuser/outgoing?https://example.com/post'
 
-    expect(cleanUrl(value)).toBe(value)
+    expect(purifyUrl(value)).toBe(value)
   })
 
   it('should unwrap a Naver cc.loginfra redirect', () => {
     const target = 'https://example.com/post'
     const value = `https://cc.loginfra.com/cc?a=post.click&u=${encodeURIComponent(target)}`
 
-    expect(cleanUrl(value)).toBe(target)
+    expect(purifyUrl(value)).toBe(target)
   })
 
   it('should unwrap a link.csdn.net redirect', () => {
     const target = 'https://example.com/post'
     const value = `https://link.csdn.net/?target=${encodeURIComponent(target)}`
 
-    expect(cleanUrl(value)).toBe(target)
+    expect(purifyUrl(value)).toBe(target)
   })
 
   it('should stop unwrapping at maxUnwrapDepth', () => {
@@ -726,7 +734,7 @@ describe('cleanUrl', () => {
       maxUnwrapDepth: 1,
     }
 
-    expect(cleanUrl(value, options)).toBe(inner)
+    expect(purifyUrl(value, options)).toBe(inner)
   })
 
   it('should not unwrap when maxUnwrapDepth is zero', () => {
@@ -738,7 +746,7 @@ describe('cleanUrl', () => {
     }
     const expected = 'https://redirect.example.com/?target=https%3A%2F%2Fexample.com%2Fpost'
 
-    expect(cleanUrl(value, options)).toBe(expected)
+    expect(purifyUrl(value, options)).toBe(expected)
   })
 
   it('should return the unwrapped target as-is when nothing is stripped', () => {
@@ -746,7 +754,7 @@ describe('cleanUrl', () => {
     const value = `https://redirect.example.com/?target=${encodeURIComponent(target)}`
     const options = { unwrappers: [exampleUnwrapper] }
 
-    expect(cleanUrl(value, options)).toBe(target)
+    expect(purifyUrl(value, options)).toBe(target)
   })
 
   it('should respect a custom tracking param list', () => {
@@ -754,52 +762,52 @@ describe('cleanUrl', () => {
     const options = { trackingParams: ['session'] }
     const expected = 'https://example.com/post?utm_source=feed'
 
-    expect(cleanUrl(value, options)).toBe(expected)
+    expect(purifyUrl(value, options)).toBe(expected)
   })
 
   it('should keep the wrapper when the unwrapped target is not a valid URL', () => {
     const value = 'https://redirect.example.com/?target=not-a-url'
     const options = { unwrappers: [exampleUnwrapper] }
 
-    expect(cleanUrl(value, options)).toBe(value)
+    expect(purifyUrl(value, options)).toBe(value)
   })
 
   it('should return a serialized URL unchanged when nothing applies', () => {
     const value = 'https://example.com/post?id=42'
 
-    expect(cleanUrl(value)).toBe(value)
+    expect(purifyUrl(value)).toBe(value)
   })
 
   it('should return the input unchanged when it is not a valid URL', () => {
-    expect(cleanUrl('not a url')).toBe('not a url')
+    expect(purifyUrl('not a url')).toBe('not a url')
   })
 
   it('should lowercase the host', () => {
     const value = 'https://EXAMPLE.com/post'
     const expected = 'https://example.com/post'
 
-    expect(cleanUrl(value)).toBe(expected)
+    expect(purifyUrl(value)).toBe(expected)
   })
 
   it('should drop the default port', () => {
     const value = 'https://example.com:443/post'
     const expected = 'https://example.com/post'
 
-    expect(cleanUrl(value)).toBe(expected)
+    expect(purifyUrl(value)).toBe(expected)
   })
 
   it('should resolve dot segments in the path', () => {
     const value = 'https://example.com/archive/../post'
     const expected = 'https://example.com/post'
 
-    expect(cleanUrl(value)).toBe(expected)
+    expect(purifyUrl(value)).toBe(expected)
   })
 
   it('should return an IDN host in Punycode', () => {
     const value = 'https://bücher.example/post'
     const expected = 'https://xn--bcher-kva.example/post'
 
-    expect(cleanUrl(value)).toBe(expected)
+    expect(purifyUrl(value)).toBe(expected)
   })
 
   it('should serialize the unwrapped target when nothing is stripped', () => {
@@ -807,39 +815,39 @@ describe('cleanUrl', () => {
     const options = { unwrappers: [exampleUnwrapper] }
     const expected = 'https://example.com/post'
 
-    expect(cleanUrl(value, options)).toBe(expected)
+    expect(purifyUrl(value, options)).toBe(expected)
   })
 
   it('should keep the query encoding as written when nothing is stripped', () => {
     const value = 'https://example.com/get?file=my%20doc.pdf&q=a+b'
 
-    expect(cleanUrl(value)).toBe(value)
+    expect(purifyUrl(value)).toBe(value)
   })
 
   it('should keep a valueless param as written when nothing is stripped', () => {
     const value = 'https://example.com/post?flag'
 
-    expect(cleanUrl(value)).toBe(value)
+    expect(purifyUrl(value)).toBe(value)
   })
 
   it('should keep semicolon-separated values as written when nothing is stripped', () => {
     const value = 'https://example.com/post?a=1;b=2'
 
-    expect(cleanUrl(value)).toBe(value)
+    expect(purifyUrl(value)).toBe(value)
   })
 
   it('should return the wrapper unchanged when its target is javascript:', () => {
     const value = 'https://anonym.to/?javascript:alert(1)'
 
-    expect(cleanUrl(value)).toBe(value)
+    expect(purifyUrl(value)).toBe(value)
   })
 
   it('should handle empty strings', () => {
-    expect(cleanUrl('')).toBe('')
+    expect(purifyUrl('')).toBe('')
   })
 })
 
-describe('cleanUrl with a legacy-charset target', () => {
+describe('purifyUrl with a legacy-charset target', () => {
   const legacyUnwrapper = createQueryUnwrapper({
     hosts: 'redirect.example.com',
     params: ['target'],
@@ -848,14 +856,14 @@ describe('cleanUrl with a legacy-charset target', () => {
   it('should keep the bytes of a base64 target and strip its tracking params', () => {
     const value = 'https://base64.example.com/?u=aHR0cHM6Ly9leGFtcGxlLmNvbS%2BkP2ZiY2xpZD1hYmM%3D'
 
-    expect(cleanUrl(value, { unwrappers: [base64Unwrapper] })).toBe('https://example.com/%A4')
+    expect(purifyUrl(value, { unwrappers: [base64Unwrapper] })).toBe('https://example.com/%A4')
   })
 
   it('should keep the bytes of a base64 target reached through another wrapper', () => {
     const value =
       'https://outer.example.com/?url=https%3A%2F%2Fbase64.example.com%2F%3Fu%3DaHR0cHM6Ly9leGFtcGxlLmNvbS%252Bk'
 
-    expect(cleanUrl(value, { unwrappers: [nestedUnwrapper, base64Unwrapper] })).toBe(
+    expect(purifyUrl(value, { unwrappers: [nestedUnwrapper, base64Unwrapper] })).toBe(
       'https://example.com/%A4',
     )
   })
@@ -865,20 +873,20 @@ describe('cleanUrl with a legacy-charset target', () => {
       'https://redirect.example.com/?target=https://defense.example.net/v3/__https:/example.org/news/__;tail%%EDITOR'
     const expected = 'https://defense.example.net/v3/__https:/example.org/news/__;tail%%EDITOR'
 
-    expect(cleanUrl(value, { unwrappers: [legacyUnwrapper] })).toBe(expected)
+    expect(purifyUrl(value, { unwrappers: [legacyUnwrapper] })).toBe(expected)
   })
 
   it('should keep a replacement character the target carries as written', () => {
     const value =
       'https://redirect.example.com/?target=https%3A%2F%2Fexample.com%2Fpage%EF%BF%BD%3Ffbclid%3Dabc'
 
-    expect(cleanUrl(value, { unwrappers: [legacyUnwrapper] })).toBe(
+    expect(purifyUrl(value, { unwrappers: [legacyUnwrapper] })).toBe(
       'https://example.com/page%EF%BF%BD',
     )
   })
 })
 
-describe('cleanUrl with a malformed target', () => {
+describe('purifyUrl with a malformed target', () => {
   const singleSlashUnwrapper: UrlUnwrapper = (url) => {
     if (url.hostname !== 'defense.example.net') {
       return
@@ -890,7 +898,7 @@ describe('cleanUrl with a malformed target', () => {
   it('should keep the wrapper when the target has no host', () => {
     const value = 'https://redirect.example.com/?target=https://'
 
-    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
+    expect(purifyUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
   })
 
   it('should fall through to the next unwrapper when a target has no usable host', () => {
@@ -899,113 +907,113 @@ describe('cleanUrl with a malformed target', () => {
     const options = { unwrappers: [exampleUnwrapper, exampleFallbackUnwrapper] }
     const expected = 'https://example.com/post'
 
-    expect(cleanUrl(value, options)).toBe(expected)
+    expect(purifyUrl(value, options)).toBe(expected)
   })
 
   it('should keep the wrapper when the target is an s3 url behind an https scheme', () => {
     const value =
       'https://redirect.example.com/?target=https://s3://podcast.example.com/2026/6.8.26'
 
-    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
+    expect(purifyUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
   })
 
   it('should keep the wrapper when the target host is a bare name', () => {
     const value = 'https://redirect.example.com/?target=http://examplecinema&source=gmail'
 
-    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
+    expect(purifyUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
   })
 
   it('should keep the wrapper when the target host is localhost', () => {
     const value = 'https://redirect.example.com/?target=http://localhost:4000/'
 
-    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
+    expect(purifyUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
   })
 
   it('should keep the wrapper when the target host is a bare www', () => {
     const value = 'https://redirect.example.com/?target=http%3A%2F%2Fwww'
 
-    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
+    expect(purifyUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
   })
 
   it('should keep the wrapper when the target is cut off after www', () => {
     const value = 'https://redirect.example.com/?target=https%3A%2F%2Fwww.'
 
-    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
+    expect(purifyUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
   })
 
   it('should keep the wrapper when the target host is an ellipsis', () => {
     const value = 'https://redirect.example.com/?target=https://...'
 
-    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
+    expect(purifyUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
   })
 
   it('should keep the wrapper when a relative php link reads as the host', () => {
     const value =
       'https://redirect.example.com/?target=http:///lermais_materias.php?cd_materias%3D5919&source=gmail'
 
-    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
+    expect(purifyUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
   })
 
   it('should keep the wrapper when a relative jspa link reads as the host', () => {
     const value =
       'https://redirect.example.com/?target=http:///external-link.jspa?url%3Dhttp%253A%252F%252Fexample.com%252F'
 
-    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
+    expect(purifyUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
   })
 
   it('should keep the wrapper when a site file glued into the path reads as the host', () => {
     const value = 'https://redirect.example.com/?target=//sitemap.xml/news'
 
-    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
+    expect(purifyUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
   })
 
   it('should keep the wrapper when a script name reads as the host', () => {
     const value = 'https://redirect.example.com/?target=https://jquery.min.js/'
 
-    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
+    expect(purifyUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
   })
 
   it('should unwrap a target on a zip TLD', () => {
     const value = 'https://redirect.example.com/?target=https://example.zip/x'
 
-    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe('https://example.zip/x')
+    expect(purifyUrl(value, { unwrappers: [exampleUnwrapper] })).toBe('https://example.zip/x')
   })
 
   it('should unwrap a target whose host has a php label before its last', () => {
     const value = 'https://redirect.example.com/?target=https://www.php.net/manual/'
 
-    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe('https://www.php.net/manual/')
+    expect(purifyUrl(value, { unwrappers: [exampleUnwrapper] })).toBe('https://www.php.net/manual/')
   })
 
   it('should unwrap a target on an IPv4 address', () => {
     const value = 'https://redirect.example.com/?target=http://192.0.2.1/x'
 
-    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe('http://192.0.2.1/x')
+    expect(purifyUrl(value, { unwrappers: [exampleUnwrapper] })).toBe('http://192.0.2.1/x')
   })
 
   it('should unwrap a target on an IPv6 address', () => {
     const value = 'https://redirect.example.com/?target=http://[2001:db8::1]/x'
 
-    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe('http://[2001:db8::1]/x')
+    expect(purifyUrl(value, { unwrappers: [exampleUnwrapper] })).toBe('http://[2001:db8::1]/x')
   })
 
   it('should unwrap a target on a dotted host', () => {
     const value = 'https://redirect.example.com/?target=https://news.example.com/x'
 
-    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe('https://news.example.com/x')
+    expect(purifyUrl(value, { unwrappers: [exampleUnwrapper] })).toBe('https://news.example.com/x')
   })
 
   it('should repair a doubled scheme', () => {
     const value = 'https://redirect.example.com/?target=https%3A%2F%2Fhttps://example.com%2Fx'
 
-    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe('https://example.com/x')
+    expect(purifyUrl(value, { unwrappers: [exampleUnwrapper] })).toBe('https://example.com/x')
   })
 
   it('should convert a feed scheme on the target', () => {
     const value = 'https://redirect.example.com/?target=feed%3Ahttps%3A%2F%2Fexample.com%2Ffeed'
     const expected = 'https://example.com/feed'
 
-    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(expected)
+    expect(purifyUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(expected)
   })
 
   it('should decode an html entity in the target', () => {
@@ -1013,113 +1021,113 @@ describe('cleanUrl with a malformed target', () => {
       'https://redirect.example.com/?target=https%3A%2F%2Fexample.com%2F%3Fa%3D1%26amp%3Bb%3D2'
     const expected = 'https://example.com/?a=1&b=2'
 
-    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(expected)
+    expect(purifyUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(expected)
   })
 
   it('should repair a leading dot in the target host', () => {
     const value = 'https://redirect.example.com/?target=http://.example.com/x&source=gmail'
 
-    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe('http://example.com/x')
+    expect(purifyUrl(value, { unwrappers: [exampleUnwrapper] })).toBe('http://example.com/x')
   })
 
   it('should repair a third slash after the scheme', () => {
     const value = 'https://redirect.example.com/?target=https:///example.com/x'
 
-    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe('https://example.com/x')
+    expect(purifyUrl(value, { unwrappers: [exampleUnwrapper] })).toBe('https://example.com/x')
   })
 
   it('should keep the wrapper when the target holds a line break', () => {
     const value = 'https://redirect.example.com/?target=https%3A%2F%2Fexample.com%2Fa%0D%0Ab'
 
-    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
+    expect(purifyUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
   })
 
   it('should keep the wrapper when the target holds a line separator', () => {
     const value = 'https://redirect.example.com/?target=https%3A%2F%2Fexample.com%2Fa%E2%80%A8b'
 
-    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
+    expect(purifyUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
   })
 
   it('should keep the wrapper when the target holds a paragraph separator', () => {
     const value = 'https://redirect.example.com/?target=https%3A%2F%2Fexample.com%2Fa%E2%80%A9b'
 
-    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
+    expect(purifyUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
   })
 
   it('should keep the wrapper when the target holds a delete character', () => {
     const value = 'https://redirect.example.com/?target=https%3A%2F%2Fexample.com%2Fa%7Fb'
 
-    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
+    expect(purifyUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
   })
 
   it('should trim a trailing line feed from the target', () => {
     const value = 'https://redirect.example.com/?target=https%3A%2F%2Fexample.com%2Fx%0A'
 
-    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe('https://example.com/x')
+    expect(purifyUrl(value, { unwrappers: [exampleUnwrapper] })).toBe('https://example.com/x')
   })
 
   it('should trim trailing whitespace from the target', () => {
     const value = 'https://redirect.example.com/?target=https%3A%2F%2Fexample.com%2Fx%20%20'
 
-    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe('https://example.com/x')
+    expect(purifyUrl(value, { unwrappers: [exampleUnwrapper] })).toBe('https://example.com/x')
   })
 
   it('should repair a single slash after the scheme', () => {
     const value = 'https://redirect.example.com/?target=https:/example.com/x'
 
-    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe('https://example.com/x')
+    expect(purifyUrl(value, { unwrappers: [exampleUnwrapper] })).toBe('https://example.com/x')
   })
 
   it('should repair a single slash after an http scheme', () => {
     const value = 'https://redirect.example.com/?target=http:/example.com/x'
 
-    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe('http://example.com/x')
+    expect(purifyUrl(value, { unwrappers: [exampleUnwrapper] })).toBe('http://example.com/x')
   })
 
   it('should repair a single slash after an uppercase scheme', () => {
     const value = 'https://redirect.example.com/?target=HTTPS:/example.com/x'
 
-    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe('https://example.com/x')
+    expect(purifyUrl(value, { unwrappers: [exampleUnwrapper] })).toBe('https://example.com/x')
   })
 
   it('should keep the wrapper when the target host opens with a comma', () => {
     const value = 'https://redirect.example.com/?target=https%3A%2F%2Ccexample.com%2F'
 
-    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
+    expect(purifyUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
   })
 
   it('should drop a parenthesis closing the target host', () => {
     const value = 'https://redirect.example.com/?target=https%3A%2F%2Fwww.example.com)'
     const expected = 'https://www.example.com/'
 
-    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(expected)
+    expect(purifyUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(expected)
   })
 
   it('should collapse a doubled dot in the target host', () => {
     const value = 'https://redirect.example.com/?target=https%3A%2F%2Fwww..example.org%2Fevents'
     const expected = 'https://www.example.org/events'
 
-    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(expected)
+    expect(purifyUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(expected)
   })
 
   it('should keep the wrapper when the target host ends in an ellipsis', () => {
     const value = 'https://redirect.example.com/?target=http%3A%2F%2Fitem.example.co.j...'
 
-    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
+    expect(purifyUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
   })
 
   it('should unwrap a target whose host label ends with a hyphen', () => {
     const value = 'https://redirect.example.com/?target=https%3A%2F%2Fok-.example.com%2Fpost'
     const expected = 'https://ok-.example.com/post'
 
-    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(expected)
+    expect(purifyUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(expected)
   })
 
   it('should resolve a chain whose inner target has a single slash', () => {
     const value =
       'https://redirect.example.com/?target=https://defense.example.net/v3/__https:/example.org/news/__;tail'
 
-    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper, singleSlashUnwrapper] })).toBe(
+    expect(purifyUrl(value, { unwrappers: [exampleUnwrapper, singleSlashUnwrapper] })).toBe(
       'https://example.org/news/',
     )
   })
@@ -1127,26 +1135,26 @@ describe('cleanUrl with a malformed target', () => {
   it('should keep the wrapper when the target host is preceded by a username', () => {
     const value = 'https://redirect.example.com/?target=https://example.com@example.net/'
 
-    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
+    expect(purifyUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
   })
 
   it('should keep the wrapper when the target carries a username and password', () => {
     const value = 'https://redirect.example.com/?target=https://user:secret@example.net/'
 
-    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
+    expect(purifyUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
   })
 
   it('should keep the wrapper when an entity-encoded at sign decodes into a username', () => {
     const value =
       'https://redirect.example.com/?target=https%3A%2F%2Fexample.com%26%2364%3Bexample.net%2F%26page%3D1'
 
-    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
+    expect(purifyUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(value)
   })
 
   it('should keep the wrapper when an archived target is preceded by a username', () => {
     const value = 'https://web.archive.org/web/20200101000000/example.com@example.net'
 
-    expect(cleanUrl(value, { unwrappers: [unwrapWebArchive] })).toBe(value)
+    expect(purifyUrl(value, { unwrappers: [unwrapWebArchive] })).toBe(value)
   })
 
   it('should unwrap a target with an at sign in its path and query', () => {
@@ -1154,7 +1162,7 @@ describe('cleanUrl with a malformed target', () => {
       'https://redirect.example.com/?target=https%3A%2F%2Fexample.net%2F%40author%3Fmail%3Dreader%40example.com'
     const expected = 'https://example.net/@author?mail=reader@example.com'
 
-    expect(cleanUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(expected)
+    expect(purifyUrl(value, { unwrappers: [exampleUnwrapper] })).toBe(expected)
   })
 })
 
@@ -1286,7 +1294,7 @@ describe('self-referential ref param', () => {
     const value = 'https://example.com/post?ref=example.com&keep=1'
     const options = { trackingParams: ['utm_source'] }
 
-    expect(cleanUrl(value, options)).toBe(value)
+    expect(purifyUrl(value, options)).toBe(value)
   })
 
   it('should strip a self-referential ref with a custom list spreading housekeeping', () => {
@@ -1294,7 +1302,7 @@ describe('self-referential ref param', () => {
     const options = { trackingParams: [...housekeepingParams, 'utm_source'] }
     const expected = 'https://example.com/post?keep=1'
 
-    expect(cleanUrl(value, options)).toBe(expected)
+    expect(purifyUrl(value, options)).toBe(expected)
   })
 
   it('should strip a self-referential ref after unwrapping', () => {
@@ -1303,7 +1311,7 @@ describe('self-referential ref param', () => {
     const options = { unwrappers: [exampleUnwrapper] }
     const expected = 'https://example.com/post'
 
-    expect(cleanUrl(value, options)).toBe(expected)
+    expect(purifyUrl(value, options)).toBe(expected)
   })
 })
 
@@ -1312,7 +1320,7 @@ describe('signed query', () => {
     const value =
       'https://cdn.example.com/api/utils/file/11602721.mp4?id=4A665C2C-D81B-4313-999C-3D24CB22911E&ts=1822903430&sig=NtAM31UkcdrglORmOSBE8bin4bg%3d'
 
-    expect(cleanUrl(value)).toBe(value)
+    expect(purifyUrl(value)).toBe(value)
   })
 
   it('should keep the query whole when it carries sig', () => {
@@ -1378,7 +1386,7 @@ describe('signed query', () => {
     const value = `https://redirect.example.com/?target=${encodeURIComponent(target)}`
     const options = { unwrappers: [exampleUnwrapper] }
 
-    expect(cleanUrl(value, options)).toBe(target)
+    expect(purifyUrl(value, options)).toBe(target)
   })
 })
 
@@ -1387,7 +1395,7 @@ describe('Alibaba DirectMail click url', () => {
     const value =
       'https://dm-cn.aliyuncs.com/trace/v1/report?bid=2546032&env=600000333590607418&extra=1-&mac=449735&mf=info%40e.example.com&msgid=c29c9133-14cf-4876-9610-962b2835b3e8%40alibaba.com&sac=0&tag=LED&tid=2546032&to=reader%40example.org&tpl=&ts=1783913769&type=0&url=http%3A%2F%2Fwww.example.com%2F&v=1.0&sign=fed82fcd6b69c59fe6c6d8c46b34cfb4&urlts=1783913802'
 
-    expect(cleanUrl(value)).toBe(value)
+    expect(purifyUrl(value)).toBe(value)
   })
 
   it('should strip other tracking params from a click url', () => {
@@ -1396,7 +1404,7 @@ describe('Alibaba DirectMail click url', () => {
     const expected =
       'https://dm-cn.aliyuncs.com/trace/v1/report?ts=1783913769&url=http%3A%2F%2Fwww.example.com%2F&sign=fed82fcd6b69c59fe6c6d8c46b34cfb4'
 
-    expect(cleanUrl(value)).toBe(expected)
+    expect(purifyUrl(value)).toBe(expected)
   })
 
   it('should strip a param whose name only contains ts from a click url', () => {
@@ -1405,7 +1413,7 @@ describe('Alibaba DirectMail click url', () => {
     const expected =
       'https://dm-cn.aliyuncs.com/trace/v1/report?ts=1783913769&url=http%3A%2F%2Fwww.example.com%2F'
 
-    expect(cleanUrl(value)).toBe(expected)
+    expect(purifyUrl(value)).toBe(expected)
   })
 
   it('should strip ts on a subdomain of the click host', () => {
@@ -1414,7 +1422,7 @@ describe('Alibaba DirectMail click url', () => {
     const expected =
       'https://cdn.dm-cn.aliyuncs.com/trace/v1/report?url=http%3A%2F%2Fwww.example.com%2F'
 
-    expect(cleanUrl(value)).toBe(expected)
+    expect(purifyUrl(value)).toBe(expected)
   })
 
   it('should strip ts on another path of the click host', () => {
@@ -1423,7 +1431,7 @@ describe('Alibaba DirectMail click url', () => {
     const expected =
       'https://dm-cn.aliyuncs.com/trace/v1/reports?url=http%3A%2F%2Fwww.example.com%2F'
 
-    expect(cleanUrl(value)).toBe(expected)
+    expect(purifyUrl(value)).toBe(expected)
   })
 })
 
@@ -1636,7 +1644,7 @@ describe('session ids', () => {
       'https://forum.example.com/index.php?PHPSESSID=3f01a9a50ab99bff744317fc3cb0b92b&topic=2590.40'
     const expected = 'https://forum.example.com/index.php?topic=2590.40'
 
-    expect(cleanUrl(value)).toBe(expected)
+    expect(purifyUrl(value)).toBe(expected)
   })
 
   it('should strip JSESSIONID from the query', () => {
@@ -1644,61 +1652,61 @@ describe('session ids', () => {
       'https://example.com/rss/news.shtml?jsessionid=02B4978C7CE0C25C878D034E5DF9C9DD&id=7'
     const expected = 'https://example.com/rss/news.shtml?id=7'
 
-    expect(cleanUrl(value)).toBe(expected)
+    expect(purifyUrl(value)).toBe(expected)
   })
 
   it('should strip a classic ASP session id', () => {
     const value = 'https://example.com/page.asp?ASPSESSIONIDQASTCRBA=MEJFLHPDNDGKOEOAJCMBNEKP&id=7'
     const expected = 'https://example.com/page.asp?id=7'
 
-    expect(cleanUrl(value)).toBe(expected)
+    expect(purifyUrl(value)).toBe(expected)
   })
 
   it('should strip CFID and CFTOKEN', () => {
     const value = 'https://example.com/doc.pdf?key1=1281671&CFID=11714&CFTOKEN=34558592'
     const expected = 'https://example.com/doc.pdf?key1=1281671'
 
-    expect(cleanUrl(value)).toBe(expected)
+    expect(purifyUrl(value)).toBe(expected)
   })
 
   it('should strip a session-shaped sid', () => {
     const value = 'https://example.com/search?sid=46a3f0c2e8b1d4f6a9c3e5b7d1f2a4c6&city=7'
     const expected = 'https://example.com/search?city=7'
 
-    expect(cleanUrl(value)).toBe(expected)
+    expect(purifyUrl(value)).toBe(expected)
   })
 
   it('should strip a session-shaped sid followed by a second question mark', () => {
     const value = 'https://example.com/search?sid=46a3f0c2e8b1d4f6a9c3e5b7d1f2a4c6?city=7'
     const expected = 'https://example.com/search'
 
-    expect(cleanUrl(value)).toBe(expected)
+    expect(purifyUrl(value)).toBe(expected)
   })
 
   it('should keep a short sid', () => {
     const value = 'https://example.com/rss?sid=46551'
 
-    expect(cleanUrl(value)).toBe(value)
+    expect(purifyUrl(value)).toBe(value)
   })
 
   it('should keep a CJ SubID without a digit', () => {
     const value =
       'https://www.example.com/click-3471301-13819538?sid=SeafoodChorizePaellaRecipeStaubDoubleHandleFryPan&url=https%3A%2F%2Fshop.example.com%2Fpan'
 
-    expect(cleanUrl(value)).toBe(value)
+    expect(purifyUrl(value)).toBe(value)
   })
 
   it('should strip a 26-character PHP session id as sid', () => {
     const value = 'https://example.com/index.php?sid=qd860jvhk9vphrslp7a9932kgd&topic=7'
     const expected = 'https://example.com/index.php?topic=7'
 
-    expect(cleanUrl(value)).toBe(expected)
+    expect(purifyUrl(value)).toBe(expected)
   })
 
   it('should keep a sid of 25 characters', () => {
     const value = 'https://example.com/rss?sid=46a3f0c2e8b1d4f6a9c3e5b7d'
 
-    expect(cleanUrl(value)).toBe(value)
+    expect(purifyUrl(value)).toBe(value)
   })
 })
 
@@ -1707,53 +1715,53 @@ describe('cache busters', () => {
     const value = 'https://example.com/feed?id=7&ts=1746842972'
     const expected = 'https://example.com/feed?id=7'
 
-    expect(cleanUrl(value)).toBe(expected)
+    expect(purifyUrl(value)).toBe(expected)
   })
 
   it('should strip a millisecond timestamp _', () => {
     const value = 'https://example.com/feed?id=7&_=1699999999999'
     const expected = 'https://example.com/feed?id=7'
 
-    expect(cleanUrl(value)).toBe(expected)
+    expect(purifyUrl(value)).toBe(expected)
   })
 
   it('should strip a hex cb', () => {
     const value = 'https://example.com/feed?id=7&cb=8f3a2c'
     const expected = 'https://example.com/feed?id=7'
 
-    expect(cleanUrl(value)).toBe(expected)
+    expect(purifyUrl(value)).toBe(expected)
   })
 
   it('should keep a ts selecting the content type', () => {
     const value = 'https://example.com/rss/feed/comments?tc=content&ts=posts&ti=5124'
 
-    expect(cleanUrl(value)).toBe(value)
+    expect(purifyUrl(value)).toBe(value)
   })
 
   it('should keep a JSONP callback cb', () => {
     const value = 'https://example.com/translate_a/element.js?cb=googleTranslateElementInit'
 
-    expect(cleanUrl(value)).toBe(value)
+    expect(purifyUrl(value)).toBe(value)
   })
 
   it('should strip a hex value without a digit', () => {
     const value = 'https://example.com/menu?ts=cafe'
     const expected = 'https://example.com/menu'
 
-    expect(cleanUrl(value)).toBe(expected)
+    expect(purifyUrl(value)).toBe(expected)
   })
 
   it('should keep a word preview', () => {
     const value = 'https://example.com/kp/card?asin=B0C1234567&preview=inline'
 
-    expect(cleanUrl(value)).toBe(value)
+    expect(purifyUrl(value)).toBe(value)
   })
 
   it('should strip a numeric preview', () => {
     const value = 'https://example.com/post?p=42&preview=1'
     const expected = 'https://example.com/post?p=42'
 
-    expect(cleanUrl(value)).toBe(expected)
+    expect(purifyUrl(value)).toBe(expected)
   })
 })
 
@@ -1762,46 +1770,46 @@ describe('path params', () => {
     const value = 'https://example.com/site/Donation2;jsessionid=00000000.app20023b?idb=682725718'
     const expected = 'https://example.com/site/Donation2?idb=682725718'
 
-    expect(cleanUrl(value)).toBe(expected)
+    expect(purifyUrl(value)).toBe(expected)
   })
 
   it('should strip an uppercase JSESSIONID path param', () => {
     const value = 'https://example.com/servlets/ProductServlet;JSESSIONID=07BCD08E5B349EC6'
     const expected = 'https://example.com/servlets/ProductServlet'
 
-    expect(cleanUrl(value)).toBe(expected)
+    expect(purifyUrl(value)).toBe(expected)
   })
 
   it('should keep a path param no list holds', () => {
     const value = 'https://example.com/map;lat=52.1;lon=21.0'
 
-    expect(cleanUrl(value)).toBe(value)
+    expect(purifyUrl(value)).toBe(value)
   })
 
   it('should strip only the listed path param among others', () => {
     const value = 'https://example.com/page;jsessionid=ABC123;lang=en'
     const expected = 'https://example.com/page;lang=en'
 
-    expect(cleanUrl(value)).toBe(expected)
+    expect(purifyUrl(value)).toBe(expected)
   })
 
   it('should strip a path param inside the path', () => {
     const value = 'https://example.com/shop;jsessionid=ABC123/item/42'
     const expected = 'https://example.com/shop/item/42'
 
-    expect(cleanUrl(value)).toBe(expected)
+    expect(purifyUrl(value)).toBe(expected)
   })
 
   it('should keep a path param a non-session literal names', () => {
     const value = 'https://example.com/a;fbclid=1;x=2/b'
 
-    expect(cleanUrl(value)).toBe(value)
+    expect(purifyUrl(value)).toBe(value)
   })
 
   it('should keep a path param whose name only an entry holds', () => {
     const value = 'https://example.com/page;sid=46a3f0c2e8b1d4f6a9c3e5b7d1f2a4c6'
 
-    expect(cleanUrl(value)).toBe(value)
+    expect(purifyUrl(value)).toBe(value)
   })
 
   it('should keep a path param with a custom list lacking it', () => {
@@ -1813,14 +1821,14 @@ describe('path params', () => {
   it('should keep the path of a signed url whole', () => {
     const value = 'https://cdn.example.com/file;jsessionid=ABC123?Signature=abc'
 
-    expect(cleanUrl(value)).toBe(value)
+    expect(purifyUrl(value)).toBe(value)
   })
 
   it('should scan a long run of path params in linear time', () => {
     const value = `https://example.com/${';a'.repeat(100_000)}`
     const start = performance.now()
 
-    cleanUrl(value)
+    purifyUrl(value)
 
     expect(performance.now() - start).toBeLessThan(1000)
   })
@@ -1832,14 +1840,14 @@ describe('host-scoped click attribution', () => {
       'https://www.iesdouyin.com/share/video/7129381734923177246/?region=CN&mid=7129381800000000000&u_code=abc&did=1'
     const expected = 'https://www.iesdouyin.com/share/video/7129381734923177246/'
 
-    expect(cleanUrl(value)).toBe(expected)
+    expect(purifyUrl(value)).toBe(expected)
   })
 
   it('should drop the query of a Douyin video page', () => {
     const value = 'https://www.douyin.com/video/7129381734923177246?previous_page=app_code_link'
     const expected = 'https://www.douyin.com/video/7129381734923177246'
 
-    expect(cleanUrl(value)).toBe(expected)
+    expect(purifyUrl(value)).toBe(expected)
   })
 
   it('should keep modal_id on a Douyin page', () => {
@@ -1847,7 +1855,7 @@ describe('host-scoped click attribution', () => {
       'https://www.douyin.com/discover?modal_id=7129381734923177246&previous_page=app_code_link'
     const expected = 'https://www.douyin.com/discover?modal_id=7129381734923177246'
 
-    expect(cleanUrl(value)).toBe(expected)
+    expect(purifyUrl(value)).toBe(expected)
   })
 
   it('should keep vid on a Douyin user page', () => {
@@ -1856,62 +1864,62 @@ describe('host-scoped click attribution', () => {
     const expected =
       'https://www.douyin.com/user/MS4wLjABAAAAmYWDaUwRro4ONVYTyTUfq6Ur8imDsE47pVwyqw5Lqzk?vid=7129381734923177246'
 
-    expect(cleanUrl(value)).toBe(expected)
+    expect(purifyUrl(value)).toBe(expected)
   })
 
   it('should drop a name that only starts with vid on Douyin', () => {
     const value = 'https://www.douyin.com/video/7129381734923177246?vidx=1'
     const expected = 'https://www.douyin.com/video/7129381734923177246'
 
-    expect(cleanUrl(value)).toBe(expected)
+    expect(purifyUrl(value)).toBe(expected)
   })
 
   it('should keep the query on a host ending in douyin.com', () => {
     const value = 'https://www.notdouyin.com/video/7129381734923177246?previous_page=app_code_link'
 
-    expect(cleanUrl(value)).toBe(value)
+    expect(purifyUrl(value)).toBe(value)
   })
 
   it('should drop the query of an SMZDM post', () => {
     const value = 'https://post.smzdm.com/p/ar6kpg7g/?send_by=3716913905&from=other'
     const expected = 'https://post.smzdm.com/p/ar6kpg7g/'
 
-    expect(cleanUrl(value)).toBe(expected)
+    expect(purifyUrl(value)).toBe(expected)
   })
 
   it('should drop the query of an SMZDM post on a host with a trailing dot', () => {
     const value = 'https://post.smzdm.com./p/ar6kpg7g/?send_by=3716913905&from=other'
     const expected = 'https://post.smzdm.com./p/ar6kpg7g/'
 
-    expect(cleanUrl(value)).toBe(expected)
+    expect(purifyUrl(value)).toBe(expected)
   })
 
   it('should drop the query of an SMZDM page on www.smzdm.com', () => {
     const value = 'https://www.smzdm.com/p/12345678/?send_by=3716913905&from=other'
     const expected = 'https://www.smzdm.com/p/12345678/'
 
-    expect(cleanUrl(value)).toBe(expected)
+    expect(purifyUrl(value)).toBe(expected)
   })
 
   it('should keep the query of an SMZDM search', () => {
     const value =
       'http://search.smzdm.com/?c=home&order=time&s=%E4%BA%AC%E4%B8%9C%E5%9B%BE%E4%B9%A6&v=b'
 
-    expect(cleanUrl(value)).toBe(value)
+    expect(purifyUrl(value)).toBe(value)
   })
 
   it('should keep only the product params on a JD product page', () => {
     const value = 'https://item.jd.com/100004898715.html?cu=true&skuIds=100004898715&pps=jdq.share'
     const expected = 'https://item.jd.com/100004898715.html?skuIds=100004898715'
 
-    expect(cleanUrl(value)).toBe(expected)
+    expect(purifyUrl(value)).toBe(expected)
   })
 
   it('should keep only the product params on a JD mobile product page', () => {
     const value = 'https://item.m.jd.com/product/100004898715.html?gx=abc&ad_od=share&wareId=7'
     const expected = 'https://item.m.jd.com/product/100004898715.html?wareId=7'
 
-    expect(cleanUrl(value)).toBe(expected)
+    expect(purifyUrl(value)).toBe(expected)
   })
 
   it('should keep every JD product param', () => {
@@ -1920,20 +1928,20 @@ describe('host-scoped click attribution', () => {
     const expected =
       'https://item.jd.com/100004898715.html?id=1&shopId=2&skuIds=3&suitId=4&wareId=5'
 
-    expect(cleanUrl(value)).toBe(expected)
+    expect(purifyUrl(value)).toBe(expected)
   })
 
   it('should drop a name that only starts with a JD product param', () => {
     const value = 'https://item.jd.com/100004898715.html?idx=1&skuIds=3'
     const expected = 'https://item.jd.com/100004898715.html?skuIds=3'
 
-    expect(cleanUrl(value)).toBe(expected)
+    expect(purifyUrl(value)).toBe(expected)
   })
 
   it('should keep the query of a JD affiliate click link', () => {
     const value = 'https://union-click.jd.com/jdc?e=abc&p=JF8BAN8JK1olXwUFU1pfC0sQ'
 
-    expect(cleanUrl(value)).toBe(value)
+    expect(purifyUrl(value)).toBe(value)
   })
 
   it('should drop the query of a Kuaishou share link', () => {
@@ -1941,14 +1949,14 @@ describe('host-scoped click attribution', () => {
       'https://www.kuaishou.com/short-video/3xg6fmtj9qjhm2q?fid=0&cc=share_copylink&shareMethod=TOKEN&kpn=KUAISHOU'
     const expected = 'https://www.kuaishou.com/short-video/3xg6fmtj9qjhm2q'
 
-    expect(cleanUrl(value)).toBe(expected)
+    expect(purifyUrl(value)).toBe(expected)
   })
 
   it('should drop the query of a Kuaishou link on m.gifshow.com', () => {
     const value = 'https://m.gifshow.com/fw/photo/5230364029584519186?cc=share_copylink&fid=0'
     const expected = 'https://m.gifshow.com/fw/photo/5230364029584519186'
 
-    expect(cleanUrl(value)).toBe(expected)
+    expect(purifyUrl(value)).toBe(expected)
   })
 
   it('should drop the query of a Kuaishou link on a subdomain of m.chenzhongtech.com', () => {
@@ -1956,25 +1964,25 @@ describe('host-scoped click attribution', () => {
       'https://v.m.chenzhongtech.com/fw/photo/5230364029584519186?cc=share_copylink&fid=0'
     const expected = 'https://v.m.chenzhongtech.com/fw/photo/5230364029584519186'
 
-    expect(cleanUrl(value)).toBe(expected)
+    expect(purifyUrl(value)).toBe(expected)
   })
 
   it('should keep the query on a host ending in m.gifshow.com', () => {
     const value = 'https://wm.gifshow.com/fw/photo/5230364029584519186?cc=share_copylink&fid=0'
 
-    expect(cleanUrl(value)).toBe(value)
+    expect(purifyUrl(value)).toBe(value)
   })
 
   it('should keep the query on a host ending in kuaishou.com', () => {
     const value = 'https://www.notkuaishou.com/short-video/3xg6fmtj9qjhm2q?fid=0&cc=share_copylink'
 
-    expect(cleanUrl(value)).toBe(value)
+    expect(purifyUrl(value)).toBe(value)
   })
 
   it('should keep the query on a host starting with kuaishou.com', () => {
     const value = 'https://kuaishou.com.example/short-video/3xg6fmtj9qjhm2q?fid=0&cc=share_copylink'
 
-    expect(cleanUrl(value)).toBe(value)
+    expect(purifyUrl(value)).toBe(value)
   })
 
   it('should keep only xsec_token on a Xiaohongshu note', () => {
@@ -1983,14 +1991,14 @@ describe('host-scoped click attribution', () => {
     const expected =
       'https://www.xiaohongshu.com/discovery/item/68ac166a000000001d012571?xsec_token=CBxtz16cD7hBeyge2T9Q3r5OWhHWYeqpxRhRb2uIoNKxk='
 
-    expect(cleanUrl(value)).toBe(expected)
+    expect(purifyUrl(value)).toBe(expected)
   })
 
   it('should keep the query on a host starting with xiaohongshu.com', () => {
     const value =
       'https://xiaohongshu.com.example.com/discovery/item/68ac166a000000001d012571?source=webshare&xhsshare=pc_web'
 
-    expect(cleanUrl(value)).toBe(value)
+    expect(purifyUrl(value)).toBe(value)
   })
 
   it('should drop a name that only starts with xsec_token on Xiaohongshu', () => {
@@ -1999,33 +2007,33 @@ describe('host-scoped click attribution', () => {
     const expected =
       'https://www.xiaohongshu.com/discovery/item/68ac166a000000001d012571?xsec_token=CBxtz16cD7hBeyge2T9Q3r5OWhHWYeqpxRhRb2uIoNKxk='
 
-    expect(cleanUrl(value)).toBe(expected)
+    expect(purifyUrl(value)).toBe(expected)
   })
 
   it('should keep the query on a host ending in xiaohongshu.com', () => {
     const value =
       'https://www.notxiaohongshu.com/discovery/item/68ac166a000000001d012571?source=webshare&xhsshare=pc_web'
 
-    expect(cleanUrl(value)).toBe(value)
+    expect(purifyUrl(value)).toBe(value)
   })
 
   it('should keep only the id on a NetEase Cloud Music playlist', () => {
     const value = 'https://y.music.163.com/m/playlist?id=2809513713&userid=1&creatorId=2'
     const expected = 'https://y.music.163.com/m/playlist?id=2809513713'
 
-    expect(cleanUrl(value)).toBe(expected)
+    expect(purifyUrl(value)).toBe(expected)
   })
 
   it('should drop a name that only starts with id on NetEase Cloud Music', () => {
     const value = 'https://y.music.163.com/m/playlist?id=2809513713&ids=1'
     const expected = 'https://y.music.163.com/m/playlist?id=2809513713'
 
-    expect(cleanUrl(value)).toBe(expected)
+    expect(purifyUrl(value)).toBe(expected)
   })
 
   it('should keep the query on another NetEase host', () => {
     const value = 'https://music.163.com/playlist?id=2809513713&creatorId=2'
 
-    expect(cleanUrl(value)).toBe(value)
+    expect(purifyUrl(value)).toBe(value)
   })
 })

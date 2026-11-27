@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'bun:test'
-import { cleanUrl } from '../clean.js'
+import { purifyUrl } from '../clean.js'
 import { unwrapFeed2js } from './feed2js.js'
 
 describe('unwrapFeed2js', () => {
@@ -36,7 +36,7 @@ describe('unwrapFeed2js', () => {
         'http://feed2js.org//feed2js.php?src=http%3A%2F%2Ffeeds.example.com%2FNF-ExpiringInstantTitles&html=a'
       const expected = 'http://feeds.example.com/NF-ExpiringInstantTitles'
 
-      expect(cleanUrl(value, { unwrappers: [unwrapFeed2js] })).toBe(expected)
+      expect(purifyUrl(value, { unwrappers: [unwrapFeed2js] })).toBe(expected)
     })
 
     it('should decode a twice-encoded feed', () => {

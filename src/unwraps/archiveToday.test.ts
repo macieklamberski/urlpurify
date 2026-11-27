@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'bun:test'
-import { cleanUrl } from '../clean.js'
+import { purifyUrl } from '../clean.js'
 import { unwrapArchiveToday } from './archiveToday.js'
 
 describe('unwrapArchiveToday', () => {
@@ -171,10 +171,10 @@ describe('unwrapArchiveToday', () => {
     expect(unwrapArchiveToday(url)).toBe('http://www.example.com/search?q=a%3Fb#top%23x')
   })
 
-  it('should unwrap through cleanUrl when passed as an unwrapper', () => {
+  it('should unwrap through purifyUrl when passed as an unwrapper', () => {
     const value = 'https://archive.is/o/v8cfx/https:/www.example.com/us/story?fbclid=abc'
 
-    expect(cleanUrl(value, { unwrappers: [unwrapArchiveToday] })).toBe(
+    expect(purifyUrl(value, { unwrappers: [unwrapArchiveToday] })).toBe(
       'https://www.example.com/us/story',
     )
   })

@@ -1,4 +1,4 @@
-export { cleanUrl, isTrackingParam, stripTrackingParams, unwrapUrl } from './clean.js'
+export { cleanUrl, isTrackingParam, purifyUrl, stripTrackingParams, unwrapUrl } from './clean.js'
 export {
   advertisingUnwrappers,
   affiliateParams,
@@ -34,6 +34,7 @@ export type { PathUnwrapperConfig } from './pathTarget.js'
 export { createPathUnwrapper } from './pathTarget.js'
 export type {
   CleanUrlOptions,
+  PurifyUrlOptions,
   TrackingEntry,
   TrackingParam,
   TrackingValueTest,
