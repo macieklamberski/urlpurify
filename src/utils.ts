@@ -106,7 +106,8 @@ export const appendLinkFragment = (url: URL, target: string): string => {
 
 // The url repair, trousse's `resolveUrl`, of a target, retried with `https://` in front when a
 // target whose host is written dotted but with no scheme fails, as `%20www.example.com/ep.mp3` or
-// `www.example.com:/ep.mp3` do. A path, a title, a `2024/` segment or an app scheme stays out.
+// `www.example.com:/ep.mp3` do. A path, a `2024/` segment or an app scheme stays out, while a
+// title written as a dotted host with a colon, such as `P.L.Travers:`, reads as one.
 export const repairTarget = (target: string): string | undefined => {
   const repaired = resolveUrl(target)
   const host = target.split(hostEndRegex, 1)[0]
@@ -138,7 +139,7 @@ type ParamTargetOptions = {
 // The target a carrier param holds, read as `getParamValues` reads it and decoded once more when
 // encoded twice: the first value, or the one at `index`, such as -1 for the last. A value the url
 // repair, `repairTarget`, cannot turn into an http url, such as a relative `/local/page`,
-// another scheme or a title, is no target. `plus` reads a raw `+` as `decodeParamValue` does.
+// another scheme or a title without a dot, is no target. `plus` reads a raw `+` as `decodeParamValue` does.
 export const readParamTarget = (
   url: URL,
   name: string,

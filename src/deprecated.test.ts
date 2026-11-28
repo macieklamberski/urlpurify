@@ -26,12 +26,16 @@ const newNames: Record<string, unknown> = {
   unwrapYouTube: unwrapYoutube,
 }
 
-const deprecatedEntries: Array<[string, unknown]> = Object.entries(deprecated)
+const deprecatedExports: Record<string, unknown> = { ...deprecated }
+const newNameEntries: Array<[string, unknown]> = Object.entries(newNames)
+const deprecatedNames = Object.keys(deprecatedExports)
 
 describe('deprecated', () => {
-  it.each(deprecatedEntries)('should keep %s equal to its new name', (name, alias) => {
-    const expected = newNames[name]
+  it.each(newNameEntries)('should keep %s equal to its new name', (name, expected) => {
+    expect(deprecatedExports[name]).toBe(expected)
+  })
 
-    expect(alias).toBe(expected)
+  it.each(deprecatedNames)('should list the new name of %s', (name) => {
+    expect(newNames).toHaveProperty(name)
   })
 })

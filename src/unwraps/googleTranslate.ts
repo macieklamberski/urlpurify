@@ -67,7 +67,7 @@ export const unwrapGoogleTranslate = createUnwrapper({
   brands: 'google',
   hosts: frameHosts,
   subdomains: proxyDomains,
-  // translate.google.<TLD> and its www. host are the hosts the walk shows on the translate paths.
+  // translate.google.<TLD> and its www. host as the walk shows them, the frame host and the proxy.
   match:
     /^(?:(?:www\.)?translate\.google\.(?:com|[a-z]{2,3}(?:\.[a-z]{2,3})?)|translate\.googleusercontent\.com|.+\.translate\.goog)$/,
   unwrap: (url) => {
