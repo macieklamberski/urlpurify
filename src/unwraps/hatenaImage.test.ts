@@ -2,6 +2,15 @@ import { describe, expect, it } from 'bun:test'
 import { unwrapHatenaImage } from './hatenaImage.js'
 
 describe('unwrapHatenaImage', () => {
+  it('should keep a literal %25 in the source as written', () => {
+    const value = new URL(
+      'https://cdn.image.st-hatena.com/image/scale/abc/x/https://cdn.example.com/a%2520b.png',
+    )
+    const expected = 'https://cdn.example.com/a%2520b.png'
+
+    expect(unwrapHatenaImage(value)).toBe(expected)
+  })
+
   it('should extract an unencoded source', () => {
     const value = new URL(
       'https://cdn.image.st-hatena.com/image/scale/abc/width=1300/https://cdn.example.com/photo.jpg',

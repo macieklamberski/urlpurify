@@ -2,6 +2,15 @@ import { describe, expect, it } from 'bun:test'
 import { unwrapCloudinaryFetch } from './cloudinaryFetch.js'
 
 describe('unwrapCloudinaryFetch', () => {
+  it('should keep a literal %25 in the source as written', () => {
+    const value = new URL(
+      'https://res.cloudinary.com/demo/image/fetch/w_100/https://cdn.example.com/a%2520b.png',
+    )
+    const expected = 'https://cdn.example.com/a%2520b.png'
+
+    expect(unwrapCloudinaryFetch(value)).toBe(expected)
+  })
+
   it('should extract an unencoded source', () => {
     const value = new URL(
       'https://res.cloudinary.com/demo/image/fetch/w_200/https://cdn.example.com/photo.jpg',

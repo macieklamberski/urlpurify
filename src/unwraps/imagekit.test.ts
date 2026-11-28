@@ -2,6 +2,15 @@ import { describe, expect, it } from 'bun:test'
 import { unwrapImagekit } from './imagekit.js'
 
 describe('unwrapImagekit', () => {
+  it('should keep a literal %25 in the source as written', () => {
+    const value = new URL(
+      'https://ik.imagekit.io/demo/tr:w-100/https://cdn.example.com/a%2520b.png',
+    )
+    const expected = 'https://cdn.example.com/a%2520b.png'
+
+    expect(unwrapImagekit(value)).toBe(expected)
+  })
+
   it('should extract an unencoded source', () => {
     const value = new URL('https://ik.imagekit.io/demo/tr:w-200/https://cdn.example.com/photo.jpg')
     const expected = 'https://cdn.example.com/photo.jpg'

@@ -1,4 +1,5 @@
-import { decodePercent, resolveUrl } from 'trousse'
+import { resolveUrl } from 'trousse'
+import { decodePathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 
 // The resizing source is an absolute url or a path on the zone's own origin.
@@ -13,7 +14,7 @@ export const unwrapCloudflareImages: UrlUnwrapper = (url) => {
   const image = url.pathname.match(imagePathRegex)?.groups?.source
 
   if (image) {
-    return resolveUrl(decodePercent(`${image}${url.search}${url.hash}`), url.origin)
+    return resolveUrl(`${decodePathTarget(image)}${url.search}${url.hash}`, url.origin)
   }
 
   const plain = url.pathname.match(plainPathRegex)?.groups?.source
@@ -22,5 +23,5 @@ export const unwrapCloudflareImages: UrlUnwrapper = (url) => {
     return
   }
 
-  return decodePercent(`${plain}${url.search}${url.hash}`)
+  return `${decodePathTarget(plain)}${url.search}${url.hash}`
 }
