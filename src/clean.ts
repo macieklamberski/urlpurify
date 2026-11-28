@@ -1,36 +1,16 @@
 import {
-  archiveExtensions,
-  audioExtensions,
-  codeExtensions,
   decodePercent,
-  documentExtensions,
-  feedExtensions,
-  flashExtensions,
-  fontExtensions,
-  imageExtensions,
-  installerExtensions,
   isAnyOf,
-  isHostname,
   isHostOf,
-  isIpAddress,
   isString,
   normalizeUrl,
-  pageExtensions,
   parseUrl,
   stripWww,
-  subtitleExtensions,
-  videoExtensions,
 } from 'trousse'
 import { defaultTrackingParams, defaultUnwrappers } from './defaults.js'
 import { sessionIdParams } from './tracking/session.js'
 import type { PurifyUrlOptions, TrackingEntry, TrackingParam, UrlUnwrapper } from './types.js'
-import {
-  dottedHostRegex,
-  getBrandLabels,
-  normalizeHost,
-  repairTarget,
-  unwrapperHosts,
-} from './utils.js'
+import { getBrandLabels, normalizeHost, repairTarget, unwrapperHosts } from './utils.js'
 
 type TrackingMatcher = {
   literals: Set<string>
@@ -291,30 +271,8 @@ const deleteTrackingParams = (url: URL, trackingParams: ReadonlyArray<TrackingPa
 
 const controlCharactersRegex = /[\p{Cc}\u2028\u2029]/u
 
-// Extensions that are also TLDs, such as `example.zip`, stay valid hosts.
-const tldExtensions = ['mobi', 'mov', 'zip']
-
-const fileExtensions = new Set(
-  [
-    ...archiveExtensions,
-    ...audioExtensions,
-    ...codeExtensions,
-    ...documentExtensions,
-    ...feedExtensions,
-    ...flashExtensions,
-    ...fontExtensions,
-    ...imageExtensions,
-    ...installerExtensions,
-    ...pageExtensions,
-    ...subtitleExtensions,
-    ...videoExtensions,
-  ].filter((extension) => !tldExtensions.includes(extension)),
-)
-
-// Repairs a scheme such as `http:// https://host` and a host such as `example.com)` through
-// `repairTarget`, then drops a target that is not http, holds a control character, carries userinfo
-// or keeps a junk host: not a hostname such as `,ccam.cc`, no dot between two labels, or a file
-// extension.
+// Drops a target that holds a control character, then repairs a scheme such as
+// `http:// https://host` and a host such as `example.com)` through `repairTarget`.
 const cleanTarget = (target: string | undefined): string | undefined => {
   if (!target) {
     return
@@ -327,34 +285,7 @@ const cleanTarget = (target: string | undefined): string | undefined => {
     return
   }
 
-  const repaired = repairTarget(trimmed)
-
-  if (!repaired) {
-    return
-  }
-
-  const parsed = parseUrl(repaired)
-
-  // A target `https://example.com@example.net/` goes to example.net while reading as example.com.
-  if (parsed?.username || parsed?.password) {
-    return
-  }
-
-  const hostname = parsed?.hostname ?? ''
-
-  if (!dottedHostRegex.test(hostname) && !isIpAddress(hostname)) {
-    return
-  }
-
-  if (!isHostname(hostname)) {
-    return
-  }
-
-  if (fileExtensions.has(hostname.slice(hostname.lastIndexOf('.') + 1))) {
-    return
-  }
-
-  return repaired
+  return repairTarget(trimmed)
 }
 
 const protocolRelativeRegex = /^\/\/[^/]/

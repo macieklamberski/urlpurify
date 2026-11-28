@@ -30,6 +30,9 @@ const nonUrlTargets = [
   'com.example.app://open/post',
   '2024/https://example.com/page',
   '05.10.2025:',
+  'D:\\zyfiles\\x\\2000C0JK.txt',
+  '.l.WwRzQ--~D',
+  'https://example.com@example.net/',
 ]
 
 describe('createQueryUnwrapper', () => {
@@ -130,6 +133,15 @@ describe('createQueryUnwrapper', () => {
     it('should skip a title for the next param', () => {
       const value = new URL(
         'https://redirect.example.com/?url=Example+News+Today&fallback=https://example.com/app',
+      )
+      const expected = 'https://example.com/app'
+
+      expect(extract(value)).toBe(expected)
+    })
+
+    it('should skip a value whose host is a file name for the next param', () => {
+      const value = new URL(
+        'https://redirect.example.com/?url=D:%5Czyfiles%5Cx%5C2000C0JK.txt&fallback=https://example.com/app',
       )
       const expected = 'https://example.com/app'
 

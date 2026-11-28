@@ -1,15 +1,28 @@
 import {
+  archiveExtensions,
+  audioExtensions,
+  codeExtensions,
   decodePercent,
+  documentExtensions,
+  feedExtensions,
+  flashExtensions,
+  fontExtensions,
   getQueryParamValues,
+  imageExtensions,
+  installerExtensions,
   isAnyOf,
+  isHostname,
   isHostOf,
   isHostOrSubdomainOf,
   isIpAddress,
   isString,
   isSubdomainOf,
   type Pattern,
+  pageExtensions,
   parseUrl,
   resolveUrl,
+  subtitleExtensions,
+  videoExtensions,
 } from 'trousse'
 import type { UrlUnwrapper } from './types.js'
 
@@ -54,7 +67,7 @@ export type QueryUnwrapperConfig = UnwrapperBaseConfig &
 
 export const httpSchemeRegex = /^https?:/i
 const encodedSchemeRegex = /^https?(?:%3A|:%2F)/i
-export const dottedHostRegex = /[^.]\.[^.]/
+const dottedHostRegex = /[^.]\.[^.]/
 const schemeRegex = /^(?:https?:|[a-z][a-z\d+.-]*:\/\/)/i
 const hostEndRegex = /[/?#]/
 
@@ -104,31 +117,75 @@ export const appendLinkFragment = (url: URL, target: string): string => {
   return `${target}${url.hash}`
 }
 
+// Extensions that are also TLDs, such as `example.zip`, stay valid hosts.
+const tldExtensions = ['mobi', 'mov', 'zip']
+
+const fileExtensions = new Set(
+  [
+    ...archiveExtensions,
+    ...audioExtensions,
+    ...codeExtensions,
+    ...documentExtensions,
+    ...feedExtensions,
+    ...flashExtensions,
+    ...fontExtensions,
+    ...imageExtensions,
+    ...installerExtensions,
+    ...pageExtensions,
+    ...subtitleExtensions,
+    ...videoExtensions,
+  ].filter((extension) => !tldExtensions.includes(extension)),
+)
+
 // The url repair, trousse's `resolveUrl`, of a target, retried with `https://` in front when a
 // target whose host is written dotted but with no scheme fails, as `%20www.example.com/ep.mp3` or
-// `www.example.com:/ep.mp3` do. A path, a `2024/` segment or an app scheme stays out, while a
-// title written as a dotted host with a colon, such as `P.L.Travers:`, reads as one.
+// `www.example.com:/ep.mp3` do. A repair that carries userinfo or keeps a junk host is no target:
+// not a hostname such as `,ccam.cc`, no dot between two labels, or a file extension.
 export const repairTarget = (target: string): string | undefined => {
-  const repaired = resolveUrl(target)
-  const host = target.split(hostEndRegex, 1)[0]
+  const retryBehindHttps = (): string | undefined => {
+    const host = target.split(hostEndRegex, 1)[0]
 
-  if (repaired || schemeRegex.test(target) || !dottedHostRegex.test(host)) {
-    return repaired
+    if (schemeRegex.test(target) || !dottedHostRegex.test(host)) {
+      return
+    }
+
+    const retried = parseUrl(resolveUrl(`https://${target}`))
+
+    // A target `05.10.2025:` reads as the IPv4 host 5.10.7.233 behind https.
+    if (!retried || isIpAddress(retried.hostname)) {
+      return
+    }
+
+    return retried.href
   }
 
-  const retried = parseUrl(resolveUrl(`https://${target}`))
+  const repaired = resolveUrl(target) ?? retryBehindHttps()
+  const parsed = parseUrl(repaired)
 
-  // A target `mailto:jobs@example.com` reads as userinfo behind https.
-  if (!retried || retried.username || retried.password) {
+  if (!repaired || !parsed) {
     return
   }
 
-  // A target `05.10.2025:` reads as the IPv4 host 5.10.7.233 behind https.
-  if (isIpAddress(retried.hostname)) {
+  // A target `https://example.com@example.net/` goes to example.net while reading as example.com.
+  if (parsed.username || parsed.password) {
     return
   }
 
-  return retried.href
+  const { hostname } = parsed
+
+  if (!dottedHostRegex.test(hostname) && !isIpAddress(hostname)) {
+    return
+  }
+
+  if (!isHostname(hostname)) {
+    return
+  }
+
+  if (fileExtensions.has(hostname.slice(hostname.lastIndexOf('.') + 1))) {
+    return
+  }
+
+  return repaired
 }
 
 type ParamTargetOptions = {
