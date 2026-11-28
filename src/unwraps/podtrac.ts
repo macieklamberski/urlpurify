@@ -34,7 +34,7 @@ export const unwrapPodtrac: UrlUnwrapper = createUnwrapper({
     }
 
     if (
-      isHostOf(url, 'www.podtrac.com') &&
+      isHostOf(url, ['www.podtrac.com', 'podtrac.com']) &&
       ptsQueryPathRegex.test(url.pathname) &&
       httpQueryRegex.test(url.search)
     ) {

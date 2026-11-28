@@ -127,6 +127,20 @@ describe('unwrapDerefMail', () => {
     expect(unwrapDerefMail(url)).toBe('http://www.example.com/pcasts/ep1.mp3')
   })
 
+  it('should extract target from the leaving page on the bare gmx.com', () => {
+    const value = new URL('https://gmx.com/dereferrer/?target=https%3A%2F%2Fexample.com%2Fpost')
+    const expected = 'https://example.com/post'
+
+    expect(unwrapDerefMail(value)).toBe(expected)
+  })
+
+  it('should extract target from the United Internet leaving page on the bare host', () => {
+    const value = new URL('https://ui-deref.de/r/?to=https%3A%2F%2Fexample.com%2Fpost')
+    const expected = 'https://example.com/post'
+
+    expect(unwrapDerefMail(value)).toBe(expected)
+  })
+
   it('should extract target from the to param of the United Internet leaving page', () => {
     const url = new URL(
       'https://www.ui-deref.de/r/?to=https://www.example.com/watch%3Fv%3DVOFoSa1pMnA&tt1=iu17T-7t7XEMafXlAQd5Ku',
