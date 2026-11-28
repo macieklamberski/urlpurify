@@ -1,6 +1,7 @@
-import { decodePercent, isAnyOf, isHostOf, isHttpUrl } from 'trousse'
+import { isAnyOf, isHostOf, isHttpUrl } from 'trousse'
+import { decodePathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
-import { appendLinkFragment, decodeEncodedScheme, readParamTarget } from '../utils.js'
+import { appendLinkFragment, readParamTarget } from '../utils.js'
 import { googleHostRegex } from './google.js'
 
 const feedPathRegex = /^\/reader\/(?:view|m\/view|lite|preview\/\*)\/feed\/(?<target>.+)$/i
@@ -24,7 +25,7 @@ export const unwrapGoogleReader: UrlUnwrapper = (url) => {
   // The query after a Reader feed path is Reader's own, such as `?hl=en`, and the feed's own query
   // sits encoded inside the path. A raw feed's fragment lands in the link's own `hash`.
   if (match?.groups) {
-    const target = decodeEncodedScheme(decodePercent(match.groups.target))
+    const target = decodePathTarget(match.groups.target)
 
     if (!isHttpUrl(target)) {
       return

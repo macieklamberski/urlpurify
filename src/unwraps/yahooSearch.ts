@@ -1,6 +1,6 @@
-import { decodePercent } from 'trousse'
+import { decodePathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
-import { createUnwrapper, decodeEncodedScheme } from '../utils.js'
+import { createUnwrapper } from '../utils.js'
 
 const hosts = ['r.search.yahoo.com', 'ri.search.yahoo.com', 'chicagotribune.search.yahoo.com']
 
@@ -15,7 +15,7 @@ export const unwrapYahooSearch: UrlUnwrapper = createUnwrapper({
     const match = url.pathname.match(yahooPathRegex)
 
     if (match) {
-      return decodeEncodedScheme(decodePercent(match[1]))
+      return decodePathTarget(match[1])
     }
 
     const unencodedMatch = url.pathname.match(unencodedTargetRegex)

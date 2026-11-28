@@ -1,7 +1,15 @@
 import { describe, expect, it } from 'bun:test'
+import { purifyUrl } from '../clean.js'
 import { unwrapAddToAny } from './addToAny.js'
 
 describe('unwrapAddToAny', () => {
+  it('should give https to a shared page without a scheme', () => {
+    const value = 'https://www.addtoany.com/add_to/facebook?linkurl=www.example.com%2Fpost'
+    const expected = 'https://www.example.com/post'
+
+    expect(purifyUrl(value, { unwrappers: [unwrapAddToAny] })).toBe(expected)
+  })
+
   it('should extract the page from a service link', () => {
     const value = new URL(
       'https://www.addtoany.com/add_to/facebook?linkurl=https%3A%2F%2Fexample.com%2F127%2F&linkname=%D8%AD%D9%83%D8%A7%D9%8A%D8%A7',
@@ -117,10 +125,10 @@ describe('unwrapAddToAny', () => {
     expect(unwrapAddToAny(value)).toBeUndefined()
   })
 
-  it('should return undefined for a non-http page', () => {
-    const value = new URL('https://www.addtoany.com/add_to/facebook?linkurl=javascript%3Aalert(1)')
+  it('should keep the wrapper for a non-http page', () => {
+    const value = 'https://www.addtoany.com/add_to/facebook?linkurl=javascript%3Aalert(1)'
 
-    expect(unwrapAddToAny(value)).toBeUndefined()
+    expect(purifyUrl(value, { unwrappers: [unwrapAddToAny] })).toBe(value)
   })
 
   it('should return undefined for the fragment on a service link', () => {

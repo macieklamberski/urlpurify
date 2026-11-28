@@ -1,9 +1,8 @@
-import { decodePercent } from 'trousse'
+import { decodePathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
-import { createQueryUnwrapper, createUnwrapper, decodeEncodedScheme } from '../utils.js'
+import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
 const legacyTargetRegex = /^\/l\/[\w-]+[/;]\/*([^/].*)$/i
-const legacyEncodedSchemeRegex = /^https?%(?:25)?3A/i
 const schemeRegex = /^https?:/i
 
 const unwrapLinkPhp = createQueryUnwrapper({
@@ -48,9 +47,7 @@ const unwrapLegacy = createUnwrapper({
     }
 
     // A target with its scheme kept is percent-encoded once, twice or half-encoded as `https%3A//`.
-    const path = legacyEncodedSchemeRegex.test(match[1])
-      ? decodeEncodedScheme(decodePercent(match[1]))
-      : match[1]
+    const path = decodePathTarget(match[1])
 
     const target = `${path}${url.search}`
 

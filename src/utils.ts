@@ -4,10 +4,10 @@ import {
   isAnyOf,
   isHostOf,
   isHostOrSubdomainOf,
-  isHttpUrl,
   isString,
   isSubdomainOf,
   type Pattern,
+  resolveUrl,
 } from 'trousse'
 import type { UrlUnwrapper } from './types.js'
 
@@ -36,10 +36,10 @@ export type QueryUnwrapperConfig = UnwrapperOptions & {
   decode?: TargetDecoder // The carrier holds the target encoded, such as in base64
 }
 
-const encodedSchemeRegex = /^https?%3A/i
+const encodedSchemeRegex = /^https?(?:%3A|:%2F)/i
 
-// A value already decoded once still holds an encoded scheme (`https%3A%2F%2F`) when the
-// carrier encoded its target twice.
+// A value already decoded once still holds an encoded scheme (`https%3A%2F%2F`, or `https:%2F%2F`
+// with its colon left raw) when the carrier encoded its target twice.
 export const decodeEncodedScheme = (value: string): string => {
   if (!encodedSchemeRegex.test(value)) {
     return value
@@ -107,8 +107,8 @@ export const getParamTarget = (url: URL, name: string, index = 0): string | unde
 
 export type TargetDecoder = (value: string) => string | undefined
 
-// The http target a carrier param holds encoded, such as in base64: the first value, or the one
-// at `index`, decoded by `decode`. The value is percent-decoded only, so a raw `+` of the base64
+// The target a carrier param holds encoded, such as in base64: the first value, or the one at
+// `index`, decoded by `decode`. The value is percent-decoded only, so a raw `+` of the base64
 // alphabet stays a `+`, where form decoding reads it as a space that `atob` drops.
 export const readDecodedTarget = (
   url: URL,
@@ -123,17 +123,11 @@ export const readDecodedTarget = (
     return
   }
 
-  const target = decode(decodePercent(raw))
-
-  if (!target || !isHttpUrl(target)) {
-    return
-  }
-
-  return target
+  return decode(decodePercent(raw))
 }
 
-// The http target a carrier param holds encoded, read by `readDecodedTarget`, with the link's
-// fragment per `appendLinkFragment`.
+// The target a carrier param holds encoded, read by `readDecodedTarget`, with the link's fragment
+// per `appendLinkFragment`.
 export const getDecodedParamTarget = (
   url: URL,
   name: string,
@@ -240,9 +234,23 @@ export const createUnwrapper = (config: UnwrapperConfig): UrlUnwrapper => {
   return unwrap
 }
 
-// An unwrapper for a target in the first of `params` that holds one, on a url on the hosts
-// `createUnwrapper` takes, and on `path` when given: an exact path or a list, compared in any case,
-// or a regex. `index` and `decode` read the target as `readDecodedTarget` does.
+const schemeRegex = /^[a-z][a-z\d+.-]*:/i
+const httpSchemeRegex = /^https?:/i
+
+// A target in a scheme `cleanUrl` cannot read as http, such as an app's own `myapp://open`. A
+// host with a port, `example.com:8080/`, reads as http.
+const hasOtherScheme = (target: string): boolean => {
+  if (!schemeRegex.test(target) || httpSchemeRegex.test(target)) {
+    return false
+  }
+
+  return !resolveUrl(target)
+}
+
+// An unwrapper for a target in the first of `params` that holds one in http or with no scheme, on
+// a url on the hosts `createUnwrapper` takes, and on `path` when given: an exact path or a list,
+// compared in any case, or a regex. `index` and `decode` read the target as `readDecodedTarget`
+// does.
 export const createQueryUnwrapper = (config: QueryUnwrapperConfig): UrlUnwrapper => {
   const { path, params, index, decode, ...options } = config
 
@@ -270,7 +278,7 @@ export const createQueryUnwrapper = (config: QueryUnwrapperConfig): UrlUnwrapper
           ? readDecodedTarget(url, param, decode, index)
           : readParamTarget(url, param, index)
 
-        if (target) {
+        if (target && !hasOtherScheme(target)) {
           return target
         }
       }

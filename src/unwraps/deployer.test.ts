@@ -1,7 +1,16 @@
 import { describe, expect, it } from 'bun:test'
+import { purifyUrl } from '../clean.js'
 import { unwrapDeployer } from './deployer.js'
 
 describe('unwrapDeployer', () => {
+  it('should give https to a decoded target without a scheme', () => {
+    const value =
+      'https://myjw.pr.judicialwatch.org/link.php?&L=1&M=30382579&N=61024&AGENCY=jw&drurl=d3d3LmV4YW1wbGUuY29tL3Bvc3Q='
+    const expected = 'https://www.example.com/post'
+
+    expect(purifyUrl(value, { unwrappers: [unwrapDeployer] })).toBe(expected)
+  })
+
   it('should extract target from drurl param', () => {
     const url = new URL(
       'https://myjw.pr.judicialwatch.org/link.php?AGENCY=jw&M=22362233&N=60546&L=28220&F=H&drurl=aHR0cHM6Ly93d3cuZXhhbXBsZS5vcmcvZG9jdW1lbnRzL2p3LXYtaGhzLz91dG1fc291cmNlPWRlcGxveWVy',
@@ -36,12 +45,11 @@ describe('unwrapDeployer', () => {
     expect(unwrapDeployer(url)).toBe('https://www.example.org/#:~:text=The')
   })
 
-  it('should return undefined for a relative drurl', () => {
-    const url = new URL(
-      'https://myjw.pr.judicialwatch.org/link.php?&L=1&M=30382579&N=61024&AGENCY=jw&drurl=ZGlzcGxheS5waHA/TT0zMDM4MjU3OQ==',
-    )
+  it('should keep the wrapper for a relative drurl', () => {
+    const value =
+      'https://myjw.pr.judicialwatch.org/link.php?&L=1&M=30382579&N=61024&AGENCY=jw&drurl=ZGlzcGxheS5waHA/TT0zMDM4MjU3OQ=='
 
-    expect(unwrapDeployer(url)).toBeUndefined()
+    expect(purifyUrl(value, { unwrappers: [unwrapDeployer] })).toBe(value)
   })
 
   it('should return undefined when drurl param is missing', () => {

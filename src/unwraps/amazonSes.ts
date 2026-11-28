@@ -1,4 +1,5 @@
-import { decodePercent, isHostOrSubdomainOf, isHttpUrl } from 'trousse'
+import { isHostOrSubdomainOf, isHttpUrl } from 'trousse'
+import { decodePathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 import { appendLinkFragment } from '../utils.js'
 
@@ -16,7 +17,7 @@ export const unwrapAmazonSes: UrlUnwrapper = (url) => {
     return
   }
 
-  const target = decodePercent(match[1])
+  const target = decodePathTarget(match[1])
 
   if (isHttpUrl(target)) {
     return appendLinkFragment(target, url)

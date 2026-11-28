@@ -18,6 +18,15 @@ describe('unwrapGodcaster', () => {
     expect(unwrapGodcaster(url)).toBe('http://example.com/pd/p/650742/sp/65074200/serveFlavor')
   })
 
+  it('should keep the query of a plain target', () => {
+    const value = new URL(
+      'https://go.godcaster.fm/act/e/123/456/789/https://example.com/episode.mp3?v=2',
+    )
+    const expected = 'https://example.com/episode.mp3?v=2'
+
+    expect(unwrapGodcaster(value)).toBe(expected)
+  })
+
   it('should keep the encoded target query', () => {
     const url = new URL(
       'https://go.godcaster.fm/act/e/147/414103/59479668091/https%253A%252F%252Fexample.com%252Fsecure%252F373.mp3%253Fdest-id%253D2148587',

@@ -1,4 +1,4 @@
-import { isAnyOf, isBrandDomainOf, isHostOf, isHttpUrl, startsWithAnyOf } from 'trousse'
+import { isAnyOf, isBrandDomainOf, isHostOf, startsWithAnyOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { getParamTarget } from '../utils.js'
 
@@ -34,11 +34,7 @@ export const unwrapAmazonAffiliate: UrlUnwrapper = (url) => {
       target = getParamTarget(url, 'url')
     }
 
-    if (target && isHttpUrl(target)) {
-      return target
-    }
-
-    return
+    return target
   }
 
   if (!isHostOf(url, amazonHostRegex)) {

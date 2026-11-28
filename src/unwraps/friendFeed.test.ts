@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'bun:test'
+import { purifyUrl } from '../clean.js'
 import { unwrapFriendFeed } from './friendFeed.js'
 
 describe('unwrapFriendFeed', () => {
@@ -106,10 +107,11 @@ describe('unwrapFriendFeed', () => {
     expect(unwrapFriendFeed(value)).toBeUndefined()
   })
 
-  it('should return undefined for a non-http value in the root form', () => {
-    const value = new URL('http://friendfeed.com/?url=example.com/post')
+  it('should give https to a root form target without a scheme', () => {
+    const value = 'http://friendfeed.com/?url=example.com/post'
+    const expected = 'https://example.com/post'
 
-    expect(unwrapFriendFeed(value)).toBeUndefined()
+    expect(purifyUrl(value, { unwrappers: [unwrapFriendFeed] })).toBe(expected)
   })
 
   it('should return undefined for a user page carrying the url param', () => {

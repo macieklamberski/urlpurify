@@ -1,7 +1,16 @@
 import { describe, expect, it } from 'bun:test'
+import { purifyUrl } from '../clean.js'
 import { unwrapLinksynergy } from './linksynergy.js'
 
 describe('unwrapLinksynergy', () => {
+  it('should repair a target the CMS spaced after its scheme', () => {
+    const value =
+      'https://click.linksynergy.com/deeplink?id=abc&mid=123&murl=http%3A%2F%2F+https%3A%2F%2Fwww.example.com%2Fzh-TW%2Factivity%2F20707'
+    const expected = 'https://www.example.com/zh-TW/activity/20707'
+
+    expect(purifyUrl(value, { unwrappers: [unwrapLinksynergy] })).toBe(expected)
+  })
+
   describe('deeplink with murl', () => {
     it('should extract target from murl param', () => {
       const url = new URL(
@@ -135,20 +144,17 @@ describe('unwrapLinksynergy', () => {
     })
   })
 
-  it('should return undefined for a non-http target', () => {
-    const url = new URL(
-      'http://click.linksynergy.com/fs-bin/click?id=abc&RD_PARM1=javascript%253Aalert(1)',
-    )
+  it('should keep the wrapper for a non-http target', () => {
+    const value =
+      'http://click.linksynergy.com/fs-bin/click?id=abc&RD_PARM1=javascript%253Aalert(1)'
 
-    expect(unwrapLinksynergy(url)).toBeUndefined()
+    expect(purifyUrl(value, { unwrappers: [unwrapLinksynergy] })).toBe(value)
   })
 
-  it('should return undefined for a malformed percent-encoded target', () => {
-    const url = new URL(
-      'http://click.linksynergy.com/fs-bin/click?id=abc&RD_PARM1=http%25E0%25A4%25A',
-    )
+  it('should keep the wrapper for a malformed percent-encoded target', () => {
+    const value = 'http://click.linksynergy.com/fs-bin/click?id=abc&RD_PARM1=http%25E0%25A4%25A'
 
-    expect(unwrapLinksynergy(url)).toBeUndefined()
+    expect(purifyUrl(value, { unwrappers: [unwrapLinksynergy] })).toBe(value)
   })
 
   it('should return undefined for murl on an fs-bin path', () => {

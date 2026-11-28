@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'bun:test'
-import { createPathUnwrapper } from './pathTarget.js'
+import { createPathUnwrapper, decodePathTarget } from './pathTarget.js'
 
 const prefixRegex = /^\/r\/\d+\//
 const prefixHostRegex = /^prefix\.example\.com$/
@@ -20,6 +20,24 @@ describe('createPathUnwrapper', () => {
   it('should keep the scheme of a target that has one', () => {
     const value = new URL('https://prefix.example.com/r/42/http://www.example.org/episode.mp3')
     const expected = 'http://www.example.org/episode.mp3'
+
+    expect(unwrap(value)).toBe(expected)
+  })
+
+  it('should decode a target whose scheme is percent-encoded', () => {
+    const value = new URL(
+      'https://prefix.example.com/r/42/https%3A%2F%2Fwww.example.org%2Fepisode.mp3',
+    )
+    const expected = 'https://www.example.org/episode.mp3'
+
+    expect(unwrap(value)).toBe(expected)
+  })
+
+  it('should drop the query of the link after an encoded target', () => {
+    const value = new URL(
+      'https://prefix.example.com/r/42/https%3A%2F%2Fwww.example.org%2Fepisode.mp3%3Ft%3D60?ref=feed',
+    )
+    const expected = 'https://www.example.org/episode.mp3?t=60'
 
     expect(unwrap(value)).toBe(expected)
   })
@@ -111,5 +129,56 @@ describe('createPathUnwrapper', () => {
     const expected = 'https://www.example.org/episode.mp3'
 
     expect(unwrapMatched(value)).toBe(expected)
+  })
+})
+
+describe('decodePathTarget', () => {
+  it('should decode a target whose scheme is percent-encoded', () => {
+    const value = 'https%3A%2F%2Fexample.com%2Fa%2520b.mp3'
+    const expected = 'https://example.com/a%20b.mp3'
+
+    expect(decodePathTarget(value)).toBe(expected)
+  })
+
+  it('should decode a target whose scheme is percent-encoded twice', () => {
+    const value = 'https%253A%252F%252Fexample.com%252Fa.mp3'
+    const expected = 'https://example.com/a.mp3'
+
+    expect(decodePathTarget(value)).toBe(expected)
+  })
+
+  it('should decode a target whose slashes are percent-encoded after a raw colon', () => {
+    const value = 'https:%2F%2Fexample.com%2Fnews'
+    const expected = 'https://example.com/news'
+
+    expect(decodePathTarget(value)).toBe(expected)
+  })
+
+  it('should decode a target whose slashes are percent-encoded twice after a raw colon', () => {
+    const value = 'https:%252F%252Fexample.com%252Fnews'
+    const expected = 'https://example.com/news'
+
+    expect(decodePathTarget(value)).toBe(expected)
+  })
+
+  it('should decode a target whose colon alone is percent-encoded', () => {
+    const value = 'http%3A//example.com/a%20b'
+    const expected = 'http://example.com/a b'
+
+    expect(decodePathTarget(value)).toBe(expected)
+  })
+
+  it('should keep a raw target with a scheme as written', () => {
+    const value = 'https://example.com/a%20b.mp3'
+    const expected = 'https://example.com/a%20b.mp3'
+
+    expect(decodePathTarget(value)).toBe(expected)
+  })
+
+  it('should keep a raw target without a scheme as written', () => {
+    const value = 'example.com/a%2Fb.mp3'
+    const expected = 'example.com/a%2Fb.mp3'
+
+    expect(decodePathTarget(value)).toBe(expected)
   })
 })

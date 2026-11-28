@@ -28,6 +28,15 @@ describe('unwrapAnchor', () => {
     expect(unwrapAnchor(url)).toBe('https://example.com/staging/2021-6-27/fb129d61.mp3')
   })
 
+  it('should keep the query of a plain target', () => {
+    const value = new URL(
+      'https://anchor.fm/s/4f9b1d84/podcast/play/37904881/https://example.com/staging/2021-6-27/fb129d61.mp3?updated=1',
+    )
+    const expected = 'https://example.com/staging/2021-6-27/fb129d61.mp3?updated=1'
+
+    expect(unwrapAnchor(value)).toBe(expected)
+  })
+
   it('should extract a target after the sponsor segment', () => {
     const url = new URL(
       'https://anchor.fm/s/45b703f0/podcast/play/24777206/sponsor/a4gc5gq,a4gc3vs/https%3A%2F%2Fexample.com%2Fstaging%2F2021-06-07%2F1cf2c2a5.m4a',
@@ -44,7 +53,7 @@ describe('unwrapAnchor', () => {
     expect(unwrapAnchor(url)).toBe('https://example.com/episode.mp3?updated=1')
   })
 
-  it('should drop the query that follows the prefix', () => {
+  it('should drop the query that follows an encoded target', () => {
     const url = new URL(
       'https://anchor.fm/s/102d2c870/podcast/play/100291057/https%3A%2F%2Fexample.com%2Fepisode.mp3?source=audiofictionreleases',
     )

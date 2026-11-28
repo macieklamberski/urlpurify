@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'bun:test'
+import { purifyUrl } from '../clean.js'
 import { unwrapEasyMarketing } from './easyMarketing.js'
 
 describe('unwrapEasyMarketing', () => {
@@ -44,12 +45,11 @@ describe('unwrapEasyMarketing', () => {
     )
   })
 
-  it('should return undefined for a non-http base64 target', () => {
-    const url = new URL(
-      'https://pvn.mediamarkt.de/trck/eclick/bc2c033a08ca185f1d7cc85fb02db46b?url64fb=amF2YXNjcmlwdDphbGVydCgxKQ==',
-    )
+  it('should keep the wrapper for a non-http base64 target', () => {
+    const value =
+      'https://pvn.mediamarkt.de/trck/eclick/bc2c033a08ca185f1d7cc85fb02db46b?url64fb=amF2YXNjcmlwdDphbGVydCgxKQ=='
 
-    expect(unwrapEasyMarketing(url)).toBeUndefined()
+    expect(purifyUrl(value, { unwrappers: [unwrapEasyMarketing] })).toBe(value)
   })
 
   it('should return undefined when both carriers are missing', () => {

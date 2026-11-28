@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'bun:test'
+import { purifyUrl } from '../clean.js'
 import { unwrapperHosts } from '../utils.js'
 import { unwrapDerefMail } from './derefMail.js'
 
@@ -9,6 +10,13 @@ const unclaimedLightmailerPaths: Array<string> = [
 ]
 
 describe('unwrapDerefMail', () => {
+  it('should give https to a target without a scheme', () => {
+    const value = 'https://deref-gmx.net/mail/client/dereferrer/?redirectUrl=www.example.com%2Fpost'
+    const expected = 'https://www.example.com/post'
+
+    expect(purifyUrl(value, { unwrappers: [unwrapDerefMail] })).toBe(expected)
+  })
+
   it('should extract target from redirectUrl param', () => {
     const url = new URL(
       'https://deref-gmx.net/mail/client/dereferrer/?redirectUrl=http%3A%2F%2Fwww.example.com',
@@ -195,20 +203,17 @@ describe('unwrapDerefMail', () => {
     expect(unwrapDerefMail(url)).toBeUndefined()
   })
 
-  it('should return undefined for a non-http target', () => {
-    const url = new URL(
-      'https://deref-gmx.net/mail/client/dereferrer/?redirectUrl=javascript%3Aalert(1)',
-    )
+  it('should keep the wrapper for a non-http target', () => {
+    const value = 'https://deref-gmx.net/mail/client/dereferrer/?redirectUrl=javascript%3Aalert(1)'
 
-    expect(unwrapDerefMail(url)).toBeUndefined()
+    expect(purifyUrl(value, { unwrappers: [unwrapDerefMail] })).toBe(value)
   })
 
-  it('should return undefined for a malformed twice-encoded target', () => {
-    const url = new URL(
-      'https://deref-gmx.net/mail/client/dereferrer/?redirectUrl=https%253A%25E0%25A4%25A',
-    )
+  it('should keep the wrapper for a malformed twice-encoded target', () => {
+    const value =
+      'https://deref-gmx.net/mail/client/dereferrer/?redirectUrl=https%253A%25E0%25A4%25A'
 
-    expect(unwrapDerefMail(url)).toBeUndefined()
+    expect(purifyUrl(value, { unwrappers: [unwrapDerefMail] })).toBe(value)
   })
 
   it('should return undefined for other paths on a dereferrer domain', () => {

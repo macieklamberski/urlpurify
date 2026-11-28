@@ -1,4 +1,4 @@
-import { isAnyOf, isHostOf, isHttpUrl } from 'trousse'
+import { isAnyOf, isHostOf } from 'trousse'
 import { createQueryUnwrapper, createUnwrapper, getParamTarget } from '../utils.js'
 
 const hosts = [
@@ -75,14 +75,6 @@ export const unwrapDerefMail = createUnwrapper({
       )
     }
 
-    const target = getParamTarget(url, 'redirectUrl')
-
-    if (!target) {
-      return
-    }
-
-    if (isHttpUrl(target)) {
-      return target
-    }
+    return getParamTarget(url, 'redirectUrl')
   },
 })

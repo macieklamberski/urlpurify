@@ -2,6 +2,13 @@ import { describe, expect, it } from 'bun:test'
 import { unwrapOp3 } from './op3.js'
 
 describe('unwrapOp3', () => {
+  it('should decode a percent-encoded target', () => {
+    const value = new URL('https://op3.dev/e/https%3A%2F%2Fexample.com%2Fa.mp3')
+    const expected = 'https://example.com/a.mp3'
+
+    expect(unwrapOp3(value)).toBe(expected)
+  })
+
   it('should extract a target without a scheme', () => {
     const url = new URL(
       'https://op3.dev/e/example.com/download/anime-nostalgia/The%20Anime%20Nostalgia%20ep%20150.mp3',

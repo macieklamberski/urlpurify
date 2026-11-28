@@ -1,4 +1,4 @@
-import { isAnyOf, isHttpUrl, parseUrl } from 'trousse'
+import { isAnyOf, parseUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper, readParamTarget } from '../utils.js'
 
@@ -22,15 +22,10 @@ export const unwrapFriendFeed: UrlUnwrapper = createUnwrapper({
       return fragment && readParamTarget(fragment, 'url')
     }
 
-    // The root path serves every other page too, so only an http target counts.
     if (url.pathname !== '/') {
       return
     }
 
-    const target = readParamTarget(url, 'url')
-
-    if (target && isHttpUrl(target)) {
-      return target
-    }
+    return readParamTarget(url, 'url')
   },
 })

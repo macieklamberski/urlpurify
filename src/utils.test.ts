@@ -40,6 +40,64 @@ describe('createQueryUnwrapper', () => {
     expect(extract(value)).toBe(expected)
   })
 
+  describe('scheme of the value', () => {
+    const extract = createQueryUnwrapper({
+      hosts: 'redirect.example.com',
+      params: ['url', 'fallback'],
+    })
+
+    it('should skip a value in an app scheme for the next param', () => {
+      const value = new URL(
+        'https://redirect.example.com/?url=myapp://open&fallback=https://example.com/app',
+      )
+      const expected = 'https://example.com/app'
+
+      expect(extract(value)).toBe(expected)
+    })
+
+    it('should skip a mailto value for the next param', () => {
+      const value = new URL(
+        'https://redirect.example.com/?url=mailto:jobs@example.com&fallback=https://example.com/app',
+      )
+      const expected = 'https://example.com/app'
+
+      expect(extract(value)).toBe(expected)
+    })
+
+    it('should return a value without a scheme over the next param', () => {
+      const value = new URL(
+        'https://redirect.example.com/?url=www.example.com/page&fallback=https://example.com/app',
+      )
+      const expected = 'www.example.com/page'
+
+      expect(extract(value)).toBe(expected)
+    })
+
+    it('should return a host with a port over the next param', () => {
+      const value = new URL(
+        'https://redirect.example.com/?url=www.example.com:8080/page&fallback=https://example.com/app',
+      )
+      const expected = 'www.example.com:8080/page'
+
+      expect(extract(value)).toBe(expected)
+    })
+
+    it('should return a feed scheme value over the next param', () => {
+      const value = new URL(
+        'https://redirect.example.com/?url=feed:https://example.com/feed&fallback=https://example.com/app',
+      )
+      const expected = 'feed:https://example.com/feed'
+
+      expect(extract(value)).toBe(expected)
+    })
+
+    it('should return undefined when every value is in an app scheme', () => {
+      const value = new URL('https://redirect.example.com/?url=myapp://open&fallback=myapp://home')
+
+      expect(extract(value)).toBeUndefined()
+    })
+  })
+
   it('should match hosts given as an array', () => {
     const extract = createQueryUnwrapper({
       hosts: ['a.example.com', 'b.example.com'],
@@ -391,6 +449,15 @@ describe('createQueryUnwrapper', () => {
     const extract = createQueryUnwrapper({
       hosts: 'redirect.example.com',
       params: ['url'],
+    })
+
+    it('should decode a twice-encoded target whose colon was left raw', () => {
+      const value = new URL(
+        'https://redirect.example.com/?url=https:%252F%252Fexample.com%252Fnews',
+      )
+      const expected = 'https://example.com/news'
+
+      expect(extract(value)).toBe(expected)
     })
 
     it('should decode a twice-encoded http target', () => {

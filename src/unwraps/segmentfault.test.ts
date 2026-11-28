@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'bun:test'
+import { purifyUrl } from '../clean.js'
 import { unwrapSegmentfault } from './segmentfault.js'
 
 describe('unwrapSegmentfault', () => {
@@ -10,11 +11,11 @@ describe('unwrapSegmentfault', () => {
     expect(unwrapSegmentfault(url)).toBe(target)
   })
 
-  it('should return undefined when the decoded value is not http(s)', () => {
+  it('should keep the wrapper when the decoded value is not a url', () => {
     const encoded = Buffer.from('not-a-url').toString('base64')
-    const url = new URL(`https://link.segmentfault.com/?enc=${encodeURIComponent(encoded)}`)
+    const value = `https://link.segmentfault.com/?enc=${encodeURIComponent(encoded)}`
 
-    expect(unwrapSegmentfault(url)).toBeUndefined()
+    expect(purifyUrl(value, { unwrappers: [unwrapSegmentfault] })).toBe(value)
   })
 
   it('should return undefined when enc param is missing', () => {

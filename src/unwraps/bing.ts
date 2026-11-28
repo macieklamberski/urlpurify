@@ -1,4 +1,4 @@
-import { decodeBase64Url, isAnyOf, isHostOf, isHttpUrl } from 'trousse'
+import { decodeBase64Url, isAnyOf, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { getDecodedParamTarget, getParamTarget } from '../utils.js'
 
@@ -32,13 +32,7 @@ export const unwrapBing: UrlUnwrapper = (url) => {
   }
 
   if (isAnyOf(url.pathname, '/news/apiclick.aspx')) {
-    const target = getParamTarget(url, 'url')
-
-    if (!target || !isHttpUrl(target)) {
-      return
-    }
-
-    return target
+    return getParamTarget(url, 'url')
   }
 
   if (!isAnyOf(url.pathname, '/ck/a')) {
