@@ -29,6 +29,7 @@ const nonUrlTargets = [
   'myapp://open',
   'com.example.app://open/post',
   '2024/https://example.com/page',
+  '05.10.2025:',
 ]
 
 describe('createQueryUnwrapper', () => {

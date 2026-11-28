@@ -4,6 +4,7 @@ import {
   isAnyOf,
   isHostOf,
   isHostOrSubdomainOf,
+  isIpAddress,
   isString,
   isSubdomainOf,
   type Pattern,
@@ -118,6 +119,11 @@ export const repairTarget = (target: string): string | undefined => {
 
   // A target `mailto:jobs@example.com` reads as userinfo behind https.
   if (!retried || retried.username || retried.password) {
+    return
+  }
+
+  // A target `05.10.2025:` reads as the IPv4 host 5.10.7.233 behind https.
+  if (isIpAddress(retried.hostname)) {
     return
   }
 
