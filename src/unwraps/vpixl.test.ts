@@ -2,14 +2,14 @@ import { describe, expect, it } from 'bun:test'
 import { unwrapVpixl } from './vpixl.js'
 
 describe('unwrapVpixl', () => {
-  it('should extract a target and give it https', () => {
+  it('should extract a target without a scheme', () => {
     const value = new URL('https://pfx.vpixl.com/2FVSF4/example.com/secure/show/Innersoul.mp3')
     const expected = 'example.com/secure/show/Innersoul.mp3'
 
     expect(unwrapVpixl(value)).toBe(expected)
   })
 
-  it('should give https to a target behind an http prefix', () => {
+  it('should keep a target without a scheme behind an http prefix', () => {
     const value = new URL('http://pfx.vpixl.com/7t0qx/example.com/episode.mp3')
     const expected = 'example.com/episode.mp3'
 

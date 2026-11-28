@@ -13,7 +13,7 @@ describe('unwrapLetscast', () => {
     expect(unwrapLetscast(value)).toBe(expected)
   })
 
-  it('should add https to a target without a scheme behind an http prefix', () => {
+  it('should keep a target without a scheme behind an http prefix', () => {
     const value = new URL(
       'http://letscast.fm/track/lc.podcast-hosting.org/lcdn.letscast.fm/media/podcast/72ec4742/episode/49d5ee4f.mp3',
     )

@@ -23,7 +23,7 @@ describe('unwrapZencastr', () => {
     expect(unwrapZencastr(value)).toBe(expected)
   })
 
-  it('should give the target https when the prefix is on http', () => {
+  it('should keep a target without a scheme when the prefix is on http', () => {
     const value = new URL(
       'http://r.zen.ai/r/example.com/wp-content/uploads/2019/11/PolicyViz_EpisodeNo163.mp3',
     )

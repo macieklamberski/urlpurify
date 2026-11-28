@@ -3,7 +3,7 @@ import { purifyUrl } from '../clean.js'
 import { unwrapSubscribeOnAndroid } from './subscribeOnAndroid.js'
 
 describe('unwrapSubscribeOnAndroid', () => {
-  it('should extract a feed that follows the host as https', () => {
+  it('should extract a feed that follows the host', () => {
     const value = new URL(
       'http://subscribeonandroid.com/example.com/users/soundcloud:users:170290482/sounds.rss',
     )

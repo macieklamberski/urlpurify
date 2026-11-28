@@ -98,7 +98,7 @@ describe('unwrapFirstory', () => {
     expect(unwrapFirstory(value)).toBeUndefined()
   })
 
-  it('should add https to a scheme-less target from the short prefix', () => {
+  it('should extract a target without a scheme from the short prefix', () => {
     const value = new URL(
       'https://track.fstry.me/p/psnx2924/example.com/rssf/c4f7213b-84ea-41d8-b9b4-e9a9d6e47730/feedurl/27200648-87dc-4de4-bf8a-43f6e9304253/rssFileVip.mp3?timestamp=1763827691662',
     )
@@ -108,7 +108,7 @@ describe('unwrapFirstory', () => {
     expect(unwrapFirstory(value)).toBe(expected)
   })
 
-  it('should add https to a scheme-less target from the short prefix on http', () => {
+  it('should keep a target without a scheme from the short prefix on http', () => {
     const value = new URL('http://track.fstry.me/p/psnx2924/example.com/rssFileVip.mp3')
     const expected = 'example.com/rssFileVip.mp3'
 
