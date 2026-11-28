@@ -167,7 +167,7 @@ Three options read a carrier that holds more than a plain value:
 
 - **`index`** picks which value of a repeated param to read, such as `-1` for the last. A tracker nested unencoded in the carrier repeats the param, and the last value is the target.
 - **`plus`** sets how a `+` in the value reads: `'space'`, as form encoding writes a space, or `'keep'`, as a literal plus. Without it, a `+` reads as a space unless the value is an unencoded url.
-- **`decode`** decodes the value, such as trousse's `decodeBase64` or `decodeBase64Url` for a base64 carrier. A decoded value in another scheme is skipped, and the next param is tried.
+- **`decode`** decodes the value, such as trousse's `decodeBase64` or `decodeBase64Url` for a base64 carrier. A decoded value in another scheme is skipped, and the next param is tried. It reads a `+` as a plus, so it takes no `plus`, and passing both is a type error.
 
 A value still encoded after one decode, starting with an encoded scheme such as `https%3A` or `https:%2F`, is decoded once more. A malformed escape, or one in a legacy charset such as `%E9` for é in Latin-1, stays as written.
 
