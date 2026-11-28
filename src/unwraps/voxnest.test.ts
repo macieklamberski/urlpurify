@@ -20,6 +20,15 @@ describe('unwrapVoxnest', () => {
     expect(unwrapVoxnest(value)).toBe(expected)
   })
 
+  it('should drop the link query, as the redirect does', () => {
+    const value = new URL(
+      'https://audio.voxnest.com/stream/bfa108d7d1734f23abc1ebd61d84fc38/example.com/listen/133bc670-8f90-4ce0-b57d-87a140c02712.mp3?source=rss&ext=asset.mp3',
+    )
+    const expected = 'http://example.com/listen/133bc670-8f90-4ce0-b57d-87a140c02712.mp3'
+
+    expect(unwrapVoxnest(value)).toBe(expected)
+  })
+
   it('should return undefined when the prefix has no target', () => {
     const value = new URL('https://audio.voxnest.com/stream/50df2568f6b64d2ca2517a08a285dd85/')
 
