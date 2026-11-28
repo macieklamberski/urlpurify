@@ -6,7 +6,6 @@ describe('unwrapAusha', () => {
     const value = new URL(
       'https://tr.ausha.co/BDMmula5dZWo/example.com/v1/stitch/ausha.mp3?tags=5e048821ca608&podcastUrl=https%3A%2F%2Fexample.org%2FBDMmula5dZWo.mp3',
     )
-
     const expected =
       'example.com/v1/stitch/ausha.mp3?tags=5e048821ca608&podcastUrl=https%3A%2F%2Fexample.org%2FBDMmula5dZWo.mp3'
 

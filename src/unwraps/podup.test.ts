@@ -6,7 +6,6 @@ describe('unwrapPodup', () => {
     const value = new URL(
       'https://traffic.podup.com/media/storageapi.podup.com/production/821/1/blog/podcast/4df4875f-6205-489a-bc44-2e6cd26128d0.mp3?key=eyJkb21haW4iOiJleGFtcGxlLmNvbSIsInB0IjoicG9kY2FzdCIsInBzIjoiZXBpc29kZS0xIiwia3kiOjMxLCJ3aSI6MX0=',
     )
-
     const expected =
       'storageapi.podup.com/production/821/1/blog/podcast/4df4875f-6205-489a-bc44-2e6cd26128d0.mp3'
 

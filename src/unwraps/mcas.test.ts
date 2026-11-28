@@ -6,7 +6,6 @@ describe('unwrapMcas', () => {
     const value = new URL(
       'https://mcas-proxyweb.mcas.ms/certificate-checker?login=false&originalUrl=https%3A%2F%2Feur05.safelinks.protection.outlook.com.mcas.ms%2F%3Furl%3Dhttps%253A%252F%252Fwww.example.com%252Fro%252Fmain%252F%26data%3D05%257C02%257C%257C0%26reserved%3D0%26McasTsid%3D20893&McasCSRF=7b367021317787a8b8de5ac0de490c166c832d0a80609f0099dcc8f693a8e80e',
     )
-
     const expected =
       'https://eur05.safelinks.protection.outlook.com/?url=https%3A%2F%2Fwww.example.com%2Fro%2Fmain%2F&data=05%7C02%7C%7C0&reserved=0&McasTsid=20893'
 

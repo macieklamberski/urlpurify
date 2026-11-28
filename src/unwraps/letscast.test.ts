@@ -6,7 +6,6 @@ describe('unwrapLetscast', () => {
     const value = new URL(
       'https://letscast.fm/track/https://lc.podcast-hosting.org/lcdn.letscast.fm/media/podcast/72ec4742/episode/49d5ee4f.mp3?t=1664291494&awCollectionId=lc-80148&awEpisodeId=49d5ee4f',
     )
-
     const expected =
       'https://lc.podcast-hosting.org/lcdn.letscast.fm/media/podcast/72ec4742/episode/49d5ee4f.mp3?t=1664291494&awCollectionId=lc-80148&awEpisodeId=49d5ee4f'
 

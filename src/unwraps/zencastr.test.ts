@@ -6,7 +6,6 @@ describe('unwrapZencastr', () => {
     const value = new URL(
       'https://r.zencastr.com/r/example.com/d/1437767933/cf372a7e-810f-4eab-8a55-34456ccc0d58/819be75e-f549-4f38-88d3-a2eb91ccb9da.mp3',
     )
-
     const expected =
       'example.com/d/1437767933/cf372a7e-810f-4eab-8a55-34456ccc0d58/819be75e-f549-4f38-88d3-a2eb91ccb9da.mp3'
 

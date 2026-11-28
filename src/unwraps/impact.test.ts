@@ -6,7 +6,6 @@ describe('unwrapImpact', () => {
     const value = new URL(
       'https://goto.example.com/c/34574/565706/9383?veh=aff&sourceid=imp_000011112222333344&u=https%3A%2F%2Fwww.example.com%2Fip%2Fsuperman-4k%2F17263205065%3FclassType%3DREGULAR%26from%3D%2Fsearch',
     )
-
     const expected =
       'https://www.example.com/ip/superman-4k/17263205065?classType=REGULAR&from=/search'
 

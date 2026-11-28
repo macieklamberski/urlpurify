@@ -6,7 +6,6 @@ describe('unwrapXimalaya', () => {
     const value = new URL(
       'https://jt.ximalaya.com//GKwRIJEHdJdaAK_G9QHh-p5O.m4a?channel=rss&album_id=8685104&track_id=597681973&uid=5669686&jt=https://aod.cos.tx.xmcdn.com/storages/738b-audiofreehighqps/DB/4C/GKwRIJEHdJdaAK_G9QHh-p5O.m4a',
     )
-
     const expected =
       'https://aod.cos.tx.xmcdn.com/storages/738b-audiofreehighqps/DB/4C/GKwRIJEHdJdaAK_G9QHh-p5O.m4a'
 

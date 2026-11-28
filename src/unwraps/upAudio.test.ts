@@ -6,7 +6,6 @@ describe('unwrapUpAudio', () => {
     const value = new URL(
       'https://prefix.up.audio/s/example.com/secure/theradiovagabond/Eng_369_-_ETF_Ric_Gazarian.mp3?dest-id=431421',
     )
-
     const expected =
       'example.com/secure/theradiovagabond/Eng_369_-_ETF_Ric_Gazarian.mp3?dest-id=431421'
 

@@ -6,7 +6,6 @@ describe('unwrapFeedsportal', () => {
     const value = new URL(
       'http://rss.feedsportal.com/c/33858/f/609641/s/4913512d/sc/21/l/0L0Sadweek0N0Cadfreak0C50Ebrilliantly0Efaked0Eviral0Eads0Epeople0Estill0Ekeep0Ethinking0Eare0Ereal0E167325/story01.htm',
     )
-
     const expected =
       'http://www.adweek.com/adfreak/5-brilliantly-faked-viral-ads-people-still-keep-thinking-are-real-167325'
 
