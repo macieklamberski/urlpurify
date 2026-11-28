@@ -56,4 +56,13 @@ describe('unwrapImagekit', () => {
 
     expect(unwrapImagekit(value)).toBeUndefined()
   })
+
+  it('should drop the link fragment', () => {
+    const value = new URL(
+      'https://ik.imagekit.io/demo/tr:w-100/https://cdn.example.com/photo.jpg#top',
+    )
+    const expected = 'https://cdn.example.com/photo.jpg'
+
+    expect(unwrapImagekit(value)).toBe(expected)
+  })
 })

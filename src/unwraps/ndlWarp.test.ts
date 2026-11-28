@@ -47,6 +47,15 @@ describe('unwrapNdlWarp', () => {
     )
   })
 
+  it('should extract a target with its scheme dropped and a port from a snapshot', () => {
+    const value = new URL(
+      'https://warp.ndl.go.jp/web/20201211204344/www.example.jp:8080/pdf/guideline.pdf',
+    )
+    const expected = 'http://www.example.jp:8080/pdf/guideline.pdf'
+
+    expect(unwrapNdlWarp(value)).toBe(expected)
+  })
+
   it('should extract the target from the persistent-id form', () => {
     const url = new URL(
       'https://warp.da.ndl.go.jp/info:ndljp/pid/286890/www.example.jp/kohosys/press/0003982/index.html',

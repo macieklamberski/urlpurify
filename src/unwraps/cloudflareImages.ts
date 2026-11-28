@@ -13,6 +13,7 @@ const plainPathRegex = /^\/cdn-cgi\/plain\/(?<source>https?(?::|%3a).+)$/i
 // Not included in defaultUnwrappers: unwrapping swaps the resized copy for the original image.
 export const unwrapCloudflareImages: UrlUnwrapper = createUnwrapper({
   anyHost: true,
+  ignoreLinkFragment: true,
   unwrap: (url) => {
     const image = url.pathname.match(imagePathRegex)?.groups?.source
 

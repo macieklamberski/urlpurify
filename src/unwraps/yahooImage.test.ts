@@ -78,4 +78,13 @@ describe('unwrapYahooImage', () => {
 
     expect(performance.now() - start).toBeLessThan(50)
   })
+
+  it('should drop the link fragment', () => {
+    const value = new URL(
+      'https://s.yimg.com/ny/api/res/1.2/abc/YXBwaWQ9aGlnaGxhbmRlcjt3PTk2MA--/https://cdn.example.com/photo.jpg#top',
+    )
+    const expected = 'https://cdn.example.com/photo.jpg'
+
+    expect(unwrapYahooImage(value)).toBe(expected)
+  })
 })

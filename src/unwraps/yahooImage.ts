@@ -8,6 +8,7 @@ const sourcePathRegex = /^\/.*?\/api\/res\/.*?(?<source>https?(?::|%3a).+)$/i
 // Not included in defaultUnwrappers: unwrapping swaps the resized copy for the original image.
 export const unwrapYahooImage: UrlUnwrapper = createUnwrapper({
   subdomains: 'yimg.com',
+  ignoreLinkFragment: true,
   unwrap: (url) => {
     const source = matchPathSource(url.pathname, sourcePathRegex)
 

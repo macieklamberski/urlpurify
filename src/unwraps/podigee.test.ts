@@ -61,4 +61,13 @@ describe('unwrapPodigee', () => {
 
     expect(unwrapPodigee(value)).toBeUndefined()
   })
+
+  it('should drop the link fragment', () => {
+    const value = new URL(
+      'https://images.podigee-cdn.net/0x,abc=/https://cdn.example.com/photo.jpg#top',
+    )
+    const expected = 'https://cdn.example.com/photo.jpg'
+
+    expect(unwrapPodigee(value)).toBe(expected)
+  })
 })

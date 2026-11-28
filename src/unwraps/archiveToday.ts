@@ -4,7 +4,8 @@ import { appendLinkFragment, createUnwrapper } from '../utils.js'
 
 const hostRegex = /^(?:www\.)?archive\.(?:is|ph|today|md|fo|vn|li)$/
 const pathRegex = /^\/(?:\d{14}|\d{4}\.\d{2}\.\d{2}-\d{6}|o\/[^/]+|newest)\/(.+)$/i
-const schemeRegex = /^[a-z][a-z\d+.-]*:/i
+// A scheme has no dot, so `www.example.com:80/` reads as a host with a port.
+const schemeRegex = /^[a-z][a-z\d+-]*:/i
 const escapedQueryRegex = /%3F/i
 const selectionHashRegex = /^#selection-\d+\.\d+-\d+\.\d+$/i
 

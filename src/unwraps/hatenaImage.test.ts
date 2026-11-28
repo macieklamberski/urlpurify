@@ -62,4 +62,13 @@ describe('unwrapHatenaImage', () => {
 
     expect(unwrapHatenaImage(value)).toBeUndefined()
   })
+
+  it('should drop the link fragment', () => {
+    const value = new URL(
+      'https://cdn.image.st-hatena.com/image/scale/abc/x/https://cdn.example.com/photo.jpg#top',
+    )
+    const expected = 'https://cdn.example.com/photo.jpg'
+
+    expect(unwrapHatenaImage(value)).toBe(expected)
+  })
 })

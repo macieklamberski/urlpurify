@@ -60,4 +60,13 @@ describe('unwrapDevToImage', () => {
 
     expect(unwrapDevToImage(value)).toBeUndefined()
   })
+
+  it('should drop the link fragment', () => {
+    const value = new URL(
+      'https://media2.dev.to/dynamic/image/width=100/https://cdn.example.com/photo.jpg#top',
+    )
+    const expected = 'https://cdn.example.com/photo.jpg'
+
+    expect(unwrapDevToImage(value)).toBe(expected)
+  })
 })

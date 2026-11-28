@@ -57,4 +57,13 @@ describe('unwrapDuckduckgoImage', () => {
 
     expect(unwrapDuckduckgoImage(value)).toBeUndefined()
   })
+
+  it('should drop the link fragment', () => {
+    const value = new URL(
+      'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.example.com%2Fphoto.jpg&f=1#top',
+    )
+    const expected = 'https://cdn.example.com/photo.jpg'
+
+    expect(unwrapDuckduckgoImage(value)).toBe(expected)
+  })
 })

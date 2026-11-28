@@ -9,6 +9,7 @@ const pathRegex = /^\/(?:i|ii\/[^/]+)\/(?<secure>s\/)?(?<target>.+)$/i
 // Not included in defaultUnwrappers: unwrapping swaps the cached copy for the original image.
 export const unwrapAmpCacheImage: UrlUnwrapper = createUnwrapper({
   domains: 'cdn.ampproject.org',
+  ignoreLinkFragment: true,
   unwrap: (url) => {
     const match = url.pathname.match(pathRegex)
 

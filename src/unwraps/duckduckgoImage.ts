@@ -7,4 +7,5 @@ export const unwrapDuckduckgoImage: UrlUnwrapper = createQueryUnwrapper({
   hosts: ['external-content.duckduckgo.com', 'images.duckduckgo.com', 'proxy.duckduckgo.com'],
   path: '/iu/',
   params: ['u'],
+  ignoreLinkFragment: true,
 })
