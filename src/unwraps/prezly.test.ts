@@ -3,6 +3,14 @@ import { purifyUrl } from '../clean.js'
 import { unwrapPrezly } from './prezly.js'
 
 describe('unwrapPrezly', () => {
+  it('should give https to a bare host target', () => {
+    const value =
+      'https://prezlymail.com/c/264cd01e-3f4c-475e-87a2-4d7f7c7ddc7d/4535aa6c/www.example.com'
+    const expected = 'https://www.example.com/'
+
+    expect(purifyUrl(value, { unwrappers: [unwrapPrezly] })).toBe(expected)
+  })
+
   it('should extract the target from the click tracker', () => {
     const url = new URL(
       'https://prezlymail.com/c/264cd01e-3f4c-475e-87a2-4d7f7c7ddc7d/4535aa6c/https%3A%2F%2Fwww.example.org%2Fen%2Fhuman-trafficking',

@@ -3,6 +3,14 @@ import { purifyUrl } from '../clean.js'
 import { unwrapCse360 } from './cse360.js'
 
 describe('unwrapCse360', () => {
+  it('should give https to a bare host target', () => {
+    const value =
+      'https://click.cse360.com.br/Click/AddCampaignEmailClick/91cb06fe-2319-45d2-6cbd-08da221b4c0d/www.example.com.br/db795461-4748-41b3-a554-cb5aed11d7b0/user@example.com/True'
+    const expected = 'https://www.example.com.br/'
+
+    expect(purifyUrl(value, { unwrappers: [unwrapCse360] })).toBe(expected)
+  })
+
   it('should extract a twice-encoded target', () => {
     const url = new URL(
       'https://click.cse360.com.br/Click/AddCampaignEmailClick/91cb06fe-2319-45d2-6cbd-08da221b4c0d/https%253a%252f%252fwww.example.com%252fin%252fmauricioconti%252f/db795461-4748-41b3-a554-cb5aed11d7b0/reporter@example.com.br/True',

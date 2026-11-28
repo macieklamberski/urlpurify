@@ -3,6 +3,13 @@ import { purifyUrl } from '../clean.js'
 import { unwrapStreak } from './streak.js'
 
 describe('unwrapStreak', () => {
+  it('should give https to a bare host target', () => {
+    const value = 'https://streaklinks.com/BtuZeQExcU8ZwbuxOgI9VdLx/www.example.com'
+    const expected = 'https://www.example.com/'
+
+    expect(purifyUrl(value, { unwrappers: [unwrapStreak] })).toBe(expected)
+  })
+
   it('should extract target on streaklinks.com', () => {
     const url = new URL(
       'https://streaklinks.com/BtuZeQExcU8ZwbuxOgI9VdLx/https%3A%2F%2Fwww.example.com%2F',
