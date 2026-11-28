@@ -29,6 +29,15 @@ describe('unwrapCloudinaryFetch', () => {
     expect(unwrapCloudinaryFetch(value)).toBe(expected)
   })
 
+  it('should extract a source encoded twice', () => {
+    const value = new URL(
+      'https://substackcdn.com/image/fetch/w_1456%2Cc_limit%2Cf_auto/https%253A%252F%252Fcdn.example.com%252Fimages%252Fphoto.jpeg',
+    )
+    const expected = 'https://cdn.example.com/images/photo.jpeg'
+
+    expect(unwrapCloudinaryFetch(value)).toBe(expected)
+  })
+
   it('should keep the query of the source', () => {
     const value = new URL(
       'https://res.cloudinary.com/demo/image/fetch/w_200/https://cdn.example.com/photo.jpg?v=2',

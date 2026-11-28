@@ -1,6 +1,6 @@
 import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createQueryUnwrapper, getParamTarget } from '../utils.js'
+import { appendLinkFragment, createQueryUnwrapper, readParamTarget } from '../utils.js'
 
 // The query opens with the click id as a bare key, such as `?P5139555780512191&redir=`.
 const merchantQueryRegex = /^\?P[0-9A-F]{13,16}&/i
@@ -26,9 +26,11 @@ export const unwrapNetaffiliation: UrlUnwrapper = (url) => {
     return
   }
 
-  const redirect = getParamTarget(url, 'redir')
+  const redirect = readParamTarget(url, 'redir')
 
-  if (redirect && isHttpUrl(redirect)) {
-    return redirect
+  if (!redirect || !isHttpUrl(redirect)) {
+    return
   }
+
+  return appendLinkFragment(redirect, url)
 }

@@ -1,8 +1,7 @@
 import type { UrlUnwrapper } from '../types.js'
-import { createUnwrapper } from '../utils.js'
+import { createUnwrapper, httpSchemeRegex } from '../utils.js'
 
 const pathRegex = /^\/\d+\/(?:banner\/|int\/)?(.+)$/i
-const schemeRegex = /^https?:/i
 // A scheme-less target starts with a dotted host, which tells it from a custom alias.
 const hostRegex = /^[\da-z-]+(?:\.[\da-z-]+)+(?:[/:]|$)/i
 
@@ -19,7 +18,7 @@ export const unwrapAdfly: UrlUnwrapper = createUnwrapper({
       return
     }
 
-    const hasScheme = schemeRegex.test(match[1])
+    const hasScheme = httpSchemeRegex.test(match[1])
 
     if (!hasScheme && !hostRegex.test(match[1])) {
       return
