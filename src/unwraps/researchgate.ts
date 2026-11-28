@@ -36,9 +36,5 @@ export const unwrapResearchgate: UrlUnwrapper = (url) => {
     return `${match[1]}${url.search}${url.hash}`
   }
 
-  const target = decodePathTarget(match[1])
-
-  if (isHttpUrl(target)) {
-    return appendLinkFragment(target, url)
-  }
+  return appendLinkFragment(decodePathTarget(match[1]), url)
 }

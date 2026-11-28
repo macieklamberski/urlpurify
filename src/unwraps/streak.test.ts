@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'bun:test'
+import { purifyUrl } from '../clean.js'
 import { unwrapStreak } from './streak.js'
 
 describe('unwrapStreak', () => {
@@ -131,12 +132,10 @@ describe('unwrapStreak', () => {
     expect(unwrapStreak(url)).toBeUndefined()
   })
 
-  it('should return undefined for a target that is not http', () => {
-    const url = new URL(
-      'https://streaklinks.com/BtuZeQExcU8ZwbuxOgI9VdLx/mailto%3Auser%40example.com',
-    )
+  it('should keep the wrapper for a target that is not http', () => {
+    const value = 'https://streaklinks.com/BtuZeQExcU8ZwbuxOgI9VdLx/mailto%3Auser%40example.com'
 
-    expect(unwrapStreak(url)).toBeUndefined()
+    expect(purifyUrl(value, { unwrappers: [unwrapStreak] })).toBe(value)
   })
 
   it('should keep a malformed escape in the target as written', () => {

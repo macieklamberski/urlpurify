@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'bun:test'
+import { purifyUrl } from '../clean.js'
 import { unwrapCse360 } from './cse360.js'
 
 describe('unwrapCse360', () => {
@@ -34,12 +35,11 @@ describe('unwrapCse360', () => {
     expect(unwrapCse360(url)).toBe('https://www.example.com/100%')
   })
 
-  it('should return undefined for a non-http target', () => {
-    const url = new URL(
-      'https://click.cse360.com.br/Click/AddCampaignEmailClick/91cb06fe-2319-45d2-6cbd-08da221b4c0d/mailto%253areporter%2540example.com/db795461-4748-41b3-a554-cb5aed11d7b0/reporter@example.com.br/True',
-    )
+  it('should keep the wrapper for a non-http target', () => {
+    const value =
+      'https://click.cse360.com.br/Click/AddCampaignEmailClick/91cb06fe-2319-45d2-6cbd-08da221b4c0d/mailto%253areporter%2540example.com/db795461-4748-41b3-a554-cb5aed11d7b0/reporter@example.com.br/True'
 
-    expect(unwrapCse360(url)).toBeUndefined()
+    expect(purifyUrl(value, { unwrappers: [unwrapCse360] })).toBe(value)
   })
 
   it('should return undefined for a link cut before the recipient', () => {

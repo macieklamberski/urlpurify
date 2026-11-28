@@ -1,4 +1,3 @@
-import { isHttpUrl } from 'trousse'
 import { decodePathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
@@ -15,13 +14,13 @@ const readFeed: UrlUnwrapper = (url) => {
     return
   }
 
-  const feed = decodePathTarget(url.pathname.slice(match[0].length))
+  const path = url.pathname.slice(match[0].length)
 
-  if (!isHttpUrl(feed)) {
+  if (!path) {
     return
   }
 
-  return `${feed}${url.search}`
+  return `${decodePathTarget(path)}${url.search}`
 }
 
 // A raw feed's fragment lands in the link's own `hash`.

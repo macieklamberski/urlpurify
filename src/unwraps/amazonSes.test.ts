@@ -1,9 +1,23 @@
 import { describe, expect, it } from 'bun:test'
+import { purifyUrl } from '../clean.js'
 import { unwrapAmazonSes } from './amazonSes.js'
 
 const tail = '/1/0100019819a7eb85-8577ee14-6ff8-44f5-9af0-008f7ce611bd-000000/c2lnbmF0dXJl_x-y=473'
 
 describe('unwrapAmazonSes', () => {
+  it('should give https to an awstrack.me target without a scheme', () => {
+    const value = `https://abcd1234.r.us-east-1.awstrack.me/L0/www.example.com/post${tail}`
+    const expected = 'https://www.example.com/post'
+
+    expect(purifyUrl(value, { unwrappers: [unwrapAmazonSes] })).toBe(expected)
+  })
+
+  it('should keep the wrapper for a target without a scheme on a sender host', () => {
+    const value = `https://links.example.com/CL0/www.example.com/post${tail}`
+
+    expect(purifyUrl(value, { unwrappers: [unwrapAmazonSes] })).toBe(value)
+  })
+
   it('should extract target from the path', () => {
     const url = new URL(
       `https://abcd1234.r.us-east-1.awstrack.me/L0/https:%2F%2Fwww.example.com%2Fnews${tail}`,
@@ -171,12 +185,10 @@ describe('unwrapAmazonSes', () => {
     expect(unwrapAmazonSes(url)).toBeUndefined()
   })
 
-  it('should return undefined for a target that is not http', () => {
-    const url = new URL(
-      `https://abcd1234.r.us-east-1.awstrack.me/L0/mailto:%2F%2Fexample.com${tail}`,
-    )
+  it('should keep the wrapper for a target that is not http', () => {
+    const value = `https://abcd1234.r.us-east-1.awstrack.me/L0/mailto:%2F%2Fexample.com${tail}`
 
-    expect(unwrapAmazonSes(url)).toBeUndefined()
+    expect(purifyUrl(value, { unwrappers: [unwrapAmazonSes] })).toBe(value)
   })
 
   it('should keep a malformed escape in the target as written', () => {

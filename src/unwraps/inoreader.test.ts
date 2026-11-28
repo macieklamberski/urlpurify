@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'bun:test'
+import { purifyUrl } from '../clean.js'
 import { unwrapInoreader } from './inoreader.js'
 
 describe('unwrapInoreader', () => {
@@ -62,6 +63,13 @@ describe('unwrapInoreader', () => {
   })
 
   describe('feed path', () => {
+    it('should give https to a raw feed without a scheme', () => {
+      const value = 'https://www.inoreader.com/feed/www.example.com/rss'
+      const expected = 'https://www.example.com/rss'
+
+      expect(purifyUrl(value, { unwrappers: [unwrapInoreader] })).toBe(expected)
+    })
+
     it('should extract a percent-encoded feed', () => {
       const value = new URL(
         'https://www.inoreader.com/feed/https%3A%2F%2Fwww.inoreader.com%2Fblog%2Ffeed',
@@ -122,10 +130,10 @@ describe('unwrapInoreader', () => {
       expect(unwrapInoreader(value)).toBe(expected)
     })
 
-    it('should return undefined for a non-http feed', () => {
-      const value = new URL('https://www.inoreader.com/feed/ftp%3A%2F%2Fexample.com%2Ffeed')
+    it('should keep the wrapper for a non-http feed', () => {
+      const value = 'https://www.inoreader.com/feed/ftp%3A%2F%2Fexample.com%2Ffeed'
 
-      expect(unwrapInoreader(value)).toBeUndefined()
+      expect(purifyUrl(value, { unwrappers: [unwrapInoreader] })).toBe(value)
     })
 
     it('should return undefined for an empty feed path', () => {

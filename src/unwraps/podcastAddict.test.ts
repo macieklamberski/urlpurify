@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'bun:test'
+import { purifyUrl } from '../clean.js'
 import { unwrapPodcastAddict } from './podcastAddict.js'
 
 describe('unwrapPodcastAddict', () => {
@@ -18,6 +19,13 @@ describe('unwrapPodcastAddict', () => {
     const expected = 'https://example.com/2e7ceeef-1889-45ff-a90f-eff7988fb63a'
 
     expect(unwrapPodcastAddict(value)).toBe(expected)
+  })
+
+  it('should give https to a raw feed without a scheme', () => {
+    const value = 'https://podcastaddict.com/feed/www.example.com/rss'
+    const expected = 'https://www.example.com/rss'
+
+    expect(purifyUrl(value, { unwrappers: [unwrapPodcastAddict] })).toBe(expected)
   })
 
   it('should extract a raw feed', () => {
@@ -77,10 +85,10 @@ describe('unwrapPodcastAddict', () => {
     expect(unwrapPodcastAddict(value)).toBe(expected)
   })
 
-  it('should return undefined for a non-http feed', () => {
-    const value = new URL('https://podcastaddict.com/feed/javascript%3Aalert(1)')
+  it('should keep the wrapper for a non-http feed', () => {
+    const value = 'https://podcastaddict.com/feed/javascript%3Aalert(1)'
 
-    expect(unwrapPodcastAddict(value)).toBeUndefined()
+    expect(purifyUrl(value, { unwrappers: [unwrapPodcastAddict] })).toBe(value)
   })
 
   it('should return undefined for an empty feed', () => {

@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'bun:test'
+import { purifyUrl } from '../clean.js'
 import { unwrapPrezly } from './prezly.js'
 
 describe('unwrapPrezly', () => {
@@ -18,12 +19,11 @@ describe('unwrapPrezly', () => {
     expect(unwrapPrezly(url)).toBe('https://news.example.com/post?utm_source=prezly.com&id=7')
   })
 
-  it('should return undefined for a non-http target', () => {
-    const url = new URL(
-      'https://prezlymail.com/c/264cd01e-3f4c-475e-87a2-4d7f7c7ddc7d/4535aa6c/mailto%3Apress%40example.com',
-    )
+  it('should keep the wrapper for a non-http target', () => {
+    const value =
+      'https://prezlymail.com/c/264cd01e-3f4c-475e-87a2-4d7f7c7ddc7d/4535aa6c/mailto%3Apress%40example.com'
 
-    expect(unwrapPrezly(url)).toBeUndefined()
+    expect(purifyUrl(value, { unwrappers: [unwrapPrezly] })).toBe(value)
   })
 
   it('should return undefined for a campaign that is not a uuid', () => {

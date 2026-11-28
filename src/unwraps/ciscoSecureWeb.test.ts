@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'bun:test'
+import { purifyUrl } from '../clean.js'
 import { unwrapCiscoSecureWeb } from './ciscoSecureWeb.js'
 
 describe('unwrapCiscoSecureWeb', () => {
@@ -96,12 +97,10 @@ describe('unwrapCiscoSecureWeb', () => {
     expect(unwrapCiscoSecureWeb(url)).toBeUndefined()
   })
 
-  it('should return undefined for a target without a host', () => {
-    const url = new URL(
-      'https://secure-web.cisco.com/1FUSlj3K3QVkKY875RHGJXaTEmxvyRjzy/https%3A%2F%2F',
-    )
+  it('should keep the wrapper for a target without a host', () => {
+    const value = 'https://secure-web.cisco.com/1FUSlj3K3QVkKY875RHGJXaTEmxvyRjzy/https%3A%2F%2F'
 
-    expect(unwrapCiscoSecureWeb(url)).toBeUndefined()
+    expect(purifyUrl(value, { unwrappers: [unwrapCiscoSecureWeb] })).toBe(value)
   })
 
   it('should keep an escape cut short in the target as written', () => {

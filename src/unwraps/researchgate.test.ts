@@ -1,7 +1,15 @@
 import { describe, expect, it } from 'bun:test'
+import { purifyUrl } from '../clean.js'
 import { unwrapResearchgate } from './researchgate.js'
 
 describe('unwrapResearchgate', () => {
+  it('should give https to a plain target without a scheme', () => {
+    const value = 'https://www.researchgate.net/deref/www.example.com/post'
+    const expected = 'https://www.example.com/post'
+
+    expect(purifyUrl(value, { unwrappers: [unwrapResearchgate] })).toBe(expected)
+  })
+
   it('should extract a percent-encoded target from the deref path', () => {
     const url = new URL(
       'https://www.researchgate.net/deref/http%3A%2F%2Fwww.example.com%2Fpubmed%2F16884344',
@@ -70,10 +78,10 @@ describe('unwrapResearchgate', () => {
     expect(unwrapResearchgate(url)).toBeUndefined()
   })
 
-  it('should return undefined for a deref path that holds no url', () => {
-    const url = new URL('https://www.researchgate.net/deref/publication%2F123')
+  it('should keep the wrapper for a deref path that holds no url', () => {
+    const value = 'https://www.researchgate.net/deref/publication%2F123'
 
-    expect(unwrapResearchgate(url)).toBeUndefined()
+    expect(purifyUrl(value, { unwrappers: [unwrapResearchgate] })).toBe(value)
   })
 
   it('should keep a malformed escape in the target as written', () => {

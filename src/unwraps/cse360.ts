@@ -1,4 +1,3 @@
-import { isHttpUrl } from 'trousse'
 import { decodePathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
@@ -20,10 +19,6 @@ export const unwrapCse360: UrlUnwrapper = createUnwrapper({
       return
     }
 
-    const target = decodePathTarget(match[1])
-
-    if (isHttpUrl(target)) {
-      return target
-    }
+    return decodePathTarget(match[1])
   },
 })

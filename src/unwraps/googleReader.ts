@@ -1,4 +1,4 @@
-import { isAnyOf, isHostOf, isHttpUrl } from 'trousse'
+import { isAnyOf, isHostOf } from 'trousse'
 import { decodePathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 import { appendLinkFragment, readParamTarget } from '../utils.js'
@@ -26,10 +26,6 @@ export const unwrapGoogleReader: UrlUnwrapper = (url) => {
   // sits encoded inside the path. A raw feed's fragment lands in the link's own `hash`.
   if (match?.groups) {
     const target = decodePathTarget(match.groups.target)
-
-    if (!isHttpUrl(target)) {
-      return
-    }
 
     if (!rawFeedRegex.test(match.groups.target)) {
       return target

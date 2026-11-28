@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'bun:test'
+import { purifyUrl } from '../clean.js'
 import { unwrapGoogleReader } from './googleReader.js'
 
 describe('unwrapGoogleReader', () => {
@@ -106,6 +107,13 @@ describe('unwrapGoogleReader', () => {
   })
 
   describe('Reader feed path', () => {
+    it('should give https to a raw feed without a scheme', () => {
+      const value = 'https://www.google.com/reader/view/feed/www.example.com/rss'
+      const expected = 'https://www.example.com/rss'
+
+      expect(purifyUrl(value, { unwrappers: [unwrapGoogleReader] })).toBe(expected)
+    })
+
     it('should extract a raw feed', () => {
       const value = new URL(
         'https://www.google.com/reader/view/feed/http://feeds.example.com/freeapp',
@@ -194,10 +202,10 @@ describe('unwrapGoogleReader', () => {
       expect(unwrapGoogleReader(value)).toBe(expected)
     })
 
-    it('should return undefined for a non-http feed', () => {
-      const value = new URL('https://www.google.com/reader/view/feed/ftp%3A%2F%2Fexample.com%2Frss')
+    it('should keep the wrapper for a non-http feed', () => {
+      const value = 'https://www.google.com/reader/view/feed/ftp%3A%2F%2Fexample.com%2Frss'
 
-      expect(unwrapGoogleReader(value)).toBeUndefined()
+      expect(purifyUrl(value, { unwrappers: [unwrapGoogleReader] })).toBe(value)
     })
 
     it('should return undefined for an empty feed path', () => {
