@@ -24,7 +24,11 @@ const extractWebTarget = createQueryUnwrapper({
 // usg<nn>.safelinks.protection.office365.us, and Outlook on the web's page above.
 // Opt-in: unwrapping skips the gateway's click-time check of the target.
 export const unwrapOutlookSafelinks = createUnwrapper({
-  hosts: [safelinksHostRegex, 'outlook.office.com'],
+  domains: [
+    'safelinks.protection.outlook.com',
+    'safelinks.protection.office365.us',
+    'outlook.office.com',
+  ],
   unwrap: (url) => {
     if (!linkPathRegex.test(url.pathname)) {
       return extractWebTarget(url)

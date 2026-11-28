@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'bun:test'
 import { purifyUrl } from '../clean.js'
+import { unwrapperHosts } from '../utils.js'
 import { unwrapSophos } from './sophos.js'
 
 describe('unwrapSophos', () => {
@@ -109,5 +110,9 @@ describe('unwrapSophos', () => {
     const expected = 'http://www.example.com/En/Data/View/3972#top'
 
     expect(unwrapSophos(value)).toBe(expected)
+  })
+
+  it('should register its hosts so the host index skips it on other hosts', () => {
+    expect(unwrapperHosts.has(unwrapSophos)).toBe(true)
   })
 })

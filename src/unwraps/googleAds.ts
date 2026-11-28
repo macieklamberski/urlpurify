@@ -52,7 +52,7 @@ const extractors = [
 // the same cost as an affiliate wrapper.
 export const unwrapGoogleAds = createUnwrapper({
   // The extractors check the exact hosts, these register them in the host index.
-  brands: ['google'],
+  brands: 'google',
   domains: [
     'doubleclick.net',
     'googleadservices.com',

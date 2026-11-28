@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'bun:test'
+import { unwrapperHosts } from '../utils.js'
 import { unwrapEbayRover } from './ebayRover.js'
 
 describe('unwrapEbayRover', () => {
@@ -111,5 +112,9 @@ describe('unwrapEbayRover', () => {
     )
 
     expect(unwrapEbayRover(value)).toBeUndefined()
+  })
+
+  it('should register its hosts so the host index skips it on other hosts', () => {
+    expect(unwrapperHosts.has(unwrapEbayRover)).toBe(true)
   })
 })

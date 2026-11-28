@@ -24,7 +24,7 @@ const extractLegacyPaperLink = createQueryUnwrapper({
 // the Paper external link (www.dropbox.com/paper/ep/redirect/external-link?url=<target>, also
 // paper.dropbox.com/ep/redirect/external-link).
 export const unwrapDropbox = createUnwrapper({
-  hosts: ['dropbox.com', 'www.dropbox.com', 'paper.dropbox.com'],
+  hosts: [...hosts, 'paper.dropbox.com'],
   unwrap: (url) => {
     return extractReferrerCleansing(url) ?? extractPaperLink(url) ?? extractLegacyPaperLink(url)
   },

@@ -16,7 +16,7 @@ const emailRedirectPaths = ['/gp/r.html', '/gp/f.html']
 // /gp/f.html?U=<URL>, /gp/slredirect/picassoRedirect.html/ref=<ref>?url=<URL>.
 // Opt-in: unwrapping removes the publisher's commission.
 export const unwrapAmazonAffiliate = createUnwrapper({
-  brands: ['amazon'],
+  brands: 'amazon',
   subdomains: 'amazon-adsystem.com',
   unwrap: (url) => {
     if (isBrandDomainOf(url, 'amazon') && startsWithAnyOf(url.hostname, storeSubdomains)) {

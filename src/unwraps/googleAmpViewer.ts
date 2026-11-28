@@ -9,7 +9,7 @@ const httpPathRegex = /^\/amp\/(?!s\/)(?<target>.+)$/i
 // Google AMP viewer (www.google.<TLD>/amp/s/<host>/<path> for https, or
 // /amp/<host>/<path> for http). Distinct from the cdn.ampproject.org cache.
 export const unwrapGoogleAmpViewer = createUnwrapper({
-  brands: ['google'],
+  brands: 'google',
   match: googleAmpHostRegex,
   ignoreLinkFragment: true,
   unwrap: (url) => {

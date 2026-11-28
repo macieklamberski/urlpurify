@@ -234,9 +234,8 @@ const deleteSessionPathParams = (url: URL): void => {
 }
 
 // Delete tracking params in place, from the query, and the session ids among them from
-// `;name=value` path params. Literal
-// names match case-insensitively, and patterns are tested against the lowercased name. A url
-// whose query carries a signature param is kept whole.
+// `;name=value` path params. Literal names match case-insensitively, and patterns are tested
+// against the lowercased name. A url whose query carries a signature param is kept whole.
 const deleteTrackingParams = (url: URL, trackingParams: ReadonlyArray<TrackingParam>): void => {
   const pairs = url.search.slice(1).split('&')
   const entries = pairs.map(readQueryPair)

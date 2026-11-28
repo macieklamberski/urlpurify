@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'bun:test'
+import { unwrapperHosts } from '../utils.js'
 import { unwrapOutlookSafelinks } from './outlookSafelinks.js'
 
 describe('unwrapOutlookSafelinks', () => {
@@ -129,5 +130,9 @@ describe('unwrapOutlookSafelinks', () => {
     const expected = 'https://example.com/post'
 
     expect(unwrapOutlookSafelinks(value)).toBe(expected)
+  })
+
+  it('should register its hosts so the host index skips it on other hosts', () => {
+    expect(unwrapperHosts.has(unwrapOutlookSafelinks)).toBe(true)
   })
 })

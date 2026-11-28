@@ -10,7 +10,7 @@ const gluedHostRegex = /^\/(?=\/(?:[a-z0-9-]+\.)+[a-z]{2,}\/)/i
 // uCoz site with a protocol-relative src glued onto its own host as text (<site>//<host>/<path>),
 // which uCoz answers with a 404.
 export const unwrapUcoz = createUnwrapper({
-  brands: ['ucoz'],
+  brands: 'ucoz',
   domains,
   unwrap: (url) => {
     // The brand key also takes a subdomain named ucoz on another site, `ucoz.example.com`.

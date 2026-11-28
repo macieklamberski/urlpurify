@@ -12,7 +12,7 @@ import {
 type TargetScheme = 'https' | 'http' | 'inherit'
 
 export type PathUnwrapperConfig = UnwrapperBaseConfig & {
-  prefix: RegExp // Anchored with `^`, since the target is read from where its match ends
+  prefix: RegExp // Anchor with `^`: the target is read from where its match ends
   scheme?: TargetScheme
 }
 

@@ -61,7 +61,7 @@ const extractWebsiteProxy: UrlUnwrapper = (url) => {
 // Opt-in: it renders the target translated, so unwrapping discards the translation the user
 // wanted.
 export const unwrapGoogleTranslate = createUnwrapper({
-  brands: ['google'],
+  brands: 'google',
   hosts: frameHosts,
   subdomains: proxyDomains,
   unwrap: (url) => {

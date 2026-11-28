@@ -26,7 +26,7 @@ const extractTurboTarget = createQueryUnwrapper({
 // Opt-in: Turbo serves a stripped-down, optimized rendering of the source page rather than the
 // canonical content. Opt in by passing a custom unwrappers array.
 export const unwrapYandexTurbo = createUnwrapper({
-  brands: ['yandex'],
+  brands: 'yandex',
   domains: 'turbopages.org',
   unwrap: (url) => {
     const turboTarget = extractTurboTarget(url)

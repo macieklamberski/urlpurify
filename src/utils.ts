@@ -332,11 +332,11 @@ export const createUnwrapper = (config: UnwrapperConfig): UrlUnwrapper => {
 }
 
 // An unwrapper for the target in the first of `params` that holds one, as `readParamTarget` reads
-// it, or `readDecodedParamTarget` with `decode`, on a url on the hosts `createUnwrapper` takes, and on
-// `path` when given: an exact path or a list, compared in any case, or a regex. A value the readers
-// skip, such as an app's own `myapp://open`, a relative path such as `/local/page` or a title,
-// moves on to the next param. A host with no scheme, or with a port as `example.com:8080/`, is
-// repaired.
+// it, or `readDecodedParamTarget` with `decode`, on a url on the hosts `createUnwrapper` takes, and
+// on `path` when given: an exact path or a list, compared in any case, or a regex. A value the
+// readers skip, such as an app's own `myapp://open`, a relative path such as `/local/page` or a
+// title, moves on to the next param. A host with no scheme, or with a port as `example.com:8080/`,
+// is repaired.
 export const createQueryUnwrapper = (config: QueryUnwrapperConfig): UrlUnwrapper => {
   const { path, params, index, decode, plus, ...options } = config
 
