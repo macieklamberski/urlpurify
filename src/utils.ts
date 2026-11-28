@@ -166,7 +166,7 @@ export const getDecodedParamTarget = (
   return appendLinkFragment(target, url)
 }
 
-const lastSchemeRegex = /^.*https?(?::|%3a)./i
+const lastSchemeRegex = /^.*https?(?::|%(?:25)?3a)./i
 
 // The `source` group of a path regex whose lazy `.*?` searches for a source scheme after a prefix.
 // Matching only up to the last scheme keeps one ahead of every prefix the regex tries, so it never
