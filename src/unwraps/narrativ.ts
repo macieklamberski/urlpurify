@@ -1,9 +1,8 @@
-import { isAnyOf } from 'trousse'
 import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
 const redirectPathRegex = /^\/api\/v\d+\/(?:client_)?redirect\/?$/i
 
-const linkPaths = ['/link', '/link/']
+const linkPathRegex = /^\/link\/?$/i
 
 const redirectHosts = [
   'narrativ.com',
@@ -37,7 +36,7 @@ const extractLinkTarget = createQueryUnwrapper({
 export const unwrapNarrativ = createUnwrapper({
   hosts: [...redirectHosts, ...linkHosts],
   unwrap: (url) => {
-    if (isAnyOf(url.pathname, linkPaths)) {
+    if (linkPathRegex.test(url.pathname)) {
       return extractLinkTarget(url)
     }
 

@@ -1,5 +1,5 @@
 import { decodeBase64, getQueryParam, isAnyOf, isHttpUrl } from 'trousse'
-import { createUnwrapper, readDecodedTarget } from '../utils.js'
+import { createUnwrapper, readDecodedParamTarget } from '../utils.js'
 
 // DataLife Engine leaving redirect (<site host>/engine/go.php?url=<base64>, also routed as
 // /index.php?do=go&url=<base64>). Each site runs the CMS on its own host, so the exact path and a
@@ -14,7 +14,7 @@ export const unwrapDatalifeEngine = createUnwrapper({
       return
     }
 
-    const target = readDecodedTarget(url, 'url', decodeBase64)
+    const target = readDecodedParamTarget(url, 'url', decodeBase64)
 
     if (target && isHttpUrl(target)) {
       return target

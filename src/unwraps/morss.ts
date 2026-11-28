@@ -6,13 +6,11 @@ const optionsRegex = /^\/:(?<options>[^/]*)\//
 // morss reads one option segment, so a second `:` segment is part of the target and 404s.
 const targetPrefixRegex = /^\/(?::[^/]*\/)?(?!:)/
 
-const hosts = ['morss.it', 'www.morss.it']
-
 // morss full-text feed proxy ([www.]morss.it/[:<options>/]<feed>, the feed raw, with or without its
 // scheme).
 // Opt-in: the link returns the feed with full articles, not the feed itself.
 export const unwrapMorss = createUnwrapper({
-  hosts,
+  hosts: ['morss.it', 'www.morss.it'],
   unwrap: (url) => {
     const options = optionsRegex.exec(url.pathname)?.groups?.options ?? ''
 

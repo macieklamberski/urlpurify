@@ -7,7 +7,7 @@ const clickPathRegex = /^\/c\/\d+\/\d+\/[^/]+\/[^/]+$/i
 // StreamSend email click tracker (app.streamsend.com/c/<n>/<n>/<hash>/<hash>?redirect_to=<target>).
 // Opt-in: unwrapping removes the sender's click count.
 export const unwrapStreamsend = createQueryUnwrapper({
-  hosts: ['app.streamsend.com'],
+  hosts: 'app.streamsend.com',
   path: clickPathRegex,
   params: ['redirect_to'],
 })

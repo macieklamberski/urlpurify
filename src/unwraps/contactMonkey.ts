@@ -3,14 +3,12 @@ import { createUnwrapper, decodeEncodedScheme } from '../utils.js'
 
 const carrierRegex = /[?&]cm_destination=/i
 
-const hosts = ['contactmonkey.com', 'www.contactmonkey.com', 'tk.cmnky.co']
-
 // ContactMonkey internal email click tracker
 // (contactmonkey.com/api/v1/tracker?cm_session=<id>&cm_type=link&cm_link=<id>&cm_destination=<target>,
 // also tk.cmnky.co).
 // Opt-in: unwrapping removes the sender's click count.
 export const unwrapContactMonkey = createUnwrapper({
-  hosts,
+  hosts: ['contactmonkey.com', 'www.contactmonkey.com', 'tk.cmnky.co'],
   unwrap: (url) => {
     if (!isAnyOf(url.pathname, '/api/v1/tracker')) {
       return

@@ -1,7 +1,6 @@
 import { isAnyOf } from 'trousse'
 import { createUnwrapper, readParamTarget } from '../utils.js'
 
-const hosts = ['tumblr.com', 'www.tumblr.com']
 const linkPathRegex = /^\/share\/link\/?$/i
 
 // Tumblr share (tumblr.com/share?u=<target> or ?canonicalUrl=, /share/link?url=, and
@@ -9,7 +8,7 @@ const linkPathRegex = /^\/share\/link\/?$/i
 // tumblr.com).
 // Opt-in: unwrapping returns the shared page, not the form that shares it.
 export const unwrapTumblrShare = createUnwrapper({
-  hosts,
+  hosts: ['tumblr.com', 'www.tumblr.com'],
   ignoreLinkFragment: true,
   unwrap: (url) => {
     if (isAnyOf(url.pathname, '/share')) {

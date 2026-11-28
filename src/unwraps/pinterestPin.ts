@@ -8,7 +8,7 @@ const pathRegex = /^\/pin\/create\/(?:button|link|extension|bookmarklet|scraped)
 // as fr.pinterest.com and the country domains such as pinterest.co.uk).
 // Opt-in: unwrapping returns the shared page, not the pin builder.
 export const unwrapPinterestPin = createUnwrapper({
-  brands: ['pinterest'],
+  brands: 'pinterest',
   ignoreLinkFragment: true,
   unwrap: (url) => {
     // The brand key also takes a subdomain named pinterest on another site, such as

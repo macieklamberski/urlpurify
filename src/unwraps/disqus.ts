@@ -1,5 +1,5 @@
 import { isAnyOf } from 'trousse'
-import { createUnwrapper, readDecodedTarget, readParamTarget } from '../utils.js'
+import { createUnwrapper, readDecodedParamTarget, readParamTarget } from '../utils.js'
 
 const paths = ['/', '/url']
 
@@ -33,6 +33,6 @@ export const unwrapDisqus = createUnwrapper({
 
     // A target with no path, as in `http://example.com:<signature>`, reads as a bad port until the
     // signature is cut off.
-    return readDecodedTarget(url, 'url', stripSignature)
+    return readDecodedParamTarget(url, 'url', stripSignature)
   },
 })

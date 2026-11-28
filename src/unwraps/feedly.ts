@@ -6,7 +6,6 @@ const feedPathRegex =
   /^\/i\/(?:subscription|discover\/sources\/search)\/feed(?:\/|%2F)(?<target>.+)$/i
 const feedFragmentRegex = /^#subscription(?:\/|%2F)feed(?:\/|%2F)(?<target>.+)$/i
 
-const hosts = ['feedly.com', 'www.feedly.com', 'cloud.feedly.com']
 const paramPath = '/i/subscription/feed'
 const fragmentPaths = ['/', '/index.html', '/home']
 
@@ -15,7 +14,7 @@ const fragmentPaths = ['/', '/index.html', '/home']
 // /home, the slash after `feed`, and before it in the fragment, also as %2F).
 // Opt-in: the link adds the feed, it never redirects.
 export const unwrapFeedly = createUnwrapper({
-  hosts,
+  hosts: ['feedly.com', 'www.feedly.com', 'cloud.feedly.com'],
   ignoreLinkFragment: true,
   unwrap: (url) => {
     if (isAnyOf(url.pathname, paramPath)) {

@@ -63,7 +63,8 @@ const extractUiDeref = createQueryUnwrapper({
 
 // The old WEB.DE FreeMail jump (freemailng<n>.web.de/jump.htm?goto=<target>).
 const extractFreemailJump = createQueryUnwrapper({
-  hosts: /^freemailng\d+\.web\.de$/,
+  subdomains: 'web.de',
+  match: /^freemailng\d+\.web\.de$/,
   path: '/jump.htm',
   params: ['goto'],
 })

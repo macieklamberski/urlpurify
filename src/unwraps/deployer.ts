@@ -1,11 +1,6 @@
 import { decodeBase64, hasQueryParam, isAnyOf } from 'trousse'
-import { createUnwrapper, readDecodedTarget } from '../utils.js'
+import { createUnwrapper, readDecodedParamTarget } from '../utils.js'
 
-const hosts = [
-  'daily.news.humanevents.com',
-  'myjw.pr.judicialwatch.org',
-  'the.daily.thepostmillennial.com',
-]
 const paths = ['/link.php', '/wta/link.php']
 
 // Deployer email click tracker on senders' own subdomains
@@ -13,12 +8,16 @@ const paths = ['/link.php', '/wta/link.php']
 // /wta/link.php).
 // Opt-in: unwrapping removes the sender's click count.
 export const unwrapDeployer = createUnwrapper({
-  hosts,
+  hosts: [
+    'daily.news.humanevents.com',
+    'myjw.pr.judicialwatch.org',
+    'the.daily.thepostmillennial.com',
+  ],
   unwrap: (url) => {
     if (!isAnyOf(url.pathname, paths) || !hasQueryParam(url, 'AGENCY')) {
       return
     }
 
-    return readDecodedTarget(url, 'drurl', decodeBase64)
+    return readDecodedParamTarget(url, 'drurl', decodeBase64)
   },
 })

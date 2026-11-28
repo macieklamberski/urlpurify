@@ -12,14 +12,14 @@ import {
 type TargetScheme = 'https' | 'http' | 'inherit'
 
 export type PathUnwrapperConfig = UnwrapperBaseConfig & {
-  prefix: RegExp
+  prefix: RegExp // Anchor with `^`: the target is read from where its match ends
   scheme?: TargetScheme
 }
 
 const leadingSlashesRegex = /^\/+/
 // An archived scheme never has a dot, so `www.example.com:80/` reads as a host with a port.
 const archivedSchemeRegex = /^[a-z][a-z\d+-]*:/i
-const encodedSchemeRegex = /^https?(?:%(?:25)?3A|:%(?:25)?2F)/i
+const encodedPathSchemeRegex = /^https?(?:%(?:25)?3A|:%(?:25)?2F)/i
 const encodedSlashesRegex = /^https?(?:%(?:25)?3A|:)%(?:25)?2F/i
 
 // A path target whose scheme and slashes are percent-encoded, once or twice, as in
@@ -32,7 +32,7 @@ export const isEncodedPathTarget = (target: string): boolean => {
 // A path target whose scheme is percent-encoded, as `isEncodedPathTarget` reads it or with its
 // colon alone encoded, decoded. Any other target is returned as written.
 export const decodePathTarget = (target: string): string => {
-  if (!encodedSchemeRegex.test(target)) {
+  if (!encodedPathSchemeRegex.test(target)) {
     return target
   }
 
@@ -48,20 +48,20 @@ export const decodePathTarget = (target: string): string => {
 // fragment is the factory's, per `createUnwrapper`.
 export const resolvePathTarget = (
   url: URL,
-  path: string,
+  target: string,
   scheme?: TargetScheme,
   suffix = url.search,
 ): string => {
-  const decoded = decodePathTarget(path)
-  const target = isEncodedPathTarget(path) ? decoded : `${decoded}${suffix}`
+  const decoded = decodePathTarget(target)
+  const resolved = isEncodedPathTarget(target) ? decoded : `${decoded}${suffix}`
 
-  if (!scheme || httpSchemeRegex.test(target)) {
-    return target
+  if (!scheme || httpSchemeRegex.test(resolved)) {
+    return resolved
   }
 
   const protocol = scheme === 'inherit' ? url.protocol : `${scheme}:`
 
-  return `${protocol}//${target}`
+  return `${protocol}//${resolved}`
 }
 
 // The target that follows a prefix at the start of the path, read by `resolvePathTarget`. Podcast
@@ -69,24 +69,24 @@ export const resolvePathTarget = (
 // with the link's own scheme passes `inherit`, and one that forwards to http passes `http`.
 export const readPathTarget = (
   url: URL,
-  prefixRegex: RegExp,
+  prefix: RegExp,
   scheme?: TargetScheme,
   suffix = url.search,
 ): string | undefined => {
-  const match = prefixRegex.exec(url.pathname)
+  const match = prefix.exec(url.pathname)
 
   if (!match) {
     return
   }
 
   // Some feeds leave an empty segment after the prefix, as in `redirect.mp3//<target>`.
-  const path = url.pathname.slice(match[0].length).replace(leadingSlashesRegex, '')
+  const target = url.pathname.slice(match[0].length).replace(leadingSlashesRegex, '')
 
-  if (!path) {
+  if (!target) {
     return
   }
 
-  return resolvePathTarget(url, path, scheme, suffix)
+  return resolvePathTarget(url, target, scheme, suffix)
 }
 
 // A target a Wayback-style replay archived with no scheme, which the replay forwards to its http

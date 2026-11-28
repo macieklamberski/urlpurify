@@ -1,20 +1,6 @@
 import { resolvePathTarget } from '../pathTarget.js'
 import { createUnwrapper } from '../utils.js'
 
-const hosts = [
-  'ebuzzing.com',
-  'www.ebuzzing.com',
-  'ebuzzing.fr',
-  'www.ebuzzing.fr',
-  'social.ebuzzing.fr',
-  'ebuzzing.it',
-  'www.ebuzzing.it',
-  'ebuzzing.es',
-  'www.ebuzzing.es',
-  'ebuzzing.co.uk',
-  'www.ebuzzing.co.uk',
-]
-
 // Campaign and placement ids joined by underscores, then the target with no scheme. The first
 // segment of the target must be a host: a dot, no colon.
 const pathRegex = /^\/rd\/[\d_]+\/(?<target>[^/:]*\.[^/:]*(?:\/.*)?)$/i
@@ -23,7 +9,19 @@ const pathRegex = /^\/rd\/[\d_]+\/(?<target>[^/:]*\.[^/:]*(?:\/.*)?)$/i
 // Italian, Spanish and British domains), which answered 301 to the http target.
 // Opt-in: unwrapping removes the advertiser's click count.
 export const unwrapEbuzzing = createUnwrapper({
-  hosts,
+  hosts: [
+    'ebuzzing.com',
+    'www.ebuzzing.com',
+    'ebuzzing.fr',
+    'www.ebuzzing.fr',
+    'social.ebuzzing.fr',
+    'ebuzzing.it',
+    'www.ebuzzing.it',
+    'ebuzzing.es',
+    'www.ebuzzing.es',
+    'ebuzzing.co.uk',
+    'www.ebuzzing.co.uk',
+  ],
   unwrap: (url) => {
     const match = pathRegex.exec(url.pathname)
 

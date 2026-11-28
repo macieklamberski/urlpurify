@@ -1,13 +1,15 @@
 import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
+const hosts = ['dropbox.com', 'www.dropbox.com']
+
 const extractReferrerCleansing = createQueryUnwrapper({
-  hosts: ['dropbox.com', 'www.dropbox.com'],
+  hosts,
   path: '/referrer_cleansing_redirect',
   params: ['url'],
 })
 
 const extractPaperLink = createQueryUnwrapper({
-  hosts: ['dropbox.com', 'www.dropbox.com'],
+  hosts,
   path: '/paper/ep/redirect/external-link',
   params: ['url'],
 })
@@ -22,7 +24,7 @@ const extractLegacyPaperLink = createQueryUnwrapper({
 // the Paper external link (www.dropbox.com/paper/ep/redirect/external-link?url=<target>, also
 // paper.dropbox.com/ep/redirect/external-link).
 export const unwrapDropbox = createUnwrapper({
-  hosts: ['dropbox.com', 'www.dropbox.com', 'paper.dropbox.com'],
+  hosts: [...hosts, 'paper.dropbox.com'],
   unwrap: (url) => {
     return extractReferrerCleansing(url) ?? extractPaperLink(url) ?? extractLegacyPaperLink(url)
   },

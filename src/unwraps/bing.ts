@@ -1,5 +1,5 @@
 import { decodeBase64Url, isAnyOf } from 'trousse'
-import { createUnwrapper, readDecodedTarget, readParamTarget } from '../utils.js'
+import { createUnwrapper, readDecodedParamTarget, readParamTarget } from '../utils.js'
 
 export const hosts = [
   'bing.com',
@@ -37,6 +37,6 @@ export const unwrapBing = createUnwrapper({
       return
     }
 
-    return readDecodedTarget(url, 'u', decodeClickValue)
+    return readDecodedParamTarget(url, 'u', decodeClickValue)
   },
 })

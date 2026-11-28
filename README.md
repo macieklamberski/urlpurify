@@ -113,9 +113,9 @@ purifyUrl(url, {
 
 An unwrapped target that isn't a usable URL is ignored, and the wrapper is kept.
 
-The earlier names, `cleanUrl` and `CleanUrlOptions`, still work. Both are deprecated and go away in the next major.
+The earlier names, `cleanUrl` and `CleanUrlOptions`, still work. Both are deprecated, removed in 4.0.0.
 
-So do these earlier export names, each deprecated beside its new one: `sessionParams` for `sessionIdParams`, `trackingParamsLiterals` and `trackingParamsPatterns` for `knownTrackingParamLiterals` and `knownTrackingParamPatterns`, `unwrapYouTube` for `unwrapYoutube`, and `unwrapBlueskyRedirect`, `unwrapFacebookShim`, `unwrapInstagramShim` and `unwrapThreadsShim` for `unwrapBsky`, `unwrapFacebook`, `unwrapInstagram` and `unwrapThreads`.
+So do these earlier export names, each deprecated beside its new one and removed in 4.0.0: `sessionParams` for `sessionIdParams`, `trackingParamsLiterals` and `trackingParamsPatterns` for `knownTrackingParamLiterals` and `knownTrackingParamPatterns`, `unwrapYouTube` for `unwrapYoutube`, and `unwrapBlueskyRedirect`, `unwrapFacebookShim`, `unwrapInstagramShim` and `unwrapThreadsShim` for `unwrapBsky`, `unwrapFacebook`, `unwrapInstagram` and `unwrapThreads`.
 
 ### `unwrapUrl(url, unwrappers?)`
 
@@ -130,7 +130,7 @@ Removes tracking params and returns the serialized URL. Both this and `purifyUrl
 - A query with a signature (`sig`, `signature`, `X-Amz-Signature` or `X-Goog-Signature`) stays whole, since dropping anything breaks the signature.
 - `ts` stays on Alibaba DirectMail click URLs, which fail without it.
 
-A session id name the list holds is also dropped as a path parameter, as in `/page;jsessionid=<id>`. A wrapper path carrying one, as in `/external-link.jspa;jsessionid=<id>?url=`, is tried again without it, by `purifyUrl` and `unwrapUrl` alike and whatever list is passed, so it still unwraps while a target carrying one keeps it. An entry's `value` is a regex or a function `(value, host) => boolean` tested on the percent-decoded value, where an escape that is not UTF-8, such as `%FC`, stays as written. Its `hosts` are exact hostnames or a regex, matched as trousse's `isHostOf` matches them, in any case and in Unicode or Punycode, with a host and its `www.` form matching alike.
+A session id name the list holds is also dropped as a path parameter, as in `/page;jsessionid=<id>`. A wrapper path carrying one, as in `/external-link.jspa;jsessionid=<id>?url=`, is tried again without it, by `purifyUrl` and `unwrapUrl` alike and whatever list is passed, so it still unwraps while a target carrying one keeps it. An entry's `value` is a regex or a function `(value, host) => boolean`, given the percent-decoded value and the hostname without `www.`. An escape in the value that is not UTF-8, such as `%FC`, stays as written. Its `hosts` are exact hostnames or a regex, matched as trousse's `isHostOf` matches them, in any case and in Unicode or Punycode, with a host and its `www.` form matching alike.
 
 A tracking list is compiled on first use and cached per array. To change it, pass a new array.
 
@@ -175,7 +175,7 @@ A value still encoded after one decode, starting with an encoded scheme such as 
 
 The target takes the link's fragment as `createUnwrapper` describes, so `example.com/out?target=https://example.org/guide#install` gives `https://example.org/guide#install`.
 
-`createParamExtractor` and `ParamExtractorConfig`, the names before 3.0, still work and are deprecated.
+`createParamExtractor` and `ParamExtractorConfig`, the names before 3.0, still work. Both are deprecated, removed in 4.0.0.
 
 ### `createPathUnwrapper(config)`
 
@@ -193,7 +193,7 @@ const unwrapExample = createPathUnwrapper({
 purifyUrl(url, { unwrappers: [...defaultUnwrappers, unwrapExample] })
 ```
 
-A raw target keeps the link's query, which the service forwards with it. A percent-encoded target, decoded once or twice, drops it, since its own query is encoded inside it. The target takes the link's fragment as `createUnwrapper` describes. A target without a scheme gets `https`. Pass `scheme: 'http'` for a service that forwards to http, or `scheme: 'inherit'` for one that forwards with the link's own.
+Anchor `prefix` with `^`. The target is read from where its match ends, so a match in the middle of the path reads the wrong target. A raw target keeps the link's query, which the service forwards with it. A percent-encoded target, decoded once or twice, drops it, since its own query is encoded inside it. The target takes the link's fragment as `createUnwrapper` describes. A target without a scheme gets `https`. Pass `scheme: 'http'` for a service that forwards to http, or `scheme: 'inherit'` for one that forwards with the link's own.
 
 For any other shape, use `createUnwrapper`.
 

@@ -1,5 +1,5 @@
 import { decodeBase64Url, isAnyOf, isHttpUrl, isString, parseJson } from 'trousse'
-import { createUnwrapper, readDecodedTarget } from '../utils.js'
+import { createUnwrapper, readDecodedParamTarget } from '../utils.js'
 
 const decodeKey = (key: string): string | undefined => {
   const target = parseJson<{ url?: unknown }>(decodeBase64Url(key))?.url
@@ -23,7 +23,7 @@ export const unwrapMailinblack = createUnwrapper({
       return
     }
 
-    const target = readDecodedTarget(url, 'key', decodeKey)
+    const target = readDecodedParamTarget(url, 'key', decodeKey)
 
     if (target && isHttpUrl(target)) {
       return target

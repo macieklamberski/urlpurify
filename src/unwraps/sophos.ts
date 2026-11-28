@@ -6,7 +6,8 @@ import { createQueryUnwrapper } from '../utils.js'
 // Opt-in: the gateway checks the target when the link is clicked, so unwrapping skips the check the
 // recipient's organization put in place.
 export const unwrapSophos = createQueryUnwrapper({
-  hosts: /^(?:us|eu|ca)-[a-z]+-\d\.protection\.sophos\.com$/,
+  subdomains: 'protection.sophos.com',
+  match: /^(?:us|eu|ca)-[a-z]+-\d\.protection\.sophos\.com$/,
   path: '/',
   params: ['u'],
   decode: decodeBase64Url,

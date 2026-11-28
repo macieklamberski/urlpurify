@@ -1,8 +1,6 @@
 import { resolvePathTarget } from '../pathTarget.js'
 import { createUnwrapper } from '../utils.js'
 
-const hosts = ['ct.symplicity.com', 'law-pacific-csm.symplicity.com', 'umd-csm.symplicity.com']
-
 // The target follows `realurl=` in the path unencoded, often with a single slash after the scheme.
 const clickPathRegex = /^\/(?:t\/[a-z]+|track)\/[0-9a-f]{32}\/\d+\/realurl=(?<target>https?:.*)$/i
 
@@ -10,7 +8,7 @@ const clickPathRegex = /^\/(?:t\/[a-z]+|track)\/[0-9a-f]{32}\/\d+\/realurl=(?<ta
 // <school>-csm.symplicity.com/track/<32 hex>/<n>/realurl=<target>).
 // Opt-in: unwrapping removes the sender's click count.
 export const unwrapSymplicity = createUnwrapper({
-  hosts,
+  hosts: ['ct.symplicity.com', 'law-pacific-csm.symplicity.com', 'umd-csm.symplicity.com'],
   unwrap: (url) => {
     const match = clickPathRegex.exec(url.pathname)
 

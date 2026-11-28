@@ -3,13 +3,11 @@ import { createUnwrapper, readParamTarget } from '../utils.js'
 
 const pathRegex = /^\/submit(?:\.php)?\/?$/i
 
-const hosts = ['meneame.net', 'www.meneame.net']
-
 // Menéame submit form (meneame.net/submit.php?url=<target>, also /submit, which /submit.php
 // redirects to, each with or without a trailing slash, on meneame.net and www.meneame.net).
 // Opt-in: unwrapping returns the shared page, not the submit form.
 export const unwrapMeneameSubmit = createUnwrapper({
-  hosts,
+  hosts: ['meneame.net', 'www.meneame.net'],
   ignoreLinkFragment: true,
   unwrap: (url) => {
     if (!isAnyOf(url.pathname, pathRegex)) {

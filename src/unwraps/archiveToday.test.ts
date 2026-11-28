@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'bun:test'
 import { purifyUrl } from '../clean.js'
+import { unwrapperHosts } from '../utils.js'
 import { unwrapArchiveToday } from './archiveToday.js'
 
 describe('unwrapArchiveToday', () => {
@@ -219,5 +220,9 @@ describe('unwrapArchiveToday', () => {
     const value = new URL('https://sub.archive.ph/20240814014001/https://example.com/page')
 
     expect(unwrapArchiveToday(value)).toBeUndefined()
+  })
+
+  it('should register its hosts so the host index skips it on other hosts', () => {
+    expect(unwrapperHosts.has(unwrapArchiveToday)).toBe(true)
   })
 })

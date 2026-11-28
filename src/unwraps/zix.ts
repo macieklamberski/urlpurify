@@ -7,7 +7,7 @@ const linkPathRegex = /^\/u\/[0-9a-f]{8}\/[A-Za-z0-9_-]+$/i
 // page that posts on to the target.
 // Opt-in: unwrapping skips the gateway's click-time check of the target.
 export const unwrapZix = createQueryUnwrapper({
-  hosts: ['link.zixcentral.com'],
+  hosts: 'link.zixcentral.com',
   path: linkPathRegex,
   params: ['u'],
 })

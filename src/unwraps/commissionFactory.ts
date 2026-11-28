@@ -6,7 +6,7 @@ const pathRegex = /^\/\d+\/[bt]\/\d+$/
 // /b/ for a banner click).
 // Opt-in: unwrapping drops the publisher's commission.
 export const unwrapCommissionFactory = createQueryUnwrapper({
-  hosts: ['t.cfjump.com'],
+  hosts: 't.cfjump.com',
   path: pathRegex,
   params: ['Url'],
 })

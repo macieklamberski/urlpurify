@@ -2,8 +2,18 @@ import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 import { googleHostRegex } from './google.js'
 
 const extractors = [
-  createQueryUnwrapper({ hosts: googleHostRegex, path: '/aclk', params: ['adurl'] }),
-  createQueryUnwrapper({ hosts: googleHostRegex, path: '/pagead/iclk', params: ['adurl'] }),
+  createQueryUnwrapper({
+    brands: 'google',
+    match: googleHostRegex,
+    path: '/aclk',
+    params: ['adurl'],
+  }),
+  createQueryUnwrapper({
+    brands: 'google',
+    match: googleHostRegex,
+    path: '/pagead/iclk',
+    params: ['adurl'],
+  }),
   createQueryUnwrapper({
     hosts: ['syndicatedsearch.goog', 'www.syndicatedsearch.goog'],
     path: '/aclk',
@@ -42,7 +52,7 @@ const extractors = [
 // the same cost as an affiliate wrapper.
 export const unwrapGoogleAds = createUnwrapper({
   // The extractors check the exact hosts, these register them in the host index.
-  brands: ['google'],
+  brands: 'google',
   domains: [
     'doubleclick.net',
     'googleadservices.com',
