@@ -47,4 +47,11 @@ describe('unwrapJetpack', () => {
 
     expect(unwrapJetpack(value)).toBeUndefined()
   })
+
+  it('should drop the link fragment', () => {
+    const value = new URL('https://i0.wp.com/cdn.example.com/wp-content/uploads/photo.jpg#top')
+    const expected = 'cdn.example.com/wp-content/uploads/photo.jpg'
+
+    expect(unwrapJetpack(value)).toBe(expected)
+  })
 })

@@ -48,4 +48,13 @@ describe('unwrapYahooMailImage', () => {
 
     expect(unwrapYahooMailImage(value)).toBe(expected)
   })
+
+  it('should drop the link fragment', () => {
+    const value = new URL(
+      'https://ecp.yusercontent.com/mail?url=https%3A%2F%2Fcdn.example.com%2Fphoto.jpg&t=1554239749&sig=DzxCZnIn6aGz57UknE9zMw--~C#top',
+    )
+    const expected = 'https://cdn.example.com/photo.jpg'
+
+    expect(unwrapYahooMailImage(value)).toBe(expected)
+  })
 })

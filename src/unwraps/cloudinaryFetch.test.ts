@@ -79,4 +79,13 @@ describe('unwrapCloudinaryFetch', () => {
 
     expect(performance.now() - start).toBeLessThan(50)
   })
+
+  it('should drop the link fragment', () => {
+    const value = new URL(
+      'https://res.cloudinary.com/demo/image/fetch/w_100/https://cdn.example.com/photo.jpg#top',
+    )
+    const expected = 'https://cdn.example.com/photo.jpg'
+
+    expect(unwrapCloudinaryFetch(value)).toBe(expected)
+  })
 })

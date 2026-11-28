@@ -79,4 +79,13 @@ describe('unwrapWeserv', () => {
 
     expect(unwrapWeserv(value)).toBe(expected)
   })
+
+  it('should drop the link fragment', () => {
+    const value = new URL(
+      'https://wsrv.nl/?url=https%3A%2F%2Fcdn.example.com%2Fphoto.jpg&w=200#top',
+    )
+    const expected = 'https://cdn.example.com/photo.jpg'
+
+    expect(unwrapWeserv(value)).toBe(expected)
+  })
 })

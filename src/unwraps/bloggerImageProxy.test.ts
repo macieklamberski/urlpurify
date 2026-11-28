@@ -107,4 +107,13 @@ describe('unwrapBloggerImageProxy', () => {
 
     expect(unwrapBloggerImageProxy(value)).toBe(expected)
   })
+
+  it('should drop the link fragment', () => {
+    const value = new URL(
+      'https://images-blogger-opensocial.googleusercontent.com/gadgets/proxy?container=blogger&gadget=a&rewriteMime=image%2F*&url=https%3A%2F%2Fcdn.example.com%2Fphoto.jpg#top',
+    )
+    const expected = 'https://cdn.example.com/photo.jpg'
+
+    expect(unwrapBloggerImageProxy(value)).toBe(expected)
+  })
 })

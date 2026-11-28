@@ -32,7 +32,7 @@ export type UnwrapperHosts =
 
 export type UnwrapperOptions = UnwrapperHosts & {
   match?: RegExp // Narrows the hosts above to those it matches, while the hosts feed the host index
-  ignoreLinkFragment?: boolean // The link opens a page, or the page reads the fragment itself
+  ignoreLinkFragment?: boolean // The link opens a page or an image, or the page reads the fragment
 }
 
 export type UnwrapperConfig = UnwrapperOptions & {

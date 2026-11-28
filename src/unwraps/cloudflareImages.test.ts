@@ -88,4 +88,13 @@ describe('unwrapCloudflareImages', () => {
 
     expect(unwrapCloudflareImages(value)).toBeUndefined()
   })
+
+  it('should drop the link fragment', () => {
+    const value = new URL(
+      'https://example.com/cdn-cgi/image/width=100/https://cdn.example.com/photo.jpg#top',
+    )
+    const expected = 'https://cdn.example.com/photo.jpg'
+
+    expect(unwrapCloudflareImages(value)).toBe(expected)
+  })
 })

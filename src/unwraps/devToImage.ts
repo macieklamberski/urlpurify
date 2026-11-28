@@ -8,6 +8,7 @@ const sourcePathRegex = /^\/dynamic\/image\/.*?(?<source>https?(?::|%3a).+)$/i
 // Not included in defaultUnwrappers: unwrapping swaps the resized copy for the original image.
 export const unwrapDevToImage: UrlUnwrapper = createUnwrapper({
   subdomains: 'dev.to',
+  ignoreLinkFragment: true,
   unwrap: (url) => {
     const source = url.pathname.match(sourcePathRegex)?.groups?.source
 

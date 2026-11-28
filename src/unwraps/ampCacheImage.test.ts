@@ -36,11 +36,11 @@ describe('unwrapAmpCacheImage', () => {
     expect(unwrapAmpCacheImage(value)).toBe(expected)
   })
 
-  it('should keep the source query and fragment', () => {
+  it('should keep the source query and drop the link fragment', () => {
     const value = new URL(
       'https://example-files-wordpress-com.cdn.ampproject.org/ii/w680/s/example.files.wordpress.com/2018/03/photo.jpg?w=575#top',
     )
-    const expected = 'https://example.files.wordpress.com/2018/03/photo.jpg?w=575#top'
+    const expected = 'https://example.files.wordpress.com/2018/03/photo.jpg?w=575'
 
     expect(unwrapAmpCacheImage(value)).toBe(expected)
   })

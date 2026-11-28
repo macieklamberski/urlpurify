@@ -8,6 +8,7 @@ const sourcePathRegex = /^\/.*?(?<source>https?(?::|%3a).+)$/i
 // Not included in defaultUnwrappers: unwrapping swaps the resized copy for the original image.
 export const unwrapImagekit: UrlUnwrapper = createUnwrapper({
   hosts: 'ik.imagekit.io',
+  ignoreLinkFragment: true,
   unwrap: (url) => {
     const source = url.pathname.match(sourcePathRegex)?.groups?.source
 

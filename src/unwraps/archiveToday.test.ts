@@ -67,6 +67,13 @@ describe('unwrapArchiveToday', () => {
     expect(unwrapArchiveToday(url)).toBe('http://example.com/links.html')
   })
 
+  it('should treat a target with no scheme and a port as http', () => {
+    const value = new URL('http://archive.today/o/wpeDf/www.example.com:8080/links.html')
+    const expected = 'http://www.example.com:8080/links.html'
+
+    expect(unwrapArchiveToday(value)).toBe(expected)
+  })
+
   it('should return undefined for a short id with no target', () => {
     const url = new URL('https://archive.ph/AbCd1')
 

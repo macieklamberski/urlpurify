@@ -12,6 +12,7 @@ const lastSchemeRegex = /^.*https?(?::|%(?:25)?3a)./i
 // unwrapping swaps the resized copy for the original image.
 export const unwrapCloudinaryFetch: UrlUnwrapper = createUnwrapper({
   anyHost: true,
+  ignoreLinkFragment: true,
   unwrap: (url) => {
     const source = matchPathSource(url.pathname, fetchPathRegex, lastSchemeRegex)
 
