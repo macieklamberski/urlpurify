@@ -69,6 +69,13 @@ describe('unwrapPodcastAddict', () => {
     expect(unwrapPodcastAddict(value)).toBe(expected)
   })
 
+  it('should drop the link fragment after a feed with only its slashes encoded', () => {
+    const value = new URL('https://podcastaddict.com/feed/https:%2F%2Fexample.com%2Frss#episodes')
+    const expected = 'https://example.com/rss'
+
+    expect(unwrapPodcastAddict(value)).toBe(expected)
+  })
+
   it('should keep the link fragment after a raw feed', () => {
     const value = new URL('https://podcastaddict.com/feed/https://example.com/rss#episodes')
     const expected = 'https://example.com/rss#episodes'

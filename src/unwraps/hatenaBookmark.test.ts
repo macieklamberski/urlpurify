@@ -96,6 +96,22 @@ describe('unwrapHatenaBookmark', () => {
       expect(unwrapHatenaBookmark(value)).toBe(expected)
     })
 
+    it('should drop the link fragment after a page with only its slashes encoded', () => {
+      const value = new URL(
+        'http://b.hatena.ne.jp/entry/https:%2F%2Fwww.example.com%2Fentry%2F1#comments',
+      )
+      const expected = 'https://www.example.com/entry/1'
+
+      expect(unwrapHatenaBookmark(value)).toBe(expected)
+    })
+
+    it('should keep the link fragment after a raw page', () => {
+      const value = new URL('https://b.hatena.ne.jp/entry/https://www.example.com/entry/1#comments')
+      const expected = 'https://www.example.com/entry/1#comments'
+
+      expect(unwrapHatenaBookmark(value)).toBe(expected)
+    })
+
     it('should drop the link fragment after an encoded page', () => {
       const value = new URL(
         'http://b.hatena.ne.jp/entry/https%3A%2F%2Fwww.example.com%2Fentry%2F20180302#comments',

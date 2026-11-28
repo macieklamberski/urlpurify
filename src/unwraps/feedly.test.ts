@@ -40,6 +40,15 @@ describe('unwrapFeedly', () => {
       expect(unwrapFeedly(value)).toBe(expected)
     })
 
+    it('should drop the link fragment after a feed with only its slashes encoded', () => {
+      const value = new URL(
+        'https://feedly.com/i/subscription/feed/https:%2F%2Fexample.com%2Ffeed#top',
+      )
+      const expected = 'https://example.com/feed'
+
+      expect(unwrapFeedly(value)).toBe(expected)
+    })
+
     it('should keep the link fragment after a feed with only its scheme colon encoded', () => {
       const value = new URL(
         'https://feedly.com/i/subscription/feed/https%3A//example.com/feed/#top',
