@@ -166,13 +166,18 @@ export const getDecodedParamTarget = (
   return appendLinkFragment(target, url)
 }
 
-const lastSchemeRegex = /^.*https?(?::|%(?:25)?3a)./i
+const lastSchemeRegex = /^.*https?(?::|%3a)./i
 
 // The `source` group of a path regex whose lazy `.*?` searches for a source scheme after a prefix.
 // Matching only up to the last scheme keeps one ahead of every prefix the regex tries, so it never
-// rescans the rest of the path per prefix, which is quadratic on a path with no source.
-export const matchPathSource = (path: string, regex: RegExp): string | undefined => {
-  const head = lastSchemeRegex.exec(path)?.[0]
+// rescans the rest of the path per prefix, which is quadratic on a path with no source. A regex
+// that reads another scheme spelling passes a `headRegex` ending on that same spelling.
+export const matchPathSource = (
+  path: string,
+  regex: RegExp,
+  headRegex = lastSchemeRegex,
+): string | undefined => {
+  const head = headRegex.exec(path)?.[0]
 
   if (!head) {
     return
