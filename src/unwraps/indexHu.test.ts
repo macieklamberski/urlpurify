@@ -52,6 +52,15 @@ describe('unwrapIndexHu', () => {
     expect(unwrapIndexHu(url)).toBe('http://www.example.com/gazdasag/adozas/438374')
   })
 
+  it('should take the link fragment on a section counter link', () => {
+    const value = new URL(
+      'http://index.hu/x?index_tech_cikklink=https%3A%2F%2Fexample.com%2Fpost#top',
+    )
+    const expected = 'https://example.com/post#top'
+
+    expect(unwrapIndexHu(value)).toBe(expected)
+  })
+
   it('should extract a twice-encoded target from a section counter link', () => {
     const url = new URL(
       'http://index.hu/x?index_tech_cikklink=https%253A%252F%252Fexample.com%252Fpost',

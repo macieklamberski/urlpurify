@@ -1,6 +1,6 @@
-import { isAnyOf, isHostOf } from 'trousse'
+import { isAnyOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createQueryUnwrapper, getParamTarget } from '../utils.js'
+import { createQueryUnwrapper, createUnwrapper, readParamTarget } from '../utils.js'
 
 const sectionParamRegex = /^index_[a-z]+_cikklink$/
 
@@ -10,23 +10,26 @@ const unwrapCounter = createQueryUnwrapper({
   params: ['url'],
 })
 
-const unwrapSectionCounter: UrlUnwrapper = (url) => {
-  if (!isHostOf(url, ['dex.hu', 'index.hu']) || !isAnyOf(url.pathname, '/x')) {
-    return
-  }
-
-  for (const key of url.searchParams.keys()) {
-    if (!sectionParamRegex.test(key)) {
-      continue
+const unwrapSectionCounter = createUnwrapper({
+  hosts: ['dex.hu', 'index.hu'],
+  unwrap: (url) => {
+    if (!isAnyOf(url.pathname, '/x')) {
+      return
     }
 
-    const target = getParamTarget(url, key)
+    for (const key of url.searchParams.keys()) {
+      if (!sectionParamRegex.test(key)) {
+        continue
+      }
 
-    if (target) {
-      return target
+      const target = readParamTarget(url, key)
+
+      if (target) {
+        return target
+      }
     }
-  }
-}
+  },
+})
 
 // Index.hu and Dex.hu outbound link counter (index.hu/x.php?id=<id>&url=<target>), on dex.hu,
 // index.hu and vakbarat.index.hu, and the section counter on dex.hu and index.hu that names the
