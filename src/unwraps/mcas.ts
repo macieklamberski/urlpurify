@@ -1,4 +1,4 @@
-import { parseUrl } from 'trousse'
+import { parseUrl, resolveUrl } from 'trousse'
 import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
 // The suffix each cloud's proxy appends to every target host.
@@ -24,7 +24,8 @@ export const unwrapMcas = createUnwrapper({
       return
     }
 
-    const target = parseUrl(value)
+    // The url repair gives a target with no scheme the one the suffix strip needs to parse it.
+    const target = parseUrl(resolveUrl(value))
 
     if (!target) {
       return

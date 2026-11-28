@@ -3,7 +3,8 @@ import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
 // The converter path, then the target host, with a doubled slash or the target's scheme kept.
-const tunisPrefixRegex = /^\/tunis\/(?=\/?(?:https?:\/+)?[a-z0-9-]+(?:\.[a-z0-9-]+)+(?:\/|$))/i
+const tunisPrefixRegex =
+  /^\/tunis\/(?=\/?(?:https?(?::|%(?:25)?3a)(?:\/|%(?:25)?2f)+)?[a-z0-9-]+(?:\.[a-z0-9-]+)+(?:\/|%(?:25)?2f|$))/i
 
 // HanWEB Simplified Chinese converter (<host>[:<port>]/TuniS/<target host>/<path>), which serves
 // a page converted from Traditional Chinese. Hong Kong government and public sites run it on a

@@ -59,4 +59,13 @@ describe('unwrapContactMonkey', () => {
 
     expect(unwrapContactMonkey(url)).toBeUndefined()
   })
+
+  it('should decode an encoded target', () => {
+    const value = new URL(
+      'https://contactmonkey.com/api/v1/tracker?cm_session=d5c73751-a927-42e4-87d0-c5475d0a3459&cm_type=link&cm_link=c8b5151a-60a4-4827-bb5e-2f4e4e18e545&cm_destination=https%3A%2F%2Fwww.example.com%2Fwatch%3Fv%3DWHr0cNF95Ok',
+    )
+    const expected = 'https://www.example.com/watch?v=WHr0cNF95Ok'
+
+    expect(unwrapContactMonkey(value)).toBe(expected)
+  })
 })

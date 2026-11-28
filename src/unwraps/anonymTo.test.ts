@@ -74,4 +74,11 @@ describe('unwrapAnonymTo', () => {
 
     expect(unwrapAnonymTo(url)).toBeUndefined()
   })
+
+  it('should decode an encoded query target', () => {
+    const value = new URL('http://anonym.to/?https%3A%2F%2Fwww.example.com%2Fpost%3Fa%3D1')
+    const expected = 'https://www.example.com/post?a=1'
+
+    expect(unwrapAnonymTo(value)).toBe(expected)
+  })
 })

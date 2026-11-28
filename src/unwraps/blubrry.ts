@@ -3,7 +3,7 @@ import { createPathUnwrapper } from '../pathTarget.js'
 // The show slug, an optional one-letter segment, and then the target, which starts with a scheme
 // or a host. A path with no host after the show is a file Blubrry hosts itself.
 const showPrefixRegex =
-  /^\/[^/]+\/(?:[bps]\/)?(?=\/*(?:https?:|[a-z0-9-]+(?:\.[a-z0-9-]+)+(?::\d+)?\/))/i
+  /^\/[^/]+\/(?:[bps]\/)?(?=\/*(?:https?(?::|%(?:25)?3a)|[a-z0-9-]+(?:\.[a-z0-9-]+)+(?::\d+)?\/))/i
 
 const hosts = ['media.blubrry.com', 'media.rawvoice.com', 'media.techpodcasts.com']
 

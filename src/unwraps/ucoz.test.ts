@@ -4,7 +4,7 @@ import { unwrapUcoz } from './ucoz.js'
 describe('unwrapUcoz', () => {
   it('should extract a target glued onto the site host', () => {
     const value = new URL('https://city-site.ucoz.com//www.example.org/embed/MLANv9VJ5Ws')
-    const expected = 'https://www.example.org/embed/MLANv9VJ5Ws'
+    const expected = 'www.example.org/embed/MLANv9VJ5Ws'
 
     expect(unwrapUcoz(value)).toBe(expected)
   })
@@ -13,15 +13,14 @@ describe('unwrapUcoz', () => {
     const value = new URL(
       'https://crafts-site.ucoz.ua//maps.example.org/services/constructor/1.0/js/?sid=qMkqdbHN9XKY&width=800#map',
     )
-    const expected =
-      'https://maps.example.org/services/constructor/1.0/js/?sid=qMkqdbHN9XKY&width=800#map'
+    const expected = 'maps.example.org/services/constructor/1.0/js/?sid=qMkqdbHN9XKY&width=800#map'
 
     expect(unwrapUcoz(value)).toBe(expected)
   })
 
   it('should extract a target on a site host of another uCoz domain', () => {
     const value = new URL('https://army-site.do.am//www.example.org/embed/2Ya2jWz6KM8')
-    const expected = 'https://www.example.org/embed/2Ya2jWz6KM8'
+    const expected = 'www.example.org/embed/2Ya2jWz6KM8'
 
     expect(unwrapUcoz(value)).toBe(expected)
   })

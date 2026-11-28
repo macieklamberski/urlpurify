@@ -39,4 +39,13 @@ describe('unwrapGroupMail', () => {
 
     expect(unwrapGroupMail(url)).toBeUndefined()
   })
+
+  it('should decode a target whose slashes alone are encoded', () => {
+    const value = new URL(
+      'http://lnk.ie/100BX/e=member@example.org/https:%2F%2Fwww.example.com%2Fp%2Frp927%2F',
+    )
+    const expected = 'https://www.example.com/p/rp927/'
+
+    expect(unwrapGroupMail(value)).toBe(expected)
+  })
 })

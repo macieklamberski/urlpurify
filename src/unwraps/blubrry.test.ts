@@ -93,4 +93,13 @@ describe('unwrapBlubrry', () => {
 
     expect(unwrapBlubrry(url)).toBeUndefined()
   })
+
+  it('should decode an encoded target', () => {
+    const value = new URL(
+      'https://media.blubrry.com/svegot/https%3A%2F%2Fexample.com%2Fepisode.mp3%3Fa%3D1',
+    )
+    const expected = 'https://example.com/episode.mp3?a=1'
+
+    expect(unwrapBlubrry(value)).toBe(expected)
+  })
 })

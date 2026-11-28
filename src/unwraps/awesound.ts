@@ -1,7 +1,7 @@
 import { createPathUnwrapper } from '../pathTarget.js'
 
 // The segment after click-auid is the show's id, and the target keeps its scheme.
-const clickPrefixRegex = /^\/click-auid\/[^/]+\/(?=https?:\/)/i
+const clickPrefixRegex = /^\/click-auid\/[^/]+\/(?=https?(?::|%(?:25)?3a))/i
 
 // Awesound show-notes click counter (awesound.com/click-auid/<show id>/<target>, also on
 // click.awesound.com), with the target unencoded in the path. Awesound now answers with a page on

@@ -1,6 +1,6 @@
 import { isAnyOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createUnwrapper } from '../utils.js'
+import { createUnwrapper, decodeEncodedScheme } from '../utils.js'
 
 const carrierRegex = /[?&]cm_destination=/i
 
@@ -24,6 +24,6 @@ export const unwrapContactMonkey: UrlUnwrapper = createUnwrapper({
       return
     }
 
-    return url.search.slice(match.index + match[0].length)
+    return decodeEncodedScheme(url.search.slice(match.index + match[0].length))
   },
 })

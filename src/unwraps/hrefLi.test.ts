@@ -37,4 +37,11 @@ describe('unwrapHrefLi', () => {
 
     expect(unwrapHrefLi(url)).toBeUndefined()
   })
+
+  it('should decode an encoded target', () => {
+    const value = new URL('https://href.li/?https%3A%2F%2Fexample.com%2Fpost%3Fa%3D1%26b%3D2')
+    const expected = 'https://example.com/post?a=1&b=2'
+
+    expect(unwrapHrefLi(value)).toBe(expected)
+  })
 })

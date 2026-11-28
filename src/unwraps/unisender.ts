@@ -1,6 +1,6 @@
 import { decodeBase64Url } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createUnwrapper, readParamTarget } from '../utils.js'
+import { createUnwrapper, readDecodedTarget, readParamTarget } from '../utils.js'
 
 const hosts = [
   'emlblog.com',
@@ -32,6 +32,10 @@ const hosts = [
 
 const pathRegex = /^\/(?:ru|ua)\/(?:mail|go2|eu1)_link_tracker$/i
 
+const decodeTarget = (value: string): string | undefined => {
+  return decodeBase64Url(value.replaceAll('~', '='))
+}
+
 // Unisender email click tracker (usndr.com/ru/mail_link_tracker?hash=<id>&url=<target>, also
 // /go2_link_tracker and /eu1_link_tracker). Opt-in: unwrapping removes the sender's click count.
 export const unwrapUnisender: UrlUnwrapper = createUnwrapper({
@@ -42,15 +46,7 @@ export const unwrapUnisender: UrlUnwrapper = createUnwrapper({
     }
 
     // An unencoded nested tracker repeats `url`, so the first value is a stub and the last one is
-    // the target.
-    const value = readParamTarget(url, 'url', -1)
-
-    if (!value) {
-      return
-    }
-
-    // Some senders encode the target as base64url with `~` as the padding character. A url holds
-    // a `:` or `.`, which base64 never does, so a url fails to decode and stays as written.
-    return decodeBase64Url(value.replaceAll('~', '=')) ?? value
+    // the target. Some senders encode the target as base64url with `~` as the padding character.
+    return readParamTarget(url, 'url', -1) ?? readDecodedTarget(url, 'url', decodeTarget, -1)
   },
 })

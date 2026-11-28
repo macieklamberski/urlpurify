@@ -1,5 +1,5 @@
 import { isHostOf } from 'trousse'
-import { resolvePathTarget } from '../pathTarget.js'
+import { addArchivedScheme, resolvePathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
@@ -7,8 +7,6 @@ import { createUnwrapper } from '../utils.js'
 const webPathRegex = /^\/web\/\d{14}\/(.+)$/i
 // The persistent id of a collection, as in /info:ndljp/pid/286890/.
 const pidPathRegex = /^\/info:ndljp\/pid\/\d+\/(.+)$/i
-// An archived scheme never has a dot, so `www.example.com:80/` reads as a host with a port.
-const schemeRegex = /^[a-z][a-z\d+-]*:/i
 
 // WARP, the National Diet Library web archive, snapshot (warp.ndl.go.jp/web/<timestamp>/<target>),
 // also the persistent-id form (warp.ndl.go.jp/info:ndljp/pid/<id>/<target>, also on
@@ -27,8 +25,6 @@ export const unwrapNdlWarp: UrlUnwrapper = createUnwrapper({
 
     // WARP's redirect of a scheme-less persistent id names http, as in
     // WE11.jsp?originalUrl=http://, and such an id now redirects to the scheme-less snapshot.
-    const target = resolvePathTarget(url, path)
-
-    return schemeRegex.test(target) ? target : `http://${target}`
+    return addArchivedScheme(resolvePathTarget(url, path))
   },
 })

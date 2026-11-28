@@ -1,10 +1,10 @@
 import { isAnyOf } from 'trousse'
+import { resolvePathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper, decodeEncodedScheme, readParamTarget } from '../utils.js'
 
 const feedPathRegex =
   /^\/i\/(?:subscription|discover\/sources\/search)\/feed(?:\/|%2F)(?<target>.+)$/i
-const encodedTargetRegex = /^https?(?:%3a|:)%2f/i
 const feedFragmentRegex = /^#subscription(?:\/|%2F)feed(?:\/|%2F)(?<target>.+)$/i
 
 const hosts = ['feedly.com', 'www.feedly.com', 'cloud.feedly.com']
@@ -25,15 +25,10 @@ export const unwrapFeedly: UrlUnwrapper = createUnwrapper({
 
     const pathMatch = url.pathname.match(feedPathRegex)
 
+    // An encoded feed holds its own query and fragment, so the link's are Feedly's own. A raw feed
+    // takes both.
     if (pathMatch?.groups) {
-      const target = decodeEncodedScheme(pathMatch.groups.target)
-
-      // An encoded feed holds its own query and fragment, so the link's are Feedly's own.
-      if (encodedTargetRegex.test(pathMatch.groups.target)) {
-        return target
-      }
-
-      return `${target}${url.search}${url.hash}`
+      return resolvePathTarget(url, pathMatch.groups.target, undefined, `${url.search}${url.hash}`)
     }
 
     if (!isAnyOf(url.pathname, fragmentPaths)) {

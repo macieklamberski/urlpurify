@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'bun:test'
+import { purifyUrl } from './clean.js'
 import { createPathUnwrapper, decodePathTarget, resolvePathTarget } from './pathTarget.js'
 
 const prefixRegex = /^\/r\/\d+\//
@@ -12,7 +13,7 @@ describe('createPathUnwrapper', () => {
 
   it('should return the target behind the prefix', () => {
     const value = new URL('https://prefix.example.com/r/42/www.example.org/episode.mp3')
-    const expected = 'https://www.example.org/episode.mp3'
+    const expected = 'www.example.org/episode.mp3'
 
     expect(unwrap(value)).toBe(expected)
   })
@@ -44,7 +45,7 @@ describe('createPathUnwrapper', () => {
 
   it('should keep the query and fragment of the link', () => {
     const value = new URL('https://prefix.example.com/r/42/www.example.org/episode.mp3?t=60#notes')
-    const expected = 'https://www.example.org/episode.mp3?t=60#notes'
+    const expected = 'www.example.org/episode.mp3?t=60#notes'
 
     expect(unwrap(value)).toBe(expected)
   })
@@ -56,7 +57,7 @@ describe('createPathUnwrapper', () => {
       ignoreLinkFragment: true,
     })
     const value = new URL('https://prefix.example.com/r/42/www.example.org/episode.mp3?t=60#notes')
-    const expected = 'https://www.example.org/episode.mp3?t=60'
+    const expected = 'www.example.org/episode.mp3?t=60'
 
     expect(unwrapIgnoring(value)).toBe(expected)
   })
@@ -71,6 +72,13 @@ describe('createPathUnwrapper', () => {
     const value = new URL('https://prefix.example.com/feed/www.example.org/episode.mp3')
 
     expect(unwrap(value)).toBeUndefined()
+  })
+
+  it('should leave a feed scheme to the url repair', () => {
+    const value = 'https://prefix.example.com/r/42/feed://www.example.org/feed.xml'
+    const expected = 'https://www.example.org/feed.xml'
+
+    expect(purifyUrl(value, { unwrappers: [unwrap] })).toBe(expected)
   })
 
   it('should give a target without a scheme http when the scheme is http', () => {
@@ -103,7 +111,7 @@ describe('createPathUnwrapper', () => {
       prefix: prefixRegex,
     })
     const value = new URL('https://cdn.example.com/r/42/www.example.org/episode.mp3')
-    const expected = 'https://www.example.org/episode.mp3'
+    const expected = 'www.example.org/episode.mp3'
 
     expect(unwrapDomain(value)).toBe(expected)
   })
@@ -126,7 +134,7 @@ describe('createPathUnwrapper', () => {
       prefix: prefixRegex,
     })
     const value = new URL('https://prefix.example.com/r/42/www.example.org/episode.mp3')
-    const expected = 'https://www.example.org/episode.mp3'
+    const expected = 'www.example.org/episode.mp3'
 
     expect(unwrapMatched(value)).toBe(expected)
   })

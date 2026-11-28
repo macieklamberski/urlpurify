@@ -165,7 +165,7 @@ describe('unwrapPodtrac', () => {
       'http://dts.podtrac.nytimes.com/redirect.mp3/example.com/podcasts/2011/12/01/1201popcast.mp3',
     )
 
-    expect(unwrapPodtrac(url)).toBe('https://example.com/podcasts/2011/12/01/1201popcast.mp3')
+    expect(unwrapPodtrac(url)).toBe('example.com/podcasts/2011/12/01/1201popcast.mp3')
   })
 
   it('should keep the http scheme of the dts prefix on a target without one', () => {

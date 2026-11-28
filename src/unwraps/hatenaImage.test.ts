@@ -71,4 +71,13 @@ describe('unwrapHatenaImage', () => {
 
     expect(unwrapHatenaImage(value)).toBe(expected)
   })
+
+  it('should decode a source encoded twice', () => {
+    const value = new URL(
+      'https://cdn.image.st-hatena.com/image/scale/abc/x/https%253A%252F%252Fcdn.example.com%252Fphoto.png',
+    )
+    const expected = 'https://cdn.example.com/photo.png'
+
+    expect(unwrapHatenaImage(value)).toBe(expected)
+  })
 })

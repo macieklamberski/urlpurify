@@ -4,7 +4,7 @@ import { createUnwrapper } from '../utils.js'
 
 const hosts = ['fed.brid.gy', 'bsky.brid.gy', 'web.brid.gy']
 
-const pathRegex = /^\/r\/(https?:\/\/.+)$/i
+const pathRegex = /^\/r\/(https?(?::|%(?:25)?3a).+)$/i
 
 // Bridgy Fed redirect for a bridged post or profile (fed.brid.gy/r/<target>, also bsky.brid.gy
 // and web.brid.gy). A browser gets a 301 to the target.

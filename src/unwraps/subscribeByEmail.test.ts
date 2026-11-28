@@ -5,7 +5,7 @@ import { unwrapSubscribeByEmail } from './subscribeByEmail.js'
 describe('unwrapSubscribeByEmail', () => {
   it('should extract a feed that follows the host as https', () => {
     const value = new URL('http://subscribebyemail.com/example.com/rss')
-    const expected = 'https://example.com/rss'
+    const expected = 'example.com/rss'
 
     expect(unwrapSubscribeByEmail(value)).toBe(expected)
   })
@@ -14,28 +14,28 @@ describe('unwrapSubscribeByEmail', () => {
     const value = new URL(
       'https://www.subscribebyemail.com/example.com/users/soundcloud:users:157948983/sounds.rss',
     )
-    const expected = 'https://example.com/users/soundcloud:users:157948983/sounds.rss'
+    const expected = 'example.com/users/soundcloud:users:157948983/sounds.rss'
 
     expect(unwrapSubscribeByEmail(value)).toBe(expected)
   })
 
   it('should extract a feed whose host has capital letters', () => {
     const value = new URL('http://subscribebyemail.com/ComicCorner.example.com/feed/')
-    const expected = 'https://ComicCorner.example.com/feed/'
+    const expected = 'ComicCorner.example.com/feed/'
 
     expect(unwrapSubscribeByEmail(value)).toBe(expected)
   })
 
   it('should keep the query string of the feed', () => {
     const value = new URL('http://subscribebyemail.com/onthemoney.example.com/rss?PID=194')
-    const expected = 'https://onthemoney.example.com/rss?PID=194'
+    const expected = 'onthemoney.example.com/rss?PID=194'
 
     expect(unwrapSubscribeByEmail(value)).toBe(expected)
   })
 
   it('should keep a feed host with a port', () => {
     const value = new URL('http://subscribebyemail.com/example.com:8080/feed/podcast/')
-    const expected = 'https://example.com:8080/feed/podcast/'
+    const expected = 'example.com:8080/feed/podcast/'
 
     expect(unwrapSubscribeByEmail(value)).toBe(expected)
   })

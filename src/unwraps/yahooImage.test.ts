@@ -87,4 +87,13 @@ describe('unwrapYahooImage', () => {
 
     expect(unwrapYahooImage(value)).toBe(expected)
   })
+
+  it('should decode a source encoded twice', () => {
+    const value = new URL(
+      'https://s.yimg.com/ny/api/res/1.2/abc/YXBwaWQ9aGlnaGxhbmRlcjt3PTk2MA--/https%253A%252F%252Fcdn.example.com%252Fphoto.png',
+    )
+    const expected = 'https://cdn.example.com/photo.png'
+
+    expect(unwrapYahooImage(value)).toBe(expected)
+  })
 })

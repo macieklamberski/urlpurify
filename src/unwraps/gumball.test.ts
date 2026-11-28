@@ -5,9 +5,7 @@ describe('unwrapGumball', () => {
   it('should extract a target that follows the host', () => {
     const url = new URL('https://2.gum.fm/example.com/e/media.transistor.fm/3f064696/a5c0bb98.mp3')
 
-    expect(unwrapGumball(url)).toBe(
-      'https://example.com/e/media.transistor.fm/3f064696/a5c0bb98.mp3',
-    )
+    expect(unwrapGumball(url)).toBe('example.com/e/media.transistor.fm/3f064696/a5c0bb98.mp3')
   })
 
   it('should extract a target after the show id and keep its query string', () => {
@@ -16,14 +14,14 @@ describe('unwrapGumball', () => {
     )
 
     expect(unwrapGumball(url)).toBe(
-      'https://example.com/episodes/7e2d7a26-bab4-4ee3-b7f7-552c91968a7e.mp3?rss_browser=BAhJIgtDaHJvbWUGOgZFVA%3D%3D',
+      'example.com/episodes/7e2d7a26-bab4-4ee3-b7f7-552c91968a7e.mp3?rss_browser=BAhJIgtDaHJvbWUGOgZFVA%3D%3D',
     )
   })
 
   it('should leave the next prefix in a chain for the next pass', () => {
     const url = new URL('https://2.gum.fm/op3.dev/e/pdcn.co/e/example.com/16ed6449/ad534b2c.mp3')
 
-    expect(unwrapGumball(url)).toBe('https://op3.dev/e/pdcn.co/e/example.com/16ed6449/ad534b2c.mp3')
+    expect(unwrapGumball(url)).toBe('op3.dev/e/pdcn.co/e/example.com/16ed6449/ad534b2c.mp3')
   })
 
   it('should return undefined when the first segment is not a host', () => {

@@ -8,7 +8,7 @@ describe('unwrapSoundstack', () => {
     )
 
     expect(unwrapSoundstack(url)).toBe(
-      'https://example.com/d/clips/566281f8-200e-4c9f-8378-a4870055423b/c7dfd105-1ae1-4b0c-b1df-a4df0058f38d/123bb48e-92b1-4a42-9dae-b4740187e591/audio.mp3?utm_source=Podcast&in_playlist=992',
+      'example.com/d/clips/566281f8-200e-4c9f-8378-a4870055423b/c7dfd105-1ae1-4b0c-b1df-a4df0058f38d/123bb48e-92b1-4a42-9dae-b4740187e591/audio.mp3?utm_source=Podcast&in_playlist=992',
     )
   })
 

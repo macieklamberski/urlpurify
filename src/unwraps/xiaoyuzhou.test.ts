@@ -8,7 +8,7 @@ describe('unwrapXiaoyuzhou', () => {
     )
 
     expect(unwrapXiaoyuzhou(url)).toBe(
-      'https://media.xyzcdn.net/632bdd5ef9101a1a5422db47/lppmLfBt883nEJUupEj3a1lnPRPm.m4a',
+      'media.xyzcdn.net/632bdd5ef9101a1a5422db47/lppmLfBt883nEJUupEj3a1lnPRPm.m4a',
     )
   })
 
@@ -17,7 +17,7 @@ describe('unwrapXiaoyuzhou', () => {
       'http://dts-api.xiaoyuzhoufm.com/track/632bdd5ef9101a1a5422db47/69f09407740bacea87735df4/media.xyzcdn.net/FvOFz_SxU5xJROBoHDhPB9CbwNzB.m4a',
     )
 
-    expect(unwrapXiaoyuzhou(url)).toBe('https://media.xyzcdn.net/FvOFz_SxU5xJROBoHDhPB9CbwNzB.m4a')
+    expect(unwrapXiaoyuzhou(url)).toBe('media.xyzcdn.net/FvOFz_SxU5xJROBoHDhPB9CbwNzB.m4a')
   })
 
   it('should keep the target query string', () => {
@@ -25,9 +25,7 @@ describe('unwrapXiaoyuzhou', () => {
       'https://dts-api.xiaoyuzhoufm.com/track/632bdd5ef9101a1a5422db47/69f09407740bacea87735df4/media.xyzcdn.net/FvOFz_SxU5xJROBoHDhPB9CbwNzB.m4a?t=120',
     )
 
-    expect(unwrapXiaoyuzhou(url)).toBe(
-      'https://media.xyzcdn.net/FvOFz_SxU5xJROBoHDhPB9CbwNzB.m4a?t=120',
-    )
+    expect(unwrapXiaoyuzhou(url)).toBe('media.xyzcdn.net/FvOFz_SxU5xJROBoHDhPB9CbwNzB.m4a?t=120')
   })
 
   it('should return undefined for a target outside media.xyzcdn.net', () => {

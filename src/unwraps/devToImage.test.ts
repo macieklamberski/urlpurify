@@ -69,4 +69,13 @@ describe('unwrapDevToImage', () => {
 
     expect(unwrapDevToImage(value)).toBe(expected)
   })
+
+  it('should decode a source encoded twice', () => {
+    const value = new URL(
+      'https://media2.dev.to/dynamic/image/width=100/https%253A%252F%252Fcdn.example.com%252Fphoto.png',
+    )
+    const expected = 'https://cdn.example.com/photo.png'
+
+    expect(unwrapDevToImage(value)).toBe(expected)
+  })
 })

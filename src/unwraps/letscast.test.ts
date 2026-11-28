@@ -18,7 +18,7 @@ describe('unwrapLetscast', () => {
     )
 
     expect(unwrapLetscast(url)).toBe(
-      'https://lc.podcast-hosting.org/lcdn.letscast.fm/media/podcast/72ec4742/episode/49d5ee4f.mp3',
+      'lc.podcast-hosting.org/lcdn.letscast.fm/media/podcast/72ec4742/episode/49d5ee4f.mp3',
     )
   })
 

@@ -1,6 +1,6 @@
 import { resolveUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createUnwrapper, readParamTarget } from '../utils.js'
+import { createUnwrapper, decodeEncodedScheme, getParamValues } from '../utils.js'
 
 // A site with a base path serves the optimizer under it.
 const imagePathRegex = /^(?:\/[^/]+)*\/_next\/image$/i
@@ -16,12 +16,13 @@ export const unwrapNextImage: UrlUnwrapper = createUnwrapper({
       return
     }
 
-    const source = readParamTarget(url, 'url', -1, 'space')
+    // A path source is read raw, since it resolves on the site.
+    const source = getParamValues(url, 'url', 'space').at(-1)
 
     if (!source) {
       return
     }
 
-    return resolveUrl(source, url.origin)
+    return resolveUrl(decodeEncodedScheme(source), url.origin)
   },
 })

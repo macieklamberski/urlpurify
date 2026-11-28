@@ -3,7 +3,7 @@ import type { UrlUnwrapper } from '../types.js'
 import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
 // The target keeps its scheme, as in /download/http://example.com/file.pdf.
-const downloadPrefixRegex = /^\/download\/(?=https?:\/)/i
+const downloadPrefixRegex = /^\/download\/(?=https?(?::|%(?:25)?3a))/i
 
 const extractDownload = createQueryUnwrapper({
   hosts: ['dstats.net', 'www.dstats.net'],

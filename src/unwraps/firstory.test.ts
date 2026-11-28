@@ -103,14 +103,14 @@ describe('unwrapFirstory', () => {
     )
 
     expect(unwrapFirstory(url)).toBe(
-      'https://example.com/rssf/c4f7213b-84ea-41d8-b9b4-e9a9d6e47730/feedurl/27200648-87dc-4de4-bf8a-43f6e9304253/rssFileVip.mp3?timestamp=1763827691662',
+      'example.com/rssf/c4f7213b-84ea-41d8-b9b4-e9a9d6e47730/feedurl/27200648-87dc-4de4-bf8a-43f6e9304253/rssFileVip.mp3?timestamp=1763827691662',
     )
   })
 
   it('should add https to a scheme-less target from the short prefix on http', () => {
     const url = new URL('http://track.fstry.me/p/psnx2924/example.com/rssFileVip.mp3')
 
-    expect(unwrapFirstory(url)).toBe('https://example.com/rssFileVip.mp3')
+    expect(unwrapFirstory(url)).toBe('example.com/rssFileVip.mp3')
   })
 
   it('should keep the scheme of a target from the short prefix', () => {

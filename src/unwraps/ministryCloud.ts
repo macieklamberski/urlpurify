@@ -9,5 +9,5 @@ const mediaPrefixRegex = /^\/r\/[^/]+\//i
 export const unwrapMinistryCloud = createPathUnwrapper({
   hosts: 'historian.ministrycloud.com',
   prefix: mediaPrefixRegex,
-  scheme: 'http',
+  scheme: 'http', // The redirect names http for a target with no scheme, probed 2026-11-28
 })

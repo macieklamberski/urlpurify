@@ -8,7 +8,7 @@ describe('unwrapTheRegister', () => {
     )
 
     expect(unwrapTheRegister(url)).toBe(
-      'https://www.theregister.com/2024/03/08/microsoft_confirms_russian_spies_stole/',
+      'www.theregister.com/2024/03/08/microsoft_confirms_russian_spies_stole/',
     )
   })
 
@@ -27,7 +27,7 @@ describe('unwrapTheRegister', () => {
       'https://go.theregister.com/feed/www.reghardware.co.uk/2009/12/17/lockface_usb/',
     )
 
-    expect(unwrapTheRegister(url)).toBe('https://www.reghardware.co.uk/2009/12/17/lockface_usb/')
+    expect(unwrapTheRegister(url)).toBe('www.reghardware.co.uk/2009/12/17/lockface_usb/')
   })
 
   it('should return undefined for a target on another site', () => {
@@ -78,7 +78,7 @@ describe('unwrapTheRegister', () => {
     )
 
     expect(unwrapTheRegister(url)).toBe(
-      'https://www.theregister.com/2024/03/08/microsoft_confirms_russian_spies_stole/',
+      'www.theregister.com/2024/03/08/microsoft_confirms_russian_spies_stole/',
     )
   })
 })

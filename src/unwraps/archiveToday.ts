@@ -1,11 +1,9 @@
-import { resolvePathTarget } from '../pathTarget.js'
+import { addArchivedScheme, resolvePathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 import { appendLinkFragment, createUnwrapper } from '../utils.js'
 
 const hostRegex = /^(?:www\.)?archive\.(?:is|ph|today|md|fo|vn|li)$/
 const pathRegex = /^\/(?:\d{14}|\d{4}\.\d{2}\.\d{2}-\d{6}|o\/[^/]+|newest)\/(.+)$/i
-// An archived scheme never has a dot, so `www.example.com:80/` reads as a host with a port.
-const schemeRegex = /^[a-z][a-z\d+-]*:/i
 const escapedQueryRegex = /%3F/i
 const selectionHashRegex = /^#selection-\d+\.\d+-\d+\.\d+$/i
 
@@ -30,7 +28,7 @@ export const unwrapArchiveToday: UrlUnwrapper = createUnwrapper({
     )
 
     // An older /o/ link carries an http target with no scheme at all.
-    const unwrapped = schemeRegex.test(target) ? target : `http://${target}`
+    const unwrapped = addArchivedScheme(target)
 
     return selectionHashRegex.test(url.hash) ? unwrapped : appendLinkFragment(unwrapped, url)
   },

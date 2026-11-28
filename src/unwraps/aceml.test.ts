@@ -127,4 +127,10 @@ describe('unwrapAceml', () => {
 
     expect(unwrapAceml(value)).toBe(expected)
   })
+
+  it('should return undefined for a relative value', () => {
+    const value = new URL('https://abc.acemlna.com/Prod/link-tracker?redirectUrl=/local/page')
+
+    expect(unwrapAceml(value)).toBeUndefined()
+  })
 })

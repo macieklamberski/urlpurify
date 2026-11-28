@@ -1,5 +1,5 @@
 import { isHostOf } from 'trousse'
-import { resolvePathTarget } from '../pathTarget.js'
+import { addArchivedScheme, resolvePathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
@@ -32,6 +32,6 @@ export const unwrapVefsafn: UrlUnwrapper = createUnwrapper({
       return
     }
 
-    return resolvePathTarget(url, match[1])
+    return addArchivedScheme(resolvePathTarget(url, match[1]))
   },
 })

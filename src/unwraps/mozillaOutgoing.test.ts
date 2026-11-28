@@ -60,4 +60,13 @@ describe('unwrapMozillaOutgoing', () => {
 
     expect(unwrapMozillaOutgoing(value)).toBe(expected)
   })
+
+  it('should keep the query of the link after a raw target', () => {
+    const value = new URL(
+      'https://outgoing.prod.mozaws.net/v1/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/https://example.com/article?a=1',
+    )
+    const expected = 'https://example.com/article?a=1'
+
+    expect(unwrapMozillaOutgoing(value)).toBe(expected)
+  })
 })

@@ -49,4 +49,13 @@ describe('unwrapDeviantartOutgoing', () => {
 
     expect(unwrapDeviantartOutgoing(url)).toBeUndefined()
   })
+
+  it('should decode an encoded target', () => {
+    const value = new URL(
+      'https://www.deviantart.com/users/outgoing?https%3A%2F%2Fexample.com%2Fshop',
+    )
+    const expected = 'https://example.com/shop'
+
+    expect(unwrapDeviantartOutgoing(value)).toBe(expected)
+  })
 })
