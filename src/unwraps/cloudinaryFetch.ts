@@ -1,4 +1,4 @@
-import { decodePathTarget } from '../pathTarget.js'
+import { decodePercent } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { matchPathSource } from '../utils.js'
 
@@ -15,5 +15,6 @@ export const unwrapCloudinaryFetch: UrlUnwrapper = (url) => {
     return
   }
 
-  return `${decodePathTarget(source)}${url.search}${url.hash}`
+  // Cloudinary decodes a fetch source once, so its `%3F` is the source's own query.
+  return decodePercent(`${source}${url.search}${url.hash}`)
 }

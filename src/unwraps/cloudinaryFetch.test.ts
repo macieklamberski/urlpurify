@@ -2,11 +2,11 @@ import { describe, expect, it } from 'bun:test'
 import { unwrapCloudinaryFetch } from './cloudinaryFetch.js'
 
 describe('unwrapCloudinaryFetch', () => {
-  it('should keep a literal %25 in the source as written', () => {
+  it('should decode the source once, as Cloudinary fetches it', () => {
     const value = new URL(
-      'https://res.cloudinary.com/demo/image/fetch/w_100/https://cdn.example.com/a%2520b.png',
+      'https://res.cloudinary.com/demo/image/fetch/w_100/https://cdn.example.com/a.png%3Fw%3D100',
     )
-    const expected = 'https://cdn.example.com/a%2520b.png'
+    const expected = 'https://cdn.example.com/a.png?w=100'
 
     expect(unwrapCloudinaryFetch(value)).toBe(expected)
   })
