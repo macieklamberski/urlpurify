@@ -15,12 +15,12 @@ type HostList = Pattern | ReadonlyArray<Pattern>
 
 // `hosts` matches a host exactly, or by regex. `domains` also matches every subdomain, and
 // `subdomains` matches only the subdomains, never the domain itself. `brands` matches a brand on
-// any tld, as `getBrandLabels` reads it, and with `domains` also those.
+// any tld, as `getBrandLabels` reads it, and with any of the other three also those.
 export type UnwrapperHosts =
   | { hosts: HostList; domains?: never; subdomains?: never; brands?: never }
   | { domains: HostList; hosts?: never; subdomains?: never; brands?: never }
   | { subdomains: HostList; hosts?: never; domains?: never; brands?: never }
-  | { brands: ReadonlyArray<string>; domains?: HostList; hosts?: never; subdomains?: never }
+  | { brands: ReadonlyArray<string>; hosts?: HostList; domains?: HostList; subdomains?: HostList }
 
 export type UnwrapperOptions = UnwrapperHosts & {
   match?: RegExp // Narrows the hosts above to those it matches, while the hosts feed the host index
@@ -267,9 +267,9 @@ const registerHosts = (unwrap: UrlUnwrapper, config: UnwrapperHosts): void => {
 }
 
 // An unwrapper that runs `unwrap` only on a url on `hosts`, matched exactly or by regex, on
-// `domains` or any of their subdomains, or only on `subdomains` of the domains given, and on a
-// host `match` matches when given. The target
-// takes the link's fragment per `appendLinkFragment`, unless `ignoreLinkFragment` is set.
+// `domains` or any of their subdomains, only on `subdomains` of the domains given, or on `brands`
+// on any tld beside any of those, and on a host `match` matches when given. The target takes the
+// link's fragment per `appendLinkFragment`, unless `ignoreLinkFragment` is set.
 export const createUnwrapper = (config: UnwrapperConfig): UrlUnwrapper => {
   const isOnHost = (url: URL): boolean => {
     if (config.match && !isHostOf(url, config.match)) {
@@ -281,7 +281,15 @@ export const createUnwrapper = (config: UnwrapperConfig): UrlUnwrapper => {
         return true
       }
 
-      return config.domains !== undefined && isHostOrSubdomainOf(url, config.domains)
+      if (config.domains !== undefined && isHostOrSubdomainOf(url, config.domains)) {
+        return true
+      }
+
+      if (config.subdomains !== undefined && isSubdomainOf(url, config.subdomains)) {
+        return true
+      }
+
+      return config.hosts !== undefined && isHostOf(url, config.hosts)
     }
 
     if (config.domains !== undefined) {

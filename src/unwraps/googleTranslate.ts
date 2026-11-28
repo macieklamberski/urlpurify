@@ -1,6 +1,6 @@
 import { getQueryParam, getSubdomain, isAnyOf, isHostOf, startsWithAnyOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamTarget } from '../utils.js'
+import { createUnwrapper, readParamTarget } from '../utils.js'
 
 // translate.google.<TLD> and its www. host, the hosts the walk shows on the translate paths.
 const googleTranslateHostRegex =
@@ -9,6 +9,8 @@ const googleTranslateHostRegex =
 const googleTranslatePaths = ['/translate', '/website']
 
 const proxyDomains = ['translate.goog']
+// googleusercontent.com gives third parties subdomains, such as Apps Script web apps.
+const frameHosts = ['translate.googleusercontent.com']
 const proxyParamPrefix = '_x_tr_'
 
 const proxyLabelRegex = /^[a-z0-9-]+$/
@@ -50,7 +52,7 @@ const unwrapWebsiteProxy: UrlUnwrapper = (url) => {
     .filter((part) => part && !startsWithAnyOf(part, proxyParamPrefix))
     .join('&')
 
-  return `${scheme}://${host}${url.pathname}${query ? `?${query}` : ''}${url.hash}`
+  return `${scheme}://${host}${url.pathname}${query ? `?${query}` : ''}`
 }
 
 // Google Translate ([www.]translate.google.<TLD>/translate?u=<target> and /website?u=<target>),
@@ -58,22 +60,25 @@ const unwrapWebsiteProxy: UrlUnwrapper = (url) => {
 // proxy (<dashed host>.translate.goog/<path>?_x_tr_sl=<lang>), rebuilt without the _x_tr_ params.
 // Opt-in: it renders the target translated, so unwrapping discards the translation the user
 // wanted.
-export const unwrapGoogleTranslate: UrlUnwrapper = (url) => {
-  const proxyTarget = unwrapWebsiteProxy(url)
+export const unwrapGoogleTranslate: UrlUnwrapper = createUnwrapper({
+  brands: ['google'],
+  hosts: frameHosts,
+  subdomains: proxyDomains,
+  unwrap: (url) => {
+    const proxyTarget = unwrapWebsiteProxy(url)
 
-  if (proxyTarget) {
-    return proxyTarget
-  }
+    if (proxyTarget) {
+      return proxyTarget
+    }
 
-  const isTranslatePage =
-    isHostOf(url, googleTranslateHostRegex) && isAnyOf(url.pathname, googleTranslatePaths)
-  // googleusercontent.com gives third parties subdomains, such as Apps Script web apps.
-  const isTranslateFrame =
-    isHostOf(url, 'translate.googleusercontent.com') && isAnyOf(url.pathname, '/translate_c')
+    const isTranslatePage =
+      isHostOf(url, googleTranslateHostRegex) && isAnyOf(url.pathname, googleTranslatePaths)
+    const isTranslateFrame = isHostOf(url, frameHosts) && isAnyOf(url.pathname, '/translate_c')
 
-  if (!isTranslatePage && !isTranslateFrame) {
-    return
-  }
+    if (!isTranslatePage && !isTranslateFrame) {
+      return
+    }
 
-  return getParamTarget(url, 'u')
-}
+    return readParamTarget(url, 'u')
+  },
+})

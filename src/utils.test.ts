@@ -887,6 +887,52 @@ describe('createUnwrapper with brands', () => {
     expect(unwrap(value)).toBe(expected)
   })
 
+  it('should run the body on a host given beside the brands', () => {
+    const unwrap = createUnwrapper({
+      brands: ['example'],
+      hosts: 'click.images.test',
+      unwrap: getTarget,
+    })
+    const value = new URL('https://click.images.test/?target=https://example.org/post')
+    const expected = 'https://example.org/post'
+
+    expect(unwrap(value)).toBe(expected)
+  })
+
+  it('should run the body on a subdomain given beside the brands', () => {
+    const unwrap = createUnwrapper({
+      brands: ['example'],
+      subdomains: 'images.test',
+      unwrap: getTarget,
+    })
+    const value = new URL('https://site.images.test/?target=https://example.org/post')
+    const expected = 'https://example.org/post'
+
+    expect(unwrap(value)).toBe(expected)
+  })
+
+  it('should return undefined on the domain itself given as subdomains beside the brands', () => {
+    const unwrap = createUnwrapper({
+      brands: ['example'],
+      subdomains: 'images.test',
+      unwrap: getTarget,
+    })
+    const value = new URL('https://images.test/?target=https://example.org/post')
+
+    expect(unwrap(value)).toBeUndefined()
+  })
+
+  it('should register the brands and the hosts in the host index', () => {
+    const unwrap = createUnwrapper({
+      brands: ['example'],
+      hosts: 'click.images.test',
+      unwrap: getTarget,
+    })
+    const expected = ['click.images.test', 'example.*']
+
+    expect(unwrapperHosts.get(unwrap)).toEqual(expected)
+  })
+
   it('should register the brands and the domains in the host index', () => {
     const unwrap = createUnwrapper({
       brands: ['example'],

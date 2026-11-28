@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'bun:test'
+import { unwrapperHosts } from '../utils.js'
 import { unwrapYandexTurbo } from './yandexTurbo.js'
 
 describe('unwrapYandexTurbo', () => {
@@ -176,5 +177,9 @@ describe('unwrapYandexTurbo', () => {
     const url = new URL('https://yandex.ru.example.com/turbo?text=https%3A%2F%2Fexample.com%2F')
 
     expect(unwrapYandexTurbo(url)).toBeUndefined()
+  })
+
+  it('should register its hosts so the host index skips it on other hosts', () => {
+    expect(unwrapperHosts.has(unwrapYandexTurbo)).toBe(true)
   })
 })

@@ -1,5 +1,5 @@
 import type { UrlUnwrapper } from '../types.js'
-import { createQueryUnwrapper } from '../utils.js'
+import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 import { googleHostRegex } from './google.js'
 
 const extractors = [
@@ -37,12 +37,22 @@ const extractors = [
 // {ad,adclick.g,googleads.g}.doubleclick.net/pcs/click?adurl=<target>).
 // Not included in defaultUnwrappers: an ad click pays the publisher who showed the ad, and
 // unwrapping removes that payment, the same cost as an affiliate wrapper.
-export const unwrapGoogleAds: UrlUnwrapper = (url) => {
-  for (const extract of extractors) {
-    const target = extract(url)
+export const unwrapGoogleAds: UrlUnwrapper = createUnwrapper({
+  // The extractors check the exact hosts, these register them in the host index.
+  brands: ['google'],
+  domains: [
+    'doubleclick.net',
+    'googleadservices.com',
+    'googlesyndication.com',
+    'syndicatedsearch.goog',
+  ],
+  unwrap: (url) => {
+    for (const extract of extractors) {
+      const target = extract(url)
 
-    if (target) {
-      return target
+      if (target) {
+        return target
+      }
     }
-  }
-}
+  },
+})
