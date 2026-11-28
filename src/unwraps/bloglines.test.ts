@@ -81,6 +81,13 @@ describe('unwrapBloglines', () => {
       expect(purifyUrl(value, { unwrappers: [unwrapBloglines] })).toBe(value)
     })
 
+    it('should keep the link query and fragment when only the colon is encoded', () => {
+      const value = new URL('https://www.bloglines.com/sub/https%3A//example.com/feed?id=3#top')
+      const expected = 'https://example.com/feed?id=3#top'
+
+      expect(unwrapBloglines(value)).toBe(expected)
+    })
+
     it('should drop the link fragment', () => {
       const value = new URL('http://www.bloglines.com/sub/http%3A%2F%2Fexample.com%2Ffeed#comments')
       const expected = 'http://example.com/feed'

@@ -5,7 +5,6 @@ import {
   createQueryUnwrapper,
   createUnwrapper,
   getBrandLabels,
-  getParamTarget,
   getUtf8ByteLength,
   readParamTarget,
   unwrapperHosts,
@@ -1064,24 +1063,6 @@ describe('readParamTarget', () => {
     const expected = 'https://www.example.com/episode'
 
     expect(readParamTarget(value, 'url')).toBe(expected)
-  })
-})
-
-describe('getParamTarget', () => {
-  it('should keep the link fragment on an unencoded target', () => {
-    const value = new URL('https://redirect.example.com/?url=https://www.example.com/guide#install')
-    const expected = 'https://www.example.com/guide#install'
-
-    expect(getParamTarget(value, 'url')).toBe(expected)
-  })
-
-  it('should prefer the encoded fragment of the target over the link fragment', () => {
-    const value = new URL(
-      'https://redirect.example.com/?url=https%3A%2F%2Fwww.example.com%2Fguide%23setup#install',
-    )
-    const expected = 'https://www.example.com/guide#setup'
-
-    expect(getParamTarget(value, 'url')).toBe(expected)
   })
 })
 

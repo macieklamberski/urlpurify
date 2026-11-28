@@ -161,13 +161,13 @@ const unwrapExample = createQueryUnwrapper({
 purifyUrl(url, { unwrappers: [...defaultUnwrappers, unwrapExample] })
 ```
 
-`path` is optional. It takes an exact path or a list of them, both compared in any case, or a regex, tested as written. `params` are tried in order, and the first that holds a value in http, or with no scheme, wins. A value in another scheme, such as `myapp://open`, is skipped.
+`path` is optional. It takes an exact path or a list of them, both compared in any case, or a regex, tested as written. `params` are tried in order, and the first whose value the url repair turns into an http url wins: a full url, or a bare host such as `example.com/post`. A value it can't repair is skipped, such as `myapp://open`, a relative path or a title.
 
 Three options read a carrier that holds more than a plain value:
 
 - **`index`** picks which value of a repeated param to read, such as `-1` for the last. A tracker nested unencoded in the carrier repeats the param, and the last value is the target.
 - **`plus`** sets how a `+` in the value reads: `'space'`, as form encoding writes a space, or `'keep'`, as a literal plus. Without it, a `+` reads as a space unless the value is an unencoded url.
-- **`decode`** decodes the value, such as trousse's `decodeBase64` or `decodeBase64Url` for a base64 carrier. A decoded value in another scheme is skipped, and the next param is tried. It reads a `+` as a plus, so it takes no `plus`, and passing both is a type error.
+- **`decode`** decodes the value, such as trousse's `decodeBase64` or `decodeBase64Url` for a base64 carrier. A decoded value the url repair can't use is skipped, and the next param is tried. It reads a `+` as a plus, so it takes no `plus`, and passing both is a type error.
 
 A value still encoded after one decode, starting with an encoded scheme such as `https%3A` or `https:%2F`, is decoded once more. A malformed escape, or one in a legacy charset such as `%E9` for é in Latin-1, stays as written.
 
@@ -177,7 +177,7 @@ The target takes the link's fragment as `createUnwrapper` describes, so `example
 
 ### `createPathUnwrapper(config)`
 
-Builds an unwrapper for a target glued into the path behind a prefix, as podcast analytics services do. It takes the same `hosts`, `domains`, `subdomains` or `brands` as `createUnwrapper`:
+Builds an unwrapper for a target glued into the path behind a prefix, as podcast analytics services do. It takes the same host keys as `createUnwrapper`, `anyHost` and `match` included:
 
 ```typescript
 import { createPathUnwrapper, defaultUnwrappers, purifyUrl } from 'urlpurifier'
