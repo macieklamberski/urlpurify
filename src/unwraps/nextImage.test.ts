@@ -38,6 +38,15 @@ describe('unwrapNextImage', () => {
     expect(unwrapNextImage(value)).toBe(expected)
   })
 
+  it('should read a raw plus in an unencoded source as a space', () => {
+    const value = new URL(
+      'https://example.com/_next/image?url=https://cdn.example.com/C++_logo.png&w=640',
+    )
+    const expected = 'https://cdn.example.com/C%20%20_logo.png'
+
+    expect(unwrapNextImage(value)).toBe(expected)
+  })
+
   it('should return undefined without a source', () => {
     const value = new URL('https://example.com/_next/image?w=640&q=75')
 
