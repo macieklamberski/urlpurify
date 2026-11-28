@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'bun:test'
+import { unwrapperHosts } from '../utils.js'
 import { unwrapPinterestPin } from './pinterestPin.js'
 
 describe('unwrapPinterestPin', () => {
@@ -187,5 +188,17 @@ describe('unwrapPinterestPin', () => {
     )
 
     expect(unwrapPinterestPin(value)).toBeUndefined()
+  })
+
+  it('should return undefined on a pinterest subdomain of another site', () => {
+    const value = new URL(
+      'https://pinterest.example.com/pin/create/button/?url=https%3A%2F%2Fexample.com%2Fpost',
+    )
+
+    expect(unwrapPinterestPin(value)).toBeUndefined()
+  })
+
+  it('should register its hosts so the host index skips it on other hosts', () => {
+    expect(unwrapperHosts.has(unwrapPinterestPin)).toBe(true)
   })
 })

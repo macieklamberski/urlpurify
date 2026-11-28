@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'bun:test'
+import { unwrapperHosts } from '../utils.js'
 import { unwrapGoogleTranslate } from './googleTranslate.js'
 
 describe('unwrapGoogleTranslate', () => {
@@ -226,5 +227,9 @@ describe('unwrapGoogleTranslate', () => {
     const url = new URL('https://1-www-example-com.translate.goog/post?_x_tr_enc=1&_x_tr_sl=en')
 
     expect(unwrapGoogleTranslate(url)).toBe('https://www.example.com/post')
+  })
+
+  it('should register its hosts so the host index skips it on other hosts', () => {
+    expect(unwrapperHosts.has(unwrapGoogleTranslate)).toBe(true)
   })
 })
