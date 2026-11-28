@@ -200,6 +200,16 @@ describe('resolvePathTarget', () => {
     expect(resolvePathTarget(url, value)).toBe(expected)
   })
 
+  it('should drop the query of the link after a target encoded twice', () => {
+    const url = new URL(
+      'https://wrapper.example.com/r/https%253A%252F%252Fexample.com%252Fpost?w=640',
+    )
+    const value = 'https%253A%252F%252Fexample.com%252Fpost'
+    const expected = 'https://example.com/post'
+
+    expect(resolvePathTarget(url, value)).toBe(expected)
+  })
+
   it('should keep the query of the link after a target with its colon alone encoded', () => {
     const url = new URL('https://wrapper.example.com/r/https%3A//example.com/post?id=7')
     const value = 'https%3A//example.com/post'

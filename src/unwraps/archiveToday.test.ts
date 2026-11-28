@@ -34,6 +34,15 @@ describe('unwrapArchiveToday', () => {
     expect(unwrapArchiveToday(url)).toBe('https://example.com/magazine/2025/41/page')
   })
 
+  it('should drop the query of the link after an encoded target', () => {
+    const value = new URL(
+      'https://archive.ph/20200101000000/https%3A%2F%2Fexample.com%2Fpage%3Fid%3D7?utm_source=rss',
+    )
+    const expected = 'https://example.com/page?id=7'
+
+    expect(unwrapArchiveToday(value)).toBe(expected)
+  })
+
   it('should keep the target query string and fragment', () => {
     const url = new URL('https://archive.is/20120917102258/https://example.com/a?id=5#section')
 
