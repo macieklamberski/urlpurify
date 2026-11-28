@@ -6,6 +6,3 @@ export const unwrapYoutube = createQueryUnwrapper({
   path: '/redirect',
   params: ['q'],
 })
-
-/** @deprecated Use `unwrapYoutube` instead. */
-export const unwrapYouTube = unwrapYoutube

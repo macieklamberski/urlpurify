@@ -6,6 +6,3 @@ export const unwrapBsky = createQueryUnwrapper({
   path: '/redirect',
   params: ['u'],
 })
-
-/** @deprecated Use `unwrapBsky` instead. */
-export const unwrapBlueskyRedirect = unwrapBsky

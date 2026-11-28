@@ -1,13 +1,14 @@
 import { describe, expect, it } from 'bun:test'
 import { readFileSync } from 'node:fs'
 import { Glob } from 'bun'
+import * as deprecated from './deprecated.js'
 import * as urlpurifier from './index.js'
 import type { UrlUnwrapper } from './types.js'
 
 const exportEntries: Array<[string, unknown]> = Object.entries(urlpurifier)
 
 const exportedUnwrappers = exportEntries.filter(([name]) => {
-  return name.startsWith('unwrap') && name !== 'unwrapUrl'
+  return name.startsWith('unwrap') && name !== 'unwrapUrl' && !(name in deprecated)
 })
 
 const getNames = (unwrappers: Array<unknown>): Array<string> => {
@@ -80,8 +81,8 @@ describe('defaultUnwrappers', () => {
       'unwrapBabyblog',
       'unwrapBale',
       'unwrapBing',
-      'unwrapBsky',
       'unwrapBridgyFed',
+      'unwrapBsky',
       'unwrapBytedance',
       'unwrapCalendly',
       'unwrapCanva',

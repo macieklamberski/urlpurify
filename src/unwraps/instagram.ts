@@ -6,6 +6,3 @@ export const unwrapInstagram = createQueryUnwrapper({
   path: '/',
   params: ['u'],
 })
-
-/** @deprecated Use `unwrapInstagram` instead. */
-export const unwrapInstagramShim = unwrapInstagram

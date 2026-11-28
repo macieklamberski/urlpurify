@@ -25,14 +25,21 @@ export {
   searchClickUnwrappers,
   securityGatewayUnwrappers,
   sessionIdParams,
-  sessionParams,
   shareIntentUnwrappers,
   signInShimUnwrappers,
   subscribeIntentUnwrappers,
-  trackingParamsLiterals,
-  trackingParamsPatterns,
   visitorIdParams,
 } from './defaults.js'
+export {
+  sessionParams,
+  trackingParamsLiterals,
+  trackingParamsPatterns,
+  unwrapBlueskyRedirect,
+  unwrapFacebookShim,
+  unwrapInstagramShim,
+  unwrapThreadsShim,
+  unwrapYouTube,
+} from './deprecated.js'
 export type { PathUnwrapperConfig } from './pathTarget.js'
 export { createPathUnwrapper } from './pathTarget.js'
 export type {
@@ -108,7 +115,7 @@ export { unwrapBlubrry } from './unwraps/blubrry.js'
 export { unwrapBolPartner } from './unwraps/bolPartner.js'
 export { unwrapBridgyFed } from './unwraps/bridgyFed.js'
 export { unwrapBrightspot } from './unwraps/brightspot.js'
-export { unwrapBlueskyRedirect, unwrapBsky } from './unwraps/bsky.js'
+export { unwrapBsky } from './unwraps/bsky.js'
 export { unwrapBuffer } from './unwraps/buffer.js'
 export { unwrapBusinessWire } from './unwraps/businessWire.js'
 export { unwrapButton } from './unwraps/button.js'
@@ -184,7 +191,7 @@ export { unwrapEvernote } from './unwraps/evernote.js'
 export { unwrapEvernoteClip } from './unwraps/evernoteClip.js'
 export { unwrapExciteTranslate } from './unwraps/exciteTranslate.js'
 export { unwrapExpediaAffiliate } from './unwraps/expediaAffiliate.js'
-export { unwrapFacebook, unwrapFacebookShim } from './unwraps/facebook.js'
+export { unwrapFacebook } from './unwraps/facebook.js'
 export { unwrapFacebookShare } from './unwraps/facebookShare.js'
 export { unwrapFanbridge } from './unwraps/fanbridge.js'
 export { unwrapFederatedMedia } from './unwraps/federatedMedia.js'
@@ -258,7 +265,7 @@ export { unwrapIndexHu } from './unwraps/indexHu.js'
 export { unwrapInfospace } from './unwraps/infospace.js'
 export { unwrapInoreader } from './unwraps/inoreader.js'
 export { unwrapInsiderAffiliate } from './unwraps/insiderAffiliate.js'
-export { unwrapInstagram, unwrapInstagramShim } from './unwraps/instagram.js'
+export { unwrapInstagram } from './unwraps/instagram.js'
 export { unwrapInstapaperSave } from './unwraps/instapaperSave.js'
 export { unwrapIntranetQuorum } from './unwraps/intranetQuorum.js'
 export { unwrapInvisionNoExternalLinks } from './unwraps/invisionNoExternalLinks.js'
@@ -434,7 +441,7 @@ export { unwrapTechnoratiFaves } from './unwraps/technoratiFaves.js'
 export { unwrapTelegramIv } from './unwraps/telegramIv.js'
 export { unwrapTelegramShare } from './unwraps/telegramShare.js'
 export { unwrapTheRegister } from './unwraps/theRegister.js'
-export { unwrapThreads, unwrapThreadsShim } from './unwraps/threads.js'
+export { unwrapThreads } from './unwraps/threads.js'
 export { unwrapThreadsIntent } from './unwraps/threadsIntent.js'
 export { unwrapTiktok } from './unwraps/tiktok.js'
 export { unwrapTitanhqLinklock } from './unwraps/titanhqLinklock.js'
@@ -514,7 +521,7 @@ export { unwrapYandexTurbo } from './unwraps/yandexTurbo.js'
 export { unwrapYelp } from './unwraps/yelp.js'
 export { unwrapYesware } from './unwraps/yesware.js'
 export { unwrapYourMembership } from './unwraps/yourMembership.js'
-export { unwrapYouTube, unwrapYoutube } from './unwraps/youtube.js'
+export { unwrapYoutube } from './unwraps/youtube.js'
 export { unwrapZanox } from './unwraps/zanox.js'
 export { unwrapZayads } from './unwraps/zayads.js'
 export { unwrapZemanta } from './unwraps/zemanta.js'

@@ -6,6 +6,3 @@ export const unwrapThreads = createQueryUnwrapper({
   path: '/',
   params: ['u'],
 })
-
-/** @deprecated Use `unwrapThreads` instead. */
-export const unwrapThreadsShim = unwrapThreads

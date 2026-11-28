@@ -63,6 +63,3 @@ export const unwrapFacebook: UrlUnwrapper = createUnwrapper({
     return unwrapLinkPhp(url) ?? unwrapRoot(url) ?? unwrapLsr(url) ?? unwrapLegacy(url)
   },
 })
-
-/** @deprecated Use `unwrapFacebook` instead. */
-export const unwrapFacebookShim = unwrapFacebook

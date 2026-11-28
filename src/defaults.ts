@@ -527,15 +527,6 @@ for (const param of knownTrackingParams) {
   }
 }
 
-/** @deprecated Use `knownTrackingParamLiterals` instead. */
-export const trackingParamsLiterals = knownTrackingParamLiterals
-
-/** @deprecated Use `knownTrackingParamPatterns` instead. */
-export const trackingParamsPatterns = knownTrackingParamPatterns
-
-/** @deprecated Use `sessionIdParams` instead. */
-export const sessionParams = sessionIdParams
-
 // Search engine and aggregator result clicks: unwrapping removes only the click logging.
 export const searchClickUnwrappers: Array<UrlUnwrapper> = [
   unwrapAllblog,
@@ -564,8 +555,8 @@ export const linkShimUnwrappers: Array<UrlUnwrapper> = [
   unwrapArxiv,
   unwrapBabyblog,
   unwrapBale,
-  unwrapBsky,
   unwrapBridgyFed,
+  unwrapBsky,
   unwrapBytedance,
   unwrapCalendly,
   unwrapCanva,
