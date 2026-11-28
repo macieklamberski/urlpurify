@@ -6,6 +6,8 @@ const pathRegex = /^\/[cv]\/(?<secure>s\/)?(?<target>.+)$/i
 
 const viewerParams = ['amp_gsa', 'amp_js_v', 'usqp']
 
+const domains = ['cdn.ampproject.org']
+
 const readTarget: UrlUnwrapper = (url) => {
   const match = pathRegex.exec(url.pathname)
 
@@ -25,7 +27,7 @@ const readTarget: UrlUnwrapper = (url) => {
 }
 
 const extractDocument = createUnwrapper({
-  domains: 'cdn.ampproject.org',
+  domains,
   unwrap: (url) => {
     if (!startsWithAnyOf(url.pathname, '/c/')) {
       return
@@ -41,7 +43,7 @@ const extractDocument = createUnwrapper({
 // own query params are dropped, and on `/v/` so is the fragment, which holds the viewer's init
 // params rather than the target's.
 export const unwrapAmpCache = createUnwrapper({
-  domains: 'cdn.ampproject.org',
+  domains,
   ignoreLinkFragment: true, // The `/c/` document takes it through `extractDocument`
   unwrap: (url) => {
     return extractDocument(url) ?? readTarget(url)

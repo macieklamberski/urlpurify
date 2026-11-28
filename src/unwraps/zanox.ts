@@ -5,8 +5,10 @@ import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 // outer query and only the raw query holds the whole target.
 const bracketRegex = /[?&]ulp=(?:\[\[|%5B%5B)(?<target>.+?)(?:\]\]|%5D%5D)/i
 
+const hosts = ['ad.zanox.com']
+
 const extractUlp = createQueryUnwrapper({
-  hosts: 'ad.zanox.com',
+  hosts,
   path: '/ppc/',
   params: ['ULP', 'ulp'],
 })
@@ -15,7 +17,7 @@ const extractUlp = createQueryUnwrapper({
 // ULP=[[<target>]]).
 // Opt-in: unwrapping drops the publisher's commission.
 export const unwrapZanox = createUnwrapper({
-  hosts: 'ad.zanox.com',
+  hosts,
   unwrap: (url) => {
     if (!isAnyOf(url.pathname, '/ppc/')) {
       return

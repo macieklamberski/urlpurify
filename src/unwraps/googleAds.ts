@@ -5,13 +5,7 @@ const extractors = [
   createQueryUnwrapper({
     brands: 'google',
     match: googleHostRegex,
-    path: '/aclk',
-    params: ['adurl'],
-  }),
-  createQueryUnwrapper({
-    brands: 'google',
-    match: googleHostRegex,
-    path: '/pagead/iclk',
+    path: ['/aclk', '/pagead/iclk'],
     params: ['adurl'],
   }),
   createQueryUnwrapper({
