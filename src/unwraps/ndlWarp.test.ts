@@ -18,6 +18,15 @@ describe('unwrapNdlWarp', () => {
     expect(unwrapNdlWarp(url)).toBe('https://www.example.lg.jp/shikai/page/0000276393.html')
   })
 
+  it('should decode an encoded target', () => {
+    const value = new URL(
+      'https://warp.ndl.go.jp/info:ndljp/pid/286890/https%3A%2F%2Fwww.example.jp%2Fpage',
+    )
+    const expected = 'https://www.example.jp/page'
+
+    expect(unwrapNdlWarp(value)).toBe(expected)
+  })
+
   it('should keep the query and fragment of the target', () => {
     const url = new URL(
       'https://warp.ndl.go.jp/web/20240916031321/http://www.example.com/2006/jp/event/index.html?lang=ja#program',
