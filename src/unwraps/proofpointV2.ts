@@ -1,7 +1,11 @@
 import { decodePercent, isAnyOf } from 'trousse'
-import { createUnwrapper, readParamTarget } from '../utils.js'
+import { createUnwrapper, readDecodedTarget } from '../utils.js'
 
 const hosts = ['urldefense.proofpoint.com']
+
+const decodeTarget = (value: string): string => {
+  return decodePercent(value.replaceAll('-', '%').replaceAll('_', '/'))
+}
 
 // Proofpoint URLDefense v2 (urldefense.proofpoint.com/v2/url?u=<encoded>). The encoded URL
 // substitutes `_` for `/` and `-` for `%`, then is URL-decoded.
@@ -12,12 +16,6 @@ export const unwrapProofpointV2 = createUnwrapper({
       return
     }
 
-    const raw = readParamTarget(url, 'u')
-
-    if (!raw) {
-      return
-    }
-
-    return decodePercent(raw.replaceAll('-', '%').replaceAll('_', '/'))
+    return readDecodedTarget(url, 'u', decodeTarget)
   },
 })
