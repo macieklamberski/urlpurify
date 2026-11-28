@@ -111,6 +111,13 @@ describe('unwrapFacebookShim', () => {
     expect(unwrapFacebookShim(value)).toBe(expected)
   })
 
+  it('should extract a target from the legacy path on the bare facebook.com', () => {
+    const value = new URL('http://facebook.com/l/mAQFYlx2o/www.example.com/watch?v=7')
+    const expected = 'http://www.example.com/watch?v=7'
+
+    expect(unwrapFacebookShim(value)).toBe(expected)
+  })
+
   it('should keep the query of a target in the legacy path', () => {
     const url = new URL('http://www.facebook.com/l/mAQFYlx2o/www.youtube.com/watch?v=fZZhiF6z2sg')
 

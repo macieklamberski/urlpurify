@@ -52,6 +52,15 @@ describe('unwrapPodtrac', () => {
     expect(unwrapPodtrac(url)).toBe('http://example.com/podcast/TREKSF_141.mp3')
   })
 
+  it('should extract a target from the query on the bare host', () => {
+    const value = new URL(
+      'http://podtrac.com/pts/redirect.mp3?http://example.com/podcast/episode.mp3',
+    )
+    const expected = 'http://example.com/podcast/episode.mp3'
+
+    expect(unwrapPodtrac(value)).toBe(expected)
+  })
+
   it('should extract a target from the query after a trailing slash', () => {
     const url = new URL(
       'http://www.podtrac.com/pts/redirect.mp3/?http://example.com/download/aaapodcast_episode236.mp3',

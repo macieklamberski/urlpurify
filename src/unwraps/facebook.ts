@@ -39,7 +39,7 @@ const unwrapLsr = createQueryUnwrapper({
 })
 
 const unwrapLegacy = createUnwrapper({
-  hosts: ['www.facebook.com', 'l.facebook.com'],
+  hosts: ['www.facebook.com', 'facebook.com', 'l.facebook.com'],
   unwrap: (url) => {
     const match = url.pathname.match(legacyTargetRegex)
 
@@ -55,8 +55,8 @@ const unwrapLegacy = createUnwrapper({
 
 // Meta link shim (l.facebook.com/l.php?u=<target>, also lm., www., upload., m., web., pt-br.,
 // free., business., 0. and bare facebook.com, l.messenger.com and l.workplace.com), on / and
-// /lsr.php on l.facebook.com, and the legacy /l/<token>/<target> or /l/<token>;<target> on www.
-// and l.facebook.com, where a target without a scheme gets `http://`.
+// /lsr.php on l.facebook.com, and the legacy /l/<token>/<target> or /l/<token>;<target> on www.,
+// bare and l.facebook.com, where a target without a scheme gets `http://`.
 export const unwrapFacebookShim: UrlUnwrapper = createUnwrapper({
   hosts,
   unwrap: (url) => {
