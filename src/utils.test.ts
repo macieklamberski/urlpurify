@@ -483,6 +483,19 @@ describe('createQueryUnwrapper', () => {
 
       expect(extract(value)).toBe(expected)
     })
+    it('should reject plus beside decode in the config type', () => {
+      const extract = createQueryUnwrapper({
+        hosts: 'redirect.example.com',
+        params: ['enc'],
+        decode: decodeBase64,
+        // @ts-expect-error A decoded target has no raw plus to read.
+        plus: 'space',
+      })
+      const value = new URL('https://redirect.example.com/?enc=aHR0cHM6Ly9leGFtcGxlLmNvbS9hK2I=')
+      const expected = 'https://example.com/a+b'
+
+      expect(extract(value)).toBe(expected)
+    })
   })
 
   describe('twice-encoded target', () => {

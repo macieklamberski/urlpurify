@@ -29,13 +29,16 @@ export type UnwrapperConfig = UnwrapperOptions & {
   unwrap: UrlUnwrapper
 }
 
-export type QueryUnwrapperConfig = UnwrapperOptions & {
-  path?: string | RegExp | ReadonlyArray<string>
-  params: Array<string>
-  index?: number // The value of a repeated param to read, such as -1 for the last
-  decode?: TargetDecoder // The carrier holds the target encoded, such as in base64
-  plus?: PlusReading // How the service reads a raw `+` in the target, per `decodeParamValue`
-}
+// `decode` reads the raw value with its `+` kept, so `plus` is read only without it.
+export type QueryUnwrapperConfig = UnwrapperOptions &
+  (
+    | { decode: TargetDecoder; plus?: never } // The carrier holds the target encoded, as in base64
+    | { plus?: PlusReading; decode?: never } // How the service reads a raw `+` in the target
+  ) & {
+    path?: string | RegExp | ReadonlyArray<string>
+    params: Array<string>
+    index?: number // The value of a repeated param to read, such as -1 for the last
+  }
 
 const encodedSchemeRegex = /^https?(?:%3A|:%2F)/i
 
