@@ -2,8 +2,8 @@ import { decodePathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
-// The target sits percent-encoded once or twice in one segment, between the campaign id and the
-// recipient's id and email address.
+// The target sits percent-encoded once or twice, or raw without its scheme, in one segment, between
+// the campaign id and the recipient's id and email address.
 const clickPathRegex =
   /^\/Click\/AddCampaignEmailClick\/[0-9a-f-]{36}\/([^/]+)\/[0-9a-f-]{36}\/[^/]+\/(?:True|False)$/i
 
