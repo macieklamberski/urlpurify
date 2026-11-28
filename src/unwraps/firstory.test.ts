@@ -21,12 +21,22 @@ describe('unwrapFirstory', () => {
     )
   })
 
-  it('should keep the query that follows the track prefix', () => {
-    const url = new URL(
+  it('should drop the link query after an encoded track target', () => {
+    const value = new URL(
       'https://m.cdn.firstory.me/track/ck9aa8efs29h20873iiki57fn/ckgnxo9jzy0aa0813xrr7b4ns/https%3A%2F%2Fexample.com%2FRecord%2F1603559076220.m4a?v=1603581332065',
     )
+    const expected = 'https://example.com/Record/1603559076220.m4a'
 
-    expect(unwrapFirstory(url)).toBe('https://example.com/Record/1603559076220.m4a?v=1603581332065')
+    expect(unwrapFirstory(value)).toBe(expected)
+  })
+
+  it('should keep the link query after a raw track target', () => {
+    const value = new URL(
+      'https://m.cdn.firstory.me/track/ck9aa8efs29h20873iiki57fn/ckgnxo9jzy0aa0813xrr7b4ns/https://example.com/Record/1603559076220.m4a?v=1603581332065',
+    )
+    const expected = 'https://example.com/Record/1603559076220.m4a?v=1603581332065'
+
+    expect(unwrapFirstory(value)).toBe(expected)
   })
 
   it('should extract a target from the play endpoint', () => {

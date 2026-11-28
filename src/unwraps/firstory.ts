@@ -1,5 +1,5 @@
 import { isHostOf } from 'trousse'
-import { decodePathTarget, getPathTarget } from '../pathTarget.js'
+import { getPathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper, readParamTarget } from '../utils.js'
 
@@ -30,12 +30,6 @@ export const unwrapFirstory: UrlUnwrapper = createUnwrapper({
       return
     }
 
-    const match = url.pathname.match(trackPrefixRegex)
-
-    if (!match) {
-      return
-    }
-
-    return `${decodePathTarget(url.pathname.slice(match[0].length))}${url.search}`
+    return getPathTarget(url, trackPrefixRegex)
   },
 })
