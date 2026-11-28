@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'bun:test'
+import { purifyUrl } from '../clean.js'
 import { unwrapSophos } from './sophos.js'
 
 describe('unwrapSophos', () => {
@@ -26,12 +27,12 @@ describe('unwrapSophos', () => {
     expect(unwrapSophos(url)).toBe('https://example.com/a')
   })
 
-  it('should return undefined when the decoded value has no scheme', () => {
-    const url = new URL(
-      'https://us-east-2.protection.sophos.com/?d=example.com&u=d3d3LmV4YW1wbGUuY29t&i=NWZmODliYjViODNhNjYw',
-    )
+  it('should give https to a decoded target without a scheme', () => {
+    const value =
+      'https://us-east-2.protection.sophos.com/?d=example.com&u=d3d3LmV4YW1wbGUuY29t&i=NWZmODliYjViODNhNjYw'
+    const expected = 'https://www.example.com/'
 
-    expect(unwrapSophos(url)).toBeUndefined()
+    expect(purifyUrl(value, { unwrappers: [unwrapSophos] })).toBe(expected)
   })
 
   it('should return undefined when the decoded value is not http', () => {

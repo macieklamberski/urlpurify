@@ -1,7 +1,15 @@
 import { describe, expect, it } from 'bun:test'
+import { purifyUrl } from '../clean.js'
 import { unwrapStay22 } from './stay22.js'
 
 describe('unwrapStay22', () => {
+  it('should give https to a target without a scheme', () => {
+    const value = 'https://www.stay22.com/allez/booking?aid=abc&link=www.example.com%2Fhotel'
+    const expected = 'https://www.example.com/hotel'
+
+    expect(purifyUrl(value, { unwrappers: [unwrapStay22] })).toBe(expected)
+  })
+
   it('should extract the target of a booking link', () => {
     const url = new URL(
       'https://www.stay22.com/allez/booking?aid=examplepublisher&campaign=examplepublisher-thingstodoinprague&product=lma&habl=false&isinc=false&sid22=51ba062e-dc18-494e-849a-76fb5abf2131&source=direct&medium=deeplink&address=Prague%2C+Czechia&link=https%3A%2F%2Fwww.example.com%2Fhotel%2Fcz%2Fexample-hotel.html',

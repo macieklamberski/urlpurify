@@ -1,7 +1,15 @@
 import { describe, expect, it } from 'bun:test'
+import { purifyUrl } from '../clean.js'
 import { unwrapAceml } from './aceml.js'
 
 describe('unwrapAceml', () => {
+  it('should give https to a plain target without a scheme', () => {
+    const value = 'https://abc.acemlna.com/Prod/link-tracker?redirectUrl=www.example.com%2Fpost'
+    const expected = 'https://www.example.com/post'
+
+    expect(purifyUrl(value, { unwrappers: [unwrapAceml] })).toBe(expected)
+  })
+
   it('should decode a base64 redirectUrl param', () => {
     const target = 'https://example.com/article'
     const encoded = Buffer.from(target).toString('base64')
@@ -66,13 +74,11 @@ describe('unwrapAceml', () => {
     expect(unwrapAceml(url)).toBe(target)
   })
 
-  it('should return undefined when the decoded value is not http(s)', () => {
+  it('should keep the wrapper when the decoded value is not a url', () => {
     const encoded = Buffer.from('not-a-url').toString('base64')
-    const url = new URL(
-      `https://abc.acemlna.com/Prod/link-tracker?redirectUrl=${encodeURIComponent(encoded)}`,
-    )
+    const value = `https://abc.acemlna.com/Prod/link-tracker?redirectUrl=${encodeURIComponent(encoded)}`
 
-    expect(unwrapAceml(url)).toBeUndefined()
+    expect(purifyUrl(value, { unwrappers: [unwrapAceml] })).toBe(value)
   })
 
   it('should return undefined when redirectUrl is missing', () => {

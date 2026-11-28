@@ -27,6 +27,12 @@ describe('unwrapXengentr', () => {
     expect(unwrapXengentr(url)).toBeUndefined()
   })
 
+  it('should return undefined for a decoded target without a scheme', () => {
+    const value = new URL('https://www.example.net/yonlendirme?to=d3d3LmV4YW1wbGUuY29tL3BhZ2U=')
+
+    expect(unwrapXengentr(value)).toBeUndefined()
+  })
+
   it('should return undefined for the leaving redirect without to', () => {
     const url = new URL('https://www.example.net/yonlendirme')
 

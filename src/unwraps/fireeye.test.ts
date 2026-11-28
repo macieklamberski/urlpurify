@@ -1,7 +1,15 @@
 import { describe, expect, it } from 'bun:test'
+import { purifyUrl } from '../clean.js'
 import { unwrapFireeye } from './fireeye.js'
 
 describe('unwrapFireeye', () => {
+  it('should give https to a target without a scheme', () => {
+    const value = 'https://protect2.fireeye.com/v1/url?k=abc&u=www.example.com%2Fpost'
+    const expected = 'https://www.example.com/post'
+
+    expect(purifyUrl(value, { unwrappers: [unwrapFireeye] })).toBe(expected)
+  })
+
   it('should extract target from the v1 path', () => {
     const url = new URL(
       'https://protect2.fireeye.com/v1/url?k=93407f2f-ccdb4639-9344362f-8681d5b5fa8e-01a4371d5adb092e&q=1&e=98882430-2b46-4dc6-90b8-29eb7702eb4c&u=https%3A%2F%2Fwww.example.com%2Fexperiences%2Fresponse-images-and-sounds-of-a-movement%2F',

@@ -1,4 +1,4 @@
-import { decodeBase64, isAnyOf, isHttpUrl } from 'trousse'
+import { decodeBase64, isAnyOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import {
   createUnwrapper,
@@ -35,10 +35,6 @@ export const unwrapAceml: UrlUnwrapper = createUnwrapper({
       return target
     }
 
-    const raw = readParamTarget(url, 'redirectUrl')
-
-    if (raw && isHttpUrl(raw)) {
-      return raw
-    }
+    return readParamTarget(url, 'redirectUrl')
   },
 })

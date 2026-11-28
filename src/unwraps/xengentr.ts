@@ -1,4 +1,4 @@
-import { decodeBase64, isAnyOf } from 'trousse'
+import { decodeBase64, isAnyOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { getDecodedParamTarget } from '../utils.js'
 
@@ -9,5 +9,9 @@ export const unwrapXengentr: UrlUnwrapper = (url) => {
     return
   }
 
-  return getDecodedParamTarget(url, 'to', decodeBase64)
+  const target = getDecodedParamTarget(url, 'to', decodeBase64)
+
+  if (target && isHttpUrl(target)) {
+    return target
+  }
 }

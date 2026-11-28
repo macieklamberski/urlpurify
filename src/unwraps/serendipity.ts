@@ -1,4 +1,4 @@
-import { decodeBase64, hasQueryParam } from 'trousse'
+import { decodeBase64, hasQueryParam, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { getDecodedParamTarget } from '../utils.js'
 
@@ -13,5 +13,9 @@ export const unwrapSerendipity: UrlUnwrapper = (url) => {
     return
   }
 
-  return getDecodedParamTarget(url, 'url', decodeBase64)
+  const target = getDecodedParamTarget(url, 'url', decodeBase64)
+
+  if (target && isHttpUrl(target)) {
+    return target
+  }
 }

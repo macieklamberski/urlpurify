@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'bun:test'
+import { purifyUrl } from '../clean.js'
 import { unwrapGooglePodcasts } from './googlePodcasts.js'
 
 describe('unwrapGooglePodcasts', () => {
@@ -188,10 +189,10 @@ describe('unwrapGooglePodcasts', () => {
     expect(unwrapGooglePodcasts(value)).toBeUndefined()
   })
 
-  it('should return undefined for a non-http feed', () => {
-    const value = new URL('https://podcasts.google.com/?feed=amF2YXNjcmlwdDphbGVydCgxKQ%3D%3D')
+  it('should keep the wrapper for a non-http feed', () => {
+    const value = 'https://podcasts.google.com/?feed=amF2YXNjcmlwdDphbGVydCgxKQ%3D%3D'
 
-    expect(unwrapGooglePodcasts(value)).toBeUndefined()
+    expect(purifyUrl(value, { unwrappers: [unwrapGooglePodcasts] })).toBe(value)
   })
 
   it('should return undefined for a feed that is not base64', () => {

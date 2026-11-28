@@ -1,4 +1,3 @@
-import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper, getParamTarget } from '../utils.js'
 
@@ -24,10 +23,6 @@ export const unwrapLinksynergy: UrlUnwrapper = createUnwrapper({
       return
     }
 
-    const target = getParamTarget(url, param)
-
-    if (target && isHttpUrl(target)) {
-      return target
-    }
+    return getParamTarget(url, param)
   },
 })

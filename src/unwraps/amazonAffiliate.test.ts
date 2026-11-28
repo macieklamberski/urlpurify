@@ -1,7 +1,16 @@
 import { describe, expect, it } from 'bun:test'
+import { purifyUrl } from '../clean.js'
 import { unwrapAmazonAffiliate } from './amazonAffiliate.js'
 
 describe('unwrapAmazonAffiliate', () => {
+  it('should repair a store redirect target the CMS spaced after its scheme', () => {
+    const value =
+      'https://www.amazon.com/gp/redirect.html?location=http%3A%2F%2F+https%3A%2F%2Fwww.example.com%2Fzh-TW%2Factivity%2F20707'
+    const expected = 'https://www.example.com/zh-TW/activity/20707'
+
+    expect(purifyUrl(value, { unwrappers: [unwrapAmazonAffiliate] })).toBe(expected)
+  })
+
   it('should extract target URL appended after the click id', () => {
     const url = new URL(
       'https://aax-us-east.amazon-adsystem.com/x/c/abc123/https://www.amazon.com/dp/B0EXAMPLE',
@@ -148,10 +157,10 @@ describe('unwrapAmazonAffiliate', () => {
     expect(unwrapAmazonAffiliate(url)).toBeUndefined()
   })
 
-  it('should return undefined for a store redirect with a non-http target', () => {
-    const url = new URL('https://www.amazon.com/gp/redirect.html?location=javascript%3Aalert(1)')
+  it('should keep the wrapper for a store redirect with a non-http target', () => {
+    const value = 'https://www.amazon.com/gp/redirect.html?location=javascript%3Aalert(1)'
 
-    expect(unwrapAmazonAffiliate(url)).toBeUndefined()
+    expect(purifyUrl(value, { unwrappers: [unwrapAmazonAffiliate] })).toBe(value)
   })
 
   it('should return undefined for other store paths', () => {

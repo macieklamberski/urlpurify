@@ -1,7 +1,15 @@
 import { describe, expect, it } from 'bun:test'
+import { purifyUrl } from '../clean.js'
 import { unwrapWindowsLive } from './windowsLive.js'
 
 describe('unwrapWindowsLive', () => {
+  it('should give https to a feed without a scheme', () => {
+    const value = 'http://www.live.com/?add=feeds.example.com%2Fblog'
+    const expected = 'https://feeds.example.com/blog'
+
+    expect(purifyUrl(value, { unwrappers: [unwrapWindowsLive] })).toBe(expected)
+  })
+
   it('should extract a percent-encoded feed', () => {
     const value = new URL('http://www.live.com/?add=http%3A%2F%2Ffeeds.example.com%2Ftechackr')
     const expected = 'http://feeds.example.com/techackr'
@@ -23,10 +31,10 @@ describe('unwrapWindowsLive', () => {
     expect(unwrapWindowsLive(value)).toBe(expected)
   })
 
-  it('should return undefined for an add value that is not a url', () => {
-    const value = new URL('http://www.live.com/?add=gadget')
+  it('should keep the wrapper for an add value that is not a url', () => {
+    const value = 'http://www.live.com/?add=gadget'
 
-    expect(unwrapWindowsLive(value)).toBeUndefined()
+    expect(purifyUrl(value, { unwrappers: [unwrapWindowsLive] })).toBe(value)
   })
 
   it('should return undefined for an empty add', () => {

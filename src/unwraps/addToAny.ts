@@ -1,4 +1,4 @@
-import { isAnyOf, isHttpUrl, parseUrl } from 'trousse'
+import { isAnyOf, parseUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper, readParamTarget } from '../utils.js'
 
@@ -27,16 +27,12 @@ export const unwrapAddToAny: UrlUnwrapper = createUnwrapper({
   hosts,
   ignoreLinkFragment: true,
   unwrap: (url) => {
-    let target: string | undefined
-
     if (servicePathRegex.test(url.pathname) || isAnyOf(url.pathname, '/email')) {
-      target = readParamTarget(url, 'linkurl')
-    } else if (isAnyOf(url.pathname, menuPaths)) {
-      target = getMenuTarget(url)
+      return readParamTarget(url, 'linkurl')
     }
 
-    if (target && isHttpUrl(target)) {
-      return target
+    if (isAnyOf(url.pathname, menuPaths)) {
+      return getMenuTarget(url)
     }
   },
 })

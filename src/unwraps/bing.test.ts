@@ -1,7 +1,16 @@
 import { describe, expect, it } from 'bun:test'
+import { purifyUrl } from '../clean.js'
 import { unwrapBing } from './bing.js'
 
 describe('unwrapBing', () => {
+  it('should repair a news apiclick target the CMS spaced after its scheme', () => {
+    const value =
+      'http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6a46b6d7ac584d99bf3c81b8f232bc5a&url=http%3A%2F%2F+https%3A%2F%2Fwww.example.com%2Fzh-TW%2Factivity%2F20707&c=12372153717731441417&mkt=en-us'
+    const expected = 'https://www.example.com/zh-TW/activity/20707'
+
+    expect(purifyUrl(value, { unwrappers: [unwrapBing] })).toBe(expected)
+  })
+
   it('should extract target from u param with a1 prefix', () => {
     const url = new URL('https://www.bing.com/ck/a?!&&u=a1aHR0cHM6Ly9leGFtcGxlLmNvbS9wYWdl')
 
@@ -20,10 +29,10 @@ describe('unwrapBing', () => {
     expect(unwrapBing(url)).toBeUndefined()
   })
 
-  it('should return undefined when decoded value is not http(s)', () => {
-    const url = new URL('https://www.bing.com/ck/a?u=a1bm90LWEtdXJs')
+  it('should keep the wrapper when the decoded value is not a url', () => {
+    const value = 'https://www.bing.com/ck/a?u=a1bm90LWEtdXJs'
 
-    expect(unwrapBing(url)).toBeUndefined()
+    expect(purifyUrl(value, { unwrappers: [unwrapBing] })).toBe(value)
   })
 
   it('should return undefined when u param is missing', () => {
@@ -82,10 +91,10 @@ describe('unwrapBing', () => {
     expect(unwrapBing(empty)).toBeUndefined()
   })
 
-  it('should return undefined when news apiclick target is not http(s)', () => {
-    const url = new URL('https://www.bing.com/news/apiclick.aspx?url=javascript%3Aalert(1)')
+  it('should keep the wrapper when the news apiclick target is not http', () => {
+    const value = 'https://www.bing.com/news/apiclick.aspx?url=javascript%3Aalert(1)'
 
-    expect(unwrapBing(url)).toBeUndefined()
+    expect(purifyUrl(value, { unwrappers: [unwrapBing] })).toBe(value)
   })
 
   it('should extract a twice-encoded news apiclick target', () => {

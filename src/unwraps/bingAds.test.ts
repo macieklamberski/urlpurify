@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'bun:test'
+import { purifyUrl } from '../clean.js'
 import { unwrapBingAds } from './bingAds.js'
 
 describe('unwrapBingAds', () => {
@@ -104,12 +105,11 @@ describe('unwrapBingAds', () => {
     expect(unwrapBingAds(url)).toBeUndefined()
   })
 
-  it('should return undefined for a value whose letter case was lost', () => {
-    const url = new URL(
-      'https://www.bing.com/aclk?ld=e8v53HweaYYJO4-AI3B9EQTjVUCUw_PMEVmStLE-Ak7-miCUGacAv4rlEWkyDU3pP48rH2hc&u=ahr0chmlm2elmmylmmz3d3cuzxhhbxbszs5jb20lmmzib29raw5njtjmmtizndu=&rlid=d9a7f0c1b2e44d5a8c3b6e1f0a2d4c7b&ntb=1',
-    )
+  it('should keep the wrapper for a value whose letter case was lost', () => {
+    const value =
+      'https://www.bing.com/aclk?ld=e8v53HweaYYJO4-AI3B9EQTjVUCUw_PMEVmStLE-Ak7-miCUGacAv4rlEWkyDU3pP48rH2hc&u=ahr0chmlm2elmmylmmz3d3cuzxhhbxbszs5jb20lmmzib29raw5njtjmmtizndu=&rlid=d9a7f0c1b2e44d5a8c3b6e1f0a2d4c7b&ntb=1'
 
-    expect(unwrapBingAds(url)).toBeUndefined()
+    expect(purifyUrl(value, { unwrappers: [unwrapBingAds] })).toBe(value)
   })
 
   it('should return undefined for a target that is not http', () => {

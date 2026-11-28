@@ -1,4 +1,4 @@
-import { decodeBase64 } from 'trousse'
+import { decodeBase64, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { getDecodedParamTarget } from '../utils.js'
 
@@ -13,5 +13,9 @@ export const unwrapFeedStatistics: UrlUnwrapper = (url) => {
     return
   }
 
-  return getDecodedParamTarget(url, 'feed-stats-url', decodeBase64)
+  const target = getDecodedParamTarget(url, 'feed-stats-url', decodeBase64)
+
+  if (target && isHttpUrl(target)) {
+    return target
+  }
 }
