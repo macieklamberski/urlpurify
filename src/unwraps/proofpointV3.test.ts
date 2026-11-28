@@ -49,6 +49,15 @@ describe('unwrapProofpointV3', () => {
     expect(unwrapProofpointV3(url)).toBe('https://www.example.com/?u=https%3A%2F%2Fexample.org')
   })
 
+  it('should unwrap markers escaped along with the delimiters', () => {
+    const value = new URL(
+      'https://urldefense.com/v3/__https://www.example.com/?u=https%2A3A%2A2F%2A2Fexample.org__%3BJSUl%21%21abc%21def%24',
+    )
+    const expected = 'https://www.example.com/?u=https%3A%2F%2Fexample.org'
+
+    expect(unwrapProofpointV3(value)).toBe(expected)
+  })
+
   it('should return undefined for non-v3 paths', () => {
     const url = new URL('https://urldefense.com/v2/url?u=https-3A__example.com_path')
 
