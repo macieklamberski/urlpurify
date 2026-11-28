@@ -1,5 +1,5 @@
 import { isHostOf } from 'trousse'
-import { createUnwrapper, getParamTarget } from '../utils.js'
+import { createUnwrapper, readParamTarget } from '../utils.js'
 
 // Public archive replay hosts, numbered public3, public4 and so on.
 const publicHostRegex = /^public\d+\.pagefreezer\.com$/
@@ -28,7 +28,7 @@ export const unwrapPagefreezer = createUnwrapper({
     }
 
     if (isHostOf(url, 'us.pagefreezer.com') && browsePathRegex.test(url.pathname)) {
-      return getParamTarget(url, 'url')
+      return readParamTarget(url, 'url')
     }
   },
 })

@@ -1,5 +1,5 @@
 import type { UrlUnwrapper } from '../types.js'
-import { createUnwrapper, getParamTarget } from '../utils.js'
+import { createUnwrapper, readParamTarget } from '../utils.js'
 
 const shimPathRegex =
   /^\/(safety\/go|redir\/redirect)\/?$|^\/(redirect|nhome\/nus-redirect|nus-trk|e\/v2)$|^\/company\/[^/]+\/redirect$/i
@@ -14,12 +14,6 @@ export const unwrapLinkedin: UrlUnwrapper = createUnwrapper({
       return
     }
 
-    const target = getParamTarget(url, 'url')
-
-    if (!target) {
-      return
-    }
-
-    return target
+    return readParamTarget(url, 'url')
   },
 })

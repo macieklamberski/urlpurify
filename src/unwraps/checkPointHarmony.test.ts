@@ -68,6 +68,22 @@ describe('unwrapCheckPointHarmony', () => {
     expect(unwrapCheckPointHarmony(url)).toBe('https://www.example.org/criminal-defense/')
   })
 
+  it('should keep the link fragment after a v1 target', () => {
+    const url = new URL(
+      'https://checkpoint.url-protection.com/v1/url?o=https%3A%2F%2Fwww.example.org%2Fpage#section',
+    )
+
+    expect(unwrapCheckPointHarmony(url)).toBe('https://www.example.org/page#section')
+  })
+
+  it('should add the link fragment after an escaped hash in a v2 target', () => {
+    const url = new URL(
+      'https://protect.checkpoint.com/v2/___https://www.example.org/page*23own___.YzJ1OmFiYw#link',
+    )
+
+    expect(unwrapCheckPointHarmony(url)).toBe('https://www.example.org/page%23own#link')
+  })
+
   it('should keep a fragment written after the v2 signature', () => {
     const url = new URL(
       'https://protect.checkpoint.com/v2/r01/___https://www.example.org/news-releases/new-flavors-302420491.html___.YzJ1OmNhcmxidWRkaWdjb21wYW55OmM6b2ZmaWNlMzY1X2VtYWlsc19#financial-modal',

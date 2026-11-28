@@ -3,7 +3,7 @@ import type { UrlUnwrapper } from '../types.js'
 import {
   createUnwrapper,
   decodeEncodedScheme,
-  getDecodedParamTarget,
+  readDecodedTarget,
   readParamTarget,
 } from '../utils.js'
 
@@ -29,7 +29,7 @@ export const unwrapAceml: UrlUnwrapper = createUnwrapper({
       return
     }
 
-    const target = getDecodedParamTarget(url, 'redirectUrl', decodeTarget)
+    const target = readDecodedTarget(url, 'redirectUrl', decodeTarget)
 
     if (target) {
       return target
