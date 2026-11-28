@@ -1,22 +1,25 @@
 import { hasQueryParam, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamTarget } from '../utils.js'
+import { createUnwrapper, readParamTarget } from '../utils.js'
 
 const pathRegex = /^\/\d+\/cookie$/i
 
 // Cleverbridge affiliate cookie redirect on any host
 // (<store host>/<client id>/cookie?affiliate=<id>&redirectto=<target>).
 // Opt-in: unwrapping removes the publisher's commission. Merchants run it on their own store hosts.
-export const unwrapCleverbridge: UrlUnwrapper = (url) => {
-  if (!pathRegex.test(url.pathname) || !hasQueryParam(url, 'affiliate')) {
-    return
-  }
+export const unwrapCleverbridge: UrlUnwrapper = createUnwrapper({
+  anyHost: true,
+  unwrap: (url) => {
+    if (!pathRegex.test(url.pathname) || !hasQueryParam(url, 'affiliate')) {
+      return
+    }
 
-  const target = getParamTarget(url, 'redirectto')
+    const target = readParamTarget(url, 'redirectto')
 
-  if (!target || !isHttpUrl(target)) {
-    return
-  }
+    if (!target || !isHttpUrl(target)) {
+      return
+    }
 
-  return target
-}
+    return target
+  },
+})

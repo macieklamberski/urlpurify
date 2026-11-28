@@ -15,12 +15,20 @@ type HostList = Pattern | ReadonlyArray<Pattern>
 
 // `hosts` matches a host exactly, or by regex. `domains` also matches every subdomain, and
 // `subdomains` matches only the subdomains, never the domain itself. `brands` matches a brand on
-// any tld, as `getBrandLabels` reads it, and with any of the other three also those.
+// any tld, as `getBrandLabels` reads it, and with any of the other three also those. `anyHost`
+// matches every host, for a path shape senders run on their own domains, and skips the host index.
 export type UnwrapperHosts =
-  | { hosts: HostList; domains?: never; subdomains?: never; brands?: never }
-  | { domains: HostList; hosts?: never; subdomains?: never; brands?: never }
-  | { subdomains: HostList; hosts?: never; domains?: never; brands?: never }
-  | { brands: ReadonlyArray<string>; hosts?: HostList; domains?: HostList; subdomains?: HostList }
+  | { hosts: HostList; domains?: never; subdomains?: never; brands?: never; anyHost?: never }
+  | { domains: HostList; hosts?: never; subdomains?: never; brands?: never; anyHost?: never }
+  | { subdomains: HostList; hosts?: never; domains?: never; brands?: never; anyHost?: never }
+  | {
+      brands: ReadonlyArray<string>
+      hosts?: HostList
+      domains?: HostList
+      subdomains?: HostList
+      anyHost?: never
+    }
+  | { anyHost: true; hosts?: never; domains?: never; subdomains?: never; brands?: never }
 
 export type UnwrapperOptions = UnwrapperHosts & {
   match?: RegExp // Narrows the hosts above to those it matches, while the hosts feed the host index
@@ -244,9 +252,13 @@ const getHostKeys = (
   return list.map(format)
 }
 
-// Registers every host form `config` gives, or none when one of them cannot register, so the
-// index never skips the unwrapper on a host it matches.
+// Registers every host form `config` gives, or none when one of them cannot register or `anyHost`
+// is set, so the index never skips the unwrapper on a host it matches.
 const registerHosts = (unwrap: UrlUnwrapper, config: UnwrapperHosts): void => {
+  if (config.anyHost) {
+    return
+  }
+
   const keys: Array<string> = []
   const forms = [
     getHostKeys(config.hosts, plainHostRegex, (host) => host),
@@ -268,12 +280,17 @@ const registerHosts = (unwrap: UrlUnwrapper, config: UnwrapperHosts): void => {
 
 // An unwrapper that runs `unwrap` only on a url on `hosts`, matched exactly or by regex, on
 // `domains` or any of their subdomains, only on `subdomains` of the domains given, or on `brands`
-// on any tld beside any of those, and on a host `match` matches when given. The target takes the
+// on any tld beside any of those, or on every host with `anyHost`, and on a host `match` matches
+// when given. The target takes the
 // link's fragment per `appendLinkFragment`, unless `ignoreLinkFragment` is set.
 export const createUnwrapper = (config: UnwrapperConfig): UrlUnwrapper => {
   const isOnHost = (url: URL): boolean => {
     if (config.match && !isHostOf(url, config.match)) {
       return false
+    }
+
+    if (config.anyHost) {
+      return true
     }
 
     if (config.brands !== undefined) {
@@ -322,22 +339,13 @@ export const createUnwrapper = (config: UnwrapperConfig): UrlUnwrapper => {
   return unwrap
 }
 
-const schemeRegex = /^[a-z][a-z\d+.-]*:/i
-
-// A target in a scheme `cleanUrl` cannot read as http, such as an app's own `myapp://open`. A
-// host with a port, `example.com:8080/`, reads as http.
-const hasOtherScheme = (target: string): boolean => {
-  if (!schemeRegex.test(target) || httpSchemeRegex.test(target)) {
-    return false
-  }
-
-  return !resolveUrl(target)
-}
-
-// An unwrapper for a target in the first of `params` that holds one in http or with no scheme, on
-// a url on the hosts `createUnwrapper` takes, and on `path` when given: an exact path or a list,
-// compared in any case, or a regex. `index` and `decode` read the target as `readDecodedTarget`
-// does, and `plus` as `readParamTarget` does.
+// An unwrapper for the target in the first of `params` whose value the url repair, trousse's
+// `resolveUrl`, turns into an http url, on a url on the hosts `createUnwrapper` takes, and on `path`
+// when given: an exact path or a list, compared in any case, or a regex. A value in another
+// scheme, such as an app's own `myapp://open`, a relative path such as `/local/page` or a title is
+// skipped for the next param. A host with no scheme, or with a port as `example.com:8080/`, is
+// repaired. `index` and `decode` read the target as `readDecodedTarget` does, and `plus` as
+// `readParamTarget` does.
 export const createQueryUnwrapper = (config: QueryUnwrapperConfig): UrlUnwrapper => {
   const { path, params, index, decode, plus, ...options } = config
 
@@ -365,7 +373,7 @@ export const createQueryUnwrapper = (config: QueryUnwrapperConfig): UrlUnwrapper
           ? readDecodedTarget(url, param, decode, index)
           : readParamTarget(url, param, index, plus)
 
-        if (target && !hasOtherScheme(target)) {
+        if (target && resolveUrl(target)) {
           return target
         }
       }

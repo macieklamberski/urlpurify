@@ -1,6 +1,6 @@
 import { decodeBase64Url, isAnyOf, isHttpUrl, isString, parseJson } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { appendLinkFragment, readParamTarget } from '../utils.js'
+import { createUnwrapper, readParamTarget } from '../utils.js'
 
 // Mailinblack Secure Link (mibc-fr-<n>.mailinblack.com/securelink/?url=<origin>&key=<blob>).
 // Partners serve the same link from their own hosts, such as mib.numerian.fr and antispam.xefi.fr,
@@ -9,26 +9,29 @@ import { appendLinkFragment, readParamTarget } from '../utils.js'
 // a base64url JSON object that also holds the language and a token.
 // Not included in defaultUnwrappers: the gateway checks the target when the link is clicked,
 // so unwrapping skips the check the recipient's organization put in place.
-export const unwrapMailinblack: UrlUnwrapper = (url) => {
-  if (!isAnyOf(url.pathname, '/securelink/')) {
-    return
-  }
+export const unwrapMailinblack: UrlUnwrapper = createUnwrapper({
+  anyHost: true,
+  unwrap: (url) => {
+    if (!isAnyOf(url.pathname, '/securelink/')) {
+      return
+    }
 
-  const key = readParamTarget(url, 'key')
+    const key = readParamTarget(url, 'key')
 
-  if (!key) {
-    return
-  }
+    if (!key) {
+      return
+    }
 
-  const json = decodeBase64Url(key)
+    const json = decodeBase64Url(key)
 
-  if (!json) {
-    return
-  }
+    if (!json) {
+      return
+    }
 
-  const target = parseJson<{ url?: unknown }>(json)?.url
+    const target = parseJson<{ url?: unknown }>(json)?.url
 
-  if (isString(target) && isHttpUrl(target)) {
-    return appendLinkFragment(target, url)
-  }
-}
+    if (isString(target) && isHttpUrl(target)) {
+      return target
+    }
+  },
+})

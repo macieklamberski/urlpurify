@@ -1,6 +1,6 @@
-import { decodeBase64Url, isAnyOf, isHostOf } from 'trousse'
+import { decodeBase64Url, isAnyOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getDecodedParamTarget, getParamTarget } from '../utils.js'
+import { createUnwrapper, readDecodedTarget, readParamTarget } from '../utils.js'
 
 export const hosts = [
   'bing.com',
@@ -27,18 +27,17 @@ const decodeClickValue = (value: string): string | undefined => {
 // - search result (www.bing.com/ck/a?u=a1<base64url>). The `u` parameter is a base64url-encoded
 //   URL prefixed by a two-byte version marker (`a1`, `a2`, ...).
 // - news click (www.bing.com/news/apiclick.aspx?url=<target>), the item link in Bing News RSS.
-export const unwrapBing: UrlUnwrapper = (url) => {
-  if (!isHostOf(url, hosts)) {
-    return
-  }
+export const unwrapBing: UrlUnwrapper = createUnwrapper({
+  hosts,
+  unwrap: (url) => {
+    if (isAnyOf(url.pathname, '/news/apiclick.aspx')) {
+      return readParamTarget(url, 'url')
+    }
 
-  if (isAnyOf(url.pathname, '/news/apiclick.aspx')) {
-    return getParamTarget(url, 'url')
-  }
+    if (!isAnyOf(url.pathname, '/ck/a')) {
+      return
+    }
 
-  if (!isAnyOf(url.pathname, '/ck/a')) {
-    return
-  }
-
-  return getDecodedParamTarget(url, 'u', decodeClickValue)
-}
+    return readDecodedTarget(url, 'u', decodeClickValue)
+  },
+})

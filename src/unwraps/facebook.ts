@@ -4,22 +4,24 @@ import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
 const legacyTargetRegex = /^\/l\/[\w-]+[/;]\/*([^/].*)$/i
 
+const hosts = [
+  'l.facebook.com',
+  'lm.facebook.com',
+  'www.facebook.com',
+  'upload.facebook.com',
+  'm.facebook.com',
+  'web.facebook.com',
+  'pt-br.facebook.com',
+  'free.facebook.com',
+  'business.facebook.com',
+  '0.facebook.com',
+  'facebook.com',
+  'l.messenger.com',
+  'l.workplace.com',
+]
+
 const unwrapLinkPhp = createQueryUnwrapper({
-  hosts: [
-    'l.facebook.com',
-    'lm.facebook.com',
-    'www.facebook.com',
-    'upload.facebook.com',
-    'm.facebook.com',
-    'web.facebook.com',
-    'pt-br.facebook.com',
-    'free.facebook.com',
-    'business.facebook.com',
-    '0.facebook.com',
-    'facebook.com',
-    'l.messenger.com',
-    'l.workplace.com',
-  ],
+  hosts,
   path: '/l.php',
   params: ['u'],
 })
@@ -55,6 +57,9 @@ const unwrapLegacy = createUnwrapper({
 // free., business., 0. and bare facebook.com, l.messenger.com and l.workplace.com), on / and
 // /lsr.php on l.facebook.com, and the legacy /l/<token>/<target> or /l/<token>;<target> on www.
 // and l.facebook.com, where a target without a scheme gets `http://`.
-export const unwrapFacebookShim: UrlUnwrapper = (url) => {
-  return unwrapLinkPhp(url) ?? unwrapRoot(url) ?? unwrapLsr(url) ?? unwrapLegacy(url)
-}
+export const unwrapFacebookShim: UrlUnwrapper = createUnwrapper({
+  hosts,
+  unwrap: (url) => {
+    return unwrapLinkPhp(url) ?? unwrapRoot(url) ?? unwrapLsr(url) ?? unwrapLegacy(url)
+  },
+})

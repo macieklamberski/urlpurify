@@ -1,6 +1,6 @@
 import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamTarget } from '../utils.js'
+import { createUnwrapper, readParamTarget } from '../utils.js'
 
 const pathRegex = /^\/(?:[^/]+\/)*scripts\/click\.php$/i
 
@@ -9,14 +9,17 @@ const pathRegex = /^\/(?:[^/]+\/)*scripts\/click\.php$/i
 // affiliate id also comes as `ref_id`, `blpid`, `bid` or `k_id`. Other scripts also answer on
 // `scripts/click.php`, so the path and an http `desturl` are the guard, not the host. Opt-in:
 // unwrapping drops the publisher's commission.
-export const unwrapPostAffiliatePro: UrlUnwrapper = (url) => {
-  if (!pathRegex.test(url.pathname)) {
-    return
-  }
+export const unwrapPostAffiliatePro: UrlUnwrapper = createUnwrapper({
+  anyHost: true,
+  unwrap: (url) => {
+    if (!pathRegex.test(url.pathname)) {
+      return
+    }
 
-  const target = getParamTarget(url, 'desturl')
+    const target = readParamTarget(url, 'desturl')
 
-  if (target && isHttpUrl(target)) {
-    return target
-  }
-}
+    if (target && isHttpUrl(target)) {
+      return target
+    }
+  },
+})

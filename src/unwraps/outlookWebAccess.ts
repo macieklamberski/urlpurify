@@ -1,6 +1,6 @@
 import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamTarget } from '../utils.js'
+import { createUnwrapper, readParamTarget } from '../utils.js'
 
 const owaPathRegex =
   /^\/(?:owa\/(?:[^/]+@[^/]+\/|\d+(?:\.\d+){3}\/scripts\/premium\/)?redir\.aspx|exchweb\/bin\/redir\.asp)$/i
@@ -11,18 +11,21 @@ const owaPathRegex =
 // Exchange 2003's /exchweb/bin/redir.asp?URL=<target>). Each organization runs it on its own host,
 // so the exact path and an http `URL` are the guard, not the host. Opt-in: the click needs a
 // signed-in mailbox, and a reader without one lands on the server's login page.
-export const unwrapOutlookWebAccess: UrlUnwrapper = (url) => {
-  if (!owaPathRegex.test(url.pathname)) {
-    return
-  }
+export const unwrapOutlookWebAccess: UrlUnwrapper = createUnwrapper({
+  anyHost: true,
+  unwrap: (url) => {
+    if (!owaPathRegex.test(url.pathname)) {
+      return
+    }
 
-  const target = getParamTarget(url, 'URL')
+    const target = readParamTarget(url, 'URL')
 
-  if (!target) {
-    return
-  }
+    if (!target) {
+      return
+    }
 
-  if (isHttpUrl(target)) {
-    return target
-  }
-}
+    if (isHttpUrl(target)) {
+      return target
+    }
+  },
+})

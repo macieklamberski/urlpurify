@@ -77,6 +77,24 @@ describe('createQueryUnwrapper', () => {
       expect(extract(value)).toBe(expected)
     })
 
+    it('should skip a relative path for the next param', () => {
+      const value = new URL(
+        'https://redirect.example.com/?url=/local/page&fallback=https://example.com/app',
+      )
+      const expected = 'https://example.com/app'
+
+      expect(extract(value)).toBe(expected)
+    })
+
+    it('should skip a title for the next param', () => {
+      const value = new URL(
+        'https://redirect.example.com/?url=Example+News+Today&fallback=https://example.com/app',
+      )
+      const expected = 'https://example.com/app'
+
+      expect(extract(value)).toBe(expected)
+    })
+
     it('should return a value without a scheme over the next param', () => {
       const value = new URL(
         'https://redirect.example.com/?url=www.example.com/page&fallback=https://example.com/app',
@@ -556,8 +574,10 @@ describe('createQueryUnwrapper', () => {
     })
 
     it('should not decode a value that only holds an encoded scheme later on', () => {
-      const value = new URL('https://redirect.example.com/?url=go-https%253A%252F%252Fexample.com')
-      const expected = 'go-https%3A%2F%2Fexample.com'
+      const value = new URL(
+        'https://redirect.example.com/?url=example.com/go-https%253A%252F%252Fexample.org',
+      )
+      const expected = 'example.com/go-https%3A%2F%2Fexample.org'
 
       expect(extract(value)).toBe(expected)
     })

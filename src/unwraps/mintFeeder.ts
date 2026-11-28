@@ -1,18 +1,21 @@
 import { getQueryParam, isAnyOf, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamTarget } from '../utils.js'
+import { createUnwrapper, readParamTarget } from '../utils.js'
 
 // Feeder pepper of the self-hosted Mint stats package, which counts clicks from a site's feed on
 // its own host (<host>/feeder/?FeederAction=clicked&feed=<name>&seed=<target>). The exact path, the
 // clicked action and an http `seed` are the guard. Captures from 2008 show it forwarding.
-export const unwrapMintFeeder: UrlUnwrapper = (url) => {
-  if (!isAnyOf(url.pathname, '/feeder/') || getQueryParam(url, 'FeederAction') !== 'clicked') {
-    return
-  }
+export const unwrapMintFeeder: UrlUnwrapper = createUnwrapper({
+  anyHost: true,
+  unwrap: (url) => {
+    if (!isAnyOf(url.pathname, '/feeder/') || getQueryParam(url, 'FeederAction') !== 'clicked') {
+      return
+    }
 
-  const target = getParamTarget(url, 'seed')
+    const target = readParamTarget(url, 'seed')
 
-  if (target && isHttpUrl(target)) {
-    return target
-  }
-}
+    if (target && isHttpUrl(target)) {
+      return target
+    }
+  },
+})

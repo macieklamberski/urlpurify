@@ -23,11 +23,10 @@ describe('unwrapWeserv', () => {
     expect(unwrapWeserv(value)).toBe(expected)
   })
 
-  it('should return a relative source as written', () => {
+  it('should return undefined for a relative source', () => {
     const value = new URL('https://wsrv.nl/?url=%2Fimages%2Fphoto.jpg')
-    const expected = '/images/photo.jpg'
 
-    expect(unwrapWeserv(value)).toBe(expected)
+    expect(unwrapWeserv(value)).toBeUndefined()
   })
 
   it('should decode the source once', () => {
