@@ -119,18 +119,6 @@ export const readParamTarget = (
   return decodeEncodedScheme(value)
 }
 
-// The target a redirect's carrier param holds, read by `readParamTarget`, with the link's fragment
-// per `appendLinkFragment`.
-export const getParamTarget = (url: URL, name: string, index = 0): string | undefined => {
-  const target = readParamTarget(url, name, index)
-
-  if (!target) {
-    return
-  }
-
-  return appendLinkFragment(target, url)
-}
-
 export type TargetDecoder = (value: string) => string | undefined
 
 // The target a carrier param holds encoded, such as in base64: the first value, or the one at
@@ -156,22 +144,6 @@ export const readDecodedTarget = (
   }
 
   return decodeEncodedScheme(target)
-}
-
-// The target a carrier param holds encoded, read by `readDecodedTarget`, with the link's fragment
-// per `appendLinkFragment`.
-export const getDecodedParamTarget = (
-  url: URL,
-  name: string,
-  decode: TargetDecoder,
-): string | undefined => {
-  const target = readDecodedTarget(url, name, decode)
-
-  if (!target) {
-    return
-  }
-
-  return appendLinkFragment(target, url)
 }
 
 const lastSchemeRegex = /^.*https?(?::|%3a)./i

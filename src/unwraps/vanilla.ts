@@ -14,8 +14,8 @@ export const unwrapVanilla: UrlUnwrapper = createUnwrapper({
       return
     }
 
-    // Older Vanilla versions spell the carrier `Target`.
-    const target = readParamTarget(url, 'target') ?? readParamTarget(url, 'Target')
+    // Older Vanilla versions spell the carrier `Target`, which the case-blind read covers.
+    const target = readParamTarget(url, 'target')
 
     if (!target || !isHttpUrl(target)) {
       return
