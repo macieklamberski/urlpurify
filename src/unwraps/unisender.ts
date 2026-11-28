@@ -27,7 +27,7 @@ const hosts = [
   'us21.besteml.com',
   'usndr.com',
   'www.usndr.com',
-  /^us\d+-usndr\.com$/,
+  /^(?:www\.)?us\d+-usndr\.com$/,
 ]
 
 const pathRegex = /^\/(?:ru|ua)\/(?:mail|go2|eu1)_link_tracker$/i

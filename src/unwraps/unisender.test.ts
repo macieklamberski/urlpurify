@@ -67,6 +67,15 @@ describe('unwrapUnisender', () => {
     expect(unwrapUnisender(url)).toBe('https://example.org/nike-sb/?q=1')
   })
 
+  it('should extract the target from a numbered host with www.', () => {
+    const value = new URL(
+      'https://www.us7-usndr.com/ru/eu1_link_tracker?hash=6dh4q41ohybo4myz4emnf1y6bpgch5k6547m1c&url=aHR0cHM6Ly9leGFtcGxlLm9yZy9uaWtlLXNiLz9xPTE~',
+    )
+    const expected = 'https://example.org/nike-sb/?q=1'
+
+    expect(unwrapUnisender(value)).toBe(expected)
+  })
+
   it('should extract the target from the ua locale path', () => {
     const url = new URL(
       'https://link.emlmind.com/ua/mail_link_tracker?hash=6dh4q41ohybo4myz4emnf1y6bpgch5k6547m1c&url=https%253A%252F%252Fexample.org%252F',
