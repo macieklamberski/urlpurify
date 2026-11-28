@@ -755,6 +755,20 @@ describe('createUnwrapper', () => {
     expect(unwrapHost(value)).toBeUndefined()
   })
 
+  it('should run the body on any host with anyHost', () => {
+    const unwrap = createUnwrapper({ anyHost: true, unwrap: getTarget })
+    const value = new URL('https://click.example.net/?target=https://example.org/post')
+    const expected = 'https://example.org/post'
+
+    expect(unwrap(value)).toBe(expected)
+  })
+
+  it('should register no host with anyHost', () => {
+    const unwrap = createUnwrapper({ anyHost: true, unwrap: getTarget })
+
+    expect(unwrapperHosts.has(unwrap)).toBe(false)
+  })
+
   it('should run the body on a domain itself', () => {
     const value = new URL('https://example.com/?target=https://example.org/post')
     const expected = 'https://example.org/post'
