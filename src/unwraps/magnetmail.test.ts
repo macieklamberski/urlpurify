@@ -10,6 +10,15 @@ describe('unwrapMagnetmail', () => {
     expect(unwrapMagnetmail(url)).toBe('http://example.com/products/einkorn-pasta')
   })
 
+  it('should extract the target from a click link on the bare host', () => {
+    const value = new URL(
+      'http://mmsend3.com/link.cfm?r=626898905&sid=10799691&m=1117090&u=Crescendo&s=http://example.com/products/einkorn-pasta',
+    )
+    const expected = 'http://example.com/products/einkorn-pasta'
+
+    expect(unwrapMagnetmail(value)).toBe(expected)
+  })
+
   it('should keep the query of an unencoded target', () => {
     const url = new URL(
       'http://www.mmsend67.com/link.cfm?r=701497273&sid=24097339&m=2609744&u=IntReading&j=13929342&s=http://example.com/index.cfm?do=cnt.page',
@@ -55,8 +64,8 @@ describe('unwrapMagnetmail', () => {
   })
 
   it('should return undefined for a host that only ends with a family host', () => {
-    const url = new URL('http://click.www.mmsend3.com/link.cfm?r=626898905&s=http://example.com/')
+    const value = new URL('http://click.mmsend3.com/link.cfm?r=626898905&s=http://example.com/')
 
-    expect(unwrapMagnetmail(url)).toBeUndefined()
+    expect(unwrapMagnetmail(value)).toBeUndefined()
   })
 })
