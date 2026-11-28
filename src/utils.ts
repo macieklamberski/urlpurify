@@ -120,8 +120,9 @@ export const getParamTarget = (url: URL, name: string, index = 0): string | unde
 export type TargetDecoder = (value: string) => string | undefined
 
 // The target a carrier param holds encoded, such as in base64: the first value, or the one at
-// `index`, decoded by `decode`. The value is percent-decoded only, so a raw `+` of the base64
-// alphabet stays a `+`, where form decoding reads it as a space that `atob` drops.
+// `index`, decoded by `decode`, and decoded once more when it still holds an encoded scheme. The
+// value is percent-decoded only, so a raw `+` of the base64 alphabet stays a `+`, where form
+// decoding reads it as a space that `atob` drops.
 export const readDecodedTarget = (
   url: URL,
   name: string,
@@ -135,7 +136,13 @@ export const readDecodedTarget = (
     return
   }
 
-  return decode(decodePercent(raw))
+  const target = decode(decodePercent(raw))
+
+  if (!target) {
+    return
+  }
+
+  return decodeEncodedScheme(target)
 }
 
 // The target a carrier param holds encoded, read by `readDecodedTarget`, with the link's fragment

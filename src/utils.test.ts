@@ -427,6 +427,34 @@ describe('createQueryUnwrapper', () => {
       expect(extract(value)).toBeUndefined()
     })
 
+    it('should decode a target whose decoded value holds an encoded scheme', () => {
+      const extract = createQueryUnwrapper({
+        hosts: 'redirect.example.com',
+        params: ['enc'],
+        decode: decodeBase64,
+      })
+      const value = new URL(
+        'https://redirect.example.com/?enc=aHR0cHMlM0ElMkYlMkZleGFtcGxlLmNvbSUyRnBvc3QlM0ZhJTNEMQ==',
+      )
+      const expected = 'https://example.com/post?a=1'
+
+      expect(extract(value)).toBe(expected)
+    })
+
+    it('should keep the escapes of a decoded target with a raw scheme', () => {
+      const extract = createQueryUnwrapper({
+        hosts: 'redirect.example.com',
+        params: ['enc'],
+        decode: decodeBase64,
+      })
+      const value = new URL(
+        'https://redirect.example.com/?enc=aHR0cHM6Ly9leGFtcGxlLmNvbS9zZWFyY2g/cT1hJTI2Yg==',
+      )
+      const expected = 'https://example.com/search?q=a%26b'
+
+      expect(extract(value)).toBe(expected)
+    })
+
     it('should try the next param when a value does not decode', () => {
       const extract = createQueryUnwrapper({
         hosts: 'redirect.example.com',

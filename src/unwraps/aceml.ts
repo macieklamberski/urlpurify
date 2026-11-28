@@ -1,23 +1,8 @@
 import { decodeBase64, isAnyOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import {
-  createUnwrapper,
-  decodeEncodedScheme,
-  readDecodedTarget,
-  readParamTarget,
-} from '../utils.js'
+import { createUnwrapper, readDecodedTarget, readParamTarget } from '../utils.js'
 
 const hostRegex = /\.acemln[a-d]\.com$/
-
-const decodeTarget = (value: string): string | undefined => {
-  const decoded = decodeBase64(value)
-
-  if (!decoded) {
-    return
-  }
-
-  return decodeEncodedScheme(decoded)
-}
 
 // ActiveCampaign ACEML link tracker (<host>.acemln[a-d].com/Prod/link-tracker
 // ?redirectUrl=<base64>). The redirectUrl param is base64 of the target, plain or percent-encoded,
@@ -29,7 +14,7 @@ export const unwrapAceml: UrlUnwrapper = createUnwrapper({
       return
     }
 
-    const target = readDecodedTarget(url, 'redirectUrl', decodeTarget)
+    const target = readDecodedTarget(url, 'redirectUrl', decodeBase64)
 
     if (target) {
       return target

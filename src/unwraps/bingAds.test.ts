@@ -3,6 +3,14 @@ import { purifyUrl } from '../clean.js'
 import { unwrapBingAds } from './bingAds.js'
 
 describe('unwrapBingAds', () => {
+  it('should keep the escapes of a target with a raw scheme', () => {
+    const url = new URL(
+      'https://www.bing.com/aclk?ld=e8v53HweaYYJO4&u=aHR0cHM6Ly9leGFtcGxlLmNvbS9zZWFyY2g_cT1hJTI2Yg&ntb=1',
+    )
+
+    expect(unwrapBingAds(url)).toBe('https://example.com/search?q=a%26b')
+  })
+
   it('should extract the target of an aclk link', () => {
     const url = new URL(
       'https://www.bing.com/aclk?ld=e8v53HweaYYJO4-AI3B9EQTjVUCUw_PMEVmStLE-Ak7-miCUGacAv4rlEWkyDU3pP48rH2hc&u=aHR0cHMlM2ElMmYlMmZ3d3cuZXhhbXBsZS5jb20lMmZib29raW5nJTJmMTIzNDU=&rlid=d9a7f0c1b2e44d5a8c3b6e1f0a2d4c7b&ntb=1',
@@ -112,12 +120,11 @@ describe('unwrapBingAds', () => {
     expect(purifyUrl(value, { unwrappers: [unwrapBingAds] })).toBe(value)
   })
 
-  it('should return undefined for a target that is not http', () => {
-    const url = new URL(
-      'https://www.bing.com/aclk?ld=e8v53HweaYYJO4-AI3B9EQTjVUCUw_PMEVmStLE-Ak7-miCUGacAv4rlEWkyDU3pP48rH2hc&u=ZnRwJTNhJTJmJTJmZXhhbXBsZS5jb20lMmZmaWxlLnppcA==&rlid=d9a7f0c1b2e44d5a8c3b6e1f0a2d4c7b&ntb=1',
-    )
+  it('should keep the wrapper for a target that is not http', () => {
+    const url =
+      'https://www.bing.com/aclk?ld=e8v53HweaYYJO4-AI3B9EQTjVUCUw_PMEVmStLE-Ak7-miCUGacAv4rlEWkyDU3pP48rH2hc&u=ZnRwJTNhJTJmJTJmZXhhbXBsZS5jb20lMmZmaWxlLnppcA==&rlid=d9a7f0c1b2e44d5a8c3b6e1f0a2d4c7b&ntb=1'
 
-    expect(unwrapBingAds(url)).toBeUndefined()
+    expect(purifyUrl(url, { unwrappers: [unwrapBingAds] })).toBe(url)
   })
 
   it('should keep a malformed escape in the target as written', () => {
