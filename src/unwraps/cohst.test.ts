@@ -2,7 +2,7 @@ import { describe, expect, it } from 'bun:test'
 import { unwrapCohst } from './cohst.js'
 
 describe('unwrapCohst', () => {
-  it('should extract a target and give it https', () => {
+  it('should extract a target without a scheme', () => {
     const url = new URL(
       'https://cohst.app/pdcst/4D2K3Z/mcdn.podbean.com/mf/web/5e6ly8/are-biologicals-the-future-of-ag.mp3',
     )
@@ -12,7 +12,7 @@ describe('unwrapCohst', () => {
     )
   })
 
-  it('should give https to a target behind an http prefix', () => {
+  it('should keep a target without a scheme behind an http prefix', () => {
     const url = new URL('http://cohst.app/pdcst/4D2K3Z/example.com/episode.mp3')
 
     expect(unwrapCohst(url)).toBe('example.com/episode.mp3')
