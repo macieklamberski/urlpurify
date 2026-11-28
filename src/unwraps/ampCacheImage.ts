@@ -17,6 +17,6 @@ export const unwrapAmpCacheImage: UrlUnwrapper = createUnwrapper({
       return
     }
 
-    return resolvePathTarget(url, match.groups.target, match.groups.secure ? 'https:' : 'http:')
+    return resolvePathTarget(url, match.groups.target, match.groups.secure ? 'https' : 'http')
   },
 })

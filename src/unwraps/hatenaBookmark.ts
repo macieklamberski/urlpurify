@@ -24,7 +24,7 @@ const readEntry: UrlUnwrapper = (url) => {
     return
   }
 
-  const scheme = match.groups.secure ? 'https:' : 'http:'
+  const scheme = match.groups.secure ? 'https' : 'http'
 
   return resolvePathTarget(url, match.groups.target, scheme).replace('%23', '#')
 }

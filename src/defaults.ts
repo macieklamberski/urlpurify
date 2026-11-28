@@ -3,7 +3,7 @@ import { affiliateParams } from './tracking/affiliate.js'
 import { campaignParams } from './tracking/campaign.js'
 import { clickAttributionParams } from './tracking/clickAttribution.js'
 import { housekeepingParams } from './tracking/housekeeping.js'
-import { sessionParams } from './tracking/session.js'
+import { sessionIdParams } from './tracking/session.js'
 import { visitorIdParams } from './tracking/visitorId.js'
 import type { TrackingParam, UrlUnwrapper } from './types.js'
 import { unwrap2performant } from './unwraps/2performant.js'
@@ -71,7 +71,7 @@ import { unwrapBlubrry } from './unwraps/blubrry.js'
 import { unwrapBolPartner } from './unwraps/bolPartner.js'
 import { unwrapBridgyFed } from './unwraps/bridgyFed.js'
 import { unwrapBrightspot } from './unwraps/brightspot.js'
-import { unwrapBlueskyRedirect } from './unwraps/bsky.js'
+import { unwrapBsky } from './unwraps/bsky.js'
 import { unwrapBuffer } from './unwraps/buffer.js'
 import { unwrapBusinessWire } from './unwraps/businessWire.js'
 import { unwrapButton } from './unwraps/button.js'
@@ -147,7 +147,7 @@ import { unwrapEvernote } from './unwraps/evernote.js'
 import { unwrapEvernoteClip } from './unwraps/evernoteClip.js'
 import { unwrapExciteTranslate } from './unwraps/exciteTranslate.js'
 import { unwrapExpediaAffiliate } from './unwraps/expediaAffiliate.js'
-import { unwrapFacebookShim } from './unwraps/facebook.js'
+import { unwrapFacebook } from './unwraps/facebook.js'
 import { unwrapFacebookShare } from './unwraps/facebookShare.js'
 import { unwrapFanbridge } from './unwraps/fanbridge.js'
 import { unwrapFederatedMedia } from './unwraps/federatedMedia.js'
@@ -221,7 +221,7 @@ import { unwrapIndexHu } from './unwraps/indexHu.js'
 import { unwrapInfospace } from './unwraps/infospace.js'
 import { unwrapInoreader } from './unwraps/inoreader.js'
 import { unwrapInsiderAffiliate } from './unwraps/insiderAffiliate.js'
-import { unwrapInstagramShim } from './unwraps/instagram.js'
+import { unwrapInstagram } from './unwraps/instagram.js'
 import { unwrapInstapaperSave } from './unwraps/instapaperSave.js'
 import { unwrapIntranetQuorum } from './unwraps/intranetQuorum.js'
 import { unwrapInvisionNoExternalLinks } from './unwraps/invisionNoExternalLinks.js'
@@ -397,7 +397,7 @@ import { unwrapTechnoratiFaves } from './unwraps/technoratiFaves.js'
 import { unwrapTelegramIv } from './unwraps/telegramIv.js'
 import { unwrapTelegramShare } from './unwraps/telegramShare.js'
 import { unwrapTheRegister } from './unwraps/theRegister.js'
-import { unwrapThreadsShim } from './unwraps/threads.js'
+import { unwrapThreads } from './unwraps/threads.js'
 import { unwrapThreadsIntent } from './unwraps/threadsIntent.js'
 import { unwrapTiktok } from './unwraps/tiktok.js'
 import { unwrapTitanhqLinklock } from './unwraps/titanhqLinklock.js'
@@ -477,7 +477,7 @@ import { unwrapYandexTurbo } from './unwraps/yandexTurbo.js'
 import { unwrapYelp } from './unwraps/yelp.js'
 import { unwrapYesware } from './unwraps/yesware.js'
 import { unwrapYourMembership } from './unwraps/yourMembership.js'
-import { unwrapYouTube } from './unwraps/youtube.js'
+import { unwrapYoutube } from './unwraps/youtube.js'
 import { unwrapZanox } from './unwraps/zanox.js'
 import { unwrapZayads } from './unwraps/zayads.js'
 import { unwrapZemanta } from './unwraps/zemanta.js'
@@ -491,7 +491,7 @@ export {
   campaignParams,
   clickAttributionParams,
   housekeepingParams,
-  sessionParams,
+  sessionIdParams,
   visitorIdParams,
 }
 
@@ -500,7 +500,7 @@ export {
 export const defaultTrackingParams: Array<TrackingParam> = [
   ...clickAttributionParams,
   ...visitorIdParams,
-  ...sessionParams,
+  ...sessionIdParams,
   ...housekeepingParams,
 ]
 
@@ -513,17 +513,17 @@ export const knownTrackingParams: Array<TrackingParam> = [
 
 // The known names and patterns that track on every host with every value. An entry is left out,
 // since its name alone would strip `sid` or `ref` everywhere.
-export const trackingParamsLiterals: Array<string> = []
-export const trackingParamsPatterns: Array<RegExp> = []
+export const knownTrackingParamLiterals: Array<string> = []
+export const knownTrackingParamPatterns: Array<RegExp> = []
 
 for (const param of knownTrackingParams) {
   if (isString(param)) {
-    trackingParamsLiterals.push(param)
+    knownTrackingParamLiterals.push(param)
     continue
   }
 
   if (param instanceof RegExp) {
-    trackingParamsPatterns.push(param)
+    knownTrackingParamPatterns.push(param)
   }
 }
 
@@ -555,8 +555,8 @@ export const linkShimUnwrappers: Array<UrlUnwrapper> = [
   unwrapArxiv,
   unwrapBabyblog,
   unwrapBale,
-  unwrapBlueskyRedirect,
   unwrapBridgyFed,
+  unwrapBsky,
   unwrapBytedance,
   unwrapCalendly,
   unwrapCanva,
@@ -569,7 +569,7 @@ export const linkShimUnwrappers: Array<UrlUnwrapper> = [
   unwrapDropbox,
   unwrapDzen,
   unwrapEvernote,
-  unwrapFacebookShim,
+  unwrapFacebook,
   unwrapFeedsportal,
   unwrapFtc,
   unwrapGfnLinkProxy,
@@ -580,7 +580,7 @@ export const linkShimUnwrappers: Array<UrlUnwrapper> = [
   unwrapHearthis,
   unwrapHorde,
   unwrapHrefLi,
-  unwrapInstagramShim,
+  unwrapInstagram,
   unwrapInvisionNoExternalLinks,
   unwrapIrs,
   unwrapJianshuGo,
@@ -617,7 +617,7 @@ export const linkShimUnwrappers: Array<UrlUnwrapper> = [
   unwrapStorify,
   unwrapStumbleupon,
   unwrapTeacup,
-  unwrapThreadsShim,
+  unwrapThreads,
   unwrapTiktok,
   unwrapTumblr,
   unwrapTwitterRedirect,
@@ -633,7 +633,7 @@ export const linkShimUnwrappers: Array<UrlUnwrapper> = [
   unwrapYahooJapanAmpViewer,
   unwrapYandexMail,
   unwrapYelp,
-  unwrapYouTube,
+  unwrapYoutube,
   unwrapZhihu,
 ]
 

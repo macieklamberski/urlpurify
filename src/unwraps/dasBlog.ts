@@ -15,7 +15,7 @@ export const unwrapDasBlog: UrlUnwrapper = createUnwrapper({
     }
 
     // A nested unencoded counter repeats `url`, and the first value is the inner counter cut short.
-    const target = readParamTarget(url, 'url', -1)
+    const target = readParamTarget(url, 'url', { index: -1 })
 
     if (target && isHttpUrl(target)) {
       return target

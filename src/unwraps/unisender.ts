@@ -47,6 +47,9 @@ export const unwrapUnisender: UrlUnwrapper = createUnwrapper({
 
     // An unencoded nested tracker repeats `url`, so the first value is a stub and the last one is
     // the target. Some senders encode the target as base64url with `~` as the padding character.
-    return readParamTarget(url, 'url', -1) ?? readDecodedTarget(url, 'url', decodeTarget, -1)
+    return (
+      readParamTarget(url, 'url', { index: -1 }) ??
+      readDecodedTarget(url, 'url', decodeTarget, { index: -1 })
+    )
   },
 })

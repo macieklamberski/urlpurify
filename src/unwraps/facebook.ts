@@ -49,7 +49,7 @@ const unwrapLegacy = createUnwrapper({
 
     // A target with its scheme kept is percent-encoded once, twice or half-encoded as `https%3A//`.
     // Facebook's leaving page and its 302 into l.php both gave a target without a scheme `http://`.
-    return resolvePathTarget(url, match[1], 'http:')
+    return resolvePathTarget(url, match[1], 'http')
   },
 })
 
@@ -57,7 +57,7 @@ const unwrapLegacy = createUnwrapper({
 // free., business., 0. and bare facebook.com, l.messenger.com and l.workplace.com), on / and
 // /lsr.php on l.facebook.com, and the legacy /l/<token>/<target> or /l/<token>;<target> on www.,
 // bare and l.facebook.com, where a target without a scheme gets `http://`.
-export const unwrapFacebookShim: UrlUnwrapper = createUnwrapper({
+export const unwrapFacebook: UrlUnwrapper = createUnwrapper({
   hosts,
   unwrap: (url) => {
     return unwrapLinkPhp(url) ?? unwrapRoot(url) ?? unwrapLsr(url) ?? unwrapLegacy(url)

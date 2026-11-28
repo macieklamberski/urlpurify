@@ -8,5 +8,5 @@ const episodePrefixRegex = /^\/e\//i
 export const unwrapPodsights = createPathUnwrapper({
   hosts: ['pdst.fm', 'www.pdst.fm', 'prfx.byspotify.com'],
   prefix: episodePrefixRegex,
-  scheme: 'link',
+  scheme: 'inherit',
 })

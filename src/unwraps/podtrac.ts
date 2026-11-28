@@ -26,11 +26,11 @@ export const unwrapPodtrac: UrlUnwrapper = createUnwrapper({
     }
 
     if (isHostOf(url, 'dts.podtrac.com')) {
-      return readPathTarget(url, dtsPrefixRegex, url.protocol)
+      return readPathTarget(url, dtsPrefixRegex, 'inherit')
     }
 
     if (isHostOf(url, 'play.podtrac.com')) {
-      return readPathTarget(url, playPrefixRegex, url.protocol)
+      return readPathTarget(url, playPrefixRegex, 'inherit')
     }
 
     if (
@@ -41,6 +41,6 @@ export const unwrapPodtrac: UrlUnwrapper = createUnwrapper({
       return url.search.slice(1)
     }
 
-    return readPathTarget(url, ptsPrefixRegex, url.protocol)
+    return readPathTarget(url, ptsPrefixRegex, 'inherit')
   },
 })

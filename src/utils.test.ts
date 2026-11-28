@@ -29,6 +29,17 @@ describe('createQueryUnwrapper', () => {
     expect(extract(value)).toBe(expected)
   })
 
+  it('should extract the target of a param given as one name', () => {
+    const extract = createQueryUnwrapper({
+      hosts: 'redirect.example.com',
+      params: 'url',
+    })
+    const value = new URL('https://redirect.example.com/?url=https%3A%2F%2Fexample.com')
+    const expected = 'https://example.com'
+
+    expect(extract(value)).toBe(expected)
+  })
+
   it('should extract the first present param for a matching host', () => {
     const extract = createQueryUnwrapper({
       hosts: 'redirect.example.com',
@@ -909,6 +920,14 @@ describe('createUnwrapper with brands', () => {
     expect(unwrapBrand(value)).toBeUndefined()
   })
 
+  it('should run the body on a brand given as one name', () => {
+    const unwrapOneBrand = createUnwrapper({ brands: 'example', unwrap: getTarget })
+    const value = new URL('https://www.example.de/?target=https://example.org/post')
+    const expected = 'https://example.org/post'
+
+    expect(unwrapOneBrand(value)).toBe(expected)
+  })
+
   it('should run the body on a domain given beside the brands', () => {
     const unwrap = createUnwrapper({
       brands: ['example'],
@@ -1049,14 +1068,14 @@ describe('readParamTarget', () => {
     const value = new URL('https://share.example.com/?url=https%3A%2F%2Fwww.example.com%2Fa+b')
     const expected = 'https://www.example.com/a+b'
 
-    expect(readParamTarget(value, 'url', 0, 'keep')).toBe(expected)
+    expect(readParamTarget(value, 'url', { plus: 'keep' })).toBe(expected)
   })
 
   it('should read a raw plus in an unencoded target as a space with plus set to space', () => {
     const value = new URL('https://share.example.com/?url=https://www.example.com/a+b')
     const expected = 'https://www.example.com/a b'
 
-    expect(readParamTarget(value, 'url', 0, 'space')).toBe(expected)
+    expect(readParamTarget(value, 'url', { plus: 'space' })).toBe(expected)
   })
 
   it('should return undefined for a relative value', () => {

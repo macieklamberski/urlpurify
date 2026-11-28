@@ -15,7 +15,7 @@ export const unwrapBrightspot: UrlUnwrapper = createUnwrapper({
       return
     }
 
-    const source = readParamTarget(url, 'url', -1, 'keep')
+    const source = readParamTarget(url, 'url', { index: -1, plus: 'keep' })
 
     // On any host, only an http source tells the resizer from another site's /dims4/ path.
     if (!source || !isHttpUrl(source)) {

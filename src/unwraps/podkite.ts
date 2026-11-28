@@ -1,3 +1,4 @@
+import { isAnyOf } from 'trousse'
 import { readPathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
@@ -16,6 +17,6 @@ export const unwrapPodkite: UrlUnwrapper = createUnwrapper({
       return
     }
 
-    return readPathTarget(url, schemePrefixRegex, `${match[1]}:`)
+    return readPathTarget(url, schemePrefixRegex, isAnyOf(match[1], 'http') ? 'http' : 'https')
   },
 })

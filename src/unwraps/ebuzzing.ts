@@ -32,6 +32,6 @@ export const unwrapEbuzzing: UrlUnwrapper = createUnwrapper({
       return
     }
 
-    return resolvePathTarget(url, match[1], 'http:')
+    return resolvePathTarget(url, match[1], 'http')
   },
 })

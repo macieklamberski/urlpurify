@@ -8,5 +8,5 @@ const flexPrefixRegex = /^\/s\/[^/]+\/u\//i
 export const unwrapAcast = createPathUnwrapper({
   hosts: 'flex2.acast.com',
   prefix: flexPrefixRegex,
-  scheme: 'link',
+  scheme: 'inherit',
 })

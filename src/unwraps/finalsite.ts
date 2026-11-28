@@ -16,7 +16,7 @@ export const unwrapFinalsite: UrlUnwrapper = createUnwrapper({
 
     // A Finalsite email link nested unencoded in `dest` spills its own `dest` into this query, so
     // the last one holds the target.
-    const target = readParamTarget(url, 'dest', -1)
+    const target = readParamTarget(url, 'dest', { index: -1 })
 
     if (!target || !isHttpUrl(target)) {
       return

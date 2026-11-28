@@ -4,12 +4,16 @@ import {
   createUnwrapper,
   decodeEncodedScheme,
   httpSchemeRegex,
-  type UnwrapperOptions,
+  type UnwrapperBaseConfig,
 } from './utils.js'
 
-export type PathUnwrapperConfig = UnwrapperOptions & {
+// What a target without a scheme forwards to: https, http or the link's own. Without a scheme
+// given, `cleanUrl` gives it https.
+type TargetScheme = 'https' | 'http' | 'inherit'
+
+export type PathUnwrapperConfig = UnwrapperBaseConfig & {
   prefix: RegExp
-  scheme?: 'https' | 'http' | 'link' // What a target without a scheme forwards to, https by default
+  scheme?: TargetScheme
 }
 
 const leadingSlashesRegex = /^\/+/
@@ -38,14 +42,14 @@ export const decodePathTarget = (target: string): string => {
 // A target written in the url's path, as a module's own regex captures it, decoded by
 // `decodePathTarget`. A raw target takes the url's own query, since its query lands there. An
 // encoded target holds its own query and ends where its encoding ends, so the url's query is the
-// wrapper's. A target without an http scheme takes `scheme` when given, and otherwise gets https
-// from `cleanUrl`, which cannot repair a host behind junk such as `%20`. A service that drops the
-// url's query on forwarding passes an empty `suffix`. The link's fragment is the factory's, per
-// `createUnwrapper`.
+// wrapper's. A target without an http scheme takes `scheme` when given, `inherit` being the
+// link's own, and otherwise gets https from `cleanUrl`, which cannot repair a host behind junk such
+// as `%20`. A service that drops the url's query on forwarding passes an empty `suffix`. The link's
+// fragment is the factory's, per `createUnwrapper`.
 export const resolvePathTarget = (
   url: URL,
   path: string,
-  scheme?: string,
+  scheme?: TargetScheme,
   suffix = url.search,
 ): string => {
   const decoded = decodePathTarget(path)
@@ -55,16 +59,18 @@ export const resolvePathTarget = (
     return target
   }
 
-  return `${scheme}//${target}`
+  const protocol = scheme === 'inherit' ? url.protocol : `${scheme}:`
+
+  return `${protocol}//${target}`
 }
 
 // The target that follows a prefix at the start of the path, read by `resolvePathTarget`. Podcast
 // analytics prefixes mostly drop the target's scheme and forward to https. A prefix that forwards
-// with its own scheme passes `url.protocol`, and one that forwards to http passes `http:`.
+// with the link's own scheme passes `inherit`, and one that forwards to http passes `http`.
 export const readPathTarget = (
   url: URL,
   prefixRegex: RegExp,
-  scheme?: string,
+  scheme?: TargetScheme,
   suffix = url.search,
 ): string | undefined => {
   const match = url.pathname.match(prefixRegex)
@@ -93,19 +99,15 @@ export const addArchivedScheme = (target: string): string => {
   return `http://${target}`
 }
 
-// An unwrapper for a target glued into the path behind a prefix, read by `readPathTarget`. A `link`
-// scheme forwards with the link's own.
+// An unwrapper for a target glued into the path behind a prefix, read by `readPathTarget` with
+// `scheme`.
 export const createPathUnwrapper = (config: PathUnwrapperConfig): UrlUnwrapper => {
   const { prefix, scheme, ...options } = config
 
   return createUnwrapper({
     ...options,
     unwrap: (url) => {
-      if (scheme === 'link') {
-        return readPathTarget(url, prefix, url.protocol)
-      }
-
-      return readPathTarget(url, prefix, scheme === 'http' ? 'http:' : undefined)
+      return readPathTarget(url, prefix, scheme)
     },
   })
 }

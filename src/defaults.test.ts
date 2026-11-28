@@ -1,13 +1,14 @@
 import { describe, expect, it } from 'bun:test'
 import { readFileSync } from 'node:fs'
 import { Glob } from 'bun'
+import * as deprecated from './deprecated.js'
 import * as urlpurifier from './index.js'
 import type { UrlUnwrapper } from './types.js'
 
 const exportEntries: Array<[string, unknown]> = Object.entries(urlpurifier)
 
 const exportedUnwrappers = exportEntries.filter(([name]) => {
-  return name.startsWith('unwrap') && name !== 'unwrapUrl'
+  return name.startsWith('unwrap') && name !== 'unwrapUrl' && !(name in deprecated)
 })
 
 const getNames = (unwrappers: Array<unknown>): Array<string> => {
@@ -80,8 +81,8 @@ describe('defaultUnwrappers', () => {
       'unwrapBabyblog',
       'unwrapBale',
       'unwrapBing',
-      'unwrapBlueskyRedirect',
       'unwrapBridgyFed',
+      'unwrapBsky',
       'unwrapBytedance',
       'unwrapCalendly',
       'unwrapCanva',
@@ -95,7 +96,7 @@ describe('defaultUnwrappers', () => {
       'unwrapDuckduckgo',
       'unwrapDzen',
       'unwrapEvernote',
-      'unwrapFacebookShim',
+      'unwrapFacebook',
       'unwrapFeedsportal',
       'unwrapFlipboard',
       'unwrapFtc',
@@ -113,7 +114,7 @@ describe('defaultUnwrappers', () => {
       'unwrapHorde',
       'unwrapHrefLi',
       'unwrapInfospace',
-      'unwrapInstagramShim',
+      'unwrapInstagram',
       'unwrapInvisionNoExternalLinks',
       'unwrapIrs',
       'unwrapJianshuGo',
@@ -150,7 +151,7 @@ describe('defaultUnwrappers', () => {
       'unwrapStorify',
       'unwrapStumbleupon',
       'unwrapTeacup',
-      'unwrapThreadsShim',
+      'unwrapThreads',
       'unwrapTiktok',
       'unwrapTumblr',
       'unwrapTwitterRedirect',
@@ -168,7 +169,7 @@ describe('defaultUnwrappers', () => {
       'unwrapYahooSearch',
       'unwrapYandexMail',
       'unwrapYelp',
-      'unwrapYouTube',
+      'unwrapYoutube',
       'unwrapZemanta',
       'unwrapZhihu',
     ]
@@ -313,22 +314,22 @@ describe('intent unwrappers', () => {
   })
 })
 
-describe('trackingParamsLiterals', () => {
+describe('knownTrackingParamLiterals', () => {
   it('should include names from the opt-in categories', () => {
-    expect(urlpurifier.trackingParamsLiterals).toContain('utm_source')
+    expect(urlpurifier.knownTrackingParamLiterals).toContain('utm_source')
   })
   it('should leave out a name only an entry holds', () => {
-    expect(urlpurifier.trackingParamsLiterals).not.toContain('sid')
+    expect(urlpurifier.knownTrackingParamLiterals).not.toContain('sid')
   })
 
   it('should leave out the self-referral ref', () => {
-    expect(urlpurifier.trackingParamsLiterals).not.toContain('ref')
+    expect(urlpurifier.knownTrackingParamLiterals).not.toContain('ref')
   })
 })
 
-describe('trackingParamsPatterns', () => {
+describe('knownTrackingParamPatterns', () => {
   it('should hold only regexes', () => {
-    const isEveryRegex = urlpurifier.trackingParamsPatterns.every((pattern) => {
+    const isEveryRegex = urlpurifier.knownTrackingParamPatterns.every((pattern) => {
       return pattern instanceof RegExp
     })
 

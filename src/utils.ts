@@ -22,7 +22,7 @@ export type UnwrapperHosts =
   | { domains: HostList; hosts?: never; subdomains?: never; brands?: never; anyHost?: never }
   | { subdomains: HostList; hosts?: never; domains?: never; brands?: never; anyHost?: never }
   | {
-      brands: ReadonlyArray<string>
+      brands: string | ReadonlyArray<string>
       hosts?: HostList
       domains?: HostList
       subdomains?: HostList
@@ -30,23 +30,23 @@ export type UnwrapperHosts =
     }
   | { anyHost: true; hosts?: never; domains?: never; subdomains?: never; brands?: never }
 
-export type UnwrapperOptions = UnwrapperHosts & {
+export type UnwrapperBaseConfig = UnwrapperHosts & {
   match?: RegExp // Narrows the hosts above to those it matches, while the hosts feed the host index
   ignoreLinkFragment?: boolean // The link opens a page or an image, or the page reads the fragment
 }
 
-export type UnwrapperConfig = UnwrapperOptions & {
+export type UnwrapperConfig = UnwrapperBaseConfig & {
   unwrap: UrlUnwrapper
 }
 
 // `decode` reads the raw value with its `+` kept, so `plus` is read only without it.
-export type QueryUnwrapperConfig = UnwrapperOptions &
+export type QueryUnwrapperConfig = UnwrapperBaseConfig &
   (
     | { decode: TargetDecoder; plus?: never } // The carrier holds the target encoded, as in base64
     | { plus?: PlusReading; decode?: never } // How the service reads a raw `+` in the target
   ) & {
     path?: string | RegExp | ReadonlyArray<string>
-    params: ReadonlyArray<string>
+    params: string | ReadonlyArray<string>
     index?: number // The value of a repeated param to read, such as -1 for the last
   }
 
@@ -99,6 +99,11 @@ export const appendLinkFragment = (target: string, url: URL): string => {
   return `${target}${url.hash}`
 }
 
+type ParamTargetOptions = {
+  index?: number // The value of a repeated param to read, such as -1 for the last
+  plus?: PlusReading
+}
+
 // The target a carrier param holds, read as `getParamValues` reads it and decoded once more when
 // encoded twice: the first value, or the one at `index`, such as -1 for the last. A value the url
 // repair, trousse's `resolveUrl`, cannot turn into an http url, such as a relative `/local/page`,
@@ -106,10 +111,9 @@ export const appendLinkFragment = (target: string, url: URL): string => {
 export const readParamTarget = (
   url: URL,
   name: string,
-  index = 0,
-  plus?: PlusReading,
+  options: ParamTargetOptions = {},
 ): string | undefined => {
-  const value = getParamValues(url, name, plus).at(index)
+  const value = getParamValues(url, name, options.plus).at(options.index ?? 0)
 
   if (!value) {
     return
@@ -135,9 +139,9 @@ export const readDecodedTarget = (
   url: URL,
   name: string,
   decode: TargetDecoder,
-  index = 0,
+  options: Pick<ParamTargetOptions, 'index'> = {},
 ): string | undefined => {
-  const value = getParamValues(url, name, 'keep').at(index)
+  const value = getParamValues(url, name, 'keep').at(options.index ?? 0)
 
   if (!value) {
     return
@@ -347,10 +351,10 @@ export const createQueryUnwrapper = (config: QueryUnwrapperConfig): UrlUnwrapper
         return
       }
 
-      for (const param of params) {
+      for (const param of isString(params) ? [params] : params) {
         const target = decode
-          ? readDecodedTarget(url, param, decode, index)
-          : readParamTarget(url, param, index, plus)
+          ? readDecodedTarget(url, param, decode, { index })
+          : readParamTarget(url, param, { index, plus })
 
         if (target) {
           return target
