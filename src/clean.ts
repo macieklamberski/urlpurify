@@ -43,13 +43,18 @@ type PairHost = {
 type QueryPair = [name: string, value: string]
 
 // A signature covers the rest of the query, so dropping any param from it makes the server reject
-// the url, as a CDN answers 401 to a signed file url without its `ts`.
+// the url, as a CDN answers 401 to a signed file url without its `ts`. Lowercase, matched against
+// the lowercased name as written: a server reads ` sig` as a name of its own.
 const signatureParams = [
   'sig', // Generic CDN and redirect signature
   'signature', // CloudFront, AWS Signature Version 2
   'x-amz-signature', // AWS Signature Version 4 presigned url
   'x-goog-signature', // Google Cloud Storage V4 signed url
 ]
+
+const foldName = (name: string): string => {
+  return name.toLowerCase()
+}
 
 const pathParamRegex = /;([^;/=]+)=[^;/]*/g
 
@@ -131,8 +136,7 @@ const matchesEntry = (
   pairHost: PairHost,
 ): boolean => {
   const isNameMatch = isString(entry.name)
-    ? // biome-ignore lint/plugin/useAnyOfOrSameText: The caller folds the name once per param, and isAnyOf would fold and trim both sides per entry.
-      entry.name.toLowerCase() === name
+    ? isAnyOf(entry.name, name, foldName)
     : matchesPattern(name, entry.name)
 
   if (!isNameMatch) {
@@ -181,7 +185,7 @@ const readQueryPair = (pair: string): QueryPair | undefined => {
 }
 
 const isSignaturePair = (pair: QueryPair | undefined): boolean => {
-  return isAnyOf(pair?.[0], signatureParams)
+  return isAnyOf(pair?.[0], signatureParams, foldName)
 }
 
 // Takes the lowercased name and the decoded value.
@@ -502,13 +506,15 @@ const applyUnwrappers = (
 
   // A wrapper written with a doubled slash, `//safety/go`, matches only once collapsed. The url as
   // written goes first, so a target whose own path holds `//` keeps it.
-  const collapsed = parseUrl(normalizeUrl(url.href, { collapseSlashes: true }))
+  if (url.pathname.includes('//')) {
+    const collapsed = parseUrl(normalizeUrl(url.href, { collapseSlashes: true }))
 
-  if (collapsed && collapsed.href !== url.href) {
-    const target = applyUnwrappers(collapsed, unwrappers, index)
+    if (collapsed && collapsed.href !== url.href) {
+      const target = applyUnwrappers(collapsed, unwrappers, index)
 
-    if (target) {
-      return target
+      if (target) {
+        return target
+      }
     }
   }
 

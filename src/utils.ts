@@ -29,14 +29,18 @@ export type UnwrapperConfig = UnwrapperOptions & {
   unwrap: UrlUnwrapper
 }
 
-export type QueryUnwrapperConfig = UnwrapperOptions & {
-  path?: string | RegExp | ReadonlyArray<string>
-  params: Array<string>
-  index?: number // The value of a repeated param to read, such as -1 for the last
-  decode?: TargetDecoder // The carrier holds the target encoded, such as in base64
-  plus?: PlusReading // How the service reads a raw `+` in the target, per `decodeParamValue`
-}
+// `decode` reads the raw value with its `+` kept, so `plus` is read only without it.
+export type QueryUnwrapperConfig = UnwrapperOptions &
+  (
+    | { decode: TargetDecoder; plus?: never } // The carrier holds the target encoded, as in base64
+    | { plus?: PlusReading; decode?: never } // How the service reads a raw `+` in the target
+  ) & {
+    path?: string | RegExp | ReadonlyArray<string>
+    params: Array<string>
+    index?: number // The value of a repeated param to read, such as -1 for the last
+  }
 
+export const httpSchemeRegex = /^https?:/i
 const encodedSchemeRegex = /^https?(?:%3A|:%2F)/i
 
 // A value already decoded once still holds an encoded scheme (`https%3A%2F%2F`, or `https:%2F%2F`
@@ -121,22 +125,21 @@ export type TargetDecoder = (value: string) => string | undefined
 
 // The target a carrier param holds encoded, such as in base64: the first value, or the one at
 // `index`, decoded by `decode`, and decoded once more when it still holds an encoded scheme. The
-// value is percent-decoded only, so a raw `+` of the base64 alphabet stays a `+`, where form
-// decoding reads it as a space that `atob` drops.
+// value is read as `getParamValues` reads it with a `+` kept, so a raw `+` of the base64 alphabet
+// stays a `+`, where form decoding reads it as a space that `atob` drops.
 export const readDecodedTarget = (
   url: URL,
   name: string,
   decode: TargetDecoder,
   index = 0,
 ): string | undefined => {
-  const raws = getQueryParamValues(url, name, { decodeValues: false, preserveEmptyValues: true })
-  const raw = raws.at(index)
+  const value = getParamValues(url, name, 'keep').at(index)
 
-  if (!raw) {
+  if (!value) {
     return
   }
 
-  const target = decode(decodePercent(raw))
+  const target = decode(value)
 
   if (!target) {
     return
@@ -254,7 +257,6 @@ export const createUnwrapper = (config: UnwrapperConfig): UrlUnwrapper => {
 }
 
 const schemeRegex = /^[a-z][a-z\d+.-]*:/i
-const httpSchemeRegex = /^https?:/i
 
 // A target in a scheme `cleanUrl` cannot read as http, such as an app's own `myapp://open`. A
 // host with a port, `example.com:8080/`, reads as http.

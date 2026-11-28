@@ -1,6 +1,11 @@
 import { decodePercent } from 'trousse'
 import type { UrlUnwrapper } from './types.js'
-import { createUnwrapper, decodeEncodedScheme, type UnwrapperOptions } from './utils.js'
+import {
+  createUnwrapper,
+  decodeEncodedScheme,
+  httpSchemeRegex,
+  type UnwrapperOptions,
+} from './utils.js'
 
 export type PathUnwrapperConfig = UnwrapperOptions & {
   prefix: RegExp
@@ -8,7 +13,6 @@ export type PathUnwrapperConfig = UnwrapperOptions & {
 }
 
 const leadingSlashesRegex = /^\/+/
-const schemeRegex = /^https?:/i
 const encodedSchemeRegex = /^https?(?:%(?:25)?3A|:%(?:25)?2F)/i
 
 // A path target whose scheme is percent-encoded, once or twice, as in `https%3A%2F%2F`,
@@ -49,7 +53,7 @@ export const getPathTarget = (
   const decoded = decodePathTarget(path)
   const target = decoded === path ? `${path}${suffix}` : decoded
 
-  if (schemeRegex.test(target)) {
+  if (httpSchemeRegex.test(target)) {
     return target
   }
 

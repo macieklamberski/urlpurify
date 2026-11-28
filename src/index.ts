@@ -521,7 +521,9 @@ export { unwrapZix } from './unwraps/zix.js'
 export { unwrapZscalerIsolation } from './unwraps/zscalerIsolation.js'
 export type {
   ParamExtractorConfig,
+  PlusReading,
   QueryUnwrapperConfig,
+  TargetDecoder,
   UnwrapperConfig,
   UnwrapperHosts,
   UnwrapperOptions,
