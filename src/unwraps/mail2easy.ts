@@ -1,5 +1,4 @@
 import { isHttpUrl } from 'trousse'
-import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper, readParamTarget } from '../utils.js'
 
 const pathRegex = /^\/u\/\d+\/\d+\/\d+\/\d+(?:_\d+)?\/(?:[0-9a-f]+\/)?$/i
@@ -7,7 +6,7 @@ const pathRegex = /^\/u\/\d+\/\d+\/\d+\/\d+(?:_\d+)?\/(?:[0-9a-f]+\/)?$/i
 // Mail2Easy email click tracker on a sender's own host
 // (d-click.<sender domain>/u/<account>/<list>/<message>/<link>_0/<hash>/?url=<target>).
 // Opt-in: unwrapping removes the sender's click count.
-export const unwrapMail2easy: UrlUnwrapper = createUnwrapper({
+export const unwrapMail2easy = createUnwrapper({
   anyHost: true,
   unwrap: (url) => {
     if (!url.hostname.startsWith('d-click.') || !pathRegex.test(url.pathname)) {

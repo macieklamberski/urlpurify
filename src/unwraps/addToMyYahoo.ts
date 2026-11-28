@@ -9,13 +9,13 @@ const usRedirectPathRegex =
 const jpRedirectPathRegex =
   /^\/myyahoo\/[^*]*\*https?:\/\/add\.my\.yahoo\.(?:com\/(?:rss|content)|co\.jp\/rss)$/i
 
-const unwrapRss = createQueryUnwrapper({
+const extractRss = createQueryUnwrapper({
   hosts,
   path: '/rss',
   params: ['url'],
   ignoreLinkFragment: true,
 })
-const unwrapContent = createQueryUnwrapper({
+const extractContent = createQueryUnwrapper({
   hosts: 'add.my.yahoo.com',
   path: '/content',
   params: ['url'],
@@ -24,8 +24,8 @@ const unwrapContent = createQueryUnwrapper({
 
 // Add to My Yahoo subscribe button (add.my.yahoo.com/rss?url=<feed>, add.my.yahoo.co.jp/rss?url=
 // and add.my.yahoo.com/content?url=), also behind Yahoo's click redirect
-// (us.rd.yahoo.com/my/.../*<add link>, rd.yahoo.co.jp/myyahoo/.../*<add link>). Opt-in: the button
-// opens My Yahoo's page that adds the feed, not the feed.
+// (us.rd.yahoo.com/my/.../*<add link>, rd.yahoo.co.jp/myyahoo/.../*<add link>).
+// Opt-in: the button opens My Yahoo's page that adds the feed, not the feed.
 export const unwrapAddToMyYahoo = createUnwrapper({
   hosts: [...hosts, 'us.rd.yahoo.com', 'rd.yahoo.co.jp'],
   ignoreLinkFragment: true,
@@ -46,6 +46,6 @@ export const unwrapAddToMyYahoo = createUnwrapper({
       return readParamTarget(url, 'url')
     }
 
-    return unwrapRss(url) ?? unwrapContent(url)
+    return extractRss(url) ?? extractContent(url)
   },
 })

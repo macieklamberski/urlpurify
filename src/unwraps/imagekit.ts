@@ -1,16 +1,15 @@
 import { resolvePathTarget } from '../pathTarget.js'
-import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
 const sourcePathRegex = /^\/.*?(?<source>https?(?::|%(?:25)?3a).+)$/i
 
 // ImageKit web proxy (ik.imagekit.io/<id>/[tr:<options>/]<source>).
-// Not included in defaultUnwrappers: unwrapping swaps the resized copy for the original image.
-export const unwrapImagekit: UrlUnwrapper = createUnwrapper({
+// Opt-in: unwrapping swaps the resized copy for the original image.
+export const unwrapImagekit = createUnwrapper({
   hosts: 'ik.imagekit.io',
   ignoreLinkFragment: true,
   unwrap: (url) => {
-    const source = url.pathname.match(sourcePathRegex)?.groups?.source
+    const source = sourcePathRegex.exec(url.pathname)?.groups?.source
 
     if (!source) {
       return

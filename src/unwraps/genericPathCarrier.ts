@@ -1,5 +1,4 @@
 import { readPathTarget } from '../pathTarget.js'
-import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
 // Stops before a run of slashes followed by a host. A run after `:` belongs to a url carried in
@@ -15,7 +14,7 @@ const encodedMarkupRegex = /%22|%3c|%3e/i
 // (<host>//<target>), sometimes with a third slash or behind the site's directory, as uCoz writes.
 // The browser reads the glued src as https.
 // Opt-in: on an unknown host a run of slashes may belong to the site's own path.
-export const unwrapGenericPathCarrier: UrlUnwrapper = createUnwrapper({
+export const unwrapGenericPathCarrier = createUnwrapper({
   anyHost: true,
   unwrap: (url) => {
     if (encodedMarkupRegex.test(url.pathname)) {

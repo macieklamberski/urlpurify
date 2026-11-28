@@ -3,60 +3,65 @@ import { unwrapBusinessWire } from './businessWire.js'
 
 describe('unwrapBusinessWire', () => {
   it('should extract target from a tracker link', () => {
-    const url = new URL(
+    const value = new URL(
       'https://cts.businesswire.com/ct/CT?id=smartlink&url=https%3A%2F%2Fexample.com%2F&esheet=54545904&newsitemid=20260602907844&lan=en-US&anchor=Example&index=1&md5=f8a229f7101d1888198a1bff449f8b45',
     )
+    const expected = 'https://example.com/'
 
-    expect(unwrapBusinessWire(url)).toBe('https://example.com/')
+    expect(unwrapBusinessWire(value)).toBe(expected)
   })
 
   it('should keep the query and fragment of the target', () => {
-    const url = new URL(
+    const value = new URL(
       'https://cts.businesswire.com/ct/CT?id=smartlink&url=https%3A%2F%2Fexample.com%2Fbrands%2F%3Fana%3Dfooter%23contact&esheet=53401648&lan=en-US&index=5&md5=8698659833f27148e3f7ae4007efc984',
     )
+    const expected = 'https://example.com/brands/?ana=footer#contact'
 
-    expect(unwrapBusinessWire(url)).toBe('https://example.com/brands/?ana=footer#contact')
+    expect(unwrapBusinessWire(value)).toBe(expected)
   })
 
   it('should extract target from an http tracker link', () => {
-    const url = new URL(
+    const value = new URL(
       'http://cts.businesswire.com/ct/CT?id=smartlink&url=http%3A%2F%2Fexample.com&esheet=53540639&lan=en-US&index=6&md5=75b04bee0d78d069d0c559fce92d6f1e',
     )
+    const expected = 'http://example.com'
 
-    expect(unwrapBusinessWire(url)).toBe('http://example.com')
+    expect(unwrapBusinessWire(value)).toBe(expected)
   })
 
   it('should extract a twice-encoded target', () => {
-    const url = new URL(
+    const value = new URL(
       'https://cts.businesswire.com/ct/CT?id=smartlink&url=https%253A%252F%252Fexample.com%252Feducate%252F%2523report&esheet=52129700&lan=en-US&index=2&md5=7b83a2b78cb23db57081fd0da2c56fc7',
     )
+    const expected = 'https://example.com/educate/#report'
 
-    expect(unwrapBusinessWire(url)).toBe('https://example.com/educate/#report')
+    expect(unwrapBusinessWire(value)).toBe(expected)
   })
 
   it('should extract an uppercase twice-encoded target', () => {
-    const url = new URL(
+    const value = new URL(
       'https://cts.businesswire.com/ct/CT?id=smartlink&url=HTTPS%253A%252F%252Fexample.com%252F',
     )
+    const expected = 'HTTPS://example.com/'
 
-    expect(unwrapBusinessWire(url)).toBe('HTTPS://example.com/')
+    expect(unwrapBusinessWire(value)).toBe(expected)
   })
 
   it('should return undefined when url param is missing', () => {
-    const url = new URL('https://cts.businesswire.com/ct/CT?id=smartlink&esheet=54545904&index=1')
+    const value = new URL('https://cts.businesswire.com/ct/CT?id=smartlink&esheet=54545904&index=1')
 
-    expect(unwrapBusinessWire(url)).toBeUndefined()
+    expect(unwrapBusinessWire(value)).toBeUndefined()
   })
 
   it('should return undefined for other paths on the tracker host', () => {
-    const url = new URL('https://cts.businesswire.com/ct/other?url=https%3A%2F%2Fexample.com%2F')
+    const value = new URL('https://cts.businesswire.com/ct/other?url=https%3A%2F%2Fexample.com%2F')
 
-    expect(unwrapBusinessWire(url)).toBeUndefined()
+    expect(unwrapBusinessWire(value)).toBeUndefined()
   })
 
   it('should return undefined for other hosts', () => {
-    const url = new URL('https://example.com/ct/CT?url=https%3A%2F%2Fexample.org%2F')
+    const value = new URL('https://example.com/ct/CT?url=https%3A%2F%2Fexample.org%2F')
 
-    expect(unwrapBusinessWire(url)).toBeUndefined()
+    expect(unwrapBusinessWire(value)).toBeUndefined()
   })
 })

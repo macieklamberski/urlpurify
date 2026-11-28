@@ -2,18 +2,18 @@ import { isAnyOf, startsWithAnyOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
-const pathRegex = /^\/[cv]\/(s\/)?(.+)$/i
+const pathRegex = /^\/[cv]\/(?<secure>s\/)?(?<target>.+)$/i
 
 const viewerParams = ['amp_gsa', 'amp_js_v', 'usqp']
 
 const readTarget: UrlUnwrapper = (url) => {
-  const match = url.pathname.match(pathRegex)
+  const match = pathRegex.exec(url.pathname)
 
-  if (!match) {
+  if (!match?.groups) {
     return
   }
 
-  const [, secure, target] = match
+  const { secure, target } = match.groups
   const scheme = secure ? 'https' : 'http'
   const params = url.search
     .slice(1)
@@ -24,7 +24,7 @@ const readTarget: UrlUnwrapper = (url) => {
   return `${scheme}://${target}${search}`
 }
 
-const unwrapDocument = createUnwrapper({
+const extractDocument = createUnwrapper({
   domains: 'cdn.ampproject.org',
   unwrap: (url) => {
     if (!startsWithAnyOf(url.pathname, '/c/')) {
@@ -40,10 +40,10 @@ const unwrapDocument = createUnwrapper({
 // publisher subdomain is a hint; the path always carries the canonical hostname. The viewer's
 // own query params are dropped, and on `/v/` so is the fragment, which holds the viewer's init
 // params rather than the target's.
-export const unwrapAmpCache: UrlUnwrapper = createUnwrapper({
+export const unwrapAmpCache = createUnwrapper({
   domains: 'cdn.ampproject.org',
-  ignoreLinkFragment: true, // The `/c/` document takes it through `unwrapDocument`
+  ignoreLinkFragment: true, // The `/c/` document takes it through `extractDocument`
   unwrap: (url) => {
-    return unwrapDocument(url) ?? readTarget(url)
+    return extractDocument(url) ?? readTarget(url)
   },
 })

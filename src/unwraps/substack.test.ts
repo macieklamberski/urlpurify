@@ -20,66 +20,65 @@ describe('unwrapSubstack', () => {
   })
 
   it('should extract target from the e field of the payload', () => {
-    const url = new URL(
+    const value = new URL(
       `https://substack.com/redirect/2/${payload}.boTvkXxD1YyQj5AE-vQ99eFrlRv8o1k11cm2mcsnzRQ?`,
     )
+    const expected = 'https://example.substack.com/p/leading-teams?utm_campaign=email-post&r=abc123'
 
-    expect(unwrapSubstack(url)).toBe(
-      'https://example.substack.com/p/leading-teams?utm_campaign=email-post&r=abc123',
-    )
+    expect(unwrapSubstack(value)).toBe(expected)
   })
 
   it('should keep the wrapper for a non-http e field', () => {
-    const url =
+    const value =
       'https://substack.com/redirect/2/eyJlIjoibWFpbHRvOmVkaXRvckBleGFtcGxlLmNvbSIsInAiOjEsImlzcyI6InB1Yi0wIiwic3ViIjoibGluay1yZWRpcmVjdCJ9.boTvkXxD1YyQj5AE-vQ99eFrlRv8o1k11cm2mcsnzRQ'
 
-    expect(purifyUrl(url, { unwrappers: [unwrapSubstack] })).toBe(url)
+    expect(purifyUrl(value, { unwrappers: [unwrapSubstack] })).toBe(value)
   })
 
   it('should return undefined when the payload has no e field', () => {
-    const url = new URL(
+    const value = new URL(
       'https://substack.com/redirect/2/eyJwIjoxLCJpc3MiOiJwdWItMCIsInN1YiI6ImxpbmstcmVkaXJlY3QifQ.boTvkXxD1YyQj5AE-vQ99eFrlRv8o1k11cm2mcsnzRQ',
     )
 
-    expect(unwrapSubstack(url)).toBeUndefined()
+    expect(unwrapSubstack(value)).toBeUndefined()
   })
 
   it('should return undefined when the payload is not JSON', () => {
-    const url = new URL(
+    const value = new URL(
       'https://substack.com/redirect/2/aHR0cHM6Ly9leGFtcGxlLmNvbS8.boTvkXxD1YyQj5AE-vQ99eFrlRv8o1k11cm2mcsnzRQ',
     )
 
-    expect(unwrapSubstack(url)).toBeUndefined()
+    expect(unwrapSubstack(value)).toBeUndefined()
   })
 
   it('should return undefined for the id redirect', () => {
-    const url = new URL(
+    const value = new URL(
       'https://substack.com/redirect/7d3a7d5c-2f2e-4a35-9a6b-4f6d0d6c3e7b?j=eyJ1IjoiMWJjZGVmIn0',
     )
 
-    expect(unwrapSubstack(url)).toBeUndefined()
+    expect(unwrapSubstack(value)).toBeUndefined()
   })
 
   it('should return undefined for the payload on another path', () => {
-    const url = new URL(
+    const value = new URL(
       `https://substack.com/api/v1/${payload}.boTvkXxD1YyQj5AE-vQ99eFrlRv8o1k11cm2mcsnzRQ`,
     )
 
-    expect(unwrapSubstack(url)).toBeUndefined()
+    expect(unwrapSubstack(value)).toBeUndefined()
   })
 
   it.each(unclaimedPaths)('should return undefined for path %s', (path) => {
-    const url = new URL(`https://substack.com${path}`)
+    const value = new URL(`https://substack.com${path}`)
 
-    expect(unwrapSubstack(url)).toBeUndefined()
+    expect(unwrapSubstack(value)).toBeUndefined()
   })
 
   it('should return undefined for another host', () => {
-    const url = new URL(
+    const value = new URL(
       `https://www.example.com/redirect/2/${payload}.boTvkXxD1YyQj5AE-vQ99eFrlRv8o1k11cm2mcsnzRQ`,
     )
 
-    expect(unwrapSubstack(url)).toBeUndefined()
+    expect(unwrapSubstack(value)).toBeUndefined()
   })
 
   it('should keep the link fragment', () => {

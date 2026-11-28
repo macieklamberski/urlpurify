@@ -8,8 +8,7 @@ const hosts = ['subscribebyemail.com', 'www.subscribebyemail.com']
 
 // Subscribe by Email subscribe button (subscribebyemail.com/<feed>), where the feed drops its
 // scheme. The page reads the feed as https.
-// Not included in defaultUnwrappers: unwrapping returns the feed, not the page that subscribes
-// to it.
+// Opt-in: unwrapping returns the feed, not the page that subscribes to it.
 export const unwrapSubscribeByEmail = createPathUnwrapper({
   hosts,
   prefix: feedPrefixRegex,

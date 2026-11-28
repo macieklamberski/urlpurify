@@ -14,8 +14,8 @@ const extractAffiliateLink = createQueryUnwrapper({
 })
 
 // Involve Asia affiliate deep link (go.isclix.com/deep_link/<id>[/<id>]?url=<target>, and
-// invol.co/aff_m?offer_id=<id>&aff_id=<id>&url=<target>). Not included in defaultUnwrappers:
-// unwrapping drops the publisher's commission.
+// invol.co/aff_m?offer_id=<id>&aff_id=<id>&url=<target>).
+// Opt-in: unwrapping drops the publisher's commission.
 export const unwrapInvolveAsia = createUnwrapper({
   hosts: ['go.isclix.com', 'invol.co', 'www.invol.co'],
   unwrap: (url) => {

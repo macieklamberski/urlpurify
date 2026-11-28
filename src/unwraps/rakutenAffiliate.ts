@@ -1,5 +1,4 @@
 import { isHostOf } from 'trousse'
-import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper, readParamTarget } from '../utils.js'
 
 // hbb.afl.rakuten.co.jp/hgb/ carries `pc` too, but as an `<img src>` banner whose `pc` is the
@@ -13,9 +12,9 @@ const linkShapes = [
 const targetParams = ['pc', 'url']
 
 // Rakuten Japan affiliate redirect (hb.afl.rakuten.co.jp/{hgc,ichiba}/<ids>/?pc=<target>,
-// {pt.afl.rakuten.co.jp/c,mt.afl.rakuten.co.jp/mc}/<ids>/?url=<target>). Not in
-// defaultUnwrappers: unwrapping drops the publisher's affiliate commission.
-export const unwrapRakutenAffiliate: UrlUnwrapper = createUnwrapper({
+// {pt.afl.rakuten.co.jp/c,mt.afl.rakuten.co.jp/mc}/<ids>/?url=<target>).
+// Opt-in: unwrapping drops the publisher's affiliate commission.
+export const unwrapRakutenAffiliate = createUnwrapper({
   hosts: linkShapes.map((shape) => shape.host),
   unwrap: (url) => {
     const isLink = linkShapes.some((shape) => {

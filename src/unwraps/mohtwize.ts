@@ -1,20 +1,19 @@
 import { isAnyOf } from 'trousse'
-import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper, decodeEncodedScheme, httpSchemeRegex } from '../utils.js'
 
 const carrierPrefixRegex = /^\?fileURL=\//i
 
 // Mohtwize download measurement prefix (stats.mohtwize.net/redirect.mp3?fileURL=/<target>), where
 // the target often drops its scheme.
-// Not included in defaultUnwrappers: unwrapping removes the podcaster's download counts.
-export const unwrapMohtwize: UrlUnwrapper = createUnwrapper({
+// Opt-in: unwrapping removes the podcaster's download counts.
+export const unwrapMohtwize = createUnwrapper({
   hosts: 'stats.mohtwize.net',
   unwrap: (url) => {
     if (!isAnyOf(url.pathname, '/redirect.mp3')) {
       return
     }
 
-    const prefix = url.search.match(carrierPrefixRegex)
+    const prefix = carrierPrefixRegex.exec(url.search)
 
     if (!prefix) {
       return

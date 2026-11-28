@@ -1,5 +1,4 @@
 import { getQueryParam, isAnyOf, isHostOf } from 'trousse'
-import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper, readParamTarget } from '../utils.js'
 
 const hosts = ['odnoklassniki.ru', 'www.odnoklassniki.ru', 'ok.ru', 'www.ok.ru']
@@ -9,7 +8,7 @@ const widgetCommands = ['WidgetShare', 'WidgetSharePreview']
 // OK.ru share (ok.ru/dk?st.cmd=addShare&st._surl=<target>, also on odnoklassniki.ru, and
 // connect.ok.ru/offer?url= and /dk?st.cmd=WidgetShare or WidgetSharePreview with st.shareUrl=).
 // Opt-in: unwrapping returns the shared page, not the form that shares it.
-export const unwrapOkShare: UrlUnwrapper = createUnwrapper({
+export const unwrapOkShare = createUnwrapper({
   hosts: [...hosts, ...connectHosts],
   ignoreLinkFragment: true,
   unwrap: (url) => {

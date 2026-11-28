@@ -1,5 +1,4 @@
 import { decodeBase64Url, isString, parseJson } from 'trousse'
-import type { UrlUnwrapper } from '../types.js'
 import { createQueryUnwrapper, createUnwrapper, readDecodedTarget } from '../utils.js'
 
 const hosts = ['go.mnsvc.com', 'mandrillapp.com', 'www.mandrillapp.com']
@@ -24,8 +23,9 @@ const decodePayload = (value: string): string | undefined => {
 
 // Mandrill, Mailchimp Transactional, click tracker (mandrillapp.com/track/click.php?url=<target>,
 // also /track/click/<account>/<target host>?p=<base64url JSON>), also a sender's custom tracking
-// domain such as go.mnsvc.com. Opt-in: unwrapping removes the sender's click count.
-export const unwrapMandrill: UrlUnwrapper = createUnwrapper({
+// domain such as go.mnsvc.com.
+// Opt-in: unwrapping removes the sender's click count.
+export const unwrapMandrill = createUnwrapper({
   hosts,
   unwrap: (url) => {
     const target = extractClickPhp(url)

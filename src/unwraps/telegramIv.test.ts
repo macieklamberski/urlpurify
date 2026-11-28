@@ -3,32 +3,33 @@ import { unwrapTelegramIv } from './telegramIv.js'
 
 describe('unwrapTelegramIv', () => {
   it('should extract target from url param', () => {
-    const url = new URL('https://t.me/iv?url=https%3A%2F%2Fexample.com%2Farticle&rhash=abc123')
+    const value = new URL('https://t.me/iv?url=https%3A%2F%2Fexample.com%2Farticle&rhash=abc123')
+    const expected = 'https://example.com/article'
 
-    expect(unwrapTelegramIv(url)).toBe('https://example.com/article')
+    expect(unwrapTelegramIv(value)).toBe(expected)
   })
 
   it('should return undefined for non-iv Telegram paths', () => {
-    const url = new URL('https://t.me/channelname')
+    const value = new URL('https://t.me/channelname')
 
-    expect(unwrapTelegramIv(url)).toBeUndefined()
+    expect(unwrapTelegramIv(value)).toBeUndefined()
   })
 
   it('should return undefined when url param is missing', () => {
-    const url = new URL('https://t.me/iv?rhash=abc123')
+    const value = new URL('https://t.me/iv?rhash=abc123')
 
-    expect(unwrapTelegramIv(url)).toBeUndefined()
+    expect(unwrapTelegramIv(value)).toBeUndefined()
   })
 
   it('should return undefined for non-Telegram hosts', () => {
-    const url = new URL('https://example.com/iv?url=https%3A%2F%2Fother.com')
+    const value = new URL('https://example.com/iv?url=https%3A%2F%2Fother.com')
 
-    expect(unwrapTelegramIv(url)).toBeUndefined()
+    expect(unwrapTelegramIv(value)).toBeUndefined()
   })
 
   it('should return undefined for another Telegram path carrying a url param', () => {
-    const url = new URL('https://t.me/channelname?url=https%3A%2F%2Fexample.com%2Fpage')
+    const value = new URL('https://t.me/channelname?url=https%3A%2F%2Fexample.com%2Fpage')
 
-    expect(unwrapTelegramIv(url)).toBeUndefined()
+    expect(unwrapTelegramIv(value)).toBeUndefined()
   })
 })

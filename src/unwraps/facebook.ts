@@ -1,12 +1,12 @@
 import { resolvePathTarget } from '../pathTarget.js'
-import type { UrlUnwrapper } from '../types.js'
 import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
-const legacyTargetRegex = /^\/l\/[\w-]+[/;]\/*([^/].*)$/i
+const legacyTargetRegex = /^\/l\/[\w-]+[/;]\/*(?<target>[^/].*)$/i
 
 const hosts = [
   'l.facebook.com',
   'lm.facebook.com',
+  'facebook.com',
   'www.facebook.com',
   'upload.facebook.com',
   'm.facebook.com',
@@ -15,41 +15,40 @@ const hosts = [
   'free.facebook.com',
   'business.facebook.com',
   '0.facebook.com',
-  'facebook.com',
   'l.messenger.com',
   'l.workplace.com',
 ]
 
-const unwrapLinkPhp = createQueryUnwrapper({
+const extractLinkPhp = createQueryUnwrapper({
   hosts,
   path: '/l.php',
   params: ['u'],
 })
 
-const unwrapRoot = createQueryUnwrapper({
+const extractRoot = createQueryUnwrapper({
   hosts: 'l.facebook.com',
   path: '/',
   params: ['u'],
 })
 
-const unwrapLsr = createQueryUnwrapper({
+const extractLsr = createQueryUnwrapper({
   hosts: 'l.facebook.com',
   path: '/lsr.php',
   params: ['u'],
 })
 
-const unwrapLegacy = createUnwrapper({
-  hosts: ['www.facebook.com', 'facebook.com', 'l.facebook.com'],
+const extractLegacy = createUnwrapper({
+  hosts: ['facebook.com', 'www.facebook.com', 'l.facebook.com'],
   unwrap: (url) => {
-    const match = url.pathname.match(legacyTargetRegex)
+    const match = legacyTargetRegex.exec(url.pathname)
 
-    if (!match) {
+    if (!match?.groups) {
       return
     }
 
     // A target with its scheme kept is percent-encoded once, twice or half-encoded as `https%3A//`.
     // Facebook's leaving page and its 302 into l.php both gave a target without a scheme `http://`.
-    return resolvePathTarget(url, match[1], 'http')
+    return resolvePathTarget(url, match.groups.target, 'http')
   },
 })
 
@@ -57,9 +56,9 @@ const unwrapLegacy = createUnwrapper({
 // free., business., 0. and bare facebook.com, l.messenger.com and l.workplace.com), on / and
 // /lsr.php on l.facebook.com, and the legacy /l/<token>/<target> or /l/<token>;<target> on www.,
 // bare and l.facebook.com, where a target without a scheme gets `http://`.
-export const unwrapFacebook: UrlUnwrapper = createUnwrapper({
+export const unwrapFacebook = createUnwrapper({
   hosts,
   unwrap: (url) => {
-    return unwrapLinkPhp(url) ?? unwrapRoot(url) ?? unwrapLsr(url) ?? unwrapLegacy(url)
+    return extractLinkPhp(url) ?? extractRoot(url) ?? extractLsr(url) ?? extractLegacy(url)
   },
 })

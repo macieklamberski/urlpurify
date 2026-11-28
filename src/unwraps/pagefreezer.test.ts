@@ -13,116 +13,122 @@ describe('unwrapPagefreezer', () => {
   })
 
   it('should extract the target from a browse snapshot', () => {
-    const url = new URL(
+    const value = new URL(
       'https://public3.pagefreezer.com/browse/HHS.gov/16-09-2020T14:35/https://www.example.gov/opioids/treatment/guide.html',
     )
+    const expected = 'https://www.example.gov/opioids/treatment/guide.html'
 
-    expect(unwrapPagefreezer(url)).toBe('https://www.example.gov/opioids/treatment/guide.html')
+    expect(unwrapPagefreezer(value)).toBe(expected)
   })
 
   it('should extract the target from a content snapshot', () => {
-    const url = new URL(
+    const value = new URL(
       'https://public4.pagefreezer.com/content/FDA/20-02-2024T15:13/https://www.example.gov/medical-devices/safety.pdf',
     )
+    const expected = 'https://www.example.gov/medical-devices/safety.pdf'
 
-    expect(unwrapPagefreezer(url)).toBe('https://www.example.gov/medical-devices/safety.pdf')
+    expect(unwrapPagefreezer(value)).toBe(expected)
   })
 
   it('should keep the query and fragment of a path target', () => {
-    const url = new URL(
+    const value = new URL(
       'https://public3.pagefreezer.com/browse/HHS.gov/02-01-2024T03:56/https://www.example.gov/news.html?page=2#top',
     )
+    const expected = 'https://www.example.gov/news.html?page=2#top'
 
-    expect(unwrapPagefreezer(url)).toBe('https://www.example.gov/news.html?page=2#top')
+    expect(unwrapPagefreezer(value)).toBe(expected)
   })
 
   it('should extract the target from the web archive browser', () => {
-    const url = new URL(
+    const value = new URL(
       'https://us.pagefreezer.com/en-US/wa/browse/0a7f82bb-be6e-448a-ae11-373d22c37842?find-by-timestamp=2025-01-02T05:49:59Z&url=https:%2F%2Fwww.example.gov%2Fabout%2Fnews%2F2024%2F06%2F25%2Freport.html',
     )
+    const expected = 'https://www.example.gov/about/news/2024/06/25/report.html'
 
-    expect(unwrapPagefreezer(url)).toBe('https://www.example.gov/about/news/2024/06/25/report.html')
+    expect(unwrapPagefreezer(value)).toBe(expected)
   })
 
   it('should extract a target encoded twice', () => {
-    const url = new URL(
+    const value = new URL(
       'https://us.pagefreezer.com/en-US/wa/browse/0a7f82bb-be6e-448a-ae11-373d22c37842?find-by-timestamp=2025-01-02T05:49:59Z&url=https%253A%252F%252Fexample.org%252Fpage',
     )
+    const expected = 'https://example.org/page'
 
-    expect(unwrapPagefreezer(url)).toBe('https://example.org/page')
+    expect(unwrapPagefreezer(value)).toBe(expected)
   })
 
   it('should keep a plus in an unencoded target', () => {
-    const url = new URL(
+    const value = new URL(
       'https://us.pagefreezer.com/en-US/wa/browse/0a7f82bb-be6e-448a-ae11-373d22c37842?find-by-timestamp=2025-01-02T05:49:59Z&url=https://example.org/search/a+b',
     )
+    const expected = 'https://example.org/search/a+b'
 
-    expect(unwrapPagefreezer(url)).toBe('https://example.org/search/a+b')
+    expect(unwrapPagefreezer(value)).toBe(expected)
   })
 
   it('should return undefined for a path snapshot with no target', () => {
-    const url = new URL('https://public3.pagefreezer.com/browse/HHS.gov/16-09-2020T14:35/')
+    const value = new URL('https://public3.pagefreezer.com/browse/HHS.gov/16-09-2020T14:35/')
 
-    expect(unwrapPagefreezer(url)).toBeUndefined()
+    expect(unwrapPagefreezer(value)).toBeUndefined()
   })
 
   it('should keep the wrapper for a non-http path target', () => {
-    const url =
+    const value =
       'https://public3.pagefreezer.com/browse/HHS.gov/16-09-2020T14:35/ftp://example.gov/file.txt'
 
-    expect(purifyUrl(url, { unwrappers: [unwrapPagefreezer] })).toBe(url)
+    expect(purifyUrl(value, { unwrappers: [unwrapPagefreezer] })).toBe(value)
   })
 
   it('should return undefined for a path with a year instead of the capture time', () => {
-    const url = new URL(
+    const value = new URL(
       'https://public3.pagefreezer.com/browse/HHS.gov/2020/https://www.example.gov/',
     )
 
-    expect(unwrapPagefreezer(url)).toBeUndefined()
+    expect(unwrapPagefreezer(value)).toBeUndefined()
   })
 
   it('should return undefined for the web archive browser path on another host', () => {
-    const url = new URL(
+    const value = new URL(
       'https://example.com/en-US/wa/browse/0a7f82bb-be6e-448a-ae11-373d22c37842?url=https%3A%2F%2Fwww.example.gov%2F',
     )
 
-    expect(unwrapPagefreezer(url)).toBeUndefined()
+    expect(unwrapPagefreezer(value)).toBeUndefined()
   })
 
   it('should return undefined for a path without the capture time', () => {
-    const url = new URL('https://public3.pagefreezer.com/browse/HHS.gov/https://www.example.gov/')
+    const value = new URL('https://public3.pagefreezer.com/browse/HHS.gov/https://www.example.gov/')
 
-    expect(unwrapPagefreezer(url)).toBeUndefined()
+    expect(unwrapPagefreezer(value)).toBeUndefined()
   })
 
   it('should return undefined for the web archive browser without url', () => {
-    const url = new URL(
+    const value = new URL(
       'https://us.pagefreezer.com/en-US/wa/browse/0a7f82bb-be6e-448a-ae11-373d22c37842?find-by-timestamp=2025-01-02T05:49:59Z',
     )
 
-    expect(unwrapPagefreezer(url)).toBeUndefined()
+    expect(unwrapPagefreezer(value)).toBeUndefined()
   })
 
   it('should return undefined for another path on the browser host', () => {
-    const url = new URL('https://us.pagefreezer.com/en-US/pricing?url=https://www.example.gov/')
+    const value = new URL('https://us.pagefreezer.com/en-US/pricing?url=https://www.example.gov/')
 
-    expect(unwrapPagefreezer(url)).toBeUndefined()
+    expect(unwrapPagefreezer(value)).toBeUndefined()
   })
 
   it('should return undefined for a lookalike public host', () => {
-    const url = new URL(
+    const value = new URL(
       'https://public3.pagefreezer.com.example.com/browse/HHS.gov/16-09-2020T14:35/https://www.example.gov/',
     )
 
-    expect(unwrapPagefreezer(url)).toBeUndefined()
+    expect(unwrapPagefreezer(value)).toBeUndefined()
   })
 
   it('should return undefined for a host that only ends with the public name', () => {
-    const url = new URL(
+    const value = new URL(
       'https://xpublic3.pagefreezer.com/browse/HHS.gov/16-09-2020T14:35/https://www.example.gov/',
     )
 
-    expect(unwrapPagefreezer(url)).toBeUndefined()
+    expect(unwrapPagefreezer(value)).toBeUndefined()
   })
 
   it('should register its hosts so the host index skips it on other hosts', () => {

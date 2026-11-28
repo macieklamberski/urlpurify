@@ -6,7 +6,8 @@ import { createUnwrapper, readParamTarget } from '../utils.js'
 const publicHostRegex = /^public\d+\.pagefreezer\.com$/
 
 // The collection, then a dd-mm-yyyyTHH:MM capture time.
-const publicPathRegex = /^\/(?:browse|content)\/[^/]+\/\d{2}-\d{2}-\d{4}T\d{2}:\d{2}\/(.+)$/i
+const publicPathRegex =
+  /^\/(?:browse|content)\/[^/]+\/\d{2}-\d{2}-\d{4}T\d{2}:\d{2}\/(?<target>.+)$/i
 
 // The web archive browser takes the archive id in the path and the target in `url`.
 const browsePathRegex = /^\/en-US\/wa\/browse\/[0-9a-f-]{36}$/i
@@ -20,11 +21,11 @@ export const unwrapPagefreezer = createUnwrapper({
     if (isHostOf(url, publicHostRegex)) {
       const match = publicPathRegex.exec(url.pathname)
 
-      if (!match?.[1]) {
+      if (!match?.groups?.target) {
         return
       }
 
-      return addArchivedScheme(resolvePathTarget(url, match[1]))
+      return addArchivedScheme(resolvePathTarget(url, match.groups.target))
     }
 
     if (isHostOf(url, 'us.pagefreezer.com') && browsePathRegex.test(url.pathname)) {

@@ -1,21 +1,20 @@
 import { decodeBase64Url } from 'trousse'
-import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
-const pathRegex = /^(?:\/[^/]+)*\/RU=([\w-]+)(?:\/R[A-Z]=[^/]*)*(?:;.*)?$/i
+const pathRegex = /^(?:\/[^/]+)*\/RU=(?<encoded>[\w-]+)(?:\/R[A-Z]=[^/]*)*(?:;.*)?$/i
 
 // Yahoo! JAPAN click redirect (rdsig.yahoo.co.jp/.../RV=1/RU=<base64url target>/RS=...). The
 // target ends the path or comes before /RK=, /RS= or ;_ylt=.
-export const unwrapYahooJapan: UrlUnwrapper = createUnwrapper({
+export const unwrapYahooJapan = createUnwrapper({
   hosts: 'rdsig.yahoo.co.jp',
   unwrap: (url) => {
     const match = pathRegex.exec(url.pathname)
 
-    if (!match?.[1]) {
+    if (!match?.groups?.encoded) {
       return
     }
 
-    const encoded = match[1]
+    const encoded = match.groups.encoded
     let end = encoded.length
 
     // Yahoo! JAPAN pads the base64url target with `-` in place of `=`. A loop, since `/-+$/`

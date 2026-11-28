@@ -1,5 +1,4 @@
 import { isHttpUrl } from 'trousse'
-import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper, readParamTarget } from '../utils.js'
 
 // The install directory, such as /horde/ or /hwebmail/, or none. Horde 3 serves util/go.php too.
@@ -7,7 +6,7 @@ const pathRegex = /^(?:\/[a-z0-9]+)?\/(?:services|util)\/go\.php$/i
 
 // Horde webmail link dereferrer on any host (<mail host>/horde/services/go.php?url=<target>).
 // Each mail provider or university runs Horde on its own host.
-export const unwrapHorde: UrlUnwrapper = createUnwrapper({
+export const unwrapHorde = createUnwrapper({
   anyHost: true,
   unwrap: (url) => {
     if (!pathRegex.test(url.pathname)) {

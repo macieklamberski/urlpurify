@@ -18,44 +18,44 @@ describe('unwrapToucharcade', () => {
   })
 
   it('should extract the target from an outbound link', () => {
-    const url = new URL(
+    const value = new URL(
       'http://toucharcade.com/link/http://itunes.example.com/us/app/hedgewars/id406787445',
     )
+    const expected = 'http://itunes.example.com/us/app/hedgewars/id406787445'
 
-    expect(unwrapToucharcade(url)).toBe('http://itunes.example.com/us/app/hedgewars/id406787445')
+    expect(unwrapToucharcade(value)).toBe(expected)
   })
 
   it('should keep the query and fragment of the target', () => {
-    const url = new URL(
+    const value = new URL(
       'http://toucharcade.com/link/http://itunes.example.com/us/app/hedgewars/id406787445?mt=12#reviews',
     )
+    const expected = 'http://itunes.example.com/us/app/hedgewars/id406787445?mt=12#reviews'
 
-    expect(unwrapToucharcade(url)).toBe(
-      'http://itunes.example.com/us/app/hedgewars/id406787445?mt=12#reviews',
-    )
+    expect(unwrapToucharcade(value)).toBe(expected)
   })
 
   it('should return undefined for a link with no target', () => {
-    const url = new URL('http://toucharcade.com/link/')
+    const value = new URL('http://toucharcade.com/link/')
 
-    expect(unwrapToucharcade(url)).toBeUndefined()
+    expect(unwrapToucharcade(value)).toBeUndefined()
   })
 
   it('should keep the wrapper for a non-http target', () => {
-    const url = 'http://toucharcade.com/link/itms-apps://itunes.example.com/app/id406787445'
+    const value = 'http://toucharcade.com/link/itms-apps://itunes.example.com/app/id406787445'
 
-    expect(purifyUrl(url, { unwrappers: [unwrapToucharcade] })).toBe(url)
+    expect(purifyUrl(value, { unwrappers: [unwrapToucharcade] })).toBe(value)
   })
 
   it('should return undefined for an article', () => {
-    const url = new URL('https://toucharcade.com/2011/01/20/hedgewars/http://www.example.com/')
+    const value = new URL('https://toucharcade.com/2011/01/20/hedgewars/http://www.example.com/')
 
-    expect(unwrapToucharcade(url)).toBeUndefined()
+    expect(unwrapToucharcade(value)).toBeUndefined()
   })
 
   it('should return undefined for other hosts', () => {
-    const url = new URL('http://example.com/link/http://www.example.org/')
+    const value = new URL('http://example.com/link/http://www.example.org/')
 
-    expect(unwrapToucharcade(url)).toBeUndefined()
+    expect(unwrapToucharcade(value)).toBeUndefined()
   })
 })

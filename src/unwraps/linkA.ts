@@ -15,7 +15,7 @@ const extractProductLinkTarget = createQueryUnwrapper({
 
 // Link-A affiliate click (link-a.net/gate.php?...&mallurl1=<target>, and
 // cl.link-ag.net/click_product_link/<id>/<id>?redirect_url=<target>).
-// Not included in defaultUnwrappers: unwrapping drops the publisher's commission.
+// Opt-in: unwrapping drops the publisher's commission.
 export const unwrapLinkA = createUnwrapper({
   hosts: ['link-a.net', 'www.link-a.net', 'cl.link-ag.net'],
   unwrap: (url) => {

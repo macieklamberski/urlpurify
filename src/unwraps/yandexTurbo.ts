@@ -1,12 +1,11 @@
 import { getSubdomain, isHostOf } from 'trousse'
-import type { UrlUnwrapper } from '../types.js'
 import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
 // turbopages.org answers 404 as of 2026-09-27, so only archived feeds carry its links.
-const turbopagesPathRegex = /^\/[^/]+\/s\/(.+)$/i
-const hostInPathRegex = /^\/turbo\/([^/]+)\/s\/(.+)$/i
-const yandexSlashSFirstRegex = /^\/turbo\/s\/([^/]+)\/(.*)$/i
-const turbopagesSlashSFirstRegex = /^\/s\/([^/]+)\/(.*)$/i
+const turbopagesPathRegex = /^\/[^/]+\/s\/(?<path>.+)$/i
+const hostInPathRegex = /^\/turbo\/(?<host>[^/]+)\/s\/(?<path>.+)$/i
+const yandexSlashSFirstRegex = /^\/turbo\/s\/(?<host>[^/]+)\/(?<path>.*)$/i
+const turbopagesSlashSFirstRegex = /^\/s\/(?<host>[^/]+)\/(?<path>.*)$/i
 const dashRegex = /-/g
 const yandexHostRegex = /^(?:www\.)?yandex\.(?:com\.tr|[a-z]{2,3})$/
 
@@ -23,10 +22,9 @@ const extractTurboTarget = createQueryUnwrapper({
 // `/s/` before the host (yandex.<tld>/turbo/s/<host>/<path> and
 // <dashed-host>.turbopages.org/s/<host>/<path>), and
 // the Turbo view on Yandex (yandex.<tld>/turbo?text=<target>, also on www.yandex.<tld>).
-// Not included in defaultUnwrappers: Turbo serves a stripped-down,
-// optimized rendering of the source page rather than the canonical content.
-// Opt in by passing a custom unwrappers array.
-export const unwrapYandexTurbo: UrlUnwrapper = createUnwrapper({
+// Opt-in: Turbo serves a stripped-down, optimized rendering of the source page rather than the
+// canonical content. Opt in by passing a custom unwrappers array.
+export const unwrapYandexTurbo = createUnwrapper({
   brands: ['yandex'],
   domains: ['turbopages.org'],
   unwrap: (url) => {
@@ -44,31 +42,31 @@ export const unwrapYandexTurbo: UrlUnwrapper = createUnwrapper({
     }
 
     const slashSFirstRegex = isTurbopagesHost ? turbopagesSlashSFirstRegex : yandexSlashSFirstRegex
-    const slashSFirstMatch = url.pathname.match(slashSFirstRegex)
+    const slashSFirstMatch = slashSFirstRegex.exec(url.pathname)
 
     // The query on these links is Turbo's own, such as parent-reqid or trbsrc.
-    if (slashSFirstMatch) {
-      return `https://${slashSFirstMatch[1]}/${slashSFirstMatch[2]}`
+    if (slashSFirstMatch?.groups) {
+      return `https://${slashSFirstMatch.groups.host}/${slashSFirstMatch.groups.path}`
     }
 
-    const hostInPathMatch = url.pathname.match(hostInPathRegex)
+    const hostInPathMatch = hostInPathRegex.exec(url.pathname)
 
-    if (hostInPathMatch) {
-      return `https://${hostInPathMatch[1]}/${hostInPathMatch[2]}`
+    if (hostInPathMatch?.groups) {
+      return `https://${hostInPathMatch.groups.host}/${hostInPathMatch.groups.path}`
     }
 
     if (!turbopagesSubdomain) {
       return
     }
 
-    const match = url.pathname.match(turbopagesPathRegex)
+    const match = turbopagesPathRegex.exec(url.pathname)
 
-    if (!match) {
+    if (!match?.groups) {
       return
     }
 
     const sourceHost = turbopagesSubdomain.replace(dashRegex, '.')
 
-    return `https://${sourceHost}/${match[1]}`
+    return `https://${sourceHost}/${match.groups.path}`
   },
 })

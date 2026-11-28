@@ -1,15 +1,14 @@
 import { decodePercent } from 'trousse'
 import { isEncodedPathTarget } from '../pathTarget.js'
-import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper, decodeEncodedScheme, matchPathSource } from '../utils.js'
 
 // Cloudinary prefixes the path with the cloud name, Substack serves it from the root.
 const fetchPathRegex = /^(?:\/[^/]+)*\/image\/fetch\/.*?(?<source>https?(?::|%(?:25)?3a).+)$/i
 
 // Cloudinary fetch on any delivery host, as Substack's substackcdn.com serves it
-// (res.cloudinary.com/<cloud>/image/fetch/<options>/<source>). Not included in defaultUnwrappers:
-// unwrapping swaps the resized copy for the original image.
-export const unwrapCloudinaryFetch: UrlUnwrapper = createUnwrapper({
+// (res.cloudinary.com/<cloud>/image/fetch/<options>/<source>).
+// Opt-in: unwrapping swaps the resized copy for the original image.
+export const unwrapCloudinaryFetch = createUnwrapper({
   anyHost: true,
   ignoreLinkFragment: true,
   unwrap: (url) => {

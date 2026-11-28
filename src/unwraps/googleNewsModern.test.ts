@@ -22,16 +22,18 @@ const buildArticleId = (sourceUrl: string): string => {
 describe('unwrapGoogleNewsModern', () => {
   it('should decode target from /articles/<base64> path', () => {
     const id = buildArticleId('https://example.com/article')
-    const url = new URL(`https://news.google.com/articles/${id}`)
+    const value = new URL(`https://news.google.com/articles/${id}`)
+    const expected = 'https://example.com/article'
 
-    expect(unwrapGoogleNewsModern(url)).toBe('https://example.com/article')
+    expect(unwrapGoogleNewsModern(value)).toBe(expected)
   })
 
   it('should decode target from /rss/articles/<base64> path', () => {
     const id = buildArticleId('https://example.com/article')
-    const url = new URL(`https://news.google.com/rss/articles/${id}`)
+    const value = new URL(`https://news.google.com/rss/articles/${id}`)
+    const expected = 'https://example.com/article'
 
-    expect(unwrapGoogleNewsModern(url)).toBe('https://example.com/article')
+    expect(unwrapGoogleNewsModern(value)).toBe(expected)
   })
 
   it('should decode target from the /__i/rss/rd/articles/<base64> redirect path', () => {
@@ -77,49 +79,49 @@ describe('unwrapGoogleNewsModern', () => {
       .replace(base64PlusRegex, '-')
       .replace(base64SlashRegex, '_')
       .replace(base64PaddingRegex, '')
-    const url = new URL(`https://news.google.com/articles/${id}`)
+    const value = new URL(`https://news.google.com/articles/${id}`)
 
-    expect(unwrapGoogleNewsModern(url)).toBeUndefined()
+    expect(unwrapGoogleNewsModern(value)).toBeUndefined()
   })
 
   it('should return undefined for non-articles paths', () => {
-    const url = new URL('https://news.google.com/foryou')
+    const value = new URL('https://news.google.com/foryou')
 
-    expect(unwrapGoogleNewsModern(url)).toBeUndefined()
+    expect(unwrapGoogleNewsModern(value)).toBeUndefined()
   })
 
   it('should return undefined for non-Google-News hosts', () => {
     const id = buildArticleId('https://example.com/article')
-    const url = new URL(`https://example.com/articles/${id}`)
+    const value = new URL(`https://example.com/articles/${id}`)
 
-    expect(unwrapGoogleNewsModern(url)).toBeUndefined()
+    expect(unwrapGoogleNewsModern(value)).toBeUndefined()
   })
 
   it('should return undefined for malformed base64 ids', () => {
-    const url = new URL('https://news.google.com/articles/not-valid-base64')
+    const value = new URL('https://news.google.com/articles/not-valid-base64')
 
-    expect(unwrapGoogleNewsModern(url)).toBeUndefined()
+    expect(unwrapGoogleNewsModern(value)).toBeUndefined()
   })
 
   it('should return undefined for a country domain other than com', () => {
     const id = buildArticleId('https://example.com/article')
-    const url = new URL(`https://news.google.de/articles/${id}`)
+    const value = new URL(`https://news.google.de/articles/${id}`)
 
-    expect(unwrapGoogleNewsModern(url)).toBeUndefined()
+    expect(unwrapGoogleNewsModern(value)).toBeUndefined()
   })
 
   it('should return undefined for an unlisted subdomain', () => {
     const id = buildArticleId('https://example.com/article')
-    const url = new URL(`https://www.news.google.com/articles/${id}`)
+    const value = new URL(`https://www.news.google.com/articles/${id}`)
 
-    expect(unwrapGoogleNewsModern(url)).toBeUndefined()
+    expect(unwrapGoogleNewsModern(value)).toBeUndefined()
   })
 
   it('should return undefined for a lookalike host', () => {
     const id = buildArticleId('https://example.com/article')
-    const url = new URL(`https://notnews.google.com/articles/${id}`)
+    const value = new URL(`https://notnews.google.com/articles/${id}`)
 
-    expect(unwrapGoogleNewsModern(url)).toBeUndefined()
+    expect(unwrapGoogleNewsModern(value)).toBeUndefined()
   })
 
   it('should keep the link fragment', () => {

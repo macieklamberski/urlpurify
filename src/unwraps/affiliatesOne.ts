@@ -3,8 +3,8 @@ import { createQueryUnwrapper } from '../utils.js'
 const pathRegex = /^\/track\/clicks\/\d+\/c627c2b[0-9a-f]+$/i
 
 // Affiliates One affiliate click (<click host>/track/clicks/<campaign id>/c627c2b<hex>?t=<target>),
-// on the network's click domains. Not included in defaultUnwrappers: unwrapping drops the
-// publisher's commission.
+// on the network's click domains.
+// Opt-in: unwrapping drops the publisher's commission.
 export const unwrapAffiliatesOne = createQueryUnwrapper({
   hosts: [
     'abzcoupon.com',

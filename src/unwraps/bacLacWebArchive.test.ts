@@ -20,53 +20,55 @@ describe('unwrapBacLacWebArchive', () => {
   })
 
   it('should extract the target from a snapshot', () => {
-    const url = new URL(
+    const value = new URL(
       'https://webarchiveweb.wayback.bac-lac.canada.ca/web/20240119052245/http://en.example.org/wiki/Reaction_formation',
     )
+    const expected = 'http://en.example.org/wiki/Reaction_formation'
 
-    expect(unwrapBacLacWebArchive(url)).toBe('http://en.example.org/wiki/Reaction_formation')
+    expect(unwrapBacLacWebArchive(value)).toBe(expected)
   })
 
   it('should keep the query and fragment of the target', () => {
-    const url = new URL(
+    const value = new URL(
       'https://webarchiveweb.wayback.bac-lac.canada.ca/web/20080207074351/http://www.example.ca/profiles/data.htm?id=98#table',
     )
+    const expected = 'http://www.example.ca/profiles/data.htm?id=98#table'
 
-    expect(unwrapBacLacWebArchive(url)).toBe('http://www.example.ca/profiles/data.htm?id=98#table')
+    expect(unwrapBacLacWebArchive(value)).toBe(expected)
   })
 
   it('should return undefined for a snapshot with no target', () => {
-    const url = new URL('https://webarchiveweb.wayback.bac-lac.canada.ca/web/20240119052245/')
+    const value = new URL('https://webarchiveweb.wayback.bac-lac.canada.ca/web/20240119052245/')
 
-    expect(unwrapBacLacWebArchive(url)).toBeUndefined()
+    expect(unwrapBacLacWebArchive(value)).toBeUndefined()
   })
 
   it('should keep the wrapper for a non-http target', () => {
-    const url =
+    const value =
       'https://webarchiveweb.wayback.bac-lac.canada.ca/web/20240119052245/ftp://example.ca/file.txt'
 
-    expect(purifyUrl(url, { unwrappers: [unwrapBacLacWebArchive] })).toBe(url)
+    expect(purifyUrl(value, { unwrappers: [unwrapBacLacWebArchive] })).toBe(value)
   })
 
   it('should return undefined for a partial timestamp', () => {
-    const url = new URL(
+    const value = new URL(
       'https://webarchiveweb.wayback.bac-lac.canada.ca/web/2022/https://www.example.ca/',
     )
 
-    expect(unwrapBacLacWebArchive(url)).toBeUndefined()
+    expect(unwrapBacLacWebArchive(value)).toBeUndefined()
   })
 
   it('should return undefined for another path on the host', () => {
-    const url = new URL(
+    const value = new URL(
       'https://webarchiveweb.wayback.bac-lac.canada.ca/search/20240119052245/http://www.example.ca/',
     )
 
-    expect(unwrapBacLacWebArchive(url)).toBeUndefined()
+    expect(unwrapBacLacWebArchive(value)).toBeUndefined()
   })
 
   it('should return undefined for other hosts', () => {
-    const url = new URL('https://www.bac-lac.gc.ca/web/20240119052245/http://www.example.ca/')
+    const value = new URL('https://www.bac-lac.gc.ca/web/20240119052245/http://www.example.ca/')
 
-    expect(unwrapBacLacWebArchive(url)).toBeUndefined()
+    expect(unwrapBacLacWebArchive(value)).toBeUndefined()
   })
 })

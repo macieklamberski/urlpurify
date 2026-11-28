@@ -1,7 +1,7 @@
 import { createQueryUnwrapper } from '../utils.js'
 
-// Duomai affiliate click (c.duomai.com/track.php?site_id=<id>&aid=<id>&t=<target>). Not included in
-// defaultUnwrappers: unwrapping drops the publisher's commission.
+// Duomai affiliate click (c.duomai.com/track.php?site_id=<id>&aid=<id>&t=<target>).
+// Opt-in: unwrapping drops the publisher's commission.
 export const unwrapDuomai = createQueryUnwrapper({
   hosts: 'c.duomai.com',
   path: '/track.php',

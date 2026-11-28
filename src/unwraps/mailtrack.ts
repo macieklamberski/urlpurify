@@ -4,6 +4,7 @@ const trackPathRegex = /^\/(?:(?:(?:trace\/)?link|l)\/[^/]+)?$/i
 
 // Mailtrack email click tracker (mailtrack.io/{trace/link,link,l}/<id>?url=<target>, also
 // mailtrack.io/?url=<target>).
+// Opt-in: unwrapping removes the sender's click count.
 export const unwrapMailtrack = createQueryUnwrapper({
   hosts: ['mailtrack.io', 'www.mailtrack.io'],
   path: trackPathRegex,

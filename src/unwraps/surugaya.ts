@@ -1,7 +1,8 @@
 import { createQueryUnwrapper } from '../utils.js'
 
 // Suruga-ya affiliate redirect (affiliate.suruga-ya.jp/modules/af/af_jump.php?user_id=<id>&
-// goods_url=<target>). Opt-in: unwrapping drops the publisher's commission.
+// goods_url=<target>).
+// Opt-in: unwrapping drops the publisher's commission.
 export const unwrapSurugaya = createQueryUnwrapper({
   hosts: 'affiliate.suruga-ya.jp',
   path: '/modules/af/af_jump.php',

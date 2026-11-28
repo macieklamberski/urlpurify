@@ -6,10 +6,9 @@ import {
   isHostOf,
   isUtf8Binary,
 } from 'trousse'
-import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper, readDecodedTarget } from '../utils.js'
 
-const showPathRegex = /^\/(?:u\/\d+\/)?feed\/([\w%=-]+)(?:\/episode\/[\w%=-]+)?\/?$/i
+const showPathRegex = /^\/(?:u\/\d+\/)?feed\/(?<feed>[\w%=-]+)(?:\/episode\/[\w%=-]+)?\/?$/i
 
 const appHosts = ['podcasts.google.com']
 const appPaths = ['/', '/subscribe-by-rss-feed']
@@ -29,17 +28,17 @@ const decodeFeed = (encoded: string): string | undefined => {
 
 // Google Podcasts show, episode and app pages (podcasts.google.com/feed/<base64 feed>, with
 // /episode/<id> or under /u/<n>/, and ?feed=<base64 feed> on /, /subscribe-by-rss-feed and
-// google.com/podcasts with or without www). Not included in defaultUnwrappers: the link opens
-// the app's page.
-export const unwrapGooglePodcasts: UrlUnwrapper = createUnwrapper({
+// google.com/podcasts with or without www).
+// Opt-in: the link opens the app's page.
+export const unwrapGooglePodcasts = createUnwrapper({
   hosts: [...appHosts, ...searchHosts],
   ignoreLinkFragment: true,
   unwrap: (url) => {
     if (isHostOf(url, appHosts)) {
-      const showMatch = url.pathname.match(showPathRegex)
+      const showMatch = showPathRegex.exec(url.pathname)
 
-      if (showMatch) {
-        return decodeFeed(decodePercent(showMatch[1]))
+      if (showMatch?.groups) {
+        return decodeFeed(decodePercent(showMatch.groups.feed))
       }
     }
 

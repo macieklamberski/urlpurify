@@ -3,23 +3,24 @@ import { unwrapViglink } from './viglink.js'
 
 describe('unwrapViglink', () => {
   it('should extract target from u param', () => {
-    const url = new URL(
+    const value = new URL(
       'https://redirect.viglink.com/?key=abc&u=https%3A%2F%2Fexample.com%2Fproduct',
     )
+    const expected = 'https://example.com/product'
 
-    expect(unwrapViglink(url)).toBe('https://example.com/product')
+    expect(unwrapViglink(value)).toBe(expected)
   })
 
   it('should return undefined when u param is missing', () => {
-    const url = new URL('https://redirect.viglink.com/?key=abc')
+    const value = new URL('https://redirect.viglink.com/?key=abc')
 
-    expect(unwrapViglink(url)).toBeUndefined()
+    expect(unwrapViglink(value)).toBeUndefined()
   })
 
   it('should return undefined for non-VigLink hosts', () => {
-    const url = new URL('https://example.com/?u=https%3A%2F%2Fother.com')
+    const value = new URL('https://example.com/?u=https%3A%2F%2Fother.com')
 
-    expect(unwrapViglink(url)).toBeUndefined()
+    expect(unwrapViglink(value)).toBeUndefined()
   })
 
   describe('redirect.viglink.com/?out=', () => {
@@ -99,8 +100,8 @@ describe('unwrapViglink', () => {
   })
 
   it('should return undefined for another path on the redirect host', () => {
-    const url = new URL('https://redirect.viglink.com/other?u=https%3A%2F%2Fexample.com%2Fpage')
+    const value = new URL('https://redirect.viglink.com/other?u=https%3A%2F%2Fexample.com%2Fpage')
 
-    expect(unwrapViglink(url)).toBeUndefined()
+    expect(unwrapViglink(value)).toBeUndefined()
   })
 })

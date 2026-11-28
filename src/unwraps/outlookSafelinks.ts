@@ -1,4 +1,3 @@
-import type { UrlUnwrapper } from '../types.js'
 import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
 const linkPathRegex = /^\/(?:ap\/[a-z]+-[0-9a-f]+\/)?$/i
@@ -22,7 +21,8 @@ const extractWebTarget = createQueryUnwrapper({
 // Outlook SafeLinks (<tenant>.safelinks.protection.outlook.com/?url=<target>, also
 // /ap/<kind>-<id>/ for Teams and OneDrive links), the US Government GCC High and DoD clouds on
 // usg<nn>.safelinks.protection.office365.us, and Outlook on the web's page above.
-export const unwrapOutlookSafelinks: UrlUnwrapper = createUnwrapper({
+// Opt-in: unwrapping skips the gateway's click-time check of the target.
+export const unwrapOutlookSafelinks = createUnwrapper({
   hosts: [safelinksHostRegex, 'outlook.office.com'],
   unwrap: (url) => {
     if (!linkPathRegex.test(url.pathname)) {

@@ -1,5 +1,4 @@
 import { isAnyOf } from 'trousse'
-import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper, readParamTarget } from '../utils.js'
 
 const pathRegex = /^\/bookmarklet\/popout\/?$/i
@@ -7,9 +6,9 @@ const pathRegex = /^\/bookmarklet\/popout\/?$/i
 const hosts = ['share.flipboard.com', 'flipboard.com', 'www.flipboard.com']
 
 // Flipboard share (share.flipboard.com/bookmarklet/popout?v=2&url=<target>&title=<title>, with or
-// without a trailing slash, also on flipboard.com and www.flipboard.com). Opt-in: unwrapping
-// returns the shared page, not the form that flips it into a magazine.
-export const unwrapFlipboardShare: UrlUnwrapper = createUnwrapper({
+// without a trailing slash, also on flipboard.com and www.flipboard.com).
+// Opt-in: unwrapping returns the shared page, not the form that flips it into a magazine.
+export const unwrapFlipboardShare = createUnwrapper({
   hosts,
   ignoreLinkFragment: true,
   unwrap: (url) => {

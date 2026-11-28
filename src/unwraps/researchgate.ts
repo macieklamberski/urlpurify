@@ -1,12 +1,11 @@
 import { resolvePathTarget } from '../pathTarget.js'
-import type { UrlUnwrapper } from '../types.js'
 import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
-const derefPathRegex = /^\/deref\/(.+)$/i
+const derefPathRegex = /^\/deref\/(?<target>.+)$/i
 
-const hosts = ['www.researchgate.net', 'researchgate.net']
+const hosts = ['researchgate.net', 'www.researchgate.net']
 
-const unwrapDerefPage = createQueryUnwrapper({
+const extractDerefPage = createQueryUnwrapper({
   hosts,
   path: '/go.Deref.html',
   params: ['url'],
@@ -14,10 +13,10 @@ const unwrapDerefPage = createQueryUnwrapper({
 
 // ResearchGate dereferrer (www.researchgate.net/deref/<target>), the target percent-encoded or
 // plain, and the older page (www.researchgate.net/go.Deref.html?url=<target>).
-export const unwrapResearchgate: UrlUnwrapper = createUnwrapper({
+export const unwrapResearchgate = createUnwrapper({
   hosts,
   unwrap: (url) => {
-    const pageTarget = unwrapDerefPage(url)
+    const pageTarget = extractDerefPage(url)
 
     if (pageTarget) {
       return pageTarget
@@ -25,12 +24,12 @@ export const unwrapResearchgate: UrlUnwrapper = createUnwrapper({
 
     const match = derefPathRegex.exec(url.pathname)
 
-    if (!match?.[1]) {
+    if (!match?.groups?.target) {
       return
     }
 
     // A raw target leaves its own query in the outer url. Beside an encoded target, the outer
     // query is ResearchGate's own `_sg` token.
-    return resolvePathTarget(url, match[1])
+    return resolvePathTarget(url, match.groups.target)
   },
 })

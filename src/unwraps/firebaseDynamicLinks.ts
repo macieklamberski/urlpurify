@@ -25,6 +25,7 @@ const extractGooGlTarget = createQueryUnwrapper({
 // goo.gl hosts (<name>.app.goo.gl/?link=<canonical> and goo.gl/app/<name>?link=<canonical>).
 // A deeper path on page.link or app.goo.gl is a short link or another service, such as
 // maps.app.goo.gl/<id>, and is left alone.
+// Opt-in: unwrapping removes the advertiser's click and install attribution.
 export const unwrapFirebaseDynamicLinks = createUnwrapper({
   domains: ['goo.gl', 'page.link'],
   unwrap: (url) => {

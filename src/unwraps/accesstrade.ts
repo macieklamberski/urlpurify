@@ -1,4 +1,3 @@
-import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper, readParamTarget } from '../utils.js'
 
 const hosts = [
@@ -16,7 +15,7 @@ const pathRegex = /^\/(?:sp\/cc|at\/c\.html|adv\.php|deep_link\/\d+(?:\/\d+)?)$/
 // Accesstrade affiliate redirect (h.accesstrade.net/sp/cc?url=<target>, /at/c.html, /adv.php and
 // /deep_link/<id>, on the Japanese, Vietnamese and Thai hosts).
 // Opt-in: unwrapping removes the publisher's commission.
-export const unwrapAccesstrade: UrlUnwrapper = createUnwrapper({
+export const unwrapAccesstrade = createUnwrapper({
   hosts,
   unwrap: (url) => {
     if (!pathRegex.test(url.pathname)) {

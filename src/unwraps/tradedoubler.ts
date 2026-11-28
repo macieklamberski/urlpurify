@@ -2,6 +2,7 @@ import { createQueryUnwrapper } from '../utils.js'
 
 // Tradedoubler affiliate redirect (?url=<target> on /click at clk., clkuk., clkde. and tracker.
 // tradedoubler.com).
+// Opt-in: unwrapping removes the publisher's commission.
 export const unwrapTradedoubler = createQueryUnwrapper({
   hosts: [
     'clk.tradedoubler.com',

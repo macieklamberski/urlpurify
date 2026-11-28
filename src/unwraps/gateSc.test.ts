@@ -3,26 +3,27 @@ import { unwrapGateSc } from './gateSc.js'
 
 describe('unwrapGateSc', () => {
   it('should extract target from url param', () => {
-    const url = new URL('https://gate.sc/?url=https%3A%2F%2Fexample.com%2Farticle')
+    const value = new URL('https://gate.sc/?url=https%3A%2F%2Fexample.com%2Farticle')
+    const expected = 'https://example.com/article'
 
-    expect(unwrapGateSc(url)).toBe('https://example.com/article')
+    expect(unwrapGateSc(value)).toBe(expected)
   })
 
   it('should return undefined when url param is missing', () => {
-    const url = new URL('https://gate.sc/?other=value')
+    const value = new URL('https://gate.sc/?other=value')
 
-    expect(unwrapGateSc(url)).toBeUndefined()
+    expect(unwrapGateSc(value)).toBeUndefined()
   })
 
   it('should return undefined for non-gate.sc hosts', () => {
-    const url = new URL('https://example.com/?url=https%3A%2F%2Fother.com')
+    const value = new URL('https://example.com/?url=https%3A%2F%2Fother.com')
 
-    expect(unwrapGateSc(url)).toBeUndefined()
+    expect(unwrapGateSc(value)).toBeUndefined()
   })
 
   it('should return undefined for another path on the host', () => {
-    const url = new URL('https://gate.sc/other?url=https%3A%2F%2Fexample.com%2Fpage')
+    const value = new URL('https://gate.sc/other?url=https%3A%2F%2Fexample.com%2Fpage')
 
-    expect(unwrapGateSc(url)).toBeUndefined()
+    expect(unwrapGateSc(value)).toBeUndefined()
   })
 })

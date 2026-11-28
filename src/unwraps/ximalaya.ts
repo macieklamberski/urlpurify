@@ -12,7 +12,7 @@ const extractTarget = createQueryUnwrapper({
 })
 
 // Ximalaya download measurement prefix (jt.ximalaya.com//<file>?album_id=<id>&jt=<target>).
-// Not included in defaultUnwrappers: unwrapping removes the podcaster's download counts.
+// Opt-in: unwrapping removes the podcaster's download counts.
 export const unwrapXimalaya = createUnwrapper({
   hosts,
   unwrap: (url) => {

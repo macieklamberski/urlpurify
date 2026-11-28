@@ -1,5 +1,4 @@
 import { decodePercent, hasQueryParam, isHttpUrl } from 'trousse'
-import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper, readParamTarget } from '../utils.js'
 
 // The delivery directory varies per install, such as /www/delivery/ or /openx/www/delivery/.
@@ -13,7 +12,7 @@ const fallbackMarker = 'dest='
 // Revive Adserver ad click on any host (<host>/www/delivery/ck.php?oaparams=...__oadest=<target>)
 // and the phpAdsNew click (<host>/adclick.php?bannerid=<id>&dest=<target>). Sites self-host it.
 // Opt-in: unwrapping removes the click count the advertiser pays for.
-export const unwrapReviveAdserver: UrlUnwrapper = createUnwrapper({
+export const unwrapReviveAdserver = createUnwrapper({
   anyHost: true,
   unwrap: (url) => {
     if (clickPathRegex.test(url.pathname)) {

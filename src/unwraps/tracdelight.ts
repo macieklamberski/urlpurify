@@ -2,7 +2,7 @@ import { resolvePathTarget } from '../pathTarget.js'
 import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
 // Links written without the `?` carry their params in the path.
-const pathLinkRegex = /^\/cl\/aaid=.*?&link=(.+)$/i
+const pathLinkRegex = /^\/cl\/aaid=.*?&link=(?<target>.+)$/i
 
 const hosts = ['td.oo34.net']
 
@@ -13,8 +13,8 @@ const extractQueryLink = createQueryUnwrapper({
 })
 
 // tracdelight affiliate click (td.oo34.net/cl/?tt=slg&aaid=<id>&paid=<id>&link=<target>), also
-// written without the `?` (td.oo34.net/cl/aaid=<id>&paid=<id>&link=<target>). Not included in
-// defaultUnwrappers: unwrapping drops the publisher's commission.
+// written without the `?` (td.oo34.net/cl/aaid=<id>&paid=<id>&link=<target>).
+// Opt-in: unwrapping drops the publisher's commission.
 export const unwrapTracdelight = createUnwrapper({
   hosts,
   unwrap: (url) => {
@@ -26,10 +26,10 @@ export const unwrapTracdelight = createUnwrapper({
 
     const match = pathLinkRegex.exec(url.pathname)
 
-    if (!match?.[1]) {
+    if (!match?.groups?.target) {
       return
     }
 
-    return resolvePathTarget(url, match[1])
+    return resolvePathTarget(url, match.groups.target)
   },
 })

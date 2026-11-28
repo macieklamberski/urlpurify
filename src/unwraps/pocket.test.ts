@@ -3,34 +3,35 @@ import { unwrapPocket } from './pocket.js'
 
 describe('unwrapPocket', () => {
   it('should extract target from url param', () => {
-    const url = new URL('https://getpocket.com/redirect?url=https%3A%2F%2Fexample.com%2Fstory')
+    const value = new URL('https://getpocket.com/redirect?url=https%3A%2F%2Fexample.com%2Fstory')
+    const expected = 'https://example.com/story'
 
-    expect(unwrapPocket(url)).toBe('https://example.com/story')
+    expect(unwrapPocket(value)).toBe(expected)
   })
 
   it('should return undefined for non-redirect Pocket URLs', () => {
-    const url = new URL('https://getpocket.com/explore')
+    const value = new URL('https://getpocket.com/explore')
 
-    expect(unwrapPocket(url)).toBeUndefined()
+    expect(unwrapPocket(value)).toBeUndefined()
   })
 
   it('should return undefined when url param is missing', () => {
-    const url = new URL('https://getpocket.com/redirect')
+    const value = new URL('https://getpocket.com/redirect')
 
-    expect(unwrapPocket(url)).toBeUndefined()
+    expect(unwrapPocket(value)).toBeUndefined()
   })
 
   it('should return undefined for non-Pocket hosts', () => {
-    const url = new URL('https://example.com/redirect?url=https%3A%2F%2Fother.com')
+    const value = new URL('https://example.com/redirect?url=https%3A%2F%2Fother.com')
 
-    expect(unwrapPocket(url)).toBeUndefined()
+    expect(unwrapPocket(value)).toBeUndefined()
   })
 
   it('should return undefined for a lookalike domain', () => {
-    const url = new URL(
+    const value = new URL(
       'https://examplegetpocket.com/redirect?url=https%3A%2F%2Fexample.com%2Fpost',
     )
 
-    expect(unwrapPocket(url)).toBeUndefined()
+    expect(unwrapPocket(value)).toBeUndefined()
   })
 })

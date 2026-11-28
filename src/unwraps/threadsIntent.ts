@@ -1,14 +1,14 @@
 import { isAnyOf } from 'trousse'
-import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper, readParamTarget } from '../utils.js'
 
-const hosts = ['www.threads.com', 'threads.com', 'www.threads.net', 'threads.net']
+const hosts = ['threads.com', 'www.threads.com', 'threads.net', 'www.threads.net']
 
 const pathRegex = /^\/intent\/post\/?$/i
 
 // Threads share intent (threads.com/intent/post?url=<target>, also /intent/post/, on www. and bare
-// threads.com and threads.net). Opt-in: unwrapping returns the shared page, not the post composer.
-export const unwrapThreadsIntent: UrlUnwrapper = createUnwrapper({
+// threads.com and threads.net).
+// Opt-in: unwrapping returns the shared page, not the post composer.
+export const unwrapThreadsIntent = createUnwrapper({
   hosts,
   ignoreLinkFragment: true,
   unwrap: (url) => {

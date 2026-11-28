@@ -24,7 +24,7 @@ const singleDashRegex = /\b-\b/g
 // every subdomain of translate.goog is a proxied site. A long host moves its start into the
 // _x_tr_hp param, and _x_tr_enc marks a `1-` prefix to drop or a `0-` prefix that stands for
 // the `xn--` of an IDN host.
-const unwrapWebsiteProxy: UrlUnwrapper = (url) => {
+const extractWebsiteProxy: UrlUnwrapper = (url) => {
   const label = getSubdomain(url, proxyDomains)
 
   if (!label || !proxyLabelRegex.test(label) || hashedLabelRegex.test(label)) {
@@ -60,12 +60,12 @@ const unwrapWebsiteProxy: UrlUnwrapper = (url) => {
 // proxy (<dashed host>.translate.goog/<path>?_x_tr_sl=<lang>), rebuilt without the _x_tr_ params.
 // Opt-in: it renders the target translated, so unwrapping discards the translation the user
 // wanted.
-export const unwrapGoogleTranslate: UrlUnwrapper = createUnwrapper({
+export const unwrapGoogleTranslate = createUnwrapper({
   brands: ['google'],
   hosts: frameHosts,
   subdomains: proxyDomains,
   unwrap: (url) => {
-    const proxyTarget = unwrapWebsiteProxy(url)
+    const proxyTarget = extractWebsiteProxy(url)
 
     if (proxyTarget) {
       return proxyTarget

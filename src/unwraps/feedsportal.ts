@@ -1,8 +1,7 @@
 import { isHttpUrl } from 'trousse'
-import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
-const feedsportalPathRegex = /\/([0-9A-Za-z]{20,})\/story01\.htm$/i
+const feedsportalPathRegex = /\/(?<id>[0-9A-Za-z]{20,})\/story01\.htm$/i
 
 // The id uses `0` as a digraph prefix: each `0X`, X from A to Z, decodes to a fixed substitution.
 const feedsportalAlphabet: Record<string, string> = {
@@ -36,15 +35,15 @@ const feedsportalAlphabet: Record<string, string> = {
 
 // FeedSportal article links (<host>/<encoded-id>/story01.htm). FeedSportal shut down around 2016,
 // so only archived feeds carry them.
-export const unwrapFeedsportal: UrlUnwrapper = createUnwrapper({
+export const unwrapFeedsportal = createUnwrapper({
   anyHost: true,
   unwrap: (url) => {
-    const match = url.pathname.match(feedsportalPathRegex)
-    if (!match) {
+    const match = feedsportalPathRegex.exec(url.pathname)
+    if (!match?.groups) {
       return
     }
 
-    const decoded = match[1]
+    const decoded = match.groups.id
       .split('0')
       .map((chunk, index) => {
         if (index === 0) {

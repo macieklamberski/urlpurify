@@ -1,16 +1,15 @@
 import { resolvePathTarget } from '../pathTarget.js'
-import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
 const sourcePathRegex = /^\/.*?(?<source>https?(?::|%(?:25)?3a).+)$/i
 
 // Hatena image scaler (cdn.image.st-hatena.com/image/scale/<signature>/<options>/<source>).
-// Not included in defaultUnwrappers: unwrapping swaps the resized copy for the original image.
-export const unwrapHatenaImage: UrlUnwrapper = createUnwrapper({
+// Opt-in: unwrapping swaps the resized copy for the original image.
+export const unwrapHatenaImage = createUnwrapper({
   hosts: 'cdn.image.st-hatena.com',
   ignoreLinkFragment: true,
   unwrap: (url) => {
-    const source = url.pathname.match(sourcePathRegex)?.groups?.source
+    const source = sourcePathRegex.exec(url.pathname)?.groups?.source
 
     if (!source) {
       return

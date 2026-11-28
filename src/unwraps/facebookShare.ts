@@ -1,9 +1,8 @@
-import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper, readDecodedTarget, readParamTarget } from '../utils.js'
 
 const hosts = [
-  'www.facebook.com',
   'facebook.com',
+  'www.facebook.com',
   'm.facebook.com',
   'pt-br.facebook.com',
   'de.facebook.com',
@@ -21,8 +20,9 @@ const stripHrefPrefix = (value: string): string => {
 
 // Facebook share (facebook.com/sharer/sharer.php?u=<target>, /sharer.php, /share.php, /sharer,
 // p[url]=, /dialog/share?href=, /dialog/feed and /dialog/send ?link=, never redirect_uri, on www.,
-// bare, m., pt-br. and de.facebook.com). Opt-in: unwrapping returns the shared page, not the form.
-export const unwrapFacebookShare: UrlUnwrapper = createUnwrapper({
+// bare, m., pt-br. and de.facebook.com).
+// Opt-in: unwrapping returns the shared page, not the form.
+export const unwrapFacebookShare = createUnwrapper({
   hosts,
   ignoreLinkFragment: true,
   unwrap: (url) => {

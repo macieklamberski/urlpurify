@@ -3,30 +3,30 @@ import { resolvePathTarget } from '../pathTarget.js'
 import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
 const hosts = [
-  'www.dpbolvw.net',
   'dpbolvw.net',
-  'www.tkqlhce.com',
+  'www.dpbolvw.net',
   'tkqlhce.com',
-  'www.anrdoezrs.net',
-  'www.jdoqocy.com',
-  'jdoqocy.com',
-  'www.kqzyfj.com',
-  'www.pntrac.com',
-  'pntrac.com',
-  'www.pjtra.com',
-  'www.pntrs.com',
-  'pntrs.com',
-  'www.pntra.com',
-  'pntra.com',
-  'www.gopjn.com',
-  'gopjn.com',
-  'www.pjatr.com',
-  'pjatr.com',
-  'www.qksrv.net',
-  'qksrv.net',
+  'www.tkqlhce.com',
   'anrdoezrs.net',
+  'www.anrdoezrs.net',
+  'jdoqocy.com',
+  'www.jdoqocy.com',
   'kqzyfj.com',
+  'www.kqzyfj.com',
+  'pntrac.com',
+  'www.pntrac.com',
   'pjtra.com',
+  'www.pjtra.com',
+  'pntrs.com',
+  'www.pntrs.com',
+  'pntra.com',
+  'www.pntra.com',
+  'gopjn.com',
+  'www.gopjn.com',
+  'pjatr.com',
+  'www.pjatr.com',
+  'qksrv.net',
+  'www.qksrv.net',
 ]
 
 // A click link is /click-<id>-<id>[-<timestamp>], /t/<token> or a single opaque token.
@@ -36,7 +36,7 @@ const clickPathRegex = /^\/(?:t\/)?[^/]+$/i
 // sometimes has its scheme collapsed to https:/. The fragment segment is the target's anchor,
 // percent-encoded once.
 const deepLinkPathRegex =
-  /^\/links\/\d+\/type\/(?:dlg|am)\/(?:sid\/[^/]*\/)?(?:fragment\/([^/]*)\/)?(https?):\/\/?(.+)$/i
+  /^\/links\/\d+\/type\/(?:dlg|am)\/(?:sid\/[^/]*\/)?(?:fragment\/(?<fragment>[^/]*)\/)?(?<scheme>https?):\/\/?(?<target>.+)$/i
 
 const extractUrlParam = createQueryUnwrapper({
   hosts,
@@ -46,12 +46,13 @@ const extractUrlParam = createQueryUnwrapper({
 // Commission Junction / CJ affiliate network redirects on rotating brand domains and their
 // subdomains (/click-<pid>-<aid>?url=<target>, also the older loc=<target>, and the deep link
 // /links/<pid>/type/dlg/[sid/<x>/][fragment/<x>/]<target>, also type/am).
+// Opt-in: unwrapping removes the publisher's commission.
 export const unwrapCjNetwork = createUnwrapper({
   hosts,
   unwrap: (url) => {
-    const match = url.pathname.match(deepLinkPathRegex)
+    const match = deepLinkPathRegex.exec(url.pathname)
 
-    if (!match) {
+    if (!match?.groups) {
       if (!clickPathRegex.test(url.pathname)) {
         return
       }
@@ -59,7 +60,7 @@ export const unwrapCjNetwork = createUnwrapper({
       return extractUrlParam(url)
     }
 
-    const [, fragment, scheme, target] = match
+    const { fragment, scheme, target } = match.groups
     const hash = fragment ? `#${decodePercent(fragment)}` : ''
 
     return `${resolvePathTarget(url, `${scheme}://${target}`)}${hash}`

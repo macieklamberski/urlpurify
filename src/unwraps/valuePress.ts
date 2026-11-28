@@ -13,8 +13,9 @@ const decodeTwice = (value: string): string | undefined => {
 
 // value press release click counter (www.value-press.com/bin/tools/link_counter?a=<id>&l=<base64>).
 // The l param is the target url base64-encoded twice.
+// Opt-in: unwrapping removes the issuer's click stats from the wire.
 export const unwrapValuePress = createQueryUnwrapper({
-  hosts: ['www.value-press.com', 'value-press.com'],
+  hosts: ['value-press.com', 'www.value-press.com'],
   path: '/bin/tools/link_counter',
   params: ['l'],
   decode: decodeTwice,
