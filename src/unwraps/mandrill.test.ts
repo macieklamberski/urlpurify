@@ -1,7 +1,16 @@
 import { describe, expect, it } from 'bun:test'
+import { purifyUrl } from '../clean.js'
 import { unwrapMandrill } from './mandrill.js'
 
 describe('unwrapMandrill', () => {
+  it('should give https to a target without a scheme', () => {
+    const value =
+      'https://mandrillapp.com/track/click/1/example.com?p=eyJwIjoie1widXJsXCI6XCJ3d3cuZXhhbXBsZS5jb20vcGFnZVwifSJ9'
+    const expected = 'https://www.example.com/page'
+
+    expect(purifyUrl(value, { unwrappers: [unwrapMandrill] })).toBe(expected)
+  })
+
   it('should extract target from url param on click.php', () => {
     const url = new URL(
       'http://mandrillapp.com/track/click.php?u=3541274&id=acd0abe879a143b4a5ed32beba272b35&url=http%3A%2F%2Fexample.com%2Fsign_up%3Freferrer_id%3D3055614&url_id=8f1d5a3c',
@@ -18,12 +27,11 @@ describe('unwrapMandrill', () => {
     expect(unwrapMandrill(url)).toBe('https://example.com/')
   })
 
-  it('should return undefined for a non-http target in the p payload', () => {
-    const url = new URL(
-      'https://mandrillapp.com/track/click/30295795/example.com?p=eyJzIjoiTGYyREg3SmljYjZYVDJxMGZfZ2tuWS1GNmxVIiwidiI6MSwicCI6IntcInVcIjozMDI5NTc5NSxcInZcIjoxLFwidXJsXCI6XCJqYXZhc2NyaXB0OmFsZXJ0KDEpXCIsXCJpZFwiOlwiY2M1ODFkY2EwYmIwNGVlMGJhM2Q5OTBjODU5YmUxMTRcIixcInVybF9pZHNcIjpbXCI1YzNhNzI2M2QwODM4N2Y3MzE5MTY1NGY3MjVlNWMwYmNkNGVmOGNjXCJdfSJ9',
-    )
+  it('should keep the wrapper for a non-http target in the p payload', () => {
+    const url =
+      'https://mandrillapp.com/track/click/30295795/example.com?p=eyJzIjoiTGYyREg3SmljYjZYVDJxMGZfZ2tuWS1GNmxVIiwidiI6MSwicCI6IntcInVcIjozMDI5NTc5NSxcInZcIjoxLFwidXJsXCI6XCJqYXZhc2NyaXB0OmFsZXJ0KDEpXCIsXCJpZFwiOlwiY2M1ODFkY2EwYmIwNGVlMGJhM2Q5OTBjODU5YmUxMTRcIixcInVybF9pZHNcIjpbXCI1YzNhNzI2M2QwODM4N2Y3MzE5MTY1NGY3MjVlNWMwYmNkNGVmOGNjXCJdfSJ9'
 
-    expect(unwrapMandrill(url)).toBeUndefined()
+    expect(purifyUrl(url, { unwrappers: [unwrapMandrill] })).toBe(url)
   })
 
   it('should return undefined for a p payload without an inner payload', () => {

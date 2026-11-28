@@ -3,6 +3,13 @@ import { purifyUrl } from '../clean.js'
 import { unwrapArchiveToday } from './archiveToday.js'
 
 describe('unwrapArchiveToday', () => {
+  it('should repair a target the CMS spaced after its scheme', () => {
+    const value = 'https://archive.ph/20200101000000/http://%20https://www.example.com/page'
+    const expected = 'https://www.example.com/page'
+
+    expect(purifyUrl(value, { unwrappers: [unwrapArchiveToday] })).toBe(expected)
+  })
+
   it('should extract the target after a 14-digit timestamp', () => {
     const url = new URL('https://archive.ph/20240814014001/https://example.com/world/article')
 
@@ -75,16 +82,16 @@ describe('unwrapArchiveToday', () => {
     expect(unwrapArchiveToday(url)).toBeUndefined()
   })
 
-  it('should return undefined for a non-http target', () => {
-    const url = new URL('https://archive.ph/20240814014001/ftp://example.com/file')
+  it('should keep the wrapper for a non-http target', () => {
+    const url = 'https://archive.ph/20240814014001/ftp://example.com/file'
 
-    expect(unwrapArchiveToday(url)).toBeUndefined()
+    expect(purifyUrl(url, { unwrappers: [unwrapArchiveToday] })).toBe(url)
   })
 
-  it('should return undefined when the encoded target has malformed percent escapes', () => {
-    const url = new URL('https://archive.ph/20240814014001/https%3A%ZZ')
+  it('should keep the wrapper when the encoded target has malformed percent escapes', () => {
+    const url = 'https://archive.ph/20240814014001/https%3A%ZZ'
 
-    expect(unwrapArchiveToday(url)).toBeUndefined()
+    expect(purifyUrl(url, { unwrappers: [unwrapArchiveToday] })).toBe(url)
   })
 
   it('should return undefined for the same shape on another host', () => {

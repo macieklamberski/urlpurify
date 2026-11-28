@@ -1,7 +1,23 @@
 import { describe, expect, it } from 'bun:test'
+import { purifyUrl } from '../clean.js'
 import { unwrapArquivo } from './arquivo.js'
 
 describe('unwrapArquivo', () => {
+  it('should give https to a target without a scheme', () => {
+    const value = 'https://arquivo.pt/wayback/20200101000000/www.example.com/page'
+    const expected = 'https://www.example.com/page'
+
+    expect(purifyUrl(value, { unwrappers: [unwrapArquivo] })).toBe(expected)
+  })
+
+  it('should decode a percent-encoded target', () => {
+    const value =
+      'https://arquivo.pt/wayback/20200101000000/https%3A%2F%2Fwww.example.com%2Fpage%3Fid%3D1'
+    const expected = 'https://www.example.com/page?id=1'
+
+    expect(purifyUrl(value, { unwrappers: [unwrapArquivo] })).toBe(expected)
+  })
+
   it('should extract the target from a snapshot', () => {
     const url = new URL(
       'http://arquivo.pt/wayback/20091001072715/http://www.example.com/disney/info/aladwsj.htm',
@@ -24,10 +40,10 @@ describe('unwrapArquivo', () => {
     expect(unwrapArquivo(url)).toBeUndefined()
   })
 
-  it('should return undefined for a non-http target', () => {
-    const url = new URL('https://arquivo.pt/wayback/20091001072715/ftp://example.com/file.txt')
+  it('should keep the wrapper for a non-http target', () => {
+    const url = 'https://arquivo.pt/wayback/20091001072715/ftp://example.com/file.txt'
 
-    expect(unwrapArquivo(url)).toBeUndefined()
+    expect(purifyUrl(url, { unwrappers: [unwrapArquivo] })).toBe(url)
   })
 
   it('should return undefined for a partial timestamp', () => {

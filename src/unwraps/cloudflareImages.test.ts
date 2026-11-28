@@ -2,6 +2,15 @@ import { describe, expect, it } from 'bun:test'
 import { unwrapCloudflareImages } from './cloudflareImages.js'
 
 describe('unwrapCloudflareImages', () => {
+  it('should keep a literal %25 in the source as written', () => {
+    const value = new URL(
+      'https://example.com/cdn-cgi/image/width=100/https://cdn.example.com/a%2520b.png',
+    )
+    const expected = 'https://cdn.example.com/a%2520b.png'
+
+    expect(unwrapCloudflareImages(value)).toBe(expected)
+  })
+
   it('should extract an absolute source from a resizing url', () => {
     const value = new URL(
       'https://files.example.com/cdn-cgi/image/width=1080,quality=80/https://cdn.example.com/s3fs/photo.jpg',

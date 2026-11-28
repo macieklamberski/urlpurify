@@ -2,6 +2,15 @@ import { describe, expect, it } from 'bun:test'
 import { unwrapFirstory } from './firstory.js'
 
 describe('unwrapFirstory', () => {
+  it('should keep a literal %25 in the source as written', () => {
+    const value = new URL(
+      'https://m.cdn.firstory.me/track/abc/def/https://cdn.example.com/a%2520b.mp3',
+    )
+    const expected = 'https://cdn.example.com/a%2520b.mp3'
+
+    expect(unwrapFirstory(value)).toBe(expected)
+  })
+
   it('should extract an encoded target from the track prefix', () => {
     const url = new URL(
       'https://m.cdn.firstory.me/track/ckc6eqqt8kc010918u9vibolz/ckjcz4urh60mt0889kp7cdkvm/https%3A%2F%2Fexample.com%2FRecord%2Fckc6eqqt8kc010918u9vibolz%2F1609426748358.m4a',

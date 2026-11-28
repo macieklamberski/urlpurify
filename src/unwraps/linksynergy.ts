@@ -1,5 +1,5 @@
 import type { UrlUnwrapper } from '../types.js'
-import { createUnwrapper, getParamTarget } from '../utils.js'
+import { createUnwrapper, readParamTarget } from '../utils.js'
 
 // linksynergy.jrs5.com and linksynergy.walmart.com sit on a merchant's own domain.
 const hosts = ['click.linksynergy.com', 'linksynergy.jrs5.com', 'linksynergy.walmart.com']
@@ -23,6 +23,6 @@ export const unwrapLinksynergy: UrlUnwrapper = createUnwrapper({
       return
     }
 
-    return getParamTarget(url, param)
+    return readParamTarget(url, param)
   },
 })

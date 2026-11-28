@@ -60,6 +60,15 @@ describe('unwrapPodcastAddict', () => {
     expect(unwrapPodcastAddict(value)).toBe(expected)
   })
 
+  it('should drop the link query after an encoded feed', () => {
+    const value = new URL(
+      'https://podcastaddict.com/feed/https%3A%2F%2Fexample.com%2Frss%3Fformat%3Dmp3?utm_source=share',
+    )
+    const expected = 'https://example.com/rss?format=mp3'
+
+    expect(unwrapPodcastAddict(value)).toBe(expected)
+  })
+
   it('should drop the link fragment after a twice-encoded feed', () => {
     const value = new URL(
       'https://podcastaddict.com/feed/https%253A%252F%252Fexample.com%252Frss#episodes',

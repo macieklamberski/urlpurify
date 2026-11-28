@@ -1,8 +1,24 @@
 import { describe, expect, it } from 'bun:test'
+import { purifyUrl } from '../clean.js'
 import { unwrapperHosts } from '../utils.js'
 import { unwrapMegalodon } from './megalodon.js'
 
 describe('unwrapMegalodon', () => {
+  it('should repair a target the CMS spaced after its scheme', () => {
+    const value = 'https://megalodon.jp/2020-0101-0000-00/http://%20https://www.example.com/page'
+    const expected = 'https://www.example.com/page'
+
+    expect(purifyUrl(value, { unwrappers: [unwrapMegalodon] })).toBe(expected)
+  })
+
+  it('should decode a percent-encoded target', () => {
+    const value =
+      'https://megalodon.jp/2020-0101-0000-00/https%3A%2F%2Fwww.example.com%2Fpage%3Fid%3D1'
+    const expected = 'https://www.example.com/page?id=1'
+
+    expect(purifyUrl(value, { unwrappers: [unwrapMegalodon] })).toBe(expected)
+  })
+
   it('should extract target from an https snapshot', () => {
     const url = new URL(
       'https://megalodon.jp/2023-0213-1416-54/https://www.example.com:443/co_seko_voice/173.html',
@@ -63,10 +79,10 @@ describe('unwrapMegalodon', () => {
     expect(unwrapMegalodon(url)).toBeUndefined()
   })
 
-  it('should return undefined for a non-http target', () => {
-    const url = new URL('https://megalodon.jp/2023-0213-1416-54/ftp://example.com/file')
+  it('should keep the wrapper for a non-http target', () => {
+    const url = 'https://megalodon.jp/2023-0213-1416-54/ftp://example.com/file'
 
-    expect(unwrapMegalodon(url)).toBeUndefined()
+    expect(purifyUrl(url, { unwrappers: [unwrapMegalodon] })).toBe(url)
   })
 
   it('should return undefined for the snapshot list lookup', () => {

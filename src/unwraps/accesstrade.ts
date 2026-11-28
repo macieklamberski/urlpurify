@@ -1,5 +1,5 @@
 import type { UrlUnwrapper } from '../types.js'
-import { createUnwrapper, getParamTarget } from '../utils.js'
+import { createUnwrapper, readParamTarget } from '../utils.js'
 
 const hosts = [
   'h.accesstrade.net',
@@ -22,6 +22,6 @@ export const unwrapAccesstrade: UrlUnwrapper = createUnwrapper({
       return
     }
 
-    return getParamTarget(url, 'url')
+    return readParamTarget(url, 'url')
   },
 })

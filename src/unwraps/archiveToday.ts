@@ -1,4 +1,4 @@
-import { isHostOf, isHttpUrl } from 'trousse'
+import { isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { appendLinkFragment, decodeEncodedScheme } from '../utils.js'
 
@@ -39,10 +39,6 @@ export const unwrapArchiveToday: UrlUnwrapper = (url) => {
 
   // An unencoded target's query lands in the snapshot URL's own `search`.
   const unwrapped = `${target}${url.search}`
-
-  if (!isHttpUrl(unwrapped)) {
-    return
-  }
 
   // archive.today's own `#selection-` highlight points into the snapshot.
   if (selectionHashRegex.test(url.hash)) {

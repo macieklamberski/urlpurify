@@ -2,6 +2,13 @@ import { describe, expect, it } from 'bun:test'
 import { unwrapJetpack } from './jetpack.js'
 
 describe('unwrapJetpack', () => {
+  it('should keep a literal %25 in the source as written', () => {
+    const value = new URL('https://i0.wp.com/cdn.example.com/a%2520b.png')
+    const expected = 'cdn.example.com/a%2520b.png'
+
+    expect(unwrapJetpack(value)).toBe(expected)
+  })
+
   it('should extract the source without its scheme', () => {
     const value = new URL('https://i0.wp.com/cdn.example.com/wp-content/uploads/photo.jpg')
     const expected = 'cdn.example.com/wp-content/uploads/photo.jpg'
@@ -16,9 +23,9 @@ describe('unwrapJetpack', () => {
     expect(unwrapJetpack(value)).toBe(expected)
   })
 
-  it('should decode an encoded source path', () => {
+  it('should keep an escape in the source path as written', () => {
     const value = new URL('https://i1.wp.com/cdn.example.com/caf%C3%A9.jpg')
-    const expected = 'cdn.example.com/café.jpg'
+    const expected = 'cdn.example.com/caf%C3%A9.jpg'
 
     expect(unwrapJetpack(value)).toBe(expected)
   })

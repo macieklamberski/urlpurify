@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'bun:test'
+import { purifyUrl } from '../clean.js'
 import { unwrapWebArchive } from './webArchive.js'
 
 const modifierUrls = [
@@ -31,6 +32,14 @@ const prefixedUrls = [
 ]
 
 describe('unwrapWebArchive', () => {
+  it('should repair a target the CMS spaced after its scheme', () => {
+    const value =
+      'https://web.archive.org/web/20200101000000/http://%20https://www.example.com/page'
+    const expected = 'https://www.example.com/page'
+
+    expect(purifyUrl(value, { unwrappers: [unwrapWebArchive] })).toBe(expected)
+  })
+
   it('should extract original URL from snapshot path', () => {
     const url = new URL(
       'https://web.archive.org/web/20240101120000/https%3A%2F%2Fexample.com%2Farticle',
@@ -55,10 +64,10 @@ describe('unwrapWebArchive', () => {
     expect(unwrapWebArchive(url)).toBe('https://example.com/page')
   })
 
-  it('should return undefined when timestamp has wrong digit count', () => {
-    const url = new URL('https://web.archive.org/web/2024/https%3A%2F%2Fexample.com')
+  it('should keep the wrapper when timestamp has wrong digit count', () => {
+    const url = 'https://web.archive.org/web/2024/https%3A%2F%2Fexample.com'
 
-    expect(unwrapWebArchive(url)).toBeUndefined()
+    expect(purifyUrl(url, { unwrappers: [unwrapWebArchive] })).toBe(url)
   })
 
   it('should return undefined for non-archive.org hosts', () => {
@@ -67,10 +76,10 @@ describe('unwrapWebArchive', () => {
     expect(unwrapWebArchive(url)).toBeUndefined()
   })
 
-  it('should return undefined when encoded URL has malformed percent escapes', () => {
-    const url = new URL('https://web.archive.org/web/20240101120000/bad%ZZ')
+  it('should keep the wrapper when encoded URL has malformed percent escapes', () => {
+    const url = 'https://web.archive.org/web/20240101120000/bad%ZZ'
 
-    expect(unwrapWebArchive(url)).toBeUndefined()
+    expect(purifyUrl(url, { unwrappers: [unwrapWebArchive] })).toBe(url)
   })
 
   it.each(modifierUrls)('should extract the target from %s', (value) => {
@@ -113,30 +122,29 @@ describe('unwrapWebArchive', () => {
     expect(unwrapWebArchive(value)).toBe('http://www.example.com/arabic/history/history_uae.asp')
   })
 
-  it('should return undefined for a Wayback path with no dot in its first segment', () => {
-    const value = new URL('https://web.archive.org/web/sitemap/example.com/')
+  it('should keep the wrapper for a Wayback path with no dot in its first segment', () => {
+    const value = 'https://web.archive.org/web/sitemap/example.com/'
 
-    expect(unwrapWebArchive(value)).toBeUndefined()
+    expect(purifyUrl(value, { unwrappers: [unwrapWebArchive] })).toBe(value)
   })
 
-  it('should return undefined for the Wayback search form', () => {
-    const value = new URL(
-      'https://web.archive.org/web/form-submit.jsp?type=prefixquery&url=http://example.com/',
-    )
+  it('should keep the wrapper for the Wayback search form', () => {
+    const value =
+      'https://web.archive.org/web/form-submit.jsp?type=prefixquery&url=http://example.com/'
 
-    expect(unwrapWebArchive(value)).toBeUndefined()
+    expect(purifyUrl(value, { unwrappers: [unwrapWebArchive] })).toBe(value)
   })
 
-  it('should return undefined for the old Wayback home page', () => {
-    const value = new URL('https://archive.org/web/web.php')
+  it('should keep the wrapper for the old Wayback home page', () => {
+    const value = 'https://archive.org/web/web.php'
 
-    expect(unwrapWebArchive(value)).toBeUndefined()
+    expect(purifyUrl(value, { unwrappers: [unwrapWebArchive] })).toBe(value)
   })
 
-  it('should return undefined for a relative image snapshot', () => {
-    const value = new URL('https://web.archive.org/web/20070220192932im_/dk46.jpg')
+  it('should keep the wrapper for a relative image snapshot', () => {
+    const value = 'https://web.archive.org/web/20070220192932im_/dk46.jpg'
 
-    expect(unwrapWebArchive(value)).toBeUndefined()
+    expect(purifyUrl(value, { unwrappers: [unwrapWebArchive] })).toBe(value)
   })
 
   it('should add the http scheme to a host with a php label', () => {
@@ -145,16 +153,16 @@ describe('unwrapWebArchive', () => {
     expect(unwrapWebArchive(value)).toBe('http://www.php.net/manual/')
   })
 
-  it('should return undefined for a mailto target', () => {
-    const value = new URL('https://web.archive.org/web/20240101120000/mailto:info@example.com')
+  it('should keep the wrapper for a mailto target', () => {
+    const value = 'https://web.archive.org/web/20240101120000/mailto:info@example.com'
 
-    expect(unwrapWebArchive(value)).toBeUndefined()
+    expect(purifyUrl(value, { unwrappers: [unwrapWebArchive] })).toBe(value)
   })
 
-  it('should return undefined for a partial timestamp before an unencoded target', () => {
-    const value = new URL('https://web.archive.org/web/2024/https://example.com/page')
+  it('should keep the wrapper for a partial timestamp before an unencoded target', () => {
+    const value = 'https://web.archive.org/web/2024/https://example.com/page'
 
-    expect(unwrapWebArchive(value)).toBeUndefined()
+    expect(purifyUrl(value, { unwrappers: [unwrapWebArchive] })).toBe(value)
   })
 
   it('should keep the query string and fragment of an Archive-It target', () => {
@@ -165,16 +173,16 @@ describe('unwrapWebArchive', () => {
     expect(unwrapWebArchive(value)).toBe('https://example.com/a?id=5#section')
   })
 
-  it('should return undefined for the calendar wildcard', () => {
-    const value = new URL('https://web.archive.org/web/*/https://example.com/page')
+  it('should keep the wrapper for the calendar wildcard', () => {
+    const value = 'https://web.archive.org/web/*/https://example.com/page'
 
-    expect(unwrapWebArchive(value)).toBeUndefined()
+    expect(purifyUrl(value, { unwrappers: [unwrapWebArchive] })).toBe(value)
   })
 
-  it('should return undefined for a partial timestamp with a modifier', () => {
-    const value = new URL('https://web.archive.org/web/20240101id_/https://example.com/page')
+  it('should keep the wrapper for a partial timestamp with a modifier', () => {
+    const value = 'https://web.archive.org/web/20240101id_/https://example.com/page'
 
-    expect(unwrapWebArchive(value)).toBeUndefined()
+    expect(purifyUrl(value, { unwrappers: [unwrapWebArchive] })).toBe(value)
   })
 
   it('should return undefined for an Archive-It collection page', () => {
@@ -189,10 +197,10 @@ describe('unwrapWebArchive', () => {
     expect(unwrapWebArchive(value)).toBeUndefined()
   })
 
-  it('should return undefined for a non-http target', () => {
-    const value = new URL('https://web.archive.org/web/20240101120000/ftp://example.com/file')
+  it('should keep the wrapper for a non-http target', () => {
+    const value = 'https://web.archive.org/web/20240101120000/ftp://example.com/file'
 
-    expect(unwrapWebArchive(value)).toBeUndefined()
+    expect(purifyUrl(value, { unwrappers: [unwrapWebArchive] })).toBe(value)
   })
 
   it.each(prefixedUrls)(

@@ -1,8 +1,16 @@
 import { describe, expect, it } from 'bun:test'
+import { purifyUrl } from '../clean.js'
 import { unwrapperHosts } from '../utils.js'
 import { unwrapBloggerImageProxy } from './bloggerImageProxy.js'
 
 describe('unwrapBloggerImageProxy', () => {
+  it('should give https to a target without a scheme', () => {
+    const value = 'https://x.gmodules.com/gadgets/proxy?url=www.example.com/page'
+    const expected = 'https://www.example.com/page'
+
+    expect(purifyUrl(value, { unwrappers: [unwrapBloggerImageProxy] })).toBe(expected)
+  })
+
   it('should extract an encoded source', () => {
     const value = new URL(
       'https://images-blogger-opensocial.googleusercontent.com/gadgets/proxy?container=blogger&gadget=a&rewriteMime=image%2F*&url=https%3A%2F%2Fcdn.example.com%2Fphoto.jpg',
@@ -21,12 +29,11 @@ describe('unwrapBloggerImageProxy', () => {
     expect(unwrapBloggerImageProxy(value)).toBe(expected)
   })
 
-  it('should return undefined for a source that is not an http url', () => {
-    const value = new URL(
-      'https://images-blogger-opensocial.googleusercontent.com/gadgets/proxy?url=%2Fuploads%2Fphoto.jpg',
-    )
+  it('should keep the wrapper for a source that is not an http url', () => {
+    const value =
+      'https://images-blogger-opensocial.googleusercontent.com/gadgets/proxy?url=%2Fuploads%2Fphoto.jpg'
 
-    expect(unwrapBloggerImageProxy(value)).toBeUndefined()
+    expect(purifyUrl(value, { unwrappers: [unwrapBloggerImageProxy] })).toBe(value)
   })
 
   it('should return undefined without a source', () => {

@@ -1,4 +1,4 @@
-import { isAnyOf, isHttpUrl } from 'trousse'
+import { isAnyOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
@@ -16,16 +16,6 @@ export const unwrapGovdelivery: UrlUnwrapper = createUnwrapper({
       return
     }
 
-    const match = clickQueryRegex.exec(url.search)
-
-    if (!match?.[1]) {
-      return
-    }
-
-    const target = match[1]
-
-    if (isHttpUrl(target)) {
-      return target
-    }
+    return clickQueryRegex.exec(url.search)?.[1]
   },
 })

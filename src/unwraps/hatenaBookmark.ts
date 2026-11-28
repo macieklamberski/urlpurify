@@ -5,7 +5,7 @@ import { createUnwrapper, decodeEncodedScheme, readParamTarget } from '../utils.
 const formPathRegex = /^\/(?:entry|add|entry\/panel)\/?$/i
 const schemePathRegex = /^\/entry\/(?<target>https?(?::|%3a).+)$/i
 const hostPathRegex = /^\/entry\/(?<secure>s\/)?(?<target>[^/.]+(?:\.[^/.]+)+(?:\/.*)?)$/i
-const encodedPathRegex = /^\/entry\/https?(?:%3a|:)%2f/i
+const encodedPathRegex = /^\/entry\/(?<target>https?(?:%3a|:)%2f.*)$/i
 
 const hosts = ['b.hatena.ne.jp']
 
@@ -42,9 +42,11 @@ export const unwrapHatenaBookmark: UrlUnwrapper = createUnwrapper({
       return readParamTarget(url, 'url')
     }
 
-    // An encoded page ends where its encoding ends, so the link's fragment is Hatena's own.
-    if (encodedPathRegex.test(url.pathname)) {
-      return readEntry(url)
+    const encodedTarget = url.pathname.match(encodedPathRegex)?.groups?.target
+
+    // An encoded page holds its own query and fragment, so the link's are Hatena's own.
+    if (encodedTarget) {
+      return decodeEncodedScheme(encodedTarget)
     }
 
     return unwrapEntry(url)

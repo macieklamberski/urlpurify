@@ -1,4 +1,4 @@
-import { isAnyOf, isHttpUrl } from 'trousse'
+import { isAnyOf } from 'trousse'
 import { createUnwrapper, readParamTarget } from '../utils.js'
 
 // Google gadget image proxy, as Blogger serves it, on three host shapes:
@@ -17,13 +17,6 @@ export const unwrapBloggerImageProxy = createUnwrapper({
       return
     }
 
-    const source = readParamTarget(url, 'url', -1, 'keep')
-
-    // gmodules.com matches on any subdomain, so only an http source tells the proxy apart.
-    if (!source || !isHttpUrl(source)) {
-      return
-    }
-
-    return source
+    return readParamTarget(url, 'url', -1, 'keep')
   },
 })

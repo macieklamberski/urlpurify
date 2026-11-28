@@ -1,4 +1,4 @@
-import { isHostOf, isHttpUrl } from 'trousse'
+import { isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
@@ -28,10 +28,6 @@ export const unwrapNdlWarp: UrlUnwrapper = createUnwrapper({
     const target = schemeRegex.test(path) ? path : `http://${path}`
 
     // An unencoded target's query lands in the snapshot URL's own `search`.
-    const unwrapped = `${target}${url.search}`
-
-    if (isHttpUrl(unwrapped)) {
-      return unwrapped
-    }
+    return `${target}${url.search}`
   },
 })

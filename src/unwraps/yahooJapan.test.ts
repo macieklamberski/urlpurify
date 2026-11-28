@@ -1,7 +1,15 @@
 import { describe, expect, it } from 'bun:test'
+import { purifyUrl } from '../clean.js'
 import { unwrapYahooJapan } from './yahooJapan.js'
 
 describe('unwrapYahooJapan', () => {
+  it('should give https to a target without a scheme', () => {
+    const value = 'https://rdsig.yahoo.co.jp/a/RV=1/RU=d3d3LmV4YW1wbGUuY29tL3BhZ2U/RS=x'
+    const expected = 'https://www.example.com/page'
+
+    expect(purifyUrl(value, { unwrappers: [unwrapYahooJapan] })).toBe(expected)
+  })
+
   it('should extract target from RU at the end of the path', () => {
     const url = new URL(
       'http://rdsig.yahoo.co.jp/rss/l/headlines/life/it_nlab/RV=1/RU=aHR0cDovL2hlYWRsaW5lcy5leGFtcGxlLmpwL2hsP2E9MjAxNjAzMTUtMDAwMDAxMTUtaXRfbmxhYi1saWZl',
@@ -72,10 +80,10 @@ describe('unwrapYahooJapan', () => {
     expect(unwrapYahooJapan(url)).toBeUndefined()
   })
 
-  it('should return undefined for a non-http target', () => {
-    const url = new URL('https://rdsig.yahoo.co.jp/RV=1/RU=ZnRwOi8vZmlsZXMuZXhhbXBsZS5qcC9h')
+  it('should keep the wrapper for a non-http target', () => {
+    const url = 'https://rdsig.yahoo.co.jp/RV=1/RU=ZnRwOi8vZmlsZXMuZXhhbXBsZS5qcC9h'
 
-    expect(unwrapYahooJapan(url)).toBeUndefined()
+    expect(purifyUrl(url, { unwrappers: [unwrapYahooJapan] })).toBe(url)
   })
 
   it('should return undefined for the RU path on Yahoo Search', () => {

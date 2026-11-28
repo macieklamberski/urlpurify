@@ -1,7 +1,15 @@
 import { describe, expect, it } from 'bun:test'
+import { purifyUrl } from '../clean.js'
 import { unwrapSurly } from './surly.js'
 
 describe('unwrapSurly', () => {
+  it('should drop a space before the target host', () => {
+    const value = 'https://sur.ly/o/%20www.example.com/page/AA000001'
+    const expected = 'https://www.example.com/page'
+
+    expect(purifyUrl(value, { unwrappers: [unwrapSurly] })).toBe(expected)
+  })
+
   it('should extract a target before the partner id', () => {
     const url = new URL('http://sur.ly/o/example.com/AA044639')
 
@@ -36,10 +44,10 @@ describe('unwrapSurly', () => {
     expect(unwrapSurly(url)).toBe('https://example.com/doclib%2')
   })
 
-  it('should return undefined for a target host that does not parse', () => {
-    const url = new URL('http://sur.ly/o/example.com%25/AA001290')
+  it('should keep the wrapper for a target host that does not parse', () => {
+    const url = 'http://sur.ly/o/example.com%25/AA001290'
 
-    expect(unwrapSurly(url)).toBeUndefined()
+    expect(purifyUrl(url, { unwrappers: [unwrapSurly] })).toBe(url)
   })
 
   it('should return undefined for the partner id with no target', () => {

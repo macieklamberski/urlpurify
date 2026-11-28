@@ -1,6 +1,6 @@
-import { isHostOf, isHttpUrl } from 'trousse'
+import { isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createUnwrapper, getParamTarget } from '../utils.js'
+import { createUnwrapper, readParamTarget } from '../utils.js'
 
 const hosts = [
   'avanan.url-protection.com',
@@ -10,7 +10,7 @@ const hosts = [
 
 // A region segment, such as /r01/.
 const pathRegex = /^\/v1\/(?:r\d+\/)?url$/i
-const v2Regex = /^\/v2\/(?:r\d+\/)?___(?<target>.+)___\.[\w+/=-]+(?<fragment>#.*)?$/i
+const v2Regex = /^\/v2\/(?:r\d+\/)?___(?<target>.+)___\.[\w+/=-]+$/i
 const starEscapeRegex = /\*([0-9a-f]{2})/gi
 
 // Check Point Harmony Email link protection (checkpoint.url-protection.com/v1/url?o=<target>, and
@@ -18,30 +18,17 @@ const starEscapeRegex = /\*([0-9a-f]{2})/gi
 // check of the target at click time, which the recipient's organization put in place.
 export const unwrapCheckPointHarmony: UrlUnwrapper = createUnwrapper({
   hosts: [...hosts, 'protect.checkpoint.com'],
-  ignoreLinkFragment: true,
   unwrap: (url) => {
     if (isHostOf(url, 'protect.checkpoint.com')) {
       // The v2 format writes a percent escape in the target's path as `*`, such as `*2F` for `%2F`.
       const pathname = url.pathname.replace(starEscapeRegex, '%$1')
-      const match = v2Regex.exec(`${pathname}${url.search}${url.hash}`)
-
-      if (!match?.groups?.target || !isHttpUrl(match.groups.target)) {
-        return
-      }
-
-      return `${match.groups.target}${match.groups.fragment ?? ''}`
+      return v2Regex.exec(`${pathname}${url.search}`)?.groups?.target
     }
 
     if (!pathRegex.test(url.pathname)) {
       return
     }
 
-    const target = getParamTarget(url, 'o')
-
-    if (!target) {
-      return
-    }
-
-    return target
+    return readParamTarget(url, 'o')
   },
 })

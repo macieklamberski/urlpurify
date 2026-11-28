@@ -1,7 +1,15 @@
 import { describe, expect, it } from 'bun:test'
+import { purifyUrl } from '../clean.js'
 import { unwrapNdlWarp } from './ndlWarp.js'
 
 describe('unwrapNdlWarp', () => {
+  it('should drop a space before the target host', () => {
+    const value = 'https://warp.ndl.go.jp/info:ndljp/pid/1/%20www.example.com/page'
+    const expected = 'http://www.example.com/page'
+
+    expect(purifyUrl(value, { unwrappers: [unwrapNdlWarp] })).toBe(expected)
+  })
+
   it('should extract the target from a snapshot', () => {
     const url = new URL(
       'https://warp.ndl.go.jp/web/20220308210930/https://www.example.lg.jp/shikai/page/0000276393.html',
@@ -62,10 +70,10 @@ describe('unwrapNdlWarp', () => {
     expect(unwrapNdlWarp(url)).toBeUndefined()
   })
 
-  it('should return undefined for a non-http target', () => {
-    const url = new URL('https://warp.ndl.go.jp/web/20220308210930/ftp://example.jp/file.txt')
+  it('should keep the wrapper for a non-http target', () => {
+    const url = 'https://warp.ndl.go.jp/web/20220308210930/ftp://example.jp/file.txt'
 
-    expect(unwrapNdlWarp(url)).toBeUndefined()
+    expect(purifyUrl(url, { unwrappers: [unwrapNdlWarp] })).toBe(url)
   })
 
   it('should return undefined for a partial timestamp', () => {

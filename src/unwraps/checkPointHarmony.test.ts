@@ -1,7 +1,15 @@
 import { describe, expect, it } from 'bun:test'
+import { purifyUrl } from '../clean.js'
 import { unwrapCheckPointHarmony } from './checkPointHarmony.js'
 
 describe('unwrapCheckPointHarmony', () => {
+  it('should give https to a target without a scheme', () => {
+    const value = 'https://protect.checkpoint.com/v2/___www.example.com/page___.YzJ1OmFiYw'
+    const expected = 'https://www.example.com/page'
+
+    expect(purifyUrl(value, { unwrappers: [unwrapCheckPointHarmony] })).toBe(expected)
+  })
+
   it('should extract a half-encoded target from o param', () => {
     const url = new URL(
       'https://checkpoint.url-protection.com/v1/url?o=https%3A//example.org/beforethepartysover&g=NWQ3N2JlOTQwYmM3NDU0YQ==&h=MTMxNmM2YWRl&p=YzJlOmtvZW5p',
@@ -60,6 +68,22 @@ describe('unwrapCheckPointHarmony', () => {
     expect(unwrapCheckPointHarmony(url)).toBe('https://www.example.org/criminal-defense/')
   })
 
+  it('should keep the link fragment after a v1 target', () => {
+    const url = new URL(
+      'https://checkpoint.url-protection.com/v1/url?o=https%3A%2F%2Fwww.example.org%2Fpage#section',
+    )
+
+    expect(unwrapCheckPointHarmony(url)).toBe('https://www.example.org/page#section')
+  })
+
+  it('should add the link fragment after an escaped hash in a v2 target', () => {
+    const url = new URL(
+      'https://protect.checkpoint.com/v2/___https://www.example.org/page*23own___.YzJ1OmFiYw#link',
+    )
+
+    expect(unwrapCheckPointHarmony(url)).toBe('https://www.example.org/page%23own#link')
+  })
+
   it('should keep a fragment written after the v2 signature', () => {
     const url = new URL(
       'https://protect.checkpoint.com/v2/r01/___https://www.example.org/news-releases/new-flavors-302420491.html___.YzJ1OmNhcmxidWRkaWdjb21wYW55OmM6b2ZmaWNlMzY1X2VtYWlsc19#financial-modal',
@@ -100,12 +124,11 @@ describe('unwrapCheckPointHarmony', () => {
     expect(unwrapCheckPointHarmony(url)).toBeUndefined()
   })
 
-  it('should return undefined for a v2 non-http target', () => {
-    const url = new URL(
-      'https://protect.checkpoint.com/v2/___javascript:alert(1)___.YzJ1OnN0YXRlOmM6bzo5NzYzODYxMWI2ZjM5NTRhZjBmNDViZDFm',
-    )
+  it('should keep the wrapper for a v2 non-http target', () => {
+    const url =
+      'https://protect.checkpoint.com/v2/___javascript:alert(1)___.YzJ1OnN0YXRlOmM6bzo5NzYzODYxMWI2ZjM5NTRhZjBmNDViZDFm'
 
-    expect(unwrapCheckPointHarmony(url)).toBeUndefined()
+    expect(purifyUrl(url, { unwrappers: [unwrapCheckPointHarmony] })).toBe(url)
   })
 
   it('should return undefined for another path on the same host', () => {

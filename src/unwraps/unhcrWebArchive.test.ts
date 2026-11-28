@@ -1,7 +1,23 @@
 import { describe, expect, it } from 'bun:test'
+import { purifyUrl } from '../clean.js'
 import { unwrapUnhcrWebArchive } from './unhcrWebArchive.js'
 
 describe('unwrapUnhcrWebArchive', () => {
+  it('should give https to a target without a scheme', () => {
+    const value = 'https://webarchive.archive.unhcr.org/20200101000000/www.example.com/page'
+    const expected = 'https://www.example.com/page'
+
+    expect(purifyUrl(value, { unwrappers: [unwrapUnhcrWebArchive] })).toBe(expected)
+  })
+
+  it('should decode a percent-encoded target', () => {
+    const value =
+      'https://webarchive.archive.unhcr.org/20200101000000/https%3A%2F%2Fwww.example.com%2Fpage%3Fid%3D1'
+    const expected = 'https://www.example.com/page?id=1'
+
+    expect(purifyUrl(value, { unwrappers: [unwrapUnhcrWebArchive] })).toBe(expected)
+  })
+
   it('should extract the target from a snapshot', () => {
     const url = new URL(
       'https://webarchive.archive.unhcr.org/20230529095740/https://www.example.org/docid/3ae6ad824c.html',
@@ -24,12 +40,10 @@ describe('unwrapUnhcrWebArchive', () => {
     expect(unwrapUnhcrWebArchive(url)).toBeUndefined()
   })
 
-  it('should return undefined for a non-http target', () => {
-    const url = new URL(
-      'https://webarchive.archive.unhcr.org/20230529095740/ftp://example.org/file.txt',
-    )
+  it('should keep the wrapper for a non-http target', () => {
+    const url = 'https://webarchive.archive.unhcr.org/20230529095740/ftp://example.org/file.txt'
 
-    expect(unwrapUnhcrWebArchive(url)).toBeUndefined()
+    expect(purifyUrl(url, { unwrappers: [unwrapUnhcrWebArchive] })).toBe(url)
   })
 
   it('should return undefined for a partial timestamp', () => {

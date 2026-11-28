@@ -29,6 +29,7 @@ import { unwrapperHosts } from './utils.js'
 
 type TrackingMatcher = {
   literals: Set<string>
+  sessionLiterals: Array<string> // The session ids among `literals`
   patterns: Array<RegExp>
   entries: Array<TrackingEntry>
 }
@@ -92,7 +93,12 @@ const getTrackingMatcher = (params: Array<TrackingParam>): TrackingMatcher => {
       entries.push(param)
     }
 
-    cached = { literals, patterns, entries }
+    cached = {
+      literals,
+      sessionLiterals: sessionLiterals.filter((name) => literals.has(name)),
+      patterns,
+      entries,
+    }
     trackingMatcherCache.set(params, cached)
   }
 
@@ -198,11 +204,9 @@ const isTrackedPair = (
 
 // Java servlet containers write the session id into the path, `/page;jsessionid=<id>`. Other
 // path params, as `;ts=1`, address the resource.
-const deletePathParams = (url: URL, matcher: TrackingMatcher): void => {
+const deletePathParams = (url: URL, names: Array<string>): void => {
   const pathname = url.pathname.replace(pathParamRegex, (param, name: string) => {
-    const lowerName = name.toLowerCase()
-
-    if (sessionLiterals.includes(lowerName) && matcher.literals.has(lowerName)) {
+    if (isAnyOf(name, names)) {
       return ''
     }
 
@@ -215,8 +219,9 @@ const deletePathParams = (url: URL, matcher: TrackingMatcher): void => {
 }
 
 // A wrapper path can carry a session id, as `/external-link.jspa;jsessionid=<id>?url=`, which an
-// unwrapper matching the exact path misses. A signed url keeps its path whole.
-const deleteSessionPathParams = (url: URL, matcher: TrackingMatcher): void => {
+// unwrapper matching the exact path misses, whatever tracking list the caller passes. A signed url
+// keeps its path whole.
+const deleteSessionPathParams = (url: URL): void => {
   if (!url.pathname.includes(';')) {
     return
   }
@@ -225,7 +230,7 @@ const deleteSessionPathParams = (url: URL, matcher: TrackingMatcher): void => {
     return
   }
 
-  deletePathParams(url, matcher)
+  deletePathParams(url, sessionLiterals)
 }
 
 // Delete tracking params in place, from the query and from `;name=value` path params. Literal
@@ -241,7 +246,7 @@ const deleteTrackingParams = (url: URL, trackingParams: Array<TrackingParam>): v
 
   const matcher = getTrackingMatcher(trackingParams)
 
-  deletePathParams(url, matcher)
+  deletePathParams(url, matcher.sessionLiterals)
 
   if (!url.search) {
     return
@@ -485,7 +490,6 @@ const applyUnwrappers = (
   url: URL,
   unwrappers: Array<UrlUnwrapper>,
   index: UnwrapperIndex | undefined,
-  matcher: TrackingMatcher,
 ): string | undefined => {
   for (const unwrap of getCandidates(url, unwrappers, index)) {
     // A trailing no-break space, as YouTube descriptions carry, hides a bare host untrimmed.
@@ -501,7 +505,7 @@ const applyUnwrappers = (
   const collapsed = parseUrl(normalizeUrl(url.href, { collapseSlashes: true }))
 
   if (collapsed && collapsed.href !== url.href) {
-    const target = applyUnwrappers(collapsed, unwrappers, index, matcher)
+    const target = applyUnwrappers(collapsed, unwrappers, index)
 
     if (target) {
       return target
@@ -517,14 +521,14 @@ const applyUnwrappers = (
   const sessionless = parseUrl(url.href)
 
   if (sessionless) {
-    deleteSessionPathParams(sessionless, matcher)
+    deleteSessionPathParams(sessionless)
   }
 
   if (!sessionless || sessionless.href === url.href) {
     return
   }
 
-  return applyUnwrappers(sessionless, unwrappers, index, matcher)
+  return applyUnwrappers(sessionless, unwrappers, index)
 }
 
 // Apply unwrappers in order and return the first extracted target URL that survives cleaning,
@@ -540,8 +544,7 @@ export const unwrapUrl = (
   }
 
   const index = getUnwrapperIndex(unwrappers)
-  const matcher = getTrackingMatcher(defaultTrackingParams)
-  const target = applyUnwrappers(parsed, unwrappers, index, matcher)
+  const target = applyUnwrappers(parsed, unwrappers, index)
 
   if (!target) {
     return
@@ -600,13 +603,12 @@ export const purifyUrl = (url: string, options?: PurifyUrlOptions): string => {
   }
 
   const index = getUnwrapperIndex(unwrappers)
-  const matcher = getTrackingMatcher(trackingParams)
   let currentParsed = parsed
 
   // Wrappers can nest (an email gateway wrapping a search redirect), so
   // unwrap repeatedly up to the depth limit.
   for (let depth = 0; depth < maxUnwrapDepth; depth += 1) {
-    const target = applyUnwrappers(currentParsed, unwrappers, index, matcher)
+    const target = applyUnwrappers(currentParsed, unwrappers, index)
 
     if (!target) {
       break

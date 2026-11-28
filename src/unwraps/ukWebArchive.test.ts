@@ -1,7 +1,24 @@
 import { describe, expect, it } from 'bun:test'
+import { purifyUrl } from '../clean.js'
 import { unwrapUkWebArchive } from './ukWebArchive.js'
 
 describe('unwrapUkWebArchive', () => {
+  it('should give https to a target without a scheme', () => {
+    const value =
+      'https://www.webarchive.org.uk/wayback/archive/20200101000000/www.example.com/page'
+    const expected = 'https://www.example.com/page'
+
+    expect(purifyUrl(value, { unwrappers: [unwrapUkWebArchive] })).toBe(expected)
+  })
+
+  it('should decode a percent-encoded target', () => {
+    const value =
+      'https://www.webarchive.org.uk/wayback/archive/20200101000000/https%3A%2F%2Fwww.example.com%2Fpage%3Fid%3D1'
+    const expected = 'https://www.example.com/page?id=1'
+
+    expect(purifyUrl(value, { unwrappers: [unwrapUkWebArchive] })).toBe(expected)
+  })
+
   it('should extract the target from a snapshot', () => {
     const url = new URL(
       'https://www.webarchive.org.uk/wayback/archive/20150401120000/http://www.example.co.uk/about/',
@@ -58,12 +75,11 @@ describe('unwrapUkWebArchive', () => {
     expect(unwrapUkWebArchive(url)).toBeUndefined()
   })
 
-  it('should return undefined for a non-http target', () => {
-    const url = new URL(
-      'https://www.webarchive.org.uk/wayback/archive/20150401120000/ftp://example.co.uk/file.txt',
-    )
+  it('should keep the wrapper for a non-http target', () => {
+    const url =
+      'https://www.webarchive.org.uk/wayback/archive/20150401120000/ftp://example.co.uk/file.txt'
 
-    expect(unwrapUkWebArchive(url)).toBeUndefined()
+    expect(purifyUrl(url, { unwrappers: [unwrapUkWebArchive] })).toBe(url)
   })
 
   it('should return undefined for another path on the host', () => {

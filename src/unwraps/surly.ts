@@ -1,4 +1,4 @@
-import { decodePercent, isHttpUrl } from 'trousse'
+import { decodePercent } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
@@ -21,10 +21,6 @@ export const unwrapSurly: UrlUnwrapper = createUnwrapper({
     const path = decodePercent(match[1])
 
     // Sur.ly forwards every target over https, an http-only site too, as of 2026-10-06.
-    const target = `https://${path.replace(schemeRegex, '')}`
-
-    if (isHttpUrl(target)) {
-      return target
-    }
+    return `https://${path.replace(schemeRegex, '')}`
   },
 })

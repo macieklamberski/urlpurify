@@ -1,7 +1,24 @@
 import { describe, expect, it } from 'bun:test'
+import { purifyUrl } from '../clean.js'
 import { unwrapNatlibNz } from './natlibNz.js'
 
 describe('unwrapNatlibNz', () => {
+  it('should give https to a target without a scheme', () => {
+    const value =
+      'https://ndhadeliver.natlib.govt.nz/webarchive/20200101000000/www.example.com/page'
+    const expected = 'https://www.example.com/page'
+
+    expect(purifyUrl(value, { unwrappers: [unwrapNatlibNz] })).toBe(expected)
+  })
+
+  it('should decode a percent-encoded target', () => {
+    const value =
+      'https://ndhadeliver.natlib.govt.nz/webarchive/20200101000000/https%3A%2F%2Fwww.example.com%2Fpage%3Fid%3D1'
+    const expected = 'https://www.example.com/page?id=1'
+
+    expect(purifyUrl(value, { unwrappers: [unwrapNatlibNz] })).toBe(expected)
+  })
+
   it('should extract the target from a snapshot', () => {
     const url = new URL(
       'https://ndhadeliver.natlib.govt.nz/webarchive/20251113213257/https://www.example.govt.nz/meet-the-objects',
@@ -24,12 +41,11 @@ describe('unwrapNatlibNz', () => {
     expect(unwrapNatlibNz(url)).toBeUndefined()
   })
 
-  it('should return undefined for a non-http target', () => {
-    const url = new URL(
-      'https://ndhadeliver.natlib.govt.nz/webarchive/20251113213257/ftp://example.org/file.txt',
-    )
+  it('should keep the wrapper for a non-http target', () => {
+    const url =
+      'https://ndhadeliver.natlib.govt.nz/webarchive/20251113213257/ftp://example.org/file.txt'
 
-    expect(unwrapNatlibNz(url)).toBeUndefined()
+    expect(purifyUrl(url, { unwrappers: [unwrapNatlibNz] })).toBe(url)
   })
 
   it('should return undefined for a partial timestamp', () => {

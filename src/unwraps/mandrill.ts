@@ -1,4 +1,4 @@
-import { decodeBase64Url, isHostOf, isHttpUrl, isString, parseJson } from 'trousse'
+import { decodeBase64Url, isHostOf, isString, parseJson } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { appendLinkFragment, createQueryUnwrapper, readParamTarget } from '../utils.js'
 
@@ -17,7 +17,7 @@ const decodePayload = (value: string): string | undefined => {
   const payload = parseJson<{ p?: string }>(decodeBase64Url(value))?.p
   const target = parseJson<{ url?: unknown }>(payload)?.url
 
-  if (isString(target) && isHttpUrl(target)) {
+  if (isString(target)) {
     return target
   }
 }

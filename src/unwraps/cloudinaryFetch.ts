@@ -15,5 +15,6 @@ export const unwrapCloudinaryFetch: UrlUnwrapper = (url) => {
     return
   }
 
+  // Cloudinary decodes a fetch source once, so its `%3F` is the source's own query.
   return decodePercent(`${source}${url.search}${url.hash}`)
 }

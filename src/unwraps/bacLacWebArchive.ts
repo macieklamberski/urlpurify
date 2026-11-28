@@ -1,27 +1,13 @@
-import { isHttpUrl } from 'trousse'
+import { createPathUnwrapper } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
-import { createUnwrapper } from '../utils.js'
 
 // A 14-digit timestamp after the web prefix.
-const pathRegex = /^\/web\/\d{14}\/(.+)$/i
+const prefixRegex = /^\/web\/\d{14}\//i
 
 // Library and Archives Canada web archive snapshot
 // (webarchiveweb.wayback.bac-lac.canada.ca/web/<timestamp>/<target>). Opt-in: unwrapping returns
 // the live page, which may have changed or be gone.
-export const unwrapBacLacWebArchive: UrlUnwrapper = createUnwrapper({
+export const unwrapBacLacWebArchive: UrlUnwrapper = createPathUnwrapper({
   hosts: 'webarchiveweb.wayback.bac-lac.canada.ca',
-  unwrap: (url) => {
-    const match = pathRegex.exec(url.pathname)
-
-    if (!match?.[1]) {
-      return
-    }
-
-    // An unencoded target's query lands in the snapshot URL's own `search`.
-    const target = `${match[1]}${url.search}`
-
-    if (isHttpUrl(target)) {
-      return target
-    }
-  },
+  prefix: prefixRegex,
 })

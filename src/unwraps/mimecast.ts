@@ -1,5 +1,5 @@
 import { isHostOf } from 'trousse'
-import { createUnwrapper, getParamTarget } from '../utils.js'
+import { createUnwrapper, readParamTarget } from '../utils.js'
 
 const mimecastHostRegex = /^protect-[a-z]{2,3}\.mimecast\.com$/
 const mimecastProtectHostRegex = /^url\.(?:au|ca|de|jer|uk|us|usb|za)\.m\.mimecastprotect\.com$/
@@ -17,6 +17,6 @@ export const unwrapMimecast = createUnwrapper({
       return
     }
 
-    return getParamTarget(url, 'url')
+    return readParamTarget(url, 'url')
   },
 })

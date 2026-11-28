@@ -2,6 +2,14 @@ import { describe, expect, it } from 'bun:test'
 import { unwrapAugure } from './augure.js'
 
 describe('unwrapAugure', () => {
+  it('should keep the escapes of a target with a raw scheme', () => {
+    const url = new URL(
+      'http://web-engage.augure.com/pub/tracking/675251/046070112134991421687249019607-example.com?id1=aHR0cHM6Ly9leGFtcGxlLmNvbS9zZWFyY2g/cT1hJTI2Yg%3D%3D',
+    )
+
+    expect(unwrapAugure(url)).toBe('https://example.com/search?q=a%26b')
+  })
+
   it('should extract the target from the click tracker', () => {
     const url = new URL(
       'http://web-engage.augure.com/pub/tracking/675251/046070112134991421687249019607-hlcom-presse.com?id1=aHR0cHMlM0ElMkYlMkZ3d3cuZXhhbXBsZS5ldSUyRm5ld3MlMkZmciUyRmhlYWRsaW5lcyUyRnNv%0AY2lldHklMkYyMDIzMDYwMVNUTzkzODA0%0A',

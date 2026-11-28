@@ -2,7 +2,10 @@ import { decodeBase64Url } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper, getUtf8ByteLength } from '../utils.js'
 
-const v3PathRegex = /^\/v3\/__(.+)__;([^!]*)!/i
+// A service that rewrites the link's query, such as govdelivery adding its own, escapes the `;` and
+// `!` that close the mangled url as `%3B` and `%21`.
+const v3PathRegex = /^\/v3\/__(.+)__(?:;|%3B)([^!%]*)(?:!|%21)/i
+const escapedMarkerRegex = /%2A/gi
 
 const v3Hosts = ['urldefense.com', 'urldefense.proofpoint.com', 'urldefense.us']
 
@@ -106,7 +109,9 @@ export const unwrapProofpointV3: UrlUnwrapper = createUnwrapper({
       return
     }
 
-    const target = decodeReplacements(match[1], match[2])
+    // A rewritten query escapes the `*` markers along with the delimiters, and a raw `%` never
+    // survives Proofpoint's own encoding, so `%2A` is always a marker.
+    const target = decodeReplacements(match[1].replace(escapedMarkerRegex, '*'), match[2])
 
     if (target) {
       return target
