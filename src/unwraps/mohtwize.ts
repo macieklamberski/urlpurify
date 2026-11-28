@@ -1,9 +1,8 @@
 import { isAnyOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createUnwrapper, decodeEncodedScheme } from '../utils.js'
+import { createUnwrapper, decodeEncodedScheme, httpSchemeRegex } from '../utils.js'
 
 const carrierPrefixRegex = /^\?fileURL=\//i
-const schemeRegex = /^https?:/i
 
 // Mohtwize download measurement prefix (stats.mohtwize.net/redirect.mp3?fileURL=/<target>), where
 // the target often drops its scheme.
@@ -29,7 +28,7 @@ export const unwrapMohtwize: UrlUnwrapper = createUnwrapper({
       return
     }
 
-    if (schemeRegex.test(target)) {
+    if (httpSchemeRegex.test(target)) {
       return target
     }
 

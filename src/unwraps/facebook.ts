@@ -1,9 +1,8 @@
 import { decodePathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
-import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
+import { createQueryUnwrapper, createUnwrapper, httpSchemeRegex } from '../utils.js'
 
 const legacyTargetRegex = /^\/l\/[\w-]+[/;]\/*([^/].*)$/i
-const schemeRegex = /^https?:/i
 
 const unwrapLinkPhp = createQueryUnwrapper({
   hosts: [
@@ -51,7 +50,7 @@ const unwrapLegacy = createUnwrapper({
 
     const target = `${path}${url.search}`
 
-    if (schemeRegex.test(target)) {
+    if (httpSchemeRegex.test(target)) {
       return target
     }
 

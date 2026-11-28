@@ -1,13 +1,11 @@
 import { isAnyOf, isHostOf } from 'trousse'
 import { decodePathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
-import { appendLinkFragment, readParamTarget } from '../utils.js'
+import { appendLinkFragment, httpSchemeRegex, readParamTarget } from '../utils.js'
 import { googleHostRegex } from './google.js'
 
 const feedPathRegex = /^\/reader\/(?:view|m\/view|lite|preview\/\*)\/feed\/(?<target>.+)$/i
 const addPathRegex = /^\/ig\/(?:add|addtoreader)$/i
-
-const rawFeedRegex = /^https?:/i
 
 const hosts = ['fusion.google.com']
 
@@ -27,7 +25,7 @@ export const unwrapGoogleReader: UrlUnwrapper = (url) => {
   if (match?.groups) {
     const target = decodePathTarget(match.groups.target)
 
-    if (!rawFeedRegex.test(match.groups.target)) {
+    if (!httpSchemeRegex.test(match.groups.target)) {
       return target
     }
 
