@@ -120,4 +120,11 @@ describe('unwrapFirebaseDynamicLinks', () => {
   it('should register its hosts so the host index skips it on other hosts', () => {
     expect(unwrapperHosts.has(unwrapFirebaseDynamicLinks)).toBe(true)
   })
+
+  it('should read the app path on the www. shortener host', () => {
+    const value = new URL('https://www.goo.gl/app/playmusic?link=https://example.com/page')
+    const expected = 'https://example.com/page'
+
+    expect(unwrapFirebaseDynamicLinks(value)).toBe(expected)
+  })
 })
