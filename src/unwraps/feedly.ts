@@ -4,7 +4,7 @@ import { createUnwrapper, decodeEncodedScheme, readParamTarget } from '../utils.
 
 const feedPathRegex =
   /^\/i\/(?:subscription|discover\/sources\/search)\/feed(?:\/|%2F)(?<target>.+)$/i
-const encodedTargetRegex = /^https?(?:%(?:25)?3a|:)%(?:25)?2f/i
+const encodedTargetRegex = /^https?(?:%3a|:)%2f/i
 const feedFragmentRegex = /^#subscription(?:\/|%2F)feed(?:\/|%2F)(?<target>.+)$/i
 
 const hosts = ['feedly.com', 'www.feedly.com', 'cloud.feedly.com']

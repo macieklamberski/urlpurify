@@ -5,7 +5,7 @@ import { createUnwrapper, decodeEncodedScheme, readParamTarget } from '../utils.
 const formPathRegex = /^\/(?:entry|add|entry\/panel)\/?$/i
 const schemePathRegex = /^\/entry\/(?<target>https?(?::|%3a).+)$/i
 const hostPathRegex = /^\/entry\/(?<secure>s\/)?(?<target>[^/.]+(?:\.[^/.]+)+(?:\/.*)?)$/i
-const encodedPathRegex = /^\/entry\/https?(?:%(?:25)?3a|:)%(?:25)?2f/i
+const encodedPathRegex = /^\/entry\/https?(?:%3a|:)%2f/i
 
 const hosts = ['b.hatena.ne.jp']
 
