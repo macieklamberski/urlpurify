@@ -1,4 +1,4 @@
-import { decodeBase64Url, isHttpUrl, isString, parseJson } from 'trousse'
+import { decodeBase64Url, isString, parseJson } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
@@ -17,7 +17,7 @@ export const unwrapSubstack: UrlUnwrapper = createUnwrapper({
 
     const target = parseJson<{ e?: unknown }>(decodeBase64Url(payload))?.e
 
-    if (isString(target) && isHttpUrl(target)) {
+    if (isString(target)) {
       return target
     }
   },

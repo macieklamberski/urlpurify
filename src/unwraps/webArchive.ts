@@ -1,4 +1,4 @@
-import { decodePercent, isHostOf, isHttpUrl } from 'trousse'
+import { decodePercent, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
@@ -77,7 +77,7 @@ export const unwrapWebArchive: UrlUnwrapper = createUnwrapper({
       target = `http://${target}`
     }
 
-    if (!target || !isHttpUrl(target)) {
+    if (!target) {
       return
     }
 

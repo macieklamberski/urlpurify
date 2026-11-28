@@ -1,10 +1,18 @@
 import { describe, expect, it } from 'bun:test'
+import { purifyUrl } from '../clean.js'
 import { unwrapGovdelivery } from './govdelivery.js'
 
 const prefix =
   'http://links.govdelivery.com/track?type=click&enid=ZWFzPTEmbWFpbGluZ2lkPTIwMTMwMzE5LjE2Nzk4MjEx&&&114&&&'
 
 describe('unwrapGovdelivery', () => {
+  it('should give https to a target without a scheme', () => {
+    const value = 'https://links.govdelivery.com/track?type=click&enid=1&&&1&&&www.example.com/page'
+    const expected = 'https://www.example.com/page'
+
+    expect(purifyUrl(value, { unwrappers: [unwrapGovdelivery] })).toBe(expected)
+  })
+
   it('should extract the target after the marker', () => {
     const url = new URL(`${prefix}http://example.com`)
 
@@ -65,12 +73,10 @@ describe('unwrapGovdelivery', () => {
     expect(unwrapGovdelivery(url)).toBeUndefined()
   })
 
-  it('should return undefined for a percent-encoded target', () => {
-    const url = new URL(
-      `${prefix}https%3A%2F%2Fwww.example.com%2Fbusiness%3Futm_content=&utm_medium=email`,
-    )
+  it('should keep the wrapper for a percent-encoded target', () => {
+    const url = `${prefix}https%3A%2F%2Fwww.example.com%2Fbusiness%3Futm_content=&utm_medium=email`
 
-    expect(unwrapGovdelivery(url)).toBeUndefined()
+    expect(purifyUrl(url, { unwrappers: [unwrapGovdelivery] })).toBe(url)
   })
 
   it('should return undefined for another path on the host', () => {

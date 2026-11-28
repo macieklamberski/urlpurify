@@ -1,7 +1,15 @@
 import { describe, expect, it } from 'bun:test'
+import { purifyUrl } from '../clean.js'
 import { unwrapYahooJapanAmpViewer } from './yahooJapanAmpViewer.js'
 
 describe('unwrapYahooJapanAmpViewer', () => {
+  it('should drop a space before the target host', () => {
+    const value = 'https://search.yahoo.co.jp/amp/s/%20www.example.com/page'
+    const expected = 'https://www.example.com/page'
+
+    expect(purifyUrl(value, { unwrappers: [unwrapYahooJapanAmpViewer] })).toBe(expected)
+  })
+
   it('should extract an https target with its encoded query', () => {
     const url = new URL(
       'https://search.yahoo.co.jp/amp/s/example.com/amp/movie/92154/%3Fusqp%3Dmq331AQIKAGwASCAAgM%253D',
@@ -40,10 +48,10 @@ describe('unwrapYahooJapanAmpViewer', () => {
     expect(unwrapYahooJapanAmpViewer(url)).toBe('https://example.com/amp/movie/92154/%3')
   })
 
-  it('should return undefined for a target host that does not parse', () => {
-    const url = new URL('https://search.yahoo.co.jp/amp/s/example.com%25/news/308550')
+  it('should keep the wrapper for a target host that does not parse', () => {
+    const url = 'https://search.yahoo.co.jp/amp/s/example.com%25/news/308550'
 
-    expect(unwrapYahooJapanAmpViewer(url)).toBeUndefined()
+    expect(purifyUrl(url, { unwrappers: [unwrapYahooJapanAmpViewer] })).toBe(url)
   })
 
   it('should return undefined for the bare viewer path', () => {

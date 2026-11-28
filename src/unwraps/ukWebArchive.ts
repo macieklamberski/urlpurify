@@ -1,26 +1,12 @@
-import { isHttpUrl } from 'trousse'
+import { createPathUnwrapper } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
-import { createUnwrapper } from '../utils.js'
 
 // The snapshot is a 14-digit timestamp with an optional replay modifier.
-const pathRegex = /^\/wayback\/(?:en\/)?archive\/\d{14}(?:mp_)?\/(.+)$/i
+const prefixRegex = /^\/wayback\/(?:en\/)?archive\/\d{14}(?:mp_)?\//i
 
 // UK Web Archive snapshot (www.webarchive.org.uk/wayback/[en/]archive/<timestamp>[mp_]/<target>).
 // Opt-in: unwrapping returns the live page, which may have changed or be gone.
-export const unwrapUkWebArchive: UrlUnwrapper = createUnwrapper({
+export const unwrapUkWebArchive: UrlUnwrapper = createPathUnwrapper({
   hosts: ['www.webarchive.org.uk', 'webarchive.org.uk'],
-  unwrap: (url) => {
-    const match = pathRegex.exec(url.pathname)
-
-    if (!match?.[1]) {
-      return
-    }
-
-    // An unencoded target's query lands in the snapshot URL's own `search`.
-    const target = `${match[1]}${url.search}`
-
-    if (isHttpUrl(target)) {
-      return target
-    }
-  },
+  prefix: prefixRegex,
 })

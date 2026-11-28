@@ -1,4 +1,3 @@
-import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
@@ -30,10 +29,6 @@ export const unwrapAdfly: UrlUnwrapper = createUnwrapper({
     const target = hasScheme ? match[1] : `http://${match[1]}`
 
     // An unencoded target's query lands in the wrapper's own `search`.
-    const unwrapped = `${target}${url.search}`
-
-    if (isHttpUrl(unwrapped)) {
-      return unwrapped
-    }
+    return `${target}${url.search}`
   },
 })

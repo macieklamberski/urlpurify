@@ -1,27 +1,13 @@
-import { isHttpUrl } from 'trousse'
+import { createPathUnwrapper } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
-import { createUnwrapper } from '../utils.js'
 
 // The collection, an end-of-term harvest such as peth04 or a congressional one such as
 // congress117th, then a 14-digit timestamp.
-const pathRegex = /^\/(?:peth\d{2}|congress\d+th)\/\d{14}\/(.+)$/i
+const prefixRegex = /^\/(?:peth\d{2}|congress\d+th)\/\d{14}\//i
 
 // NARA web harvest snapshot (webharvest.gov/<collection>/<timestamp>/<target>). Opt-in: unwrapping
 // returns the live page, which may have changed or be gone.
-export const unwrapWebharvest: UrlUnwrapper = createUnwrapper({
+export const unwrapWebharvest: UrlUnwrapper = createPathUnwrapper({
   hosts: 'webharvest.gov',
-  unwrap: (url) => {
-    const match = pathRegex.exec(url.pathname)
-
-    if (!match?.[1]) {
-      return
-    }
-
-    // An unencoded target's query lands in the snapshot URL's own `search`.
-    const target = `${match[1]}${url.search}`
-
-    if (isHttpUrl(target)) {
-      return target
-    }
-  },
+  prefix: prefixRegex,
 })

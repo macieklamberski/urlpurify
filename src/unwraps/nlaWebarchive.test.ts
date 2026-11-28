@@ -1,7 +1,15 @@
 import { describe, expect, it } from 'bun:test'
+import { purifyUrl } from '../clean.js'
 import { unwrapNlaWebarchive } from './nlaWebarchive.js'
 
 describe('unwrapNlaWebarchive', () => {
+  it('should give https to a target without a scheme', () => {
+    const value = 'https://webarchive.nla.gov.au/awa/20200101000000/www.example.com/page'
+    const expected = 'https://www.example.com/page'
+
+    expect(purifyUrl(value, { unwrappers: [unwrapNlaWebarchive] })).toBe(expected)
+  })
+
   it('should extract target from an awa snapshot', () => {
     const url = new URL(
       'https://webarchive.nla.gov.au/awa/19991206141957/http://www.example.gov.au/about/publication_online.htm',
@@ -108,10 +116,10 @@ describe('unwrapNlaWebarchive', () => {
     expect(unwrapNlaWebarchive(url)).toBeUndefined()
   })
 
-  it('should return undefined for a non-http target', () => {
-    const url = new URL('https://webarchive.nla.gov.au/awa/19991206141957/ftp://example.com/file')
+  it('should keep the wrapper for a non-http target', () => {
+    const url = 'https://webarchive.nla.gov.au/awa/19991206141957/ftp://example.com/file'
 
-    expect(unwrapNlaWebarchive(url)).toBeUndefined()
+    expect(purifyUrl(url, { unwrappers: [unwrapNlaWebarchive] })).toBe(url)
   })
 
   it('should return undefined for a timestamp shorter than 14 digits', () => {

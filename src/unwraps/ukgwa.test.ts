@@ -1,9 +1,26 @@
 import { describe, expect, it } from 'bun:test'
+import { purifyUrl } from '../clean.js'
 import { unwrapUkgwa } from './ukgwa.js'
 
 const unclaimedModifiers: Array<string> = ['id_', 'if_', 'fw_', 'oe_']
 
 describe('unwrapUkgwa', () => {
+  it('should repair a target the CMS spaced after its scheme', () => {
+    const value =
+      'https://webarchive.nationalarchives.gov.uk/20200101000000/http://%20https://www.example.com/page'
+    const expected = 'https://www.example.com/page'
+
+    expect(purifyUrl(value, { unwrappers: [unwrapUkgwa] })).toBe(expected)
+  })
+
+  it('should decode a percent-encoded target', () => {
+    const value =
+      'https://webarchive.nationalarchives.gov.uk/20200101000000/https%3A%2F%2Fwww.example.com%2Fpage%3Fid%3D1'
+    const expected = 'https://www.example.com/page?id=1'
+
+    expect(purifyUrl(value, { unwrappers: [unwrapUkgwa] })).toBe(expected)
+  })
+
   it('should extract target from a ukgwa snapshot', () => {
     const url = new URL(
       'https://webarchive.nationalarchives.gov.uk/ukgwa/20220828193851/https://www.example.gov.uk/guidance/depot',
@@ -104,12 +121,11 @@ describe('unwrapUkgwa', () => {
     expect(unwrapUkgwa(url)).toBeUndefined()
   })
 
-  it('should return undefined for a non-http target', () => {
-    const url = new URL(
-      'https://webarchive.nationalarchives.gov.uk/ukgwa/20220828193851/ftp://example.com/file',
-    )
+  it('should keep the wrapper for a non-http target', () => {
+    const url =
+      'https://webarchive.nationalarchives.gov.uk/ukgwa/20220828193851/ftp://example.com/file'
 
-    expect(unwrapUkgwa(url)).toBeUndefined()
+    expect(purifyUrl(url, { unwrappers: [unwrapUkgwa] })).toBe(url)
   })
 
   it('should return undefined for a partial timestamp', () => {

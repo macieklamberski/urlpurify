@@ -1,7 +1,15 @@
 import { describe, expect, it } from 'bun:test'
+import { purifyUrl } from '../clean.js'
 import { unwrapVefsafn } from './vefsafn.js'
 
 describe('unwrapVefsafn', () => {
+  it('should give https to a target without a scheme', () => {
+    const value = 'https://vefsafn.is/is/20200101000000/www.example.com/page'
+    const expected = 'https://www.example.com/page'
+
+    expect(purifyUrl(value, { unwrappers: [unwrapVefsafn] })).toBe(expected)
+  })
+
   it('should extract the target from a snapshot on the wayback host', () => {
     const url = new URL(
       'http://wayback.vefsafn.is/wayback/20050622161649/http://www.example.is/page/ies_kraflafires',
@@ -38,12 +46,10 @@ describe('unwrapVefsafn', () => {
     expect(unwrapVefsafn(url)).toBeUndefined()
   })
 
-  it('should return undefined for a non-http target', () => {
-    const url = new URL(
-      'http://wayback.vefsafn.is/wayback/20050622161649/ftp://example.is/file.txt',
-    )
+  it('should keep the wrapper for a non-http target', () => {
+    const url = 'http://wayback.vefsafn.is/wayback/20050622161649/ftp://example.is/file.txt'
 
-    expect(unwrapVefsafn(url)).toBeUndefined()
+    expect(purifyUrl(url, { unwrappers: [unwrapVefsafn] })).toBe(url)
   })
 
   it('should return undefined for a partial timestamp on the wayback host', () => {

@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'bun:test'
+import { purifyUrl } from '../clean.js'
 import { unwrapSubstack } from './substack.js'
 
 const payload =
@@ -11,6 +12,13 @@ const unclaimedPaths: Array<string> = [
 ]
 
 describe('unwrapSubstack', () => {
+  it('should give https to a target without a scheme', () => {
+    const value = 'https://substack.com/redirect/2/eyJlIjoid3d3LmV4YW1wbGUuY29tL3BhZ2UifQ.sig'
+    const expected = 'https://www.example.com/page'
+
+    expect(purifyUrl(value, { unwrappers: [unwrapSubstack] })).toBe(expected)
+  })
+
   it('should extract target from the e field of the payload', () => {
     const url = new URL(
       `https://substack.com/redirect/2/${payload}.boTvkXxD1YyQj5AE-vQ99eFrlRv8o1k11cm2mcsnzRQ?`,
@@ -21,12 +29,11 @@ describe('unwrapSubstack', () => {
     )
   })
 
-  it('should return undefined for a non-http e field', () => {
-    const url = new URL(
-      'https://substack.com/redirect/2/eyJlIjoibWFpbHRvOmVkaXRvckBleGFtcGxlLmNvbSIsInAiOjEsImlzcyI6InB1Yi0wIiwic3ViIjoibGluay1yZWRpcmVjdCJ9.boTvkXxD1YyQj5AE-vQ99eFrlRv8o1k11cm2mcsnzRQ',
-    )
+  it('should keep the wrapper for a non-http e field', () => {
+    const url =
+      'https://substack.com/redirect/2/eyJlIjoibWFpbHRvOmVkaXRvckBleGFtcGxlLmNvbSIsInAiOjEsImlzcyI6InB1Yi0wIiwic3ViIjoibGluay1yZWRpcmVjdCJ9.boTvkXxD1YyQj5AE-vQ99eFrlRv8o1k11cm2mcsnzRQ'
 
-    expect(unwrapSubstack(url)).toBeUndefined()
+    expect(purifyUrl(url, { unwrappers: [unwrapSubstack] })).toBe(url)
   })
 
   it('should return undefined when the payload has no e field', () => {

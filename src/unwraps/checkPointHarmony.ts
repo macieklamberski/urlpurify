@@ -1,4 +1,4 @@
-import { isHostOf, isHttpUrl } from 'trousse'
+import { isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper, getParamTarget } from '../utils.js'
 
@@ -25,7 +25,7 @@ export const unwrapCheckPointHarmony: UrlUnwrapper = createUnwrapper({
       const pathname = url.pathname.replace(starEscapeRegex, '%$1')
       const match = v2Regex.exec(`${pathname}${url.search}${url.hash}`)
 
-      if (!match?.groups?.target || !isHttpUrl(match.groups.target)) {
+      if (!match?.groups?.target) {
         return
       }
 

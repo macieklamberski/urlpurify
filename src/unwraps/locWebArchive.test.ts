@@ -1,7 +1,23 @@
 import { describe, expect, it } from 'bun:test'
+import { purifyUrl } from '../clean.js'
 import { unwrapLocWebArchive } from './locWebArchive.js'
 
 describe('unwrapLocWebArchive', () => {
+  it('should give https to a target without a scheme', () => {
+    const value = 'https://webarchive.loc.gov/all/20200101000000/www.example.com/page'
+    const expected = 'https://www.example.com/page'
+
+    expect(purifyUrl(value, { unwrappers: [unwrapLocWebArchive] })).toBe(expected)
+  })
+
+  it('should decode a percent-encoded target', () => {
+    const value =
+      'https://webarchive.loc.gov/all/20200101000000/https%3A%2F%2Fwww.example.com%2Fpage%3Fid%3D1'
+    const expected = 'https://www.example.com/page?id=1'
+
+    expect(purifyUrl(value, { unwrappers: [unwrapLocWebArchive] })).toBe(expected)
+  })
+
   it('should extract the target from a snapshot in the all collection', () => {
     const url = new URL(
       'http://webarchive.loc.gov/all/20021104074223/http://www.example.org/wcf1/wcf1_home.htm',
@@ -44,10 +60,10 @@ describe('unwrapLocWebArchive', () => {
     expect(unwrapLocWebArchive(url)).toBeUndefined()
   })
 
-  it('should return undefined for a non-http target', () => {
-    const url = new URL('https://webarchive.loc.gov/all/20021104074223/ftp://example.org/file.txt')
+  it('should keep the wrapper for a non-http target', () => {
+    const url = 'https://webarchive.loc.gov/all/20021104074223/ftp://example.org/file.txt'
 
-    expect(unwrapLocWebArchive(url)).toBeUndefined()
+    expect(purifyUrl(url, { unwrappers: [unwrapLocWebArchive] })).toBe(url)
   })
 
   it('should return undefined for a partial timestamp', () => {

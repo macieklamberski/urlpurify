@@ -1,7 +1,15 @@
 import { describe, expect, it } from 'bun:test'
+import { purifyUrl } from '../clean.js'
 import { unwrapCloze } from './cloze.js'
 
 describe('unwrapCloze', () => {
+  it('should drop a space before the target host', () => {
+    const value = 'https://circulate.it/r/abc/%20www.example.com/page'
+    const expected = 'http://www.example.com/page'
+
+    expect(purifyUrl(value, { unwrappers: [unwrapCloze] })).toBe(expected)
+  })
+
   it('should extract a target with its scheme dropped', () => {
     const url = new URL(
       'https://circulate.it/r/VoMRdaDZJgWIXBtMV63opiU2H_wB_8w9SIQ9YMfa6foxvXcMGgzK_0JSXTtcLeN7/example.com/contact',
@@ -34,12 +42,11 @@ describe('unwrapCloze', () => {
     expect(unwrapCloze(url)).toBeUndefined()
   })
 
-  it('should return undefined for a target host that does not parse', () => {
-    const url = new URL(
-      'https://circulate.it/r/VoMRdaDZJgWIXBtMV63opiU2H_wB_8w9SIQ9YMfa6foxvXcMGgzK_0JSXTtcLeN7/example.com%2',
-    )
+  it('should keep the wrapper for a target host that does not parse', () => {
+    const url =
+      'https://circulate.it/r/VoMRdaDZJgWIXBtMV63opiU2H_wB_8w9SIQ9YMfa6foxvXcMGgzK_0JSXTtcLeN7/example.com%2'
 
-    expect(unwrapCloze(url)).toBeUndefined()
+    expect(purifyUrl(url, { unwrappers: [unwrapCloze] })).toBe(url)
   })
 
   it('should return undefined for other paths on the host', () => {

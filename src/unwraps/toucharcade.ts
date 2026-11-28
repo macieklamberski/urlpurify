@@ -1,25 +1,11 @@
-import { isHttpUrl } from 'trousse'
+import { createPathUnwrapper } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
-import { createUnwrapper } from '../utils.js'
 
-const pathRegex = /^\/link\/(.+)$/i
+const prefixRegex = /^\/link\//i
 
 // TouchArcade outbound link (toucharcade.com/link/<target>). Opt-in: the redirect goes
 // through TouchArcade's Georiot affiliate link.
-export const unwrapToucharcade: UrlUnwrapper = createUnwrapper({
+export const unwrapToucharcade: UrlUnwrapper = createPathUnwrapper({
   hosts: 'toucharcade.com',
-  unwrap: (url) => {
-    const match = pathRegex.exec(url.pathname)
-
-    if (!match?.[1]) {
-      return
-    }
-
-    // An unencoded target's query lands in the link's own `search`.
-    const target = `${match[1]}${url.search}`
-
-    if (isHttpUrl(target)) {
-      return target
-    }
-  },
+  prefix: prefixRegex,
 })

@@ -1,7 +1,15 @@
 import { describe, expect, it } from 'bun:test'
+import { purifyUrl } from '../clean.js'
 import { unwrapAdfly } from './adfly.js'
 
 describe('unwrapAdfly', () => {
+  it('should repair a target the CMS spaced after its scheme', () => {
+    const value = 'https://adf.ly/123/http://%20https://www.example.com/page'
+    const expected = 'https://www.example.com/page'
+
+    expect(purifyUrl(value, { unwrappers: [unwrapAdfly] })).toBe(expected)
+  })
+
   it('should extract a target with its scheme', () => {
     const url = new URL(
       'http://adf.ly/266435/http://www.example.com/download/16055490/song.mp3.html',
@@ -38,10 +46,10 @@ describe('unwrapAdfly', () => {
     expect(unwrapAdfly(url)).toBe('http://www.example.com/?d=JS47TMYS#top')
   })
 
-  it('should return undefined for a target host cut short inside an escape', () => {
-    const url = new URL('http://adf.ly/266435/http://www.example.com%2')
+  it('should keep the wrapper for a target host cut short inside an escape', () => {
+    const url = 'http://adf.ly/266435/http://www.example.com%2'
 
-    expect(unwrapAdfly(url)).toBeUndefined()
+    expect(purifyUrl(url, { unwrappers: [unwrapAdfly] })).toBe(url)
   })
 
   it('should return undefined for a custom alias', () => {

@@ -1,4 +1,4 @@
-import { decodeBase64Url, isHttpUrl } from 'trousse'
+import { decodeBase64Url } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
@@ -24,15 +24,13 @@ export const unwrapYahooJapan: UrlUnwrapper = createUnwrapper({
       end -= 1
     }
 
-    let target = decodeBase64Url(encoded.slice(0, end))
+    const target = decodeBase64Url(encoded.slice(0, end))
 
     // RV=2 links end the target with a NUL byte.
     if (target?.endsWith('\0')) {
-      target = target.slice(0, -1)
+      return target.slice(0, -1)
     }
 
-    if (target && isHttpUrl(target)) {
-      return target
-    }
+    return target
   },
 })

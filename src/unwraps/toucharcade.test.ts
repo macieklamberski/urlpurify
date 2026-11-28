@@ -1,7 +1,22 @@
 import { describe, expect, it } from 'bun:test'
+import { purifyUrl } from '../clean.js'
 import { unwrapToucharcade } from './toucharcade.js'
 
 describe('unwrapToucharcade', () => {
+  it('should give https to a target without a scheme', () => {
+    const value = 'https://toucharcade.com/link/www.example.com/page'
+    const expected = 'https://www.example.com/page'
+
+    expect(purifyUrl(value, { unwrappers: [unwrapToucharcade] })).toBe(expected)
+  })
+
+  it('should decode a percent-encoded target', () => {
+    const value = 'https://toucharcade.com/link/https%3A%2F%2Fwww.example.com%2Fpage%3Fid%3D1'
+    const expected = 'https://www.example.com/page?id=1'
+
+    expect(purifyUrl(value, { unwrappers: [unwrapToucharcade] })).toBe(expected)
+  })
+
   it('should extract the target from an outbound link', () => {
     const url = new URL(
       'http://toucharcade.com/link/http://itunes.example.com/us/app/hedgewars/id406787445',
@@ -26,12 +41,10 @@ describe('unwrapToucharcade', () => {
     expect(unwrapToucharcade(url)).toBeUndefined()
   })
 
-  it('should return undefined for a non-http target', () => {
-    const url = new URL(
-      'http://toucharcade.com/link/itms-apps://itunes.example.com/app/id406787445',
-    )
+  it('should keep the wrapper for a non-http target', () => {
+    const url = 'http://toucharcade.com/link/itms-apps://itunes.example.com/app/id406787445'
 
-    expect(unwrapToucharcade(url)).toBeUndefined()
+    expect(purifyUrl(url, { unwrappers: [unwrapToucharcade] })).toBe(url)
   })
 
   it('should return undefined for an article', () => {

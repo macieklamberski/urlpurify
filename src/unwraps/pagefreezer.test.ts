@@ -1,8 +1,17 @@
 import { describe, expect, it } from 'bun:test'
+import { purifyUrl } from '../clean.js'
 import { unwrapperHosts } from '../utils.js'
 import { unwrapPagefreezer } from './pagefreezer.js'
 
 describe('unwrapPagefreezer', () => {
+  it('should give https to a target without a scheme', () => {
+    const value =
+      'https://public3.pagefreezer.com/browse/coll/01-01-2020T00:00/www.example.com/page'
+    const expected = 'https://www.example.com/page'
+
+    expect(purifyUrl(value, { unwrappers: [unwrapPagefreezer] })).toBe(expected)
+  })
+
   it('should extract the target from a browse snapshot', () => {
     const url = new URL(
       'https://public3.pagefreezer.com/browse/HHS.gov/16-09-2020T14:35/https://www.example.gov/opioids/treatment/guide.html',
@@ -57,12 +66,11 @@ describe('unwrapPagefreezer', () => {
     expect(unwrapPagefreezer(url)).toBeUndefined()
   })
 
-  it('should return undefined for a non-http path target', () => {
-    const url = new URL(
-      'https://public3.pagefreezer.com/browse/HHS.gov/16-09-2020T14:35/ftp://example.gov/file.txt',
-    )
+  it('should keep the wrapper for a non-http path target', () => {
+    const url =
+      'https://public3.pagefreezer.com/browse/HHS.gov/16-09-2020T14:35/ftp://example.gov/file.txt'
 
-    expect(unwrapPagefreezer(url)).toBeUndefined()
+    expect(purifyUrl(url, { unwrappers: [unwrapPagefreezer] })).toBe(url)
   })
 
   it('should return undefined for a path with a year instead of the capture time', () => {

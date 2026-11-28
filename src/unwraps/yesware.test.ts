@@ -1,7 +1,16 @@
 import { describe, expect, it } from 'bun:test'
+import { purifyUrl } from '../clean.js'
 import { unwrapYesware } from './yesware.js'
 
 describe('unwrapYesware', () => {
+  it('should drop a space before the target host', () => {
+    const value =
+      'https://t.yesware.com/tt/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/cccccccccccccccccccccccccccccccc/%20www.example.com/page'
+    const expected = 'https://www.example.com/page'
+
+    expect(purifyUrl(value, { unwrappers: [unwrapYesware] })).toBe(expected)
+  })
+
   it('should extract a target with its scheme dropped from the path', () => {
     const url = new URL(
       'http://t.yesware.com/tt/cc4aab7ab5585b4f64d82ec15e4f4fe0f25b6e3d/a46491027919e3faf1bdee545ec1da8d/d3d018e9172577e0213cd571b7b2df8e/example.com/clubsapply',
@@ -28,12 +37,11 @@ describe('unwrapYesware', () => {
     expect(unwrapYesware(url)).toBe('http://example.com/')
   })
 
-  it('should return undefined for a target host cut short inside an escape', () => {
-    const url = new URL(
-      'https://t.yesware.com/tt/cc4aab7ab5585b4f64d82ec15e4f4fe0f25b6e3d/a46491027919e3faf1bdee545ec1da8d/d3d018e9172577e0213cd571b7b2df8e/www.example.com%2',
-    )
+  it('should keep the wrapper for a target host cut short inside an escape', () => {
+    const url =
+      'https://t.yesware.com/tt/cc4aab7ab5585b4f64d82ec15e4f4fe0f25b6e3d/a46491027919e3faf1bdee545ec1da8d/d3d018e9172577e0213cd571b7b2df8e/www.example.com%2'
 
-    expect(unwrapYesware(url)).toBeUndefined()
+    expect(purifyUrl(url, { unwrappers: [unwrapYesware] })).toBe(url)
   })
 
   it('should return undefined for the tracking path with no target', () => {
