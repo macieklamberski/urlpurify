@@ -4,8 +4,10 @@ import { createQueryUnwrapper, createUnwrapper, readParamTarget } from '../utils
 
 const sectionParamRegex = /^index_[a-z]+_cikklink$/
 
+const counterHosts = ['dex.hu', 'www.dex.hu', 'index.hu', 'www.index.hu', 'vakbarat.index.hu']
+
 const unwrapCounter = createQueryUnwrapper({
-  hosts: ['dex.hu', 'www.dex.hu', 'index.hu', 'www.index.hu', 'vakbarat.index.hu'],
+  hosts: counterHosts,
   path: '/x.php',
   params: ['url'],
 })
@@ -34,6 +36,9 @@ const unwrapSectionCounter = createUnwrapper({
 // Index.hu and Dex.hu outbound link counter (index.hu/x.php?id=<id>&url=<target>), on dex.hu,
 // index.hu and vakbarat.index.hu, and the section counter on dex.hu and index.hu that names the
 // param after the section (index.hu/x?index_<section>_cikklink=<target>).
-export const unwrapIndexHu: UrlUnwrapper = (url) => {
-  return unwrapCounter(url) ?? unwrapSectionCounter(url)
-}
+export const unwrapIndexHu: UrlUnwrapper = createUnwrapper({
+  hosts: counterHosts,
+  unwrap: (url) => {
+    return unwrapCounter(url) ?? unwrapSectionCounter(url)
+  },
+})

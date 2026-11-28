@@ -20,11 +20,10 @@ describe('unwrapYahooMailImage', () => {
     expect(unwrapYahooMailImage(value)).toBe(expected)
   })
 
-  it('should return a relative source as written', () => {
+  it('should return undefined for a relative source', () => {
     const value = new URL('https://ecp.yusercontent.com/mail?url=%2Fuploads%2Fphoto.jpg')
-    const expected = '/uploads/photo.jpg'
 
-    expect(unwrapYahooMailImage(value)).toBe(expected)
+    expect(unwrapYahooMailImage(value)).toBeUndefined()
   })
 
   it('should return undefined without a source', () => {

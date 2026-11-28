@@ -1,6 +1,4 @@
-import { isAnyOf, isHostOf, isHttpUrl } from 'trousse'
-import type { UrlUnwrapper } from '../types.js'
-import { createQueryUnwrapper, createUnwrapper, readParamTarget } from '../utils.js'
+import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
 const submitPathRegex = /^\/submit\/?$/i
 
@@ -23,20 +21,13 @@ const unwrapBuzz = createQueryUnwrapper({
   ignoreLinkFragment: true,
 })
 
-const unwrapBuzzSubmit: UrlUnwrapper = (url) => {
-  if (!isHostOf(url, 'buzz.yahoo.com') || !isAnyOf(url.pathname, submitPathRegex)) {
-    return
-  }
-
-  const submitUrl = readParamTarget(url, 'submitUrl')
-
-  if (submitUrl && isHttpUrl(submitUrl)) {
-    return submitUrl
-  }
-
-  // Some share links put the title in submitUrl= and the page in u=.
-  return readParamTarget(url, 'u')
-}
+// Some share links put the title in submitUrl= and the page in u=.
+const unwrapBuzzSubmit = createQueryUnwrapper({
+  hosts: 'buzz.yahoo.com',
+  path: submitPathRegex,
+  params: ['submitUrl', 'u'],
+  ignoreLinkFragment: true,
+})
 
 // Yahoo Bookmarks, MyWeb and Buzz share buttons
 // (bookmarks.yahoo.com/myresults/bookmarklet?u=<target>, also on myweb2.search.yahoo.com and

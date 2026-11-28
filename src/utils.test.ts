@@ -5,7 +5,6 @@ import {
   createQueryUnwrapper,
   createUnwrapper,
   getBrandLabels,
-  getParamTarget,
   getUtf8ByteLength,
   readParamTarget,
   unwrapperHosts,
@@ -71,6 +70,24 @@ describe('createQueryUnwrapper', () => {
     it('should skip a mailto value for the next param', () => {
       const value = new URL(
         'https://redirect.example.com/?url=mailto:jobs@example.com&fallback=https://example.com/app',
+      )
+      const expected = 'https://example.com/app'
+
+      expect(extract(value)).toBe(expected)
+    })
+
+    it('should skip a relative path for the next param', () => {
+      const value = new URL(
+        'https://redirect.example.com/?url=/local/page&fallback=https://example.com/app',
+      )
+      const expected = 'https://example.com/app'
+
+      expect(extract(value)).toBe(expected)
+    })
+
+    it('should skip a title for the next param', () => {
+      const value = new URL(
+        'https://redirect.example.com/?url=Example+News+Today&fallback=https://example.com/app',
       )
       const expected = 'https://example.com/app'
 
@@ -556,8 +573,10 @@ describe('createQueryUnwrapper', () => {
     })
 
     it('should not decode a value that only holds an encoded scheme later on', () => {
-      const value = new URL('https://redirect.example.com/?url=go-https%253A%252F%252Fexample.com')
-      const expected = 'go-https%3A%2F%2Fexample.com'
+      const value = new URL(
+        'https://redirect.example.com/?url=example.com/go-https%253A%252F%252Fexample.org',
+      )
+      const expected = 'example.com/go-https%3A%2F%2Fexample.org'
 
       expect(extract(value)).toBe(expected)
     })
@@ -733,6 +752,20 @@ describe('createUnwrapper', () => {
     const value = new URL('https://example.com/?target=https://example.org/post')
 
     expect(unwrapHost(value)).toBeUndefined()
+  })
+
+  it('should run the body on any host with anyHost', () => {
+    const unwrap = createUnwrapper({ anyHost: true, unwrap: getTarget })
+    const value = new URL('https://click.example.net/?target=https://example.org/post')
+    const expected = 'https://example.org/post'
+
+    expect(unwrap(value)).toBe(expected)
+  })
+
+  it('should register no host with anyHost', () => {
+    const unwrap = createUnwrapper({ anyHost: true, unwrap: getTarget })
+
+    expect(unwrapperHosts.has(unwrap)).toBe(false)
   })
 
   it('should run the body on a domain itself', () => {
@@ -1030,24 +1063,6 @@ describe('readParamTarget', () => {
     const expected = 'https://www.example.com/episode'
 
     expect(readParamTarget(value, 'url')).toBe(expected)
-  })
-})
-
-describe('getParamTarget', () => {
-  it('should keep the link fragment on an unencoded target', () => {
-    const value = new URL('https://redirect.example.com/?url=https://www.example.com/guide#install')
-    const expected = 'https://www.example.com/guide#install'
-
-    expect(getParamTarget(value, 'url')).toBe(expected)
-  })
-
-  it('should prefer the encoded fragment of the target over the link fragment', () => {
-    const value = new URL(
-      'https://redirect.example.com/?url=https%3A%2F%2Fwww.example.com%2Fguide%23setup#install',
-    )
-    const expected = 'https://www.example.com/guide#setup'
-
-    expect(getParamTarget(value, 'url')).toBe(expected)
   })
 })
 

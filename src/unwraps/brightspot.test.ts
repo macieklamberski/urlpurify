@@ -11,6 +11,15 @@ describe('unwrapBrightspot', () => {
     expect(unwrapBrightspot(value)).toBe(expected)
   })
 
+  it('should drop the link fragment', () => {
+    const value = new URL(
+      'https://npr.brightspotcdn.com/dims4/default/f008/2147483647/resize/300x169!/quality/90/?url=https%3A%2F%2Fcdn.example.com%2Fphoto.jpg#section',
+    )
+    const expected = 'https://cdn.example.com/photo.jpg'
+
+    expect(unwrapBrightspot(value)).toBe(expected)
+  })
+
   it('should extract the source from a dims3 path', () => {
     const value = new URL(
       'https://ewscripps.brightspotcdn.com/dims3/default/89f2c9d/2147483647/resize/1280x720!/?url=https%3A%2F%2Fcdn.example.com%2Fphoto.jpg',

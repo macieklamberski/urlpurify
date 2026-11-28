@@ -1,6 +1,6 @@
 import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { appendLinkFragment } from '../utils.js'
+import { createUnwrapper } from '../utils.js'
 
 const feedsportalPathRegex = /\/([0-9A-Za-z]{20,})\/story01\.htm$/i
 
@@ -36,27 +36,30 @@ const feedsportalAlphabet: Record<string, string> = {
 
 // FeedSportal article links (<host>/<encoded-id>/story01.htm). FeedSportal shut down around 2016,
 // so only archived feeds carry them.
-export const unwrapFeedsportal: UrlUnwrapper = (url) => {
-  const match = url.pathname.match(feedsportalPathRegex)
-  if (!match) {
-    return
-  }
+export const unwrapFeedsportal: UrlUnwrapper = createUnwrapper({
+  anyHost: true,
+  unwrap: (url) => {
+    const match = url.pathname.match(feedsportalPathRegex)
+    if (!match) {
+      return
+    }
 
-  const decoded = match[1]
-    .split('0')
-    .map((chunk, index) => {
-      if (index === 0) {
-        return chunk
-      }
-      const head = chunk[0]
-      const substitution = head ? feedsportalAlphabet[head] : undefined
-      return substitution === undefined ? `0${chunk}` : substitution + chunk.slice(1)
-    })
-    .join('')
+    const decoded = match[1]
+      .split('0')
+      .map((chunk, index) => {
+        if (index === 0) {
+          return chunk
+        }
+        const head = chunk[0]
+        const substitution = head ? feedsportalAlphabet[head] : undefined
+        return substitution === undefined ? `0${chunk}` : substitution + chunk.slice(1)
+      })
+      .join('')
 
-  if (!isHttpUrl(decoded)) {
-    return
-  }
+    if (!isHttpUrl(decoded)) {
+      return
+    }
 
-  return appendLinkFragment(decoded, url)
-}
+    return decoded
+  },
+})

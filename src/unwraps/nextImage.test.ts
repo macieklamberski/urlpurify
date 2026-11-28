@@ -11,6 +11,15 @@ describe('unwrapNextImage', () => {
     expect(unwrapNextImage(value)).toBe(expected)
   })
 
+  it('should drop the link fragment', () => {
+    const value = new URL(
+      'https://example.com/_next/image?url=https%3A%2F%2Fcdn.example.com%2Fphoto.jpg&w=384&q=75#section',
+    )
+    const expected = 'https://cdn.example.com/photo.jpg'
+
+    expect(unwrapNextImage(value)).toBe(expected)
+  })
+
   it('should resolve a path source against the site', () => {
     const value = new URL(
       'https://example.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fphoto.6e6e9428.png&w=32&q=75',

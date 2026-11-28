@@ -1,6 +1,6 @@
 import { getQueryParam, isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamTarget } from '../utils.js'
+import { createUnwrapper, readParamTarget } from '../utils.js'
 
 const pathRegex = /^(?:\/[^/]+)*\/media\/oembed$/i
 
@@ -9,22 +9,25 @@ const pathRegex = /^(?:\/[^/]+)*\/media\/oembed$/i
 // On any host, a `hash` param and an http `url` tell Drupal's frame from another site's
 // /media/oembed path. Drupal reads the last `url`.
 // Not included in defaultUnwrappers: unwrapping swaps the site's frame for the provider's page.
-export const unwrapDrupalOembed: UrlUnwrapper = (url) => {
-  if (!pathRegex.test(url.pathname)) {
-    return
-  }
+export const unwrapDrupalOembed: UrlUnwrapper = createUnwrapper({
+  anyHost: true,
+  unwrap: (url) => {
+    if (!pathRegex.test(url.pathname)) {
+      return
+    }
 
-  const hash = getQueryParam(url, 'hash')
+    const hash = getQueryParam(url, 'hash')
 
-  if (!hash) {
-    return
-  }
+    if (!hash) {
+      return
+    }
 
-  const target = getParamTarget(url, 'url', -1)
+    const target = readParamTarget(url, 'url', -1)
 
-  if (!target || !isHttpUrl(target)) {
-    return
-  }
+    if (!target || !isHttpUrl(target)) {
+      return
+    }
 
-  return target
-}
+    return target
+  },
+})

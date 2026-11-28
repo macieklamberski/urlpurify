@@ -1,5 +1,6 @@
+import { isAnyOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { appendLinkFragment, createQueryUnwrapper } from '../utils.js'
+import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
 // Zanox writes an unencoded target between double brackets, so the target's own `&` splits the
 // outer query and only the raw query holds the whole target.
@@ -14,18 +15,19 @@ const extractUlp = createQueryUnwrapper({
 // Zanox affiliate click (ad.zanox.com/ppc/?<ad id>&ULP=<target>, also ulp=, and the deeplink
 // form ULP=[[<target>]]). Not included in defaultUnwrappers: unwrapping drops the publisher's
 // commission.
-export const unwrapZanox: UrlUnwrapper = (url) => {
-  const target = extractUlp(url)
+export const unwrapZanox: UrlUnwrapper = createUnwrapper({
+  hosts: 'ad.zanox.com',
+  unwrap: (url) => {
+    if (!isAnyOf(url.pathname, '/ppc/')) {
+      return
+    }
 
-  if (!target) {
-    return
-  }
+    const bracketed = url.search.match(bracketRegex)
 
-  const bracketed = url.search.match(bracketRegex)
+    if (bracketed) {
+      return bracketed[1]
+    }
 
-  if (bracketed) {
-    return appendLinkFragment(bracketed[1], url)
-  }
-
-  return target
-}
+    return extractUlp(url)
+  },
+})

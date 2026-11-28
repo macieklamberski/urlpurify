@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'bun:test'
+import { unwrapUrl } from '../clean.js'
 import { unwrapUnisender } from './unisender.js'
 
 describe('unwrapUnisender', () => {
@@ -136,10 +137,10 @@ describe('unwrapUnisender', () => {
     expect(unwrapUnisender(url)).toBeUndefined()
   })
 
-  it('should return undefined for a base64url non-http target', () => {
-    const url = new URL('https://geteml.com/ru/mail_link_tracker?url=amF2YXNjcmlwdDphbGVydCgxKQ~~')
+  it('should leave a base64url non-http target unwrapped', () => {
+    const value = 'https://geteml.com/ru/mail_link_tracker?url=amF2YXNjcmlwdDphbGVydCgxKQ~~'
 
-    expect(unwrapUnisender(url)).toBeUndefined()
+    expect(unwrapUrl(value, [unwrapUnisender])).toBeUndefined()
   })
 
   it('should keep a stray percent sign in a twice-encoded target', () => {
