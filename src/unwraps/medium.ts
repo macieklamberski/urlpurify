@@ -4,7 +4,7 @@ const redirectPathRegex = /^\/r\/?$/i
 const globalIdentityPathRegex = /^\/m\/global-identity(?:-2)?$/i
 
 // Authors and publications get their own `<name>.medium.com`, so the hosts match exactly.
-const hosts = ['medium.com', 'gen.medium.com']
+const hosts = ['medium.com', 'www.medium.com', 'gen.medium.com']
 
 const extractRedirectTarget = createQueryUnwrapper({
   hosts,

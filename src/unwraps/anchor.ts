@@ -7,6 +7,6 @@ const playPrefixRegex = /^\/s\/[^/]+\/podcast\/play\/[^/]+\/(?:sponsor\/[^/]+\/)
 // also with sponsor/<ids>/ before the target), where the target is raw or percent-encoded once or
 // twice. Not included in defaultUnwrappers: unwrapping removes the podcaster's download counts.
 export const unwrapAnchor = createPathUnwrapper({
-  hosts: 'anchor.fm',
+  hosts: ['anchor.fm', 'www.anchor.fm'],
   prefix: playPrefixRegex,
 })

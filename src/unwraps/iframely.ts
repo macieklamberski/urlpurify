@@ -5,7 +5,7 @@ import { createQueryUnwrapper } from '../utils.js'
 // The short-id frame, cdn.iframe.ly/<id>, holds no target and stays wrapped.
 // Not included in defaultUnwrappers: unwrapping swaps the site's frame for the provider's page.
 export const unwrapIframely: UrlUnwrapper = createQueryUnwrapper({
-  hosts: ['cdn.iframe.ly', 'iframely.net'],
+  hosts: ['cdn.iframe.ly', 'iframely.net', 'www.iframely.net'],
   path: '/api/iframe',
   params: ['url'],
 })

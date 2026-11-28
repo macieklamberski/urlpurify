@@ -26,6 +26,13 @@ describe('unwrapAnonymTo', () => {
     expect(unwrapAnonymTo(url)).toBe('https://en.example.org/wiki/RIAA')
   })
 
+  it('should extract the target from the path on the www. host', () => {
+    const value = new URL('https://www.anonym.to/https://example.com/page')
+    const expected = 'https://example.com/page'
+
+    expect(unwrapAnonymTo(value)).toBe(expected)
+  })
+
   it('should return undefined for a path target without a scheme', () => {
     const url = new URL('https://anonym.to/www.example.com/page')
 

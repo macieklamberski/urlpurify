@@ -8,6 +8,6 @@ const clickPrefixRegex = /^\/click-auid\/[^/]+\/(?=https?:\/)/i
 // old.awesound.com instead of forwarding. Not included in defaultUnwrappers: unwrapping removes the
 // podcaster's click count.
 export const unwrapAwesound = createPathUnwrapper({
-  hosts: ['awesound.com', 'click.awesound.com'],
+  hosts: ['awesound.com', 'www.awesound.com', 'click.awesound.com'],
   prefix: clickPrefixRegex,
 })

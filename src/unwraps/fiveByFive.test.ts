@@ -101,4 +101,11 @@ describe('unwrapFiveByFive', () => {
 
     expect(unwrapFiveByFive(url)).toBeUndefined()
   })
+
+  it('should read the show prefix on the www. host', () => {
+    const value = new URL('https://www.fdlyr.co/d/show/example.com/a.mp3')
+    const expected = 'http://example.com/a.mp3'
+
+    expect(unwrapFiveByFive(value)).toBe(expected)
+  })
 })

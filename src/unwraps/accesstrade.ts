@@ -3,6 +3,7 @@ import { createUnwrapper, readParamTarget } from '../utils.js'
 
 const hosts = [
   'h.accesstrade.net',
+  'accesstrade.net',
   'www.accesstrade.net',
   'click.accesstrade.vn',
   'fast.accesstrade.com.vn',

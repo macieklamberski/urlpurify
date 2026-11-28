@@ -5,13 +5,13 @@ import { createQueryUnwrapper, createUnwrapper, readParamTarget } from '../utils
 const sectionParamRegex = /^index_[a-z]+_cikklink$/
 
 const unwrapCounter = createQueryUnwrapper({
-  hosts: ['dex.hu', 'index.hu', 'vakbarat.index.hu'],
+  hosts: ['dex.hu', 'www.dex.hu', 'index.hu', 'www.index.hu', 'vakbarat.index.hu'],
   path: '/x.php',
   params: ['url'],
 })
 
 const unwrapSectionCounter = createUnwrapper({
-  hosts: ['dex.hu', 'index.hu'],
+  hosts: ['dex.hu', 'www.dex.hu', 'index.hu', 'www.index.hu'],
   unwrap: (url) => {
     if (!isAnyOf(url.pathname, '/x')) {
       return

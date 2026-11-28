@@ -6,6 +6,6 @@ const campaignPrefixRegex = /^\/p\/[A-Z0-9]{5}\//i
 // drops its scheme.
 // Not included in defaultUnwrappers: unwrapping removes the podcaster's download counts.
 export const unwrapArttrack = createPathUnwrapper({
-  hosts: 'arttrk.com',
+  hosts: ['arttrk.com', 'www.arttrk.com'],
   prefix: campaignPrefixRegex,
 })

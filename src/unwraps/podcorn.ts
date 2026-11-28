@@ -6,6 +6,6 @@ const episodePrefixRegex = /^\/e\//i
 // target often drops its scheme.
 // Not included in defaultUnwrappers: unwrapping removes the podcaster's download counts.
 export const unwrapPodcorn = createPathUnwrapper({
-  hosts: 'pdcn.co',
+  hosts: ['pdcn.co', 'www.pdcn.co'],
   prefix: episodePrefixRegex,
 })

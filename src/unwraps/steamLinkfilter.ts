@@ -2,7 +2,7 @@ import { createQueryUnwrapper } from '../utils.js'
 
 // Steam outbound link filter (steamcommunity.com/linkfilter/?url=<target> or ?u=<target>).
 export const unwrapSteamLinkfilter = createQueryUnwrapper({
-  hosts: 'steamcommunity.com',
+  hosts: ['steamcommunity.com', 'www.steamcommunity.com'],
   path: '/linkfilter/',
   params: ['url', 'u'],
 })

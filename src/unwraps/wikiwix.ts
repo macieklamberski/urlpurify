@@ -1,7 +1,7 @@
 import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
 const extractCacheTarget = createQueryUnwrapper({
-  hosts: ['archive.wikiwix.com', 'wikiwix.com'],
+  hosts: ['archive.wikiwix.com', 'wikiwix.com', 'www.wikiwix.com'],
   path: '/cache/',
   params: ['url'],
   ignoreLinkFragment: true,
@@ -19,7 +19,7 @@ const extractIndexTarget = createQueryUnwrapper({
 // <target>, and wikiwix.com/cache/?url=<target>). Opt-in: unwrapping returns the live page,
 // which may have changed or be gone.
 export const unwrapWikiwix = createUnwrapper({
-  hosts: ['archive.wikiwix.com', 'wikiwix.com'],
+  hosts: ['archive.wikiwix.com', 'wikiwix.com', 'www.wikiwix.com'],
   ignoreLinkFragment: true,
   unwrap: (url) => {
     return extractCacheTarget(url) ?? extractIndexTarget(url)

@@ -9,7 +9,7 @@ const clickPathRegex =
 // Mailstat email click tracker (mailstat.us/tr/t/<id>/<link>/<target>, also
 // /tr/t2/<id>/<id>/<n>/<target>). Opt-in: unwrapping removes the sender's click count.
 export const unwrapMailstat: UrlUnwrapper = createUnwrapper({
-  hosts: 'mailstat.us',
+  hosts: ['mailstat.us', 'www.mailstat.us'],
   unwrap: (url) => {
     const match = clickPathRegex.exec(url.pathname)
 

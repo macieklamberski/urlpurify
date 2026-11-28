@@ -8,7 +8,7 @@ const pathRegex = /^\/r\/[\w-]+\/(?:n\/[\w-]+\/)?(.+)$/i
 // circulate.it/r/<token>/n/<link text>/<target>), with the target's scheme dropped.
 // Not included in defaultUnwrappers: unwrapping removes the sender's click stats.
 export const unwrapCloze: UrlUnwrapper = createUnwrapper({
-  hosts: 'circulate.it',
+  hosts: ['circulate.it', 'www.circulate.it'],
   unwrap: (url) => {
     const match = pathRegex.exec(url.pathname)
 

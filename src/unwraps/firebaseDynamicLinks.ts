@@ -7,6 +7,8 @@ const appPathRegex = /^\/app\/[\w-]+$/i
 // See: https://firebase.google.com/docs/dynamic-links/create-manually.
 const params = ['ofl', 'link']
 
+const shortenerHosts = ['goo.gl', 'www.goo.gl']
+
 const extractTarget = createQueryUnwrapper({
   domains: ['app.goo.gl', 'page.link'],
   path: '/',
@@ -15,7 +17,7 @@ const extractTarget = createQueryUnwrapper({
 
 // goo.gl itself is the URL shortener, so it matches exactly and only on /app/<name>.
 const extractGooGlTarget = createQueryUnwrapper({
-  hosts: 'goo.gl',
+  hosts: shortenerHosts,
   params,
 })
 
@@ -26,7 +28,7 @@ const extractGooGlTarget = createQueryUnwrapper({
 export const unwrapFirebaseDynamicLinks = createUnwrapper({
   domains: ['goo.gl', 'page.link'],
   unwrap: (url) => {
-    if (!isHostOf(url, 'goo.gl')) {
+    if (!isHostOf(url, shortenerHosts)) {
       return extractTarget(url)
     }
 

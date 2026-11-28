@@ -6,6 +6,6 @@ const prefixRegex = /^\/(?:e\/p?\d+|track)\//i
 // where the target often drops its scheme.
 // Not included in defaultUnwrappers: unwrapping removes the podcaster's download counts.
 export const unwrapMagellan = createPathUnwrapper({
-  hosts: 'mgln.ai',
+  hosts: ['mgln.ai', 'www.mgln.ai'],
   prefix: prefixRegex,
 })

@@ -5,7 +5,11 @@ import { googleHostRegex } from './google.js'
 const extractors = [
   createQueryUnwrapper({ hosts: googleHostRegex, path: '/aclk', params: ['adurl'] }),
   createQueryUnwrapper({ hosts: googleHostRegex, path: '/pagead/iclk', params: ['adurl'] }),
-  createQueryUnwrapper({ hosts: 'syndicatedsearch.goog', path: '/aclk', params: ['adurl'] }),
+  createQueryUnwrapper({
+    hosts: ['syndicatedsearch.goog', 'www.syndicatedsearch.goog'],
+    path: '/aclk',
+    params: ['adurl'],
+  }),
   createQueryUnwrapper({
     hosts: ['www.googleadservices.com', 'googleadservices.com'],
     path: '/pagead/aclk',

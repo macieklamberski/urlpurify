@@ -81,4 +81,11 @@ describe('unwrapVefsafn', () => {
 
     expect(unwrapVefsafn(url)).toBeUndefined()
   })
+
+  it('should read the current replay on the www. host', () => {
+    const value = new URL('https://www.vefsafn.is/is/20200101000000/https://example.com/')
+    const expected = 'https://example.com/'
+
+    expect(unwrapVefsafn(value)).toBe(expected)
+  })
 })

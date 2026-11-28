@@ -10,7 +10,7 @@ const hostRegex = /^[\da-z-]+(?:\.[\da-z-]+)+(?:[/:]|$)/i
 // scheme. Both now redirect to Linkvertise, so a wrapped link no longer reaches its target.
 // Not included in defaultUnwrappers: unwrapping removes the link owner's ad earnings.
 export const unwrapAdfly: UrlUnwrapper = createUnwrapper({
-  hosts: ['adf.ly', 'q.gs'],
+  hosts: ['adf.ly', 'www.adf.ly', 'q.gs', 'www.q.gs'],
   unwrap: (url) => {
     const match = pathRegex.exec(url.pathname)
 
