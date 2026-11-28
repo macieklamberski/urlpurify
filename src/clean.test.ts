@@ -1369,6 +1369,13 @@ describe('signed query', () => {
     expect(stripTrackingParams(value)).toBe(value)
   })
 
+  it('should strip tracking beside a param whose name is sig after a space', () => {
+    const value = 'https://example.com/?fbclid=1&+sig=x'
+    const expected = 'https://example.com/?+sig=x'
+
+    expect(stripTrackingParams(value)).toBe(expected)
+  })
+
   it('should strip ts from a url without a signature', () => {
     const value = 'https://cdn.example.com/file.mp4?id=4A665C2C&ts=1822903430'
     const expected = 'https://cdn.example.com/file.mp4?id=4A665C2C'

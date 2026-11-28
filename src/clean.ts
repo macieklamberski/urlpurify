@@ -43,13 +43,14 @@ type PairHost = {
 type QueryPair = [name: string, value: string]
 
 // A signature covers the rest of the query, so dropping any param from it makes the server reject
-// the url, as a CDN answers 401 to a signed file url without its `ts`.
-const signatureParams = [
+// the url, as a CDN answers 401 to a signed file url without its `ts`. Lowercase, matched against
+// the lowercased name as written: a server reads ` sig` as a name of its own.
+const signatureParams = new Set([
   'sig', // Generic CDN and redirect signature
   'signature', // CloudFront, AWS Signature Version 2
   'x-amz-signature', // AWS Signature Version 4 presigned url
   'x-goog-signature', // Google Cloud Storage V4 signed url
-]
+])
 
 const pathParamRegex = /;([^;/=]+)=[^;/]*/g
 
@@ -181,7 +182,8 @@ const readQueryPair = (pair: string): QueryPair | undefined => {
 }
 
 const isSignaturePair = (pair: QueryPair | undefined): boolean => {
-  return isAnyOf(pair?.[0], signatureParams)
+  // biome-ignore lint/plugin/useAnyOf: One Set lookup per pair, where isAnyOf would trim the name.
+  return pair !== undefined && signatureParams.has(pair[0].toLowerCase())
 }
 
 // Takes the lowercased name and the decoded value.
@@ -502,13 +504,15 @@ const applyUnwrappers = (
 
   // A wrapper written with a doubled slash, `//safety/go`, matches only once collapsed. The url as
   // written goes first, so a target whose own path holds `//` keeps it.
-  const collapsed = parseUrl(normalizeUrl(url.href, { collapseSlashes: true }))
+  if (url.pathname.includes('//')) {
+    const collapsed = parseUrl(normalizeUrl(url.href, { collapseSlashes: true }))
 
-  if (collapsed && collapsed.href !== url.href) {
-    const target = applyUnwrappers(collapsed, unwrappers, index)
+    if (collapsed && collapsed.href !== url.href) {
+      const target = applyUnwrappers(collapsed, unwrappers, index)
 
-    if (target) {
-      return target
+      if (target) {
+        return target
+      }
     }
   }
 
