@@ -248,8 +248,8 @@ const hasOtherScheme = (target: string): boolean => {
 }
 
 // An unwrapper for a target in the first of `params` that holds one in http or with no scheme, on
-// a url on the hosts `createUnwrapper` takes, and on `path` when given: an exact path or a list, compared in any case,
-// or a regex. `index` and `decode` read the target as `readDecodedTarget` does.
+// a url on the hosts `createUnwrapper` takes, and on `path` when given: an exact path or a list,
+// compared in any case, or a regex. `index` and `decode` read the target as `readDecodedTarget` does.
 export const createQueryUnwrapper = (config: QueryUnwrapperConfig): UrlUnwrapper => {
   const { path, params, index, decode, ...options } = config
 
