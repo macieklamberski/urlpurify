@@ -46,7 +46,8 @@ const extractLegacy = createQueryUnwrapper({
   params: ['DEST'],
 })
 
-// The leaving page on mail.com and GMX (service.mail.com/dereferrer/?target=<target>).
+// The leaving page on mail.com and GMX (service.mail.com/dereferrer/?target=<target>, also on
+// [www.]gmx.com and [www.]gmx.es).
 const extractLeaving = createQueryUnwrapper({
   hosts: ['service.mail.com', 'www.gmx.com', 'gmx.com', 'www.gmx.es', 'gmx.es'],
   path: '/dereferrer/',
