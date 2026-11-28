@@ -1,6 +1,6 @@
 import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
-const hosts = ['player.fm']
+const hosts = ['player.fm', 'www.player.fm']
 
 const extractImporter = createQueryUnwrapper({
   hosts,

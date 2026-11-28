@@ -5,7 +5,7 @@ import { createQueryUnwrapper } from '../utils.js'
 // Not included in defaultUnwrappers: an ad click pays the publisher who showed the ad, and
 // unwrapping removes that payment, the same cost as an affiliate wrapper.
 export const unwrapDuckduckgoAds: UrlUnwrapper = createQueryUnwrapper({
-  hosts: 'duckduckgo.com',
+  hosts: ['duckduckgo.com', 'www.duckduckgo.com'],
   path: '/y.js',
   params: ['u3', 'u2'],
 })

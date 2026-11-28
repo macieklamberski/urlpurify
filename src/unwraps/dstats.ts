@@ -6,13 +6,13 @@ import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 const downloadPrefixRegex = /^\/download\/(?=https?:\/)/i
 
 const extractDownload = createQueryUnwrapper({
-  hosts: 'dstats.net',
+  hosts: ['dstats.net', 'www.dstats.net'],
   path: '/download.php',
   params: ['file'],
 })
 
 const extractForward = createQueryUnwrapper({
-  hosts: 'dstats.net',
+  hosts: ['dstats.net', 'www.dstats.net'],
   path: '/fwd.php',
   params: ['url'],
 })
@@ -21,7 +21,7 @@ const extractForward = createQueryUnwrapper({
 // /fwd.php?url=<target>), the target unencoded. Opt-in: unwrapping removes the publisher's
 // download count.
 export const unwrapDstats: UrlUnwrapper = createUnwrapper({
-  hosts: 'dstats.net',
+  hosts: ['dstats.net', 'www.dstats.net'],
   unwrap: (url) => {
     return getPathTarget(url, downloadPrefixRegex) ?? extractDownload(url) ?? extractForward(url)
   },

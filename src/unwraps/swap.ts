@@ -3,6 +3,7 @@ import { createPathUnwrapper } from '../pathTarget.js'
 const hosts = [
   'tracking.swap.fm',
   'swap.fm',
+  'www.swap.fm',
   'dev.swap.fm',
   'staging.swap.fm',
   'tracking-stage.swap.fm',

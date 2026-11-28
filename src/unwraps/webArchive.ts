@@ -10,6 +10,7 @@ const hosts = [
   'web-old.archive.org',
   'classic-web.archive.org',
   'archive.org',
+  'www.archive.org',
   'www.waybackmachine.org',
   'waybackmachine.org',
   'webcf.waybackmachine.org',

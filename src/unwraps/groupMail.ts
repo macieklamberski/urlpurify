@@ -6,7 +6,7 @@ const pathRegex = /^\/[A-Za-z0-9]+\/e=[^/]*\/(https?:\/.*)$/i
 // GroupMail email click tracker (lnk.ie/<code>/e=<recipient email>/<target>). The target's own
 // query and fragment are the url's. Opt-in: unwrapping removes the sender's click count.
 export const unwrapGroupMail: UrlUnwrapper = createUnwrapper({
-  hosts: 'lnk.ie',
+  hosts: ['lnk.ie', 'www.lnk.ie'],
   unwrap: (url) => {
     const match = url.pathname.match(pathRegex)
 

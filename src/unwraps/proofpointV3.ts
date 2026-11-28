@@ -7,7 +7,13 @@ import { createUnwrapper, getUtf8ByteLength } from '../utils.js'
 const v3PathRegex = /^\/v3\/__(.+)__(?:;|%3B)([^!%]*)(?:!|%21)/i
 const escapedMarkerRegex = /%2A/gi
 
-const v3Hosts = ['urldefense.com', 'urldefense.proofpoint.com', 'urldefense.us']
+const v3Hosts = [
+  'urldefense.com',
+  'www.urldefense.com',
+  'urldefense.proofpoint.com',
+  'urldefense.us',
+  'www.urldefense.us',
+]
 
 // `**X` runs replace a fixed byte count: A=2, B=3, ... `_`=65.
 const runLengthAlphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_'

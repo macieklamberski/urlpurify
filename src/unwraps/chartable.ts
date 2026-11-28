@@ -11,7 +11,7 @@ const noIdPrefixRegex = /^\/track\/(?=https?:\/)/i
 // without an id (chtbl.com/track/<target>). Chartable closed in December 2024 and both hosts
 // answer 404, so a wrapped enclosure no longer plays.
 export const unwrapChartable: UrlUnwrapper = createUnwrapper({
-  hosts: ['chtbl.com', 'chrt.fm'],
+  hosts: ['chtbl.com', 'www.chtbl.com', 'chrt.fm', 'www.chrt.fm'],
   unwrap: (url) => {
     return getPathTarget(url, trackPrefixRegex) ?? getPathTarget(url, noIdPrefixRegex)
   },

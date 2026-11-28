@@ -7,6 +7,6 @@ const prefixRegex = /^\/cgi-bin\/anon-www(?:_de)?\.cgi\//i
 // Anonymouse web proxy (anonymouse.org/cgi-bin/anon-www.cgi/<target>, also anon-www_de.cgi).
 // Opt-in: the proxy serves the page anonymously, which a reader may choose on purpose.
 export const unwrapAnonymouse: UrlUnwrapper = createPathUnwrapper({
-  hosts: 'anonymouse.org',
+  hosts: ['anonymouse.org', 'www.anonymouse.org'],
   prefix: prefixRegex,
 })

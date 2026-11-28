@@ -8,8 +8,8 @@ const prefixRegex = /^\/\d{4}-\d{4}-\d{4}-\d{2}\//
 // page, which may have changed or be gone.
 export const unwrapMegalodon = createPathUnwrapper({
   domains: 'megalodon.jp',
-  // The main host and its numbered snapshot hosts, such as `s01.megalodon.jp`.
-  match: /^(?:s\d{2}\.)?megalodon\.jp$/,
+  // The main host, its www. pair and its numbered snapshot hosts, such as `s01.megalodon.jp`.
+  match: /^(?:s\d{2}\.|www\.)?megalodon\.jp$/,
   prefix: prefixRegex,
   scheme: 'http', // An http target is stored with no scheme, an https one with its scheme and `:443`
 })

@@ -1,6 +1,6 @@
 import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
-const hosts = ['googleweblight.com']
+const hosts = ['googleweblight.com', 'www.googleweblight.com']
 
 const extractLiteUrl = createQueryUnwrapper({
   hosts,

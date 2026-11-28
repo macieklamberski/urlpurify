@@ -9,11 +9,13 @@ const waybackPathRegex = /^\/wayback\/\d{14}\/(.+)$/i
 // language prefix.
 const currentPathRegex = /^\/is\/\d{14}(?:mp_)?\/(.+)$/i
 
+const currentHosts = ['vefsafn.is', 'www.vefsafn.is']
+
 // Icelandic web archive snapshot, run by the National and University Library of Iceland
 // (wayback.vefsafn.is/wayback/<timestamp>/<target> and vefsafn.is/is/<timestamp>[mp_]/<target>).
 // Opt-in: unwrapping returns the live page, which may have changed or be gone.
 export const unwrapVefsafn: UrlUnwrapper = createUnwrapper({
-  hosts: ['wayback.vefsafn.is', 'vefsafn.is'],
+  hosts: ['wayback.vefsafn.is', ...currentHosts],
   unwrap: (url) => {
     let match: RegExpExecArray | null = null
 
@@ -21,7 +23,7 @@ export const unwrapVefsafn: UrlUnwrapper = createUnwrapper({
       match = waybackPathRegex.exec(url.pathname)
     }
 
-    if (isHostOf(url, 'vefsafn.is')) {
+    if (isHostOf(url, currentHosts)) {
       match = currentPathRegex.exec(url.pathname)
     }
 

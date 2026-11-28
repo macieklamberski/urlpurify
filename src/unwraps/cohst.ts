@@ -6,6 +6,6 @@ const prefixRegex = /^\/pdcst\/[A-Za-z0-9]+\//i
 // scheme.
 // Not included in defaultUnwrappers: unwrapping removes the podcaster's download counts.
 export const unwrapCohst = createPathUnwrapper({
-  hosts: 'cohst.app',
+  hosts: ['cohst.app', 'www.cohst.app'],
   prefix: prefixRegex,
 })

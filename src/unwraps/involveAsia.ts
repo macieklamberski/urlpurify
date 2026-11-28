@@ -8,7 +8,7 @@ const extractDeepLink = createQueryUnwrapper({
 })
 
 const extractAffiliateLink = createQueryUnwrapper({
-  hosts: 'invol.co',
+  hosts: ['invol.co', 'www.invol.co'],
   path: '/aff_m',
   params: ['url'],
 })
@@ -17,7 +17,7 @@ const extractAffiliateLink = createQueryUnwrapper({
 // invol.co/aff_m?offer_id=<id>&aff_id=<id>&url=<target>). Not included in defaultUnwrappers:
 // unwrapping drops the publisher's commission.
 export const unwrapInvolveAsia = createUnwrapper({
-  hosts: ['go.isclix.com', 'invol.co'],
+  hosts: ['go.isclix.com', 'invol.co', 'www.invol.co'],
   unwrap: (url) => {
     if (deepLinkPathRegex.test(url.pathname)) {
       return extractDeepLink(url)

@@ -6,8 +6,20 @@ const redirectPathRegex = /^\/api\/v\d+\/(?:client_)?redirect\/?$/i
 
 const linkPaths = ['/link', '/link/']
 
-const redirectHosts = ['narrativ.com', 'api.narrativ.com', 'events.release.narrativ.com']
-const linkHosts = ['howl.link', 'howl.me', 'shop-links.co']
+const redirectHosts = [
+  'narrativ.com',
+  'www.narrativ.com',
+  'api.narrativ.com',
+  'events.release.narrativ.com',
+]
+const linkHosts = [
+  'howl.link',
+  'www.howl.link',
+  'howl.me',
+  'www.howl.me',
+  'shop-links.co',
+  'www.shop-links.co',
+]
 
 const extractTarget = createQueryUnwrapper({
   hosts: redirectHosts,

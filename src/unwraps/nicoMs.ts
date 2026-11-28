@@ -6,7 +6,7 @@ const nicoMsRegex = /^\/((?:sm|nm|so|im|lv)\w+)$/i
 // nico.ms short link. `/sm`, `/nm` and `/so` route to the watch page, `/im` to the seiga
 // illustration page, `/lv` to the live broadcast page.
 export const unwrapNicoMs: UrlUnwrapper = createUnwrapper({
-  hosts: 'nico.ms',
+  hosts: ['nico.ms', 'www.nico.ms'],
   unwrap: (url) => {
     const match = url.pathname.match(nicoMsRegex)
     if (!match) {

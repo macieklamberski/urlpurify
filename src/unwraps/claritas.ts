@@ -12,7 +12,7 @@ const shortPrefixRegex = /^\/m\//i
 // www.claritaspod.com, and clrtpod.com/m/<target>), where the target drops its scheme.
 // Not included in defaultUnwrappers: unwrapping removes the podcaster's download counts.
 export const unwrapClaritas: UrlUnwrapper = createUnwrapper({
-  hosts: [...measureHosts, 'clrtpod.com'],
+  hosts: [...measureHosts, 'clrtpod.com', 'www.clrtpod.com'],
   unwrap: (url) => {
     if (isHostOf(url, measureHosts)) {
       return getPathTarget(url, measurePrefixRegex)

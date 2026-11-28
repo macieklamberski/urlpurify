@@ -4,7 +4,7 @@ import { createQueryUnwrapper } from '../utils.js'
 // (expedia.com/affiliate?siteid=<id>&landingPage=<target>&camref=<id>). Not included in
 // defaultUnwrappers: unwrapping drops the publisher's commission.
 export const unwrapExpediaAffiliate = createQueryUnwrapper({
-  hosts: 'expedia.com',
+  hosts: ['expedia.com', 'www.expedia.com'],
   path: '/affiliate',
   params: ['landingPage'],
 })

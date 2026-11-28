@@ -5,7 +5,7 @@ import { createUnwrapper } from '../utils.js'
 const feedPrefixRegex = /^\/feed\//i
 const encodedFeedPathRegex = /^\/feed\/https?(?:%(?:25)?3a|:)%(?:25)?2f/i
 
-const hosts = ['podcastaddict.com']
+const hosts = ['podcastaddict.com', 'www.podcastaddict.com']
 
 const readFeed: UrlUnwrapper = (url) => {
   return getPathTarget(url, feedPrefixRegex)

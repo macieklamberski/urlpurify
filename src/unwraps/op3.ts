@@ -6,6 +6,6 @@ const episodePrefixRegex = /^\/e(?:,[^/]*)?\//i
 // the target often drops its scheme.
 // Not included in defaultUnwrappers: unwrapping removes the podcaster's download counts.
 export const unwrapOp3 = createPathUnwrapper({
-  hosts: 'op3.dev',
+  hosts: ['op3.dev', 'www.op3.dev'],
   prefix: episodePrefixRegex,
 })

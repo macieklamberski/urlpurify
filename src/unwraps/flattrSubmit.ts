@@ -4,7 +4,7 @@ import { createQueryUnwrapper } from '../utils.js'
 // registers the page as a thing to support for the creator. Opt-in: unwrapping returns the page,
 // not the donation form.
 export const unwrapFlattrSubmit = createQueryUnwrapper({
-  hosts: 'flattr.com',
+  hosts: ['flattr.com', 'www.flattr.com'],
   path: '/submit/auto',
   params: ['url'],
   ignoreLinkFragment: true,

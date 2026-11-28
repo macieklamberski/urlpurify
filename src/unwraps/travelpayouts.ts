@@ -1,7 +1,7 @@
 import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
 const unwrapRedirect = createQueryUnwrapper({
-  hosts: 'tp.media',
+  hosts: ['tp.media', 'www.tp.media'],
   path: '/r',
   params: ['u'],
 })

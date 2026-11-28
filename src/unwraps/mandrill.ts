@@ -2,7 +2,7 @@ import { decodeBase64Url, isHostOf, isString, parseJson } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { appendLinkFragment, createQueryUnwrapper, readParamTarget } from '../utils.js'
 
-const hosts = ['go.mnsvc.com', 'mandrillapp.com']
+const hosts = ['go.mnsvc.com', 'mandrillapp.com', 'www.mandrillapp.com']
 
 const clickPathRegex = /^\/track\/click\/\d+\/[^/]+$/i
 

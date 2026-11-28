@@ -6,6 +6,6 @@ const prefixRegex = /^\/link\//i
 // TouchArcade outbound link (toucharcade.com/link/<target>). Opt-in: the redirect goes
 // through TouchArcade's Georiot affiliate link.
 export const unwrapToucharcade: UrlUnwrapper = createPathUnwrapper({
-  hosts: 'toucharcade.com',
+  hosts: ['toucharcade.com', 'www.toucharcade.com'],
   prefix: prefixRegex,
 })

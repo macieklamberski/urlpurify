@@ -3,15 +3,25 @@ import { createQueryUnwrapper, createUnwrapper, readParamTarget } from '../utils
 
 const hosts = [
   'deref-1und1.de',
+  'www.deref-1und1.de',
   'deref-1und1-02.de',
+  'www.deref-1und1-02.de',
   'deref-gmx.co.uk',
+  'www.deref-gmx.co.uk',
   'deref-gmx.com',
+  'www.deref-gmx.com',
   'deref-gmx.fr',
+  'www.deref-gmx.fr',
   'deref-gmx.net',
+  'www.deref-gmx.net',
   'deref-mail.com',
+  'www.deref-mail.com',
   'deref-mail-02.com',
+  'www.deref-mail-02.com',
   'deref-web.de',
+  'www.deref-web.de',
   'deref-web-02.de',
+  'www.deref-web-02.de',
 ]
 
 const clientHosts = [

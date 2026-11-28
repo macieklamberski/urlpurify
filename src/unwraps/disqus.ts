@@ -10,7 +10,7 @@ const signatureRegex = /:[\w-]{27}$/
 // Disqus outbound link redirect (disq.us/url?url=<target>:<signature> and
 // disq.us/?url=<target>).
 export const unwrapDisqus: UrlUnwrapper = createUnwrapper({
-  hosts: 'disq.us',
+  hosts: ['disq.us', 'www.disq.us'],
   unwrap: (url) => {
     if (!isAnyOf(url.pathname, paths)) {
       return

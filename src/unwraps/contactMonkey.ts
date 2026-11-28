@@ -4,7 +4,7 @@ import { createUnwrapper } from '../utils.js'
 
 const carrierRegex = /[?&]cm_destination=/i
 
-const hosts = ['contactmonkey.com', 'tk.cmnky.co']
+const hosts = ['contactmonkey.com', 'www.contactmonkey.com', 'tk.cmnky.co']
 
 // ContactMonkey internal email click tracker
 // (contactmonkey.com/api/v1/tracker?cm_session=<id>&cm_type=link&cm_link=<id>&cm_destination=<target>,

@@ -10,7 +10,7 @@ const extractFromAnalyticsDomain = createQueryUnwrapper({
 })
 
 const extractFromEthreemail = createQueryUnwrapper({
-  hosts: 'ethreemail.com',
+  hosts: ['ethreemail.com', 'www.ethreemail.com'],
   params: ['u'],
 })
 

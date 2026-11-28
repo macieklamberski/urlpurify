@@ -4,20 +4,29 @@ import { appendLinkFragment, readParamTarget } from '../utils.js'
 
 const hosts = [
   'emlblog.com',
+  'www.emlblog.com',
   'emlpage.com',
+  'www.emlpage.com',
   'emlstart.com',
+  'www.emlstart.com',
   'emlway.com',
+  'www.emlway.com',
   'geteml.com',
+  'www.geteml.com',
   'link.emlmind.com',
   'link.posteml.com',
   'link.urait.ru', // A sender's own click domain
   'p11673.email-d.com',
   'redirlnk.com',
+  'www.redirlnk.com',
   'trk.emlbest.com',
   'ulist-man.com',
+  'www.ulist-man.com',
   'umail62.com',
+  'www.umail62.com',
   'us21.besteml.com',
   'usndr.com',
+  'www.usndr.com',
   /^us\d+-usndr\.com$/,
 ]
 

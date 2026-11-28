@@ -88,7 +88,7 @@ describe('unwrapFirebaseDynamicLinks', () => {
   })
 
   it('should return undefined for the app path on another goo.gl subdomain', () => {
-    const url = new URL('https://www.goo.gl/app/playmusic?link=https://example.com/page')
+    const url = new URL('https://maps.goo.gl/app/playmusic?link=https://example.com/page')
 
     expect(unwrapFirebaseDynamicLinks(url)).toBeUndefined()
   })
