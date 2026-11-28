@@ -1,4 +1,3 @@
-import { isHostOf } from 'trousse'
 import { getPathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
@@ -11,12 +10,8 @@ const pathTargetRegex = /^\/(?=https?:\/\/)/
 export const unwrapAnonymTo: UrlUnwrapper = createUnwrapper({
   hosts: ['anonym.to', 'www.anonym.to'],
   unwrap: (url) => {
-    if (isHostOf(url, 'anonym.to') && url.pathname !== '/') {
-      return getPathTarget(url, pathTargetRegex)
-    }
-
     if (url.pathname !== '/') {
-      return
+      return getPathTarget(url, pathTargetRegex)
     }
 
     const target = url.search.slice(1)
