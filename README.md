@@ -169,7 +169,7 @@ Three options read a carrier that holds more than a plain value:
 - **`plus`** sets how a `+` in the value reads: `'space'`, as form encoding writes a space, or `'keep'`, as a literal plus. Without it, a `+` reads as a space unless the value is an unencoded url.
 - **`decode`** decodes the value, such as trousse's `decodeBase64` or `decodeBase64Url` for a base64 carrier. A decoded value in another scheme is skipped, and the next param is tried.
 
-A value still encoded after one decode, starting with `http%3A`, `https%3A` or `https:%2F`, is decoded once more. A malformed escape, or one in a legacy charset such as `%E9` for é in Latin-1, stays as written.
+A value still encoded after one decode, starting with an encoded scheme such as `https%3A` or `https:%2F`, is decoded once more. A malformed escape, or one in a legacy charset such as `%E9` for é in Latin-1, stays as written.
 
 The target takes the link's fragment as `createUnwrapper` describes, so `example.com/out?target=https://example.org/guide#install` gives `https://example.org/guide#install`.
 
