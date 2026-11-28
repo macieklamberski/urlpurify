@@ -5,7 +5,7 @@ describe('unwrapPodscribe', () => {
   it('should extract a target without a scheme from pscrb.fm', () => {
     const url = new URL('https://pscrb.fm/rss/p/example.com/the_witch_wave/DRATCHAllEditFinal.mp3')
 
-    expect(unwrapPodscribe(url)).toBe('https://example.com/the_witch_wave/DRATCHAllEditFinal.mp3')
+    expect(unwrapPodscribe(url)).toBe('example.com/the_witch_wave/DRATCHAllEditFinal.mp3')
   })
 
   it('should extract a target from verifi.podscribe.com and keep its query string', () => {
@@ -14,7 +14,7 @@ describe('unwrapPodscribe', () => {
     )
 
     expect(unwrapPodscribe(url)).toBe(
-      'https://example.com/secure/androidcentral/Android_Central_280324.mp3?dest-id=35189',
+      'example.com/secure/androidcentral/Android_Central_280324.mp3?dest-id=35189',
     )
   })
 
@@ -34,7 +34,7 @@ describe('unwrapPodscribe', () => {
     )
 
     expect(unwrapPodscribe(url)).toBe(
-      'https://dts.podtrac.com/redirect.mp3/example.com/secure/ESP8316344405.mp3?dest-id=4434203',
+      'dts.podtrac.com/redirect.mp3/example.com/secure/ESP8316344405.mp3?dest-id=4434203',
     )
   })
 

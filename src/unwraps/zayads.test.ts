@@ -26,16 +26,16 @@ describe('unwrapZayads', () => {
     expect(unwrapZayads(url)).toBe('http://example.com/episode.mp3')
   })
 
-  it('should add https to a target without a scheme', () => {
+  it('should extract a target without a scheme', () => {
     const url = new URL('https://track.zayads.ru/QtN-zEoLRmG15Q7OWDfTlB/example.com/episode.mp3')
 
-    expect(unwrapZayads(url)).toBe('https://example.com/episode.mp3')
+    expect(unwrapZayads(url)).toBe('example.com/episode.mp3')
   })
 
-  it('should add https to a target without a scheme behind an http prefix', () => {
+  it('should keep a target without a scheme behind an http prefix', () => {
     const url = new URL('http://track.zayads.ru/QtN-zEoLRmG15Q7OWDfTlB/example.com/episode.mp3')
 
-    expect(unwrapZayads(url)).toBe('https://example.com/episode.mp3')
+    expect(unwrapZayads(url)).toBe('example.com/episode.mp3')
   })
 
   it('should return undefined when the campaign id has no target', () => {

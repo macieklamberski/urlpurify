@@ -5,7 +5,7 @@ describe('unwrapChartable', () => {
   it('should extract a target without a scheme from chrt.fm', () => {
     const url = new URL('https://chrt.fm/track/6DA3GA/example.com/artofcomposing/13_AOC_013.mp3')
 
-    expect(unwrapChartable(url)).toBe('https://example.com/artofcomposing/13_AOC_013.mp3')
+    expect(unwrapChartable(url)).toBe('example.com/artofcomposing/13_AOC_013.mp3')
   })
 
   it('should extract a target without a scheme from chtbl.com', () => {
@@ -14,7 +14,7 @@ describe('unwrapChartable', () => {
     )
 
     expect(unwrapChartable(url)).toBe(
-      'https://example.com/static/554a6e7e/t/623f603b/1648320630371/Episode+110.mp3',
+      'example.com/static/554a6e7e/t/623f603b/1648320630371/Episode+110.mp3',
     )
   })
 
@@ -31,7 +31,7 @@ describe('unwrapChartable', () => {
       'https://chtbl.com/track/6538//example.com/forcedn/bordersofsleep/SBS_EP0049.mp3',
     )
 
-    expect(unwrapChartable(url)).toBe('https://example.com/forcedn/bordersofsleep/SBS_EP0049.mp3')
+    expect(unwrapChartable(url)).toBe('example.com/forcedn/bordersofsleep/SBS_EP0049.mp3')
   })
 
   it('should leave the next prefix in a chain for the next pass', () => {
@@ -40,7 +40,7 @@ describe('unwrapChartable', () => {
     )
 
     expect(unwrapChartable(url)).toBe(
-      'https://podtrac.com/pts/redirect.mp3/example.com/d/clips/audio.mp3?utm_source=Podcast',
+      'podtrac.com/pts/redirect.mp3/example.com/d/clips/audio.mp3?utm_source=Podcast',
     )
   })
 

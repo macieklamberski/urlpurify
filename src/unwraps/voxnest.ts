@@ -8,5 +8,5 @@ const streamPrefixRegex = /^\/stream\/[^/]+\//i
 export const unwrapVoxnest = createPathUnwrapper({
   hosts: 'audio.voxnest.com',
   prefix: streamPrefixRegex,
-  scheme: 'http',
+  scheme: 'http', // The redirect names http for a target with no scheme, probed 2026-11-28
 })

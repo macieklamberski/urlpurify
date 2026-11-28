@@ -57,4 +57,13 @@ describe('unwrapDstats', () => {
 
     expect(unwrapDstats(url)).toBeUndefined()
   })
+
+  it('should decode an encoded download target', () => {
+    const value = new URL(
+      'http://dstats.net/download/https%3A%2F%2Fexample.com%2Fepisode.mp3%3Fa%3D1',
+    )
+    const expected = 'https://example.com/episode.mp3?a=1'
+
+    expect(unwrapDstats(value)).toBe(expected)
+  })
 })

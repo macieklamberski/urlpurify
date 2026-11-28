@@ -188,4 +188,12 @@ describe('unwrapUnisender', () => {
 
     expect(unwrapUnisender(value)).toBe(expected)
   })
+
+  it('should return undefined for a relative value', () => {
+    const value = new URL(
+      'http://usndr.com/ru/mail_link_tracker?hash=5ophjexcycqe5wnr3ykwqf6hro5uuxtmkosu775oodnd8ro&url=/local/page',
+    )
+
+    expect(unwrapUnisender(value)).toBeUndefined()
+  })
 })

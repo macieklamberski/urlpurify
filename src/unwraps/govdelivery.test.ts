@@ -73,10 +73,11 @@ describe('unwrapGovdelivery', () => {
     expect(unwrapGovdelivery(url)).toBeUndefined()
   })
 
-  it('should keep the wrapper for a percent-encoded target', () => {
-    const url = `${prefix}https%3A%2F%2Fwww.example.com%2Fbusiness%3Futm_content=&utm_medium=email`
+  it('should decode a percent-encoded target', () => {
+    const value = `${prefix}https%3A%2F%2Fwww.example.com%2Fbusiness%3Futm_content=&utm_medium=email`
+    const expected = 'https://www.example.com/business?utm_content=&utm_medium=email'
 
-    expect(purifyUrl(url, { unwrappers: [unwrapGovdelivery] })).toBe(url)
+    expect(purifyUrl(value, { unwrappers: [unwrapGovdelivery] })).toBe(expected)
   })
 
   it('should return undefined for another path on the host', () => {

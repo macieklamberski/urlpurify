@@ -3,9 +3,9 @@ import { purifyUrl } from '../clean.js'
 import { unwrapNlaWebarchive } from './nlaWebarchive.js'
 
 describe('unwrapNlaWebarchive', () => {
-  it('should give https to a target without a scheme', () => {
+  it('should give http to a target without a scheme', () => {
     const value = 'https://webarchive.nla.gov.au/awa/20200101000000/www.example.com/page'
-    const expected = 'https://www.example.com/page'
+    const expected = 'http://www.example.com/page'
 
     expect(purifyUrl(value, { unwrappers: [unwrapNlaWebarchive] })).toBe(expected)
   })

@@ -4,7 +4,7 @@ import { unwrapWikidot } from './wikidot.js'
 describe('unwrapWikidot', () => {
   it('should extract a target glued onto the wiki host', () => {
     const value = new URL('http://film-wiki.wikidot.com//www.example.org/embed/e8frOhxdZmE')
-    const expected = 'https://www.example.org/embed/e8frOhxdZmE'
+    const expected = 'www.example.org/embed/e8frOhxdZmE'
 
     expect(unwrapWikidot(value)).toBe(expected)
   })
@@ -13,7 +13,7 @@ describe('unwrapWikidot', () => {
     const value = new URL(
       'http://rooms-wiki.wikidot.com//interwiki.example.org/styleFrame.html?priority=2&type=sidebar#top',
     )
-    const expected = 'https://interwiki.example.org/styleFrame.html?priority=2&type=sidebar#top'
+    const expected = 'interwiki.example.org/styleFrame.html?priority=2&type=sidebar#top'
 
     expect(unwrapWikidot(value)).toBe(expected)
   })

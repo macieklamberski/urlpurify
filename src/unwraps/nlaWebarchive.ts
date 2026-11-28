@@ -1,5 +1,5 @@
 import { isHostOf } from 'trousse'
-import { resolvePathTarget } from '../pathTarget.js'
+import { addArchivedScheme, resolvePathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
@@ -22,7 +22,6 @@ export const unwrapNlaWebarchive: UrlUnwrapper = createUnwrapper({
   hosts: [...hosts, 'pandora.nla.gov.au'],
   unwrap: (url) => {
     let match: RegExpExecArray | null = null
-    let scheme = ''
 
     if (isHostOf(url, hosts)) {
       match = pathRegex.exec(url.pathname)
@@ -33,8 +32,6 @@ export const unwrapNlaWebarchive: UrlUnwrapper = createUnwrapper({
 
       if (!match) {
         match = pandoraTitlePathRegex.exec(url.pathname)
-        // Pandora's title page links the publisher's site as http beside its snapshot.
-        scheme = 'http://'
       }
     }
 
@@ -42,6 +39,6 @@ export const unwrapNlaWebarchive: UrlUnwrapper = createUnwrapper({
       return
     }
 
-    return resolvePathTarget(url, `${scheme}${match[1]}`)
+    return addArchivedScheme(resolvePathTarget(url, match[1]))
   },
 })

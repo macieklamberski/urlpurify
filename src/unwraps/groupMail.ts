@@ -2,7 +2,7 @@ import { resolvePathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
-const pathRegex = /^\/[A-Za-z0-9]+\/e=[^/]*\/(https?:\/.*)$/i
+const pathRegex = /^\/[A-Za-z0-9]+\/e=[^/]*\/(https?:(?:\/|%2f).*)$/i
 
 // GroupMail email click tracker (lnk.ie/<code>/e=<recipient email>/<target>). The target's own
 // query and fragment are the url's. Opt-in: unwrapping removes the sender's click count.

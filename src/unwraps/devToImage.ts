@@ -2,7 +2,7 @@ import { resolvePathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
-const sourcePathRegex = /^\/dynamic\/image\/.*?(?<source>https?(?::|%3a).+)$/i
+const sourcePathRegex = /^\/dynamic\/image\/.*?(?<source>https?(?::|%(?:25)?3a).+)$/i
 
 // dev.to image optimizer (media2.dev.to/dynamic/image/<options>/<source>).
 // Not included in defaultUnwrappers: unwrapping swaps the resized copy for the original image.

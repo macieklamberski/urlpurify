@@ -2,13 +2,13 @@ import { describe, expect, it } from 'bun:test'
 import { unwrapTheRegister } from './theRegister.js'
 
 describe('unwrapTheRegister', () => {
-  it('should add the https scheme to a target stored without one', () => {
+  it('should extract a target stored without a scheme', () => {
     const url = new URL(
       'https://go.theregister.com/feed/www.theregister.com/2024/03/08/microsoft_confirms_russian_spies_stole/',
     )
 
     expect(unwrapTheRegister(url)).toBe(
-      'https://www.theregister.com/2024/03/08/microsoft_confirms_russian_spies_stole/',
+      'www.theregister.com/2024/03/08/microsoft_confirms_russian_spies_stole/',
     )
   })
 
@@ -27,7 +27,7 @@ describe('unwrapTheRegister', () => {
       'https://go.theregister.com/feed/www.reghardware.co.uk/2009/12/17/lockface_usb/',
     )
 
-    expect(unwrapTheRegister(url)).toBe('https://www.reghardware.co.uk/2009/12/17/lockface_usb/')
+    expect(unwrapTheRegister(url)).toBe('www.reghardware.co.uk/2009/12/17/lockface_usb/')
   })
 
   it('should return undefined for a target on another site', () => {
@@ -72,13 +72,13 @@ describe('unwrapTheRegister', () => {
     expect(unwrapTheRegister(url)).toBeUndefined()
   })
 
-  it('should give a target with no scheme https behind an http counter', () => {
+  it('should keep a target without a scheme behind an http counter', () => {
     const url = new URL(
       'http://go.theregister.com/feed/www.theregister.com/2024/03/08/microsoft_confirms_russian_spies_stole/',
     )
 
     expect(unwrapTheRegister(url)).toBe(
-      'https://www.theregister.com/2024/03/08/microsoft_confirms_russian_spies_stole/',
+      'www.theregister.com/2024/03/08/microsoft_confirms_russian_spies_stole/',
     )
   })
 })

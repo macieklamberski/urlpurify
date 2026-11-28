@@ -64,4 +64,14 @@ describe('unwrapProofpointV2', () => {
 
     expect(unwrapProofpointV2(value)).toBe(expected)
   })
+
+  it('should decode a target whose encoded form ends in a number', () => {
+    const value = new URL(
+      'https://urldefense.proofpoint.com/v2/url?u=https-3A__www.example.com_maps_place_30908-2BWarder-2BSt-2C-2BSan-2BAntonio-2C-2BFL-2B33576_-4028.330544-2C-2D82.3080347-2C17z_data-3D-213m1-214d-2D82.305846&d=DwMFaQ&c=abc',
+    )
+    const expected =
+      'https://www.example.com/maps/place/30908+Warder+St,+San+Antonio,+FL+33576/@28.330544,-82.3080347,17z/data=!3m1!4d-82.305846'
+
+    expect(unwrapProofpointV2(value)).toBe(expected)
+  })
 })

@@ -51,4 +51,13 @@ describe('unwrapPbs', () => {
 
     expect(unwrapPbs(url)).toBeUndefined()
   })
+
+  it('should decode an encoded target', () => {
+    const value = new URL(
+      'http://www.pbs.org/wgbh/nova/rss/podcast/redir/https%3A%2F%2Fexample.com%2Fepisode.mp3%3Fa%3D1',
+    )
+    const expected = 'https://example.com/episode.mp3?a=1'
+
+    expect(unwrapPbs(value)).toBe(expected)
+  })
 })

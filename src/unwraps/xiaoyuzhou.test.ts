@@ -2,22 +2,22 @@ import { describe, expect, it } from 'bun:test'
 import { unwrapXiaoyuzhou } from './xiaoyuzhou.js'
 
 describe('unwrapXiaoyuzhou', () => {
-  it('should extract a target and give it the https scheme', () => {
+  it('should extract a target without a scheme', () => {
     const url = new URL(
       'https://dts-api.xiaoyuzhoufm.com/track/632bdd5ef9101a1a5422db47/6a69acb056a3f3491ba6d196/media.xyzcdn.net/632bdd5ef9101a1a5422db47/lppmLfBt883nEJUupEj3a1lnPRPm.m4a',
     )
 
     expect(unwrapXiaoyuzhou(url)).toBe(
-      'https://media.xyzcdn.net/632bdd5ef9101a1a5422db47/lppmLfBt883nEJUupEj3a1lnPRPm.m4a',
+      'media.xyzcdn.net/632bdd5ef9101a1a5422db47/lppmLfBt883nEJUupEj3a1lnPRPm.m4a',
     )
   })
 
-  it('should give the target the https scheme on an http prefix', () => {
+  it('should keep a target without a scheme behind an http prefix', () => {
     const url = new URL(
       'http://dts-api.xiaoyuzhoufm.com/track/632bdd5ef9101a1a5422db47/69f09407740bacea87735df4/media.xyzcdn.net/FvOFz_SxU5xJROBoHDhPB9CbwNzB.m4a',
     )
 
-    expect(unwrapXiaoyuzhou(url)).toBe('https://media.xyzcdn.net/FvOFz_SxU5xJROBoHDhPB9CbwNzB.m4a')
+    expect(unwrapXiaoyuzhou(url)).toBe('media.xyzcdn.net/FvOFz_SxU5xJROBoHDhPB9CbwNzB.m4a')
   })
 
   it('should keep the target query string', () => {
@@ -25,9 +25,7 @@ describe('unwrapXiaoyuzhou', () => {
       'https://dts-api.xiaoyuzhoufm.com/track/632bdd5ef9101a1a5422db47/69f09407740bacea87735df4/media.xyzcdn.net/FvOFz_SxU5xJROBoHDhPB9CbwNzB.m4a?t=120',
     )
 
-    expect(unwrapXiaoyuzhou(url)).toBe(
-      'https://media.xyzcdn.net/FvOFz_SxU5xJROBoHDhPB9CbwNzB.m4a?t=120',
-    )
+    expect(unwrapXiaoyuzhou(url)).toBe('media.xyzcdn.net/FvOFz_SxU5xJROBoHDhPB9CbwNzB.m4a?t=120')
   })
 
   it('should return undefined for a target outside media.xyzcdn.net', () => {

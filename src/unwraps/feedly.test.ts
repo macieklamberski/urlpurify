@@ -125,6 +125,14 @@ describe('unwrapFeedly', () => {
 
       expect(unwrapFeedly(value)).toBeUndefined()
     })
+    it('should decode a feed encoded twice', () => {
+      const value = new URL(
+        'https://feedly.com/i/subscription/feed/https%253A%252F%252Fwww.example.com%252Ffeed%252F',
+      )
+      const expected = 'https://www.example.com/feed/'
+
+      expect(unwrapFeedly(value)).toBe(expected)
+    })
   })
 
   describe('subscription url param', () => {

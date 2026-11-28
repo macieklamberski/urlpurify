@@ -8,23 +8,23 @@ describe('unwrapPodup', () => {
     )
 
     expect(unwrapPodup(url)).toBe(
-      'https://storageapi.podup.com/production/821/1/blog/podcast/4df4875f-6205-489a-bc44-2e6cd26128d0.mp3',
+      'storageapi.podup.com/production/821/1/blog/podcast/4df4875f-6205-489a-bc44-2e6cd26128d0.mp3',
     )
   })
 
-  it('should give the target https behind an http prefix', () => {
+  it('should keep a target without a scheme behind an http prefix', () => {
     const url = new URL(
       'http://traffic.podup.com/media/storageapi.podup.com/production/769/files/files/episode_1767740067401_810f5b0f.mp3',
     )
 
     expect(unwrapPodup(url)).toBe(
-      'https://storageapi.podup.com/production/769/files/files/episode_1767740067401_810f5b0f.mp3',
+      'storageapi.podup.com/production/769/files/files/episode_1767740067401_810f5b0f.mp3',
     )
   })
 
   it('should keep the link fragment', () => {
     const value = new URL('https://traffic.podup.com/media/example.com/episode.mp3#t=30')
-    const expected = 'https://example.com/episode.mp3#t=30'
+    const expected = 'example.com/episode.mp3#t=30'
 
     expect(unwrapPodup(value)).toBe(expected)
   })

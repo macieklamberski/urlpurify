@@ -7,9 +7,7 @@ describe('unwrapPodder', () => {
       'https://p.podderapp.com/7764874378/example.com/2597144/episodes/19435573-134.mp3?download=true',
     )
 
-    expect(unwrapPodder(url)).toBe(
-      'https://example.com/2597144/episodes/19435573-134.mp3?download=true',
-    )
+    expect(unwrapPodder(url)).toBe('example.com/2597144/episodes/19435573-134.mp3?download=true')
   })
 
   it('should extract a target with a scheme', () => {

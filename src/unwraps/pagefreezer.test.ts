@@ -4,10 +4,10 @@ import { unwrapperHosts } from '../utils.js'
 import { unwrapPagefreezer } from './pagefreezer.js'
 
 describe('unwrapPagefreezer', () => {
-  it('should give https to a target without a scheme', () => {
+  it('should give http to a target without a scheme', () => {
     const value =
       'https://public3.pagefreezer.com/browse/coll/01-01-2020T00:00/www.example.com/page'
-    const expected = 'https://www.example.com/page'
+    const expected = 'http://www.example.com/page'
 
     expect(purifyUrl(value, { unwrappers: [unwrapPagefreezer] })).toBe(expected)
   })

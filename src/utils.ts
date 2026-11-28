@@ -100,10 +100,9 @@ export const appendLinkFragment = (target: string, url: URL): string => {
 }
 
 // The target a carrier param holds, read as `getParamValues` reads it and decoded once more when
-// encoded twice: the first value, or the one at `index`, such as -1 for the last. For a link that
-// opens a page, such as a share intent or an archive's own view: the page reads the carrier from
-// the query, so the link's fragment stays on that page. `plus` reads a raw `+` as
-// `decodeParamValue` does.
+// encoded twice: the first value, or the one at `index`, such as -1 for the last. A value the url
+// repair, trousse's `resolveUrl`, cannot turn into an http url, such as a relative `/local/page`,
+// another scheme or a title, is no target. `plus` reads a raw `+` as `decodeParamValue` does.
 export const readParamTarget = (
   url: URL,
   name: string,
@@ -116,7 +115,13 @@ export const readParamTarget = (
     return
   }
 
-  return decodeEncodedScheme(value)
+  const target = decodeEncodedScheme(value)
+
+  if (!resolveUrl(target)) {
+    return
+  }
+
+  return target
 }
 
 export type TargetDecoder = (value: string) => string | undefined
@@ -124,7 +129,8 @@ export type TargetDecoder = (value: string) => string | undefined
 // The target a carrier param holds encoded, such as in base64: the first value, or the one at
 // `index`, decoded by `decode`, and decoded once more when it still holds an encoded scheme. The
 // value is read as `getParamValues` reads it with a `+` kept, so a raw `+` of the base64 alphabet
-// stays a `+`, where form decoding reads it as a space that `atob` drops.
+// stays a `+`, where form decoding reads it as a space that `atob` drops. A decoded value the url
+// repair cannot use is no target, as in `readParamTarget`.
 export const readDecodedTarget = (
   url: URL,
   name: string,
@@ -137,27 +143,29 @@ export const readDecodedTarget = (
     return
   }
 
-  const target = decode(value)
+  const decoded = decode(value)
 
-  if (!target) {
+  if (!decoded) {
     return
   }
 
-  return decodeEncodedScheme(target)
+  const target = decodeEncodedScheme(decoded)
+
+  if (!resolveUrl(target)) {
+    return
+  }
+
+  return target
 }
 
-const lastSchemeRegex = /^.*https?(?::|%3a)./i
+const lastSchemeRegex = /^.*https?(?::|%(?:25)?3a)./i
 
 // The `source` group of a path regex whose lazy `.*?` searches for a source scheme after a prefix.
 // Matching only up to the last scheme keeps one ahead of every prefix the regex tries, so it never
-// rescans the rest of the path per prefix, which is quadratic on a path with no source. A regex
-// that reads another scheme spelling passes a `headRegex` ending on that same spelling.
-export const matchPathSource = (
-  path: string,
-  regex: RegExp,
-  headRegex = lastSchemeRegex,
-): string | undefined => {
-  const head = headRegex.exec(path)?.[0]
+// rescans the rest of the path per prefix, which is quadratic on a path with no source. The scheme
+// is raw, encoded or encoded twice.
+export const matchPathSource = (path: string, regex: RegExp): string | undefined => {
+  const head = lastSchemeRegex.exec(path)?.[0]
 
   if (!head) {
     return
@@ -311,13 +319,12 @@ export const createUnwrapper = (config: UnwrapperConfig): UrlUnwrapper => {
   return unwrap
 }
 
-// An unwrapper for the target in the first of `params` whose value the url repair, trousse's
-// `resolveUrl`, turns into an http url, on a url on the hosts `createUnwrapper` takes, and on `path`
-// when given: an exact path or a list, compared in any case, or a regex. A value in another
-// scheme, such as an app's own `myapp://open`, a relative path such as `/local/page` or a title is
-// skipped for the next param. A host with no scheme, or with a port as `example.com:8080/`, is
-// repaired. `index` and `decode` read the target as `readDecodedTarget` does, and `plus` as
-// `readParamTarget` does.
+// An unwrapper for the target in the first of `params` that holds one, as `readParamTarget` reads
+// it, or `readDecodedTarget` with `decode`, on a url on the hosts `createUnwrapper` takes, and on
+// `path` when given: an exact path or a list, compared in any case, or a regex. A value the readers
+// skip, such as an app's own `myapp://open`, a relative path such as `/local/page` or a title,
+// moves on to the next param. A host with no scheme, or with a port as `example.com:8080/`, is
+// repaired.
 export const createQueryUnwrapper = (config: QueryUnwrapperConfig): UrlUnwrapper => {
   const { path, params, index, decode, plus, ...options } = config
 
@@ -345,7 +352,7 @@ export const createQueryUnwrapper = (config: QueryUnwrapperConfig): UrlUnwrapper
           ? readDecodedTarget(url, param, decode, index)
           : readParamTarget(url, param, index, plus)
 
-        if (target && resolveUrl(target)) {
+        if (target) {
           return target
         }
       }

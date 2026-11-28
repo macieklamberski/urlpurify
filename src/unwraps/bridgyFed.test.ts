@@ -59,4 +59,11 @@ describe('unwrapBridgyFed', () => {
 
     expect(unwrapBridgyFed(url)).toBeUndefined()
   })
+
+  it('should decode an encoded target', () => {
+    const value = new URL('https://fed.brid.gy/r/https%3A%2F%2Fexample.org%2Fpost%3Fa%3D1')
+    const expected = 'https://example.org/post?a=1'
+
+    expect(unwrapBridgyFed(value)).toBe(expected)
+  })
 })

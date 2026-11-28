@@ -7,15 +7,13 @@ describe('unwrapArttrack', () => {
       'https://arttrk.com/p/BZZPR/example.com/2551804/episodes/19434057-elise-joshi.mp3',
     )
 
-    expect(unwrapArttrack(url)).toBe(
-      'https://example.com/2551804/episodes/19434057-elise-joshi.mp3',
-    )
+    expect(unwrapArttrack(url)).toBe('example.com/2551804/episodes/19434057-elise-joshi.mp3')
   })
 
   it('should keep the query string of the target', () => {
     const url = new URL('https://arttrk.com/p/ABMA5/example.com/episode.mp3?source=rss')
 
-    expect(unwrapArttrack(url)).toBe('https://example.com/episode.mp3?source=rss')
+    expect(unwrapArttrack(url)).toBe('example.com/episode.mp3?source=rss')
   })
 
   it('should return undefined when the campaign id has no target', () => {

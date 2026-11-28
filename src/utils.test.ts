@@ -6,6 +6,7 @@ import {
   createUnwrapper,
   getBrandLabels,
   getUtf8ByteLength,
+  readDecodedTarget,
   readParamTarget,
   unwrapperHosts,
 } from './utils.js'
@@ -1058,6 +1059,18 @@ describe('readParamTarget', () => {
     expect(readParamTarget(value, 'url', 0, 'space')).toBe(expected)
   })
 
+  it('should return undefined for a relative value', () => {
+    const value = new URL('https://share.example.com/?url=/local/page')
+
+    expect(readParamTarget(value, 'url')).toBeUndefined()
+  })
+
+  it('should return undefined for a value in another scheme', () => {
+    const value = new URL('https://share.example.com/?url=myapp://open')
+
+    expect(readParamTarget(value, 'url')).toBeUndefined()
+  })
+
   it('should drop the link fragment', () => {
     const value = new URL('https://share.example.com/?url=https://www.example.com/episode&t=#195')
     const expected = 'https://www.example.com/episode'
@@ -1080,5 +1093,20 @@ describe('getUtf8ByteLength', () => {
 
   it('should return zero for empty strings', () => {
     expect(getUtf8ByteLength('')).toBe(0)
+  })
+})
+
+describe('readDecodedTarget', () => {
+  it('should return the target a base64 value holds', () => {
+    const value = new URL('https://click.example.com/?u=aHR0cHM6Ly93d3cuZXhhbXBsZS5jb20vcG9zdA')
+    const expected = 'https://www.example.com/post'
+
+    expect(readDecodedTarget(value, 'u', decodeBase64)).toBe(expected)
+  })
+
+  it('should return undefined for a relative value that decodes to junk', () => {
+    const value = new URL('https://click.example.com/?u=/local/page')
+
+    expect(readDecodedTarget(value, 'u', decodeBase64)).toBeUndefined()
   })
 })

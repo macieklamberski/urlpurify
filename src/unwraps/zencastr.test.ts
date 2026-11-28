@@ -8,7 +8,7 @@ describe('unwrapZencastr', () => {
     )
 
     expect(unwrapZencastr(url)).toBe(
-      'https://example.com/d/1437767933/cf372a7e-810f-4eab-8a55-34456ccc0d58/819be75e-f549-4f38-88d3-a2eb91ccb9da.mp3',
+      'example.com/d/1437767933/cf372a7e-810f-4eab-8a55-34456ccc0d58/819be75e-f549-4f38-88d3-a2eb91ccb9da.mp3',
     )
   })
 
@@ -18,17 +18,17 @@ describe('unwrapZencastr', () => {
     )
 
     expect(unwrapZencastr(url)).toBe(
-      'https://example.com/media/audio/transcoded/75c667ea-2739-4306-96be-e15097ef0853/episodes/audio/default.mp3',
+      'example.com/media/audio/transcoded/75c667ea-2739-4306-96be-e15097ef0853/episodes/audio/default.mp3',
     )
   })
 
-  it('should give the target https when the prefix is on http', () => {
+  it('should keep a target without a scheme when the prefix is on http', () => {
     const url = new URL(
       'http://r.zen.ai/r/example.com/wp-content/uploads/2019/11/PolicyViz_EpisodeNo163.mp3',
     )
 
     expect(unwrapZencastr(url)).toBe(
-      'https://example.com/wp-content/uploads/2019/11/PolicyViz_EpisodeNo163.mp3',
+      'example.com/wp-content/uploads/2019/11/PolicyViz_EpisodeNo163.mp3',
     )
   })
 
@@ -37,9 +37,7 @@ describe('unwrapZencastr', () => {
       'https://r.zencastr.com/r/example.com/web/episode/9a7b2c.mp3?updated=1778670796',
     )
 
-    expect(unwrapZencastr(url)).toBe(
-      'https://example.com/web/episode/9a7b2c.mp3?updated=1778670796',
-    )
+    expect(unwrapZencastr(url)).toBe('example.com/web/episode/9a7b2c.mp3?updated=1778670796')
   })
 
   it('should return undefined when the prefix has no target', () => {

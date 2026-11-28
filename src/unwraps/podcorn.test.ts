@@ -8,7 +8,7 @@ describe('unwrapPodcorn', () => {
     )
 
     expect(unwrapPodcorn(url)).toBe(
-      'https://example.com/audio/7976124/7976124_2026-02-13-213724.128.mp3?rssID=4772',
+      'example.com/audio/7976124/7976124_2026-02-13-213724.128.mp3?rssID=4772',
     )
   })
 
@@ -21,7 +21,7 @@ describe('unwrapPodcorn', () => {
   it('should skip an empty segment after the prefix', () => {
     const url = new URL('https://pdcn.co/e//example.com/datingwomenradioshow/DWP556.mp3')
 
-    expect(unwrapPodcorn(url)).toBe('https://example.com/datingwomenradioshow/DWP556.mp3')
+    expect(unwrapPodcorn(url)).toBe('example.com/datingwomenradioshow/DWP556.mp3')
   })
 
   it('should leave the next prefix in a chain for the next pass', () => {
@@ -30,7 +30,7 @@ describe('unwrapPodcorn', () => {
     )
 
     expect(unwrapPodcorn(url)).toBe(
-      'https://dts.podtrac.com/redirect.mp3/example.com/broadway/20260628-br-twob.mp3',
+      'dts.podtrac.com/redirect.mp3/example.com/broadway/20260628-br-twob.mp3',
     )
   })
 

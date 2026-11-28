@@ -52,12 +52,13 @@ describe('unwrapMcas', () => {
     expect(unwrapMcas(url)).toBe('https://examplemcas.ms/page')
   })
 
-  it('should return undefined when originalUrl is not a url', () => {
-    const url = new URL(
-      'https://mcas-proxyweb.mcas.ms/certificate-checker?login=false&originalUrl=example.com.mcas.ms',
+  it('should repair a target without a scheme', () => {
+    const value = new URL(
+      'https://mcas-proxyweb.mcas.ms/certificate-checker?login=false&originalUrl=example.com.mcas.ms/post',
     )
+    const expected = 'https://example.com/post'
 
-    expect(unwrapMcas(url)).toBeUndefined()
+    expect(unwrapMcas(value)).toBe(expected)
   })
 
   it('should return undefined when originalUrl param is missing', () => {

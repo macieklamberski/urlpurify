@@ -8,14 +8,14 @@ describe('unwrapUpAudio', () => {
     )
 
     expect(unwrapUpAudio(url)).toBe(
-      'https://example.com/secure/theradiovagabond/Eng_369_-_ETF_Ric_Gazarian.mp3?dest-id=431421',
+      'example.com/secure/theradiovagabond/Eng_369_-_ETF_Ric_Gazarian.mp3?dest-id=431421',
     )
   })
 
   it('should leave the next prefix in a chain for the next pass', () => {
     const url = new URL('https://prefix.up.audio/s/pdst.fm/e/example.com/episode.mp3')
 
-    expect(unwrapUpAudio(url)).toBe('https://pdst.fm/e/example.com/episode.mp3')
+    expect(unwrapUpAudio(url)).toBe('pdst.fm/e/example.com/episode.mp3')
   })
 
   it('should return undefined when the prefix has no target', () => {

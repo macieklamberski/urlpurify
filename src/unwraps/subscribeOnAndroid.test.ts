@@ -3,25 +3,25 @@ import { purifyUrl } from '../clean.js'
 import { unwrapSubscribeOnAndroid } from './subscribeOnAndroid.js'
 
 describe('unwrapSubscribeOnAndroid', () => {
-  it('should extract a feed that follows the host as https', () => {
+  it('should extract a feed that follows the host', () => {
     const value = new URL(
       'http://subscribeonandroid.com/example.com/users/soundcloud:users:170290482/sounds.rss',
     )
-    const expected = 'https://example.com/users/soundcloud:users:170290482/sounds.rss'
+    const expected = 'example.com/users/soundcloud:users:170290482/sounds.rss'
 
     expect(unwrapSubscribeOnAndroid(value)).toBe(expected)
   })
 
   it('should extract a feed on the www host', () => {
     const value = new URL('https://www.subscribeonandroid.com/example.com/s/8901fef8/podcast/rss')
-    const expected = 'https://example.com/s/8901fef8/podcast/rss'
+    const expected = 'example.com/s/8901fef8/podcast/rss'
 
     expect(unwrapSubscribeOnAndroid(value)).toBe(expected)
   })
 
   it('should extract a feed whose host has capital letters', () => {
     const value = new URL('http://subscribeonandroid.com/NRR.example.com/feed/')
-    const expected = 'https://NRR.example.com/feed/'
+    const expected = 'NRR.example.com/feed/'
 
     expect(unwrapSubscribeOnAndroid(value)).toBe(expected)
   })
@@ -31,7 +31,7 @@ describe('unwrapSubscribeOnAndroid', () => {
       'http://subscribeonandroid.com/www.example.com/rss_search.rss?speakeronly=true&keyword=Pastor+Edward+Donnelly',
     )
     const expected =
-      'https://www.example.com/rss_search.rss?speakeronly=true&keyword=Pastor+Edward+Donnelly'
+      'www.example.com/rss_search.rss?speakeronly=true&keyword=Pastor+Edward+Donnelly'
 
     expect(unwrapSubscribeOnAndroid(value)).toBe(expected)
   })
@@ -41,14 +41,14 @@ describe('unwrapSubscribeOnAndroid', () => {
       'https://www.subscribeonandroid.com/example.com/internet-talk-radio/category/podcasts/Former%20Shows%20&%20Episodes/paranormal-is-normal/feed',
     )
     const expected =
-      'https://example.com/internet-talk-radio/category/podcasts/Former%20Shows%20&%20Episodes/paranormal-is-normal/feed'
+      'example.com/internet-talk-radio/category/podcasts/Former%20Shows%20&%20Episodes/paranormal-is-normal/feed'
 
     expect(unwrapSubscribeOnAndroid(value)).toBe(expected)
   })
 
   it('should keep a feed host with a port', () => {
     const value = new URL('http://subscribeonandroid.com/example.com:8080/feed/podcast/')
-    const expected = 'https://example.com:8080/feed/podcast/'
+    const expected = 'example.com:8080/feed/podcast/'
 
     expect(unwrapSubscribeOnAndroid(value)).toBe(expected)
   })

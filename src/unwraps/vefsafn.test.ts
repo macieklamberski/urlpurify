@@ -3,9 +3,9 @@ import { purifyUrl } from '../clean.js'
 import { unwrapVefsafn } from './vefsafn.js'
 
 describe('unwrapVefsafn', () => {
-  it('should give https to a target without a scheme', () => {
+  it('should give http to a target without a scheme', () => {
     const value = 'https://vefsafn.is/is/20200101000000/www.example.com/page'
-    const expected = 'https://www.example.com/page'
+    const expected = 'http://www.example.com/page'
 
     expect(purifyUrl(value, { unwrappers: [unwrapVefsafn] })).toBe(expected)
   })

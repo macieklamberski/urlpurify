@@ -8,7 +8,7 @@ describe('unwrapAusha', () => {
     )
 
     expect(unwrapAusha(url)).toBe(
-      'https://example.com/v1/stitch/ausha.mp3?tags=5e048821ca608&podcastUrl=https%3A%2F%2Fexample.org%2FBDMmula5dZWo.mp3',
+      'example.com/v1/stitch/ausha.mp3?tags=5e048821ca608&podcastUrl=https%3A%2F%2Fexample.org%2FBDMmula5dZWo.mp3',
     )
   })
 
@@ -17,7 +17,7 @@ describe('unwrapAusha', () => {
       'https://tr.ausha.co/B1mQPt1VGOew/dts.podtrac.com/redirect.mp3/example.com/episode.mp3',
     )
 
-    expect(unwrapAusha(url)).toBe('https://dts.podtrac.com/redirect.mp3/example.com/episode.mp3')
+    expect(unwrapAusha(url)).toBe('dts.podtrac.com/redirect.mp3/example.com/episode.mp3')
   })
 
   it('should return undefined when the episode id has no target', () => {

@@ -8,7 +8,7 @@ describe('unwrapSoundOn', () => {
     )
 
     expect(unwrapSoundOn(url)).toBe(
-      'https://example.com/d/1437767933/a2a4d3d1-b8dc-4db4-b6d9-013a5534a6f1.mp3',
+      'example.com/d/1437767933/a2a4d3d1-b8dc-4db4-b6d9-013a5534a6f1.mp3',
     )
   })
 

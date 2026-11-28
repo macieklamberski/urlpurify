@@ -5,7 +5,6 @@ import { createUnwrapper, decodeEncodedScheme, matchPathSource } from '../utils.
 
 // Cloudinary prefixes the path with the cloud name, Substack serves it from the root.
 const fetchPathRegex = /^(?:\/[^/]+)*\/image\/fetch\/.*?(?<source>https?(?::|%(?:25)?3a).+)$/i
-const lastSchemeRegex = /^.*https?(?::|%(?:25)?3a)./i
 
 // Cloudinary fetch on any delivery host, as Substack's substackcdn.com serves it
 // (res.cloudinary.com/<cloud>/image/fetch/<options>/<source>). Not included in defaultUnwrappers:
@@ -14,7 +13,7 @@ export const unwrapCloudinaryFetch: UrlUnwrapper = createUnwrapper({
   anyHost: true,
   ignoreLinkFragment: true,
   unwrap: (url) => {
-    const source = matchPathSource(url.pathname, fetchPathRegex, lastSchemeRegex)
+    const source = matchPathSource(url.pathname, fetchPathRegex)
 
     if (!source) {
       return

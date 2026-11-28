@@ -13,6 +13,8 @@ export type PathUnwrapperConfig = UnwrapperOptions & {
 }
 
 const leadingSlashesRegex = /^\/+/
+// An archived scheme never has a dot, so `www.example.com:80/` reads as a host with a port.
+const archivedSchemeRegex = /^[a-z][a-z\d+-]*:/i
 const encodedSchemeRegex = /^https?(?:%(?:25)?3A|:%(?:25)?2F)/i
 const encodedSlashesRegex = /^https?(?:%(?:25)?3A|:)%(?:25)?2F/i
 
@@ -36,7 +38,8 @@ export const decodePathTarget = (target: string): string => {
 // A target written in the url's path, as a module's own regex captures it, decoded by
 // `decodePathTarget`. A raw target takes the url's own query, since its query lands there. An
 // encoded target holds its own query and ends where its encoding ends, so the url's query is the
-// wrapper's. A target without an http scheme takes `scheme` when given. A service that drops the
+// wrapper's. A target without an http scheme takes `scheme` when given, and otherwise gets https
+// from `cleanUrl`, which cannot repair a host behind junk such as `%20`. A service that drops the
 // url's query on forwarding passes an empty `suffix`. The link's fragment is the factory's, per
 // `createUnwrapper`.
 export const resolvePathTarget = (
@@ -61,7 +64,7 @@ export const resolvePathTarget = (
 export const readPathTarget = (
   url: URL,
   prefixRegex: RegExp,
-  scheme = 'https:',
+  scheme?: string,
   suffix = url.search,
 ): string | undefined => {
   const match = url.pathname.match(prefixRegex)
@@ -80,15 +83,29 @@ export const readPathTarget = (
   return resolvePathTarget(url, path, scheme, suffix)
 }
 
+// A target a Wayback-style replay archived with no scheme, which the replay forwards to its http
+// snapshot.
+export const addArchivedScheme = (target: string): string => {
+  if (archivedSchemeRegex.test(target)) {
+    return target
+  }
+
+  return `http://${target}`
+}
+
 // An unwrapper for a target glued into the path behind a prefix, read by `readPathTarget`. A `link`
 // scheme forwards with the link's own.
 export const createPathUnwrapper = (config: PathUnwrapperConfig): UrlUnwrapper => {
-  const { prefix, scheme = 'https', ...options } = config
+  const { prefix, scheme, ...options } = config
 
   return createUnwrapper({
     ...options,
     unwrap: (url) => {
-      return readPathTarget(url, prefix, scheme === 'link' ? url.protocol : `${scheme}:`)
+      if (scheme === 'link') {
+        return readPathTarget(url, prefix, url.protocol)
+      }
+
+      return readPathTarget(url, prefix, scheme === 'http' ? 'http:' : undefined)
     },
   })
 }
