@@ -3,11 +3,11 @@ import { createUnwrapper, readParamTarget } from '../utils.js'
 
 const sharePaths = [
   {
-    hosts: ['social-plugins.line.me'],
+    hosts: 'social-plugins.line.me',
     path: /^\/(?:lineit\/share(?:\/ui)?|social-plugin\/share)$/i,
   },
-  { hosts: ['lineit.line.me'], path: /^\/share(?:\/ui)?$/i },
-  { hosts: ['timeline.line.me'], path: /^\/(?:lineit|social-plugin)\/share$/i },
+  { hosts: 'lineit.line.me', path: /^\/share(?:\/ui)?$/i },
+  { hosts: 'timeline.line.me', path: /^\/(?:lineit|social-plugin)\/share$/i },
 ]
 
 // LINE share (social-plugins.line.me/lineit/share?url=<target>, and the spellings that redirect to

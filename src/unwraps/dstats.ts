@@ -1,17 +1,19 @@
 import { readPathTarget } from '../pathTarget.js'
 import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
+const hosts = ['dstats.net', 'www.dstats.net']
+
 // The target keeps its scheme, as in /download/http://example.com/file.pdf.
 const downloadPrefixRegex = /^\/download\/(?=https?(?::|%(?:25)?3a))/i
 
 const extractDownload = createQueryUnwrapper({
-  hosts: ['dstats.net', 'www.dstats.net'],
+  hosts,
   path: '/download.php',
   params: ['file'],
 })
 
 const extractForward = createQueryUnwrapper({
-  hosts: ['dstats.net', 'www.dstats.net'],
+  hosts,
   path: '/fwd.php',
   params: ['url'],
 })
@@ -20,7 +22,7 @@ const extractForward = createQueryUnwrapper({
 // /fwd.php?url=<target>), the target unencoded.
 // Opt-in: unwrapping removes the publisher's download count.
 export const unwrapDstats = createUnwrapper({
-  hosts: ['dstats.net', 'www.dstats.net'],
+  hosts,
   unwrap: (url) => {
     return readPathTarget(url, downloadPrefixRegex) ?? extractDownload(url) ?? extractForward(url)
   },

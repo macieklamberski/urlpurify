@@ -5,8 +5,7 @@ import {
   createQueryUnwrapper,
   createUnwrapper,
   getBrandLabels,
-  getUtf8ByteLength,
-  readDecodedTarget,
+  readDecodedParamTarget,
   readParamTarget,
   unwrapperHosts,
 } from './utils.js'
@@ -17,6 +16,20 @@ const clickHostRegex = /^click\d+\.example\.com$/
 const lowercasePathRegex = /^\/[a-z]+$/
 
 describe('createQueryUnwrapper', () => {
+  it('should match a global path regex on every call', () => {
+    const extract = createQueryUnwrapper({
+      hosts: 'redirect.example.com',
+      path: /^\/out$/g,
+      params: 'url',
+    })
+    const value = new URL('https://redirect.example.com/out?url=https%3A%2F%2Fexample.com%2Fpost')
+    const expected = 'https://example.com/post'
+
+    extract(value)
+
+    expect(extract(value)).toBe(expected)
+  })
+
   it('should keep a raw plus in an encoded target with plus set to keep', () => {
     const extract = createQueryUnwrapper({
       hosts: 'images.example.com',
@@ -1098,34 +1111,17 @@ describe('readParamTarget', () => {
   })
 })
 
-describe('getUtf8ByteLength', () => {
-  it('should count ASCII characters as one byte', () => {
-    const value = 'hello'
-
-    expect(getUtf8ByteLength(value)).toBe(5)
-  })
-
-  it('should count multi-byte characters by their UTF-8 size', () => {
-    expect(getUtf8ByteLength('ã')).toBe(2)
-    expect(getUtf8ByteLength('€')).toBe(3)
-  })
-
-  it('should return zero for empty strings', () => {
-    expect(getUtf8ByteLength('')).toBe(0)
-  })
-})
-
-describe('readDecodedTarget', () => {
+describe('readDecodedParamTarget', () => {
   it('should return the target a base64 value holds', () => {
     const value = new URL('https://click.example.com/?u=aHR0cHM6Ly93d3cuZXhhbXBsZS5jb20vcG9zdA')
     const expected = 'https://www.example.com/post'
 
-    expect(readDecodedTarget(value, 'u', decodeBase64)).toBe(expected)
+    expect(readDecodedParamTarget(value, 'u', decodeBase64)).toBe(expected)
   })
 
   it('should return undefined for a relative value that decodes to junk', () => {
     const value = new URL('https://click.example.com/?u=/local/page')
 
-    expect(readDecodedTarget(value, 'u', decodeBase64)).toBeUndefined()
+    expect(readDecodedParamTarget(value, 'u', decodeBase64)).toBeUndefined()
   })
 })

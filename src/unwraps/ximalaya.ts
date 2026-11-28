@@ -4,7 +4,7 @@ import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 const filePathRegex = /^\/\/[^/]+$/
 const targetHostRegex = /\.xmcdn\.com$/
 
-const hosts = ['jt.ximalaya.com']
+const hosts = 'jt.ximalaya.com'
 
 const extractTarget = createQueryUnwrapper({
   hosts,

@@ -5,7 +5,7 @@ import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 const episodePrefixRegex = /^\/act\/e\/\d+\/\d+\/\d+\//i
 const supportPathRegex = /^\/act\/(?:sr\/\d+|fr\/\d+\/\d+)$/i
 
-const hosts = ['go.godcaster.fm']
+const hosts = 'go.godcaster.fm'
 
 const extractSupportTarget = createQueryUnwrapper({
   hosts,

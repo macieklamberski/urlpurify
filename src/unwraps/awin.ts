@@ -1,13 +1,15 @@
 import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
+const hosts = ['awin1.com', 'www.awin1.com']
+
 const extractAwinCread = createQueryUnwrapper({
-  hosts: ['awin1.com', 'www.awin1.com'],
+  hosts,
   path: '/cread.php',
   params: ['ued', 'p'],
 })
 
 const extractAwinClick = createQueryUnwrapper({
-  hosts: ['awin1.com', 'www.awin1.com'],
+  hosts,
   path: '/awclick.php',
   params: ['ued', 'p'],
 })
@@ -16,7 +18,7 @@ const extractAwinClick = createQueryUnwrapper({
 // [www.]awin1.com/awclick.php?p=<target> or ?ued=<target>).
 // Opt-in: unwrapping removes the writer's commission.
 export const unwrapAwin = createUnwrapper({
-  hosts: ['awin1.com', 'www.awin1.com'],
+  hosts,
   unwrap: (url) => {
     return extractAwinCread(url) ?? extractAwinClick(url)
   },

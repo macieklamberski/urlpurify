@@ -1,13 +1,15 @@
 import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
+const hosts = ['dropbox.com', 'www.dropbox.com']
+
 const extractReferrerCleansing = createQueryUnwrapper({
-  hosts: ['dropbox.com', 'www.dropbox.com'],
+  hosts,
   path: '/referrer_cleansing_redirect',
   params: ['url'],
 })
 
 const extractPaperLink = createQueryUnwrapper({
-  hosts: ['dropbox.com', 'www.dropbox.com'],
+  hosts,
   path: '/paper/ep/redirect/external-link',
   params: ['url'],
 })

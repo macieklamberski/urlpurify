@@ -6,7 +6,8 @@ const roverPathRegex = /^\/rover\/\d+\/[\d-]+\/\d+$/i
 // older ?loc=<target>).
 // Opt-in: unwrapping removes the publisher's commission.
 export const unwrapEbayRover = createQueryUnwrapper({
-  hosts: /^rover\.ebay\.(?:com|[a-z]{2,3}(?:\.[a-z]{2,3})?)$/,
+  brands: 'ebay',
+  match: /^rover\.ebay\.(?:com|[a-z]{2,3}(?:\.[a-z]{2,3})?)$/,
   path: roverPathRegex,
   params: ['mpre', 'loc'],
 })

@@ -6,7 +6,8 @@ const safelinksHostRegex =
   /(?:\.safelinks\.protection\.outlook\.com|^usg\d{2}\.safelinks\.protection\.office365\.us)$/
 
 const extractTarget = createQueryUnwrapper({
-  hosts: safelinksHostRegex,
+  subdomains: ['safelinks.protection.outlook.com', 'safelinks.protection.office365.us'],
+  match: safelinksHostRegex,
   params: ['url'],
 })
 

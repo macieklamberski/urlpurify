@@ -5,14 +5,13 @@ const hosts = ['bufferapp.com', 'www.bufferapp.com', 'buffer.com', 'www.buffer.c
 const composeHosts = ['publish.buffer.com']
 
 const addPathRegex = /^\/add\/?$/i
-const composePathRegex = /^\/compose$/i
 
 const isCarrierPath = (url: URL): boolean => {
   if (isHostOf(url, hosts)) {
     return isAnyOf(url.pathname, addPathRegex)
   }
 
-  return isAnyOf(url.pathname, composePathRegex)
+  return isAnyOf(url.pathname, '/compose')
 }
 
 // Buffer share form (bufferapp.com/add?url=<page>, also buffer.com/add, their www. hosts and

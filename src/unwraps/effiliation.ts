@@ -6,7 +6,7 @@ const pathRegex = /^\/servlet\/effi\.(?:redir|product)$/i
 // also /servlet/effi.product).
 // Opt-in: unwrapping removes the publisher's commission.
 export const unwrapEffiliation = createQueryUnwrapper({
-  hosts: ['track.effiliation.com'],
+  hosts: 'track.effiliation.com',
   path: pathRegex,
   params: ['url'],
 })

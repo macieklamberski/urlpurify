@@ -11,7 +11,8 @@ const extractTracker = createQueryUnwrapper({
 
 // The path is the app's own deep-link path, so any path is claimed on these hosts.
 const extractUniversalLink = createQueryUnwrapper({
-  hosts: /^[a-z0-9]{4}(?:\.tr)?\.adj\.st$/,
+  subdomains: 'adj.st',
+  match: /^[a-z0-9]{4}(?:\.tr)?\.adj\.st$/,
   params: ['adj_redirect_windows', 'adj_redirect', 'adjust_fallback', 'adj_fallback'],
 })
 

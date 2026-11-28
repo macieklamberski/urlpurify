@@ -6,7 +6,7 @@ const pathRegex = /^\/in\/offer\/\d+$/i
 // id>?aid=<id>&dlink=<target>).
 // Opt-in: unwrapping drops the publisher's commission.
 export const unwrapSalesdoubler = createQueryUnwrapper({
-  hosts: ['rdr.salesdoubler.com.ua'],
+  hosts: 'rdr.salesdoubler.com.ua',
   path: pathRegex,
   params: ['dlink'],
 })

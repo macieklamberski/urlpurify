@@ -10,7 +10,8 @@ const dashRegex = /-/g
 const yandexHostRegex = /^(?:www\.)?yandex\.(?:com\.tr|[a-z]{2,3})$/
 
 const extractTurboTarget = createQueryUnwrapper({
-  hosts: yandexHostRegex,
+  brands: 'yandex',
+  match: yandexHostRegex,
   path: '/turbo',
   params: ['text'],
 })
@@ -26,7 +27,7 @@ const extractTurboTarget = createQueryUnwrapper({
 // canonical content. Opt in by passing a custom unwrappers array.
 export const unwrapYandexTurbo = createUnwrapper({
   brands: ['yandex'],
-  domains: ['turbopages.org'],
+  domains: 'turbopages.org',
   unwrap: (url) => {
     const turboTarget = extractTurboTarget(url)
 

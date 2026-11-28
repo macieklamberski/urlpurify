@@ -1,5 +1,5 @@
 import { decodeBase64, hasQueryParam, isHttpUrl } from 'trousse'
-import { createUnwrapper, readDecodedTarget } from '../utils.js'
+import { createUnwrapper, readDecodedParamTarget } from '../utils.js'
 
 // The exit tracker at the blog root or under one blog folder.
 const pathRegex = /^(?:\/[^/]+)?\/exit\.php$/i
@@ -15,7 +15,7 @@ export const unwrapSerendipity = createUnwrapper({
       return
     }
 
-    const target = readDecodedTarget(url, 'url', decodeBase64)
+    const target = readDecodedParamTarget(url, 'url', decodeBase64)
 
     if (target && isHttpUrl(target)) {
       return target

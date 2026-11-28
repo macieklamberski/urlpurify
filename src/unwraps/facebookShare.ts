@@ -1,12 +1,4 @@
-import { createUnwrapper, readDecodedTarget, readParamTarget } from '../utils.js'
-
-const hosts = [
-  'facebook.com',
-  'www.facebook.com',
-  'm.facebook.com',
-  'pt-br.facebook.com',
-  'de.facebook.com',
-]
+import { createUnwrapper, readDecodedParamTarget, readParamTarget } from '../utils.js'
 
 const sharerPathRegex = /^\/(?:sharer(?:\/sharer)?(?:\.php)?|share\.php)\/?$/i
 const shareDialogPathRegex = /^\/dialog\/share\/?$/i
@@ -23,13 +15,19 @@ const stripHrefPrefix = (value: string): string => {
 // bare, m., pt-br. and de.facebook.com).
 // Opt-in: unwrapping returns the shared page, not the form.
 export const unwrapFacebookShare = createUnwrapper({
-  hosts,
+  hosts: [
+    'facebook.com',
+    'www.facebook.com',
+    'm.facebook.com',
+    'pt-br.facebook.com',
+    'de.facebook.com',
+  ],
   ignoreLinkFragment: true,
   unwrap: (url) => {
     if (sharerPathRegex.test(url.pathname)) {
       return (
         readParamTarget(url, 'u') ??
-        readDecodedTarget(url, 'u', stripHrefPrefix) ??
+        readDecodedParamTarget(url, 'u', stripHrefPrefix) ??
         readParamTarget(url, 'p[url]')
       )
     }

@@ -1,7 +1,5 @@
 import { createUnwrapper, readParamTarget } from '../utils.js'
 
-const hosts = ['stumbleupon.com', 'www.stumbleupon.com', 'badge.stumbleupon.com']
-
 const pathRegex = /^\/(?:submit(?:\.php)?|refer\.php|badge\/?)$/i
 
 // StumbleUpon share (stumbleupon.com/submit?url=<target>, /submit.php, /refer.php, /badge and
@@ -9,7 +7,7 @@ const pathRegex = /^\/(?:submit(?:\.php)?|refer\.php|badge\/?)$/i
 // same url=.
 // Opt-in: unwrapping returns the shared page, not the form.
 export const unwrapStumbleuponSubmit = createUnwrapper({
-  hosts,
+  hosts: ['stumbleupon.com', 'www.stumbleupon.com', 'badge.stumbleupon.com'],
   ignoreLinkFragment: true,
   unwrap: (url) => {
     if (!pathRegex.test(url.pathname)) {

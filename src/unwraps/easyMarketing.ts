@@ -1,15 +1,13 @@
 import { decodeBase64Url } from 'trousse'
-import { createUnwrapper, readDecodedTarget, readParamTarget } from '../utils.js'
+import { createUnwrapper, readDecodedParamTarget, readParamTarget } from '../utils.js'
 
 const pathRegex = /^\/trck\/eclick\/[0-9a-f]{32}$/i
-
-const hosts = ['partnerprogramm.otto.de', 'pvn.mediamarkt.de', 'pvn.saturn.de']
 
 // easy Marketing (easy.M) private affiliate network click on a retailer's tracking host
 // (pvn.saturn.de/trck/eclick/<id>?url=<target>, or ?url64fb=<base64 target>).
 // Opt-in: unwrapping drops the publisher's commission.
 export const unwrapEasyMarketing = createUnwrapper({
-  hosts,
+  hosts: ['partnerprogramm.otto.de', 'pvn.mediamarkt.de', 'pvn.saturn.de'],
   unwrap: (url) => {
     if (!pathRegex.test(url.pathname)) {
       return
@@ -21,6 +19,6 @@ export const unwrapEasyMarketing = createUnwrapper({
       return target
     }
 
-    return readDecodedTarget(url, 'url64fb', decodeBase64Url)
+    return readDecodedParamTarget(url, 'url64fb', decodeBase64Url)
   },
 })

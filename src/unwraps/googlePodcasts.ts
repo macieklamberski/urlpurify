@@ -6,7 +6,7 @@ import {
   isHostOf,
   isUtf8Binary,
 } from 'trousse'
-import { createUnwrapper, readDecodedTarget } from '../utils.js'
+import { createUnwrapper, readDecodedParamTarget } from '../utils.js'
 
 const showPathRegex = /^\/(?:u\/\d+\/)?feed\/(?<feed>[\w%=-]+)(?:\/episode\/[\w%=-]+)?\/?$/i
 
@@ -49,6 +49,6 @@ export const unwrapGooglePodcasts = createUnwrapper({
       return
     }
 
-    return readDecodedTarget(url, 'feed', decodeFeed)
+    return readDecodedParamTarget(url, 'feed', decodeFeed)
   },
 })

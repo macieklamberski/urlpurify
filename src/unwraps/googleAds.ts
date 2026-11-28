@@ -2,8 +2,18 @@ import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 import { googleHostRegex } from './google.js'
 
 const extractors = [
-  createQueryUnwrapper({ hosts: googleHostRegex, path: '/aclk', params: ['adurl'] }),
-  createQueryUnwrapper({ hosts: googleHostRegex, path: '/pagead/iclk', params: ['adurl'] }),
+  createQueryUnwrapper({
+    brands: 'google',
+    match: googleHostRegex,
+    path: '/aclk',
+    params: ['adurl'],
+  }),
+  createQueryUnwrapper({
+    brands: 'google',
+    match: googleHostRegex,
+    path: '/pagead/iclk',
+    params: ['adurl'],
+  }),
   createQueryUnwrapper({
     hosts: ['syndicatedsearch.goog', 'www.syndicatedsearch.goog'],
     path: '/aclk',

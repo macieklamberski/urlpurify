@@ -4,7 +4,7 @@ import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 // Links written without the `?` carry their params in the path.
 const pathLinkRegex = /^\/cl\/aaid=.*?&link=(?<target>.+)$/i
 
-const hosts = ['td.oo34.net']
+const hosts = 'td.oo34.net'
 
 const extractQueryLink = createQueryUnwrapper({
   hosts,

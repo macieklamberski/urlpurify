@@ -6,7 +6,7 @@ const clickPathRegex = /^\/(?:xid|syid)\/[^/]+$/i
 // also /syid/<id>).
 // Opt-in: the target is often an affiliate link the publisher earns from.
 export const unwrapTrxHub = createQueryUnwrapper({
-  hosts: ['clicks.trx-hub.com'],
+  hosts: 'clicks.trx-hub.com',
   path: clickPathRegex,
   params: ['q'],
 })

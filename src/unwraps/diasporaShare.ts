@@ -1,18 +1,15 @@
-import { isAnyOf } from 'trousse'
 import { createUnwrapper, readParamTarget } from '../utils.js'
 
-const hosts = ['share.diasporafoundation.org']
-
-const paths = ['/', '/index', '/index/', '/index.html']
+const pathRegex = /^\/(?:index\/?|index\.html)?$/i
 
 // diaspora* share form (share.diasporafoundation.org/?url=<page>, also /index, /index/ and
 // /index.html).
 // Opt-in: unwrapping returns the shared page, not the form that picks a pod to share it from.
 export const unwrapDiasporaShare = createUnwrapper({
-  hosts,
+  hosts: 'share.diasporafoundation.org',
   ignoreLinkFragment: true,
   unwrap: (url) => {
-    if (!isAnyOf(url.pathname, paths)) {
+    if (!pathRegex.test(url.pathname)) {
       return
     }
 

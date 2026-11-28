@@ -7,7 +7,8 @@ const extractRedirect = createQueryUnwrapper({
 })
 
 const extractClick = createQueryUnwrapper({
-  hosts: /^c\d+\.travelpayouts\.com$/,
+  subdomains: 'travelpayouts.com',
+  match: /^c\d+\.travelpayouts\.com$/,
   path: '/click',
   params: ['custom_url'],
 })

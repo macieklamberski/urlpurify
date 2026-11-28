@@ -4,12 +4,10 @@ import { createPathUnwrapper } from '../pathTarget.js'
 // publishers leave on the feed. The site's own pages, such as /help/ and /favicon.ico, do not.
 const feedPrefixRegex = /^\/(?=(?:https?:\/*)?[a-z0-9-]+(?:\.[a-z0-9-]+)+(?::\d+)?\/)/i
 
-const hosts = ['subscribeonandroid.com', 'www.subscribeonandroid.com']
-
 // Subscribe on Android subscribe button (subscribeonandroid.com/<feed>), where the feed drops its
 // scheme. The page reads the feed as https.
 // Opt-in: unwrapping returns the feed, not the page that subscribes to it.
 export const unwrapSubscribeOnAndroid = createPathUnwrapper({
-  hosts,
+  hosts: ['subscribeonandroid.com', 'www.subscribeonandroid.com'],
   prefix: feedPrefixRegex,
 })

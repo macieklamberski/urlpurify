@@ -1,5 +1,5 @@
 import { decodeBase64Url } from 'trousse'
-import { createUnwrapper, getUtf8ByteLength } from '../utils.js'
+import { createUnwrapper } from '../utils.js'
 
 // A service that rewrites the link's query, such as govdelivery adding its own, escapes the `;` and
 // `!` that close the mangled url as `%3B` and `%21`.
@@ -13,6 +13,12 @@ const v3Hosts = [
   'urldefense.us',
   'www.urldefense.us',
 ]
+
+const utf8Encoder = new TextEncoder()
+
+const getUtf8ByteLength = (value: string): number => {
+  return utf8Encoder.encode(value).length
+}
 
 // `**X` runs replace a fixed byte count: A=2, B=3, ... `_`=65.
 const runLengthAlphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_'

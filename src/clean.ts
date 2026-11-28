@@ -25,7 +25,7 @@ import {
 import { defaultTrackingParams, defaultUnwrappers } from './defaults.js'
 import { sessionIdParams } from './tracking/session.js'
 import type { PurifyUrlOptions, TrackingEntry, TrackingParam, UrlUnwrapper } from './types.js'
-import { getBrandLabels, unwrapperHosts } from './utils.js'
+import { getBrandLabels, normalizeHost, unwrapperHosts } from './utils.js'
 
 type TrackingMatcher = {
   literals: Set<string>
@@ -62,13 +62,13 @@ const sessionLiterals = sessionIdParams.filter(isString).map((param) => param.to
 
 const trackingMatcherCache = new WeakMap<ReadonlyArray<TrackingParam>, TrackingMatcher>()
 
-const alibabaDirectMailHosts = ['dm-cn.aliyuncs.com', 'www.dm-cn.aliyuncs.com']
-
 const getWwwPair = (host: string): Array<string> => {
   const bare = stripWww(host.toLowerCase())
 
   return [bare, `www.${bare}`]
 }
+
+const alibabaDirectMailHosts = getWwwPair('dm-cn.aliyuncs.com')
 
 const getTrackingMatcher = (params: ReadonlyArray<TrackingParam>): TrackingMatcher => {
   let cached = trackingMatcherCache.get(params)
@@ -158,14 +158,6 @@ const matchesEntry = (
   return true
 }
 
-// A hostname in lowercase without its trailing dot, as `isHostOf` compares it: `example.com.` names
-// the same host as `example.com`.
-const normalizeHost = (hostname: string): string => {
-  const host = hostname.toLowerCase()
-
-  return host.endsWith('.') ? host.slice(0, -1) : host
-}
-
 const getPairHost = (url: URL): PairHost => {
   return { host: stripWww(normalizeHost(url.hostname)), url }
 }
@@ -186,6 +178,10 @@ const readQueryPair = (pair: string): QueryPair | undefined => {
 
 const isSignaturePair = (pair: QueryPair | undefined): boolean => {
   return isAnyOf(pair?.[0], signatureParams, foldName)
+}
+
+const hasSignatureParam = (url: URL): boolean => {
+  return url.search.slice(1).split('&').map(readQueryPair).some(isSignaturePair)
 }
 
 // Takes the lowercased name and the decoded value.
@@ -230,14 +226,15 @@ const deleteSessionPathParams = (url: URL): void => {
     return
   }
 
-  if (url.search.slice(1).split('&').map(readQueryPair).some(isSignaturePair)) {
+  if (hasSignatureParam(url)) {
     return
   }
 
   deletePathParams(url, sessionLiterals)
 }
 
-// Delete tracking params in place, from the query and from `;name=value` path params. Literal
+// Delete tracking params in place, from the query, and the session ids among them from
+// `;name=value` path params. Literal
 // names match case-insensitively, and patterns are tested against the lowercased name. A url
 // whose query carries a signature param is kept whole.
 const deleteTrackingParams = (url: URL, trackingParams: ReadonlyArray<TrackingParam>): void => {

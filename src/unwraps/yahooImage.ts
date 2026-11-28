@@ -1,5 +1,5 @@
 import { resolvePathTarget } from '../pathTarget.js'
-import { createUnwrapper, matchPathSource } from '../utils.js'
+import { createUnwrapper, readPathSource } from '../utils.js'
 
 const sourcePathRegex = /^\/.*?\/api\/res\/.*?(?<source>https?(?::|%(?:25)?3a).+)$/i
 
@@ -9,7 +9,7 @@ export const unwrapYahooImage = createUnwrapper({
   subdomains: 'yimg.com',
   ignoreLinkFragment: true,
   unwrap: (url) => {
-    const source = matchPathSource(url.pathname, sourcePathRegex)
+    const source = readPathSource(url.pathname, sourcePathRegex)
 
     if (!source) {
       return
