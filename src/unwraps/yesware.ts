@@ -29,6 +29,6 @@ export const unwrapYesware = createUnwrapper({
 
     // Yesware keeps the scheme server-side: http on links archived before 2019, https on nearly
     // all since. The prefix also lets the url repair drop a `%20` before the target host.
-    return resolvePathTarget(url, match[1], 'https:')
+    return resolvePathTarget(url, match[1], 'https')
   },
 })

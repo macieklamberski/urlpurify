@@ -1,28 +1,28 @@
 import { describe, expect, it } from 'bun:test'
-import { unwrapInstagramShim } from './instagram.js'
+import { unwrapInstagram } from './instagram.js'
 
-describe('unwrapInstagramShim', () => {
+describe('unwrapInstagram', () => {
   it('should extract target from u param on l.instagram.com', () => {
     const url = new URL('https://l.instagram.com/?u=https%3A%2F%2Fexample.com%2Fpage&e=ABC&s=1')
 
-    expect(unwrapInstagramShim(url)).toBe('https://example.com/page')
+    expect(unwrapInstagram(url)).toBe('https://example.com/page')
   })
 
   it('should return undefined when u param is missing', () => {
     const url = new URL('https://l.instagram.com/?e=ABC')
 
-    expect(unwrapInstagramShim(url)).toBeUndefined()
+    expect(unwrapInstagram(url)).toBeUndefined()
   })
 
   it('should return undefined for non-Instagram hosts', () => {
     const url = new URL('https://example.com/?u=https%3A%2F%2Fother.com')
 
-    expect(unwrapInstagramShim(url)).toBeUndefined()
+    expect(unwrapInstagram(url)).toBeUndefined()
   })
 
   it('should return undefined for another path on the host', () => {
     const url = new URL('https://l.instagram.com/accounts/?u=https%3A%2F%2Fexample.com%2Fpage')
 
-    expect(unwrapInstagramShim(url)).toBeUndefined()
+    expect(unwrapInstagram(url)).toBeUndefined()
   })
 })

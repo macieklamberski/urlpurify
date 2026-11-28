@@ -1,3 +1,4 @@
+import { isAnyOf } from 'trousse'
 import { resolvePathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
@@ -18,6 +19,8 @@ export const unwrapYandexTranslate: UrlUnwrapper = createUnwrapper({
       return
     }
 
-    return resolvePathTarget(url, match.groups.target, `${match.groups.scheme ?? 'http'}:`)
+    const scheme = isAnyOf(match.groups.scheme, 'https') ? 'https' : 'http'
+
+    return resolvePathTarget(url, match.groups.target, scheme)
   },
 })

@@ -26,6 +26,6 @@ export const unwrapAdfly: UrlUnwrapper = createUnwrapper({
     }
 
     // Adfly forwarded a scheme-less target over http.
-    return resolvePathTarget(url, match[1], 'http:')
+    return resolvePathTarget(url, match[1], 'http')
   },
 })

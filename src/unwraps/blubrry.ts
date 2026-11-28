@@ -15,5 +15,5 @@ const hosts = ['media.blubrry.com', 'media.rawvoice.com', 'media.techpodcasts.co
 export const unwrapBlubrry = createPathUnwrapper({
   hosts,
   prefix: showPrefixRegex,
-  scheme: 'link',
+  scheme: 'inherit',
 })

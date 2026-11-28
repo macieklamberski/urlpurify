@@ -8,5 +8,5 @@ const showPrefixRegex = /^\/[0-9a-f]{6}\//
 export const unwrapPodroll = createPathUnwrapper({
   hosts: ['pdrl.fm', 'www.pdrl.fm', 'rss.pdrl.fm'],
   prefix: showPrefixRegex,
-  scheme: 'link',
+  scheme: 'inherit',
 })

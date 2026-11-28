@@ -22,6 +22,6 @@ export const unwrapYahooJapanAmpViewer: UrlUnwrapper = createUnwrapper({
     // The target's own query is percent-encoded into the path, as in `%3Fusqp%3D`.
     const path = decodePercent(match[1])
 
-    return resolvePathTarget(url, path, httpsMatch ? 'https:' : 'http:')
+    return resolvePathTarget(url, path, httpsMatch ? 'https' : 'http')
   },
 })

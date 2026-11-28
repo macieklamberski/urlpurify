@@ -24,6 +24,6 @@ export const unwrapGoogleAmpViewer: UrlUnwrapper = createUnwrapper({
     // The target's own query can be percent-encoded into the path, as in `%3famp`.
     const path = decodePercent(match[1])
 
-    return resolvePathTarget(url, path, httpsMatch ? 'https:' : 'http:')
+    return resolvePathTarget(url, path, httpsMatch ? 'https' : 'http')
   },
 })

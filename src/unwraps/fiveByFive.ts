@@ -16,9 +16,9 @@ export const unwrapFiveByFive: UrlUnwrapper = createUnwrapper({
   unwrap: (url) => {
     // The targets drop their scheme. Archived captures show every host forwarding them to http.
     if (isHostOf(url, showHosts)) {
-      return readPathTarget(url, showPrefixRegex, 'http:')
+      return readPathTarget(url, showPrefixRegex, 'http')
     }
 
-    return readPathTarget(url, redirectPrefixRegex, 'http:')
+    return readPathTarget(url, redirectPrefixRegex, 'http')
   },
 })

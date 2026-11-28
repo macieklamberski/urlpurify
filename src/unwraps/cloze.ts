@@ -18,6 +18,6 @@ export const unwrapCloze: UrlUnwrapper = createUnwrapper({
     }
 
     // Cloze keeps the scheme server-side, and an https site redirects from http.
-    return resolvePathTarget(url, match[1], 'http:')
+    return resolvePathTarget(url, match[1], 'http')
   },
 })

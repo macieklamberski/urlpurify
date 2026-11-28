@@ -22,6 +22,6 @@ export const unwrapMorss: UrlUnwrapper = createUnwrapper({
     }
 
     // morss fetches a target without a scheme over http.
-    return readPathTarget(url, targetPrefixRegex, 'http:')
+    return readPathTarget(url, targetPrefixRegex, 'http')
   },
 })

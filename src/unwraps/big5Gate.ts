@@ -18,7 +18,7 @@ export const unwrapBig5Gate: UrlUnwrapper = createUnwrapper({
     }
 
     // The gate rewrites a page's http://<host>/<path> links to gate/big5/<host>/<path>.
-    const target = resolvePathTarget(url, match[1], 'http:')
+    const target = resolvePathTarget(url, match[1], 'http')
 
     if (isHttpUrl(target)) {
       return target

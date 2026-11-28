@@ -20,7 +20,7 @@ export const unwrapWordpressOembed: UrlUnwrapper = createUnwrapper({
       return
     }
 
-    const target = readParamTarget(url, 'url', -1)
+    const target = readParamTarget(url, 'url', { index: -1 })
 
     if (!target || !isHttpUrl(target)) {
       return

@@ -75,7 +75,7 @@ Tracking params are grouped like the unwrappers, by what stripping them takes aw
 | --- | --- | --- | :---: |
 | Click attribution | `clickAttributionParams` | Ad, search and platform click ids | ☑️ |
 | Visitor ids | `visitorIdParams` | Ids of one visitor, session, browser or email recipient | ☑️ |
-| Session ids | `sessionParams` | A server session id, which never changes what the page shows | ☑️ |
+| Session ids | `sessionIdParams` | A server session id, which never changes what the page shows | ☑️ |
 | Housekeeping | `housekeepingParams` | Nothing: cache busters, previews, redirect leftovers and a `ref` naming the URL's own host | ☑️ |
 | Campaign tags | `campaignParams` | The site's own traffic stats, from tags like `utm_*` | |
 | Affiliate ids | `affiliateParams` | The publisher's commission | |
@@ -114,6 +114,8 @@ purifyUrl(url, {
 An unwrapped target that isn't a usable URL is ignored, and the wrapper is kept.
 
 The earlier names, `cleanUrl` and `CleanUrlOptions`, still work. Both are deprecated and go away in the next major.
+
+So do these earlier export names, each deprecated beside its new one: `sessionParams` for `sessionIdParams`, `trackingParamsLiterals` and `trackingParamsPatterns` for `knownTrackingParamLiterals` and `knownTrackingParamPatterns`, `unwrapYouTube` for `unwrapYoutube`, and `unwrapBlueskyRedirect`, `unwrapFacebookShim`, `unwrapInstagramShim` and `unwrapThreadsShim` for `unwrapBsky`, `unwrapFacebook`, `unwrapInstagram` and `unwrapThreads`.
 
 ### `unwrapUrl(url, unwrappers?)`
 
@@ -161,7 +163,7 @@ const unwrapExample = createQueryUnwrapper({
 purifyUrl(url, { unwrappers: [...defaultUnwrappers, unwrapExample] })
 ```
 
-`path` is optional. It takes an exact path or a list of them, both compared in any case, or a regex, tested as written. `params` are tried in order, and the first whose value the url repair turns into an http url wins: a full url, or a bare host such as `example.com/post`. A value it can't repair is skipped, such as `myapp://open`, a relative path or a title.
+`path` is optional. It takes an exact path or a list of them, both compared in any case, or a regex, tested as written. `params` takes one name or a list, tried in order, and the first whose value the url repair turns into an http url wins: a full url, or a bare host such as `example.com/post`. A value it can't repair is skipped, such as `myapp://open`, a relative path or a title.
 
 Three options read a carrier that holds more than a plain value:
 
@@ -191,7 +193,7 @@ const unwrapExample = createPathUnwrapper({
 purifyUrl(url, { unwrappers: [...defaultUnwrappers, unwrapExample] })
 ```
 
-A raw target keeps the link's query, which the service forwards with it. A percent-encoded target, decoded once or twice, drops it, since its own query is encoded inside it. The target takes the link's fragment as `createUnwrapper` describes. A target without a scheme gets `https`. Pass `scheme: 'http'` for a service that forwards to http, or `scheme: 'link'` for one that forwards with the link's own.
+A raw target keeps the link's query, which the service forwards with it. A percent-encoded target, decoded once or twice, drops it, since its own query is encoded inside it. The target takes the link's fragment as `createUnwrapper` describes. A target without a scheme gets `https`. Pass `scheme: 'http'` for a service that forwards to http, or `scheme: 'inherit'` for one that forwards with the link's own.
 
 For any other shape, use `createUnwrapper`.
 
@@ -218,7 +220,7 @@ Pass exactly one of `hosts`, `domains`, `subdomains`, `brands` or `anyHost: true
 
 For a path shape that senders run on their own domains, such as a forum's `/redirect/?to=`, pass `anyHost: true`. It matches every host and registers nothing, so the unwrapper runs on every url and its path and carrier checks are the whole guard.
 
-For a service on many country domains, pass `brands` instead: `brands: ['example']` matches the brand on any tld of one or two labels, so `example.com`, `www.example.de` and `www.example.co.uk`, and registers it, so `purifyUrl` still skips the unwrapper on every other host. It reads only where the brand sits, so it also takes `example.cdn.com`, the subdomain of another site. Pass `match` with it to name the real hosts: `brands: ['example'], match: /^(?:www\.)?example\.(?:com|de|co\.uk)$/`. `hosts`, `domains` or `subdomains` may come beside `brands`, for a service that also lives on a few fixed hosts or domains.
+For a service on many country domains, pass `brands` instead, one brand or a list: `brands: 'example'` matches the brand on any tld of one or two labels, so `example.com`, `www.example.de` and `www.example.co.uk`, and registers it, so `purifyUrl` still skips the unwrapper on every other host. It reads only where the brand sits, so it also takes `example.cdn.com`, the subdomain of another site. Pass `match` with it to name the real hosts: `brands: 'example', match: /^(?:www\.)?example\.(?:com|de|co\.uk)$/`. `hosts`, `domains` or `subdomains` may come beside `brands`, for a service that also lives on a few fixed hosts or domains.
 
 To claim only some subdomains and still register, pass a host key with `match`, a regex the host must also match: `subdomains: 'example.com', match: /^click\d+\.example\.com$/` registers `.example.com` and runs only on `click<n>.example.com`. All three factories take it.
 
@@ -244,4 +246,4 @@ import { campaignParams, defaultTrackingParams, stripTrackingParams } from 'urlp
 stripTrackingParams(url, [...defaultTrackingParams, ...campaignParams])
 ```
 
-`knownTrackingParams` holds every known parameter, opt-in categories included. `trackingParamsLiterals` and `trackingParamsPatterns` split its names and regexes, and leave out entries, whose name alone would strip `sid` or `ref` everywhere.
+`knownTrackingParams` holds every known parameter, opt-in categories included. `knownTrackingParamLiterals` and `knownTrackingParamPatterns` split its names and regexes, and leave out entries, whose name alone would strip `sid` or `ref` everywhere.

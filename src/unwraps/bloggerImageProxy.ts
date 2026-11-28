@@ -17,6 +17,6 @@ export const unwrapBloggerImageProxy = createUnwrapper({
       return
     }
 
-    return readParamTarget(url, 'url', -1, 'keep')
+    return readParamTarget(url, 'url', { index: -1, plus: 'keep' })
   },
 })

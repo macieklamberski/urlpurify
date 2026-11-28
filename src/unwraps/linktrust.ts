@@ -19,7 +19,7 @@ export const unwrapLinktrust: UrlUnwrapper = createUnwrapper({
     // A tracking link nested unencoded in a carrier spills its own carrier into this query, so the
     // last value holds the target.
     for (const param of params) {
-      const target = readParamTarget(url, param, -1)
+      const target = readParamTarget(url, param, { index: -1 })
 
       if (target && isHttpUrl(target)) {
         return target

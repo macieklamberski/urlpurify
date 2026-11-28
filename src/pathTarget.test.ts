@@ -93,11 +93,11 @@ describe('createPathUnwrapper', () => {
     expect(unwrapHttp(value)).toBe(expected)
   })
 
-  it('should give a target without a scheme the scheme of the link when the scheme is link', () => {
+  it('should give a target without a scheme the scheme of the link when the scheme is inherit', () => {
     const unwrapLink = createPathUnwrapper({
       hosts: 'prefix.example.com',
       prefix: prefixRegex,
-      scheme: 'link',
+      scheme: 'inherit',
     })
     const value = new URL('http://prefix.example.com/r/42/www.example.org/episode.mp3')
     const expected = 'http://www.example.org/episode.mp3'
@@ -231,7 +231,7 @@ describe('resolvePathTarget', () => {
     const value = 'example.com/post'
     const expected = 'http://example.com/post'
 
-    expect(resolvePathTarget(url, value, 'http:')).toBe(expected)
+    expect(resolvePathTarget(url, value, 'http')).toBe(expected)
   })
 
   it('should keep the scheme of a decoded target over the scheme passed', () => {
@@ -239,7 +239,7 @@ describe('resolvePathTarget', () => {
     const value = 'https%3A%2F%2Fexample.com%2Fpost'
     const expected = 'https://example.com/post'
 
-    expect(resolvePathTarget(url, value, 'http:')).toBe(expected)
+    expect(resolvePathTarget(url, value, 'http')).toBe(expected)
   })
 
   it('should leave a target without a scheme as written with no scheme passed', () => {
