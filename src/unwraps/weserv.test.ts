@@ -66,4 +66,18 @@ describe('unwrapWeserv', () => {
 
     expect(unwrapWeserv(value)).toBeUndefined()
   })
+
+  it('should decode a twice-encoded source', () => {
+    const value = new URL('https://wsrv.nl/?url=https%253A%252F%252Fcdn.example.com%252Fphoto.jpg')
+    const expected = 'https://cdn.example.com/photo.jpg'
+
+    expect(unwrapWeserv(value)).toBe(expected)
+  })
+
+  it('should keep a raw plus in an encoded source', () => {
+    const value = new URL('https://wsrv.nl/?url=https%3A%2F%2Fcdn.example.com%2FC++_logo.png')
+    const expected = 'https://cdn.example.com/C++_logo.png'
+
+    expect(unwrapWeserv(value)).toBe(expected)
+  })
 })

@@ -4,6 +4,7 @@ import { createUnwrapper, decodeEncodedScheme, readParamTarget } from '../utils.
 
 const feedPathRegex =
   /^\/i\/(?:subscription|discover\/sources\/search)\/feed(?:\/|%2F)(?<target>.+)$/i
+const encodedTargetRegex = /^https?(?:%3a|:)%2f/i
 const feedFragmentRegex = /^#subscription(?:\/|%2F)feed(?:\/|%2F)(?<target>.+)$/i
 
 const hosts = ['feedly.com', 'www.feedly.com', 'cloud.feedly.com']
@@ -25,7 +26,14 @@ export const unwrapFeedly: UrlUnwrapper = createUnwrapper({
     const pathMatch = url.pathname.match(feedPathRegex)
 
     if (pathMatch?.groups) {
-      return `${decodeEncodedScheme(pathMatch.groups.target)}${url.search}${url.hash}`
+      const target = decodeEncodedScheme(pathMatch.groups.target)
+
+      // An encoded feed ends where its encoding ends, so the link's fragment is Feedly's own.
+      if (encodedTargetRegex.test(pathMatch.groups.target)) {
+        return `${target}${url.search}`
+      }
+
+      return `${target}${url.search}${url.hash}`
     }
 
     if (!isAnyOf(url.pathname, fragmentPaths)) {

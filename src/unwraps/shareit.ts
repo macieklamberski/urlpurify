@@ -1,7 +1,7 @@
 import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
 const extractAffiliate = createQueryUnwrapper({
-  hosts: ['www.shareit.com', 'esd.element5.com'],
+  hosts: ['www.shareit.com', 'shareit.com', 'esd.element5.com'],
   path: '/affiliate.html',
   params: ['target'],
 })
@@ -16,7 +16,7 @@ const extractSecureAffiliate = createQueryUnwrapper({
 // <target>, also on esd.element5.com and secure.shareit.com/shareit/affiliate.html). Opt-in:
 // unwrapping drops the publisher's affiliate commission.
 export const unwrapShareit = createUnwrapper({
-  hosts: ['www.shareit.com', 'esd.element5.com', 'secure.shareit.com'],
+  hosts: ['www.shareit.com', 'shareit.com', 'esd.element5.com', 'secure.shareit.com'],
   unwrap: (url) => {
     return extractAffiliate(url) ?? extractSecureAffiliate(url)
   },

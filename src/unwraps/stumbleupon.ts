@@ -7,7 +7,7 @@ import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 const pathRegex = /^\/su\/[a-z\d]{6}\/(?:[^/]*:[^/]*\/)?([^/:]*\.[^/:]*(?:\/.*?)?)(?:\/r:t)?$/i
 
 const extractRedirect = createQueryUnwrapper({
-  hosts: 'www.stumbleupon.com',
+  hosts: ['www.stumbleupon.com', 'stumbleupon.com'],
   path: '/to/event/redir/',
   params: ['url'],
 })
@@ -17,7 +17,7 @@ const extractRedirect = createQueryUnwrapper({
 // (www.stumbleupon.com/to/event/redir/?url=<target>), which answered 302 to the target. The
 // service is gone and both paths answer 404.
 export const unwrapStumbleupon: UrlUnwrapper = createUnwrapper({
-  hosts: 'www.stumbleupon.com',
+  hosts: ['www.stumbleupon.com', 'stumbleupon.com'],
   unwrap: (url) => {
     const redirectTarget = extractRedirect(url)
 

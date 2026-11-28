@@ -1,7 +1,7 @@
 import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
 const extractRedirectTarget = createQueryUnwrapper({
-  hosts: ['px.a8.net', 'rpx.a8.net', 'www.a8.net', 'px.moba8.net'],
+  hosts: ['px.a8.net', 'rpx.a8.net', 'www.a8.net', 'a8.net', 'px.moba8.net'],
   path: '/svt/ejp',
   params: ['a8ejpredirect'],
 })
@@ -17,7 +17,7 @@ const deeplinkPathRegex = /^\/s\d+\/redirect_v2\.php$/i
 // /svt/ejp?a8ejpredirect=<target>) and deep link (ow.a8.net/s<id>/redirect_v2.php?url=<target>).
 // Not included in defaultUnwrappers: unwrapping drops the publisher's affiliate commission.
 export const unwrapA8Net = createUnwrapper({
-  hosts: ['px.a8.net', 'rpx.a8.net', 'www.a8.net', 'px.moba8.net', 'ow.a8.net'],
+  hosts: ['px.a8.net', 'rpx.a8.net', 'www.a8.net', 'a8.net', 'px.moba8.net', 'ow.a8.net'],
   unwrap: (url) => {
     if (deeplinkPathRegex.test(url.pathname)) {
       return extractDeeplinkTarget(url)

@@ -3,7 +3,7 @@ import { getPathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
-const ptsHosts = ['www.podtrac.com', 'podtrac.com', 'www.podtrac.net']
+const ptsHosts = ['www.podtrac.com', 'podtrac.com', 'www.podtrac.net', 'podtrac.net']
 
 // Feeds also write a stray dot after the extension, `redirect.mp3./<target>`, or no slash before
 // a target with a scheme, `redirect.mp3https://<target>`. Podtrac forwards both.

@@ -3,6 +3,13 @@ import { purifyUrl } from '../clean.js'
 import { unwrapGooglePodcasts } from './googlePodcasts.js'
 
 describe('unwrapGooglePodcasts', () => {
+  it('should give https to a show feed without a scheme', () => {
+    const value = 'https://podcasts.google.com/feed/d3d3LmV4YW1wbGUuY29tL3Jzcw'
+    const expected = 'https://www.example.com/rss'
+
+    expect(purifyUrl(value, { unwrappers: [unwrapGooglePodcasts] })).toBe(expected)
+  })
+
   it('should keep a raw plus in a query feed', () => {
     const value = new URL(
       'https://www.google.com/podcasts?feed=aHR0cHM6Ly9leGFtcGxlLm9yZy9hP2I9fn5+Pg==',

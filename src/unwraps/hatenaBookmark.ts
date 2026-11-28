@@ -5,29 +5,30 @@ import { createUnwrapper, decodeEncodedScheme, readParamTarget } from '../utils.
 const formPathRegex = /^\/(?:entry|add|entry\/panel)\/?$/i
 const schemePathRegex = /^\/entry\/(?<target>https?(?::|%3a).+)$/i
 const hostPathRegex = /^\/entry\/(?<secure>s\/)?(?<target>[^/.]+(?:\.[^/.]+)+(?:\/.*)?)$/i
+const encodedPathRegex = /^\/entry\/https?(?:%3a|:)%2f/i
 
 const hosts = ['b.hatena.ne.jp']
 
-const unwrapEntry = createUnwrapper({
-  hosts,
-  unwrap: (url) => {
-    const schemeTarget = url.pathname.match(schemePathRegex)?.groups?.target
-    let target = schemeTarget && decodeEncodedScheme(schemeTarget)
+const readEntry: UrlUnwrapper = (url) => {
+  const schemeTarget = url.pathname.match(schemePathRegex)?.groups?.target
+  let target = schemeTarget && decodeEncodedScheme(schemeTarget)
 
-    if (!target) {
-      const match = url.pathname.match(hostPathRegex)
+  if (!target) {
+    const match = url.pathname.match(hostPathRegex)
 
-      if (!match?.groups) {
-        return
-      }
-
-      target = `${match.groups.secure ? 'https' : 'http'}://${match.groups.target}`
+    if (!match?.groups) {
+      return
     }
 
-    // Hatena reads an escaped `%23` in the path or query as the start of the page's fragment.
-    return `${target}${url.search}`.replace('%23', '#')
-  },
-})
+    target = `${match.groups.secure ? 'https' : 'http'}://${match.groups.target}`
+  }
+
+  // Hatena reads an escaped `%23` in the path or query as the start of the page's fragment.
+  return `${target}${url.search}`.replace('%23', '#')
+}
+
+// A page written raw in the path ends where the link's fragment starts, so it takes the fragment.
+const unwrapEntry = createUnwrapper({ hosts, unwrap: readEntry })
 
 // Hatena Bookmark entry page (b.hatena.ne.jp/entry/<page>, with the scheme, percent-encoded, or
 // without it as /entry/s/<host>/<path> for https and /entry/<host>/<path> for http), and the
@@ -39,6 +40,11 @@ export const unwrapHatenaBookmark: UrlUnwrapper = createUnwrapper({
   unwrap: (url) => {
     if (isAnyOf(url.pathname, formPathRegex)) {
       return readParamTarget(url, 'url')
+    }
+
+    // An encoded page ends where its encoding ends, so the link's fragment is Hatena's own.
+    if (encodedPathRegex.test(url.pathname)) {
+      return readEntry(url)
     }
 
     return unwrapEntry(url)

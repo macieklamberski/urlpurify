@@ -8,7 +8,7 @@ const shimPathRegex =
 // /safety/go, /redir/redirect (both also with a trailing slash), /redirect, /nhome/nus-redirect,
 // /nus-trk, /e/v2 and /company/<id>/redirect.
 export const unwrapLinkedin: UrlUnwrapper = createUnwrapper({
-  hosts: 'www.linkedin.com',
+  hosts: ['www.linkedin.com', 'linkedin.com'],
   unwrap: (url) => {
     if (!shimPathRegex.test(url.pathname)) {
       return

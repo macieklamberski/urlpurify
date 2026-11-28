@@ -10,7 +10,8 @@ const customPathRegex = /^\/CL0\/(.+?)\/\d+\/[^/]+-000000\/[^/]+$/i
 // and a sender's own host (/CL0/<target>/<n>/<message id>-000000/<signature>).
 // Opt-in: unwrapping removes the sender's click count.
 export const unwrapAmazonSes: UrlUnwrapper = (url) => {
-  const pathRegex = isHostOrSubdomainOf(url, 'awstrack.me') ? awstrackPathRegex : customPathRegex
+  const isAwstrack = isHostOrSubdomainOf(url, 'awstrack.me')
+  const pathRegex = isAwstrack ? awstrackPathRegex : customPathRegex
   const match = pathRegex.exec(url.pathname)
 
   if (!match?.[1]) {
@@ -19,7 +20,10 @@ export const unwrapAmazonSes: UrlUnwrapper = (url) => {
 
   const target = decodePathTarget(match[1])
 
-  if (isHttpUrl(target)) {
-    return appendLinkFragment(target, url)
+  // On a sender's own host, only an http target tells the tracker from another site's /CL0/ path.
+  if (!isAwstrack && !isHttpUrl(target)) {
+    return
   }
+
+  return appendLinkFragment(target, url)
 }

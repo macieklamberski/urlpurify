@@ -4,7 +4,6 @@ import {
   decodePercent,
   isAnyOf,
   isHostOf,
-  isHttpUrl,
   isUtf8Binary,
 } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
@@ -40,13 +39,7 @@ export const unwrapGooglePodcasts: UrlUnwrapper = createUnwrapper({
       const showMatch = url.pathname.match(showPathRegex)
 
       if (showMatch) {
-        const decoded = decodeFeed(decodePercent(showMatch[1]))
-
-        if (decoded && isHttpUrl(decoded)) {
-          return decoded
-        }
-
-        return
+        return decodeFeed(decodePercent(showMatch[1]))
       }
     }
 

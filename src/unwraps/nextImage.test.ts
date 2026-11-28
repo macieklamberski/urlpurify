@@ -38,6 +38,15 @@ describe('unwrapNextImage', () => {
     expect(unwrapNextImage(value)).toBe(expected)
   })
 
+  it('should read a raw plus in an unencoded source as a space', () => {
+    const value = new URL(
+      'https://example.com/_next/image?url=https://cdn.example.com/C++_logo.png&w=640',
+    )
+    const expected = 'https://cdn.example.com/C%20%20_logo.png'
+
+    expect(unwrapNextImage(value)).toBe(expected)
+  })
+
   it('should return undefined without a source', () => {
     const value = new URL('https://example.com/_next/image?w=640&q=75')
 
@@ -48,5 +57,14 @@ describe('unwrapNextImage', () => {
     const value = new URL('https://example.com/_next/static/media/photo.png?url=/a.png')
 
     expect(unwrapNextImage(value)).toBeUndefined()
+  })
+
+  it('should decode a twice-encoded source', () => {
+    const value = new URL(
+      'https://example.com/_next/image?url=https%253A%252F%252Fcdn.example.com%252Fphoto.jpg&w=640&q=75',
+    )
+    const expected = 'https://cdn.example.com/photo.jpg'
+
+    expect(unwrapNextImage(value)).toBe(expected)
   })
 })

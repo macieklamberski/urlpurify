@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'bun:test'
+import { purifyUrl } from '../clean.js'
 import { unwrapBloglines } from './bloglines.js'
 
 describe('unwrapBloglines', () => {
@@ -74,10 +75,10 @@ describe('unwrapBloglines', () => {
       expect(unwrapBloglines(value)).toBe(expected)
     })
 
-    it('should return undefined for an encoded feed without a host', () => {
-      const value = new URL('http://www.bloglines.com/sub/https%3A%2F%2F')
+    it('should keep the wrapper for an encoded feed without a host', () => {
+      const value = 'http://www.bloglines.com/sub/https%3A%2F%2F'
 
-      expect(unwrapBloglines(value)).toBeUndefined()
+      expect(purifyUrl(value, { unwrappers: [unwrapBloglines] })).toBe(value)
     })
 
     it('should drop the link fragment', () => {

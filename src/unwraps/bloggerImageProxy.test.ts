@@ -91,4 +91,13 @@ describe('unwrapBloggerImageProxy', () => {
   it('should register its hosts so the host index skips it on other hosts', () => {
     expect(unwrapperHosts.has(unwrapBloggerImageProxy)).toBe(true)
   })
+
+  it('should decode a twice-encoded source', () => {
+    const value = new URL(
+      'https://images-blogger-opensocial.googleusercontent.com/gadgets/proxy?url=https%253A%252F%252Fcdn.example.com%252Fphoto.jpg',
+    )
+    const expected = 'https://cdn.example.com/photo.jpg'
+
+    expect(unwrapBloggerImageProxy(value)).toBe(expected)
+  })
 })

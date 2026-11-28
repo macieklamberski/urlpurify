@@ -4,7 +4,7 @@ import { createQueryUnwrapper } from '../utils.js'
 // deeplink=<target>). Not included in defaultUnwrappers: unwrapping drops the publisher's
 // commission.
 export const unwrapCommunicationads = createQueryUnwrapper({
-  hosts: 'www.communicationads.net',
+  hosts: ['www.communicationads.net', 'communicationads.net'],
   path: '/tc.php',
   params: ['deeplink'],
 })

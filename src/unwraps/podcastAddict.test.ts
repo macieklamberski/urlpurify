@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'bun:test'
+import { purifyUrl } from '../clean.js'
 import { unwrapPodcastAddict } from './podcastAddict.js'
 
 describe('unwrapPodcastAddict', () => {
@@ -18,6 +19,13 @@ describe('unwrapPodcastAddict', () => {
     const expected = 'https://example.com/2e7ceeef-1889-45ff-a90f-eff7988fb63a'
 
     expect(unwrapPodcastAddict(value)).toBe(expected)
+  })
+
+  it('should give https to a raw feed without a scheme', () => {
+    const value = 'https://podcastaddict.com/feed/www.example.com/rss'
+    const expected = 'https://www.example.com/rss'
+
+    expect(purifyUrl(value, { unwrappers: [unwrapPodcastAddict] })).toBe(expected)
   })
 
   it('should extract a raw feed', () => {
@@ -45,6 +53,36 @@ describe('unwrapPodcastAddict', () => {
     expect(unwrapPodcastAddict(value)).toBe(expected)
   })
 
+  it('should drop the link fragment after an encoded feed', () => {
+    const value = new URL('https://podcastaddict.com/feed/https%3A%2F%2Fexample.com%2Frss#episodes')
+    const expected = 'https://example.com/rss'
+
+    expect(unwrapPodcastAddict(value)).toBe(expected)
+  })
+
+  it('should drop the link fragment after a twice-encoded feed', () => {
+    const value = new URL(
+      'https://podcastaddict.com/feed/https%253A%252F%252Fexample.com%252Frss#episodes',
+    )
+    const expected = 'https://example.com/rss'
+
+    expect(unwrapPodcastAddict(value)).toBe(expected)
+  })
+
+  it('should drop the link fragment after a feed with only its slashes encoded', () => {
+    const value = new URL('https://podcastaddict.com/feed/https:%2F%2Fexample.com%2Frss#episodes')
+    const expected = 'https://example.com/rss'
+
+    expect(unwrapPodcastAddict(value)).toBe(expected)
+  })
+
+  it('should keep the link fragment after a raw feed', () => {
+    const value = new URL('https://podcastaddict.com/feed/https://example.com/rss#episodes')
+    const expected = 'https://example.com/rss#episodes'
+
+    expect(unwrapPodcastAddict(value)).toBe(expected)
+  })
+
   it('should match the path in any case', () => {
     const value = new URL(
       'https://podcastaddict.com/Feed/https%3A%2F%2Fexample.com%2Fs%2F27ff739c%2Fpodcast%2Frss',
@@ -54,10 +92,10 @@ describe('unwrapPodcastAddict', () => {
     expect(unwrapPodcastAddict(value)).toBe(expected)
   })
 
-  it('should return undefined for a non-http feed', () => {
-    const value = new URL('https://podcastaddict.com/feed/javascript%3Aalert(1)')
+  it('should keep the wrapper for a non-http feed', () => {
+    const value = 'https://podcastaddict.com/feed/javascript%3Aalert(1)'
 
-    expect(unwrapPodcastAddict(value)).toBeUndefined()
+    expect(purifyUrl(value, { unwrappers: [unwrapPodcastAddict] })).toBe(value)
   })
 
   it('should return undefined for an empty feed', () => {

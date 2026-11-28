@@ -34,6 +34,7 @@ export type QueryUnwrapperConfig = UnwrapperOptions & {
   params: Array<string>
   index?: number // The value of a repeated param to read, such as -1 for the last
   decode?: TargetDecoder // The carrier holds the target encoded, such as in base64
+  plus?: PlusReading // How the service reads a raw `+` in the target, per `decodeParamValue`
 }
 
 const encodedSchemeRegex = /^https?(?:%3A|:%2F)/i
@@ -50,12 +51,17 @@ export const decodeEncodedScheme = (value: string): string => {
 
 const unencodedTargetRegex = /^(?:https?:\/|\/\/|[\p{L}\p{N}-]+(?:\.[\p{L}\p{N}-]+)+(?::\d+)?\/)/iu
 
+// A raw `+` read as a space, or kept as a `+`, where a service reads it one way whatever the value.
+export type PlusReading = 'space' | 'keep'
+
 // A raw query param value decoded as `URLSearchParams` does, except that a malformed escape stays
 // as written, and a `+` stays in an unencoded target, as in `wgtarget=https://example.com/a+b/`,
 // which `URLSearchParams` reads as a space. Form encoding escapes `/`, so a target whose scheme,
-// `//` or host is followed by a raw `/` was not form-encoded.
-export const decodeParamValue = (raw: string): string => {
-  if (!unencodedTargetRegex.test(raw)) {
+// `//` or host is followed by a raw `/` was not form-encoded. `plus` overrides that guess.
+export const decodeParamValue = (raw: string, plus?: PlusReading): string => {
+  const isSpace = plus ? plus === 'space' : !unencodedTargetRegex.test(raw)
+
+  if (isSpace) {
     return decodePercent(raw.replaceAll('+', ' '))
   }
 
@@ -63,10 +69,10 @@ export const decodeParamValue = (raw: string): string => {
 }
 
 // Every value of a query param, in order, its name in any case, decoded by `decodeParamValue`.
-export const getParamValues = (url: URL, name: string): Array<string> => {
+export const getParamValues = (url: URL, name: string, plus?: PlusReading): Array<string> => {
   const raws = getQueryParamValues(url, name, { decodeValues: false, preserveEmptyValues: true })
 
-  return raws.map(decodeParamValue)
+  return raws.map((raw) => decodeParamValue(raw, plus))
 }
 
 // A redirect whose `Location` has no fragment lands on the link's own, so a target without one
@@ -82,9 +88,15 @@ export const appendLinkFragment = (target: string, url: URL): string => {
 // The target a carrier param holds, read as `getParamValues` reads it and decoded once more when
 // encoded twice: the first value, or the one at `index`, such as -1 for the last. For a link that
 // opens a page, such as a share intent or an archive's own view: the page reads the carrier from
-// the query, so the link's fragment stays on that page.
-export const readParamTarget = (url: URL, name: string, index = 0): string | undefined => {
-  const value = getParamValues(url, name).at(index)
+// the query, so the link's fragment stays on that page. `plus` reads a raw `+` as
+// `decodeParamValue` does.
+export const readParamTarget = (
+  url: URL,
+  name: string,
+  index = 0,
+  plus?: PlusReading,
+): string | undefined => {
+  const value = getParamValues(url, name, plus).at(index)
 
   if (!value) {
     return
@@ -250,9 +262,9 @@ const hasOtherScheme = (target: string): boolean => {
 // An unwrapper for a target in the first of `params` that holds one in http or with no scheme, on
 // a url on the hosts `createUnwrapper` takes, and on `path` when given: an exact path or a list,
 // compared in any case, or a regex. `index` and `decode` read the target as `readDecodedTarget`
-// does.
+// does, and `plus` as `readParamTarget` does.
 export const createQueryUnwrapper = (config: QueryUnwrapperConfig): UrlUnwrapper => {
-  const { path, params, index, decode, ...options } = config
+  const { path, params, index, decode, plus, ...options } = config
 
   const isOnPath = (url: URL): boolean => {
     if (!path) {
@@ -276,7 +288,7 @@ export const createQueryUnwrapper = (config: QueryUnwrapperConfig): UrlUnwrapper
       for (const param of params) {
         const target = decode
           ? readDecodedTarget(url, param, decode, index)
-          : readParamTarget(url, param, index)
+          : readParamTarget(url, param, index, plus)
 
         if (target && !hasOtherScheme(target)) {
           return target

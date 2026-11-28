@@ -16,6 +16,18 @@ const clickHostRegex = /^click\d+\.example\.com$/
 const lowercasePathRegex = /^\/[a-z]+$/
 
 describe('createQueryUnwrapper', () => {
+  it('should keep a raw plus in an encoded target with plus set to keep', () => {
+    const extract = createQueryUnwrapper({
+      hosts: 'images.example.com',
+      params: ['url'],
+      plus: 'keep',
+    })
+    const value = new URL('https://images.example.com/?url=https%3A%2F%2Fexample.com%2FC++.png')
+    const expected = 'https://example.com/C++.png'
+
+    expect(extract(value)).toBe(expected)
+  })
+
   it('should extract the first present param for a matching host', () => {
     const extract = createQueryUnwrapper({
       hosts: 'redirect.example.com',
@@ -790,6 +802,27 @@ describe('match', () => {
 })
 
 describe('readParamTarget', () => {
+  it('should read a raw plus in an encoded target as a space by default', () => {
+    const value = new URL('https://share.example.com/?url=https%3A%2F%2Fwww.example.com%2Fa+b')
+    const expected = 'https://www.example.com/a b'
+
+    expect(readParamTarget(value, 'url')).toBe(expected)
+  })
+
+  it('should keep a raw plus in an encoded target with plus set to keep', () => {
+    const value = new URL('https://share.example.com/?url=https%3A%2F%2Fwww.example.com%2Fa+b')
+    const expected = 'https://www.example.com/a+b'
+
+    expect(readParamTarget(value, 'url', 0, 'keep')).toBe(expected)
+  })
+
+  it('should read a raw plus in an unencoded target as a space with plus set to space', () => {
+    const value = new URL('https://share.example.com/?url=https://www.example.com/a+b')
+    const expected = 'https://www.example.com/a b'
+
+    expect(readParamTarget(value, 'url', 0, 'space')).toBe(expected)
+  })
+
   it('should drop the link fragment', () => {
     const value = new URL('https://share.example.com/?url=https://www.example.com/episode&t=#195')
     const expected = 'https://www.example.com/episode'

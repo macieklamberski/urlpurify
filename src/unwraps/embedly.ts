@@ -6,7 +6,7 @@ import { createQueryUnwrapper } from '../utils.js'
 // and the provider's page in `url` stands in when the frame names no player.
 // Not included in defaultUnwrappers: unwrapping swaps the site's frame for the provider's embed.
 export const unwrapEmbedly: UrlUnwrapper = createQueryUnwrapper({
-  hosts: ['cdn.embedly.com', 'www.embedly.com'],
+  hosts: ['cdn.embedly.com', 'www.embedly.com', 'embedly.com'],
   path: '/widgets/media.html',
   params: ['src', 'url'],
 })

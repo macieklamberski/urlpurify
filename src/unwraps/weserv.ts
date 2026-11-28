@@ -1,25 +1,15 @@
-import { decodePercent, getQueryParamValues } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createUnwrapper } from '../utils.js'
+import { createQueryUnwrapper } from '../utils.js'
 
 const hosts = ['images.weserv.nl', 'wsrv.nl']
 
 // weserv image proxy (wsrv.nl/?url=<source>). weserv reads a raw `+` in the source literally.
 // Not included in defaultUnwrappers: unwrapping swaps the resized copy for the original image.
-export const unwrapWeserv: UrlUnwrapper = createUnwrapper({
+export const unwrapWeserv: UrlUnwrapper = createQueryUnwrapper({
   hosts,
+  path: '/',
+  params: ['url'],
+  index: -1,
+  plus: 'keep',
   ignoreLinkFragment: true,
-  unwrap: (url) => {
-    if (url.pathname !== '/') {
-      return
-    }
-
-    const value = getQueryParamValues(url, 'url', { decodeValues: false }).at(-1)
-
-    if (!value) {
-      return
-    }
-
-    return decodePercent(value)
-  },
 })

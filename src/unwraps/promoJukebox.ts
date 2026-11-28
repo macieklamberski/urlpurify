@@ -4,7 +4,7 @@ import { createQueryUnwrapper } from '../utils.js'
 // (www.promojukebox.com/nwldel/link/?nlsendlistid=<n>&checkcode=<hex>&urlcc=<hex>&url=<target>).
 // Opt-in: unwrapping removes the sender's click count.
 export const unwrapPromoJukebox = createQueryUnwrapper({
-  hosts: 'www.promojukebox.com',
+  hosts: ['www.promojukebox.com', 'promojukebox.com'],
   path: '/nwldel/link/',
   params: ['url'],
 })

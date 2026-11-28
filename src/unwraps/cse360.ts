@@ -1,10 +1,9 @@
-import { isHttpUrl } from 'trousse'
 import { decodePathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
-// The target sits percent-encoded once or twice in one segment, between the campaign id and the
-// recipient's id and email address.
+// The target sits percent-encoded once or twice, or raw without its scheme, in one segment, between
+// the campaign id and the recipient's id and email address.
 const clickPathRegex =
   /^\/Click\/AddCampaignEmailClick\/[0-9a-f-]{36}\/([^/]+)\/[0-9a-f-]{36}\/[^/]+\/(?:True|False)$/i
 
@@ -20,10 +19,6 @@ export const unwrapCse360: UrlUnwrapper = createUnwrapper({
       return
     }
 
-    const target = decodePathTarget(match[1])
-
-    if (isHttpUrl(target)) {
-      return target
-    }
+    return decodePathTarget(match[1])
   },
 })

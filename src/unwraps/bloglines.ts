@@ -1,4 +1,4 @@
-import { isAnyOf, isHttpUrl } from 'trousse'
+import { isAnyOf } from 'trousse'
 import { createPathUnwrapper, decodePathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper, readParamTarget } from '../utils.js'
@@ -27,13 +27,7 @@ export const unwrapBloglines: UrlUnwrapper = createUnwrapper({
 
     // An encoded feed holds its own query inside the path, so the link's query is Bloglines' own.
     if (match?.groups) {
-      const target = decodePathTarget(match.groups.target)
-
-      if (!isHttpUrl(target)) {
-        return
-      }
-
-      return target
+      return decodePathTarget(match.groups.target)
     }
 
     return unwrapRawFeed(url)

@@ -31,6 +31,33 @@ describe('unwrapFeedly', () => {
       expect(unwrapFeedly(value)).toBe(expected)
     })
 
+    it('should drop the link fragment after an encoded feed', () => {
+      const value = new URL(
+        'https://feedly.com/i/subscription/feed/https%3A%2F%2Fexample.com%2Ffeed%2F#top',
+      )
+      const expected = 'https://example.com/feed/'
+
+      expect(unwrapFeedly(value)).toBe(expected)
+    })
+
+    it('should drop the link fragment after a feed with only its slashes encoded', () => {
+      const value = new URL(
+        'https://feedly.com/i/subscription/feed/https:%2F%2Fexample.com%2Ffeed#top',
+      )
+      const expected = 'https://example.com/feed'
+
+      expect(unwrapFeedly(value)).toBe(expected)
+    })
+
+    it('should keep the link fragment after a feed with only its scheme colon encoded', () => {
+      const value = new URL(
+        'https://feedly.com/i/subscription/feed/https%3A//example.com/feed/#top',
+      )
+      const expected = 'https://example.com/feed/#top'
+
+      expect(unwrapFeedly(value)).toBe(expected)
+    })
+
     it('should extract a feed without a scheme', () => {
       const value = new URL('https://feedly.com/i/subscription/feed/example.hatenablog.com/feed')
       const expected = 'example.hatenablog.com/feed'
