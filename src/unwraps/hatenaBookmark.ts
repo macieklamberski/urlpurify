@@ -8,7 +8,7 @@ const schemePathRegex = /^\/entry\/(?<target>https?(?::|%3a).+)$/i
 const hostPathRegex = /^\/entry\/(?<secure>s\/)?(?<target>[^/.]+(?:\.[^/.]+)+(?:\/.*)?)$/i
 const encodedPathRegex = /^\/entry\/(?<target>https?(?:%3a|:)%2f.*)$/i
 
-const hosts = 'b.hatena.ne.jp'
+const hosts = ['b.hatena.ne.jp']
 
 const readEntry: UrlUnwrapper = (url) => {
   const schemeTarget = schemePathRegex.exec(url.pathname)?.groups?.target

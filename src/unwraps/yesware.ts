@@ -4,7 +4,7 @@ import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 const trackPathRegex = /^\/tt\/[\da-f]{40}\/[\da-f]{32}\/[\da-f]{32}\/(?<target>.+)$/i
 const linkPathRegex = /^\/tl\/[\da-f]{40}\/[\da-f]{32}\/[\da-f]{32}$/i
 
-const hosts = 't.yesware.com'
+const hosts = ['t.yesware.com']
 
 const extractLinkTarget = createQueryUnwrapper({
   hosts,

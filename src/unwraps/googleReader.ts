@@ -6,7 +6,7 @@ import { googleHostRegex } from './google.js'
 const feedPathRegex = /^\/reader\/(?:view|m\/view|lite|preview\/\*)\/feed\/(?<target>.+)$/i
 const addPathRegex = /^\/ig\/(?:add|addtoreader)$/i
 
-const hosts = 'fusion.google.com'
+const hosts = ['fusion.google.com']
 
 // Google Reader, iGoogle and Fusion subscribe links (google.<TLD>/reader/view/feed/<feed>, also
 // /reader/m/view/feed/, /reader/lite/feed/ and /reader/preview/*/feed/,

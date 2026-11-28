@@ -1,6 +1,6 @@
 import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
-const domains = 'about.com'
+const domains = ['about.com']
 
 const extractFrame = createQueryUnwrapper({
   domains,

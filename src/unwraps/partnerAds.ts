@@ -1,7 +1,7 @@
 import { resolvePathTarget } from '../pathTarget.js'
 import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
-const domains = 'partner-ads.com'
+const domains = ['partner-ads.com']
 const clickPathRegex = /^\/(?:dk\/klikbanner\.php)?$/i
 // Optional u1 and u2 segments hold the partner's own sub ids.
 const deepLinkPathRegex = /^\/dk\/c\/p\/\d+\/b\/\d+\/(?:u\d\/[^/]+\/)*(?<target>https?:\/\/.+)$/i
