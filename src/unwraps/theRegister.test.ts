@@ -2,7 +2,7 @@ import { describe, expect, it } from 'bun:test'
 import { unwrapTheRegister } from './theRegister.js'
 
 describe('unwrapTheRegister', () => {
-  it('should add the https scheme to a target stored without one', () => {
+  it('should extract a target stored without a scheme', () => {
     const value = new URL(
       'https://go.theregister.com/feed/www.theregister.com/2024/03/08/microsoft_confirms_russian_spies_stole/',
     )
@@ -70,7 +70,7 @@ describe('unwrapTheRegister', () => {
     expect(unwrapTheRegister(value)).toBeUndefined()
   })
 
-  it('should give a target with no scheme https behind an http counter', () => {
+  it('should keep a target without a scheme behind an http counter', () => {
     const value = new URL(
       'http://go.theregister.com/feed/www.theregister.com/2024/03/08/microsoft_confirms_russian_spies_stole/',
     )

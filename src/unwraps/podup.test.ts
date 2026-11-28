@@ -13,7 +13,7 @@ describe('unwrapPodup', () => {
     expect(unwrapPodup(value)).toBe(expected)
   })
 
-  it('should give the target https behind an http prefix', () => {
+  it('should keep a target without a scheme behind an http prefix', () => {
     const value = new URL(
       'http://traffic.podup.com/media/storageapi.podup.com/production/769/files/files/episode_1767740067401_810f5b0f.mp3',
     )

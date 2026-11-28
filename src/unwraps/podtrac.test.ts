@@ -170,7 +170,7 @@ describe('unwrapPodtrac', () => {
     expect(unwrapPodtrac(value)).toBeUndefined()
   })
 
-  it('should give a target without a scheme https behind the http New York Times host', () => {
+  it('should keep a target without a scheme behind the http New York Times host', () => {
     const value = new URL(
       'http://dts.podtrac.nytimes.com/redirect.mp3/example.com/podcasts/2011/12/01/1201popcast.mp3',
     )
