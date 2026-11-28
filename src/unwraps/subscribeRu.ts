@@ -1,3 +1,4 @@
+import { resolvePathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
@@ -18,7 +19,6 @@ export const unwrapSubscribeRu: UrlUnwrapper = createUnwrapper({
       return
     }
 
-    // An unencoded target's query lands in the tracker URL's own `search`.
-    return `http://${match[1]}${url.search}`
+    return resolvePathTarget(url, match[1], 'http:')
   },
 })

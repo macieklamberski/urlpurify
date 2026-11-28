@@ -1,3 +1,4 @@
+import { resolvePathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
@@ -18,6 +19,6 @@ export const unwrapSymplicity: UrlUnwrapper = createUnwrapper({
       return
     }
 
-    return `${match[1]}${url.search}`
+    return resolvePathTarget(url, match[1])
   },
 })

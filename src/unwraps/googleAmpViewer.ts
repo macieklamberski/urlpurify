@@ -1,4 +1,5 @@
 import { decodePercent } from 'trousse'
+import { resolvePathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
@@ -23,6 +24,6 @@ export const unwrapGoogleAmpViewer: UrlUnwrapper = createUnwrapper({
     // The target's own query can be percent-encoded into the path, as in `%3famp`.
     const path = decodePercent(match[1])
 
-    return `${httpsMatch ? 'https' : 'http'}://${path}${url.search}`
+    return resolvePathTarget(url, path, httpsMatch ? 'https:' : 'http:')
   },
 })

@@ -1,4 +1,4 @@
-import { getPathTarget } from '../pathTarget.js'
+import { readPathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 import { appendLinkFragment } from '../utils.js'
 
@@ -20,7 +20,7 @@ export const unwrapGenericPathCarrier: UrlUnwrapper = (url) => {
     return
   }
 
-  const target = getPathTarget(url, gluedUrlRegex)
+  const target = readPathTarget(url, gluedUrlRegex)
 
   if (!target) {
     return

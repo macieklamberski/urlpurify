@@ -1,4 +1,4 @@
-import { getPathTarget } from '../pathTarget.js'
+import { readPathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
@@ -8,7 +8,7 @@ const encodedFeedPathRegex = /^\/feed\/https?(?:%(?:25)?3a|:)%(?:25)?2f/i
 const hosts = ['podcastaddict.com', 'www.podcastaddict.com']
 
 const readFeed: UrlUnwrapper = (url) => {
-  return getPathTarget(url, feedPrefixRegex)
+  return readPathTarget(url, feedPrefixRegex)
 }
 
 // A raw feed's fragment lands in the link's own `hash`.

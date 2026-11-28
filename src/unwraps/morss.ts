@@ -1,5 +1,5 @@
 import { isAnyOf } from 'trousse'
-import { getPathTarget } from '../pathTarget.js'
+import { readPathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
@@ -22,6 +22,6 @@ export const unwrapMorss: UrlUnwrapper = createUnwrapper({
     }
 
     // morss fetches a target without a scheme over http.
-    return getPathTarget(url, targetPrefixRegex, 'http:')
+    return readPathTarget(url, targetPrefixRegex, 'http:')
   },
 })

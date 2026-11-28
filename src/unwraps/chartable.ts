@@ -1,4 +1,4 @@
-import { getPathTarget } from '../pathTarget.js'
+import { readPathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
@@ -13,6 +13,6 @@ const noIdPrefixRegex = /^\/track\/(?=https?:\/)/i
 export const unwrapChartable: UrlUnwrapper = createUnwrapper({
   hosts: ['chtbl.com', 'www.chtbl.com', 'chrt.fm', 'www.chrt.fm'],
   unwrap: (url) => {
-    return getPathTarget(url, trackPrefixRegex) ?? getPathTarget(url, noIdPrefixRegex)
+    return readPathTarget(url, trackPrefixRegex) ?? readPathTarget(url, noIdPrefixRegex)
   },
 })

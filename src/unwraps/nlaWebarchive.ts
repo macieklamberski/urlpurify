@@ -1,4 +1,5 @@
 import { isHostOf } from 'trousse'
+import { resolvePathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
@@ -41,7 +42,6 @@ export const unwrapNlaWebarchive: UrlUnwrapper = createUnwrapper({
       return
     }
 
-    // An unencoded target's query lands in the snapshot URL's own `search`.
-    return `${scheme}${match[1]}${url.search}`
+    return resolvePathTarget(url, `${scheme}${match[1]}`)
   },
 })

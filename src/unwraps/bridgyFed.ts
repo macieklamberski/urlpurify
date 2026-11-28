@@ -1,3 +1,4 @@
+import { resolvePathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
@@ -16,7 +17,6 @@ export const unwrapBridgyFed: UrlUnwrapper = createUnwrapper({
       return
     }
 
-    // An unencoded target's query lands in the redirect URL's own `search`.
-    return `${match[1]}${url.search}`
+    return resolvePathTarget(url, match[1])
   },
 })

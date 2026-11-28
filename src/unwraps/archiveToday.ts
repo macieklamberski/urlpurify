@@ -1,6 +1,7 @@
 import { isHostOf } from 'trousse'
+import { resolvePathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
-import { appendLinkFragment, decodeEncodedScheme } from '../utils.js'
+import { appendLinkFragment } from '../utils.js'
 
 const hostRegex = /^(?:www\.)?archive\.(?:is|ph|today|md|fo|vn|li)$/
 const pathRegex = /^\/(?:\d{14}|\d{4}\.\d{2}\.\d{2}-\d{6}|o\/[^/]+|newest)\/(.+)$/i
@@ -23,22 +24,14 @@ export const unwrapArchiveToday: UrlUnwrapper = (url) => {
     return
   }
 
-  let target = decodeEncodedScheme(match[1])
-
-  if (!target) {
-    return
-  }
+  // A link can escape the target's own `?` and `#` as `%3F` and `%23` in the path.
+  const target = resolvePathTarget(
+    url,
+    match[1].replace(escapedQueryRegex, '?').replace('%23', '#'),
+  )
 
   // An older /o/ link carries an http target with no scheme at all.
-  if (!schemeRegex.test(target)) {
-    target = `http://${target}`
-  }
-
-  // A link can escape the target's own `?` and `#` as `%3F` and `%23` in the path.
-  target = target.replace(escapedQueryRegex, '?').replace('%23', '#')
-
-  // An unencoded target's query lands in the snapshot URL's own `search`.
-  const unwrapped = `${target}${url.search}`
+  const unwrapped = schemeRegex.test(target) ? target : `http://${target}`
 
   // archive.today's own `#selection-` highlight points into the snapshot.
   if (selectionHashRegex.test(url.hash)) {

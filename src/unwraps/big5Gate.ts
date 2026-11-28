@@ -1,4 +1,5 @@
 import { isHttpUrl } from 'trousse'
+import { resolvePathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 
 const pathRegex = /^\/gate\/big5\/([\w-]+(?:\.[\w-]+)+(?:\/.*)?)$/i
@@ -14,7 +15,7 @@ export const unwrapBig5Gate: UrlUnwrapper = (url) => {
   }
 
   // The gate rewrites a page's http://<host>/<path> links to gate/big5/<host>/<path>.
-  const target = `http://${match[1]}${url.search}${url.hash}`
+  const target = `${resolvePathTarget(url, match[1], 'http:')}${url.hash}`
 
   if (isHttpUrl(target)) {
     return target

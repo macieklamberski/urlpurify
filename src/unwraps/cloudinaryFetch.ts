@@ -1,4 +1,5 @@
 import { decodePercent } from 'trousse'
+import { isEncodedPathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 import { decodeEncodedScheme, matchPathSource } from '../utils.js'
 
@@ -16,7 +17,11 @@ export const unwrapCloudinaryFetch: UrlUnwrapper = (url) => {
     return
   }
 
+  // An encoded source holds its own query, so the link's is the proxy's, such as Jetpack's
+  // `?resize=`.
+  const query = isEncodedPathTarget(source) ? '' : url.search
+
   // Cloudinary decodes a fetch source once, so its `%3F` is the source's own query. A source
   // encoded twice, as Jetpack spells substackcdn.com's, is decoded once more.
-  return decodeEncodedScheme(decodePercent(`${source}${url.search}${url.hash}`))
+  return decodeEncodedScheme(decodePercent(`${source}${query}${url.hash}`))
 }

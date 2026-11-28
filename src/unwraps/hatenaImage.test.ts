@@ -29,6 +29,15 @@ describe('unwrapHatenaImage', () => {
     expect(unwrapHatenaImage(value)).toBe(expected)
   })
 
+  it('should drop the query of the link after an encoded source', () => {
+    const value = new URL(
+      'https://cdn.image.st-hatena.com/image/scale/abc/width=1300/https%3A%2F%2Fcdn.example.com%2Fphoto.jpg?resize=640%2C360',
+    )
+    const expected = 'https://cdn.example.com/photo.jpg'
+
+    expect(unwrapHatenaImage(value)).toBe(expected)
+  })
+
   it('should keep the query of the source', () => {
     const value = new URL(
       'https://cdn.image.st-hatena.com/image/scale/abc/width=1300/https://cdn.example.com/photo.jpg?v=2',

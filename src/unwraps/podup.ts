@@ -1,4 +1,4 @@
-import { getPathTarget } from '../pathTarget.js'
+import { readPathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
@@ -11,6 +11,6 @@ export const unwrapPodup: UrlUnwrapper = createUnwrapper({
   hosts: 'traffic.podup.com',
   unwrap: (url) => {
     // Podup forwards to the path alone on https, dropping the query.
-    return getPathTarget(url, mediaPrefixRegex, 'https:', '')
+    return readPathTarget(url, mediaPrefixRegex, 'https:', '')
   },
 })

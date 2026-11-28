@@ -102,6 +102,15 @@ describe('unwrapFacebookShim', () => {
     expect(unwrapFacebookShim(url)).toBe('http://rapidcityjournal.com/news/article_46a1b9aa')
   })
 
+  it('should drop the query of the link after an encoded target in the legacy path', () => {
+    const value = new URL(
+      'http://www.facebook.com/l/mAQFYlx2o/https%3A%2F%2Fwww.example.com%2Fwatch%3Fv%3D7?ref=nf',
+    )
+    const expected = 'https://www.example.com/watch?v=7'
+
+    expect(unwrapFacebookShim(value)).toBe(expected)
+  })
+
   it('should keep the query of a target in the legacy path', () => {
     const url = new URL('http://www.facebook.com/l/mAQFYlx2o/www.youtube.com/watch?v=fZZhiF6z2sg')
 

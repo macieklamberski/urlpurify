@@ -1,3 +1,4 @@
+import { resolvePathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
@@ -31,7 +32,6 @@ export const unwrapStumbleupon: UrlUnwrapper = createUnwrapper({
       return
     }
 
-    // An unencoded target's query lands in the toolbar URL's own `search`.
-    return `http://${match[1]}${url.search}`
+    return resolvePathTarget(url, match[1], 'http:')
   },
 })

@@ -1,4 +1,5 @@
 import { isHostOf } from 'trousse'
+import { resolvePathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
@@ -25,9 +26,6 @@ export const unwrapNdlWarp: UrlUnwrapper = createUnwrapper({
 
     // WARP's redirect of a scheme-less persistent id names http, as in
     // WE11.jsp?originalUrl=http://, and such an id now redirects to the scheme-less snapshot.
-    const target = schemeRegex.test(path) ? path : `http://${path}`
-
-    // An unencoded target's query lands in the snapshot URL's own `search`.
-    return `${target}${url.search}`
+    return resolvePathTarget(url, schemeRegex.test(path) ? path : `http://${path}`)
   },
 })

@@ -1,6 +1,7 @@
 import { isAnyOf } from 'trousse'
+import { resolvePathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
-import { createUnwrapper, decodeEncodedScheme, readParamTarget } from '../utils.js'
+import { createUnwrapper, readParamTarget } from '../utils.js'
 
 const formPathRegex = /^\/(?:entry|add|entry\/panel)\/?$/i
 const schemePathRegex = /^\/entry\/(?<target>https?(?::|%3a).+)$/i
@@ -11,20 +12,21 @@ const hosts = ['b.hatena.ne.jp']
 
 const readEntry: UrlUnwrapper = (url) => {
   const schemeTarget = url.pathname.match(schemePathRegex)?.groups?.target
-  let target = schemeTarget && decodeEncodedScheme(schemeTarget)
-
-  if (!target) {
-    const match = url.pathname.match(hostPathRegex)
-
-    if (!match?.groups) {
-      return
-    }
-
-    target = `${match.groups.secure ? 'https' : 'http'}://${match.groups.target}`
-  }
 
   // Hatena reads an escaped `%23` in the path or query as the start of the page's fragment.
-  return `${target}${url.search}`.replace('%23', '#')
+  if (schemeTarget) {
+    return resolvePathTarget(url, schemeTarget).replace('%23', '#')
+  }
+
+  const match = url.pathname.match(hostPathRegex)
+
+  if (!match?.groups) {
+    return
+  }
+
+  const scheme = match.groups.secure ? 'https:' : 'http:'
+
+  return resolvePathTarget(url, match.groups.target, scheme).replace('%23', '#')
 }
 
 // A page written raw in the path ends where the link's fragment starts, so it takes the fragment.
@@ -46,7 +48,7 @@ export const unwrapHatenaBookmark: UrlUnwrapper = createUnwrapper({
 
     // An encoded page holds its own query and fragment, so the link's are Hatena's own.
     if (encodedTarget) {
-      return decodeEncodedScheme(encodedTarget)
+      return resolvePathTarget(url, encodedTarget)
     }
 
     return unwrapEntry(url)

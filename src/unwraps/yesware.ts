@@ -1,3 +1,4 @@
+import { resolvePathTarget } from '../pathTarget.js'
 import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
 const trackPathRegex = /^\/tt\/[\da-f]{40}\/[\da-f]{32}\/[\da-f]{32}\/(.+)$/i
@@ -28,6 +29,6 @@ export const unwrapYesware = createUnwrapper({
 
     // Yesware keeps the scheme server-side: http on links archived before 2019, https on nearly
     // all since.
-    return `https://${match[1]}${url.search}`
+    return resolvePathTarget(url, match[1], 'https:')
   },
 })
