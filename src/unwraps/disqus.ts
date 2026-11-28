@@ -1,5 +1,4 @@
 import { isAnyOf } from 'trousse'
-import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper, readDecodedTarget, readParamTarget } from '../utils.js'
 
 const paths = ['/', '/url']
@@ -14,7 +13,7 @@ const stripSignature = (value: string): string => {
 
 // Disqus outbound link redirect (disq.us/url?url=<target>:<signature> and
 // disq.us/?url=<target>).
-export const unwrapDisqus: UrlUnwrapper = createUnwrapper({
+export const unwrapDisqus = createUnwrapper({
   hosts: ['disq.us', 'www.disq.us'],
   unwrap: (url) => {
     if (!isAnyOf(url.pathname, paths)) {

@@ -11,27 +11,31 @@ describe('unwrapArchiveToday', () => {
   })
 
   it('should extract the target after a 14-digit timestamp', () => {
-    const url = new URL('https://archive.ph/20240814014001/https://example.com/world/article')
+    const value = new URL('https://archive.ph/20240814014001/https://example.com/world/article')
+    const expected = 'https://example.com/world/article'
 
-    expect(unwrapArchiveToday(url)).toBe('https://example.com/world/article')
+    expect(unwrapArchiveToday(value)).toBe(expected)
   })
 
   it('should extract the target after a dotted timestamp', () => {
-    const url = new URL('http://archive.today/2021.06.12-193819/https://example.com/docs/page')
+    const value = new URL('http://archive.today/2021.06.12-193819/https://example.com/docs/page')
+    const expected = 'https://example.com/docs/page'
 
-    expect(unwrapArchiveToday(url)).toBe('https://example.com/docs/page')
+    expect(unwrapArchiveToday(value)).toBe(expected)
   })
 
   it('should extract the target from the link to the original', () => {
-    const url = new URL('https://archive.is/o/hwFiP/https://example.com/coal')
+    const value = new URL('https://archive.is/o/hwFiP/https://example.com/coal')
+    const expected = 'https://example.com/coal'
 
-    expect(unwrapArchiveToday(url)).toBe('https://example.com/coal')
+    expect(unwrapArchiveToday(value)).toBe(expected)
   })
 
   it('should extract the target from the newest snapshot link', () => {
-    const url = new URL('https://archive.is/newest/https://example.com/magazine/2025/41/page')
+    const value = new URL('https://archive.is/newest/https://example.com/magazine/2025/41/page')
+    const expected = 'https://example.com/magazine/2025/41/page'
 
-    expect(unwrapArchiveToday(url)).toBe('https://example.com/magazine/2025/41/page')
+    expect(unwrapArchiveToday(value)).toBe(expected)
   })
 
   it('should drop the query of the link after an encoded target', () => {
@@ -44,27 +48,31 @@ describe('unwrapArchiveToday', () => {
   })
 
   it('should keep the target query string and fragment', () => {
-    const url = new URL('https://archive.is/20120917102258/https://example.com/a?id=5#section')
+    const value = new URL('https://archive.is/20120917102258/https://example.com/a?id=5#section')
+    const expected = 'https://example.com/a?id=5#section'
 
-    expect(unwrapArchiveToday(url)).toBe('https://example.com/a?id=5#section')
+    expect(unwrapArchiveToday(value)).toBe(expected)
   })
 
   it('should decode a target with an encoded scheme', () => {
-    const url = new URL('https://archive.ph/2023.09.16-062709/https%3A//example.com/attention')
+    const value = new URL('https://archive.ph/2023.09.16-062709/https%3A//example.com/attention')
+    const expected = 'https://example.com/attention'
 
-    expect(unwrapArchiveToday(url)).toBe('https://example.com/attention')
+    expect(unwrapArchiveToday(value)).toBe(expected)
   })
 
   it('should keep the percent escapes of a target with a plain scheme', () => {
-    const url = new URL('https://archive.ph/20240814014001/https://example.com/a%2Fb')
+    const value = new URL('https://archive.ph/20240814014001/https://example.com/a%2Fb')
+    const expected = 'https://example.com/a%2Fb'
 
-    expect(unwrapArchiveToday(url)).toBe('https://example.com/a%2Fb')
+    expect(unwrapArchiveToday(value)).toBe(expected)
   })
 
   it('should treat a target with no scheme as http', () => {
-    const url = new URL('http://archive.today/o/wpeDf/example.com/links.html')
+    const value = new URL('http://archive.today/o/wpeDf/example.com/links.html')
+    const expected = 'http://example.com/links.html'
 
-    expect(unwrapArchiveToday(url)).toBe('http://example.com/links.html')
+    expect(unwrapArchiveToday(value)).toBe(expected)
   })
 
   it('should treat a target with no scheme and a port as http', () => {
@@ -75,67 +83,69 @@ describe('unwrapArchiveToday', () => {
   })
 
   it('should return undefined for a short id with no target', () => {
-    const url = new URL('https://archive.ph/AbCd1')
+    const value = new URL('https://archive.ph/AbCd1')
 
-    expect(unwrapArchiveToday(url)).toBeUndefined()
+    expect(unwrapArchiveToday(value)).toBeUndefined()
   })
 
   it('should return undefined for the bare host', () => {
-    const url = new URL('https://archive.ph/')
+    const value = new URL('https://archive.ph/')
 
-    expect(unwrapArchiveToday(url)).toBeUndefined()
+    expect(unwrapArchiveToday(value)).toBeUndefined()
   })
 
   it('should return undefined for the snapshot list of a url', () => {
-    const url = new URL('https://archive.is/https://example.com/page')
+    const value = new URL('https://archive.is/https://example.com/page')
 
-    expect(unwrapArchiveToday(url)).toBeUndefined()
+    expect(unwrapArchiveToday(value)).toBeUndefined()
   })
 
   it('should return undefined when the timestamp has the wrong digit count', () => {
-    const url = new URL('https://archive.is/20120709/https://example.com/page')
+    const value = new URL('https://archive.is/20120709/https://example.com/page')
 
-    expect(unwrapArchiveToday(url)).toBeUndefined()
+    expect(unwrapArchiveToday(value)).toBeUndefined()
   })
 
   it('should keep the wrapper for a non-http target', () => {
-    const url = 'https://archive.ph/20240814014001/ftp://example.com/file'
+    const value = 'https://archive.ph/20240814014001/ftp://example.com/file'
 
-    expect(purifyUrl(url, { unwrappers: [unwrapArchiveToday] })).toBe(url)
+    expect(purifyUrl(value, { unwrappers: [unwrapArchiveToday] })).toBe(value)
   })
 
   it('should keep the wrapper when the encoded target has malformed percent escapes', () => {
-    const url = 'https://archive.ph/20240814014001/https%3A%ZZ'
+    const value = 'https://archive.ph/20240814014001/https%3A%ZZ'
 
-    expect(purifyUrl(url, { unwrappers: [unwrapArchiveToday] })).toBe(url)
+    expect(purifyUrl(value, { unwrappers: [unwrapArchiveToday] })).toBe(value)
   })
 
   it('should return undefined for the same shape on another host', () => {
-    const url = new URL('https://example.com/20240814014001/https://example.org/page')
+    const value = new URL('https://example.com/20240814014001/https://example.org/page')
 
-    expect(unwrapArchiveToday(url)).toBeUndefined()
+    expect(unwrapArchiveToday(value)).toBeUndefined()
   })
 
   it('should return undefined for an archive domain outside the mirror list', () => {
-    const url = new URL('https://archive.org/20240814014001/https://example.com/page')
+    const value = new URL('https://archive.org/20240814014001/https://example.com/page')
 
-    expect(unwrapArchiveToday(url)).toBeUndefined()
+    expect(unwrapArchiveToday(value)).toBeUndefined()
   })
 
   it('should restore an escaped query separator', () => {
-    const url = new URL(
+    const value = new URL(
       'https://archive.is/20121211084659/http://www.example.com/people/search%3Flastname=Doe',
     )
+    const expected = 'http://www.example.com/people/search?lastname=Doe'
 
-    expect(unwrapArchiveToday(url)).toBe('http://www.example.com/people/search?lastname=Doe')
+    expect(unwrapArchiveToday(value)).toBe(expected)
   })
 
   it('should restore an escaped fragment separator', () => {
-    const url = new URL(
+    const value = new URL(
       'https://archive.is/o/NTGoD/https://www.example.com/standard%23:~:text=Congress',
     )
+    const expected = 'https://www.example.com/standard#:~:text=Congress'
 
-    expect(unwrapArchiveToday(url)).toBe('https://www.example.com/standard#:~:text=Congress')
+    expect(unwrapArchiveToday(value)).toBe(expected)
   })
 
   it('should drop the snapshot highlight fragment', () => {
@@ -148,64 +158,66 @@ describe('unwrapArchiveToday', () => {
   })
 
   it('should keep a highlight fragment followed by a text directive', () => {
-    const url = new URL(
+    const value = new URL(
       'https://archive.ph/20220919102213/https://example.com/a#selection-1.0-1.5:~:text=word',
     )
+    const expected = 'https://example.com/a#selection-1.0-1.5:~:text=word'
 
-    expect(unwrapArchiveToday(url)).toBe('https://example.com/a#selection-1.0-1.5:~:text=word')
+    expect(unwrapArchiveToday(value)).toBe(expected)
   })
 
   it('should return undefined for a date-only dotted timestamp', () => {
-    const url = new URL('https://archive.is/2026.06.28/https://example.com/page')
+    const value = new URL('https://archive.is/2026.06.28/https://example.com/page')
 
-    expect(unwrapArchiveToday(url)).toBeUndefined()
+    expect(unwrapArchiveToday(value)).toBeUndefined()
   })
 
   it('should return undefined for a lookalike host', () => {
-    const url = new URL('https://examplearchive.ph/20240814014001/https://example.com/page')
+    const value = new URL('https://examplearchive.ph/20240814014001/https://example.com/page')
 
-    expect(unwrapArchiveToday(url)).toBeUndefined()
+    expect(unwrapArchiveToday(value)).toBeUndefined()
   })
 
   it('should return undefined for a mirror host as a label of another host', () => {
-    const url = new URL('https://archive.ph.example.com/20240814014001/https://example.com/page')
+    const value = new URL('https://archive.ph.example.com/20240814014001/https://example.com/page')
 
-    expect(unwrapArchiveToday(url)).toBeUndefined()
+    expect(unwrapArchiveToday(value)).toBeUndefined()
   })
 
   it('should return undefined for the shape below another path', () => {
-    const url = new URL('https://archive.ph/x/20240814014001/https://example.com/page')
+    const value = new URL('https://archive.ph/x/20240814014001/https://example.com/page')
 
-    expect(unwrapArchiveToday(url)).toBeUndefined()
+    expect(unwrapArchiveToday(value)).toBeUndefined()
   })
 
   it('should restore a lowercase escaped query separator', () => {
-    const url = new URL(
+    const value = new URL(
       'https://archive.is/20121211084659/http://www.example.com/people/search%3flastname=Doe',
     )
+    const expected = 'http://www.example.com/people/search?lastname=Doe'
 
-    expect(unwrapArchiveToday(url)).toBe('http://www.example.com/people/search?lastname=Doe')
+    expect(unwrapArchiveToday(value)).toBe(expected)
   })
 
   it('should restore only the first escaped query and fragment separators', () => {
-    const url = new URL(
+    const value = new URL(
       'https://archive.is/20121211084659/http://www.example.com/search%3Fq=a%3Fb%23top%23x',
     )
+    const expected = 'http://www.example.com/search?q=a%3Fb#top%23x'
 
-    expect(unwrapArchiveToday(url)).toBe('http://www.example.com/search?q=a%3Fb#top%23x')
+    expect(unwrapArchiveToday(value)).toBe(expected)
   })
 
   it('should unwrap through purifyUrl when passed as an unwrapper', () => {
     const value = 'https://archive.is/o/v8cfx/https:/www.example.com/us/story?fbclid=abc'
+    const expected = 'https://www.example.com/us/story'
 
-    expect(purifyUrl(value, { unwrappers: [unwrapArchiveToday] })).toBe(
-      'https://www.example.com/us/story',
-    )
+    expect(purifyUrl(value, { unwrappers: [unwrapArchiveToday] })).toBe(expected)
   })
 
   it('should return undefined for an unlisted subdomain of a mirror host', () => {
-    const url = new URL('https://sub.archive.ph/20240814014001/https://example.com/page')
+    const value = new URL('https://sub.archive.ph/20240814014001/https://example.com/page')
 
-    expect(unwrapArchiveToday(url)).toBeUndefined()
+    expect(unwrapArchiveToday(value)).toBeUndefined()
   })
 })

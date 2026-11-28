@@ -13,65 +13,69 @@ describe('unwrapAceml', () => {
   it('should decode a base64 redirectUrl param', () => {
     const target = 'https://example.com/article'
     const encoded = Buffer.from(target).toString('base64')
-    const url = new URL(
+    const value = new URL(
       `https://abc.acemlna.com/Prod/link-tracker?notrack=1&redirectUrl=${encodeURIComponent(encoded)}`,
     )
 
-    expect(unwrapAceml(url)).toBe(target)
+    expect(unwrapAceml(value)).toBe(target)
   })
 
   it('should decode a base64 redirectUrl param holding a percent-encoded target', () => {
-    const url = new URL(
+    const value = new URL(
       'https://example.lt.acemlnc.com/Prod/link-tracker?redirectUrl=aHR0cHMlM0ElMkYlMkZleGFtcGxlLmNvbSUyRmVkaXRvJTNGaWQlM0Qx&sig=25aVrhcnNbnaNWYVHMVds7Q6enE',
     )
+    const expected = 'https://example.com/edito?id=1'
 
-    expect(unwrapAceml(url)).toBe('https://example.com/edito?id=1')
+    expect(unwrapAceml(value)).toBe(expected)
   })
 
   it('should return a plain redirectUrl param', () => {
-    const url = new URL(
+    const value = new URL(
       'https://example.lt.acemlnb.com/Prod/link-tracker?redirectUrl=https://example.com/terms/a/annualized-rate.asp&a=90105704&s=192ad911b220e2320a3c7e3da8b45b6e&i=77A73A1A506',
     )
+    const expected = 'https://example.com/terms/a/annualized-rate.asp'
 
-    expect(unwrapAceml(url)).toBe('https://example.com/terms/a/annualized-rate.asp')
+    expect(unwrapAceml(value)).toBe(expected)
   })
 
   it('should keep a malformed escape in the target as written', () => {
     const encoded = Buffer.from('https%3A%2F%2Fexample.com%2F%E0%A4%A').toString('base64')
-    const url = new URL(
+    const value = new URL(
       `https://abc.acemlnc.com/Prod/link-tracker?redirectUrl=${encodeURIComponent(encoded)}`,
     )
+    const expected = 'https://example.com/%E0%A4%A'
 
-    expect(unwrapAceml(url)).toBe('https://example.com/%E0%A4%A')
+    expect(unwrapAceml(value)).toBe(expected)
   })
 
   it('should keep percent escapes in a base64 redirectUrl param holding a plain target', () => {
     const target = 'https://example.com/search?q=a%2Bb'
     const encoded = Buffer.from(target).toString('base64')
-    const url = new URL(
+    const value = new URL(
       `https://abc.acemlnc.com/Prod/link-tracker?redirectUrl=${encodeURIComponent(encoded)}`,
     )
 
-    expect(unwrapAceml(url)).toBe(target)
+    expect(unwrapAceml(value)).toBe(target)
   })
 
   it('should decode a percent-encoded target with lowercase escapes', () => {
     const encoded = Buffer.from('https%3a%2f%2fexample.com%2fpage').toString('base64')
-    const url = new URL(
+    const value = new URL(
       `https://abc.acemlnc.com/Prod/link-tracker?redirectUrl=${encodeURIComponent(encoded)}`,
     )
+    const expected = 'https://example.com/page'
 
-    expect(unwrapAceml(url)).toBe('https://example.com/page')
+    expect(unwrapAceml(value)).toBe(expected)
   })
 
   it('should match other ACEML host suffixes', () => {
     const target = 'https://example.com/page'
     const encoded = Buffer.from(target).toString('base64')
-    const url = new URL(
+    const value = new URL(
       `https://xyz.acemlnd.com/Prod/link-tracker?redirectUrl=${encodeURIComponent(encoded)}`,
     )
 
-    expect(unwrapAceml(url)).toBe(target)
+    expect(unwrapAceml(value)).toBe(target)
   })
 
   it('should keep the wrapper when the decoded value is not a url', () => {
@@ -82,41 +86,41 @@ describe('unwrapAceml', () => {
   })
 
   it('should return undefined when redirectUrl is missing', () => {
-    const url = new URL('https://abc.acemlna.com/Prod/link-tracker?notrack=1')
+    const value = new URL('https://abc.acemlna.com/Prod/link-tracker?notrack=1')
 
-    expect(unwrapAceml(url)).toBeUndefined()
+    expect(unwrapAceml(value)).toBeUndefined()
   })
 
   it('should return undefined for non-tracker paths', () => {
-    const url = new URL(
+    const value = new URL(
       'https://abc.acemlna.com/redirect?redirectUrl=aHR0cHM6Ly9leGFtcGxlLmNvbS8%3D',
     )
 
-    expect(unwrapAceml(url)).toBeUndefined()
+    expect(unwrapAceml(value)).toBeUndefined()
   })
 
   it('should return undefined for non-ACEML hosts', () => {
-    const url = new URL(
+    const value = new URL(
       'https://example.com/Prod/link-tracker?redirectUrl=aHR0cHM6Ly9leGFtcGxlLmNvbS8%3D',
     )
 
-    expect(unwrapAceml(url)).toBeUndefined()
+    expect(unwrapAceml(value)).toBeUndefined()
   })
 
   it('should return undefined for a lookalike host', () => {
-    const url = new URL(
+    const value = new URL(
       'https://exampleacemlna.com/Prod/link-tracker?redirectUrl=aHR0cHM6Ly9leGFtcGxlLmNvbS8%3D',
     )
 
-    expect(unwrapAceml(url)).toBeUndefined()
+    expect(unwrapAceml(value)).toBeUndefined()
   })
 
   it('should return undefined for the bare domain', () => {
-    const url = new URL(
+    const value = new URL(
       'https://acemlnb.com/Prod/link-tracker?redirectUrl=aHR0cHM6Ly9leGFtcGxlLmNvbS8%3D',
     )
 
-    expect(unwrapAceml(url)).toBeUndefined()
+    expect(unwrapAceml(value)).toBeUndefined()
   })
 
   it('should keep the fragment the target carries', () => {

@@ -11,14 +11,14 @@ const encodedPathRegex = /^\/entry\/(?<target>https?(?:%3a|:)%2f.*)$/i
 const hosts = ['b.hatena.ne.jp']
 
 const readEntry: UrlUnwrapper = (url) => {
-  const schemeTarget = url.pathname.match(schemePathRegex)?.groups?.target
+  const schemeTarget = schemePathRegex.exec(url.pathname)?.groups?.target
 
   // Hatena reads an escaped `%23` in the path or query as the start of the page's fragment.
   if (schemeTarget) {
     return resolvePathTarget(url, schemeTarget).replace('%23', '#')
   }
 
-  const match = url.pathname.match(hostPathRegex)
+  const match = hostPathRegex.exec(url.pathname)
 
   if (!match?.groups) {
     return
@@ -30,27 +30,27 @@ const readEntry: UrlUnwrapper = (url) => {
 }
 
 // A page written raw in the path ends where the link's fragment starts, so it takes the fragment.
-const unwrapEntry = createUnwrapper({ hosts, unwrap: readEntry })
+const extractEntry = createUnwrapper({ hosts, unwrap: readEntry })
 
 // Hatena Bookmark entry page (b.hatena.ne.jp/entry/<page>, with the scheme, percent-encoded, or
 // without it as /entry/s/<host>/<path> for https and /entry/<host>/<path> for http), and the
-// bookmark form at /entry?url=, /add?url= and /entry/panel/?url=. Opt-in: unwrapping returns the
-// bookmarked page, not the Hatena page that bookmarks it.
-export const unwrapHatenaBookmark: UrlUnwrapper = createUnwrapper({
+// bookmark form at /entry?url=, /add?url= and /entry/panel/?url=.
+// Opt-in: unwrapping returns the bookmarked page, not the Hatena page that bookmarks it.
+export const unwrapHatenaBookmark = createUnwrapper({
   hosts,
-  ignoreLinkFragment: true, // An entry page takes it through `unwrapEntry`
+  ignoreLinkFragment: true, // An entry page takes it through `extractEntry`
   unwrap: (url) => {
     if (isAnyOf(url.pathname, formPathRegex)) {
       return readParamTarget(url, 'url')
     }
 
-    const encodedTarget = url.pathname.match(encodedPathRegex)?.groups?.target
+    const encodedTarget = encodedPathRegex.exec(url.pathname)?.groups?.target
 
     // An encoded page holds its own query and fragment, so the link's are Hatena's own.
     if (encodedTarget) {
       return resolvePathTarget(url, encodedTarget)
     }
 
-    return unwrapEntry(url)
+    return extractEntry(url)
   },
 })

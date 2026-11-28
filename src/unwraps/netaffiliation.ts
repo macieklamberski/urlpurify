@@ -1,5 +1,4 @@
 import { isHttpUrl } from 'trousse'
-import type { UrlUnwrapper } from '../types.js'
 import { createQueryUnwrapper, createUnwrapper, readParamTarget } from '../utils.js'
 
 // The query opens with the click id as a bare key, such as `?P5139555780512191&redir=`.
@@ -13,8 +12,8 @@ const extractTracker = createQueryUnwrapper({
 
 // NetAffiliation, now Kwanko, affiliate click (action.metaffiliation.com/trk.php?mclic=<id>&redir=
 // <target>, and <merchant tracking host>/?P<id>&redir=<target> on any host).
-// Not included in defaultUnwrappers: unwrapping drops the publisher's commission.
-export const unwrapNetaffiliation: UrlUnwrapper = createUnwrapper({
+// Opt-in: unwrapping drops the publisher's commission.
+export const unwrapNetaffiliation = createUnwrapper({
   anyHost: true,
   unwrap: (url) => {
     const target = extractTracker(url)

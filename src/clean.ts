@@ -56,7 +56,7 @@ const foldName = (name: string): string => {
   return name.toLowerCase()
 }
 
-const pathParamRegex = /;([^;/=]+)=[^;/]*/g
+const pathParamRegex = /;(?<name>[^;/=]+)=[^;/]*/g
 
 const sessionLiterals = sessionIdParams.filter(isString).map((param) => param.toLowerCase())
 

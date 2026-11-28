@@ -3,40 +3,44 @@ import { unwrapRedditOut } from './redditOut.js'
 
 describe('unwrapRedditOut', () => {
   it('should extract target from url param', () => {
-    const url = new URL('https://out.reddit.com/?url=https%3A%2F%2Fexample.com%2Farticle&token=abc')
+    const value = new URL(
+      'https://out.reddit.com/?url=https%3A%2F%2Fexample.com%2Farticle&token=abc',
+    )
+    const expected = 'https://example.com/article'
 
-    expect(unwrapRedditOut(url)).toBe('https://example.com/article')
+    expect(unwrapRedditOut(value)).toBe(expected)
   })
 
   it('should return undefined when url param is missing', () => {
-    const url = new URL('https://out.reddit.com/?token=abc')
+    const value = new URL('https://out.reddit.com/?token=abc')
 
-    expect(unwrapRedditOut(url)).toBeUndefined()
+    expect(unwrapRedditOut(value)).toBeUndefined()
   })
 
   it('should return undefined for non-Reddit hosts', () => {
-    const url = new URL('https://example.com/?url=https%3A%2F%2Fother.com')
+    const value = new URL('https://example.com/?url=https%3A%2F%2Fother.com')
 
-    expect(unwrapRedditOut(url)).toBeUndefined()
+    expect(unwrapRedditOut(value)).toBeUndefined()
   })
 
   it('should extract target from the post path', () => {
-    const url = new URL(
+    const value = new URL(
       'https://out.reddit.com/t3_1abc2de?url=https%3A%2F%2Fexample.com%2Fpost&token=abc',
     )
+    const expected = 'https://example.com/post'
 
-    expect(unwrapRedditOut(url)).toBe('https://example.com/post')
+    expect(unwrapRedditOut(value)).toBe(expected)
   })
 
   it('should return undefined for the submit share intent', () => {
-    const url = new URL('https://www.reddit.com/submit?url=https%3A%2F%2Fexample.com%2Fpost')
+    const value = new URL('https://www.reddit.com/submit?url=https%3A%2F%2Fexample.com%2Fpost')
 
-    expect(unwrapRedditOut(url)).toBeUndefined()
+    expect(unwrapRedditOut(value)).toBeUndefined()
   })
 
   it('should return undefined for another path on the host', () => {
-    const url = new URL('https://out.reddit.com/about?url=https%3A%2F%2Fexample.com%2Fpost')
+    const value = new URL('https://out.reddit.com/about?url=https%3A%2F%2Fexample.com%2Fpost')
 
-    expect(unwrapRedditOut(url)).toBeUndefined()
+    expect(unwrapRedditOut(value)).toBeUndefined()
   })
 })

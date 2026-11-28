@@ -2,19 +2,19 @@ import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
 const submitPathRegex = /^\/submit\/?$/i
 
-const unwrapBookmarklet = createQueryUnwrapper({
+const extractBookmarklet = createQueryUnwrapper({
   hosts: ['bookmarks.yahoo.com', 'myweb2.search.yahoo.com', 'myweb.yahoo.com'],
   path: '/myresults/bookmarklet',
   params: ['u'],
   ignoreLinkFragment: true,
 })
-const unwrapToolbar = createQueryUnwrapper({
+const extractToolbar = createQueryUnwrapper({
   hosts: 'bookmarks.yahoo.com',
   path: '/toolbar/savebm',
   params: ['u'],
   ignoreLinkFragment: true,
 })
-const unwrapBuzz = createQueryUnwrapper({
+const extractBuzz = createQueryUnwrapper({
   hosts: ['buzz.yahoo.com', 'fr.buzz.yahoo.com', 'uk.buzz.yahoo.com'],
   path: '/buzz',
   params: ['targetUrl', 'guid'],
@@ -22,7 +22,7 @@ const unwrapBuzz = createQueryUnwrapper({
 })
 
 // Some share links put the title in submitUrl= and the page in u=.
-const unwrapBuzzSubmit = createQueryUnwrapper({
+const extractBuzzSubmit = createQueryUnwrapper({
   hosts: 'buzz.yahoo.com',
   path: submitPathRegex,
   params: ['submitUrl', 'u'],
@@ -46,6 +46,8 @@ export const unwrapYahooBookmarks = createUnwrapper({
   ],
   ignoreLinkFragment: true,
   unwrap: (url) => {
-    return unwrapBookmarklet(url) ?? unwrapToolbar(url) ?? unwrapBuzz(url) ?? unwrapBuzzSubmit(url)
+    return (
+      extractBookmarklet(url) ?? extractToolbar(url) ?? extractBuzz(url) ?? extractBuzzSubmit(url)
+    )
   },
 })

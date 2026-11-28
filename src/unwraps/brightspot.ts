@@ -1,13 +1,12 @@
 import { isHttpUrl } from 'trousse'
-import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper, readParamTarget } from '../utils.js'
 
 const dimsPathRegex = /^\/dims\d\/.*$/i
 
 // Brightspot dims image resizer on any host: its own brightspotcdn.com subdomains and the
 // publishers' domains (<host>/dims4/<options>/?url=<source>), such as dims.apnews.com.
-// Not included in defaultUnwrappers: unwrapping swaps the resized copy for the original image.
-export const unwrapBrightspot: UrlUnwrapper = createUnwrapper({
+// Opt-in: unwrapping swaps the resized copy for the original image.
+export const unwrapBrightspot = createUnwrapper({
   anyHost: true,
   ignoreLinkFragment: true,
   unwrap: (url) => {

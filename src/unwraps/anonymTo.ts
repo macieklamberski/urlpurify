@@ -1,5 +1,4 @@
 import { readPathTarget } from '../pathTarget.js'
-import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper, decodeEncodedScheme } from '../utils.js'
 
 // anonym.to shows its home page for a path target written `http:/` with one slash.
@@ -7,7 +6,7 @@ const pathTargetRegex = /^\/(?=https?:\/\/)/
 
 // anonym.to referrer anonymizer (anonym.to/?<target> and anonym.to/<target>). The query target
 // is the whole query string, written unencoded, so a raw one is taken verbatim.
-export const unwrapAnonymTo: UrlUnwrapper = createUnwrapper({
+export const unwrapAnonymTo = createUnwrapper({
   hosts: ['anonym.to', 'www.anonym.to'],
   unwrap: (url) => {
     if (url.pathname !== '/') {

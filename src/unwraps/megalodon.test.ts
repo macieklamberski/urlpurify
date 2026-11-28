@@ -20,87 +20,87 @@ describe('unwrapMegalodon', () => {
   })
 
   it('should extract target from an https snapshot', () => {
-    const url = new URL(
+    const value = new URL(
       'https://megalodon.jp/2023-0213-1416-54/https://www.example.com:443/co_seko_voice/173.html',
     )
+    const expected = 'https://www.example.com:443/co_seko_voice/173.html'
 
-    expect(unwrapMegalodon(url)).toBe('https://www.example.com:443/co_seko_voice/173.html')
+    expect(unwrapMegalodon(value)).toBe(expected)
   })
 
   it('should add the http scheme to a target stored without one', () => {
-    const url = new URL('http://megalodon.jp/2012-0607-1850-18/www.example.com/cache/page.html')
+    const value = new URL('http://megalodon.jp/2012-0607-1850-18/www.example.com/cache/page.html')
+    const expected = 'http://www.example.com/cache/page.html'
 
-    expect(unwrapMegalodon(url)).toBe('http://www.example.com/cache/page.html')
+    expect(unwrapMegalodon(value)).toBe(expected)
   })
 
   it('should extract target from a snapshot on a numbered host', () => {
-    const url = new URL(
+    const value = new URL(
       'http://s02.megalodon.jp/2008-0219-1451-14/www3.example.com/news/2008/02/19/d20080219000037.html',
     )
+    const expected = 'http://www3.example.com/news/2008/02/19/d20080219000037.html'
 
-    expect(unwrapMegalodon(url)).toBe(
-      'http://www3.example.com/news/2008/02/19/d20080219000037.html',
-    )
+    expect(unwrapMegalodon(value)).toBe(expected)
   })
 
   it('should return undefined for a host that only ends with a numbered host', () => {
-    const url = new URL('http://xs02.megalodon.jp/2008-0219-1451-14/www3.example.com/news.html')
+    const value = new URL('http://xs02.megalodon.jp/2008-0219-1451-14/www3.example.com/news.html')
 
-    expect(unwrapMegalodon(url)).toBeUndefined()
+    expect(unwrapMegalodon(value)).toBeUndefined()
   })
 
   it('should return undefined for a host that only starts with a numbered host', () => {
-    const url = new URL(
+    const value = new URL(
       'http://s02.megalodon.jp.example.com/2008-0219-1451-14/www3.example.com/news.html',
     )
 
-    expect(unwrapMegalodon(url)).toBeUndefined()
+    expect(unwrapMegalodon(value)).toBeUndefined()
   })
 
   it('should return undefined for a numbered host with three digits', () => {
-    const url = new URL('http://s002.megalodon.jp/2008-0219-1451-14/www3.example.com/news.html')
+    const value = new URL('http://s002.megalodon.jp/2008-0219-1451-14/www3.example.com/news.html')
 
-    expect(unwrapMegalodon(url)).toBeUndefined()
+    expect(unwrapMegalodon(value)).toBeUndefined()
   })
 
   it('should keep the query and fragment of the target', () => {
-    const url = new URL(
+    const value = new URL(
       'https://megalodon.jp/2024-1027-0030-50/https://example.com:443/status/1850194155626217909?t=rZTzLHtz&s=19#reply',
     )
+    const expected = 'https://example.com:443/status/1850194155626217909?t=rZTzLHtz&s=19#reply'
 
-    expect(unwrapMegalodon(url)).toBe(
-      'https://example.com:443/status/1850194155626217909?t=rZTzLHtz&s=19#reply',
-    )
+    expect(unwrapMegalodon(value)).toBe(expected)
   })
 
   it('should return undefined for a snapshot with no target', () => {
-    const url = new URL('https://megalodon.jp/2023-0213-1416-54/')
+    const value = new URL('https://megalodon.jp/2023-0213-1416-54/')
 
-    expect(unwrapMegalodon(url)).toBeUndefined()
+    expect(unwrapMegalodon(value)).toBeUndefined()
   })
 
   it('should keep the wrapper for a non-http target', () => {
-    const url = 'https://megalodon.jp/2023-0213-1416-54/ftp://example.com/file'
+    const value = 'https://megalodon.jp/2023-0213-1416-54/ftp://example.com/file'
 
-    expect(purifyUrl(url, { unwrappers: [unwrapMegalodon] })).toBe(url)
+    expect(purifyUrl(value, { unwrappers: [unwrapMegalodon] })).toBe(value)
   })
 
   it('should return undefined for the snapshot list lookup', () => {
-    const url = new URL('https://megalodon.jp/?url=https://www.example.com/')
+    const value = new URL('https://megalodon.jp/?url=https://www.example.com/')
 
-    expect(unwrapMegalodon(url)).toBeUndefined()
+    expect(unwrapMegalodon(value)).toBeUndefined()
   })
 
   it('should return undefined for a timestamp of another shape', () => {
-    const url = new URL('https://megalodon.jp/20230213141654/https://www.example.com/')
+    const value = new URL('https://megalodon.jp/20230213141654/https://www.example.com/')
 
-    expect(unwrapMegalodon(url)).toBeUndefined()
+    expect(unwrapMegalodon(value)).toBeUndefined()
   })
 
   it('should return undefined for other hosts', () => {
-    const url = new URL('https://example.com/2023-0213-1416-54/https://www.example.org/')
+    const value = new URL('https://example.com/2023-0213-1416-54/https://www.example.org/')
 
-    expect(unwrapMegalodon(url)).toBeUndefined()
+    expect(unwrapMegalodon(value)).toBeUndefined()
   })
 
   it('should register its hosts so the host index skips it on other hosts', () => {

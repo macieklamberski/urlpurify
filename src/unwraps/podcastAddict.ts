@@ -12,20 +12,20 @@ const readFeed: UrlUnwrapper = (url) => {
 }
 
 // A raw feed's fragment lands in the link's own `hash`.
-const unwrapRawFeed = createUnwrapper({ hosts, unwrap: readFeed })
+const extractRawFeed = createUnwrapper({ hosts, unwrap: readFeed })
 
 // Podcast Addict subscribe link (podcastaddict.com/feed/<feed>), the feed percent-encoded or raw.
 // Its ?id=<episode>&podcastId=<id> and /episode/<episode> links carry an episode, not a feed.
-// Not included in defaultUnwrappers: unwrapping returns the feed, not the app's podcast page.
-export const unwrapPodcastAddict: UrlUnwrapper = createUnwrapper({
+// Opt-in: unwrapping returns the feed, not the app's podcast page.
+export const unwrapPodcastAddict = createUnwrapper({
   hosts,
-  ignoreLinkFragment: true, // A raw feed takes it through `unwrapRawFeed`
+  ignoreLinkFragment: true, // A raw feed takes it through `extractRawFeed`
   unwrap: (url) => {
     // An encoded feed holds its own query and fragment, so the link's are Podcast Addict's own.
     if (encodedFeedPathRegex.test(url.pathname)) {
       return readFeed(url)
     }
 
-    return unwrapRawFeed(url)
+    return extractRawFeed(url)
   },
 })

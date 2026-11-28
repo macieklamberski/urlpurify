@@ -1,14 +1,13 @@
 import { isAnyOf } from 'trousse'
-import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper, readParamTarget } from '../utils.js'
 
-const hosts = ['www.blogger.com', 'blogger.com', 'www2.blogger.com', 'draft.blogger.com']
+const hosts = ['blogger.com', 'www.blogger.com', 'www2.blogger.com', 'draft.blogger.com']
 const paths = ['/blog_this.pyra', '/blog-this.g']
 
-// Blogger BlogThis form (blogger.com/blog_this.pyra?u=<target> and /blog-this.g?u=, on www.,
-// bare, www2. and draft.blogger.com). Opt-in: unwrapping returns the shared page, not the post
-// form.
-export const unwrapBloggerBlogThis: UrlUnwrapper = createUnwrapper({
+// Blogger BlogThis form (blogger.com/blog_this.pyra?u=<target> and /blog-this.g?u=, on www., bare,
+// www2. and draft.blogger.com).
+// Opt-in: unwrapping returns the shared page, not the post form.
+export const unwrapBloggerBlogThis = createUnwrapper({
   hosts,
   ignoreLinkFragment: true,
   unwrap: (url) => {

@@ -3,55 +3,59 @@ import { unwrapFacebook } from './facebook.js'
 
 describe('unwrapFacebook', () => {
   it('should extract target from l.facebook.com', () => {
-    const url = new URL('https://l.facebook.com/l.php?u=https%3A%2F%2Fexample.com%2Fpage')
+    const value = new URL('https://l.facebook.com/l.php?u=https%3A%2F%2Fexample.com%2Fpage')
+    const expected = 'https://example.com/page'
 
-    expect(unwrapFacebook(url)).toBe('https://example.com/page')
+    expect(unwrapFacebook(value)).toBe(expected)
   })
 
   it('should return undefined for the share intent on www.facebook.com', () => {
-    const url = new URL('https://www.facebook.com/sharer.php?u=https%3A%2F%2Fexample.com%2Fpage')
+    const value = new URL('https://www.facebook.com/sharer.php?u=https%3A%2F%2Fexample.com%2Fpage')
 
-    expect(unwrapFacebook(url)).toBeUndefined()
+    expect(unwrapFacebook(value)).toBeUndefined()
   })
 
   it('should return undefined for non-shim Facebook URLs', () => {
-    const url = new URL('https://www.facebook.com/profile')
+    const value = new URL('https://www.facebook.com/profile')
 
-    expect(unwrapFacebook(url)).toBeUndefined()
+    expect(unwrapFacebook(value)).toBeUndefined()
   })
 
   it('should return undefined when u param is missing', () => {
-    const url = new URL('https://l.facebook.com/l.php')
+    const value = new URL('https://l.facebook.com/l.php')
 
-    expect(unwrapFacebook(url)).toBeUndefined()
+    expect(unwrapFacebook(value)).toBeUndefined()
   })
 
   it('should return undefined for non-Facebook hosts', () => {
-    const url = new URL('https://example.com/l.php?u=https%3A%2F%2Fother.com')
+    const value = new URL('https://example.com/l.php?u=https%3A%2F%2Fother.com')
 
-    expect(unwrapFacebook(url)).toBeUndefined()
+    expect(unwrapFacebook(value)).toBeUndefined()
   })
 
   it('should extract target from the root path on l.facebook.com', () => {
-    const url = new URL(
+    const value = new URL(
       'http://l.facebook.com/?u=http%3A%2F%2Fexample.com%2Fpage%3Fa%3D1%26z%3D2&e=ATNt8VAv5DHBAf9_BeBUAgRUR',
     )
+    const expected = 'http://example.com/page?a=1&z=2'
 
-    expect(unwrapFacebook(url)).toBe('http://example.com/page?a=1&z=2')
+    expect(unwrapFacebook(value)).toBe(expected)
   })
 
   it('should extract target from /lsr.php on l.facebook.com', () => {
-    const url = new URL(
+    const value = new URL(
       'http://l.facebook.com/lsr.php?u=http%3A%2F%2Fexample.com%2Fpage&ext=1412643317&hash=AcnaqSl-oP5KRrEKSkIxqQ',
     )
+    const expected = 'http://example.com/page'
 
-    expect(unwrapFacebook(url)).toBe('http://example.com/page')
+    expect(unwrapFacebook(value)).toBe(expected)
   })
 
   it('should decode a twice-encoded target on the root path', () => {
-    const url = new URL('https://l.facebook.com/?u=https%253A%252F%252Fexample.com%252Fpage')
+    const value = new URL('https://l.facebook.com/?u=https%253A%252F%252Fexample.com%252Fpage')
+    const expected = 'https://example.com/page'
 
-    expect(unwrapFacebook(url)).toBe('https://example.com/page')
+    expect(unwrapFacebook(value)).toBe(expected)
   })
 
   it('should return undefined for the root path without a u param', () => {
@@ -61,9 +65,9 @@ describe('unwrapFacebook', () => {
   })
 
   it('should return undefined for a sibling path on l.facebook.com', () => {
-    const url = new URL('https://l.facebook.com/sharer.php?u=https%3A%2F%2Fexample.com%2Fpage')
+    const value = new URL('https://l.facebook.com/sharer.php?u=https%3A%2F%2Fexample.com%2Fpage')
 
-    expect(unwrapFacebook(url)).toBeUndefined()
+    expect(unwrapFacebook(value)).toBeUndefined()
   })
 
   it('should return undefined for the root path on other Facebook hosts', () => {
@@ -74,32 +78,33 @@ describe('unwrapFacebook', () => {
       'facebook.com',
       'l.messenger.com',
     ]) {
-      const url = new URL(`https://${host}/?u=https%3A%2F%2Fexample.com%2Fpage`)
+      const value = new URL(`https://${host}/?u=https%3A%2F%2Fexample.com%2Fpage`)
 
-      expect(unwrapFacebook(url)).toBeUndefined()
+      expect(unwrapFacebook(value)).toBeUndefined()
     }
   })
 
   it('should return undefined for /lsr.php on other Facebook hosts', () => {
     for (const host of ['www.facebook.com', 'lm.facebook.com', 'l.messenger.com', 'facebook.com']) {
-      const url = new URL(`https://${host}/lsr.php?u=https%3A%2F%2Fexample.com%2Fpage`)
+      const value = new URL(`https://${host}/lsr.php?u=https%3A%2F%2Fexample.com%2Fpage`)
 
-      expect(unwrapFacebook(url)).toBeUndefined()
+      expect(unwrapFacebook(value)).toBeUndefined()
     }
   })
 
   it('should return undefined for the root path on a lookalike host', () => {
-    const url = new URL('https://l.examplefacebook.com/?u=https%3A%2F%2Fexample.com%2Fpage')
+    const value = new URL('https://l.examplefacebook.com/?u=https%3A%2F%2Fexample.com%2Fpage')
 
-    expect(unwrapFacebook(url)).toBeUndefined()
+    expect(unwrapFacebook(value)).toBeUndefined()
   })
 
   it('should extract a target without a scheme from the legacy path on www.facebook.com', () => {
-    const url = new URL(
+    const value = new URL(
       'http://www.facebook.com/l/5AQHGK4rxAQGL-AEL93wViymSpBqLhKkJJR0sSF1hMP-V6w/rapidcityjournal.com/news/article_46a1b9aa',
     )
+    const expected = 'http://rapidcityjournal.com/news/article_46a1b9aa'
 
-    expect(unwrapFacebook(url)).toBe('http://rapidcityjournal.com/news/article_46a1b9aa')
+    expect(unwrapFacebook(value)).toBe(expected)
   })
 
   it('should drop the query of the link after an encoded target in the legacy path', () => {
@@ -119,79 +124,88 @@ describe('unwrapFacebook', () => {
   })
 
   it('should keep the query of a target in the legacy path', () => {
-    const url = new URL('http://www.facebook.com/l/mAQFYlx2o/www.youtube.com/watch?v=fZZhiF6z2sg')
+    const value = new URL('http://www.facebook.com/l/mAQFYlx2o/www.youtube.com/watch?v=fZZhiF6z2sg')
+    const expected = 'http://www.youtube.com/watch?v=fZZhiF6z2sg'
 
-    expect(unwrapFacebook(url)).toBe('http://www.youtube.com/watch?v=fZZhiF6z2sg')
+    expect(unwrapFacebook(value)).toBe(expected)
   })
 
   it('should extract a target from the legacy path on l.facebook.com', () => {
-    const url = new URL(
+    const value = new URL(
       'http://l.facebook.com/l/2AQEUvcwIAQHqTXiT8B3usUbA2R3i2FYxgJfBJXaRReZzbA/example.blogspot.com/',
     )
+    const expected = 'http://example.blogspot.com/'
 
-    expect(unwrapFacebook(url)).toBe('http://example.blogspot.com/')
+    expect(unwrapFacebook(value)).toBe(expected)
   })
 
   it('should extract a target after a semicolon in the legacy path', () => {
-    const url = new URL(
+    const value = new URL(
       'http://www.facebook.com/l/92723;https://www.paypal.com/cgi-bin/webscr?cmd=x',
     )
+    const expected = 'https://www.paypal.com/cgi-bin/webscr?cmd=x'
 
-    expect(unwrapFacebook(url)).toBe('https://www.paypal.com/cgi-bin/webscr?cmd=x')
+    expect(unwrapFacebook(value)).toBe(expected)
   })
 
   it('should decode an encoded target in the legacy path', () => {
-    const url = new URL(
+    const value = new URL(
       'https://www.facebook.com/l/tAQGrQpNyAQGcNugK26MJo6I7u13EWjMs-gm8qDRbwkVYhQ/https%3A%2F%2Fwww.paypal.com%2Fcgi-bin%2Fwebscr%3Fcmd%3D_s-xclick%26hosted_button_id%3DQNGYF76RFWAHC',
     )
+    const expected =
+      'https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=QNGYF76RFWAHC'
 
-    expect(unwrapFacebook(url)).toBe(
-      'https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=QNGYF76RFWAHC',
-    )
+    expect(unwrapFacebook(value)).toBe(expected)
   })
 
   it('should decode a half-encoded target in the legacy path', () => {
-    const url = new URL(
+    const value = new URL(
       'https://www.facebook.com/l/sAQEFF71-AQGl56XZDFE3_XOX8b7wicBJuJHRag8_CrzStA/https%3A//www.youcaring.com/help-a-neighbor/165331',
     )
+    const expected = 'https://www.youcaring.com/help-a-neighbor/165331'
 
-    expect(unwrapFacebook(url)).toBe('https://www.youcaring.com/help-a-neighbor/165331')
+    expect(unwrapFacebook(value)).toBe(expected)
   })
 
   it('should decode a twice-encoded target in the legacy path', () => {
-    const url = new URL(
+    const value = new URL(
       'https://l.facebook.com/l/jAQEpUZL6/https%253A%252F%252Fwww.poets.org%252Fpoet%252Fdavid-lehman',
     )
+    const expected = 'https://www.poets.org/poet/david-lehman'
 
-    expect(unwrapFacebook(url)).toBe('https://www.poets.org/poet/david-lehman')
+    expect(unwrapFacebook(value)).toBe(expected)
   })
 
   it('should keep a stray percent sign in a twice-encoded target', () => {
-    const url = new URL(
+    const value = new URL(
       'https://l.facebook.com/l/jAQEpUZL6/https%253A%252F%252Fexample.com%252F100%25',
     )
+    const expected = 'https://example.com/100%'
 
-    expect(unwrapFacebook(url)).toBe('https://example.com/100%')
+    expect(unwrapFacebook(value)).toBe(expected)
   })
 
   it('should keep a malformed escape in the target as written', () => {
-    const url = new URL('https://www.facebook.com/l/jAQEpUZL6/https%3A%2F%2Fexample.com%2F%E0%A4%A')
+    const value = new URL(
+      'https://www.facebook.com/l/jAQEpUZL6/https%3A%2F%2Fexample.com%2F%E0%A4%A',
+    )
+    const expected = 'https://example.com/%E0%A4%A'
 
-    expect(unwrapFacebook(url)).toBe('https://example.com/%E0%A4%A')
+    expect(unwrapFacebook(value)).toBe(expected)
   })
 
   it('should return undefined for the legacy path without a token or a target', () => {
-    const url = new URL('http://www.facebook.com/l/;http://example.com/page')
+    const value = new URL('http://www.facebook.com/l/;http://example.com/page')
 
-    expect(unwrapFacebook(url)).toBeUndefined()
+    expect(unwrapFacebook(value)).toBeUndefined()
     expect(unwrapFacebook(new URL('http://www.facebook.com/l/mAQFYlx2o/'))).toBeUndefined()
     expect(unwrapFacebook(new URL('http://www.facebook.com/l/mAQFYlx2o'))).toBeUndefined()
   })
 
   it('should return undefined for the legacy path on another host', () => {
-    const url = new URL('http://example.com/l/mAQFYlx2o/www.youtube.com/watch?v=fZZhiF6z2sg')
+    const value = new URL('http://example.com/l/mAQFYlx2o/www.youtube.com/watch?v=fZZhiF6z2sg')
 
-    expect(unwrapFacebook(url)).toBeUndefined()
+    expect(unwrapFacebook(value)).toBeUndefined()
   })
 
   it('should keep the fragment the target carries', () => {

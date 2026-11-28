@@ -1,6 +1,5 @@
 import { isHostOf } from 'trousse'
 import { readPathTarget } from '../pathTarget.js'
-import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper, readParamTarget } from '../utils.js'
 
 const trackPrefixRegex = /^\/track\/[^/]+\/[^/]+\//i
@@ -14,8 +13,8 @@ const playHosts = [...trackHosts, 'backend.endpoints.firstory-709db.cloud.goog']
 // target percent-encoded, and m.cdn.firstory.me/play.<ext>?url=<target>), also on v1.firstory.me,
 // play.<ext>?url=<target> on backend.endpoints.firstory-709db.cloud.goog, and
 // track.fstry.me/p/<id>/<target>, where the target often drops its scheme.
-// Not included in defaultUnwrappers: unwrapping removes the podcaster's download counts.
-export const unwrapFirstory: UrlUnwrapper = createUnwrapper({
+// Opt-in: unwrapping removes the podcaster's download counts.
+export const unwrapFirstory = createUnwrapper({
   hosts: [...playHosts, 'track.fstry.me'],
   unwrap: (url) => {
     if (isHostOf(url, 'track.fstry.me')) {

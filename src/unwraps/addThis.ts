@@ -1,8 +1,7 @@
 import { isAnyOf, isHostOf } from 'trousse'
-import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper, readParamTarget } from '../utils.js'
 
-const bookmarkHosts = ['www.addthis.com', 'addthis.com']
+const bookmarkHosts = ['addthis.com', 'www.addthis.com']
 const apiHosts = ['api.addthis.com']
 
 const offerPathRegex = /^\/oexchange\/0\.8\/(?:forward\/[^/]+\/)?offer$/i
@@ -16,9 +15,9 @@ const isCarrierPath = (url: URL): boolean => {
 }
 
 // AddThis share links (www.addthis.com/bookmark.php?url=<page>, api.addthis.com/oexchange/0.8/
-// offer?url= and /forward/<service>/offer?url=). Opt-in: unwrapping returns the shared page, not
-// the form that shares it.
-export const unwrapAddThis: UrlUnwrapper = createUnwrapper({
+// offer?url= and /forward/<service>/offer?url=).
+// Opt-in: unwrapping returns the shared page, not the form that shares it.
+export const unwrapAddThis = createUnwrapper({
   hosts: [...bookmarkHosts, ...apiHosts],
   ignoreLinkFragment: true,
   unwrap: (url) => {

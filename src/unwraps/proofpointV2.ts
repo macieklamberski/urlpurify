@@ -9,6 +9,7 @@ const decodeTarget = (value: string): string => {
 
 // Proofpoint URLDefense v2 (urldefense.proofpoint.com/v2/url?u=<encoded>). The encoded URL
 // substitutes `_` for `/` and `-` for `%`, then is URL-decoded.
+// Opt-in: unwrapping skips the gateway's click-time check of the target.
 export const unwrapProofpointV2 = createUnwrapper({
   hosts,
   unwrap: (url) => {

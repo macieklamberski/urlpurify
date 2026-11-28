@@ -1,12 +1,12 @@
 import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
-const unwrapLoginfra = createQueryUnwrapper({
+const extractLoginfra = createQueryUnwrapper({
   hosts: 'cc.loginfra.com',
   path: '/cc',
   params: ['u'],
 })
 
-const unwrapSearchClick = createQueryUnwrapper({
+const extractSearchClick = createQueryUnwrapper({
   hosts: ['search.naver.com', 'm.search.naver.com'],
   path: '/p/crd/rd',
   params: ['u'],
@@ -18,6 +18,6 @@ const unwrapSearchClick = createQueryUnwrapper({
 export const unwrapNaverOutgoing = createUnwrapper({
   hosts: ['cc.loginfra.com', 'search.naver.com', 'm.search.naver.com'],
   unwrap: (url) => {
-    return unwrapLoginfra(url) ?? unwrapSearchClick(url)
+    return extractLoginfra(url) ?? extractSearchClick(url)
   },
 })

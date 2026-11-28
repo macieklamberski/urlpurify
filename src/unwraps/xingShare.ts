@@ -1,8 +1,7 @@
 import { isAnyOf, parseUrl } from 'trousse'
-import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper, getParamValues, readParamTarget } from '../utils.js'
 
-const hosts = ['www.xing.com', 'xing.com']
+const hosts = ['xing.com', 'www.xing.com']
 
 const sharePathRegex =
   /^\/(?:spi\/shares\/new|social_plugins\/share(?:\/new)?|social\/share\/spi)\/?$/i
@@ -10,8 +9,9 @@ const appPathRegex = /^\/app\/user\/?$/i
 
 // XING share (xing.com/spi/shares/new?url=<target>, /social_plugins/share/new,
 // /social_plugins/share and /social/share/spi, and the legacy /app/user?op=share&url=, on www. and
-// bare xing.com). Opt-in: unwrapping returns the shared page, not the share form.
-export const unwrapXingShare: UrlUnwrapper = createUnwrapper({
+// bare xing.com).
+// Opt-in: unwrapping returns the shared page, not the share form.
+export const unwrapXingShare = createUnwrapper({
   hosts,
   ignoreLinkFragment: true,
   unwrap: (url) => {

@@ -8,8 +8,7 @@ const hosts = ['subscribeonandroid.com', 'www.subscribeonandroid.com']
 
 // Subscribe on Android subscribe button (subscribeonandroid.com/<feed>), where the feed drops its
 // scheme. The page reads the feed as https.
-// Not included in defaultUnwrappers: unwrapping returns the feed, not the page that subscribes
-// to it.
+// Opt-in: unwrapping returns the feed, not the page that subscribes to it.
 export const unwrapSubscribeOnAndroid = createPathUnwrapper({
   hosts,
   prefix: feedPrefixRegex,

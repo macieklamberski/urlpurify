@@ -1,5 +1,4 @@
 import { getQueryParam, isAnyOf, isHttpUrl } from 'trousse'
-import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper, readParamTarget } from '../utils.js'
 
 const prettyPathRegex = /^(?:\/[^/]+)*\/wp-json\/oembed\/1\.0\/embed$/i
@@ -7,8 +6,8 @@ const restRoutePathRegex = /^(?:\/[^/]+)*\/(?:index\.php)?$/i
 
 // WordPress oEmbed API on any host, below a subfolder install too, reading the last `url`
 // (<host>/wp-json/oembed/1.0/embed?url=<page>, <host>/?rest_route=/oembed/1.0/embed&url=<page>).
-// Not included in defaultUnwrappers: unwrapping swaps the data about a page for the page.
-export const unwrapWordpressOembed: UrlUnwrapper = createUnwrapper({
+// Opt-in: unwrapping swaps the data about a page for the page.
+export const unwrapWordpressOembed = createUnwrapper({
   anyHost: true,
   unwrap: (url) => {
     const isPrettyRoute = prettyPathRegex.test(url.pathname)

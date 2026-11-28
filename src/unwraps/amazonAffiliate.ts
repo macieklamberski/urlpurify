@@ -1,9 +1,8 @@
 import { isAnyOf, isBrandDomainOf, isHostOf, startsWithAnyOf } from 'trousse'
 import { resolvePathTarget } from '../pathTarget.js'
-import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper, readParamTarget } from '../utils.js'
 
-const amazonPathRegex = /^\/x\/c\/[^/]+\/(https?:\/\/.+)$/i
+const amazonPathRegex = /^\/x\/c\/[^/]+\/(?<target>https?:\/\/.+)$/i
 const amazonHostRegex = /^aax(?:-[a-z]+)*\.amazon-adsystem\.com$|^aax-us-iad\.amazon\.com$/
 const storeRedirectPathRegex = /^\/gp\/redirect\.html(?:\/ref=.+)?$/i
 const sponsoredRedirectPathRegex = /^\/gp\/slredirect\/picassoRedirect\.html\/ref=.+$/i
@@ -15,7 +14,8 @@ const emailRedirectPaths = ['/gp/r.html', '/gp/f.html']
 // /x/c/<id>/<URL>) and store redirects on amazon.<tld>:
 // /gp/redirect.html[/ref=<ref>]?location=<URL>, /exec/obidos/redirect?path=<URL>, /gp/r.html and
 // /gp/f.html?U=<URL>, /gp/slredirect/picassoRedirect.html/ref=<ref>?url=<URL>.
-export const unwrapAmazonAffiliate: UrlUnwrapper = createUnwrapper({
+// Opt-in: unwrapping removes the publisher's commission.
+export const unwrapAmazonAffiliate = createUnwrapper({
   brands: ['amazon'],
   subdomains: ['amazon-adsystem.com'],
   unwrap: (url) => {
@@ -45,12 +45,12 @@ export const unwrapAmazonAffiliate: UrlUnwrapper = createUnwrapper({
       return
     }
 
-    const match = url.pathname.match(amazonPathRegex)
+    const match = amazonPathRegex.exec(url.pathname)
 
-    if (!match) {
+    if (!match?.groups) {
       return
     }
 
-    return resolvePathTarget(url, match[1])
+    return resolvePathTarget(url, match.groups.target)
   },
 })

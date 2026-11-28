@@ -16,8 +16,8 @@ const extractSafeproxy = createQueryUnwrapper({
 // Vade Secure link rewriting (antiphishing.vadesecure.com/v4?u=<target>) and its Microsoft 365
 // and Google Workspace proxy (m365.eu.vadesecure.com/safeproxy/v4?u=<target>, also /v3, on
 // m365.us and gws.eu). The `f`, `i`, `k`, `r` and `s` params authenticate the wrapper.
-// Not included in defaultUnwrappers: the gateway checks the target when the link is clicked,
-// so unwrapping skips the check the recipient's organization put in place.
+// Opt-in: the gateway checks the target when the link is clicked, so unwrapping skips the check the
+// recipient's organization put in place.
 export const unwrapVadeSecure = createUnwrapper({
   hosts: [
     'antiphishing.vadesecure.com',

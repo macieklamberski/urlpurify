@@ -1,15 +1,14 @@
 import { isAnyOf } from 'trousse'
-import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper, readParamTarget } from '../utils.js'
 
-const hosts = ['www.wykop.pl', 'wykop.pl']
+const hosts = ['wykop.pl', 'www.wykop.pl']
 
 const pathRegex = /^\/(?:remotelink|dodaj(?:\/link|-link)?)\/?$/i
 
-// Wykop add-link form (wykop.pl/dodaj?url=<target>, also /dodaj/link, /dodaj-link and the
-// former /remotelink, on www. and bare wykop.pl). Opt-in: unwrapping returns the shared page, not
-// the form.
-export const unwrapWykop: UrlUnwrapper = createUnwrapper({
+// Wykop add-link form (wykop.pl/dodaj?url=<target>, also /dodaj/link, /dodaj-link and the former
+// /remotelink, on www. and bare wykop.pl).
+// Opt-in: unwrapping returns the shared page, not the form.
+export const unwrapWykop = createUnwrapper({
   hosts,
   ignoreLinkFragment: true,
   unwrap: (url) => {

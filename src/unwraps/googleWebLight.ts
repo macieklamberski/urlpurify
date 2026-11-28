@@ -15,7 +15,8 @@ const extractPageUrl = createQueryUnwrapper({
 })
 
 // Google Web Light page proxy for slow connections (googleweblight.com/?lite_url=<target>, also
-// /i?u=<target>). Opt-in, as the other proxies.
+// /i?u=<target>).
+// Opt-in: unwrapping returns the live page, not the archived or translated copy.
 export const unwrapGoogleWebLight = createUnwrapper({
   hosts,
   unwrap: (url) => {

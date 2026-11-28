@@ -1,5 +1,4 @@
 import { isHttpUrl } from 'trousse'
-import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper, readParamTarget } from '../utils.js'
 
 // The click-through counter at the blog root or under one blog folder.
@@ -7,7 +6,8 @@ const pathRegex = /^(?:\/[^/]+)?\/ct\.ashx$/i
 
 // dasBlog click-through counter, on each blog's own host (<host>/[<blog>/]ct.ashx?id=<guid>&
 // url=<target>).
-export const unwrapDasBlog: UrlUnwrapper = createUnwrapper({
+// Opt-in: unwrapping removes the site's count of which links get clicked.
+export const unwrapDasBlog = createUnwrapper({
   anyHost: true,
   unwrap: (url) => {
     if (!pathRegex.test(url.pathname)) {

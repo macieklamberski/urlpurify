@@ -1,13 +1,12 @@
 import { isAnyOf } from 'trousse'
-import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper, readParamTarget } from '../utils.js'
 
 const hosts = ['getpocket.com', 'www.getpocket.com']
 const paths = ['/save', '/edit', '/edit.php']
 
-// Pocket save links (getpocket.com/save?url=<page>, /edit?url= and /edit.php?url=). Opt-in:
-// unwrapping returns the saved page, not the form that saves it.
-export const unwrapPocketSave: UrlUnwrapper = createUnwrapper({
+// Pocket save links (getpocket.com/save?url=<page>, /edit?url= and /edit.php?url=).
+// Opt-in: unwrapping returns the saved page, not the form that saves it.
+export const unwrapPocketSave = createUnwrapper({
   hosts,
   ignoreLinkFragment: true,
   unwrap: (url) => {

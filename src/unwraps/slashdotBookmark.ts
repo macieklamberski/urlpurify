@@ -1,5 +1,4 @@
 import { isAnyOf } from 'trousse'
-import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper, readParamTarget } from '../utils.js'
 
 const hosts = ['slashdot.org', 'www.slashdot.org']
@@ -7,9 +6,9 @@ const hosts = ['slashdot.org', 'www.slashdot.org']
 const pathRegex = /^\/(?:bookmark|slashdot-it)\.pl$/i
 
 // Slashdot share links (slashdot.org/bookmark.pl?url=<target>, and the badge at
-// /slashdot-it.pl?url=, on slashdot.org and www.slashdot.org). Opt-in: unwrapping returns the
-// shared page, not the form that bookmarks or submits it.
-export const unwrapSlashdotBookmark: UrlUnwrapper = createUnwrapper({
+// /slashdot-it.pl?url=, on slashdot.org and www.slashdot.org).
+// Opt-in: unwrapping returns the shared page, not the form that bookmarks or submits it.
+export const unwrapSlashdotBookmark = createUnwrapper({
   hosts,
   ignoreLinkFragment: true,
   unwrap: (url) => {

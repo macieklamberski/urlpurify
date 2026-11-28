@@ -11,128 +11,138 @@ describe('unwrapNlaWebarchive', () => {
   })
 
   it('should extract target from an awa snapshot', () => {
-    const url = new URL(
+    const value = new URL(
       'https://webarchive.nla.gov.au/awa/19991206141957/http://www.example.gov.au/about/publication_online.htm',
     )
+    const expected = 'http://www.example.gov.au/about/publication_online.htm'
 
-    expect(unwrapNlaWebarchive(url)).toBe('http://www.example.gov.au/about/publication_online.htm')
+    expect(unwrapNlaWebarchive(value)).toBe(expected)
   })
 
   it('should extract target from a gov snapshot', () => {
-    const url = new URL(
+    const value = new URL(
       'http://webarchive.nla.gov.au/gov/20170224225955/http://www.example.gov.au/heritage/themes',
     )
+    const expected = 'http://www.example.gov.au/heritage/themes'
 
-    expect(unwrapNlaWebarchive(url)).toBe('http://www.example.gov.au/heritage/themes')
+    expect(unwrapNlaWebarchive(value)).toBe(expected)
   })
 
   it('should extract target from a wayback snapshot', () => {
-    const url = new URL(
+    const value = new URL(
       'https://webarchive.nla.gov.au/wayback/19970215064516/http://www.example.com.au/zan/regurg.htm',
     )
+    const expected = 'http://www.example.com.au/zan/regurg.htm'
 
-    expect(unwrapNlaWebarchive(url)).toBe('http://www.example.com.au/zan/regurg.htm')
+    expect(unwrapNlaWebarchive(value)).toBe(expected)
   })
 
   it('should extract target from a mp_ snapshot', () => {
-    const url = new URL(
+    const value = new URL(
       'https://web.archive.org.au/awa/20200605035409mp_/https://www.example.gov.au/sites/default/files/report.pdf',
     )
+    const expected = 'https://www.example.gov.au/sites/default/files/report.pdf'
 
-    expect(unwrapNlaWebarchive(url)).toBe(
-      'https://www.example.gov.au/sites/default/files/report.pdf',
-    )
+    expect(unwrapNlaWebarchive(value)).toBe(expected)
   })
 
   it('should extract target from a Pandora replay snapshot', () => {
-    const url = new URL(
+    const value = new URL(
       'http://pandora.nla.gov.au/nph-wb/20010220130000/http://www.example.edu.au/Articles/dec00/hase2.htm',
     )
+    const expected = 'http://www.example.edu.au/Articles/dec00/hase2.htm'
 
-    expect(unwrapNlaWebarchive(url)).toBe('http://www.example.edu.au/Articles/dec00/hase2.htm')
+    expect(unwrapNlaWebarchive(value)).toBe(expected)
   })
 
   it('should return undefined for a Pandora replay timestamp shorter than 14 digits', () => {
-    const url = new URL('http://pandora.nla.gov.au/nph-wb/200102201300/http://www.example.edu.au/')
+    const value = new URL(
+      'http://pandora.nla.gov.au/nph-wb/200102201300/http://www.example.edu.au/',
+    )
 
-    expect(unwrapNlaWebarchive(url)).toBeUndefined()
+    expect(unwrapNlaWebarchive(value)).toBeUndefined()
   })
 
   it('should add the http scheme to a Pandora title snapshot target', () => {
-    const url = new URL(
+    const value = new URL(
       'http://pandora.nla.gov.au/pan/21336/20031011-0000/www.example.gov.au/creative.nation/contents.html',
     )
+    const expected = 'http://www.example.gov.au/creative.nation/contents.html'
 
-    expect(unwrapNlaWebarchive(url)).toBe('http://www.example.gov.au/creative.nation/contents.html')
+    expect(unwrapNlaWebarchive(value)).toBe(expected)
   })
 
   it('should add the http scheme to a Pandora title snapshot dated without a time', () => {
-    const url = new URL('http://pandora.nla.gov.au/pan/42197/20040527/www.example.com/acag.html')
+    const value = new URL('http://pandora.nla.gov.au/pan/42197/20040527/www.example.com/acag.html')
+    const expected = 'http://www.example.com/acag.html'
 
-    expect(unwrapNlaWebarchive(url)).toBe('http://www.example.com/acag.html')
+    expect(unwrapNlaWebarchive(value)).toBe(expected)
   })
 
   it('should return undefined for a Pandora title snapshot file outside a host folder', () => {
-    const url = new URL('http://pandora.nla.gov.au/pan/21336/20031011-0000/images/banner.gif')
+    const value = new URL('http://pandora.nla.gov.au/pan/21336/20031011-0000/images/banner.gif')
 
-    expect(unwrapNlaWebarchive(url)).toBeUndefined()
+    expect(unwrapNlaWebarchive(value)).toBeUndefined()
   })
 
   it('should return undefined for a Pandora title snapshot with a partial date', () => {
-    const url = new URL('http://pandora.nla.gov.au/pan/21336/2003/www.example.gov.au/contents.html')
+    const value = new URL(
+      'http://pandora.nla.gov.au/pan/21336/2003/www.example.gov.au/contents.html',
+    )
 
-    expect(unwrapNlaWebarchive(url)).toBeUndefined()
+    expect(unwrapNlaWebarchive(value)).toBeUndefined()
   })
 
   it('should return undefined for the Pandora title snapshot path on another host', () => {
-    const url = new URL(
+    const value = new URL(
       'http://webarchive.nla.gov.au/pan/21336/20031011-0000/www.example.gov.au/contents.html',
     )
 
-    expect(unwrapNlaWebarchive(url)).toBeUndefined()
+    expect(unwrapNlaWebarchive(value)).toBeUndefined()
   })
 
   it('should return undefined for an archive collection on Pandora', () => {
-    const url = new URL(
+    const value = new URL(
       'http://pandora.nla.gov.au/awa/20010220130000/http://www.example.edu.au/Articles/hase2.htm',
     )
 
-    expect(unwrapNlaWebarchive(url)).toBeUndefined()
+    expect(unwrapNlaWebarchive(value)).toBeUndefined()
   })
 
   it('should keep the query and fragment of the target', () => {
-    const url = new URL(
+    const value = new URL(
       'https://web.archive.org.au/awa/20220302235108mp_/https://www.example.gov.au/file/10668/download?token=V5AKd-29#page=2',
     )
+    const expected = 'https://www.example.gov.au/file/10668/download?token=V5AKd-29#page=2'
 
-    expect(unwrapNlaWebarchive(url)).toBe(
-      'https://www.example.gov.au/file/10668/download?token=V5AKd-29#page=2',
-    )
+    expect(unwrapNlaWebarchive(value)).toBe(expected)
   })
 
   it('should return undefined for a snapshot with no target', () => {
-    const url = new URL('https://webarchive.nla.gov.au/awa/19991206141957/')
+    const value = new URL('https://webarchive.nla.gov.au/awa/19991206141957/')
 
-    expect(unwrapNlaWebarchive(url)).toBeUndefined()
+    expect(unwrapNlaWebarchive(value)).toBeUndefined()
   })
 
   it('should keep the wrapper for a non-http target', () => {
-    const url = 'https://webarchive.nla.gov.au/awa/19991206141957/ftp://example.com/file'
+    const value = 'https://webarchive.nla.gov.au/awa/19991206141957/ftp://example.com/file'
 
-    expect(purifyUrl(url, { unwrappers: [unwrapNlaWebarchive] })).toBe(url)
+    expect(purifyUrl(value, { unwrappers: [unwrapNlaWebarchive] })).toBe(value)
   })
 
   it('should return undefined for a timestamp shorter than 14 digits', () => {
-    const url = new URL('https://webarchive.nla.gov.au/awa/199912061419/http://www.example.gov.au/')
+    const value = new URL(
+      'https://webarchive.nla.gov.au/awa/199912061419/http://www.example.gov.au/',
+    )
 
-    expect(unwrapNlaWebarchive(url)).toBeUndefined()
+    expect(unwrapNlaWebarchive(value)).toBeUndefined()
   })
 
   it('should return undefined for the url search', () => {
-    const url = new URL(
+    const value = new URL(
       'http://webarchive.nla.gov.au/gov/search?mode=urlSearch&url=http://www.example.com/',
     )
 
-    expect(unwrapNlaWebarchive(url)).toBeUndefined()
+    expect(unwrapNlaWebarchive(value)).toBeUndefined()
   })
 })

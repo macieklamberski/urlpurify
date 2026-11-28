@@ -4,42 +4,45 @@ import { unwrapMozillaOutgoing } from './mozillaOutgoing.js'
 describe('unwrapMozillaOutgoing', () => {
   it('should decode target from AWS host path', () => {
     const sha = 'a'.repeat(64)
-    const url = new URL(
+    const value = new URL(
       `https://outgoing.prod.mozaws.net/v1/${sha}/https%3A%2F%2Fexample.com%2Farticle`,
     )
+    const expected = 'https://example.com/article'
 
-    expect(unwrapMozillaOutgoing(url)).toBe('https://example.com/article')
+    expect(unwrapMozillaOutgoing(value)).toBe(expected)
   })
 
   it('should decode target from GCP host path', () => {
     const sha = 'b'.repeat(64)
-    const url = new URL(
+    const value = new URL(
       `https://prod.outgoing.prod.webservices.mozgcp.net/v1/${sha}/https%3A%2F%2Fexample.com%2Fpage`,
     )
+    const expected = 'https://example.com/page'
 
-    expect(unwrapMozillaOutgoing(url)).toBe('https://example.com/page')
+    expect(unwrapMozillaOutgoing(value)).toBe(expected)
   })
 
   it('should return undefined for non-Mozilla hosts', () => {
     const sha = 'c'.repeat(64)
-    const url = new URL(`https://example.com/v1/${sha}/https%3A%2F%2Fother.com`)
+    const value = new URL(`https://example.com/v1/${sha}/https%3A%2F%2Fother.com`)
 
-    expect(unwrapMozillaOutgoing(url)).toBeUndefined()
+    expect(unwrapMozillaOutgoing(value)).toBeUndefined()
   })
 
   it('should return undefined when path lacks /v1/<sha256>/ prefix', () => {
-    const url = new URL('https://outgoing.prod.mozaws.net/other?url=https%3A%2F%2Fexample.com')
+    const value = new URL('https://outgoing.prod.mozaws.net/other?url=https%3A%2F%2Fexample.com')
 
-    expect(unwrapMozillaOutgoing(url)).toBeUndefined()
+    expect(unwrapMozillaOutgoing(value)).toBeUndefined()
   })
 
   it('should keep a malformed escape in the target as written', () => {
     const sha = 'd'.repeat(64)
-    const url = new URL(
+    const value = new URL(
       `https://outgoing.prod.mozaws.net/v1/${sha}/https%3A%2F%2Fexample.com%2F100%ZZ`,
     )
+    const expected = 'https://example.com/100%ZZ'
 
-    expect(unwrapMozillaOutgoing(url)).toBe('https://example.com/100%ZZ')
+    expect(unwrapMozillaOutgoing(value)).toBe(expected)
   })
 
   it('should keep the link fragment', () => {

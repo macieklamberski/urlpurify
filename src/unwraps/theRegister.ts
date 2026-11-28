@@ -8,6 +8,7 @@ const prefixRegex =
 // The Register feed click counter (go.theregister.com/feed/<target>, also
 // go.theregister.com/i/cfa/<target>), where the target is an article on The Register or its
 // former sister sites, with or without its scheme. It answers 302 to the https article.
+// Opt-in: unwrapping removes the site's count of which links get clicked.
 export const unwrapTheRegister = createPathUnwrapper({
   hosts: 'go.theregister.com',
   prefix: prefixRegex,

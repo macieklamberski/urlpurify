@@ -1,5 +1,4 @@
 import { isAnyOf, isHostOf } from 'trousse'
-import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper, readParamTarget } from '../utils.js'
 
 const sharePaths = [
@@ -13,9 +12,9 @@ const sharePaths = [
 
 // LINE share (social-plugins.line.me/lineit/share?url=<target>, and the spellings that redirect to
 // it: social-plugins.line.me/lineit/share/ui and /social-plugin/share, lineit.line.me/share and
-// /share/ui, timeline.line.me/lineit/share and /social-plugin/share). Opt-in: unwrapping returns
-// the shared page, not the form that shares it.
-export const unwrapLineShare: UrlUnwrapper = createUnwrapper({
+// /share/ui, timeline.line.me/lineit/share and /social-plugin/share).
+// Opt-in: unwrapping returns the shared page, not the form that shares it.
+export const unwrapLineShare = createUnwrapper({
   hosts: sharePaths.flatMap(({ hosts }) => hosts),
   ignoreLinkFragment: true,
   unwrap: (url) => {

@@ -6,9 +6,9 @@ describe('unwrapSegmentfault', () => {
   it('should decode a base64 enc param', () => {
     const target = 'https://example.com/article'
     const encoded = Buffer.from(target).toString('base64')
-    const url = new URL(`https://link.segmentfault.com/?enc=${encodeURIComponent(encoded)}`)
+    const value = new URL(`https://link.segmentfault.com/?enc=${encodeURIComponent(encoded)}`)
 
-    expect(unwrapSegmentfault(url)).toBe(target)
+    expect(unwrapSegmentfault(value)).toBe(target)
   })
 
   it('should keep the wrapper when the decoded value is not a url', () => {
@@ -19,21 +19,21 @@ describe('unwrapSegmentfault', () => {
   })
 
   it('should return undefined when enc param is missing', () => {
-    const url = new URL('https://link.segmentfault.com/?other=value')
+    const value = new URL('https://link.segmentfault.com/?other=value')
 
-    expect(unwrapSegmentfault(url)).toBeUndefined()
+    expect(unwrapSegmentfault(value)).toBeUndefined()
   })
 
   it('should return undefined for non-Segmentfault hosts', () => {
-    const url = new URL('https://example.com/?enc=abc')
+    const value = new URL('https://example.com/?enc=abc')
 
-    expect(unwrapSegmentfault(url)).toBeUndefined()
+    expect(unwrapSegmentfault(value)).toBeUndefined()
   })
 
   it('should return undefined for another path on the host', () => {
-    const url = new URL('https://link.segmentfault.com/a/1?enc=aHR0cHM6Ly9leGFtcGxlLmNvbS9wb3N0')
+    const value = new URL('https://link.segmentfault.com/a/1?enc=aHR0cHM6Ly9leGFtcGxlLmNvbS9wb3N0')
 
-    expect(unwrapSegmentfault(url)).toBeUndefined()
+    expect(unwrapSegmentfault(value)).toBeUndefined()
   })
 
   it('should keep the fragment the target carries', () => {

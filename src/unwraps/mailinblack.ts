@@ -1,5 +1,4 @@
 import { decodeBase64Url, isAnyOf, isHttpUrl, isString, parseJson } from 'trousse'
-import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper, readDecodedTarget } from '../utils.js'
 
 const decodeKey = (key: string): string | undefined => {
@@ -15,9 +14,9 @@ const decodeKey = (key: string): string | undefined => {
 // so the exact path matches on any host, guarded by a `key` that decodes to JSON with an http url.
 // The `url` param holds only the target's origin. The full target is the `url` field of `key`,
 // a base64url JSON object that also holds the language and a token.
-// Not included in defaultUnwrappers: the gateway checks the target when the link is clicked,
-// so unwrapping skips the check the recipient's organization put in place.
-export const unwrapMailinblack: UrlUnwrapper = createUnwrapper({
+// Opt-in: the gateway checks the target when the link is clicked, so unwrapping skips the check the
+// recipient's organization put in place.
+export const unwrapMailinblack = createUnwrapper({
   anyHost: true,
   unwrap: (url) => {
     if (!isAnyOf(url.pathname, '/securelink/')) {

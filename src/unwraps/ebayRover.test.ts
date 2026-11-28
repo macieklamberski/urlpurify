@@ -3,110 +3,113 @@ import { unwrapEbayRover } from './ebayRover.js'
 
 describe('unwrapEbayRover', () => {
   it('should extract target from mpre param on rover.ebay.com', () => {
-    const url = new URL(
+    const value = new URL(
       'https://rover.ebay.com/rover/1/711-53200-19255-0/1?campid=12345&mpre=https%3A%2F%2Fwww.ebay.com%2Fitm%2F123',
     )
+    const expected = 'https://www.ebay.com/itm/123'
 
-    expect(unwrapEbayRover(url)).toBe('https://www.ebay.com/itm/123')
+    expect(unwrapEbayRover(value)).toBe(expected)
   })
 
   it('should match country-code TLDs (rover.ebay.co.uk)', () => {
-    const url = new URL(
+    const value = new URL(
       'https://rover.ebay.co.uk/rover/1/710-53481-19255-0/1?mpre=https%3A%2F%2Fwww.ebay.co.uk%2Fitm%2F456',
     )
+    const expected = 'https://www.ebay.co.uk/itm/456'
 
-    expect(unwrapEbayRover(url)).toBe('https://www.ebay.co.uk/itm/456')
+    expect(unwrapEbayRover(value)).toBe(expected)
   })
 
   it('should extract target from loc param', () => {
-    const url = new URL(
+    const value = new URL(
       'http://rover.ebay.com/rover/1/711-37018-2978-0/1?AID=10420677&PID=1987912&loc=http%3A%2F%2Fcgi.example.com%2FCALIFORNIA-15-ACRES-CORNER-LOT_W0QQitemZ301288441580QQcmdZViewItem',
     )
+    const expected =
+      'http://cgi.example.com/CALIFORNIA-15-ACRES-CORNER-LOT_W0QQitemZ301288441580QQcmdZViewItem'
 
-    expect(unwrapEbayRover(url)).toBe(
-      'http://cgi.example.com/CALIFORNIA-15-ACRES-CORNER-LOT_W0QQitemZ301288441580QQcmdZViewItem',
-    )
+    expect(unwrapEbayRover(value)).toBe(expected)
   })
 
   it('should read mpre param before loc param', () => {
-    const url = new URL(
+    const value = new URL(
       'https://rover.ebay.com/rover/1/711-53200-19255-0/1?loc=https%3A%2F%2Fwww.example.com%2Fitm%2F456&mpre=https%3A%2F%2Fwww.example.com%2Fitm%2F123',
     )
+    const expected = 'https://www.example.com/itm/123'
 
-    expect(unwrapEbayRover(url)).toBe('https://www.example.com/itm/123')
+    expect(unwrapEbayRover(value)).toBe(expected)
   })
 
   it('should return undefined when mpre param is missing', () => {
-    const url = new URL('https://rover.ebay.com/rover/1/711-53200-19255-0/1?campid=12345')
+    const value = new URL('https://rover.ebay.com/rover/1/711-53200-19255-0/1?campid=12345')
 
-    expect(unwrapEbayRover(url)).toBeUndefined()
+    expect(unwrapEbayRover(value)).toBeUndefined()
   })
 
   it('should return undefined for non-rover hosts', () => {
-    const url = new URL('https://example.com/?mpre=https%3A%2F%2Fother.com')
+    const value = new URL('https://example.com/?mpre=https%3A%2F%2Fother.com')
 
-    expect(unwrapEbayRover(url)).toBeUndefined()
+    expect(unwrapEbayRover(value)).toBeUndefined()
   })
 
   it('should return undefined for an unlisted subdomain', () => {
-    const url = new URL(
+    const value = new URL(
       'https://m.rover.ebay.de/rover/1/707-53477-19255-0/1?mpre=https%3A%2F%2Fexample.com%2Fpage',
     )
 
-    expect(unwrapEbayRover(url)).toBeUndefined()
+    expect(unwrapEbayRover(value)).toBeUndefined()
   })
 
   it('should return undefined for another path on rover', () => {
-    const url = new URL('https://rover.ebay.com/other?mpre=https%3A%2F%2Fexample.com%2Fpage')
+    const value = new URL('https://rover.ebay.com/other?mpre=https%3A%2F%2Fexample.com%2Fpage')
 
-    expect(unwrapEbayRover(url)).toBeUndefined()
+    expect(unwrapEbayRover(value)).toBeUndefined()
   })
 
   it('should return undefined for a lookalike host', () => {
-    const url = new URL(
+    const value = new URL(
       'https://examplerover.ebay.com/rover/1/711-53200-19255-0/1?mpre=https%3A%2F%2Fexample.com%2Fpage',
     )
 
-    expect(unwrapEbayRover(url)).toBeUndefined()
+    expect(unwrapEbayRover(value)).toBeUndefined()
   })
 
   it('should return undefined for a host that only contains the rover host', () => {
-    const url = new URL(
+    const value = new URL(
       'https://rover.ebay.com.example.org/rover/1/711-53200-19255-0/1?mpre=https%3A%2F%2Fexample.com%2Fpage',
     )
 
-    expect(unwrapEbayRover(url)).toBeUndefined()
+    expect(unwrapEbayRover(value)).toBeUndefined()
   })
 
   it('should return undefined for a rover path with a prefix', () => {
-    const url = new URL(
+    const value = new URL(
       'https://rover.ebay.com/x/rover/1/711-53200-19255-0/1?mpre=https%3A%2F%2Fexample.com%2F',
     )
 
-    expect(unwrapEbayRover(url)).toBeUndefined()
+    expect(unwrapEbayRover(value)).toBeUndefined()
   })
 
   it('should return undefined for a rover path with a trailing segment', () => {
-    const url = new URL(
+    const value = new URL(
       'https://rover.ebay.com/rover/1/711-53200-19255-0/1/extra?mpre=https%3A%2F%2Fexample.com%2F',
     )
 
-    expect(unwrapEbayRover(url)).toBeUndefined()
+    expect(unwrapEbayRover(value)).toBeUndefined()
   })
 
   it('should return undefined for a rover path with a letter in the first segment', () => {
-    const url = new URL(
+    const value = new URL(
       'https://rover.ebay.com/rover/x/711-53200-19255-0/1?mpre=https%3A%2F%2Fexample.com%2F',
     )
 
-    expect(unwrapEbayRover(url)).toBeUndefined()
+    expect(unwrapEbayRover(value)).toBeUndefined()
   })
 
   it('should return undefined for a rover path with an empty last segment', () => {
-    const url = new URL(
+    const value = new URL(
       'https://rover.ebay.com/rover/1/711-53200-19255-0/?mpre=https%3A%2F%2Fexample.com%2F',
     )
 
-    expect(unwrapEbayRover(url)).toBeUndefined()
+    expect(unwrapEbayRover(value)).toBeUndefined()
   })
 })

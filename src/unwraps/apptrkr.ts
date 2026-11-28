@@ -1,7 +1,7 @@
 import { createQueryUnwrapper } from '../utils.js'
 
 // Apptrkr job-ad click tracker (apptrkr.com/get_redirect.php?id=<n>&targetURL=<target>).
-// Not included in defaultUnwrappers: unwrapping drops the job board's click count for the ad.
+// Opt-in: unwrapping drops the job board's click count for the ad.
 export const unwrapApptrkr = createQueryUnwrapper({
   hosts: ['apptrkr.com', 'www.apptrkr.com'],
   path: '/get_redirect.php',

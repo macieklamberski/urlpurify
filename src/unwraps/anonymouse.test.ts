@@ -19,48 +19,51 @@ describe('unwrapAnonymouse', () => {
   })
 
   it('should extract the target from the proxy script', () => {
-    const url = new URL('http://anonymouse.org/cgi-bin/anon-www.cgi/http://www.example.co.uk/')
+    const value = new URL('http://anonymouse.org/cgi-bin/anon-www.cgi/http://www.example.co.uk/')
+    const expected = 'http://www.example.co.uk/'
 
-    expect(unwrapAnonymouse(url)).toBe('http://www.example.co.uk/')
+    expect(unwrapAnonymouse(value)).toBe(expected)
   })
 
   it('should extract the target from the German proxy script', () => {
-    const url = new URL(
+    const value = new URL(
       'http://anonymouse.org/cgi-bin/anon-www_de.cgi/http://www.example.fr/actualite/monde/article.html',
     )
+    const expected = 'http://www.example.fr/actualite/monde/article.html'
 
-    expect(unwrapAnonymouse(url)).toBe('http://www.example.fr/actualite/monde/article.html')
+    expect(unwrapAnonymouse(value)).toBe(expected)
   })
 
   it('should keep the query and fragment of the target', () => {
-    const url = new URL(
+    const value = new URL(
       'http://anonymouse.org/cgi-bin/anon-www.cgi/http://www.example.com/bbs/bbs.cgi?id=7#top',
     )
+    const expected = 'http://www.example.com/bbs/bbs.cgi?id=7#top'
 
-    expect(unwrapAnonymouse(url)).toBe('http://www.example.com/bbs/bbs.cgi?id=7#top')
+    expect(unwrapAnonymouse(value)).toBe(expected)
   })
 
   it('should return undefined for the proxy script with no target', () => {
-    const url = new URL('http://anonymouse.org/cgi-bin/anon-www.cgi/')
+    const value = new URL('http://anonymouse.org/cgi-bin/anon-www.cgi/')
 
-    expect(unwrapAnonymouse(url)).toBeUndefined()
+    expect(unwrapAnonymouse(value)).toBeUndefined()
   })
 
   it('should keep the wrapper for a non-http target', () => {
-    const url = 'http://anonymouse.org/cgi-bin/anon-www.cgi/ftp://example.com/file.txt'
+    const value = 'http://anonymouse.org/cgi-bin/anon-www.cgi/ftp://example.com/file.txt'
 
-    expect(purifyUrl(url, { unwrappers: [unwrapAnonymouse] })).toBe(url)
+    expect(purifyUrl(value, { unwrappers: [unwrapAnonymouse] })).toBe(value)
   })
 
   it('should return undefined for another script on the host', () => {
-    const url = new URL('http://anonymouse.org/cgi-bin/anon-email.cgi/http://www.example.com/')
+    const value = new URL('http://anonymouse.org/cgi-bin/anon-email.cgi/http://www.example.com/')
 
-    expect(unwrapAnonymouse(url)).toBeUndefined()
+    expect(unwrapAnonymouse(value)).toBeUndefined()
   })
 
   it('should return undefined for other hosts', () => {
-    const url = new URL('http://example.com/cgi-bin/anon-www.cgi/http://www.example.org/')
+    const value = new URL('http://example.com/cgi-bin/anon-www.cgi/http://www.example.org/')
 
-    expect(unwrapAnonymouse(url)).toBeUndefined()
+    expect(unwrapAnonymouse(value)).toBeUndefined()
   })
 })

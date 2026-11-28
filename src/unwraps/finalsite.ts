@@ -1,5 +1,4 @@
 import { hasQueryParam, isAnyOf, isHttpUrl } from 'trousse'
-import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper, readParamTarget } from '../utils.js'
 
 const paths = ['/forward.cfm', '/cf_news/forward.cfm']
@@ -7,7 +6,8 @@ const paths = ['/forward.cfm', '/cf_news/forward.cfm']
 // Finalsite school website link counter on any host
 // (<school host>/cf_news/forward.cfm?dest=<target>&destkey=<signature>). `destkey` signs the
 // redirect and is not needed to reach the target. Each school runs the platform on its own host.
-export const unwrapFinalsite: UrlUnwrapper = createUnwrapper({
+// Opt-in: unwrapping removes the site's count of which links get clicked.
+export const unwrapFinalsite = createUnwrapper({
   anyHost: true,
   unwrap: (url) => {
     if (!isAnyOf(url.pathname, paths) || !hasQueryParam(url, 'destkey')) {

@@ -8,6 +8,7 @@ const mimecastPathRegex = /^\/s\/[^/]+$/i
 // Mimecast email link protection (protect-<region>.mimecast.com/s/<id>?url=<target> and
 // url.<region>.m.mimecastprotect.com/s/<id>?url=<target>).
 // The ?domain=<host> form is left wrapped: Mimecast keeps the target's path on its server.
+// Opt-in: unwrapping skips the gateway's click-time check of the target.
 export const unwrapMimecast = createUnwrapper({
   subdomains: ['mimecast.com', 'mimecastprotect.com'],
   unwrap: (url) => {

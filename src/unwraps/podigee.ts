@@ -1,16 +1,15 @@
 import { resolvePathTarget } from '../pathTarget.js'
-import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
 const sourcePathRegex = /^\/.*?(?<source>https?(?::|%(?:25)?3a).+)$/i
 
 // Podigee image resizer for podcast art (images.podigee-cdn.net/<options>/<source>).
-// Not included in defaultUnwrappers: unwrapping swaps the resized copy for the original image.
-export const unwrapPodigee: UrlUnwrapper = createUnwrapper({
+// Opt-in: unwrapping swaps the resized copy for the original image.
+export const unwrapPodigee = createUnwrapper({
   subdomains: 'podigee-cdn.net',
   ignoreLinkFragment: true,
   unwrap: (url) => {
-    const source = url.pathname.match(sourcePathRegex)?.groups?.source
+    const source = sourcePathRegex.exec(url.pathname)?.groups?.source
 
     if (!source) {
       return

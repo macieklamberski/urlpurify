@@ -1,5 +1,4 @@
 import { decodeBase64Url } from 'trousse'
-import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper, readDecodedTarget, readParamTarget } from '../utils.js'
 
 const hosts = [
@@ -37,8 +36,9 @@ const decodeTarget = (value: string): string | undefined => {
 }
 
 // Unisender email click tracker (usndr.com/ru/mail_link_tracker?hash=<id>&url=<target>, also
-// /go2_link_tracker and /eu1_link_tracker). Opt-in: unwrapping removes the sender's click count.
-export const unwrapUnisender: UrlUnwrapper = createUnwrapper({
+// /go2_link_tracker and /eu1_link_tracker).
+// Opt-in: unwrapping removes the sender's click count.
+export const unwrapUnisender = createUnwrapper({
   hosts,
   unwrap: (url) => {
     if (!pathRegex.test(url.pathname)) {

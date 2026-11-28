@@ -1,4 +1,3 @@
-import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper, readParamTarget } from '../utils.js'
 
 // linksynergy.jrs5.com and linksynergy.walmart.com sit on a merchant's own domain.
@@ -12,9 +11,9 @@ const carrierParams: Record<string, string> = {
 }
 
 // LinkSynergy (Rakuten) affiliate redirect on click.linksynergy.com and two merchant hosts:
-// /deeplink?murl=<target>, /link?murl=<target> and /fs-bin/{click,stat}?RD_PARM1=<target>. Not in
-// defaultUnwrappers: it is an affiliate link.
-export const unwrapLinksynergy: UrlUnwrapper = createUnwrapper({
+// /deeplink?murl=<target>, /link?murl=<target> and /fs-bin/{click,stat}?RD_PARM1=<target>.
+// Opt-in: it is an affiliate link.
+export const unwrapLinksynergy = createUnwrapper({
   hosts,
   unwrap: (url) => {
     const param = carrierParams[url.pathname.toLowerCase()]

@@ -1,6 +1,5 @@
 import { isAnyOf } from 'trousse'
 import { resolvePathTarget } from '../pathTarget.js'
-import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper, decodeEncodedScheme, readParamTarget } from '../utils.js'
 
 const feedPathRegex =
@@ -13,9 +12,9 @@ const fragmentPaths = ['/', '/index.html', '/home']
 
 // Feedly subscribe links (feedly.com/i/subscription/feed/<feed>, /i/subscription/feed?url=<feed>,
 // /i/discover/sources/search/feed/<feed>, /#subscription/feed/<feed> also after /index.html or
-// /home, the slash after `feed`, and before it in the fragment, also as %2F). Opt-in: the link adds
-// the feed, it never redirects.
-export const unwrapFeedly: UrlUnwrapper = createUnwrapper({
+// /home, the slash after `feed`, and before it in the fragment, also as %2F).
+// Opt-in: the link adds the feed, it never redirects.
+export const unwrapFeedly = createUnwrapper({
   hosts,
   ignoreLinkFragment: true,
   unwrap: (url) => {
@@ -23,7 +22,7 @@ export const unwrapFeedly: UrlUnwrapper = createUnwrapper({
       return readParamTarget(url, 'url')
     }
 
-    const pathMatch = url.pathname.match(feedPathRegex)
+    const pathMatch = feedPathRegex.exec(url.pathname)
 
     // An encoded feed holds its own query and fragment, so the link's are Feedly's own. A raw feed
     // takes both.
@@ -36,7 +35,7 @@ export const unwrapFeedly: UrlUnwrapper = createUnwrapper({
     }
 
     // The feed's own query sits inside the fragment, after Feedly's route.
-    const fragmentMatch = url.hash.match(feedFragmentRegex)
+    const fragmentMatch = feedFragmentRegex.exec(url.hash)
 
     if (!fragmentMatch?.groups) {
       return

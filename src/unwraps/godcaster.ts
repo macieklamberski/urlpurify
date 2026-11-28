@@ -1,5 +1,4 @@
 import { createPathUnwrapper } from '../pathTarget.js'
-import type { UrlUnwrapper } from '../types.js'
 import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
 // The first number is the show, as in the show's feeds.godcaster.fm/player_<n>.xml.
@@ -22,8 +21,8 @@ const extractEpisodeTarget = createPathUnwrapper({
 // Godcaster download measurement prefix (go.godcaster.fm/act/e/<show>/<n>/<n>/<target>), where the
 // target is percent-encoded twice, and its show-notes click counter
 // (go.godcaster.fm/act/sr/<show>?d=<target>, also /act/fr/<show>/<n>?d=<target>).
-// Not included in defaultUnwrappers: unwrapping removes the podcaster's download counts.
-export const unwrapGodcaster: UrlUnwrapper = createUnwrapper({
+// Opt-in: unwrapping removes the podcaster's download counts.
+export const unwrapGodcaster = createUnwrapper({
   hosts,
   unwrap: (url) => {
     return extractSupportTarget(url) ?? extractEpisodeTarget(url)

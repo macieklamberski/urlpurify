@@ -1,13 +1,13 @@
 import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
 // An exact host: i.viglink.com serves the same root path as an impression beacon.
-const unwrapRedirect = createQueryUnwrapper({
+const extractRedirect = createQueryUnwrapper({
   hosts: 'redirect.viglink.com',
   path: '/',
   params: ['u', 'out'],
 })
 
-const unwrapClickApi = createQueryUnwrapper({
+const extractClickApi = createQueryUnwrapper({
   hosts: ['api.viglink.com', 'apicdn.viglink.com', 'lwlink3.linkwithin.com'],
   path: '/api/click',
   params: ['out'],
@@ -17,6 +17,7 @@ const unwrapClickApi = createQueryUnwrapper({
 // (api.viglink.com/api/click?out=<target>, also on apicdn.viglink.com and, through the LinkWithin
 // widget, on lwlink3.linkwithin.com).
 // The click query also carries `loc`, the page the link sat on, which is never the target.
+// Opt-in: unwrapping removes the publisher's commission.
 export const unwrapViglink = createUnwrapper({
   hosts: [
     'redirect.viglink.com',
@@ -25,6 +26,6 @@ export const unwrapViglink = createUnwrapper({
     'lwlink3.linkwithin.com',
   ],
   unwrap: (url) => {
-    return unwrapRedirect(url) ?? unwrapClickApi(url)
+    return extractRedirect(url) ?? extractClickApi(url)
   },
 })

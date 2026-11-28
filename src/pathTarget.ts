@@ -72,7 +72,7 @@ export const readPathTarget = (
   scheme?: TargetScheme,
   suffix = url.search,
 ): string | undefined => {
-  const match = url.pathname.match(prefixRegex)
+  const match = prefixRegex.exec(url.pathname)
 
   if (!match) {
     return

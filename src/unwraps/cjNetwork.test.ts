@@ -3,220 +3,232 @@ import { unwrapCjNetwork } from './cjNetwork.js'
 
 describe('unwrapCjNetwork', () => {
   it('should extract target from url param on dpbolvw.net', () => {
-    const url = new URL(
+    const value = new URL(
       'https://www.dpbolvw.net/click-12345-67890?url=https%3A%2F%2Fexample.com%2Fproduct',
     )
+    const expected = 'https://example.com/product'
 
-    expect(unwrapCjNetwork(url)).toBe('https://example.com/product')
+    expect(unwrapCjNetwork(value)).toBe(expected)
   })
 
   it('should extract target from the deep link path', () => {
-    const url = new URL(
+    const value = new URL(
       'https://www.anrdoezrs.net/links/8946794/type/dlg/https://www.example.com/en-ca/books/item.html',
     )
+    const expected = 'https://www.example.com/en-ca/books/item.html'
 
-    expect(unwrapCjNetwork(url)).toBe('https://www.example.com/en-ca/books/item.html')
+    expect(unwrapCjNetwork(value)).toBe(expected)
   })
 
   it('should extract an http target from the deep link path', () => {
-    const url = new URL(
+    const value = new URL(
       'http://www.anrdoezrs.net/links/7760579/type/dlg/http://www.example.com/products/',
     )
+    const expected = 'http://www.example.com/products/'
 
-    expect(unwrapCjNetwork(url)).toBe('http://www.example.com/products/')
+    expect(unwrapCjNetwork(value)).toBe(expected)
   })
 
   it('should keep the target query from the deep link path', () => {
-    const url = new URL(
+    const value = new URL(
       'https://www.anrdoezrs.net/links/100266590/type/dlg/https://example.com/product/throw-blanket?sku=s6-13300962',
     )
+    const expected = 'https://example.com/product/throw-blanket?sku=s6-13300962'
 
-    expect(unwrapCjNetwork(url)).toBe('https://example.com/product/throw-blanket?sku=s6-13300962')
+    expect(unwrapCjNetwork(value)).toBe(expected)
   })
 
   it('should extract target after a sid segment in the deep link path', () => {
-    const url = new URL(
+    const value = new URL(
       'https://www.anrdoezrs.net/links/7992675/type/dlg/sid/tordotcomgeneral/https://www.example.com/s/9781250750501',
     )
+    const expected = 'https://www.example.com/s/9781250750501'
 
-    expect(unwrapCjNetwork(url)).toBe('https://www.example.com/s/9781250750501')
+    expect(unwrapCjNetwork(value)).toBe(expected)
   })
 
   it('should extract target after a fragment segment in the deep link path', () => {
-    const url = new URL(
+    const value = new URL(
       'http://www.anrdoezrs.net/links/8919635/type/dlg/fragment/REVIEWS/https://www.example.com/Hotel_Review-g499380',
     )
+    const expected = 'https://www.example.com/Hotel_Review-g499380#REVIEWS'
 
-    expect(unwrapCjNetwork(url)).toBe('https://www.example.com/Hotel_Review-g499380#REVIEWS')
+    expect(unwrapCjNetwork(value)).toBe(expected)
   })
 
   it('should extract target after sid and fragment segments in the deep link path', () => {
-    const url = new URL(
+    const value = new URL(
       'https://www.anrdoezrs.net/links/8946794/type/dlg/sid/UUwpUdUnU57440/fragment/internal%3D1/https://www.example.com/search/',
     )
+    const expected = 'https://www.example.com/search/#internal=1'
 
-    expect(unwrapCjNetwork(url)).toBe('https://www.example.com/search/#internal=1')
+    expect(unwrapCjNetwork(value)).toBe(expected)
   })
 
   it('should restore a collapsed scheme in the deep link path', () => {
-    const url = new URL(
+    const value = new URL(
       'https://www.anrdoezrs.net/links/100048247/type/dlg/sid/UUwpUdUnU57440/https:/www.example.com/?a_bid=48f95966',
     )
+    const expected = 'https://www.example.com/?a_bid=48f95966'
 
-    expect(unwrapCjNetwork(url)).toBe('https://www.example.com/?a_bid=48f95966')
+    expect(unwrapCjNetwork(value)).toBe(expected)
   })
 
   it('should decode a percent-encoded fragment segment into the target anchor', () => {
-    const url = new URL(
+    const value = new URL(
       'https://www.anrdoezrs.net/links/7768368/type/dlg/fragment/q%3Dsleepy%252Bcrib%26lang%3Den_US%26start%3D1/https://www.example.com/nursery/1043.html?dwvar_1043_color=100',
     )
+    const expected =
+      'https://www.example.com/nursery/1043.html?dwvar_1043_color=100#q=sleepy%2Bcrib&lang=en_US&start=1'
 
-    expect(unwrapCjNetwork(url)).toBe(
-      'https://www.example.com/nursery/1043.html?dwvar_1043_color=100#q=sleepy%2Bcrib&lang=en_US&start=1',
-    )
+    expect(unwrapCjNetwork(value)).toBe(expected)
   })
 
   it('should keep a fragment segment with a malformed percent escape as is', () => {
-    const url = new URL(
+    const value = new URL(
       'https://www.anrdoezrs.net/links/7768368/type/dlg/fragment/sale-50%-off/https://www.example.com/nursery/1043.html',
     )
+    const expected = 'https://www.example.com/nursery/1043.html#sale-50%-off'
 
-    expect(unwrapCjNetwork(url)).toBe('https://www.example.com/nursery/1043.html#sale-50%-off')
+    expect(unwrapCjNetwork(value)).toBe(expected)
   })
 
   it('should keep the target anchor from the deep link path', () => {
-    const url = new URL(
+    const value = new URL(
       'https://www.anrdoezrs.net/links/100048247/type/dlg/sid/UUwpUdUnU84278/https://www.example.com/music/podcasts/portal/u/0#p:id=playpodcast/series&a=100923914',
     )
+    const expected =
+      'https://www.example.com/music/podcasts/portal/u/0#p:id=playpodcast/series&a=100923914'
 
-    expect(unwrapCjNetwork(url)).toBe(
-      'https://www.example.com/music/podcasts/portal/u/0#p:id=playpodcast/series&a=100923914',
-    )
+    expect(unwrapCjNetwork(value)).toBe(expected)
   })
 
   it('should return undefined for the deep link path with a non-numeric publisher id', () => {
-    const url = new URL(
+    const value = new URL(
       'https://www.anrdoezrs.net/links/Verge/type/dlg/sid/VergeStreamingServiceDeals011223/https://www.example.com/plans/wireless/',
     )
 
-    expect(unwrapCjNetwork(url)).toBeUndefined()
+    expect(unwrapCjNetwork(value)).toBeUndefined()
   })
 
   it('should return undefined for the deep link path below another path', () => {
-    const url = new URL(
+    const value = new URL(
       'https://www.anrdoezrs.net/prefix/links/8946794/type/dlg/https://www.example.com/item',
     )
 
-    expect(unwrapCjNetwork(url)).toBeUndefined()
+    expect(unwrapCjNetwork(value)).toBeUndefined()
   })
 
   it('should return undefined for the deep link path without a target', () => {
-    const url = new URL('https://www.anrdoezrs.net/links/8946794/type/dlg/')
+    const value = new URL('https://www.anrdoezrs.net/links/8946794/type/dlg/')
 
-    expect(unwrapCjNetwork(url)).toBeUndefined()
+    expect(unwrapCjNetwork(value)).toBeUndefined()
   })
 
   it('should extract target from the deep link path with the am link type', () => {
-    const url = new URL(
+    const value = new URL(
       'https://www.qksrv.net/links/7737731/type/am/https://www.example.com/w/the-cafe-of-dreams/1129512852?ean=2940164090227',
     )
+    const expected = 'https://www.example.com/w/the-cafe-of-dreams/1129512852?ean=2940164090227'
 
-    expect(unwrapCjNetwork(url)).toBe(
-      'https://www.example.com/w/the-cafe-of-dreams/1129512852?ean=2940164090227',
-    )
+    expect(unwrapCjNetwork(value)).toBe(expected)
   })
 
   it('should return undefined for a link type other than dlg or am', () => {
-    const url = new URL(
+    const value = new URL(
       'https://www.anrdoezrs.net/links/8900337/type/xyz/https://www.example.com/w/item',
     )
 
-    expect(unwrapCjNetwork(url)).toBeUndefined()
+    expect(unwrapCjNetwork(value)).toBeUndefined()
   })
 
   it('should return undefined for the links path without a link type', () => {
-    const url = new URL('http://www.anrdoezrs.net/links/4302665/http://www.example.com/item.htm')
+    const value = new URL('http://www.anrdoezrs.net/links/4302665/http://www.example.com/item.htm')
 
-    expect(unwrapCjNetwork(url)).toBeUndefined()
+    expect(unwrapCjNetwork(value)).toBeUndefined()
   })
 
   it('should return undefined for the deep link path on non-CJ hosts', () => {
-    const url = new URL('https://example.com/links/8946794/type/dlg/https://example.org/item')
+    const value = new URL('https://example.com/links/8946794/type/dlg/https://example.org/item')
 
-    expect(unwrapCjNetwork(url)).toBeUndefined()
+    expect(unwrapCjNetwork(value)).toBeUndefined()
   })
 
   it('should extract target from the loc param of a click link', () => {
-    const url = new URL(
+    const value = new URL(
       'http://www.anrdoezrs.net/click-1759496-5463217?loc=http%3A//www.example.com/ws/eBayISAPI.dll%3FViewItem%26item%3D180000694940',
     )
+    const expected = 'http://www.example.com/ws/eBayISAPI.dll?ViewItem&item=180000694940'
 
-    expect(unwrapCjNetwork(url)).toBe(
-      'http://www.example.com/ws/eBayISAPI.dll?ViewItem&item=180000694940',
-    )
+    expect(unwrapCjNetwork(value)).toBe(expected)
   })
 
   it('should read the url param before loc', () => {
-    const url = new URL(
+    const value = new URL(
       'https://www.anrdoezrs.net/click-100577550-15073808?url=https%3A%2F%2Fwww.example.com%2Fproducts%2Fcoat%3Fcountry%3DGB&curr=GBP&loc=GB',
     )
+    const expected = 'https://www.example.com/products/coat?country=GB'
 
-    expect(unwrapCjNetwork(url)).toBe('https://www.example.com/products/coat?country=GB')
+    expect(unwrapCjNetwork(value)).toBe(expected)
   })
 
   it('should return undefined when url param is missing', () => {
-    const url = new URL('https://www.tkqlhce.com/click-12345-67890')
+    const value = new URL('https://www.tkqlhce.com/click-12345-67890')
 
-    expect(unwrapCjNetwork(url)).toBeUndefined()
+    expect(unwrapCjNetwork(value)).toBeUndefined()
   })
 
   it('should return undefined for non-CJ hosts', () => {
-    const url = new URL('https://example.com/click?url=https%3A%2F%2Fother.com')
+    const value = new URL('https://example.com/click?url=https%3A%2F%2Fother.com')
 
-    expect(unwrapCjNetwork(url)).toBeUndefined()
+    expect(unwrapCjNetwork(value)).toBeUndefined()
   })
 
   it('should extract target from a click link with a timestamp', () => {
-    const url = new URL(
+    const value = new URL(
       'https://www.jdoqocy.com/click-12345-67890-1438649470000?url=https%3A%2F%2Fexample.com%2Fpage',
     )
+    const expected = 'https://example.com/page'
 
-    expect(unwrapCjNetwork(url)).toBe('https://example.com/page')
+    expect(unwrapCjNetwork(value)).toBe(expected)
   })
 
   it('should extract target from a t path', () => {
-    const url = new URL(
+    const value = new URL(
       'https://www.pntrs.com/t/8-11214-150797-146971?url=https%3A%2F%2Fexample.com%2Fpage',
     )
+    const expected = 'https://example.com/page'
 
-    expect(unwrapCjNetwork(url)).toBe('https://example.com/page')
+    expect(unwrapCjNetwork(value)).toBe(expected)
   })
 
   it('should extract target from an opaque token path', () => {
-    const url = new URL(
+    const value = new URL(
       'https://www.tkqlhce.com/8998xdmjdl02118A6572?url=https%3A%2F%2Fexample.com%2Fpage',
     )
+    const expected = 'https://example.com/page'
 
-    expect(unwrapCjNetwork(url)).toBe('https://example.com/page')
+    expect(unwrapCjNetwork(value)).toBe(expected)
   })
 
   it('should return undefined for the url param on the root of a CJ host', () => {
-    const url = new URL('https://www.dpbolvw.net/?url=https%3A%2F%2Fexample.com%2Fpage')
+    const value = new URL('https://www.dpbolvw.net/?url=https%3A%2F%2Fexample.com%2Fpage')
 
-    expect(unwrapCjNetwork(url)).toBeUndefined()
+    expect(unwrapCjNetwork(value)).toBeUndefined()
   })
 
   it('should return undefined for the url param on a deeper path of a CJ host', () => {
-    const url = new URL('https://www.dpbolvw.net/help/faq?url=https%3A%2F%2Fexample.com%2Fpage')
+    const value = new URL('https://www.dpbolvw.net/help/faq?url=https%3A%2F%2Fexample.com%2Fpage')
 
-    expect(unwrapCjNetwork(url)).toBeUndefined()
+    expect(unwrapCjNetwork(value)).toBeUndefined()
   })
 
   it('should extract target from a click link with an unfilled publisher placeholder', () => {
-    const url = new URL(
+    const value = new URL(
       'http://www.dpbolvw.net/click-{CJ_PID}-13223184?url=https://example.com/page',
     )
+    const expected = 'https://example.com/page'
 
-    expect(unwrapCjNetwork(url)).toBe('https://example.com/page')
+    expect(unwrapCjNetwork(value)).toBe(expected)
   })
 })

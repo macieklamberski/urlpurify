@@ -3,23 +3,24 @@ import { unwrapPodup } from './podup.js'
 
 describe('unwrapPodup', () => {
   it('should extract a target after the media prefix and drop the key param', () => {
-    const url = new URL(
+    const value = new URL(
       'https://traffic.podup.com/media/storageapi.podup.com/production/821/1/blog/podcast/4df4875f-6205-489a-bc44-2e6cd26128d0.mp3?key=eyJkb21haW4iOiJleGFtcGxlLmNvbSIsInB0IjoicG9kY2FzdCIsInBzIjoiZXBpc29kZS0xIiwia3kiOjMxLCJ3aSI6MX0=',
     )
 
-    expect(unwrapPodup(url)).toBe(
-      'storageapi.podup.com/production/821/1/blog/podcast/4df4875f-6205-489a-bc44-2e6cd26128d0.mp3',
-    )
+    const expected =
+      'storageapi.podup.com/production/821/1/blog/podcast/4df4875f-6205-489a-bc44-2e6cd26128d0.mp3'
+
+    expect(unwrapPodup(value)).toBe(expected)
   })
 
   it('should give the target https behind an http prefix', () => {
-    const url = new URL(
+    const value = new URL(
       'http://traffic.podup.com/media/storageapi.podup.com/production/769/files/files/episode_1767740067401_810f5b0f.mp3',
     )
+    const expected =
+      'storageapi.podup.com/production/769/files/files/episode_1767740067401_810f5b0f.mp3'
 
-    expect(unwrapPodup(url)).toBe(
-      'storageapi.podup.com/production/769/files/files/episode_1767740067401_810f5b0f.mp3',
-    )
+    expect(unwrapPodup(value)).toBe(expected)
   })
 
   it('should keep the link fragment', () => {
@@ -30,44 +31,44 @@ describe('unwrapPodup', () => {
   })
 
   it('should return undefined when the media prefix has no target', () => {
-    const url = new URL('https://traffic.podup.com/media/')
+    const value = new URL('https://traffic.podup.com/media/')
 
-    expect(unwrapPodup(url)).toBeUndefined()
+    expect(unwrapPodup(value)).toBeUndefined()
   })
 
   it('should return undefined for a path that resolves to no url', () => {
-    const url = new URL('https://traffic.podup.com//')
+    const value = new URL('https://traffic.podup.com//')
 
-    expect(unwrapPodup(url)).toBeUndefined()
+    expect(unwrapPodup(value)).toBeUndefined()
   })
 
   it('should return undefined for a path opening on a second slash', () => {
-    const url = new URL('https://traffic.podup.com//example.com/media/episode.mp3')
+    const value = new URL('https://traffic.podup.com//example.com/media/episode.mp3')
 
-    expect(unwrapPodup(url)).toBeUndefined()
+    expect(unwrapPodup(value)).toBeUndefined()
   })
 
   it('should return undefined for other paths on the host', () => {
-    const url = new URL('https://traffic.podup.com/other/example.com/episode.mp3')
+    const value = new URL('https://traffic.podup.com/other/example.com/episode.mp3')
 
-    expect(unwrapPodup(url)).toBeUndefined()
+    expect(unwrapPodup(value)).toBeUndefined()
   })
 
   it('should return undefined for other hosts', () => {
-    const url = new URL('https://storageapi.podup.com/media/example.com/episode.mp3')
+    const value = new URL('https://storageapi.podup.com/media/example.com/episode.mp3')
 
-    expect(unwrapPodup(url)).toBeUndefined()
+    expect(unwrapPodup(value)).toBeUndefined()
   })
 
   it('should return undefined for the media path below another path', () => {
-    const url = new URL('https://traffic.podup.com/other/media/example.com/episode.mp3')
+    const value = new URL('https://traffic.podup.com/other/media/example.com/episode.mp3')
 
-    expect(unwrapPodup(url)).toBeUndefined()
+    expect(unwrapPodup(value)).toBeUndefined()
   })
 
   it('should return undefined for a path that only starts with media', () => {
-    const url = new URL('https://traffic.podup.com/mediafiles/example.com/episode.mp3')
+    const value = new URL('https://traffic.podup.com/mediafiles/example.com/episode.mp3')
 
-    expect(unwrapPodup(url)).toBeUndefined()
+    expect(unwrapPodup(value)).toBeUndefined()
   })
 })

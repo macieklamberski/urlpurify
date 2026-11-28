@@ -1,7 +1,7 @@
 import { createQueryUnwrapper } from '../utils.js'
 
 // Klook affiliate redirect (affiliate.klook.com/redirect?k_site=<target>).
-// Not included in defaultUnwrappers: unwrapping drops the publisher's affiliate commission.
+// Opt-in: unwrapping drops the publisher's affiliate commission.
 export const unwrapKlook = createQueryUnwrapper({
   hosts: 'affiliate.klook.com',
   path: '/redirect',

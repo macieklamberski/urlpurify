@@ -1,23 +1,23 @@
 import { resolvePathTarget } from '../pathTarget.js'
-import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
 // The target follows the message and link ids unencoded, often with a single slash after the
 // scheme.
 const clickPathRegex =
-  /^\/tr\/(?:t\/[a-z0-9]+\/[a-z0-9]+|t2\/[a-z0-9]+\/[a-z0-9]+\/\d+)\/(https?:.*)$/i
+  /^\/tr\/(?:t\/[a-z0-9]+\/[a-z0-9]+|t2\/[a-z0-9]+\/[a-z0-9]+\/\d+)\/(?<target>https?:.*)$/i
 
 // Mailstat email click tracker (mailstat.us/tr/t/<id>/<link>/<target>, also
-// /tr/t2/<id>/<id>/<n>/<target>). Opt-in: unwrapping removes the sender's click count.
-export const unwrapMailstat: UrlUnwrapper = createUnwrapper({
+// /tr/t2/<id>/<id>/<n>/<target>).
+// Opt-in: unwrapping removes the sender's click count.
+export const unwrapMailstat = createUnwrapper({
   hosts: ['mailstat.us', 'www.mailstat.us'],
   unwrap: (url) => {
     const match = clickPathRegex.exec(url.pathname)
 
-    if (!match) {
+    if (!match?.groups) {
       return
     }
 
-    return resolvePathTarget(url, match[1])
+    return resolvePathTarget(url, match.groups.target)
   },
 })
