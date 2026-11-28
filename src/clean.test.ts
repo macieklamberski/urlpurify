@@ -1887,6 +1887,40 @@ describe('cache busters', () => {
     expect(purifyUrl(value)).toBe(expected)
   })
 
+  it('should strip a fractional timestamp _', () => {
+    const value = 'https://example.com/enclosure/episode.mp3?_=1782597425.17810722'
+    const expected = 'https://example.com/enclosure/episode.mp3'
+
+    expect(purifyUrl(value)).toBe(expected)
+  })
+
+  it('should strip a random fraction cb', () => {
+    const value = 'https://example.com/data.js.php?d=2012-8-27&cb=0.15384303485766682'
+    const expected = 'https://example.com/data.js.php?d=2012-8-27'
+
+    expect(purifyUrl(value)).toBe(expected)
+  })
+
+  it('should strip an empty ts', () => {
+    const value = 'https://example.com/feed?id=7&ts='
+    const expected = 'https://example.com/feed?id=7'
+
+    expect(purifyUrl(value)).toBe(expected)
+  })
+
+  it('should strip a cb without a value', () => {
+    const value = 'https://example.com/profile/page.html?cb'
+    const expected = 'https://example.com/profile/page.html'
+
+    expect(purifyUrl(value)).toBe(expected)
+  })
+
+  it('should keep a ts with two decimal parts', () => {
+    const value = 'https://example.com/feed?id=7&ts=1.2.3'
+
+    expect(purifyUrl(value)).toBe(value)
+  })
+
   it('should keep a ts selecting the content type', () => {
     const value = 'https://example.com/rss/feed/comments?tc=content&ts=posts&ti=5124'
 
@@ -1908,6 +1942,12 @@ describe('cache busters', () => {
 
   it('should keep a word preview', () => {
     const value = 'https://example.com/kp/card?asin=B0C1234567&preview=inline'
+
+    expect(purifyUrl(value)).toBe(value)
+  })
+
+  it('should keep an empty preview', () => {
+    const value = 'https://example.com/post?p=42&preview='
 
     expect(purifyUrl(value)).toBe(value)
   })

@@ -5,9 +5,15 @@ import type { TrackingParam, TrackingValueTest } from '../types.js'
 // parse to the hostname `example.com`.
 const refDelimitersRegex = /[\s/?#\\:@]/
 
-// A word value selects content, as `ts=posts` picks a comments feed's type and `cb` names a JSONP
-// callback. A cache buster is a timestamp or a hash, so it is hex.
-const cacheBusterValueRegex = /^[0-9a-f]+$/i
+// A hex `preview`, as `preview=1`, is a draft flag. A word such as `preview=inline` picks a card
+// layout and stays, and so does an empty `preview=`.
+const hexValueRegex = /^[0-9a-f]+$/i
+
+// A cache buster is a timestamp, a hash or a random number: hex, a fractional timestamp such as
+// `1782597425.17810722`, a `Math.random()` value such as `0.1538`, or empty, which selects nothing.
+// A word stays: `ts=posts` picks a comments feed's type and `cb=googleTranslateElementInit` names
+// a JSONP callback.
+const cacheBusterValueRegex = /^(?:[0-9a-f]*|\d+\.\d+)$/i
 
 // A `ref` holding the URL's own host is Ghost's self-referral, `?ref=example.com` on example.com.
 // With any other value `ref` is often a real referral target.
@@ -39,7 +45,7 @@ export const housekeepingParams: Array<TrackingParam> = [
 
   // WordPress. Safe in feed context: feeds only serve published content, never drafts.
   'doing_wp_cron', // Triggers WP scheduled tasks. Feeds ignore this.
-  { name: 'preview', value: cacheBusterValueRegex }, // Enables draft preview. Feeds never include drafts.
+  { name: 'preview', value: hexValueRegex }, // Enables draft preview. Feeds never include drafts.
   'preview_id', // Post ID for preview. Feeds never include drafts.
   'preview_nonce', // Security token for preview. Feeds never include drafts.
   'replytocom', // Comment reply form positioning. Feeds have no comments.
