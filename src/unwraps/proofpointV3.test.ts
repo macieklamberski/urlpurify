@@ -32,6 +32,23 @@ describe('unwrapProofpointV3', () => {
     expect(unwrapProofpointV3(url)).toBe('https://www.example.com/path?q=hello')
   })
 
+  it('should unwrap when a rewritten query escapes the closing delimiters', () => {
+    const url = new URL(
+      'https://urldefense.com/v3/__https://www.example.com/path?id=1__%3B%21%21abc%21def%24&utm_medium=email',
+    )
+
+    expect(unwrapProofpointV3(url)).toBe('https://www.example.com/path?id=1')
+  })
+
+  it('should unwrap an escaped replacement segment', () => {
+    // Replacement b64 'JSUl' decodes to '%%%'.
+    const url = new URL(
+      'https://urldefense.com/v3/__https://www.example.com/?u=https*3A*2F*2Fexample.org__%3BJSUl!!abc!def%24',
+    )
+
+    expect(unwrapProofpointV3(url)).toBe('https://www.example.com/?u=https%3A%2F%2Fexample.org')
+  })
+
   it('should return undefined for non-v3 paths', () => {
     const url = new URL('https://urldefense.com/v2/url?u=https-3A__example.com_path')
 

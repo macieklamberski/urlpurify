@@ -2,7 +2,9 @@ import { decodeBase64Url } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper, getUtf8ByteLength } from '../utils.js'
 
-const v3PathRegex = /^\/v3\/__(.+)__;([^!]*)!/i
+// A service that rewrites the link's query, such as govdelivery adding its own, escapes the `;` and
+// `!` that close the mangled url as `%3B` and `%21`.
+const v3PathRegex = /^\/v3\/__(.+)__(?:;|%3B)([^!%]*)(?:!|%21)/i
 
 const v3Hosts = ['urldefense.com', 'urldefense.proofpoint.com', 'urldefense.us']
 
