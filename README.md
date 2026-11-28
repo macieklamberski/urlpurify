@@ -161,14 +161,15 @@ const unwrapExample = createQueryUnwrapper({
 purifyUrl(url, { unwrappers: [...defaultUnwrappers, unwrapExample] })
 ```
 
-`path` is optional. It takes an exact path or a list of them, both compared in any case, or a regex, tested as written. `params` are tried in order, and the first that holds a value wins.
+`path` is optional. It takes an exact path or a list of them, both compared in any case, or a regex, tested as written. `params` are tried in order, and the first that holds a value in http, or with no scheme, wins. A value in another scheme, such as `myapp://open`, is skipped.
 
-Two options read a carrier that holds more than a plain value:
+Three options read a carrier that holds more than a plain value:
 
 - **`index`** picks which value of a repeated param to read, such as `-1` for the last. A tracker nested unencoded in the carrier repeats the param, and the last value is the target.
-- **`decode`** decodes the value, such as trousse's `decodeBase64` or `decodeBase64Url` for a base64 carrier. A decoded value that is not an http url is skipped, and the next param is tried.
+- **`plus`** sets how a `+` in the value reads: `'space'`, as form encoding writes a space, or `'keep'`, as a literal plus. Without it, a `+` reads as a space unless the value is an unencoded url.
+- **`decode`** decodes the value, such as trousse's `decodeBase64` or `decodeBase64Url` for a base64 carrier. A decoded value in another scheme is skipped, and the next param is tried.
 
-A value still encoded after one decode, starting with `http%3A` or `https%3A`, is decoded once more. A malformed escape, or one in a legacy charset such as `%E9` for é in Latin-1, stays as written.
+A value still encoded after one decode, starting with `http%3A`, `https%3A` or `https:%2F`, is decoded once more. A malformed escape, or one in a legacy charset such as `%E9` for é in Latin-1, stays as written.
 
 The target takes the link's fragment as `createUnwrapper` describes, so `example.com/out?target=https://example.org/guide#install` gives `https://example.org/guide#install`.
 
@@ -190,7 +191,7 @@ const unwrapExample = createPathUnwrapper({
 purifyUrl(url, { unwrappers: [...defaultUnwrappers, unwrapExample] })
 ```
 
-The target keeps the link's query, which the service forwards with it, and takes the link's fragment as `createUnwrapper` describes. A target without a scheme gets `https`. Pass `scheme: 'http'` for a service that forwards to http, or `scheme: 'link'` for one that forwards with the link's own.
+A raw target keeps the link's query, which the service forwards with it. A percent-encoded target, decoded once or twice, drops it, since its own query is encoded inside it. The target takes the link's fragment as `createUnwrapper` describes. A target without a scheme gets `https`. Pass `scheme: 'http'` for a service that forwards to http, or `scheme: 'link'` for one that forwards with the link's own.
 
 For any other shape, use `createUnwrapper`.
 
