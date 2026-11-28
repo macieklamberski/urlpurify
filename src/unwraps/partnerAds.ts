@@ -1,3 +1,4 @@
+import { resolvePathTarget } from '../pathTarget.js'
 import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
 const domains = ['partner-ads.com']
@@ -19,7 +20,7 @@ export const unwrapPartnerAds = createUnwrapper({
     const deepLinkMatch = url.pathname.match(deepLinkPathRegex)
 
     if (deepLinkMatch) {
-      return `${deepLinkMatch[1]}${url.search}`
+      return resolvePathTarget(url, deepLinkMatch[1])
     }
 
     if (!clickPathRegex.test(url.pathname)) {

@@ -1,3 +1,4 @@
+import { resolvePathTarget } from '../pathTarget.js'
 import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
 // Links written without the `?` carry their params in the path.
@@ -29,6 +30,6 @@ export const unwrapTracdelight = createUnwrapper({
       return
     }
 
-    return `${match[1]}${url.search}`
+    return resolvePathTarget(url, match[1])
   },
 })

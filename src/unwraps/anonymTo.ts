@@ -1,4 +1,4 @@
-import { getPathTarget } from '../pathTarget.js'
+import { readPathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
@@ -11,7 +11,7 @@ export const unwrapAnonymTo: UrlUnwrapper = createUnwrapper({
   hosts: ['anonym.to', 'www.anonym.to'],
   unwrap: (url) => {
     if (url.pathname !== '/') {
-      return getPathTarget(url, pathTargetRegex)
+      return readPathTarget(url, pathTargetRegex)
     }
 
     const target = url.search.slice(1)

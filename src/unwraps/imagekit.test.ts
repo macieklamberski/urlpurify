@@ -27,6 +27,15 @@ describe('unwrapImagekit', () => {
     expect(unwrapImagekit(value)).toBe(expected)
   })
 
+  it('should drop the query of the link after an encoded source', () => {
+    const value = new URL(
+      'https://ik.imagekit.io/demo/tr:w-200/https%3A%2F%2Fcdn.example.com%2Fphoto.jpg?resize=640%2C360',
+    )
+    const expected = 'https://cdn.example.com/photo.jpg'
+
+    expect(unwrapImagekit(value)).toBe(expected)
+  })
+
   it('should keep the query of the source', () => {
     const value = new URL(
       'https://ik.imagekit.io/demo/tr:w-200/https://cdn.example.com/photo.jpg?v=2',

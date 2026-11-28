@@ -1,3 +1,4 @@
+import { resolvePathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
@@ -17,6 +18,6 @@ export const unwrapYandexTranslate: UrlUnwrapper = createUnwrapper({
       return
     }
 
-    return `${match.groups.scheme ?? 'http'}://${match.groups.target}${url.search}`
+    return resolvePathTarget(url, match.groups.target, `${match.groups.scheme ?? 'http'}:`)
   },
 })

@@ -1,4 +1,4 @@
-import { getPathTarget } from '../pathTarget.js'
+import { readPathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
@@ -23,6 +23,6 @@ const extractForward = createQueryUnwrapper({
 export const unwrapDstats: UrlUnwrapper = createUnwrapper({
   hosts: ['dstats.net', 'www.dstats.net'],
   unwrap: (url) => {
-    return getPathTarget(url, downloadPrefixRegex) ?? extractDownload(url) ?? extractForward(url)
+    return readPathTarget(url, downloadPrefixRegex) ?? extractDownload(url) ?? extractForward(url)
   },
 })

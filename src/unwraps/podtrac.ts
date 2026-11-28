@@ -1,5 +1,5 @@
 import { isHostOf } from 'trousse'
-import { getPathTarget } from '../pathTarget.js'
+import { readPathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
@@ -22,15 +22,15 @@ export const unwrapPodtrac: UrlUnwrapper = createUnwrapper({
   unwrap: (url) => {
     // The New York Times host answers 301 to https://dts.podtrac.com, so its targets get https.
     if (isHostOf(url, 'dts.podtrac.nytimes.com')) {
-      return getPathTarget(url, dtsPrefixRegex)
+      return readPathTarget(url, dtsPrefixRegex)
     }
 
     if (isHostOf(url, 'dts.podtrac.com')) {
-      return getPathTarget(url, dtsPrefixRegex, url.protocol)
+      return readPathTarget(url, dtsPrefixRegex, url.protocol)
     }
 
     if (isHostOf(url, 'play.podtrac.com')) {
-      return getPathTarget(url, playPrefixRegex, url.protocol)
+      return readPathTarget(url, playPrefixRegex, url.protocol)
     }
 
     if (
@@ -41,6 +41,6 @@ export const unwrapPodtrac: UrlUnwrapper = createUnwrapper({
       return url.search.slice(1)
     }
 
-    return getPathTarget(url, ptsPrefixRegex, url.protocol)
+    return readPathTarget(url, ptsPrefixRegex, url.protocol)
   },
 })

@@ -248,6 +248,33 @@ describe('unwrapWebArchive', () => {
     expect(unwrapWebArchive(url)).toBeUndefined()
   })
 
+  it('should drop the query of the snapshot after an encoded target', () => {
+    const value = new URL(
+      'https://web.archive.org/web/20200101000000/https%3A%2F%2Fexample.com%2Fpage%3Fid%3D7?utm_source=rss',
+    )
+    const expected = 'https://example.com/page?id=7'
+
+    expect(unwrapWebArchive(value)).toBe(expected)
+  })
+
+  it('should decode a target encoded twice', () => {
+    const value = new URL(
+      'https://web.archive.org/web/20200101000000/https%253A%252F%252Fexample.com%252Fpage',
+    )
+    const expected = 'https://example.com/page'
+
+    expect(unwrapWebArchive(value)).toBe(expected)
+  })
+
+  it('should keep the query of a target with its colon alone encoded', () => {
+    const value = new URL(
+      'https://web.archive.org/web/20111107072614/https%3A//www.example.com/cgi-bin/article.cgi?f=/c/a/2011/11/05/BAN51.DTL',
+    )
+    const expected = 'https://www.example.com/cgi-bin/article.cgi?f=/c/a/2011/11/05/BAN51.DTL'
+
+    expect(unwrapWebArchive(value)).toBe(expected)
+  })
+
   it('should keep the fragment the target carries', () => {
     const value = new URL(
       'https://web.archive.org/web/20240101120000id_/https://example.com/page%23top',

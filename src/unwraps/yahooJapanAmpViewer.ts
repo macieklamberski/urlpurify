@@ -1,4 +1,5 @@
 import { decodePercent } from 'trousse'
+import { resolvePathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
@@ -21,6 +22,6 @@ export const unwrapYahooJapanAmpViewer: UrlUnwrapper = createUnwrapper({
     // The target's own query is percent-encoded into the path, as in `%3Fusqp%3D`.
     const path = decodePercent(match[1])
 
-    return `${httpsMatch ? 'https' : 'http'}://${path}${url.search}`
+    return resolvePathTarget(url, path, httpsMatch ? 'https:' : 'http:')
   },
 })

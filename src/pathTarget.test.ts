@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'bun:test'
-import { createPathUnwrapper, decodePathTarget } from './pathTarget.js'
+import { createPathUnwrapper, decodePathTarget, resolvePathTarget } from './pathTarget.js'
 
 const prefixRegex = /^\/r\/\d+\//
 const prefixHostRegex = /^prefix\.example\.com$/
@@ -180,5 +180,64 @@ describe('decodePathTarget', () => {
     const expected = 'example.com/a%2Fb.mp3'
 
     expect(decodePathTarget(value)).toBe(expected)
+  })
+})
+
+describe('resolvePathTarget', () => {
+  it('should keep the query of the link after a raw target', () => {
+    const url = new URL('https://wrapper.example.com/r/https://example.com/post?id=7')
+    const value = 'https://example.com/post'
+    const expected = 'https://example.com/post?id=7'
+
+    expect(resolvePathTarget(url, value)).toBe(expected)
+  })
+
+  it('should drop the query of the link after an encoded target', () => {
+    const url = new URL('https://wrapper.example.com/r/https%3A%2F%2Fexample.com%2Fpost?w=640')
+    const value = 'https%3A%2F%2Fexample.com%2Fpost'
+    const expected = 'https://example.com/post'
+
+    expect(resolvePathTarget(url, value)).toBe(expected)
+  })
+
+  it('should drop the query of the link after a target encoded twice', () => {
+    const url = new URL(
+      'https://wrapper.example.com/r/https%253A%252F%252Fexample.com%252Fpost?w=640',
+    )
+    const value = 'https%253A%252F%252Fexample.com%252Fpost'
+    const expected = 'https://example.com/post'
+
+    expect(resolvePathTarget(url, value)).toBe(expected)
+  })
+
+  it('should keep the query of the link after a target with its colon alone encoded', () => {
+    const url = new URL('https://wrapper.example.com/r/https%3A//example.com/post?id=7')
+    const value = 'https%3A//example.com/post'
+    const expected = 'https://example.com/post?id=7'
+
+    expect(resolvePathTarget(url, value)).toBe(expected)
+  })
+
+  it('should give a target without a scheme the scheme passed', () => {
+    const url = new URL('https://wrapper.example.com/r/example.com/post')
+    const value = 'example.com/post'
+    const expected = 'http://example.com/post'
+
+    expect(resolvePathTarget(url, value, 'http:')).toBe(expected)
+  })
+
+  it('should keep the scheme of a decoded target over the scheme passed', () => {
+    const url = new URL('https://wrapper.example.com/r/https%3A%2F%2Fexample.com%2Fpost')
+    const value = 'https%3A%2F%2Fexample.com%2Fpost'
+    const expected = 'https://example.com/post'
+
+    expect(resolvePathTarget(url, value, 'http:')).toBe(expected)
+  })
+
+  it('should leave a target without a scheme as written with no scheme passed', () => {
+    const url = new URL('https://wrapper.example.com/r/example.com/post')
+    const value = 'example.com/post'
+
+    expect(resolvePathTarget(url, value)).toBe(value)
   })
 })

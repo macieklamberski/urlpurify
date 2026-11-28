@@ -1,3 +1,4 @@
+import { resolvePathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper, httpSchemeRegex } from '../utils.js'
 
@@ -25,9 +26,6 @@ export const unwrapAdfly: UrlUnwrapper = createUnwrapper({
     }
 
     // Adfly forwarded a scheme-less target over http.
-    const target = hasScheme ? match[1] : `http://${match[1]}`
-
-    // An unencoded target's query lands in the wrapper's own `search`.
-    return `${target}${url.search}`
+    return resolvePathTarget(url, match[1], 'http:')
   },
 })

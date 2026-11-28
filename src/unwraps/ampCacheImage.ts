@@ -1,3 +1,4 @@
+import { resolvePathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
@@ -15,8 +16,6 @@ export const unwrapAmpCacheImage: UrlUnwrapper = createUnwrapper({
       return
     }
 
-    const scheme = match.groups.secure ? 'https' : 'http'
-
-    return `${scheme}://${match.groups.target}${url.search}`
+    return resolvePathTarget(url, match.groups.target, match.groups.secure ? 'https:' : 'http:')
   },
 })

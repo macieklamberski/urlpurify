@@ -29,6 +29,15 @@ describe('unwrapDevToImage', () => {
     expect(unwrapDevToImage(value)).toBe(expected)
   })
 
+  it('should drop the query of the link after an encoded source', () => {
+    const value = new URL(
+      'https://media2.dev.to/dynamic/image/width=800/https%3A%2F%2Fcdn.example.com%2Fphoto.jpg?resize=640%2C360',
+    )
+    const expected = 'https://cdn.example.com/photo.jpg'
+
+    expect(unwrapDevToImage(value)).toBe(expected)
+  })
+
   it('should keep the query of the source', () => {
     const value = new URL(
       'https://media2.dev.to/dynamic/image/width=800,height=,fit=scale-down/https://cdn.example.com/photo.jpg?v=2',

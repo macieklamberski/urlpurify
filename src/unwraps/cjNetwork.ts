@@ -1,4 +1,5 @@
 import { decodePercent } from 'trousse'
+import { resolvePathTarget } from '../pathTarget.js'
 import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
 const hosts = [
@@ -61,6 +62,6 @@ export const unwrapCjNetwork = createUnwrapper({
     const [, fragment, scheme, target] = match
     const hash = fragment ? `#${decodePercent(fragment)}` : ''
 
-    return `${scheme}://${target}${url.search}${hash}`
+    return `${resolvePathTarget(url, `${scheme}://${target}`)}${hash}`
   },
 })

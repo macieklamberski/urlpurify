@@ -1,6 +1,6 @@
-import { decodePathTarget } from '../pathTarget.js'
+import { resolvePathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
-import { createQueryUnwrapper, createUnwrapper, httpSchemeRegex } from '../utils.js'
+import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
 const legacyTargetRegex = /^\/l\/[\w-]+[/;]\/*([^/].*)$/i
 
@@ -46,16 +46,8 @@ const unwrapLegacy = createUnwrapper({
     }
 
     // A target with its scheme kept is percent-encoded once, twice or half-encoded as `https%3A//`.
-    const path = decodePathTarget(match[1])
-
-    const target = `${path}${url.search}`
-
-    if (httpSchemeRegex.test(target)) {
-      return target
-    }
-
     // Facebook's leaving page and its 302 into l.php both gave a target without a scheme `http://`.
-    return `http://${target}`
+    return resolvePathTarget(url, match[1], 'http:')
   },
 })
 

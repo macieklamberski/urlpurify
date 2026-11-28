@@ -1,4 +1,4 @@
-import { decodePathTarget } from '../pathTarget.js'
+import { resolvePathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
@@ -15,6 +15,6 @@ export const unwrapPodigee: UrlUnwrapper = createUnwrapper({
       return
     }
 
-    return `${decodePathTarget(source)}${url.search}`
+    return resolvePathTarget(url, source)
   },
 })

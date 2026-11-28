@@ -1,4 +1,5 @@
 import { isHostOf } from 'trousse'
+import { resolvePathTarget } from '../pathTarget.js'
 import { createUnwrapper, readParamTarget } from '../utils.js'
 
 // Public archive replay hosts, numbered public3, public4 and so on.
@@ -23,8 +24,7 @@ export const unwrapPagefreezer = createUnwrapper({
         return
       }
 
-      // An unencoded target's query lands in the snapshot URL's own `search`.
-      return `${match[1]}${url.search}`
+      return resolvePathTarget(url, match[1])
     }
 
     if (isHostOf(url, 'us.pagefreezer.com') && browsePathRegex.test(url.pathname)) {

@@ -1,5 +1,5 @@
 import { isBrandDomainOf, isHostOrSubdomainOf } from 'trousse'
-import { getPathTarget } from '../pathTarget.js'
+import { readPathTarget } from '../pathTarget.js'
 import { createUnwrapper } from '../utils.js'
 
 // The free domains a site may also live on, beside the brand's own domains.
@@ -18,6 +18,6 @@ export const unwrapUcoz = createUnwrapper({
       return
     }
 
-    return getPathTarget(url, gluedHostRegex)
+    return readPathTarget(url, gluedHostRegex)
   },
 })

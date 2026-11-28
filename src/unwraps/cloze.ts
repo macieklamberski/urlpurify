@@ -1,3 +1,4 @@
+import { resolvePathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
@@ -17,6 +18,6 @@ export const unwrapCloze: UrlUnwrapper = createUnwrapper({
     }
 
     // Cloze keeps the scheme server-side, and an https site redirects from http.
-    return `http://${match[1]}${url.search}`
+    return resolvePathTarget(url, match[1], 'http:')
   },
 })

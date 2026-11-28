@@ -1,5 +1,5 @@
 import { isHostOf } from 'trousse'
-import { getPathTarget } from '../pathTarget.js'
+import { readPathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
@@ -16,9 +16,9 @@ export const unwrapFiveByFive: UrlUnwrapper = createUnwrapper({
   unwrap: (url) => {
     // The targets drop their scheme. Archived captures show every host forwarding them to http.
     if (isHostOf(url, showHosts)) {
-      return getPathTarget(url, showPrefixRegex, 'http:')
+      return readPathTarget(url, showPrefixRegex, 'http:')
     }
 
-    return getPathTarget(url, redirectPrefixRegex, 'http:')
+    return readPathTarget(url, redirectPrefixRegex, 'http:')
   },
 })

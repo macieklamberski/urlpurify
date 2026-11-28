@@ -1,5 +1,5 @@
 import { isHostOf } from 'trousse'
-import { getPathTarget } from '../pathTarget.js'
+import { readPathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
@@ -15,9 +15,9 @@ export const unwrapClaritas: UrlUnwrapper = createUnwrapper({
   hosts: [...measureHosts, 'clrtpod.com', 'www.clrtpod.com'],
   unwrap: (url) => {
     if (isHostOf(url, measureHosts)) {
-      return getPathTarget(url, measurePrefixRegex)
+      return readPathTarget(url, measurePrefixRegex)
     }
 
-    return getPathTarget(url, shortPrefixRegex)
+    return readPathTarget(url, shortPrefixRegex)
   },
 })

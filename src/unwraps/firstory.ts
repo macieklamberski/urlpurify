@@ -1,5 +1,5 @@
 import { isHostOf } from 'trousse'
-import { getPathTarget } from '../pathTarget.js'
+import { readPathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper, readParamTarget } from '../utils.js'
 
@@ -19,7 +19,7 @@ export const unwrapFirstory: UrlUnwrapper = createUnwrapper({
   hosts: [...playHosts, 'track.fstry.me'],
   unwrap: (url) => {
     if (isHostOf(url, 'track.fstry.me')) {
-      return getPathTarget(url, shortPrefixRegex)
+      return readPathTarget(url, shortPrefixRegex)
     }
 
     if (playPathRegex.test(url.pathname)) {
@@ -30,6 +30,6 @@ export const unwrapFirstory: UrlUnwrapper = createUnwrapper({
       return
     }
 
-    return getPathTarget(url, trackPrefixRegex)
+    return readPathTarget(url, trackPrefixRegex)
   },
 })

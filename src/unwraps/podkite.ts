@@ -1,4 +1,4 @@
-import { getPathTarget } from '../pathTarget.js'
+import { readPathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
@@ -16,6 +16,6 @@ export const unwrapPodkite: UrlUnwrapper = createUnwrapper({
       return
     }
 
-    return getPathTarget(url, schemePrefixRegex, `${match[1]}:`)
+    return readPathTarget(url, schemePrefixRegex, `${match[1]}:`)
   },
 })

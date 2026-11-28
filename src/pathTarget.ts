@@ -14,9 +14,17 @@ export type PathUnwrapperConfig = UnwrapperOptions & {
 
 const leadingSlashesRegex = /^\/+/
 const encodedSchemeRegex = /^https?(?:%(?:25)?3A|:%(?:25)?2F)/i
+const encodedSlashesRegex = /^https?(?:%(?:25)?3A|:)%(?:25)?2F/i
 
-// A path target whose scheme is percent-encoded, once or twice, as in `https%3A%2F%2F`,
-// `https:%2F%2F` or `https%253A%252F%252F`, decoded. Any other target is returned as written.
+// A path target whose scheme and slashes are percent-encoded, once or twice, as in
+// `https%3A%2F%2F`, `https:%2F%2F` or `https%253A%252F%252F`, so its own query is encoded inside
+// it. A target with its colon alone encoded, `https%3A//`, keeps its query raw in the url's own.
+export const isEncodedPathTarget = (target: string): boolean => {
+  return encodedSlashesRegex.test(target)
+}
+
+// A path target whose scheme is percent-encoded, as `isEncodedPathTarget` reads it or with its
+// colon alone encoded, decoded. Any other target is returned as written.
 export const decodePathTarget = (target: string): string => {
   if (!encodedSchemeRegex.test(target)) {
     return target
@@ -25,13 +33,32 @@ export const decodePathTarget = (target: string): string => {
   return decodeEncodedScheme(decodePercent(target))
 }
 
-// The target that follows a prefix at the start of the path, decoded by `decodePathTarget`, with
-// the url's own query when written raw: an encoded target holds its own query. The link's fragment
-// is the factory's, per `createUnwrapper`. Podcast analytics prefixes mostly drop the target's
-// scheme and forward to https. A prefix that forwards with its own scheme passes `url.protocol`,
-// and one that forwards to http passes `http:`. A prefix that drops the url's query on forwarding
-// passes an empty `suffix`.
-export const getPathTarget = (
+// A target written in the url's path, as a module's own regex captures it, decoded by
+// `decodePathTarget`. A raw target takes the url's own query, since its query lands there. An
+// encoded target holds its own query and ends where its encoding ends, so the url's query is the
+// wrapper's. A target without an http scheme takes `scheme` when given. A service that drops the
+// url's query on forwarding passes an empty `suffix`. The link's fragment is the factory's, per
+// `createUnwrapper`.
+export const resolvePathTarget = (
+  url: URL,
+  path: string,
+  scheme?: string,
+  suffix = url.search,
+): string => {
+  const decoded = decodePathTarget(path)
+  const target = isEncodedPathTarget(path) ? decoded : `${decoded}${suffix}`
+
+  if (!scheme || httpSchemeRegex.test(target)) {
+    return target
+  }
+
+  return `${scheme}//${target}`
+}
+
+// The target that follows a prefix at the start of the path, read by `resolvePathTarget`. Podcast
+// analytics prefixes mostly drop the target's scheme and forward to https. A prefix that forwards
+// with its own scheme passes `url.protocol`, and one that forwards to http passes `http:`.
+export const readPathTarget = (
   url: URL,
   prefixRegex: RegExp,
   scheme = 'https:',
@@ -50,17 +77,10 @@ export const getPathTarget = (
     return
   }
 
-  const decoded = decodePathTarget(path)
-  const target = decoded === path ? `${path}${suffix}` : decoded
-
-  if (httpSchemeRegex.test(target)) {
-    return target
-  }
-
-  return `${scheme}//${target}`
+  return resolvePathTarget(url, path, scheme, suffix)
 }
 
-// An unwrapper for a target glued into the path behind a prefix, read by `getPathTarget`. A `link`
+// An unwrapper for a target glued into the path behind a prefix, read by `readPathTarget`. A `link`
 // scheme forwards with the link's own.
 export const createPathUnwrapper = (config: PathUnwrapperConfig): UrlUnwrapper => {
   const { prefix, scheme = 'https', ...options } = config
@@ -68,7 +88,7 @@ export const createPathUnwrapper = (config: PathUnwrapperConfig): UrlUnwrapper =
   return createUnwrapper({
     ...options,
     unwrap: (url) => {
-      return getPathTarget(url, prefix, scheme === 'link' ? url.protocol : `${scheme}:`)
+      return readPathTarget(url, prefix, scheme === 'link' ? url.protocol : `${scheme}:`)
     },
   })
 }

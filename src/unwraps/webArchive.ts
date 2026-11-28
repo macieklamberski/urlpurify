@@ -1,4 +1,5 @@
 import { decodePercent, isHostOf } from 'trousse'
+import { decodePathTarget, isEncodedPathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
@@ -71,18 +72,17 @@ export const unwrapWebArchive: UrlUnwrapper = createUnwrapper({
       return
     }
 
-    let target = decodePercent(match[1])
+    // Wayback decodes a raw target's escapes, such as `%23` before its fragment. An encoded target
+    // holds its own query, so the snapshot url's is Wayback's.
+    const isEncoded = isEncodedPathTarget(match[1])
+    const path = isEncoded ? decodePathTarget(match[1]) : decodePercent(match[1])
+    const target = isEncoded ? path : `${path}${url.search}`
 
     // Wayback answers a target with no scheme with its http snapshot.
-    if (target && !schemeRegex.test(target) && schemelessRegex.test(target)) {
-      target = `http://${target}`
+    if (!schemeRegex.test(path) && schemelessRegex.test(path)) {
+      return `http://${target}`
     }
 
-    if (!target) {
-      return
-    }
-
-    // An unencoded target's query lands in the snapshot URL's own `search`.
-    return `${target}${url.search}`
+    return target
   },
 })

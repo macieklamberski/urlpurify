@@ -1,5 +1,5 @@
 import { isHostOf } from 'trousse'
-import { getPathTarget } from '../pathTarget.js'
+import { readPathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
@@ -14,9 +14,9 @@ export const unwrapGumball: UrlUnwrapper = createUnwrapper({
   hosts: ['2.gum.fm', 's.gum.fm'],
   unwrap: (url) => {
     if (isHostOf(url, '2.gum.fm')) {
-      return getPathTarget(url, hostPrefixRegex)
+      return readPathTarget(url, hostPrefixRegex)
     }
 
-    return getPathTarget(url, showPrefixRegex)
+    return readPathTarget(url, showPrefixRegex)
   },
 })
