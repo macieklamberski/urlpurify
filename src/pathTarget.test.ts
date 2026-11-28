@@ -200,6 +200,14 @@ describe('resolvePathTarget', () => {
     expect(resolvePathTarget(url, value)).toBe(expected)
   })
 
+  it('should keep the query of the link after a target with its colon alone encoded', () => {
+    const url = new URL('https://wrapper.example.com/r/https%3A//example.com/post?id=7')
+    const value = 'https%3A//example.com/post'
+    const expected = 'https://example.com/post?id=7'
+
+    expect(resolvePathTarget(url, value)).toBe(expected)
+  })
+
   it('should give a target without a scheme the scheme passed', () => {
     const url = new URL('https://wrapper.example.com/r/example.com/post')
     const value = 'example.com/post'

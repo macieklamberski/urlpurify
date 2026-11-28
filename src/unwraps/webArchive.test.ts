@@ -248,6 +248,15 @@ describe('unwrapWebArchive', () => {
     expect(unwrapWebArchive(url)).toBeUndefined()
   })
 
+  it('should keep the query of a target with its colon alone encoded', () => {
+    const value = new URL(
+      'https://web.archive.org/web/20111107072614/https%3A//www.example.com/cgi-bin/article.cgi?f=/c/a/2011/11/05/BAN51.DTL',
+    )
+    const expected = 'https://www.example.com/cgi-bin/article.cgi?f=/c/a/2011/11/05/BAN51.DTL'
+
+    expect(unwrapWebArchive(value)).toBe(expected)
+  })
+
   it('should keep the fragment the target carries', () => {
     const value = new URL(
       'https://web.archive.org/web/20240101120000id_/https://example.com/page%23top',

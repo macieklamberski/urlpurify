@@ -14,16 +14,19 @@ export type PathUnwrapperConfig = UnwrapperOptions & {
 
 const leadingSlashesRegex = /^\/+/
 const encodedSchemeRegex = /^https?(?:%(?:25)?3A|:%(?:25)?2F)/i
+const encodedSlashesRegex = /^https?(?:%(?:25)?3A|:)%(?:25)?2F/i
 
-// A path target whose scheme is percent-encoded, once or twice, as in `https%3A%2F%2F`,
-// `https:%2F%2F` or `https%253A%252F%252F`.
+// A path target whose scheme and slashes are percent-encoded, once or twice, as in
+// `https%3A%2F%2F`, `https:%2F%2F` or `https%253A%252F%252F`, so its own query is encoded inside
+// it. A target with its colon alone encoded, `https%3A//`, keeps its query raw in the url's own.
 export const isEncodedPathTarget = (target: string): boolean => {
-  return encodedSchemeRegex.test(target)
+  return encodedSlashesRegex.test(target)
 }
 
-// A path target encoded by `isEncodedPathTarget`, decoded. Any other target is returned as written.
+// A path target whose scheme is percent-encoded, as `isEncodedPathTarget` reads it or with its
+// colon alone encoded, decoded. Any other target is returned as written.
 export const decodePathTarget = (target: string): string => {
-  if (!isEncodedPathTarget(target)) {
+  if (!encodedSchemeRegex.test(target)) {
     return target
   }
 
@@ -43,7 +46,7 @@ export const resolvePathTarget = (
   suffix = url.search,
 ): string => {
   const decoded = decodePathTarget(path)
-  const target = decoded === path ? `${path}${suffix}` : decoded
+  const target = isEncodedPathTarget(path) ? decoded : `${decoded}${suffix}`
 
   if (!scheme || httpSchemeRegex.test(target)) {
     return target

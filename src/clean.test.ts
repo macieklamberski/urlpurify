@@ -1915,6 +1915,12 @@ describe('cache busters', () => {
     expect(purifyUrl(value)).toBe(expected)
   })
 
+  it('should keep a ts with two decimal parts', () => {
+    const value = 'https://example.com/feed?id=7&ts=1.2.3'
+
+    expect(purifyUrl(value)).toBe(value)
+  })
+
   it('should keep a ts selecting the content type', () => {
     const value = 'https://example.com/rss/feed/comments?tc=content&ts=posts&ti=5124'
 
