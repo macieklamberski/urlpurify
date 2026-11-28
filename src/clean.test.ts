@@ -1924,6 +1924,22 @@ describe('path params', () => {
     expect(purifyUrl(value)).toBe(expected)
   })
 
+  it('should unwrap a wrapper whose path carries a jsessionid with no tracking params', () => {
+    const value =
+      'https://community.example.com/external-link.jspa;jsessionid=ABC123?url=https%3A%2F%2Fexample.org%2Fpage'
+    const expected = 'https://example.org/page'
+
+    expect(purifyUrl(value, { trackingParams: [] })).toBe(expected)
+  })
+
+  it('should keep a jsessionid on the target with no tracking params', () => {
+    const value =
+      'https://community.example.com/external-link.jspa;jsessionid=ABC123?url=https%3A%2F%2Fexample.org%2Fpage%3Bjsessionid%3DDEF456'
+    const expected = 'https://example.org/page;jsessionid=DEF456'
+
+    expect(purifyUrl(value, { trackingParams: [] })).toBe(expected)
+  })
+
   it('should unwrap a nested wrapper whose path carries a jsessionid', () => {
     const value =
       'https://www.google.com/url?q=https%3A%2F%2Fcommunity.example.com%2Fexternal-link.jspa%3Bjsessionid%3DABC123%3Furl%3Dhttps%253A%252F%252Fexample.org%252Fpage'
