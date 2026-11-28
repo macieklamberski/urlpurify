@@ -28,7 +28,7 @@ const pathRegex = new RegExp(`^/web/(?:${snapshot}/)?(.+)$`, 'i')
 const replayPathRegex = new RegExp(`^/${snapshot}/(.+)$`, 'i')
 const archiveItPathRegex = new RegExp(String.raw`^/(?:\d+|org-\d+|all)/${snapshot}/(.+)$`, 'i')
 const scholarPathRegex = /^\/work\/[a-z0-9]+\/access\/wayback\/(.+)$/i
-// A scheme has no dot, so `www.example.com:80/` reads as a host with a port.
+// An archived scheme never has a dot, so `www.example.com:80/` reads as a host with a port.
 const schemeRegex = /^[a-z][a-z\d+-]*:/i
 // A dot in the first segment tells a host from Wayback's own paths, such as `/web/diff/`, except
 // its own pages `/web/form-submit.jsp` and `archive.org/web/web.php`, and a relative image

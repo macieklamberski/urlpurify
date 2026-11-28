@@ -222,7 +222,7 @@ For a service on many country domains, pass `brands` instead: `brands: ['example
 
 To claim only some subdomains and still register, pass a host key with `match`, a regex the host must also match: `subdomains: 'example.com', match: /^click\d+\.example\.com$/` registers `.example.com` and runs only on `click<n>.example.com`. All three factories take it.
 
-The target takes the link's fragment, unless it holds a fragment of its own. A browser following a redirect lands there too, since the server never sees the fragment. When the link opens a page instead of redirecting, such as a share button, or the wrapper's page reads the fragment itself, pass `ignoreLinkFragment: true`. All three factories take it.
+The target takes the link's fragment, unless it holds a fragment of its own. A browser following a redirect lands there too, since the server never sees the fragment. When the link opens a page instead of redirecting, such as a share button, serves an image, such as an image proxy, or the wrapper's page reads the fragment itself, pass `ignoreLinkFragment: true`. All three factories take it.
 
 ### Choosing unwrappers
 

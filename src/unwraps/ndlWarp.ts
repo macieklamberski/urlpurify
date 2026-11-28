@@ -7,7 +7,7 @@ import { createUnwrapper } from '../utils.js'
 const webPathRegex = /^\/web\/\d{14}\/(.+)$/i
 // The persistent id of a collection, as in /info:ndljp/pid/286890/.
 const pidPathRegex = /^\/info:ndljp\/pid\/\d+\/(.+)$/i
-// A scheme has no dot, so `www.example.com:80/` reads as a host with a port.
+// An archived scheme never has a dot, so `www.example.com:80/` reads as a host with a port.
 const schemeRegex = /^[a-z][a-z\d+-]*:/i
 
 // WARP, the National Diet Library web archive, snapshot (warp.ndl.go.jp/web/<timestamp>/<target>),

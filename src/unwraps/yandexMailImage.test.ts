@@ -57,4 +57,13 @@ describe('unwrapYandexMailImage', () => {
 
     expect(unwrapYandexMailImage(value)).toBe(expected)
   })
+
+  it('should drop the link fragment', () => {
+    const value = new URL(
+      'https://resize.yandex.net/mailservice?url=https%3A%2F%2Fcdn.example.com%2Fphoto.jpg&proxy=yes&key=fbb6e138eabfa3da556a345b6f3faea8#top',
+    )
+    const expected = 'https://cdn.example.com/photo.jpg'
+
+    expect(unwrapYandexMailImage(value)).toBe(expected)
+  })
 })
