@@ -1,11 +1,12 @@
 import { resolvePathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
-import { createUnwrapper } from '../utils.js'
+import { appendLinkFragment, createUnwrapper } from '../utils.js'
 
 const hostRegex = /^(?:www\.)?archive\.(?:is|ph|today|md|fo|vn|li)$/
 const pathRegex = /^\/(?:\d{14}|\d{4}\.\d{2}\.\d{2}-\d{6}|o\/[^/]+|newest)\/(.+)$/i
 const schemeRegex = /^[a-z][a-z\d+.-]*:/i
 const escapedQueryRegex = /%3F/i
+const selectionHashRegex = /^#selection-\d+\.\d+-\d+\.\d+$/i
 
 // archive.today snapshot (archive.ph/<timestamp>/<URL>, archive.ph/o/<id>/<URL> and
 // archive.ph/newest/<URL>, on every archive.today mirror domain).
@@ -13,6 +14,7 @@ const escapedQueryRegex = /%3F/i
 // returns the live page, which may have changed or gone.
 export const unwrapArchiveToday: UrlUnwrapper = createUnwrapper({
   hosts: hostRegex,
+  ignoreLinkFragment: true, // archive.today's own `#selection-` highlight points into the snapshot
   unwrap: (url) => {
     const match = url.pathname.match(pathRegex)
 
@@ -27,6 +29,8 @@ export const unwrapArchiveToday: UrlUnwrapper = createUnwrapper({
     )
 
     // An older /o/ link carries an http target with no scheme at all.
-    return schemeRegex.test(target) ? target : `http://${target}`
+    const unwrapped = schemeRegex.test(target) ? target : `http://${target}`
+
+    return selectionHashRegex.test(url.hash) ? unwrapped : appendLinkFragment(unwrapped, url)
   },
 })

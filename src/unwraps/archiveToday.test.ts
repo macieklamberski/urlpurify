@@ -131,11 +131,11 @@ describe('unwrapArchiveToday', () => {
     expect(unwrapArchiveToday(url)).toBe('https://www.example.com/standard#:~:text=Congress')
   })
 
-  it('should keep the link fragment, a snapshot highlight too', () => {
+  it('should drop the snapshot highlight fragment', () => {
     const value = new URL(
       'https://archive.ph/20220919102213/https://example.com/news/article#selection-3608.0-3608.2',
     )
-    const expected = 'https://example.com/news/article#selection-3608.0-3608.2'
+    const expected = 'https://example.com/news/article'
 
     expect(unwrapArchiveToday(value)).toBe(expected)
   })
