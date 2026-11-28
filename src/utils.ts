@@ -14,11 +14,13 @@ import type { UrlUnwrapper } from './types.js'
 type HostList = Pattern | ReadonlyArray<Pattern>
 
 // `hosts` matches a host exactly, or by regex. `domains` also matches every subdomain, and
-// `subdomains` matches only the subdomains, never the domain itself.
+// `subdomains` matches only the subdomains, never the domain itself. `brands` matches a brand on
+// any tld, as `getBrandLabels` reads it, and with `domains` also those.
 export type UnwrapperHosts =
-  | { hosts: HostList; domains?: never; subdomains?: never }
-  | { domains: HostList; hosts?: never; subdomains?: never }
-  | { subdomains: HostList; hosts?: never; domains?: never }
+  | { hosts: HostList; domains?: never; subdomains?: never; brands?: never }
+  | { domains: HostList; hosts?: never; subdomains?: never; brands?: never }
+  | { subdomains: HostList; hosts?: never; domains?: never; brands?: never }
+  | { brands: ReadonlyArray<string>; domains?: HostList; hosts?: never; subdomains?: never }
 
 export type UnwrapperOptions = UnwrapperHosts & {
   match?: RegExp // Narrows the hosts above to those it matches, while the hosts feed the host index
@@ -186,24 +188,77 @@ export const matchPathSource = (path: string, regex: RegExp): string | undefined
 }
 
 // The hostnames a factory unwrapper can match, read by `applyUnwrappers` to skip it on any other
-// host. A domain whose subdomains match registers as `.domain`. Only lowercase ascii hosts
-// register: the index compares them as written, where `isHostOf` also folds case and punycode.
+// host. A domain whose subdomains match registers as `.domain`, a brand as `brand.*`. Only
+// lowercase ascii hosts register: the index compares them as written, where `isHostOf` also folds
+// case and punycode.
 export const unwrapperHosts = new WeakMap<UrlUnwrapper, Array<string>>()
 
 const plainHostRegex = /^[a-z0-9-]+(?:\.[a-z0-9-]+)+$/
+const plainLabelRegex = /^[a-z0-9-]+$/
 
-// Registers `hosts` when every one is a plain host, each behind `prefix`.
-const registerHosts = (unwrap: UrlUnwrapper, hosts: HostList, prefix = ''): void => {
+// The labels a brand can take in `host`: the one before a tld of one or two labels, so both
+// `google` in `www.google.co.uk` and `google` in `google.com`, or the host itself when it has one
+// label. Every registrable domain trousse's `isBrandDomainOf` reads ends in one of them. A trailing
+// dot is dropped, as the index drops it.
+export const getBrandLabels = (hostname: string): Array<string> => {
+  const host = hostname.endsWith('.') ? hostname.slice(0, -1) : hostname
+  const last = host.lastIndexOf('.')
+
+  if (last === -1) {
+    return [host]
+  }
+
+  const second = host.lastIndexOf('.', last - 1)
+
+  if (second === -1) {
+    return [host.slice(0, last)]
+  }
+
+  const third = host.lastIndexOf('.', second - 1)
+
+  return [host.slice(second + 1, last), host.slice(third + 1, second)]
+}
+
+// The index keys for `hosts` when every one passes `regex`, each wrapped as `format` writes it. An
+// empty list when none are given, and undefined when one cannot register.
+const getHostKeys = (
+  hosts: HostList | undefined,
+  regex: RegExp,
+  format: (host: string) => string,
+): Array<string> | undefined => {
+  if (hosts === undefined) {
+    return []
+  }
+
   const list = isString(hosts) ? [hosts] : hosts
 
-  if (!Array.isArray(list) || !list.every((host) => isString(host) && plainHostRegex.test(host))) {
+  if (!Array.isArray(list) || !list.every((host) => isString(host) && regex.test(host))) {
     return
   }
 
-  unwrapperHosts.set(
-    unwrap,
-    list.map((host) => `${prefix}${host}`),
-  )
+  return list.map(format)
+}
+
+// Registers every host form `config` gives, or none when one of them cannot register, so the
+// index never skips the unwrapper on a host it matches.
+const registerHosts = (unwrap: UrlUnwrapper, config: UnwrapperHosts): void => {
+  const keys: Array<string> = []
+  const forms = [
+    getHostKeys(config.hosts, plainHostRegex, (host) => host),
+    getHostKeys(config.domains, plainHostRegex, (host) => `.${host}`),
+    getHostKeys(config.subdomains, plainHostRegex, (host) => `.${host}`),
+    getHostKeys(config.brands, plainLabelRegex, (brand) => `${brand}.*`),
+  ]
+
+  for (const form of forms) {
+    if (!form) {
+      return
+    }
+
+    keys.push(...form)
+  }
+
+  unwrapperHosts.set(unwrap, keys)
 }
 
 // An unwrapper that runs `unwrap` only on a url on `hosts`, matched exactly or by regex, on
@@ -214,6 +269,14 @@ export const createUnwrapper = (config: UnwrapperConfig): UrlUnwrapper => {
   const isOnHost = (url: URL): boolean => {
     if (config.match && !isHostOf(url, config.match)) {
       return false
+    }
+
+    if (config.brands !== undefined) {
+      if (getBrandLabels(url.hostname).some((label) => isAnyOf(label, config.brands))) {
+        return true
+      }
+
+      return config.domains !== undefined && isHostOrSubdomainOf(url, config.domains)
     }
 
     if (config.domains !== undefined) {
@@ -241,17 +304,7 @@ export const createUnwrapper = (config: UnwrapperConfig): UrlUnwrapper => {
     return appendLinkFragment(target, url)
   }
 
-  if (config.hosts !== undefined) {
-    registerHosts(unwrap, config.hosts)
-  }
-
-  if (config.domains !== undefined) {
-    registerHosts(unwrap, config.domains, '.')
-  }
-
-  if (config.subdomains !== undefined) {
-    registerHosts(unwrap, config.subdomains, '.')
-  }
+  registerHosts(unwrap, config)
 
   return unwrap
 }
