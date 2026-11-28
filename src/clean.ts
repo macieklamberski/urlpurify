@@ -45,12 +45,16 @@ type QueryPair = [name: string, value: string]
 // A signature covers the rest of the query, so dropping any param from it makes the server reject
 // the url, as a CDN answers 401 to a signed file url without its `ts`. Lowercase, matched against
 // the lowercased name as written: a server reads ` sig` as a name of its own.
-const signatureParams = new Set([
+const signatureParams = [
   'sig', // Generic CDN and redirect signature
   'signature', // CloudFront, AWS Signature Version 2
   'x-amz-signature', // AWS Signature Version 4 presigned url
   'x-goog-signature', // Google Cloud Storage V4 signed url
-])
+]
+
+const foldName = (name: string): string => {
+  return name.toLowerCase()
+}
 
 const pathParamRegex = /;([^;/=]+)=[^;/]*/g
 
@@ -132,8 +136,7 @@ const matchesEntry = (
   pairHost: PairHost,
 ): boolean => {
   const isNameMatch = isString(entry.name)
-    ? // biome-ignore lint/plugin/useAnyOfOrSameText: The caller folds the name once per param, and isAnyOf would fold and trim both sides per entry.
-      entry.name.toLowerCase() === name
+    ? isAnyOf(entry.name, name, foldName)
     : matchesPattern(name, entry.name)
 
   if (!isNameMatch) {
@@ -182,8 +185,7 @@ const readQueryPair = (pair: string): QueryPair | undefined => {
 }
 
 const isSignaturePair = (pair: QueryPair | undefined): boolean => {
-  // biome-ignore lint/plugin/useAnyOf: One Set lookup per pair, where isAnyOf would trim the name.
-  return pair !== undefined && signatureParams.has(pair[0].toLowerCase())
+  return isAnyOf(pair?.[0], signatureParams, foldName)
 }
 
 // Takes the lowercased name and the decoded value.
