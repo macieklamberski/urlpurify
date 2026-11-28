@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'bun:test'
+import { unwrapperHosts } from '../utils.js'
 import { unwrapGoogleAds } from './googleAds.js'
 
 describe('unwrapGoogleAds', () => {
@@ -239,5 +240,9 @@ describe('unwrapGoogleAds', () => {
 
       expect(unwrapGoogleAds(url)).toBeUndefined()
     })
+  })
+
+  it('should register its hosts so the host index skips it on other hosts', () => {
+    expect(unwrapperHosts.has(unwrapGoogleAds)).toBe(true)
   })
 })

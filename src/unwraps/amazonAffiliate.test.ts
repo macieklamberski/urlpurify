@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'bun:test'
 import { purifyUrl } from '../clean.js'
+import { unwrapperHosts } from '../utils.js'
 import { unwrapAmazonAffiliate } from './amazonAffiliate.js'
 
 describe('unwrapAmazonAffiliate', () => {
@@ -279,5 +280,9 @@ describe('unwrapAmazonAffiliate', () => {
     )
 
     expect(unwrapAmazonAffiliate(url)).toBeUndefined()
+  })
+
+  it('should register its hosts so the host index skips it on other hosts', () => {
+    expect(unwrapperHosts.has(unwrapAmazonAffiliate)).toBe(true)
   })
 })

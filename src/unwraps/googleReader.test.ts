@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'bun:test'
 import { purifyUrl } from '../clean.js'
+import { unwrapperHosts } from '../utils.js'
 import { unwrapGoogleReader } from './googleReader.js'
 
 describe('unwrapGoogleReader', () => {
@@ -242,5 +243,15 @@ describe('unwrapGoogleReader', () => {
 
       expect(unwrapGoogleReader(value)).toBe(expected)
     })
+  })
+
+  it('should return undefined on a google subdomain of another site', () => {
+    const value = new URL('https://google.example.com/reader/view/feed/http://example.com/rss')
+
+    expect(unwrapGoogleReader(value)).toBeUndefined()
+  })
+
+  it('should register its hosts so the host index skips it on other hosts', () => {
+    expect(unwrapperHosts.has(unwrapGoogleReader)).toBe(true)
   })
 })

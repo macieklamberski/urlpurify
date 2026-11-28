@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'bun:test'
+import { unwrapperHosts } from '../utils.js'
 import { unwrapGoogleAmpViewer } from './googleAmpViewer.js'
 
 describe('unwrapGoogleAmpViewer', () => {
@@ -78,5 +79,9 @@ describe('unwrapGoogleAmpViewer', () => {
     const url = new URL('https://www.google.com.example.net/amp/s/example.com/page')
 
     expect(unwrapGoogleAmpViewer(url)).toBeUndefined()
+  })
+
+  it('should register its hosts so the host index skips it on other hosts', () => {
+    expect(unwrapperHosts.has(unwrapGoogleAmpViewer)).toBe(true)
   })
 })
