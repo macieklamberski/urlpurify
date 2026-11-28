@@ -8,7 +8,7 @@ const pathRegex = /^\/wayback\/(?:en\/)?archive\/\d{14}(?:mp_)?\/(.+)$/i
 // UK Web Archive snapshot (www.webarchive.org.uk/wayback/[en/]archive/<timestamp>[mp_]/<target>).
 // Opt-in: unwrapping returns the live page, which may have changed or be gone.
 export const unwrapUkWebArchive: UrlUnwrapper = createUnwrapper({
-  hosts: 'www.webarchive.org.uk',
+  hosts: ['www.webarchive.org.uk', 'webarchive.org.uk'],
   unwrap: (url) => {
     const match = pathRegex.exec(url.pathname)
 

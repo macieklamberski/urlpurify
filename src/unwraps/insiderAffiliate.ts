@@ -7,7 +7,7 @@ const extractAffiliate = createQueryUnwrapper({
 })
 
 const extractReviewsOut = createQueryUnwrapper({
-  hosts: ['www.businessinsider.com', 'www.insider.com'],
+  hosts: ['www.businessinsider.com', 'businessinsider.com', 'www.insider.com', 'insider.com'],
   path: '/reviews/out',
   params: ['u'],
 })
@@ -17,7 +17,13 @@ const extractReviewsOut = createQueryUnwrapper({
 // www.insider.com). Not included in defaultUnwrappers: unwrapping drops the publisher's affiliate
 // commission.
 export const unwrapInsiderAffiliate = createUnwrapper({
-  hosts: ['affiliate.insider.com', 'www.businessinsider.com', 'www.insider.com'],
+  hosts: [
+    'affiliate.insider.com',
+    'www.businessinsider.com',
+    'businessinsider.com',
+    'www.insider.com',
+    'insider.com',
+  ],
   unwrap: (url) => {
     return extractAffiliate(url) ?? extractReviewsOut(url)
   },

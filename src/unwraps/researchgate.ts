@@ -6,7 +6,7 @@ import { appendLinkFragment, createQueryUnwrapper } from '../utils.js'
 const derefPathRegex = /^\/deref\/(.+)$/i
 
 const unwrapDerefPage = createQueryUnwrapper({
-  hosts: 'www.researchgate.net',
+  hosts: ['www.researchgate.net', 'researchgate.net'],
   path: '/go.Deref.html',
   params: ['url'],
 })
@@ -20,7 +20,7 @@ export const unwrapResearchgate: UrlUnwrapper = (url) => {
     return pageTarget
   }
 
-  if (!isHostOf(url, 'www.researchgate.net')) {
+  if (!isHostOf(url, ['www.researchgate.net', 'researchgate.net'])) {
     return
   }
 

@@ -7,7 +7,7 @@ const paths = ['/fan_reach/pt', '/c/fan_reach/pt', '/controller/fan_reach/pt']
 // /c/fan_reach/pt and /controller/fan_reach/pt, which forwarded the same way until 2021. Opt-in:
 // unwrapping removes the artist's click count.
 export const unwrapReverbnation = createQueryUnwrapper({
-  hosts: ['www.rvrb.me', 'www.reverbnation.com'],
+  hosts: ['www.rvrb.me', 'rvrb.me', 'www.reverbnation.com', 'reverbnation.com'],
   path: paths,
   params: ['url', 'rn_url'],
 })

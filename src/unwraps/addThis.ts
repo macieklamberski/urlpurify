@@ -2,7 +2,7 @@ import { isAnyOf, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper, readParamTarget } from '../utils.js'
 
-const bookmarkHosts = ['www.addthis.com']
+const bookmarkHosts = ['www.addthis.com', 'addthis.com']
 const apiHosts = ['api.addthis.com']
 
 const offerPathRegex = /^\/oexchange\/0\.8\/(?:forward\/[^/]+\/)?offer$/i

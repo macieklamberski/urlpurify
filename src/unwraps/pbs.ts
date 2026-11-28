@@ -7,6 +7,6 @@ const redirPrefixRegex = /^\/(?:[\w-]+\/)+redir\/(?=https?:\/)/i
 // /wgbh/nova/rss/podcast/redir/ on podcast enclosures. The target keeps its scheme.
 // Not included in defaultUnwrappers: unwrapping removes PBS's download counts.
 export const unwrapPbs = createPathUnwrapper({
-  hosts: 'www.pbs.org',
+  hosts: ['www.pbs.org', 'pbs.org'],
   prefix: redirPrefixRegex,
 })

@@ -4,7 +4,7 @@ import { createQueryUnwrapper } from '../utils.js'
 // <target>, also /af.aspx?affiliate=<id>&path=<target>). Not included in defaultUnwrappers:
 // unwrapping drops the publisher's commission.
 export const unwrapWorldNomads = createQueryUnwrapper({
-  hosts: 'www.worldnomads.com',
+  hosts: ['www.worldnomads.com', 'worldnomads.com'],
   path: ['/Turnstile/AffiliateLink', '/af.aspx'],
   params: ['path'],
   // A Turnstile link nested unencoded in `path` spills its own `path` into this query, so the

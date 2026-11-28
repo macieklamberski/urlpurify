@@ -2,7 +2,7 @@ import { createQueryUnwrapper } from '../utils.js'
 
 // Yelp outbound link redirect (www.yelp.com/biz_redir?url=<target>, also /redir).
 export const unwrapYelp = createQueryUnwrapper({
-  hosts: ['www.yelp.com'],
+  hosts: ['www.yelp.com', 'yelp.com'],
   path: ['/biz_redir', '/redir'],
   params: ['url'],
 })

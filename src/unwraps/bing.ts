@@ -10,6 +10,7 @@ export const hosts = [
   'ssl.bing.com',
   'global.bing.com',
   'www.bing.de',
+  'bing.de',
 ]
 
 const bingPrefixRegex = /^a\d/

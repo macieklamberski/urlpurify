@@ -4,7 +4,7 @@ import { createQueryUnwrapper } from '../utils.js'
 // consumer.ftc.gov and consumidor.ftc.gov. The page named the target and linked on to it until
 // 2026-09, and now answers 302 to the site's home page.
 export const unwrapFtc = createQueryUnwrapper({
-  hosts: ['www.ftc.gov', 'consumer.ftc.gov', 'consumidor.ftc.gov'],
+  hosts: ['www.ftc.gov', 'ftc.gov', 'consumer.ftc.gov', 'consumidor.ftc.gov'],
   path: '/now-leaving',
   params: ['external_url'],
 })

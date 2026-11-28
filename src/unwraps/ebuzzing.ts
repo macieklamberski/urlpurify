@@ -5,10 +5,14 @@ const hosts = [
   'www.ebuzzing.com',
   'ebuzzing.com',
   'www.ebuzzing.fr',
+  'ebuzzing.fr',
   'social.ebuzzing.fr',
   'www.ebuzzing.it',
+  'ebuzzing.it',
   'www.ebuzzing.es',
+  'ebuzzing.es',
   'www.ebuzzing.co.uk',
+  'ebuzzing.co.uk',
 ]
 
 // Campaign and placement ids joined by underscores, then the target with no scheme. The first

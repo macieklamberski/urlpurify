@@ -7,7 +7,7 @@ const extractors = [
   createQueryUnwrapper({ hosts: googleHostRegex, path: '/pagead/iclk', params: ['adurl'] }),
   createQueryUnwrapper({ hosts: 'syndicatedsearch.goog', path: '/aclk', params: ['adurl'] }),
   createQueryUnwrapper({
-    hosts: 'www.googleadservices.com',
+    hosts: ['www.googleadservices.com', 'googleadservices.com'],
     path: '/pagead/aclk',
     params: ['adurl'],
   }),

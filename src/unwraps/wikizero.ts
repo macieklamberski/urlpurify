@@ -7,10 +7,15 @@ import { createQueryUnwrapper } from '../utils.js'
 export const unwrapWikizero = createQueryUnwrapper({
   hosts: [
     'www.wikizero.biz',
+    'wikizero.biz',
     'www.wikizero.net',
+    'wikizero.net',
     'www.wikizeroo.com',
+    'wikizeroo.com',
     'www.wikizeroo.net',
+    'wikizeroo.net',
     'www.wikizeroo.org',
+    'wikizeroo.org',
   ],
   path: '/index.php',
   params: ['q'],
