@@ -3,7 +3,7 @@ import { purifyUrl } from '../clean.js'
 import { unwrapSubscribeByEmail } from './subscribeByEmail.js'
 
 describe('unwrapSubscribeByEmail', () => {
-  it('should extract a feed that follows the host as https', () => {
+  it('should extract a feed that follows the host', () => {
     const value = new URL('http://subscribebyemail.com/example.com/rss')
     const expected = 'example.com/rss'
 

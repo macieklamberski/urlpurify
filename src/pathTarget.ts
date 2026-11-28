@@ -39,8 +39,9 @@ export const decodePathTarget = (target: string): string => {
 // `decodePathTarget`. A raw target takes the url's own query, since its query lands there. An
 // encoded target holds its own query and ends where its encoding ends, so the url's query is the
 // wrapper's. A target without an http scheme takes `scheme` when given, and otherwise gets https
-// from `cleanUrl`. A service that drops the url's query on forwarding passes an empty `suffix`. The
-// link's fragment is the factory's, per `createUnwrapper`.
+// from `cleanUrl`, which cannot repair a host behind junk such as `%20`. A service that drops the
+// url's query on forwarding passes an empty `suffix`. The link's fragment is the factory's, per
+// `createUnwrapper`.
 export const resolvePathTarget = (
   url: URL,
   path: string,
