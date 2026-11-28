@@ -46,7 +46,7 @@ const extractUrlParam = createQueryUnwrapper({
 // Commission Junction / CJ affiliate network redirects on rotating brand domains and their
 // subdomains (/click-<pid>-<aid>?url=<target>, also the older loc=<target>, and the deep link
 // /links/<pid>/type/dlg/[sid/<x>/][fragment/<x>/]<target>, also type/am).
-// Opt-in: unwrapping removes the publisher's commission.
+// Opt-in: unwrapping drops the publisher's commission.
 export const unwrapCjNetwork = createUnwrapper({
   hosts,
   unwrap: (url) => {

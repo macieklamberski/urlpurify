@@ -5,7 +5,7 @@ import { createUnwrapper } from '../utils.js'
 const pathRegex = /^\/c\/[0-9a-f-]{36}\/[0-9a-f]{8}\/(?<target>[^/]+)$/i
 
 // Prezly email click tracker (prezlymail.com/c/<campaign id>/<link hash>/<encoded target>).
-// Opt-in: unwrapping drops the sender's click count, as with the other email trackers.
+// Opt-in: unwrapping removes the sender's click count.
 export const unwrapPrezly = createUnwrapper({
   hosts: ['prezlymail.com', 'www.prezlymail.com'],
   unwrap: (url) => {

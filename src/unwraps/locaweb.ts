@@ -7,7 +7,7 @@ const idRegex = /^T?H\|(?:\d+|teste)\|\d+\|\d+$/
 // Locaweb Email Marketing click tracker on any host
 // (<sender host>/registra_clique.php?id=<ids>&url=<target>). Senders run it on subdomains of
 // Locaweb's mailing domains and on their own hosts.
-// Opt-in: unwrapping removes the click count.
+// Opt-in: unwrapping removes the sender's click count.
 export const unwrapLocaweb = createUnwrapper({
   anyHost: true,
   unwrap: (url) => {

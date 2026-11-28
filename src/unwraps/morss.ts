@@ -8,7 +8,7 @@ const targetPrefixRegex = /^\/(?::[^/]*\/)?(?!:)/
 
 // morss full-text feed proxy ([www.]morss.it/[:<options>/]<feed>, the feed raw, with or without its
 // scheme).
-// Opt-in: the link returns the feed with full articles, not the feed itself.
+// Opt-in: unwrapping returns the feed the tool was given, not the tool's view of it.
 export const unwrapMorss = createUnwrapper({
   hosts: ['morss.it', 'www.morss.it'],
   unwrap: (url) => {

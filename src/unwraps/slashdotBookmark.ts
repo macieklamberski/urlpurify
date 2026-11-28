@@ -5,7 +5,7 @@ const pathRegex = /^\/(?:bookmark|slashdot-it)\.pl$/i
 
 // Slashdot share links (slashdot.org/bookmark.pl?url=<target>, and the badge at
 // /slashdot-it.pl?url=, on slashdot.org and www.slashdot.org).
-// Opt-in: unwrapping returns the shared page, not the form that bookmarks or submits it.
+// Opt-in: unwrapping returns the shared page, not the form that shares it.
 export const unwrapSlashdotBookmark = createUnwrapper({
   hosts: ['slashdot.org', 'www.slashdot.org'],
   ignoreLinkFragment: true,

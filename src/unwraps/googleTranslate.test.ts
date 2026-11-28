@@ -197,6 +197,22 @@ describe('unwrapGoogleTranslate', () => {
     expect(unwrapGoogleTranslate(value)).toBeUndefined()
   })
 
+  it('should return undefined for the translate page path on translate.googleusercontent.com', () => {
+    const value = new URL(
+      'https://translate.googleusercontent.com/translate?u=https%3A%2F%2Fexample.com%2Fpage',
+    )
+
+    expect(unwrapGoogleTranslate(value)).toBeUndefined()
+  })
+
+  it('should return undefined for the translate page path on a hashed website proxy host', () => {
+    const value = new URL(
+      'https://gkg6hbawmh4aahgekdnsv2jrpm-ac4c6men2g7xr2a-example-com.translate.goog/translate?u=https%3A%2F%2Fexample.com%2Fpage',
+    )
+
+    expect(unwrapGoogleTranslate(value)).toBeUndefined()
+  })
+
   it('should return undefined for a nested subdomain of translate.goog', () => {
     const value = new URL('https://www.example-com.translate.goog/post?_x_tr_sl=en')
 

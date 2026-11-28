@@ -5,7 +5,7 @@ const paths = ['/post', '/save']
 
 // Delicious bookmark form (del.icio.us/post?url=<target>, delicious.com/post?url= and
 // delicious.com/save?url=, on del.icio.us, delicious.com and www.delicious.com).
-// Opt-in: unwrapping returns the bookmarked page, not the form that saves it.
+// Opt-in: unwrapping returns the shared page, not the form that shares it.
 export const unwrapDelicious = createUnwrapper({
   hosts: ['del.icio.us', 'delicious.com', 'www.delicious.com'],
   ignoreLinkFragment: true,

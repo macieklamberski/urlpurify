@@ -32,7 +32,8 @@ const extractLinkTarget = createQueryUnwrapper({
 // Narrativ affiliate redirect (api.narrativ.com/api/v0/{client_redirect,redirect}/?url=<target>) on
 // narrativ.com, api.narrativ.com and events.release.narrativ.com, and its Howl commerce link
 // (howl.link/link?url=<target>, also /link/, howl.me and shop-links.co).
-// Opt-in: real-time auction bidding routes the click, so `url` may not be where it lands.
+// Opt-in: unwrapping drops the publisher's commission. Real-time auction bidding routes the click,
+// so `url` may not be where it lands.
 export const unwrapNarrativ = createUnwrapper({
   hosts: [...redirectHosts, ...linkHosts],
   unwrap: (url) => {

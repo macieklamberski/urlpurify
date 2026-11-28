@@ -1,5 +1,5 @@
-import { parseUrl, resolveUrl } from 'trousse'
-import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
+import { parseUrl } from 'trousse'
+import { createQueryUnwrapper, createUnwrapper, repairTarget } from '../utils.js'
 
 // The suffix each cloud's proxy appends to every target host.
 const proxySuffixes = ['.mcas.ms', '.mcas-gov.us', '.mcas-gov.ms']
@@ -14,7 +14,8 @@ const extractTarget = createQueryUnwrapper({
 
 // Microsoft Defender for Cloud Apps session proxy (mcas-proxyweb.mcas.ms/certificate-checker
 // ?originalUrl=<target>, also on mcas-proxyweb.mcas-gov.us and mcas-proxyweb.mcas-gov.ms).
-// Opt-in: the proxy applies the organization's session policy.
+// Opt-in: unwrapping skips the gateway's click-time check of the target. The proxy applies the
+// organization's session policy.
 export const unwrapMcas = createUnwrapper({
   hosts,
   unwrap: (url) => {
@@ -25,7 +26,7 @@ export const unwrapMcas = createUnwrapper({
     }
 
     // The url repair gives a target with no scheme the one the suffix strip needs to parse it.
-    const target = parseUrl(resolveUrl(value))
+    const target = parseUrl(repairTarget(value))
 
     if (!target) {
       return

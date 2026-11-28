@@ -3,7 +3,7 @@ import { createUnwrapper, readParamTarget } from '../utils.js'
 
 // HasOffers (TUNE) affiliate click on any host
 // (<network>.go2cloud.org/aff_c?offer_id=<id>&aff_id=<id>&url=<target>).
-// Opt-in: unwrapping removes the publisher's commission. Networks run it on their own hosts.
+// Opt-in: unwrapping drops the publisher's commission. Networks run it on their own hosts.
 export const unwrapHasoffers = createUnwrapper({
   anyHost: true,
   unwrap: (url) => {

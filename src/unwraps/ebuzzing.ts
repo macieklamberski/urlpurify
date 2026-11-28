@@ -7,7 +7,7 @@ const pathRegex = /^\/rd\/[\d_]+\/(?<target>[^/:]*\.[^/:]*(?:\/.*)?)$/i
 
 // Ebuzzing sponsored post click tracker (www.ebuzzing.com/rd/<ids>/<target>, also on its French,
 // Italian, Spanish and British domains), which answered 301 to the http target.
-// Opt-in: unwrapping removes the advertiser's click count.
+// Opt-in: unwrapping removes the click attribution.
 export const unwrapEbuzzing = createUnwrapper({
   hosts: [
     'ebuzzing.com',

@@ -13,7 +13,7 @@ const stripHrefPrefix = (value: string): string => {
 // Facebook share (facebook.com/sharer/sharer.php?u=<target>, /sharer.php, /share.php, /sharer,
 // p[url]=, /dialog/share?href=, /dialog/feed and /dialog/send ?link=, never redirect_uri, on www.,
 // bare, m., pt-br. and de.facebook.com).
-// Opt-in: unwrapping returns the shared page, not the form.
+// Opt-in: unwrapping returns the shared page, not the form that shares it.
 export const unwrapFacebookShare = createUnwrapper({
   hosts: [
     'facebook.com',

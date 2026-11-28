@@ -29,7 +29,7 @@ const decodeFeed = (encoded: string): string | undefined => {
 // Google Podcasts show, episode and app pages (podcasts.google.com/feed/<base64 feed>, with
 // /episode/<id> or under /u/<n>/, and ?feed=<base64 feed> on /, /subscribe-by-rss-feed and
 // google.com/podcasts with or without www).
-// Opt-in: the link opens the app's page.
+// Opt-in: unwrapping returns the feed, not the reader's or app's page that adds or plays it.
 export const unwrapGooglePodcasts = createUnwrapper({
   hosts: [...appHosts, ...searchHosts],
   ignoreLinkFragment: true,

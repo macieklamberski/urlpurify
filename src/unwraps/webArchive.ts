@@ -42,9 +42,8 @@ const schemelessRegex = /^(?![^/]*\.(?:jsp|php|jpg)(?:\/|$))[^/]*\./i
 // (wayback.archive-it.org/<collection or all>/<timestamp>[<modifier>]/<URL>), and the Scholar
 // access link (scholar.archive.org/work/<id>/access/wayback/<URL>), which redirects to a Wayback
 // snapshot. Each may carry an http target with no scheme, as in `/web/<timestamp>/example.com/`.
-// Opt-in: an archive URL is a historical snapshot at a specific point in time, not a redirect;
-// unwrapping returns the live page, which may have changed or 404'd. Opt in by passing a custom
-// unwrappers array.
+// Opt-in: unwrapping returns the live page, not the copy. Opt in by passing a custom unwrappers
+// array.
 export const unwrapWebArchive = createUnwrapper({
   hosts: [...hosts, ...replayHosts, 'wayback.archive-it.org', 'scholar.archive.org'],
   unwrap: (url) => {

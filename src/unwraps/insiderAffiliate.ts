@@ -15,7 +15,7 @@ const extractReviewsOut = createQueryUnwrapper({
 // Insider commerce redirect (affiliate.insider.com/?h=<hash>&postID=<id>&u=<target>), and the older
 // one on its own sites (www.businessinsider.com/reviews/out?type=<kind>&u=<target>, also
 // www.insider.com).
-// Opt-in: unwrapping drops the publisher's affiliate commission.
+// Opt-in: unwrapping drops the publisher's commission.
 export const unwrapInsiderAffiliate = createUnwrapper({
   hosts: [
     'affiliate.insider.com',

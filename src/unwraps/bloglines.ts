@@ -13,7 +13,7 @@ const extractRawFeed = createPathUnwrapper({ hosts, prefix: rawFeedPrefixRegex }
 
 // Bloglines subscribe button (www.bloglines.com/sub/<feed>, the feed raw or percent-encoded, also
 // www.bloglines.com/sub/?url=<feed>).
-// Opt-in: the link adds the feed to a Bloglines account, it does not redirect to it.
+// Opt-in: unwrapping returns the feed, not the reader's or app's page that adds or plays it.
 export const unwrapBloglines = createUnwrapper({
   hosts,
   ignoreLinkFragment: true, // A raw feed takes it through `extractRawFeed`

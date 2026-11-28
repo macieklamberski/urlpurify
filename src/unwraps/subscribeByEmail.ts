@@ -6,7 +6,7 @@ const feedPrefixRegex = /^\/(?=(?:https?:\/*)?[a-z0-9-]+(?:\.[a-z0-9-]+)+(?::\d+
 
 // Subscribe by Email subscribe button (subscribebyemail.com/<feed>), where the feed drops its
 // scheme. The page reads the feed as https.
-// Opt-in: unwrapping returns the feed, not the page that subscribes to it.
+// Opt-in: unwrapping returns the feed, not the reader's or app's page that adds or plays it.
 export const unwrapSubscribeByEmail = createPathUnwrapper({
   hosts: ['subscribebyemail.com', 'www.subscribebyemail.com'],
   prefix: feedPrefixRegex,

@@ -25,15 +25,9 @@ const extractLinkPhp = createQueryUnwrapper({
   params: ['u'],
 })
 
-const extractRoot = createQueryUnwrapper({
+const extractShim = createQueryUnwrapper({
   hosts: 'l.facebook.com',
-  path: '/',
-  params: ['u'],
-})
-
-const extractLsr = createQueryUnwrapper({
-  hosts: 'l.facebook.com',
-  path: '/lsr.php',
+  path: ['/', '/lsr.php'],
   params: ['u'],
 })
 
@@ -59,6 +53,6 @@ const extractLegacy = createUnwrapper({
 export const unwrapFacebook = createUnwrapper({
   hosts,
   unwrap: (url) => {
-    return extractLinkPhp(url) ?? extractRoot(url) ?? extractLsr(url) ?? extractLegacy(url)
+    return extractLinkPhp(url) ?? extractShim(url) ?? extractLegacy(url)
   },
 })

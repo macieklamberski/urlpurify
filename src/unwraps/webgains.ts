@@ -2,7 +2,7 @@ import { createQueryUnwrapper } from '../utils.js'
 
 // Webgains affiliate click (track.webgains.com/click.html?wgtarget=<target>), also served from
 // the Webgains-owned assets.ikhnaie.link and assets.ikhnaie.me.
-// Opt-in: unwrapping drops the publisher's affiliate commission.
+// Opt-in: unwrapping drops the publisher's commission.
 export const unwrapWebgains = createQueryUnwrapper({
   hosts: ['track.webgains.com', 'assets.ikhnaie.link', 'assets.ikhnaie.me'],
   path: '/click.html',

@@ -3,7 +3,7 @@ import { createUnwrapper, readParamTarget } from '../utils.js'
 
 // AntennaPod subscribe deep link (antennapod.org/deeplink/subscribe?url=<feed>&title=<title>, also
 // under a locale such as /fr/).
-// Opt-in: unwrapping returns the feed, not the page that subscribes to it.
+// Opt-in: unwrapping returns the feed, not the reader's or app's page that adds or plays it.
 export const unwrapAntennaPod = createUnwrapper({
   hosts: ['antennapod.org', 'www.antennapod.org'],
   ignoreLinkFragment: true,

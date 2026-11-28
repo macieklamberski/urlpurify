@@ -16,7 +16,7 @@ const extractAwinClick = createQueryUnwrapper({
 
 // Awin affiliate redirect ([www.]awin1.com/cread.php?ued=<target> or ?p=<target>, and
 // [www.]awin1.com/awclick.php?p=<target> or ?ued=<target>).
-// Opt-in: unwrapping removes the writer's commission.
+// Opt-in: unwrapping drops the publisher's commission.
 export const unwrapAwin = createUnwrapper({
   hosts,
   unwrap: (url) => {

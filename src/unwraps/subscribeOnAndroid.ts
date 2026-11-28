@@ -6,7 +6,7 @@ const feedPrefixRegex = /^\/(?=(?:https?:\/*)?[a-z0-9-]+(?:\.[a-z0-9-]+)+(?::\d+
 
 // Subscribe on Android subscribe button (subscribeonandroid.com/<feed>), where the feed drops its
 // scheme. The page reads the feed as https.
-// Opt-in: unwrapping returns the feed, not the page that subscribes to it.
+// Opt-in: unwrapping returns the feed, not the reader's or app's page that adds or plays it.
 export const unwrapSubscribeOnAndroid = createPathUnwrapper({
   hosts: ['subscribeonandroid.com', 'www.subscribeonandroid.com'],
   prefix: feedPrefixRegex,

@@ -6,7 +6,7 @@ const pathRegex = /^\/gate\/big5\/(?<target>[\w-]+(?:\.[\w-]+)+(?:\/.*)?)$/i
 
 // Big5 conversion gate (<host>/gate/big5/<target host>/<path>), with the target's scheme dropped.
 // Chinese-language news and government sites run it on their own hosts, such as big5.xinhuanet.com.
-// Opt-in: unwrapping returns the original page, not the converted copy.
+// Opt-in: unwrapping returns the live page, not the copy.
 export const unwrapBig5Gate = createUnwrapper({
   anyHost: true,
   unwrap: (url) => {

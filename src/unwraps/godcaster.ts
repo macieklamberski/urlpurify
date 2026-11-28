@@ -21,7 +21,7 @@ const extractEpisodeTarget = createPathUnwrapper({
 // Godcaster download measurement prefix (go.godcaster.fm/act/e/<show>/<n>/<n>/<target>), where the
 // target is percent-encoded twice, and its show-notes click counter
 // (go.godcaster.fm/act/sr/<show>?d=<target>, also /act/fr/<show>/<n>?d=<target>).
-// Opt-in: unwrapping removes the podcaster's download counts.
+// Opt-in: unwrapping removes the publisher's download counts.
 export const unwrapGodcaster = createUnwrapper({
   hosts,
   unwrap: (url) => {

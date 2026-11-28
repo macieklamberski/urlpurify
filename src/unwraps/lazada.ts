@@ -3,7 +3,7 @@ import { createQueryUnwrapper } from '../utils.js'
 const pathRegex = /^\/t\/c\.[A-Za-z0-9]+$/i
 
 // Lazada affiliate link (c.lazada.<tld>/t/c.<id>?url=<target>).
-// Opt-in: unwrapping drops the affiliate's commission.
+// Opt-in: unwrapping drops the publisher's commission.
 export const unwrapLazada = createQueryUnwrapper({
   hosts: [
     'c.lazada.co.id',

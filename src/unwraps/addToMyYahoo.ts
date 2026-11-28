@@ -25,7 +25,7 @@ const extractContent = createQueryUnwrapper({
 // Add to My Yahoo subscribe button (add.my.yahoo.com/rss?url=<feed>, add.my.yahoo.co.jp/rss?url=
 // and add.my.yahoo.com/content?url=), also behind Yahoo's click redirect
 // (us.rd.yahoo.com/my/.../*<add link>, rd.yahoo.co.jp/myyahoo/.../*<add link>).
-// Opt-in: the button opens My Yahoo's page that adds the feed, not the feed.
+// Opt-in: unwrapping returns the feed, not the reader's or app's page that adds or plays it.
 export const unwrapAddToMyYahoo = createUnwrapper({
   hosts: [...hosts, 'us.rd.yahoo.com', 'rd.yahoo.co.jp'],
   ignoreLinkFragment: true,

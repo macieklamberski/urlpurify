@@ -4,7 +4,7 @@ import { createPathUnwrapper } from '../pathTarget.js'
 const prefixRegex = /^\/web\/\d{14}\//i
 
 // UNESCO web archive snapshot (webarchive.unesco.org/web/<timestamp>/<target>).
-// Opt-in: unwrapping returns the live page, which may have changed or be gone.
+// Opt-in: unwrapping returns the live page, not the copy.
 export const unwrapUnescoWebArchive = createPathUnwrapper({
   hosts: 'webarchive.unesco.org',
   prefix: prefixRegex,

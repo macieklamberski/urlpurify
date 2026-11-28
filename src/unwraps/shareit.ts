@@ -14,7 +14,7 @@ const extractSecureAffiliate = createQueryUnwrapper({
 
 // MyCommerce Share-it affiliate link (www.shareit.com/affiliate.html?affiliateid=<id>&target=
 // <target>, also on esd.element5.com and secure.shareit.com/shareit/affiliate.html).
-// Opt-in: unwrapping drops the publisher's affiliate commission.
+// Opt-in: unwrapping drops the publisher's commission.
 export const unwrapShareit = createUnwrapper({
   hosts: ['shareit.com', 'www.shareit.com', 'esd.element5.com', 'secure.shareit.com'],
   unwrap: (url) => {

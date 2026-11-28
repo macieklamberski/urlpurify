@@ -9,7 +9,7 @@ const noIdPrefixRegex = /^\/track\/(?=https?:\/)/i
 // chrt.fm/track/<id>/<target>), where the target often drops its scheme, and the same prefix
 // without an id (chtbl.com/track/<target>). Chartable closed in December 2024 and both hosts
 // answer 404, so a wrapped enclosure no longer plays.
-// Opt-in: unwrapping removes the podcaster's download counts.
+// Opt-in: unwrapping removes the publisher's download counts.
 export const unwrapChartable = createUnwrapper({
   hosts: ['chtbl.com', 'www.chtbl.com', 'chrt.fm', 'www.chrt.fm'],
   unwrap: (url) => {

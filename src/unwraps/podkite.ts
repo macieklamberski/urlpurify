@@ -6,7 +6,7 @@ const schemePrefixRegex = /^\/(?<scheme>https?)\/[^/]+\//i
 
 // Podkite download measurement prefix (growx.podkite.com/<scheme>/<show id>/<target>), where the
 // target drops its scheme and the first segment names it.
-// Opt-in: unwrapping removes the podcaster's download counts.
+// Opt-in: unwrapping removes the publisher's download counts.
 export const unwrapPodkite = createUnwrapper({
   hosts: 'growx.podkite.com',
   unwrap: (url) => {

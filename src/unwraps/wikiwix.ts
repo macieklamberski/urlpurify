@@ -19,7 +19,7 @@ const extractIndexTarget = createQueryUnwrapper({
 
 // Wikiwix archive snapshot (archive.wikiwix.com/cache/?url=<target> or /cache/index2.php?url=
 // <target>, and wikiwix.com/cache/?url=<target>).
-// Opt-in: unwrapping returns the live page, which may have changed or be gone.
+// Opt-in: unwrapping returns the live page, not the copy.
 export const unwrapWikiwix = createUnwrapper({
   hosts,
   ignoreLinkFragment: true,

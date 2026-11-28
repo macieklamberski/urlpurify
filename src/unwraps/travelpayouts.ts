@@ -15,7 +15,7 @@ const extractClick = createQueryUnwrapper({
 
 // Travelpayouts affiliate redirect (tp.media/r?u=<target>) and its older custom link
 // (c<n>.travelpayouts.com/click?custom_url=<target>).
-// Opt-in: unwrapping drops the publisher's affiliate commission.
+// Opt-in: unwrapping drops the publisher's commission.
 export const unwrapTravelpayouts = createUnwrapper({
   domains: ['tp.media', 'travelpayouts.com'],
   unwrap: (url) => {

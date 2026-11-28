@@ -14,7 +14,7 @@ const hosts = [
 
 // Telegram share (t.me/share/url?url=<target>, also /share and /share/link/add, on t.me,
 // telegram.me, telegram.dog and their www. hosts).
-// Opt-in: unwrapping returns the shared page, not the share dialog.
+// Opt-in: unwrapping returns the shared page, not the form that shares it.
 export const unwrapTelegramShare = createUnwrapper({
   hosts,
   ignoreLinkFragment: true,

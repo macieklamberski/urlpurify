@@ -21,7 +21,7 @@ const extractUniversalLink = createQueryUnwrapper({
 // only the app opens, so the next param holds the web target. Also Adjust universal links
 // (<id>.adj.st/<path>?adj_fallback=<target>, also on <id>.tr.adj.st), whose web destination is in
 // adj_redirect_windows, adj_redirect, the older adjust_fallback or adj_fallback.
-// Opt-in: unwrapping removes the advertiser's click and install attribution.
+// Opt-in: unwrapping removes the click attribution.
 export const unwrapAdjust = createUnwrapper({
   subdomains: ['adj.st', 'adjust.com', 'adjust.net.in'],
   unwrap: (url) => {

@@ -13,7 +13,7 @@ const currentHosts = ['vefsafn.is', 'www.vefsafn.is']
 
 // Icelandic web archive snapshot, run by the National and University Library of Iceland
 // (wayback.vefsafn.is/wayback/<timestamp>/<target> and vefsafn.is/is/<timestamp>[mp_]/<target>).
-// Opt-in: unwrapping returns the live page, which may have changed or be gone.
+// Opt-in: unwrapping returns the live page, not the copy.
 export const unwrapVefsafn = createUnwrapper({
   hosts: ['wayback.vefsafn.is', ...currentHosts],
   unwrap: (url) => {

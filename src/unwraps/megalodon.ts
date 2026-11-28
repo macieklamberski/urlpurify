@@ -5,7 +5,7 @@ const prefixRegex = /^\/\d{4}-\d{4}-\d{4}-\d{2}\//
 
 // Megalodon archive snapshot (megalodon.jp/<YYYY-MMDD-HHMM-SS>/<target>, also on the numbered hosts
 // s01 to s04.megalodon.jp).
-// Opt-in: unwrapping returns the live page, which may have changed or be gone.
+// Opt-in: unwrapping returns the live page, not the copy.
 export const unwrapMegalodon = createPathUnwrapper({
   domains: 'megalodon.jp',
   // The main host, its www. pair and its numbered snapshot hosts, such as `s01.megalodon.jp`.

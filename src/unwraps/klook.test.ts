@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'bun:test'
-import { cleanUrl } from '../clean.js'
+import { purifyUrl } from '../clean.js'
 import { unwrapKlook } from './klook.js'
 
 describe('unwrapKlook', () => {
@@ -93,7 +93,7 @@ describe('unwrapKlook', () => {
     const expected =
       'https://affiliate.klook.com/redirect?aid=1&k_site=ftp%3A%2F%2Fexample.com%2Ffile.zip'
 
-    expect(cleanUrl(value, { unwrappers: [unwrapKlook] })).toBe(expected)
+    expect(purifyUrl(value, { unwrappers: [unwrapKlook] })).toBe(expected)
   })
 
   it('should return undefined for the redirect path without params', () => {

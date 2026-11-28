@@ -7,6 +7,7 @@ import {
   getBrandLabels,
   readDecodedParamTarget,
   readParamTarget,
+  repairTarget,
   unwrapperHosts,
 } from './utils.js'
 
@@ -14,6 +15,25 @@ const exampleSubdomainRegex = /\.example\.com$/
 const clickPathRegex = /^\/click\/\d+$/
 const clickHostRegex = /^click\d+\.example\.com$/
 const lowercasePathRegex = /^\/[a-z]+$/
+
+const junkHostTargets = [
+  '%20www.example.com/ep.mp3',
+  '.www.example.com/ep.mp3',
+  'www.example.com:/ep.mp3',
+]
+
+const nonUrlTargets = [
+  '/local/page',
+  'Example News Today',
+  'mailto:jobs@example.com',
+  'myapp://open',
+  'com.example.app://open/post',
+  '2024/https://example.com/page',
+  '05.10.2025:',
+  'D:\\zyfiles\\x\\2000C0JK.txt',
+  '.l.WwRzQ--~D',
+  'https://example.com@example.net/',
+]
 
 describe('createQueryUnwrapper', () => {
   it('should match a global path regex on every call', () => {
@@ -113,6 +133,15 @@ describe('createQueryUnwrapper', () => {
     it('should skip a title for the next param', () => {
       const value = new URL(
         'https://redirect.example.com/?url=Example+News+Today&fallback=https://example.com/app',
+      )
+      const expected = 'https://example.com/app'
+
+      expect(extract(value)).toBe(expected)
+    })
+
+    it('should skip a value whose host is a file name for the next param', () => {
+      const value = new URL(
+        'https://redirect.example.com/?url=D:%5Czyfiles%5Cx%5C2000C0JK.txt&fallback=https://example.com/app',
       )
       const expected = 'https://example.com/app'
 
@@ -1066,6 +1095,18 @@ describe('getBrandLabels', () => {
     const expected = ['example', 'www']
 
     expect(getBrandLabels(value)).toEqual(expected)
+  })
+})
+
+describe('repairTarget', () => {
+  it.each(junkHostTargets)('should repair %s behind https', (value) => {
+    const expected = 'https://www.example.com/ep.mp3'
+
+    expect(repairTarget(value)).toBe(expected)
+  })
+
+  it.each(nonUrlTargets)('should return undefined for %s', (value) => {
+    expect(repairTarget(value)).toBeUndefined()
   })
 })
 

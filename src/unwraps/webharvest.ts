@@ -5,7 +5,7 @@ import { createPathUnwrapper } from '../pathTarget.js'
 const prefixRegex = /^\/(?:peth\d{2}|congress\d+th)\/\d{14}\//i
 
 // NARA web harvest snapshot (webharvest.gov/<collection>/<timestamp>/<target>).
-// Opt-in: unwrapping returns the live page, which may have changed or be gone.
+// Opt-in: unwrapping returns the live page, not the copy.
 export const unwrapWebharvest = createPathUnwrapper({
   hosts: ['webharvest.gov', 'www.webharvest.gov'],
   prefix: prefixRegex,

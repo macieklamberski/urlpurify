@@ -4,7 +4,7 @@ const showPrefixRegex = /^\/[0-9a-f]{6}\//
 
 // Podroll download measurement prefix (pdrl.fm/<show id>/<target>, also on rss.pdrl.fm), where the
 // target drops its scheme.
-// Opt-in: unwrapping removes the podcaster's download counts.
+// Opt-in: unwrapping removes the publisher's download counts.
 export const unwrapPodroll = createPathUnwrapper({
   hosts: ['pdrl.fm', 'www.pdrl.fm', 'rss.pdrl.fm'],
   prefix: showPrefixRegex,

@@ -1,13 +1,28 @@
 import {
+  archiveExtensions,
+  audioExtensions,
+  codeExtensions,
   decodePercent,
+  documentExtensions,
+  feedExtensions,
+  flashExtensions,
+  fontExtensions,
   getQueryParamValues,
+  imageExtensions,
+  installerExtensions,
   isAnyOf,
+  isHostname,
   isHostOf,
   isHostOrSubdomainOf,
+  isIpAddress,
   isString,
   isSubdomainOf,
   type Pattern,
+  pageExtensions,
+  parseUrl,
   resolveUrl,
+  subtitleExtensions,
+  videoExtensions,
 } from 'trousse'
 import type { UrlUnwrapper } from './types.js'
 
@@ -52,6 +67,9 @@ export type QueryUnwrapperConfig = UnwrapperBaseConfig &
 
 export const httpSchemeRegex = /^https?:/i
 const encodedSchemeRegex = /^https?(?:%3A|:%2F)/i
+const dottedHostRegex = /[^.]\.[^.]/
+const schemeRegex = /^(?:https?:|[a-z][a-z\d+.-]*:\/\/)/i
+const hostEndRegex = /[/?#]/
 
 // A value already decoded once still holds an encoded scheme (`https%3A%2F%2F`, or `https:%2F%2F`
 // with its colon left raw) when the carrier encoded its target twice.
@@ -99,6 +117,77 @@ export const appendLinkFragment = (url: URL, target: string): string => {
   return `${target}${url.hash}`
 }
 
+// Extensions that are also TLDs, such as `example.zip`, stay valid hosts.
+const tldExtensions = ['mobi', 'mov', 'zip']
+
+const fileExtensions = new Set(
+  [
+    ...archiveExtensions,
+    ...audioExtensions,
+    ...codeExtensions,
+    ...documentExtensions,
+    ...feedExtensions,
+    ...flashExtensions,
+    ...fontExtensions,
+    ...imageExtensions,
+    ...installerExtensions,
+    ...pageExtensions,
+    ...subtitleExtensions,
+    ...videoExtensions,
+  ].filter((extension) => !tldExtensions.includes(extension)),
+)
+
+// The url repair, trousse's `resolveUrl`, of a target, retried with `https://` in front when a
+// target whose host is written dotted but with no scheme fails, as `%20www.example.com/ep.mp3` or
+// `www.example.com:/ep.mp3` do. A repair that carries userinfo or keeps a junk host is no target:
+// not a hostname such as `,ccam.cc`, no dot between two labels, or a file extension.
+export const repairTarget = (target: string): string | undefined => {
+  const retryBehindHttps = (): string | undefined => {
+    const host = target.split(hostEndRegex, 1)[0]
+
+    if (schemeRegex.test(target) || !dottedHostRegex.test(host)) {
+      return
+    }
+
+    const retried = parseUrl(resolveUrl(`https://${target}`))
+
+    // A target `05.10.2025:` reads as the IPv4 host 5.10.7.233 behind https.
+    if (!retried || isIpAddress(retried.hostname)) {
+      return
+    }
+
+    return retried.href
+  }
+
+  const repaired = resolveUrl(target) ?? retryBehindHttps()
+  const parsed = parseUrl(repaired)
+
+  if (!repaired || !parsed) {
+    return
+  }
+
+  // A target `https://example.com@example.net/` goes to example.net while reading as example.com.
+  if (parsed.username || parsed.password) {
+    return
+  }
+
+  const { hostname } = parsed
+
+  if (!dottedHostRegex.test(hostname) && !isIpAddress(hostname)) {
+    return
+  }
+
+  if (!isHostname(hostname)) {
+    return
+  }
+
+  if (fileExtensions.has(hostname.slice(hostname.lastIndexOf('.') + 1))) {
+    return
+  }
+
+  return repaired
+}
+
 type ParamTargetOptions = {
   index?: number // The value of a repeated param to read, such as -1 for the last
   plus?: PlusReading
@@ -106,8 +195,8 @@ type ParamTargetOptions = {
 
 // The target a carrier param holds, read as `getParamValues` reads it and decoded once more when
 // encoded twice: the first value, or the one at `index`, such as -1 for the last. A value the url
-// repair, trousse's `resolveUrl`, cannot turn into an http url, such as a relative `/local/page`,
-// another scheme or a title, is no target. `plus` reads a raw `+` as `decodeParamValue` does.
+// repair, `repairTarget`, cannot turn into an http url, such as a relative `/local/page`,
+// another scheme or a title without a dot, is no target. `plus` reads a raw `+` as `decodeParamValue` does.
 export const readParamTarget = (
   url: URL,
   name: string,
@@ -121,7 +210,7 @@ export const readParamTarget = (
 
   const target = decodeEncodedScheme(value)
 
-  if (!resolveUrl(target)) {
+  if (!repairTarget(target)) {
     return
   }
 
@@ -155,7 +244,7 @@ export const readDecodedParamTarget = (
 
   const target = decodeEncodedScheme(decoded)
 
-  if (!resolveUrl(target)) {
+  if (!repairTarget(target)) {
     return
   }
 
@@ -372,9 +461,3 @@ export const createQueryUnwrapper = (config: QueryUnwrapperConfig): UrlUnwrapper
     },
   })
 }
-
-/** @deprecated Use `QueryUnwrapperConfig` instead. */
-export type ParamExtractorConfig = QueryUnwrapperConfig
-
-/** @deprecated Use `createQueryUnwrapper` instead. */
-export const createParamExtractor = createQueryUnwrapper

@@ -1,4 +1,4 @@
-import { getSubdomain, isHostOf } from 'trousse'
+import { getSubdomain } from 'trousse'
 import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
 // turbopages.org answers 404 as of 2026-09-27, so only archived feeds carry its links.
@@ -7,11 +7,9 @@ const hostInPathRegex = /^\/turbo\/(?<host>[^/]+)\/s\/(?<path>.+)$/i
 const yandexSlashSFirstRegex = /^\/turbo\/s\/(?<host>[^/]+)\/(?<path>.*)$/i
 const turbopagesSlashSFirstRegex = /^\/s\/(?<host>[^/]+)\/(?<path>.*)$/i
 const dashRegex = /-/g
-const yandexHostRegex = /^(?:www\.)?yandex\.(?:com\.tr|[a-z]{2,3})$/
 
 const extractTurboTarget = createQueryUnwrapper({
   brands: 'yandex',
-  match: yandexHostRegex,
   path: '/turbo',
   params: ['text'],
 })
@@ -23,23 +21,24 @@ const extractTurboTarget = createQueryUnwrapper({
 // `/s/` before the host (yandex.<tld>/turbo/s/<host>/<path> and
 // <dashed-host>.turbopages.org/s/<host>/<path>), and
 // the Turbo view on Yandex (yandex.<tld>/turbo?text=<target>, also on www.yandex.<tld>).
-// Opt-in: Turbo serves a stripped-down, optimized rendering of the source page rather than the
-// canonical content. Opt in by passing a custom unwrappers array.
+// Opt-in: unwrapping returns the live page, not the copy. Opt in by passing a custom unwrappers
+// array.
 export const unwrapYandexTurbo = createUnwrapper({
   brands: 'yandex',
   domains: 'turbopages.org',
+  match: /^(?:(?:www\.)?yandex\.(?:com\.tr|[a-z]{2,3})|(?:.+\.)?turbopages\.org)$/,
   unwrap: (url) => {
-    const turboTarget = extractTurboTarget(url)
-
-    if (turboTarget) {
-      return turboTarget
-    }
-
     const turbopagesSubdomain = getSubdomain(url, 'turbopages.org')
     const isTurbopagesHost = turbopagesSubdomain !== undefined
 
-    if (!isTurbopagesHost && !isHostOf(url, yandexHostRegex)) {
-      return
+    // The Turbo view runs on Yandex alone, and a host such as yandex.turbopages.org carries the
+    // brand.
+    if (!isTurbopagesHost) {
+      const turboTarget = extractTurboTarget(url)
+
+      if (turboTarget) {
+        return turboTarget
+      }
     }
 
     const slashSFirstRegex = isTurbopagesHost ? turbopagesSlashSFirstRegex : yandexSlashSFirstRegex

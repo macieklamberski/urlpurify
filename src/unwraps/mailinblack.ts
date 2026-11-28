@@ -14,8 +14,7 @@ const decodeKey = (key: string): string | undefined => {
 // so the exact path matches on any host, guarded by a `key` that decodes to JSON with an http url.
 // The `url` param holds only the target's origin. The full target is the `url` field of `key`,
 // a base64url JSON object that also holds the language and a token.
-// Opt-in: the gateway checks the target when the link is clicked, so unwrapping skips the check the
-// recipient's organization put in place.
+// Opt-in: unwrapping skips the gateway's click-time check of the target.
 export const unwrapMailinblack = createUnwrapper({
   anyHost: true,
   unwrap: (url) => {

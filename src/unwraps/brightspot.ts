@@ -5,7 +5,7 @@ const dimsPathRegex = /^\/dims\d\/.*$/i
 
 // Brightspot dims image resizer on any host: its own brightspotcdn.com subdomains and the
 // publishers' domains (<host>/dims4/<options>/?url=<source>), such as dims.apnews.com.
-// Opt-in: unwrapping swaps the resized copy for the original image.
+// Opt-in: unwrapping swaps the resized or optimized copy for the original image.
 export const unwrapBrightspot = createUnwrapper({
   anyHost: true,
   ignoreLinkFragment: true,

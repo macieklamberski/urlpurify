@@ -20,7 +20,7 @@ const extractForward = createQueryUnwrapper({
 
 // DStats download and hit counter (dstats.net/download/<target>, /download.php?file=<target> and
 // /fwd.php?url=<target>), the target unencoded.
-// Opt-in: unwrapping removes the publisher's download count.
+// Opt-in: unwrapping removes the publisher's download counts.
 export const unwrapDstats = createUnwrapper({
   hosts,
   unwrap: (url) => {

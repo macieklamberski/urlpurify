@@ -14,8 +14,7 @@ const starEscapeRegex = /\*(?<hex>[0-9a-f]{2})/gi
 
 // Check Point Harmony Email link protection (checkpoint.url-protection.com/v1/url?o=<target>, and
 // protect.checkpoint.com/v2/___<target>___.<signature>).
-// Opt-in: unwrapping skips the gateway's check of the target at click time, which the recipient's
-// organization put in place.
+// Opt-in: unwrapping skips the gateway's click-time check of the target.
 export const unwrapCheckPointHarmony = createUnwrapper({
   hosts: [...hosts, 'protect.checkpoint.com'],
   unwrap: (url) => {

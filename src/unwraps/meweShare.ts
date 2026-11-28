@@ -1,7 +1,7 @@
 import { createQueryUnwrapper } from '../utils.js'
 
 // MeWe share (mewe.com/share?link=<target>).
-// Opt-in: the link opens MeWe's post composer with the page attached, it never redirects to it.
+// Opt-in: unwrapping returns the shared page, not the form that shares it.
 export const unwrapMeweShare = createQueryUnwrapper({
   hosts: ['mewe.com', 'www.mewe.com'],
   path: '/share',

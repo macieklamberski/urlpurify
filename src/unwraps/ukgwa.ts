@@ -5,7 +5,7 @@ const prefixRegex = /^(?:\/ukgwa)?\/(?:\d{14}(?:mp_)?|\+)\//i
 
 // UK Government Web Archive snapshot (webarchive.nationalarchives.gov.uk/[ukgwa/]<timestamp>[mp_]/
 // <target>, or `+` for the latest), with or without the target's scheme.
-// Opt-in: unwrapping returns the live page, which may have changed or be gone.
+// Opt-in: unwrapping returns the live page, not the copy.
 export const unwrapUkgwa = createPathUnwrapper({
   hosts: 'webarchive.nationalarchives.gov.uk',
   prefix: prefixRegex,

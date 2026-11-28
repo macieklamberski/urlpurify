@@ -8,7 +8,7 @@ const tunisPrefixRegex =
 // HanWEB Simplified Chinese converter (<host>[:<port>]/TuniS/<target host>/<path>), which serves
 // a page converted from Traditional Chinese. Hong Kong government and public sites run it on a
 // host of their own, such as sc.isd.gov.hk, sc.news.gov.hk or gbcode.rthk.hk.
-// Opt-in: unwrapping returns the original page, not the converted copy.
+// Opt-in: unwrapping returns the live page, not the copy.
 export const unwrapHanweb = createUnwrapper({
   anyHost: true,
   unwrap: (url) => {

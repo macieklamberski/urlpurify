@@ -5,7 +5,7 @@ const params = ['url', 'u', 'nonencodedurl']
 
 // LinkTrust affiliate click on networks' and merchants' own tracking hosts
 // (<host>/click.track?CID=<campaign>&AFID=<affiliate>&url=<target>, also u and nonencodedurl).
-// Opt-in: unwrapping drops the affiliate's commission.
+// Opt-in: unwrapping drops the publisher's commission.
 export const unwrapLinktrust = createUnwrapper({
   anyHost: true,
   unwrap: (url) => {

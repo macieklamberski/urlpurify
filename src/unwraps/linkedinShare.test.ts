@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'bun:test'
+import { unwrapperHosts } from '../utils.js'
 import { unwrapLinkedinShare } from './linkedinShare.js'
 
 describe('unwrapLinkedinShare', () => {
@@ -182,5 +183,9 @@ describe('unwrapLinkedinShare', () => {
     )
 
     expect(unwrapLinkedinShare(value)).toBeUndefined()
+  })
+
+  it('should register its hosts so the host index skips it on other hosts', () => {
+    expect(unwrapperHosts.has(unwrapLinkedinShare)).toBe(true)
   })
 })

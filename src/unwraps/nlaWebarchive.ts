@@ -16,7 +16,7 @@ const pandoraTitlePathRegex = /^\/pan\/\d+\/\d{8}(?:-\d{4})?\/(?<target>[^/]*\..
 // <target>, also /gov/ and /wayback/, web.archive.org.au/awa/<timestamp>[mp_]/<target>, and
 // pandora.nla.gov.au/nph-wb/<timestamp>/<target>), and Pandora title snapshots
 // (pandora.nla.gov.au/pan/<id>/<YYYYMMDD>[-HHMM]/<target>).
-// Opt-in: unwrapping returns the live page, which may have changed or be gone.
+// Opt-in: unwrapping returns the live page, not the copy.
 export const unwrapNlaWebarchive = createUnwrapper({
   hosts: [...hosts, 'pandora.nla.gov.au'],
   unwrap: (url) => {

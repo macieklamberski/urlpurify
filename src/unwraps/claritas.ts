@@ -9,7 +9,7 @@ const shortPrefixRegex = /^\/m\//i
 
 // Claritas download measurement prefix (claritaspod.com/measure/<target>, also on
 // www.claritaspod.com, and clrtpod.com/m/<target>), where the target drops its scheme.
-// Opt-in: unwrapping removes the podcaster's download counts.
+// Opt-in: unwrapping removes the publisher's download counts.
 export const unwrapClaritas = createUnwrapper({
   hosts: [...measureHosts, 'clrtpod.com', 'www.clrtpod.com'],
   unwrap: (url) => {

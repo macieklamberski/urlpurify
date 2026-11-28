@@ -3,8 +3,7 @@ import { createQueryUnwrapper } from '../utils.js'
 const linkPathRegex = /^\/(?:s\/[0-9a-f]+\/[\w-]+|x\/[\w-]+)$/i
 
 // EdgePilot email link rewriting (link.edgepilot.com/s/<id>/<id>?u=<target>, also /x/<id>).
-// Opt-in: the gateway checks the target when the link is clicked, so unwrapping skips the check the
-// recipient's organization put in place.
+// Opt-in: unwrapping skips the gateway's click-time check of the target.
 export const unwrapEdgepilot = createQueryUnwrapper({
   hosts: 'link.edgepilot.com',
   path: linkPathRegex,

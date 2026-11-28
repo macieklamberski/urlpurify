@@ -16,7 +16,7 @@ const extractFromEthreemail = createQueryUnwrapper({
 
 // Direct Mail email click tracker (<account>.dmanalytics2.com/click?u=<target>, also
 // dmanalytics1.com, and /e3ds/mail_link.php?u=<target> on those and ethreemail.com).
-// Opt-in: an email click tracker, like Mailchimp.
+// Opt-in: unwrapping removes the sender's click count.
 export const unwrapDirectMail = createUnwrapper({
   domains: ['dmanalytics1.com', 'dmanalytics2.com', 'ethreemail.com'],
   unwrap: (url) => {

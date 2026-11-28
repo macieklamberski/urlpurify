@@ -23,6 +23,3 @@ export type PurifyUrlOptions = {
   trackingParams?: ReadonlyArray<TrackingParam>
   maxUnwrapDepth?: number
 }
-
-/** @deprecated Use `PurifyUrlOptions` instead. */
-export type CleanUrlOptions = PurifyUrlOptions

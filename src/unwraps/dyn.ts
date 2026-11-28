@@ -2,7 +2,7 @@ import { createQueryUnwrapper } from '../utils.js'
 
 // Dyn email click tracker (link.email.dynect.net/link.php?DynEngagement=true&...&R=<target>, also
 // on icm-tracking.meltwater.com).
-// Opt-in: an email campaign click tracker, like unwrapMailchimp.
+// Opt-in: unwrapping removes the sender's click count.
 export const unwrapDyn = createQueryUnwrapper({
   hosts: ['link.email.dynect.net', 'icm-tracking.meltwater.com'],
   path: '/link.php',

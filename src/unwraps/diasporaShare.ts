@@ -4,7 +4,7 @@ const pathRegex = /^\/(?:index\/?|index\.html)?$/i
 
 // diaspora* share form (share.diasporafoundation.org/?url=<page>, also /index, /index/ and
 // /index.html).
-// Opt-in: unwrapping returns the shared page, not the form that picks a pod to share it from.
+// Opt-in: unwrapping returns the shared page, not the form that shares it.
 export const unwrapDiasporaShare = createUnwrapper({
   hosts: 'share.diasporafoundation.org',
   ignoreLinkFragment: true,

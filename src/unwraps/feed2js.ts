@@ -16,7 +16,7 @@ const extractFeedroll = createQueryUnwrapper({
 
 // Feed2JS feed widget ([www.]feed2js.org/feed2js.php?src=<feed>, and its copy on
 // [www.]feedroll.com/rssviewer/feed2js.php?src=<feed>).
-// Opt-in: the link returns a script that writes the feed into a page, not the feed.
+// Opt-in: unwrapping returns the feed the tool was given, not the tool's view of it.
 export const unwrapFeed2js = createUnwrapper({
   hosts: ['feed2js.org', 'www.feed2js.org', 'feedroll.com', 'www.feedroll.com'],
   ignoreLinkFragment: true,

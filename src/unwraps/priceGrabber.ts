@@ -2,7 +2,7 @@ import { createQueryUnwrapper } from '../utils.js'
 
 // PriceGrabber partner-site click (viglink.pgpartner.com/rd.php?r=<id>&k=<hash>&url=<target>). `k`
 // signs the click, not the target. Captures from 2016 show the click forwarding to the merchant.
-// Opt-in: unwrapping drops the publisher's affiliate commission.
+// Opt-in: unwrapping drops the publisher's commission.
 export const unwrapPriceGrabber = createQueryUnwrapper({
   hosts: 'viglink.pgpartner.com',
   path: '/rd.php',

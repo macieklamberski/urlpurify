@@ -5,7 +5,7 @@ import { createUnwrapper, readParamTarget } from '../utils.js'
 // - images-blogger-opensocial.googleusercontent.com/gadgets/proxy?url=<source>
 // - images0-focus-opensocial.googleusercontent.com/gadgets/proxy?url=<source>
 // - <any>.gmodules.com/gadgets/proxy?container=<name>&url=<source>
-// Opt-in: unwrapping swaps the proxied copy for the original image.
+// Opt-in: unwrapping swaps the resized or optimized copy for the original image.
 export const unwrapBloggerImageProxy = createUnwrapper({
   domains: ['gmodules.com', 'googleusercontent.com'],
   // Every gmodules.com host proxies, but on googleusercontent.com only the two gadget hosts do.

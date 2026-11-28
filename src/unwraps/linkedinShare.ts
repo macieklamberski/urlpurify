@@ -1,8 +1,6 @@
 import { isAnyOf } from 'trousse'
 import { createUnwrapper, readParamTarget } from '../utils.js'
 
-const hosts = ['linkedin.com', 'www.linkedin.com', /^[a-z]{2}\.linkedin\.com$/]
-
 const pathRegex = /^\/(?:shareArticle|sharing\/share-offsite|cws\/share|share)\/?$/i
 
 // LinkedIn share (linkedin.com/shareArticle?url=<page>, /sharing/share-offsite?url=,
@@ -10,7 +8,8 @@ const pathRegex = /^\/(?:shareArticle|sharing\/share-offsite|cws\/share|share)\/
 // two-letter country hosts such as uk.linkedin.com).
 // Opt-in: unwrapping returns the shared page, not the form that shares it.
 export const unwrapLinkedinShare = createUnwrapper({
-  hosts,
+  domains: 'linkedin.com',
+  match: /^(?:(?:www|[a-z]{2})\.)?linkedin\.com$/,
   ignoreLinkFragment: true,
   unwrap: (url) => {
     if (!isAnyOf(url.pathname, pathRegex)) {

@@ -5,7 +5,7 @@ const pathRegex = /^\/(?:intent\/(?:tweet|post)|share)\/?$/i
 
 // Twitter / X share intent (twitter.com/intent/tweet?url=<target>, also /intent/post and /share, on
 // twitter.com and x.com).
-// Opt-in: unwrapping returns the shared page, not the post composer.
+// Opt-in: unwrapping returns the shared page, not the form that shares it.
 export const unwrapTwitterIntent = createUnwrapper({
   hosts: ['twitter.com', 'www.twitter.com', 'mobile.twitter.com', 'x.com', 'www.x.com'],
   ignoreLinkFragment: true,

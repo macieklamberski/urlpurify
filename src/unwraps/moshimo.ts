@@ -2,7 +2,7 @@ import { createQueryUnwrapper } from '../utils.js'
 
 // Moshimo affiliate click (af.moshimo.com/af/c/click?url=<target>, also on c.af.moshimo.com and
 // f.moshimo.com).
-// Opt-in: unwrapping drops the publisher's affiliate commission.
+// Opt-in: unwrapping drops the publisher's commission.
 export const unwrapMoshimo = createQueryUnwrapper({
   hosts: ['af.moshimo.com', 'c.af.moshimo.com', 'f.moshimo.com'],
   path: '/af/c/click',

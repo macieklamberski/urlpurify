@@ -5,7 +5,7 @@ const pathRegex = /^\/intent\/post\/?$/i
 
 // Threads share intent (threads.com/intent/post?url=<target>, also /intent/post/, on www. and bare
 // threads.com and threads.net).
-// Opt-in: unwrapping returns the shared page, not the post composer.
+// Opt-in: unwrapping returns the shared page, not the form that shares it.
 export const unwrapThreadsIntent = createUnwrapper({
   hosts: ['threads.com', 'www.threads.com', 'threads.net', 'www.threads.net'],
   ignoreLinkFragment: true,

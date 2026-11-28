@@ -16,7 +16,7 @@ const extractRawFeed = createUnwrapper({ hosts, unwrap: readFeed })
 
 // Podcast Addict subscribe link (podcastaddict.com/feed/<feed>), the feed percent-encoded or raw.
 // Its ?id=<episode>&podcastId=<id> and /episode/<episode> links carry an episode, not a feed.
-// Opt-in: unwrapping returns the feed, not the app's podcast page.
+// Opt-in: unwrapping returns the feed, not the reader's or app's page that adds or plays it.
 export const unwrapPodcastAddict = createUnwrapper({
   hosts,
   ignoreLinkFragment: true, // A raw feed takes it through `extractRawFeed`
