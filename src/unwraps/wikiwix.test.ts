@@ -6,7 +6,6 @@ describe('unwrapWikiwix', () => {
     const value = new URL(
       'http://archive.wikiwix.com/cache/?url=http%3A%2F%2Fwww.example.com%2Fnazi-grandma-convicted-denying-holocaust-fifth-time-1643424',
     )
-
     const expected =
       'http://www.example.com/nazi-grandma-convicted-denying-holocaust-fifth-time-1643424'
 

@@ -6,7 +6,6 @@ describe('unwrapAxigen', () => {
     const value = new URL(
       'http://mail.example.ro/redir.hsp?url=http%3A%2F%2Fwww.example.com%2Fcatalog%2Fcarte%2Fsint-o-baba-comunista%21-editia-2011---4300%2F',
     )
-
     const expected =
       'http://www.example.com/catalog/carte/sint-o-baba-comunista!-editia-2011---4300/'
 

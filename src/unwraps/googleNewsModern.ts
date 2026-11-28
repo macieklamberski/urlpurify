@@ -21,7 +21,12 @@ export const unwrapGoogleNewsModern = createUnwrapper({
     }
 
     const decoded = decodeBase64UrlBinary(match.groups.id)
-    const target = decoded?.match(protobufFramingRegex)?.groups?.target
+
+    if (!decoded) {
+      return
+    }
+
+    const target = protobufFramingRegex.exec(decoded)?.groups?.target
 
     if (target) {
       return target
