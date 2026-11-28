@@ -38,7 +38,7 @@ export type QueryUnwrapperConfig = UnwrapperOptions &
     | { plus?: PlusReading; decode?: never } // How the service reads a raw `+` in the target
   ) & {
     path?: string | RegExp | ReadonlyArray<string>
-    params: Array<string>
+    params: ReadonlyArray<string>
     index?: number // The value of a repeated param to read, such as -1 for the last
   }
 
