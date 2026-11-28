@@ -40,6 +40,15 @@ describe('unwrapFeedly', () => {
       expect(unwrapFeedly(value)).toBe(expected)
     })
 
+    it('should drop the link query after an encoded feed', () => {
+      const value = new URL(
+        'https://feedly.com/i/subscription/feed/https%3A%2F%2Fexample.com%2Ffeed%3Fformat%3Drss?utm_source=share',
+      )
+      const expected = 'https://example.com/feed?format=rss'
+
+      expect(unwrapFeedly(value)).toBe(expected)
+    })
+
     it('should drop the link fragment after a feed with only its slashes encoded', () => {
       const value = new URL(
         'https://feedly.com/i/subscription/feed/https:%2F%2Fexample.com%2Ffeed#top',

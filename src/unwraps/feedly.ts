@@ -28,9 +28,9 @@ export const unwrapFeedly: UrlUnwrapper = createUnwrapper({
     if (pathMatch?.groups) {
       const target = decodeEncodedScheme(pathMatch.groups.target)
 
-      // An encoded feed ends where its encoding ends, so the link's fragment is Feedly's own.
+      // An encoded feed holds its own query and fragment, so the link's are Feedly's own.
       if (encodedTargetRegex.test(pathMatch.groups.target)) {
-        return `${target}${url.search}`
+        return target
       }
 
       return `${target}${url.search}${url.hash}`

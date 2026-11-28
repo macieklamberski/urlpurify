@@ -120,6 +120,15 @@ describe('unwrapHatenaBookmark', () => {
 
       expect(unwrapHatenaBookmark(value)).toBe(expected)
     })
+
+    it('should drop the link query after an encoded page', () => {
+      const value = new URL(
+        'http://b.hatena.ne.jp/entry/https%3A%2F%2Fwww.example.com%2Fentry%3Fid%3D1?utm_source=share',
+      )
+      const expected = 'https://www.example.com/entry?id=1'
+
+      expect(unwrapHatenaBookmark(value)).toBe(expected)
+    })
   })
 
   describe('entry page without the scheme', () => {
