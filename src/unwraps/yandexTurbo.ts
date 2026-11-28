@@ -28,14 +28,18 @@ export const unwrapYandexTurbo = createUnwrapper({
   domains: 'turbopages.org',
   match: /^(?:(?:www\.)?yandex\.(?:com\.tr|[a-z]{2,3})|(?:.+\.)?turbopages\.org)$/,
   unwrap: (url) => {
-    const turboTarget = extractTurboTarget(url)
-
-    if (turboTarget) {
-      return turboTarget
-    }
-
     const turbopagesSubdomain = getSubdomain(url, 'turbopages.org')
     const isTurbopagesHost = turbopagesSubdomain !== undefined
+
+    // The Turbo view runs on Yandex alone, and a host such as yandex.turbopages.org carries the
+    // brand.
+    if (!isTurbopagesHost) {
+      const turboTarget = extractTurboTarget(url)
+
+      if (turboTarget) {
+        return turboTarget
+      }
+    }
 
     const slashSFirstRegex = isTurbopagesHost ? turbopagesSlashSFirstRegex : yandexSlashSFirstRegex
     const slashSFirstMatch = slashSFirstRegex.exec(url.pathname)

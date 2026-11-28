@@ -192,6 +192,12 @@ describe('unwrapYandexTurbo', () => {
     expect(unwrapYandexTurbo(value)).toBeUndefined()
   })
 
+  it('should return undefined for the Turbo view on a turbopages.org host', () => {
+    const value = new URL('https://yandex.turbopages.org/turbo?text=https%3A%2F%2Fexample.com%2F')
+
+    expect(unwrapYandexTurbo(value)).toBeUndefined()
+  })
+
   it('should register its hosts so the host index skips it on other hosts', () => {
     expect(unwrapperHosts.has(unwrapYandexTurbo)).toBe(true)
   })
