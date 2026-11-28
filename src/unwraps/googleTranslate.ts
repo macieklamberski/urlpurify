@@ -1,10 +1,13 @@
-import { getQueryParam, getSubdomain, isAnyOf, isHostOf, startsWithAnyOf } from 'trousse'
+import {
+  getQueryParam,
+  getSubdomain,
+  isAnyOf,
+  isBrandDomainOf,
+  isHostOf,
+  startsWithAnyOf,
+} from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper, readParamTarget } from '../utils.js'
-
-// translate.google.<TLD> and its www. host, the hosts the walk shows on the translate paths.
-const googleTranslateHostRegex =
-  /^(?:www\.)?translate\.google\.(?:com|[a-z]{2,3}(?:\.[a-z]{2,3})?)$/
 
 const googleTranslatePaths = ['/translate', '/website']
 
@@ -64,6 +67,9 @@ export const unwrapGoogleTranslate = createUnwrapper({
   brands: 'google',
   hosts: frameHosts,
   subdomains: proxyDomains,
+  // translate.google.<TLD> and its www. host are the hosts the walk shows on the translate paths.
+  match:
+    /^(?:(?:www\.)?translate\.google\.(?:com|[a-z]{2,3}(?:\.[a-z]{2,3})?)|translate\.googleusercontent\.com|.+\.translate\.goog)$/,
   unwrap: (url) => {
     const proxyTarget = extractWebsiteProxy(url)
 
@@ -72,7 +78,7 @@ export const unwrapGoogleTranslate = createUnwrapper({
     }
 
     const isTranslatePage =
-      isHostOf(url, googleTranslateHostRegex) && isAnyOf(url.pathname, googleTranslatePaths)
+      isBrandDomainOf(url, 'google') && isAnyOf(url.pathname, googleTranslatePaths)
     const isTranslateFrame = isHostOf(url, frameHosts) && isAnyOf(url.pathname, '/translate_c')
 
     if (!isTranslatePage && !isTranslateFrame) {
