@@ -62,6 +62,12 @@ describe('unwrapUcoz', () => {
     expect(unwrapUcoz(value)).toBeUndefined()
   })
 
+  it('should return undefined for a subdomain named ucoz on another site', () => {
+    const value = new URL('https://ucoz.example.com//www.example.org/embed/MLANv9VJ5Ws')
+
+    expect(unwrapUcoz(value)).toBeUndefined()
+  })
+
   it('should scan a long run of slashes in linear time', () => {
     const value = new URL(`https://city-site.ucoz.com/${'/'.repeat(200000)}`)
     const start = performance.now()

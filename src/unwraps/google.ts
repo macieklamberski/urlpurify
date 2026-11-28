@@ -7,7 +7,8 @@ export const googleHostRegex = /^(?:[a-z0-9-]+\.)*google\.(?:com|[a-z]{2,3}(?:\.
 
 // Google redirect (google.<TLD>/url?url=<target> or google.<TLD>/url?q=<target>).
 export const unwrapGoogle = createQueryUnwrapper({
-  hosts: googleHostRegex,
+  brands: ['google'],
+  match: googleHostRegex,
   path: '/url',
   params: ['url', 'q'],
 })

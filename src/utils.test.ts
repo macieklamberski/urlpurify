@@ -4,6 +4,7 @@ import type { UrlUnwrapper } from './types.js'
 import {
   createQueryUnwrapper,
   createUnwrapper,
+  getBrandLabels,
   getParamTarget,
   getUtf8ByteLength,
   readParamTarget,
@@ -839,6 +840,120 @@ describe('match', () => {
     const value = new URL('https://www.example.com/?target=https://example.org/post')
 
     expect(unwrap(value)).toBeUndefined()
+  })
+})
+
+describe('createUnwrapper with brands', () => {
+  const getTarget: UrlUnwrapper = (url) => {
+    return getQueryParam(url, 'target')
+  }
+  const unwrapBrand = createUnwrapper({ brands: ['example'], unwrap: getTarget })
+
+  it('should run the body on the brand under a one-label tld', () => {
+    const value = new URL('https://www.example.com/?target=https://example.org/post')
+    const expected = 'https://example.org/post'
+
+    expect(unwrapBrand(value)).toBe(expected)
+  })
+
+  it('should run the body on the brand under a two-label tld', () => {
+    const value = new URL('https://www.example.co.uk/?target=https://example.org/post')
+    const expected = 'https://example.org/post'
+
+    expect(unwrapBrand(value)).toBe(expected)
+  })
+
+  it('should return undefined on the brand deeper than a two-label tld', () => {
+    const value = new URL('https://example.cdn.images.test/?target=https://example.org/post')
+
+    expect(unwrapBrand(value)).toBeUndefined()
+  })
+
+  it('should return undefined on a label that only ends in the brand', () => {
+    const value = new URL('https://notexample.com/?target=https://example.org/post')
+
+    expect(unwrapBrand(value)).toBeUndefined()
+  })
+
+  it('should run the body on a domain given beside the brands', () => {
+    const unwrap = createUnwrapper({
+      brands: ['example'],
+      domains: 'images.test',
+      unwrap: getTarget,
+    })
+    const value = new URL('https://site.images.test/?target=https://example.org/post')
+    const expected = 'https://example.org/post'
+
+    expect(unwrap(value)).toBe(expected)
+  })
+
+  it('should register the brands and the domains in the host index', () => {
+    const unwrap = createUnwrapper({
+      brands: ['example'],
+      domains: 'images.test',
+      unwrap: getTarget,
+    })
+    const expected = ['.images.test', 'example.*']
+
+    expect(unwrapperHosts.get(unwrap)).toEqual(expected)
+  })
+
+  it('should register nothing when a domain beside the brands is a regex', () => {
+    const unwrap = createUnwrapper({
+      brands: ['example'],
+      domains: exampleSubdomainRegex,
+      unwrap: getTarget,
+    })
+
+    expect(unwrapperHosts.has(unwrap)).toBe(false)
+  })
+
+  it('should narrow the brand with match', () => {
+    const unwrap = createUnwrapper({
+      brands: ['example'],
+      match: clickHostRegex,
+      unwrap: getTarget,
+    })
+    const value = new URL('https://www.example.com/?target=https://example.org/post')
+
+    expect(unwrap(value)).toBeUndefined()
+  })
+})
+
+describe('getBrandLabels', () => {
+  it('should return the host itself for a host of one label', () => {
+    const value = 'localhost'
+    const expected = ['localhost']
+
+    expect(getBrandLabels(value)).toEqual(expected)
+  })
+
+  it('should return the label before the tld for a host of two labels', () => {
+    const value = 'example.com'
+    const expected = ['example']
+
+    expect(getBrandLabels(value)).toEqual(expected)
+  })
+
+  it('should return the labels before a tld of one or two labels for a longer host', () => {
+    const value = 'www.example.co.uk'
+    const expected = ['co', 'example']
+
+    expect(getBrandLabels(value)).toEqual(expected)
+  })
+
+  it('should return both labels of a host of three labels', () => {
+    const value = 'example.co.uk'
+    const expected = ['co', 'example']
+
+    expect(getBrandLabels(value)).toEqual(expected)
+  })
+
+  it('should drop a trailing dot', () => {
+    const value = 'www.example.com.'
+    const expected = ['example', 'www']
+
+    expect(getBrandLabels(value)).toEqual(expected)
   })
 })
 

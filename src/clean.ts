@@ -25,7 +25,7 @@ import {
 import { defaultTrackingParams, defaultUnwrappers } from './defaults.js'
 import { sessionParams } from './tracking/session.js'
 import type { PurifyUrlOptions, TrackingEntry, TrackingParam, UrlUnwrapper } from './types.js'
-import { unwrapperHosts } from './utils.js'
+import { getBrandLabels, unwrapperHosts } from './utils.js'
 
 type TrackingMatcher = {
   literals: Set<string>
@@ -377,6 +377,7 @@ type UnwrapperIndex = {
   byHost: Map<string, Array<UrlUnwrapper>>
   rest: Array<UrlUnwrapper>
   domainLength: number // Longest registered `.domain`, 0 when none
+  hasBrands: boolean // Whether any `brand.*` registered
 }
 
 // A list seen once maps to undefined and gets no index, so a caller passing a new array per call
@@ -390,6 +391,7 @@ const buildUnwrapperIndex = (unwrappers: Array<UrlUnwrapper>): UnwrapperIndex =>
   const byHost = new Map<string, Array<UrlUnwrapper>>()
   const rest: Array<UrlUnwrapper> = []
   let domainLength = 0
+  let hasBrands = false
 
   for (const unwrap of unwrappers) {
     const hosts = unwrapperHosts.get(unwrap)
@@ -411,6 +413,10 @@ const buildUnwrapperIndex = (unwrappers: Array<UrlUnwrapper>): UnwrapperIndex =>
         domainLength = Math.max(domainLength, host.length)
       }
 
+      if (host.endsWith('.*')) {
+        hasBrands = true
+      }
+
       if (!list) {
         byHost.set(host, [...rest, unwrap])
         continue
@@ -422,7 +428,7 @@ const buildUnwrapperIndex = (unwrappers: Array<UrlUnwrapper>): UnwrapperIndex =>
     }
   }
 
-  return { byHost, rest, domainLength }
+  return { byHost, rest, domainLength, hasBrands }
 }
 
 const getUnwrapperIndex = (unwrappers: Array<UrlUnwrapper>): UnwrapperIndex | undefined => {
@@ -453,7 +459,7 @@ const getCandidates = (
   const host = normalizeHost(url.hostname)
   const exact = index.byHost.get(host)
 
-  if (!index.domainLength) {
+  if (!index.domainLength && !index.hasBrands) {
     return exact ?? index.rest
   }
 
@@ -475,6 +481,16 @@ const getCandidates = (
   const lists: Array<Array<UrlUnwrapper>> = exact ? [exact] : []
 
   lists.push(...suffixLists.reverse())
+
+  if (index.hasBrands) {
+    for (const label of getBrandLabels(host)) {
+      const list = index.byHost.get(`${label}.*`)
+
+      if (list) {
+        lists.push(list)
+      }
+    }
+  }
 
   if (lists.length === 0) {
     return index.rest

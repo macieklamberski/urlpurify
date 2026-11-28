@@ -3,6 +3,7 @@ import { decodeBase64, getQueryParam } from 'trousse'
 import { cleanUrl, isTrackingParam, purifyUrl, stripTrackingParams, unwrapUrl } from './clean.js'
 import { campaignParams, defaultTrackingParams, housekeepingParams } from './defaults.js'
 import type { TrackingParam, TrackingValueTest, UrlUnwrapper } from './types.js'
+import { unwrapGoogle } from './unwraps/google.js'
 import { unwrapWebArchive } from './unwraps/webArchive.js'
 import { createQueryUnwrapper, createUnwrapper, unwrapperHosts } from './utils.js'
 
@@ -187,6 +188,61 @@ describe('unwrapUrl', () => {
     unwrapUrl(value, unwrappers)
 
     expect(unwrapUrl(value, unwrappers)).toBe(expected)
+  })
+
+  it('should run a brand unwrapper on the brand under a two-label tld once its list is indexed', () => {
+    const value = 'https://www.google.co.uk/url?q=https%3A%2F%2Fexample.com%2Fpost'
+    const unwrappers = [exampleHostUnwrapper, unwrapGoogle]
+    const expected = 'https://example.com/post'
+
+    unwrapUrl(value, unwrappers)
+
+    expect(unwrapUrl(value, unwrappers)).toBe(expected)
+  })
+
+  it('should run a brand unwrapper on the brand under a one-label tld once its list is indexed', () => {
+    const value = 'https://www.google.com/url?q=https%3A%2F%2Fexample.com%2Fpost'
+    const unwrappers = [exampleHostUnwrapper, unwrapGoogle]
+    const expected = 'https://example.com/post'
+
+    unwrapUrl(value, unwrappers)
+
+    expect(unwrapUrl(value, unwrappers)).toBe(expected)
+  })
+
+  it('should skip a brand unwrapper on another host once its list arrives a second time', () => {
+    const value = 'https://example.org/url?q=https%3A%2F%2Fexample.com%2Fpost'
+    const unwrap = mock(unwrapGoogle)
+    const unwrappers = [unwrap]
+    const expected = 1
+
+    unwrapperHosts.set(unwrap, ['google.*'])
+    unwrapUrl(value, unwrappers)
+    unwrapUrl(value, unwrappers)
+
+    expect(unwrap).toHaveBeenCalledTimes(expected)
+  })
+
+  it('should skip a brand unwrapper on a host whose label only ends in the brand', () => {
+    const value = 'https://notgoogle.com/url?q=https%3A%2F%2Fexample.com%2Fpost'
+    const unwrap = mock(unwrapGoogle)
+    const unwrappers = [unwrap]
+    const expected = 1
+
+    unwrapperHosts.set(unwrap, ['google.*'])
+    unwrapUrl(value, unwrappers)
+    unwrapUrl(value, unwrappers)
+
+    expect(unwrap).toHaveBeenCalledTimes(expected)
+  })
+
+  it('should leave a url on the brand under another site once its list is indexed', () => {
+    const value = 'https://google.evil.example/url?q=https%3A%2F%2Fexample.com%2Fpost'
+    const unwrappers = [exampleHostUnwrapper, unwrapGoogle]
+
+    unwrapUrl(value, unwrappers)
+
+    expect(unwrapUrl(value, unwrappers)).toBeUndefined()
   })
 
   it('should unwrap with default unwrappers when none are given', () => {
