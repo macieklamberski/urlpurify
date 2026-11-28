@@ -20,6 +20,15 @@ describe('unwrapAmazonSes', () => {
     expect(unwrapAmazonSes(url)).toBe('http://example.com/events/48715862')
   })
 
+  it('should decode a target whose slashes are encoded twice', () => {
+    const value = new URL(
+      `https://abcd1234.r.us-east-1.awstrack.me/L0/https:%252F%252Fwww.example.com%252Fnews${tail}`,
+    )
+    const expected = 'https://www.example.com/news'
+
+    expect(unwrapAmazonSes(value)).toBe(expected)
+  })
+
   it('should extract a target with an encoded colon', () => {
     const url = new URL(
       `https://abcd1234.r.eu-west-1.awstrack.me/L0/https%3A%2F%2Fexample.com%2Fa${tail}`,

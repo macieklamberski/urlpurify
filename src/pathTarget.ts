@@ -1,5 +1,6 @@
+import { decodePercent } from 'trousse'
 import type { UrlUnwrapper } from './types.js'
-import { createUnwrapper, type UnwrapperOptions } from './utils.js'
+import { createUnwrapper, decodeEncodedScheme, type UnwrapperOptions } from './utils.js'
 
 export type PathUnwrapperConfig = UnwrapperOptions & {
   prefix: RegExp
@@ -8,12 +9,24 @@ export type PathUnwrapperConfig = UnwrapperOptions & {
 
 const leadingSlashesRegex = /^\/+/
 const schemeRegex = /^https?:/i
+const encodedSchemeRegex = /^https?(?:%(?:25)?3A|:%(?:25)?2F)/i
 
-// The target that follows a prefix at the start of the path, with the url's own query. The link's
-// fragment is the factory's, per `createUnwrapper`. Podcast analytics prefixes mostly drop the
-// target's scheme and forward to https. A prefix that forwards with its own scheme passes
-// `url.protocol`, and one that forwards to http passes `http:`. A prefix that drops the url's query
-// on forwarding passes an empty `suffix`.
+// A path target whose scheme is percent-encoded, once or twice, as in `https%3A%2F%2F`,
+// `https:%2F%2F` or `https%253A%252F%252F`, decoded. Any other target is returned as written.
+export const decodePathTarget = (target: string): string => {
+  if (!encodedSchemeRegex.test(target)) {
+    return target
+  }
+
+  return decodeEncodedScheme(decodePercent(target))
+}
+
+// The target that follows a prefix at the start of the path, decoded by `decodePathTarget`, with
+// the url's own query when written raw: an encoded target holds its own query. The link's fragment
+// is the factory's, per `createUnwrapper`. Podcast analytics prefixes mostly drop the target's
+// scheme and forward to https. A prefix that forwards with its own scheme passes `url.protocol`,
+// and one that forwards to http passes `http:`. A prefix that drops the url's query on forwarding
+// passes an empty `suffix`.
 export const getPathTarget = (
   url: URL,
   prefixRegex: RegExp,
@@ -33,7 +46,8 @@ export const getPathTarget = (
     return
   }
 
-  const target = `${path}${suffix}`
+  const decoded = decodePathTarget(path)
+  const target = decoded === path ? `${path}${suffix}` : decoded
 
   if (schemeRegex.test(target)) {
     return target

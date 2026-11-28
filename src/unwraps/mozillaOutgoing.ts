@@ -1,4 +1,4 @@
-import { decodePercent } from 'trousse'
+import { decodePathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
@@ -20,6 +20,6 @@ export const unwrapMozillaOutgoing: UrlUnwrapper = createUnwrapper({
       return
     }
 
-    return decodePercent(match[1])
+    return decodePathTarget(match[1])
   },
 })

@@ -36,10 +36,10 @@ export type QueryUnwrapperConfig = UnwrapperOptions & {
   decode?: TargetDecoder // The carrier holds the target encoded, such as in base64
 }
 
-const encodedSchemeRegex = /^https?%3A/i
+const encodedSchemeRegex = /^https?(?:%3A|:%2F)/i
 
-// A value already decoded once still holds an encoded scheme (`https%3A%2F%2F`) when the
-// carrier encoded its target twice.
+// A value already decoded once still holds an encoded scheme (`https%3A%2F%2F`, or `https:%2F%2F`
+// with its colon left raw) when the carrier encoded its target twice.
 export const decodeEncodedScheme = (value: string): string => {
   if (!encodedSchemeRegex.test(value)) {
     return value

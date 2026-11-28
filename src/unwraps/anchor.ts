@@ -1,6 +1,6 @@
-import { decodePercent, isHttpUrl } from 'trousse'
+import { decodePathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
-import { createUnwrapper, decodeEncodedScheme } from '../utils.js'
+import { createUnwrapper } from '../utils.js'
 
 // Ad-inserted episodes carry `sponsor/<ids>/` before the target.
 const playPrefixRegex = /^\/s\/[^/]+\/podcast\/play\/[^/]+\/(?:sponsor\/[^/]+\/)?/i
@@ -18,8 +18,6 @@ export const unwrapAnchor: UrlUnwrapper = createUnwrapper({
     }
 
     const path = url.pathname.slice(match[0].length)
-    const target = isHttpUrl(path) ? path : decodeEncodedScheme(decodePercent(path))
-
-    return target
+    return decodePathTarget(path)
   },
 })

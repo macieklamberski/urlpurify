@@ -1,7 +1,7 @@
-import { decodePercent, isAnyOf, isHttpUrl } from 'trousse'
-import { createPathUnwrapper } from '../pathTarget.js'
+import { isAnyOf, isHttpUrl } from 'trousse'
+import { createPathUnwrapper, decodePathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
-import { createUnwrapper, decodeEncodedScheme, readParamTarget } from '../utils.js'
+import { createUnwrapper, readParamTarget } from '../utils.js'
 
 const formPathRegex = /^\/sub\/?$/i
 const rawFeedPrefixRegex = /^\/sub\/(?=https?:)/i
@@ -27,7 +27,7 @@ export const unwrapBloglines: UrlUnwrapper = createUnwrapper({
 
     // An encoded feed holds its own query inside the path, so the link's query is Bloglines' own.
     if (match?.groups) {
-      const target = decodeEncodedScheme(decodePercent(match.groups.target))
+      const target = decodePathTarget(match.groups.target)
 
       if (!isHttpUrl(target)) {
         return

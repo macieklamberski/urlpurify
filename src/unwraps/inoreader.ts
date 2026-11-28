@@ -1,6 +1,7 @@
-import { decodePercent, isHttpUrl } from 'trousse'
+import { isHttpUrl } from 'trousse'
+import { decodePathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
-import { createQueryUnwrapper, createUnwrapper, decodeEncodedScheme } from '../utils.js'
+import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
 const hosts = ['inoreader.com', 'www.inoreader.com', 'jp.inoreader.com']
 
@@ -23,7 +24,7 @@ const readFeedPath: UrlUnwrapper = (url) => {
     return
   }
 
-  const target = decodeEncodedScheme(decodePercent(match.groups.target))
+  const target = decodePathTarget(match.groups.target)
 
   if (isHttpUrl(target)) {
     return target

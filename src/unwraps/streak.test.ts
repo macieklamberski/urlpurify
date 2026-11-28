@@ -26,6 +26,15 @@ describe('unwrapStreak', () => {
     expect(unwrapStreak(url)).toBe('https://www.example.com/research/policy')
   })
 
+  it('should decode a target encoded twice', () => {
+    const value = new URL(
+      'https://streaklinks.com/BtuZeQExcU8ZwbuxOgI9VdLx/https%253A%252F%252Fwww.example.com%252Fnews',
+    )
+    const expected = 'https://www.example.com/news'
+
+    expect(unwrapStreak(value)).toBe(expected)
+  })
+
   it('should extract an http target', () => {
     const url = new URL(
       'https://0176ede8.streak-link.com/C6jpgKWtLcXpNMfWwA-YlnsU/http%3A%2F%2Fwww.example.com%2Fprofile',

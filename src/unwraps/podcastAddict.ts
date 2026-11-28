@@ -1,6 +1,7 @@
-import { decodePercent, isHttpUrl } from 'trousse'
+import { isHttpUrl } from 'trousse'
+import { decodePathTarget } from '../pathTarget.js'
 import type { UrlUnwrapper } from '../types.js'
-import { createUnwrapper, decodeEncodedScheme } from '../utils.js'
+import { createUnwrapper } from '../utils.js'
 
 const feedPrefixRegex = /^\/feed\//i
 
@@ -18,7 +19,7 @@ export const unwrapPodcastAddict: UrlUnwrapper = createUnwrapper({
       return
     }
 
-    const feed = decodeEncodedScheme(decodePercent(url.pathname.slice(match[0].length)))
+    const feed = decodePathTarget(url.pathname.slice(match[0].length))
 
     if (!isHttpUrl(feed)) {
       return

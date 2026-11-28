@@ -451,6 +451,15 @@ describe('createQueryUnwrapper', () => {
       params: ['url'],
     })
 
+    it('should decode a twice-encoded target whose colon was left raw', () => {
+      const value = new URL(
+        'https://redirect.example.com/?url=https:%252F%252Fexample.com%252Fnews',
+      )
+      const expected = 'https://example.com/news'
+
+      expect(extract(value)).toBe(expected)
+    })
+
     it('should decode a twice-encoded http target', () => {
       const value = new URL('https://redirect.example.com/?url=http%253A%252F%252Fexample.com%252F')
       const expected = 'http://example.com/'
