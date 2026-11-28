@@ -17,7 +17,6 @@ import {
   normalizeUrl,
   pageExtensions,
   parseUrl,
-  resolveUrl,
   stripWww,
   subtitleExtensions,
   videoExtensions,
@@ -25,7 +24,13 @@ import {
 import { defaultTrackingParams, defaultUnwrappers } from './defaults.js'
 import { sessionIdParams } from './tracking/session.js'
 import type { PurifyUrlOptions, TrackingEntry, TrackingParam, UrlUnwrapper } from './types.js'
-import { getBrandLabels, normalizeHost, unwrapperHosts } from './utils.js'
+import {
+  dottedHostRegex,
+  getBrandLabels,
+  normalizeHost,
+  repairTarget,
+  unwrapperHosts,
+} from './utils.js'
 
 type TrackingMatcher = {
   literals: Set<string>
@@ -285,7 +290,6 @@ const deleteTrackingParams = (url: URL, trackingParams: ReadonlyArray<TrackingPa
 }
 
 const controlCharactersRegex = /[\p{Cc}\u2028\u2029]/u
-const dottedHostRegex = /[^.]\.[^.]/
 
 // Extensions that are also TLDs, such as `example.zip`, stay valid hosts.
 const tldExtensions = ['mobi', 'mov', 'zip']
@@ -308,7 +312,7 @@ const fileExtensions = new Set(
 )
 
 // Repairs a scheme such as `http:// https://host` and a host such as `example.com)` through
-// `resolveUrl`, then drops a target that is not http, holds a control character, carries userinfo
+// `repairTarget`, then drops a target that is not http, holds a control character, carries userinfo
 // or keeps a junk host: not a hostname such as `,ccam.cc`, no dot between two labels, or a file
 // extension.
 const cleanTarget = (target: string | undefined): string | undefined => {
@@ -323,7 +327,7 @@ const cleanTarget = (target: string | undefined): string | undefined => {
     return
   }
 
-  const repaired = resolveUrl(trimmed)
+  const repaired = repairTarget(trimmed)
 
   if (!repaired) {
     return

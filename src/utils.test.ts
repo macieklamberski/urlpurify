@@ -7,6 +7,7 @@ import {
   getBrandLabels,
   readDecodedParamTarget,
   readParamTarget,
+  repairTarget,
   unwrapperHosts,
 } from './utils.js'
 
@@ -14,6 +15,21 @@ const exampleSubdomainRegex = /\.example\.com$/
 const clickPathRegex = /^\/click\/\d+$/
 const clickHostRegex = /^click\d+\.example\.com$/
 const lowercasePathRegex = /^\/[a-z]+$/
+
+const junkHostTargets = [
+  '%20www.example.com/ep.mp3',
+  '.www.example.com/ep.mp3',
+  'www.example.com:/ep.mp3',
+]
+
+const nonUrlTargets = [
+  '/local/page',
+  'Example News Today',
+  'mailto:jobs@example.com',
+  'myapp://open',
+  'com.example.app://open/post',
+  '2024/https://example.com/page',
+]
 
 describe('createQueryUnwrapper', () => {
   it('should match a global path regex on every call', () => {
@@ -1066,6 +1082,18 @@ describe('getBrandLabels', () => {
     const expected = ['example', 'www']
 
     expect(getBrandLabels(value)).toEqual(expected)
+  })
+})
+
+describe('repairTarget', () => {
+  it.each(junkHostTargets)('should repair %s behind https', (value) => {
+    const expected = 'https://www.example.com/ep.mp3'
+
+    expect(repairTarget(value)).toBe(expected)
+  })
+
+  it.each(nonUrlTargets)('should return undefined for %s', (value) => {
+    expect(repairTarget(value)).toBeUndefined()
   })
 })
 

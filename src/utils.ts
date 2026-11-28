@@ -7,6 +7,7 @@ import {
   isString,
   isSubdomainOf,
   type Pattern,
+  parseUrl,
   resolveUrl,
 } from 'trousse'
 import type { UrlUnwrapper } from './types.js'
@@ -52,6 +53,9 @@ export type QueryUnwrapperConfig = UnwrapperBaseConfig &
 
 export const httpSchemeRegex = /^https?:/i
 const encodedSchemeRegex = /^https?(?:%3A|:%2F)/i
+export const dottedHostRegex = /[^.]\.[^.]/
+const schemeRegex = /^(?:https?:|[a-z][a-z\d+.-]*:\/\/)/i
+const hostEndRegex = /[/?#]/
 
 // A value already decoded once still holds an encoded scheme (`https%3A%2F%2F`, or `https:%2F%2F`
 // with its colon left raw) when the carrier encoded its target twice.
@@ -99,6 +103,27 @@ export const appendLinkFragment = (url: URL, target: string): string => {
   return `${target}${url.hash}`
 }
 
+// The url repair, trousse's `resolveUrl`, of a target, retried with `https://` in front when a
+// target whose host is written dotted but with no scheme fails, as `%20www.example.com/ep.mp3` or
+// `www.example.com:/ep.mp3` do. A path, a title, a `2024/` segment or an app scheme stays out.
+export const repairTarget = (target: string): string | undefined => {
+  const repaired = resolveUrl(target)
+  const host = target.split(hostEndRegex, 1)[0]
+
+  if (repaired || schemeRegex.test(target) || !dottedHostRegex.test(host)) {
+    return repaired
+  }
+
+  const retried = parseUrl(resolveUrl(`https://${target}`))
+
+  // A target `mailto:jobs@example.com` reads as userinfo behind https.
+  if (!retried || retried.username || retried.password) {
+    return
+  }
+
+  return retried.href
+}
+
 type ParamTargetOptions = {
   index?: number // The value of a repeated param to read, such as -1 for the last
   plus?: PlusReading
@@ -106,7 +131,7 @@ type ParamTargetOptions = {
 
 // The target a carrier param holds, read as `getParamValues` reads it and decoded once more when
 // encoded twice: the first value, or the one at `index`, such as -1 for the last. A value the url
-// repair, trousse's `resolveUrl`, cannot turn into an http url, such as a relative `/local/page`,
+// repair, `repairTarget`, cannot turn into an http url, such as a relative `/local/page`,
 // another scheme or a title, is no target. `plus` reads a raw `+` as `decodeParamValue` does.
 export const readParamTarget = (
   url: URL,
@@ -121,7 +146,7 @@ export const readParamTarget = (
 
   const target = decodeEncodedScheme(value)
 
-  if (!resolveUrl(target)) {
+  if (!repairTarget(target)) {
     return
   }
 
@@ -155,7 +180,7 @@ export const readDecodedParamTarget = (
 
   const target = decodeEncodedScheme(decoded)
 
-  if (!resolveUrl(target)) {
+  if (!repairTarget(target)) {
     return
   }
 

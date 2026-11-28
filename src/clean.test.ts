@@ -3,7 +3,9 @@ import { decodeBase64, getQueryParam } from 'trousse'
 import { isTrackingParam, purifyUrl, stripTrackingParams, unwrapUrl } from './clean.js'
 import { campaignParams, defaultTrackingParams, housekeepingParams } from './defaults.js'
 import type { TrackingParam, TrackingValueTest, UrlUnwrapper } from './types.js'
+import { unwrapChartable } from './unwraps/chartable.js'
 import { unwrapGoogle } from './unwraps/google.js'
+import { unwrapOp3 } from './unwraps/op3.js'
 import { unwrapWebArchive } from './unwraps/webArchive.js'
 import { createQueryUnwrapper, createUnwrapper, unwrapperHosts } from './utils.js'
 
@@ -16,6 +18,14 @@ const exampleFallbackUnwrapper = createQueryUnwrapper({
   hosts: 'redirect.example.com',
   params: ['fallback'],
 })
+
+const junkHostLinks = [
+  'https://chtbl.com/track/ABC123/%20www.example.com/ep.mp3',
+  'https://chtbl.com/track/ABC123/.www.example.com/ep.mp3',
+  'https://op3.dev/e/%20www.example.com/ep.mp3',
+  'https://op3.dev/e/www.example.com:/ep.mp3',
+  'https://redirect.example.com/?target=www.example.com%3A%2Fep.mp3',
+]
 
 const nestedUnwrapper = createQueryUnwrapper({
   hosts: 'outer.example.com',
@@ -684,6 +694,13 @@ describe('purifyUrl', () => {
     const value = `https://redirect.example.com/?target=${encodeURIComponent(target)}`
     const options = { unwrappers: [exampleUnwrapper] }
     const expected = 'https://example.com/post?id=42'
+
+    expect(purifyUrl(value, options)).toBe(expected)
+  })
+
+  it.each(junkHostLinks)('should repair the target of %s behind https', (value) => {
+    const options = { unwrappers: [unwrapChartable, unwrapOp3, exampleUnwrapper] }
+    const expected = 'https://www.example.com/ep.mp3'
 
     expect(purifyUrl(value, options)).toBe(expected)
   })
