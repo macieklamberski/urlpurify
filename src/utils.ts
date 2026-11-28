@@ -372,9 +372,3 @@ export const createQueryUnwrapper = (config: QueryUnwrapperConfig): UrlUnwrapper
     },
   })
 }
-
-/** @deprecated Use `QueryUnwrapperConfig` instead. */
-export type ParamExtractorConfig = QueryUnwrapperConfig
-
-/** @deprecated Use `createQueryUnwrapper` instead. */
-export const createParamExtractor = createQueryUnwrapper

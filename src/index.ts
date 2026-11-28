@@ -1,4 +1,4 @@
-export { cleanUrl, isTrackingParam, purifyUrl, stripTrackingParams, unwrapUrl } from './clean.js'
+export { isTrackingParam, purifyUrl, stripTrackingParams, unwrapUrl } from './clean.js'
 export {
   advertisingUnwrappers,
   affiliateParams,
@@ -30,7 +30,10 @@ export {
   subscribeIntentUnwrappers,
   visitorIdParams,
 } from './defaults.js'
+export type { CleanUrlOptions, ParamExtractorConfig } from './deprecated.js'
 export {
+  cleanUrl,
+  createParamExtractor,
   sessionParams,
   trackingParamsLiterals,
   trackingParamsPatterns,
@@ -43,7 +46,6 @@ export {
 export type { PathUnwrapperConfig } from './pathTarget.js'
 export { createPathUnwrapper } from './pathTarget.js'
 export type {
-  CleanUrlOptions,
   PurifyUrlOptions,
   TrackingEntry,
   TrackingParam,
@@ -530,7 +532,6 @@ export { unwrapZhihu } from './unwraps/zhihu.js'
 export { unwrapZix } from './unwraps/zix.js'
 export { unwrapZscalerIsolation } from './unwraps/zscalerIsolation.js'
 export type {
-  ParamExtractorConfig,
   PlusReading,
   QueryUnwrapperConfig,
   TargetDecoder,
@@ -538,4 +539,4 @@ export type {
   UnwrapperConfig,
   UnwrapperHosts,
 } from './utils.js'
-export { createParamExtractor, createQueryUnwrapper, createUnwrapper } from './utils.js'
+export { createQueryUnwrapper, createUnwrapper } from './utils.js'

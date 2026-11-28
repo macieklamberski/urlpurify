@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'bun:test'
-import { cleanUrl } from '../clean.js'
+import { purifyUrl } from '../clean.js'
 import { unwrapApptrkr } from './apptrkr.js'
 
 describe('unwrapApptrkr', () => {
@@ -70,7 +70,7 @@ describe('unwrapApptrkr', () => {
     const value = 'https://apptrkr.com/get_redirect.php?id=1&targetURL=mailto:jobs@example.edu'
     const expected = 'https://apptrkr.com/get_redirect.php?id=1&targetURL=mailto:jobs@example.edu'
 
-    expect(cleanUrl(value, { unwrappers: [unwrapApptrkr] })).toBe(expected)
+    expect(purifyUrl(value, { unwrappers: [unwrapApptrkr] })).toBe(expected)
   })
 
   it('should return undefined when targetURL param is missing', () => {

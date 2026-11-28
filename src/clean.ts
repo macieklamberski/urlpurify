@@ -645,6 +645,3 @@ export const purifyUrl = (url: string, options?: PurifyUrlOptions): string => {
 
   return currentParsed.href
 }
-
-/** @deprecated Use `purifyUrl` instead. */
-export const cleanUrl = purifyUrl

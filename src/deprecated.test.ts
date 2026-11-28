@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'bun:test'
+import { purifyUrl } from './clean.js'
 import {
   knownTrackingParamLiterals,
   knownTrackingParamPatterns,
@@ -10,8 +11,11 @@ import { unwrapFacebook } from './unwraps/facebook.js'
 import { unwrapInstagram } from './unwraps/instagram.js'
 import { unwrapThreads } from './unwraps/threads.js'
 import { unwrapYoutube } from './unwraps/youtube.js'
+import { createQueryUnwrapper } from './utils.js'
 
 const newNames: Record<string, unknown> = {
+  cleanUrl: purifyUrl,
+  createParamExtractor: createQueryUnwrapper,
   trackingParamsLiterals: knownTrackingParamLiterals,
   trackingParamsPatterns: knownTrackingParamPatterns,
   sessionParams: sessionIdParams,

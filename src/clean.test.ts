@@ -1,6 +1,6 @@
 import { describe, expect, it, mock } from 'bun:test'
 import { decodeBase64, getQueryParam } from 'trousse'
-import { cleanUrl, isTrackingParam, purifyUrl, stripTrackingParams, unwrapUrl } from './clean.js'
+import { isTrackingParam, purifyUrl, stripTrackingParams, unwrapUrl } from './clean.js'
 import { campaignParams, defaultTrackingParams, housekeepingParams } from './defaults.js'
 import type { TrackingParam, TrackingValueTest, UrlUnwrapper } from './types.js'
 import { unwrapGoogle } from './unwraps/google.js'
@@ -661,14 +661,6 @@ describe('stripTrackingParams', () => {
 
     expect(stripTrackingParams(value, params)).toBe(expected)
     expect(stripTrackingParams(value, params)).toBe(expected)
-  })
-})
-
-describe('cleanUrl', () => {
-  it('should be the same function as purifyUrl', () => {
-    const expected = purifyUrl
-
-    expect(cleanUrl).toBe(expected)
   })
 })
 

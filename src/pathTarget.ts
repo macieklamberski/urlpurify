@@ -8,7 +8,7 @@ import {
 } from './utils.js'
 
 // What a target without a scheme forwards to: https, http or the link's own. Without a scheme
-// given, `cleanUrl` gives it https.
+// given, `purifyUrl` gives it https.
 type TargetScheme = 'https' | 'http' | 'inherit'
 
 export type PathUnwrapperConfig = UnwrapperBaseConfig & {
@@ -43,7 +43,7 @@ export const decodePathTarget = (target: string): string => {
 // `decodePathTarget`. A raw target takes the url's own query, since its query lands there. An
 // encoded target holds its own query and ends where its encoding ends, so the url's query is the
 // wrapper's. A target without an http scheme takes `scheme` when given, `inherit` being the
-// link's own, and otherwise gets https from `cleanUrl`, which cannot repair a host behind junk such
+// link's own, and otherwise gets https from `purifyUrl`, which cannot repair a host behind junk such
 // as `%20`. A service that drops the url's query on forwarding passes an empty `suffix`. The link's
 // fragment is the factory's, per `createUnwrapper`.
 export const resolvePathTarget = (
