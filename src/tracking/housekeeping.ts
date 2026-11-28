@@ -5,13 +5,14 @@ import type { TrackingParam, TrackingValueTest } from '../types.js'
 // parse to the hostname `example.com`.
 const refDelimitersRegex = /[\s/?#\\:@]/
 
-// A word value selects content, as `ts=posts` picks a comments feed's type and `preview=inline` a
-// card layout. A draft preview flag is hex, as `preview=1`.
+// A hex `preview`, as `preview=1`, is a draft flag. A word such as `preview=inline` picks a card
+// layout and stays, and so does an empty `preview=`.
 const hexValueRegex = /^[0-9a-f]+$/i
 
 // A cache buster is a timestamp, a hash or a random number: hex, a fractional timestamp such as
 // `1782597425.17810722`, a `Math.random()` value such as `0.1538`, or empty, which selects nothing.
-// A word such as `cb=googleTranslateElementInit` names a JSONP callback and stays.
+// A word stays: `ts=posts` picks a comments feed's type and `cb=googleTranslateElementInit` names
+// a JSONP callback.
 const cacheBusterValueRegex = /^(?:[0-9a-f]*|\d+\.\d+)$/i
 
 // A `ref` holding the URL's own host is Ghost's self-referral, `?ref=example.com` on example.com.
