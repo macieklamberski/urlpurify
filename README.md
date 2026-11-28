@@ -214,7 +214,7 @@ const unwrapExample = createUnwrapper({
 })
 ```
 
-Pass exactly one of `hosts`, `domains` or `subdomains`. Each matches as trousse's `isHostOf`, `isHostOrSubdomainOf` or `isSubdomainOf` does. The unwrapper registers its hosts, so `purifyUrl` skips it on every other host. A host given as a regex registers nothing, so its unwrapper runs on every url, as a plain `UrlUnwrapper` function does.
+Pass exactly one of `hosts`, `domains`, `subdomains` or `brands`, or `brands` with `domains`. Each matches as trousse's `isHostOf`, `isHostOrSubdomainOf` or `isSubdomainOf` does. The unwrapper registers its hosts, so `purifyUrl` skips it on every other host. A host given as a regex registers nothing, so its unwrapper runs on every url, as a plain `UrlUnwrapper` function does.
 
 For a service on many country domains, pass `brands` instead: `brands: ['example']` matches the brand on any tld of one or two labels, so `example.com`, `www.example.de` and `www.example.co.uk`, and registers it, so `purifyUrl` still skips the unwrapper on every other host. It reads only where the brand sits, so it also takes `example.cdn.com`, the subdomain of another site. Pass `match` with it to name the real hosts: `brands: ['example'], match: /^(?:www\.)?example\.(?:com|de|co\.uk)$/`. `domains` may come beside `brands`, for a service that also lives on a few fixed domains.
 
