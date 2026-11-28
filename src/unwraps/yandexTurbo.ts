@@ -1,6 +1,6 @@
 import { getSubdomain, isHostOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { createQueryUnwrapper } from '../utils.js'
+import { createQueryUnwrapper, createUnwrapper } from '../utils.js'
 
 // turbopages.org answers 404 as of 2026-09-27, so only archived feeds carry its links.
 const turbopagesPathRegex = /^\/[^/]+\/s\/(.+)$/i
@@ -26,44 +26,49 @@ const extractTurboTarget = createQueryUnwrapper({
 // Not included in defaultUnwrappers: Turbo serves a stripped-down,
 // optimized rendering of the source page rather than the canonical content.
 // Opt in by passing a custom unwrappers array.
-export const unwrapYandexTurbo: UrlUnwrapper = (url) => {
-  const turboTarget = extractTurboTarget(url)
+export const unwrapYandexTurbo: UrlUnwrapper = createUnwrapper({
+  brands: ['yandex'],
+  domains: ['turbopages.org'],
+  unwrap: (url) => {
+    const turboTarget = extractTurboTarget(url)
 
-  if (turboTarget) {
-    return turboTarget
-  }
+    if (turboTarget) {
+      return turboTarget
+    }
 
-  const turbopagesSubdomain = getSubdomain(url, 'turbopages.org')
-  const isTurbopagesHost = turbopagesSubdomain !== undefined
+    const turbopagesSubdomain = getSubdomain(url, 'turbopages.org')
+    const isTurbopagesHost = turbopagesSubdomain !== undefined
 
-  if (!isTurbopagesHost && !isHostOf(url, yandexHostRegex)) {
-    return
-  }
+    if (!isTurbopagesHost && !isHostOf(url, yandexHostRegex)) {
+      return
+    }
 
-  const slashSFirstRegex = isTurbopagesHost ? turbopagesSlashSFirstRegex : yandexSlashSFirstRegex
-  const slashSFirstMatch = url.pathname.match(slashSFirstRegex)
+    const slashSFirstRegex = isTurbopagesHost ? turbopagesSlashSFirstRegex : yandexSlashSFirstRegex
+    const slashSFirstMatch = url.pathname.match(slashSFirstRegex)
 
-  // The query on these links is Turbo's own, such as parent-reqid or trbsrc.
-  if (slashSFirstMatch) {
-    return `https://${slashSFirstMatch[1]}/${slashSFirstMatch[2]}${url.hash}`
-  }
+    // The query on these links is Turbo's own, such as parent-reqid or trbsrc.
+    if (slashSFirstMatch) {
+      return `https://${slashSFirstMatch[1]}/${slashSFirstMatch[2]}`
+    }
 
-  const hostInPathMatch = url.pathname.match(hostInPathRegex)
+    const hostInPathMatch = url.pathname.match(hostInPathRegex)
 
-  if (hostInPathMatch) {
-    return `https://${hostInPathMatch[1]}/${hostInPathMatch[2]}${url.hash}`
-  }
+    if (hostInPathMatch) {
+      return `https://${hostInPathMatch[1]}/${hostInPathMatch[2]}`
+    }
 
-  if (!turbopagesSubdomain) {
-    return
-  }
+    if (!turbopagesSubdomain) {
+      return
+    }
 
-  const match = url.pathname.match(turbopagesPathRegex)
-  if (!match) {
-    return
-  }
+    const match = url.pathname.match(turbopagesPathRegex)
 
-  const sourceHost = turbopagesSubdomain.replace(dashRegex, '.')
+    if (!match) {
+      return
+    }
 
-  return `https://${sourceHost}/${match[1]}${url.hash}`
-}
+    const sourceHost = turbopagesSubdomain.replace(dashRegex, '.')
+
+    return `https://${sourceHost}/${match[1]}`
+  },
+})

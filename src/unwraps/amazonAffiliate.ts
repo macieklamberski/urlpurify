@@ -1,6 +1,6 @@
 import { isAnyOf, isBrandDomainOf, isHostOf, startsWithAnyOf } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
-import { getParamTarget } from '../utils.js'
+import { createUnwrapper, readParamTarget } from '../utils.js'
 
 const amazonPathRegex = /^\/x\/c\/[^/]+\/(https?:\/\/.+)$/i
 const amazonHostRegex = /^aax(?:-[a-z]+)*\.amazon-adsystem\.com$|^aax-us-iad\.amazon\.com$/
@@ -14,38 +14,42 @@ const emailRedirectPaths = ['/gp/r.html', '/gp/f.html']
 // /x/c/<id>/<URL>) and store redirects on amazon.<tld>:
 // /gp/redirect.html[/ref=<ref>]?location=<URL>, /exec/obidos/redirect?path=<URL>, /gp/r.html and
 // /gp/f.html?U=<URL>, /gp/slredirect/picassoRedirect.html/ref=<ref>?url=<URL>.
-export const unwrapAmazonAffiliate: UrlUnwrapper = (url) => {
-  if (isBrandDomainOf(url, 'amazon') && startsWithAnyOf(url.hostname, storeSubdomains)) {
-    let target: string | undefined
+export const unwrapAmazonAffiliate: UrlUnwrapper = createUnwrapper({
+  brands: ['amazon'],
+  subdomains: ['amazon-adsystem.com'],
+  unwrap: (url) => {
+    if (isBrandDomainOf(url, 'amazon') && startsWithAnyOf(url.hostname, storeSubdomains)) {
+      let target: string | undefined
 
-    if (storeRedirectPathRegex.test(url.pathname)) {
-      target = getParamTarget(url, 'location')
+      if (storeRedirectPathRegex.test(url.pathname)) {
+        target = readParamTarget(url, 'location')
+      }
+
+      if (isAnyOf(url.pathname, '/exec/obidos/redirect')) {
+        target = readParamTarget(url, 'path')
+      }
+
+      if (isAnyOf(url.pathname, emailRedirectPaths)) {
+        target = readParamTarget(url, 'U')
+      }
+
+      if (sponsoredRedirectPathRegex.test(url.pathname)) {
+        target = readParamTarget(url, 'url')
+      }
+
+      return target
     }
 
-    if (isAnyOf(url.pathname, '/exec/obidos/redirect')) {
-      target = getParamTarget(url, 'path')
+    if (!isHostOf(url, amazonHostRegex)) {
+      return
     }
 
-    if (isAnyOf(url.pathname, emailRedirectPaths)) {
-      target = getParamTarget(url, 'U')
+    const match = url.pathname.match(amazonPathRegex)
+
+    if (!match) {
+      return
     }
 
-    if (sponsoredRedirectPathRegex.test(url.pathname)) {
-      target = getParamTarget(url, 'url')
-    }
-
-    return target
-  }
-
-  if (!isHostOf(url, amazonHostRegex)) {
-    return
-  }
-
-  const match = url.pathname.match(amazonPathRegex)
-
-  if (!match) {
-    return
-  }
-
-  return `${match[1]}${url.search}${url.hash}`
-}
+    return `${match[1]}${url.search}`
+  },
+})
