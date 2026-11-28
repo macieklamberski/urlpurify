@@ -50,7 +50,7 @@ export const unwrapUnisender: UrlUnwrapper = createUnwrapper({
     }
 
     // Some senders encode the target as base64url with `~` as the padding character. A url holds
-    // a `:`, `.` or `/`, which base64url never does, so a url fails to decode and stays as written.
+    // a `:` or `.`, which base64 never does, so a url fails to decode and stays as written.
     return decodeBase64Url(value.replaceAll('~', '=')) ?? value
   },
 })

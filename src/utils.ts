@@ -281,8 +281,8 @@ const registerHosts = (unwrap: UrlUnwrapper, config: UnwrapperHosts): void => {
 // An unwrapper that runs `unwrap` only on a url on `hosts`, matched exactly or by regex, on
 // `domains` or any of their subdomains, only on `subdomains` of the domains given, or on `brands`
 // on any tld beside any of those, or on every host with `anyHost`, and on a host `match` matches
-// when given. The target takes the
-// link's fragment per `appendLinkFragment`, unless `ignoreLinkFragment` is set.
+// when given. The target takes the link's fragment per `appendLinkFragment`, unless
+// `ignoreLinkFragment` is set.
 export const createUnwrapper = (config: UnwrapperConfig): UrlUnwrapper => {
   const isOnHost = (url: URL): boolean => {
     if (config.match && !isHostOf(url, config.match)) {
