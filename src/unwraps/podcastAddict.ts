@@ -4,27 +4,41 @@ import type { UrlUnwrapper } from '../types.js'
 import { createUnwrapper } from '../utils.js'
 
 const feedPrefixRegex = /^\/feed\//i
+const encodedFeedPathRegex = /^\/feed\/https?(?:%(?:25)?3a|:)%(?:25)?2f/i
 
 const hosts = ['podcastaddict.com']
+
+const readFeed: UrlUnwrapper = (url) => {
+  const match = url.pathname.match(feedPrefixRegex)
+
+  if (!match) {
+    return
+  }
+
+  const feed = decodePathTarget(url.pathname.slice(match[0].length))
+
+  if (!isHttpUrl(feed)) {
+    return
+  }
+
+  return `${feed}${url.search}`
+}
+
+// A raw feed's fragment lands in the link's own `hash`.
+const unwrapRawFeed = createUnwrapper({ hosts, unwrap: readFeed })
 
 // Podcast Addict subscribe link (podcastaddict.com/feed/<feed>), the feed percent-encoded or raw.
 // Its ?id=<episode>&podcastId=<id> and /episode/<episode> links carry an episode, not a feed.
 // Not included in defaultUnwrappers: unwrapping returns the feed, not the app's podcast page.
 export const unwrapPodcastAddict: UrlUnwrapper = createUnwrapper({
   hosts,
+  ignoreLinkFragment: true, // A raw feed takes it through `unwrapRawFeed`
   unwrap: (url) => {
-    const match = url.pathname.match(feedPrefixRegex)
-
-    if (!match) {
-      return
+    // An encoded feed ends where its encoding ends, so the link's fragment is Podcast Addict's own.
+    if (encodedFeedPathRegex.test(url.pathname)) {
+      return readFeed(url)
     }
 
-    const feed = decodePathTarget(url.pathname.slice(match[0].length))
-
-    if (!isHttpUrl(feed)) {
-      return
-    }
-
-    return `${feed}${url.search}`
+    return unwrapRawFeed(url)
   },
 })

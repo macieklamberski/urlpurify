@@ -45,6 +45,29 @@ describe('unwrapPodcastAddict', () => {
     expect(unwrapPodcastAddict(value)).toBe(expected)
   })
 
+  it('should drop the link fragment after an encoded feed', () => {
+    const value = new URL('https://podcastaddict.com/feed/https%3A%2F%2Fexample.com%2Frss#episodes')
+    const expected = 'https://example.com/rss'
+
+    expect(unwrapPodcastAddict(value)).toBe(expected)
+  })
+
+  it('should drop the link fragment after a twice-encoded feed', () => {
+    const value = new URL(
+      'https://podcastaddict.com/feed/https%253A%252F%252Fexample.com%252Frss#episodes',
+    )
+    const expected = 'https://example.com/rss'
+
+    expect(unwrapPodcastAddict(value)).toBe(expected)
+  })
+
+  it('should keep the link fragment after a raw feed', () => {
+    const value = new URL('https://podcastaddict.com/feed/https://example.com/rss#episodes')
+    const expected = 'https://example.com/rss#episodes'
+
+    expect(unwrapPodcastAddict(value)).toBe(expected)
+  })
+
   it('should match the path in any case', () => {
     const value = new URL(
       'https://podcastaddict.com/Feed/https%3A%2F%2Fexample.com%2Fs%2F27ff739c%2Fpodcast%2Frss',

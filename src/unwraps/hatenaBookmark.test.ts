@@ -95,6 +95,15 @@ describe('unwrapHatenaBookmark', () => {
 
       expect(unwrapHatenaBookmark(value)).toBe(expected)
     })
+
+    it('should drop the link fragment after an encoded page', () => {
+      const value = new URL(
+        'http://b.hatena.ne.jp/entry/https%3A%2F%2Fwww.example.com%2Fentry%2F20180302#comments',
+      )
+      const expected = 'https://www.example.com/entry/20180302'
+
+      expect(unwrapHatenaBookmark(value)).toBe(expected)
+    })
   })
 
   describe('entry page without the scheme', () => {
