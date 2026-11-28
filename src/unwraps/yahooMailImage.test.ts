@@ -40,4 +40,13 @@ describe('unwrapYahooMailImage', () => {
 
     expect(unwrapYahooMailImage(value)).toBeUndefined()
   })
+
+  it('should decode a twice-encoded source', () => {
+    const value = new URL(
+      'https://ecp.yusercontent.com/mail?url=https%253A%252F%252Fcdn.example.com%252Fphoto.jpg',
+    )
+    const expected = 'https://cdn.example.com/photo.jpg'
+
+    expect(unwrapYahooMailImage(value)).toBe(expected)
+  })
 })

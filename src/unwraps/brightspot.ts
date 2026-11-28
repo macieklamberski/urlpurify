@@ -1,5 +1,6 @@
-import { decodePercent, getQueryParamValues, isHttpUrl } from 'trousse'
+import { isHttpUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
+import { readParamTarget } from '../utils.js'
 
 const dimsPathRegex = /^\/dims\d\/.*$/i
 
@@ -11,16 +12,10 @@ export const unwrapBrightspot: UrlUnwrapper = (url) => {
     return
   }
 
-  const value = getQueryParamValues(url, 'url', { decodeValues: false }).at(-1)
-
-  if (!value) {
-    return
-  }
-
-  const source = decodePercent(value)
+  const source = readParamTarget(url, 'url', -1, 'keep')
 
   // On any host, only an http source tells the resizer from another site's /dims4/ path.
-  if (!isHttpUrl(source)) {
+  if (!source || !isHttpUrl(source)) {
     return
   }
 

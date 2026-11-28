@@ -1,5 +1,6 @@
-import { decodePercent, getQueryParamValues, resolveUrl } from 'trousse'
+import { resolveUrl } from 'trousse'
 import type { UrlUnwrapper } from '../types.js'
+import { readParamTarget } from '../utils.js'
 
 // A site with a base path serves the optimizer under it.
 const imagePathRegex = /^(?:\/[^/]+)*\/_next\/image$/i
@@ -12,11 +13,11 @@ export const unwrapNextImage: UrlUnwrapper = (url) => {
     return
   }
 
-  const value = getQueryParamValues(url, 'url', { decodeValues: false }).at(-1)
+  const source = readParamTarget(url, 'url', -1, 'space')
 
-  if (!value) {
+  if (!source) {
     return
   }
 
-  return resolveUrl(decodePercent(value.replaceAll('+', ' ')), url.origin)
+  return resolveUrl(source, url.origin)
 }

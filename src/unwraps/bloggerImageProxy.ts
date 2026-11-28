@@ -1,5 +1,5 @@
-import { decodePercent, getQueryParamValues, isAnyOf, isHttpUrl } from 'trousse'
-import { createUnwrapper } from '../utils.js'
+import { isAnyOf, isHttpUrl } from 'trousse'
+import { createUnwrapper, readParamTarget } from '../utils.js'
 
 // Google gadget image proxy, as Blogger serves it, on three host shapes:
 // - images-blogger-opensocial.googleusercontent.com/gadgets/proxy?url=<source>
@@ -17,16 +17,10 @@ export const unwrapBloggerImageProxy = createUnwrapper({
       return
     }
 
-    const value = getQueryParamValues(url, 'url', { decodeValues: false }).at(-1)
-
-    if (!value) {
-      return
-    }
-
-    const source = decodePercent(value)
+    const source = readParamTarget(url, 'url', -1, 'keep')
 
     // gmodules.com matches on any subdomain, so only an http source tells the proxy apart.
-    if (!isHttpUrl(source)) {
+    if (!source || !isHttpUrl(source)) {
       return
     }
 

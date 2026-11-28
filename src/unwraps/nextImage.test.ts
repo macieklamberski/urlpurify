@@ -49,4 +49,13 @@ describe('unwrapNextImage', () => {
 
     expect(unwrapNextImage(value)).toBeUndefined()
   })
+
+  it('should decode a twice-encoded source', () => {
+    const value = new URL(
+      'https://example.com/_next/image?url=https%253A%252F%252Fcdn.example.com%252Fphoto.jpg&w=640&q=75',
+    )
+    const expected = 'https://cdn.example.com/photo.jpg'
+
+    expect(unwrapNextImage(value)).toBe(expected)
+  })
 })
