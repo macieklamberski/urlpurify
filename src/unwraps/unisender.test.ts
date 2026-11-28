@@ -100,6 +100,14 @@ describe('unwrapUnisender', () => {
     expect(unwrapUnisender(url)).toBeUndefined()
   })
 
+  it('should return undefined for another subdomain of a numbered host', () => {
+    const value = new URL(
+      'https://click.us7-usndr.com/ru/mail_link_tracker?url=https%253A%252F%252Fexample.org%252F',
+    )
+
+    expect(unwrapUnisender(value)).toBeUndefined()
+  })
+
   it('should return undefined for a non-numbered host', () => {
     const url = new URL(
       'https://usx-usndr.com/ru/mail_link_tracker?url=https%253A%252F%252Fexample.org%252F',

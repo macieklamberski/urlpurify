@@ -64,8 +64,8 @@ describe('unwrapMagnetmail', () => {
   })
 
   it('should return undefined for a host that only ends with a family host', () => {
-    const url = new URL('http://click.www.mmsend3.com/link.cfm?r=626898905&s=http://example.com/')
+    const value = new URL('http://click.mmsend3.com/link.cfm?r=626898905&s=http://example.com/')
 
-    expect(unwrapMagnetmail(url)).toBeUndefined()
+    expect(unwrapMagnetmail(value)).toBeUndefined()
   })
 })
