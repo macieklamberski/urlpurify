@@ -4,7 +4,7 @@ import { createUnwrapper, readParamTarget } from '../utils.js'
 const paths = ['/hello2', '/edit']
 
 // Instapaper save links (instapaper.com/hello2?url=<target> and the signed-in form at /edit?url=).
-// Opt-in: unwrapping returns the saved page, not the form that saves it.
+// Opt-in: unwrapping returns the shared page, not the form that shares it.
 export const unwrapInstapaperSave = createUnwrapper({
   hosts: ['instapaper.com', 'www.instapaper.com'],
   ignoreLinkFragment: true,

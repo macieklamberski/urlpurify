@@ -11,7 +11,7 @@ const hosts = ['media.blubrry.com', 'media.rawvoice.com', 'media.techpodcasts.co
 // after the show), where the target often drops its scheme. The target is often Blubrry's own
 // content., ins. or mc.blubrry.com. RawVoice's media.rawvoice.com and media.techpodcasts.com run
 // the same redirect.
-// Opt-in: unwrapping removes the podcaster's download counts.
+// Opt-in: unwrapping removes the publisher's download counts.
 export const unwrapBlubrry = createPathUnwrapper({
   hosts,
   prefix: showPrefixRegex,

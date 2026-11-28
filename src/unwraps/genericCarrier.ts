@@ -19,7 +19,7 @@ const carriers = [
 
 // A url in a carrier param, such as `url`, `feedurl` or `goto`, on any host and any path
 // (<host>/<path>?url=<target>), the only unwrapper that names no path. The first http url wins.
-// Opt-in: on an unknown host the param may be an argument to the page, not where it leads.
+// Opt-in: on an unknown host the url may be an argument to the page, not where it leads.
 export const unwrapGenericCarrier = createUnwrapper({
   anyHost: true,
   unwrap: (url) => {

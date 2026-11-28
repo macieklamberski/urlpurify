@@ -5,7 +5,7 @@ const pathRegex = /^\/bookmarklet\/popout\/?$/i
 
 // Flipboard share (share.flipboard.com/bookmarklet/popout?v=2&url=<target>&title=<title>, with or
 // without a trailing slash, also on flipboard.com and www.flipboard.com).
-// Opt-in: unwrapping returns the shared page, not the form that flips it into a magazine.
+// Opt-in: unwrapping returns the shared page, not the form that shares it.
 export const unwrapFlipboardShare = createUnwrapper({
   hosts: ['share.flipboard.com', 'flipboard.com', 'www.flipboard.com'],
   ignoreLinkFragment: true,

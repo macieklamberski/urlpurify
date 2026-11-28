@@ -40,7 +40,7 @@ const extractRawFeedPath = createUnwrapper({
 
 // Inoreader subscribe and feed preview links (www.inoreader.com/?add_feed=<feed>,
 // www.inoreader.com/feed/<feed>, also on inoreader.com and jp.inoreader.com).
-// Opt-in: the link adds the feed to a reader or previews it there, it never redirects to it.
+// Opt-in: unwrapping returns the feed, not the reader's or app's page that adds or plays it.
 export const unwrapInoreader = createUnwrapper({
   hosts,
   ignoreLinkFragment: true, // A raw feed takes it through `extractRawFeedPath`

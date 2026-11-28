@@ -5,7 +5,7 @@ const pathRegex = /^\/submit(?:\.php)?\/?$/i
 
 // Menéame submit form (meneame.net/submit.php?url=<target>, also /submit, which /submit.php
 // redirects to, each with or without a trailing slash, on meneame.net and www.meneame.net).
-// Opt-in: unwrapping returns the shared page, not the submit form.
+// Opt-in: unwrapping returns the shared page, not the form that shares it.
 export const unwrapMeneameSubmit = createUnwrapper({
   hosts: ['meneame.net', 'www.meneame.net'],
   ignoreLinkFragment: true,

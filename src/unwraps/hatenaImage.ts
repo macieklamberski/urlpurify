@@ -4,7 +4,7 @@ import { createUnwrapper } from '../utils.js'
 const sourcePathRegex = /^\/.*?(?<source>https?(?::|%(?:25)?3a).+)$/i
 
 // Hatena image scaler (cdn.image.st-hatena.com/image/scale/<signature>/<options>/<source>).
-// Opt-in: unwrapping swaps the resized copy for the original image.
+// Opt-in: unwrapping swaps the resized or optimized copy for the original image.
 export const unwrapHatenaImage = createUnwrapper({
   hosts: 'cdn.image.st-hatena.com',
   ignoreLinkFragment: true,

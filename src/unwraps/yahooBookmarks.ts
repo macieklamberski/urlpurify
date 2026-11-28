@@ -34,7 +34,7 @@ const extractBuzzSubmit = createQueryUnwrapper({
 // myweb.yahoo.com, bookmarks.yahoo.com/toolbar/savebm?u=, buzz.yahoo.com/buzz?targetUrl= or guid=
 // when targetUrl= is empty, also on fr. and uk.buzz.yahoo.com, and buzz.yahoo.com/submit?submitUrl=
 // or u= when submitUrl= holds the title), never the t=, d=, headline= or submitHeadline= text.
-// Opt-in: unwrapping returns the shared page, not the form that saves or votes for it.
+// Opt-in: unwrapping returns the shared page, not the form that shares it.
 export const unwrapYahooBookmarks = createUnwrapper({
   hosts: [
     'bookmarks.yahoo.com',

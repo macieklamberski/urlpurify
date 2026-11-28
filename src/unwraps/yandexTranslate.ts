@@ -7,8 +7,7 @@ import { createUnwrapper } from '../utils.js'
 const proxyPathRegex = /^\/proxy_u\/[^/]+\/(?:(?<scheme>https?)\/)?(?<target>.+)$/i
 
 // Yandex Translate page proxy (translated.turbopages.org/proxy_u/<langs>/[<scheme>/]<host>/<path>).
-// Opt-in: the proxy renders the target translated, so unwrapping discards the translation the user
-// wanted.
+// Opt-in: unwrapping returns the live page, not the copy.
 export const unwrapYandexTranslate = createUnwrapper({
   hosts: 'translated.turbopages.org',
   unwrap: (url) => {

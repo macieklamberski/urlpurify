@@ -4,8 +4,7 @@ import { createUnwrapper } from '../utils.js'
 const pathRegex = /^\/[\w-]+\/(?<target>https?(?:%3A|%253A)(?:%2F|%252F){2}[^/]*)$/i
 
 // Cisco Secure Email link rewriting (secure-web.cisco.com/<token>/<percent-encoded target>).
-// Opt-in: the gateway checks the target when the link is clicked, so unwrapping skips the check the
-// recipient's organization put in place.
+// Opt-in: unwrapping skips the gateway's click-time check of the target.
 export const unwrapCiscoSecureWeb = createUnwrapper({
   hosts: 'secure-web.cisco.com',
   unwrap: (url) => {

@@ -17,7 +17,7 @@ const extractClickApi = createQueryUnwrapper({
 // (api.viglink.com/api/click?out=<target>, also on apicdn.viglink.com and, through the LinkWithin
 // widget, on lwlink3.linkwithin.com).
 // The click query also carries `loc`, the page the link sat on, which is never the target.
-// Opt-in: unwrapping removes the publisher's commission.
+// Opt-in: unwrapping drops the publisher's commission.
 export const unwrapViglink = createUnwrapper({
   hosts: [
     'redirect.viglink.com',

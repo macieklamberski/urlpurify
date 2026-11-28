@@ -8,7 +8,7 @@ const showPrefixRegex = /^\/s-[0-9a-f]{24}\//i
 
 // Gumball download measurement prefix (2.gum.fm/<target> and s.gum.fm/s-<show id>/<target>),
 // where the target drops its scheme.
-// Opt-in: unwrapping removes the podcaster's download counts.
+// Opt-in: unwrapping removes the publisher's download counts.
 export const unwrapGumball = createUnwrapper({
   hosts: ['2.gum.fm', 's.gum.fm'],
   unwrap: (url) => {

@@ -7,7 +7,7 @@ const fetchPathRegex = /^(?:\/[^/]+)*\/image\/fetch\/.*?(?<source>https?(?::|%(?
 
 // Cloudinary fetch on any delivery host, as Substack's substackcdn.com serves it
 // (res.cloudinary.com/<cloud>/image/fetch/<options>/<source>).
-// Opt-in: unwrapping swaps the resized copy for the original image.
+// Opt-in: unwrapping swaps the resized or optimized copy for the original image.
 export const unwrapCloudinaryFetch = createUnwrapper({
   anyHost: true,
   ignoreLinkFragment: true,

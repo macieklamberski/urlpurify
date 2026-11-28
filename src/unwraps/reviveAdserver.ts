@@ -11,7 +11,7 @@ const fallbackMarker = 'dest='
 
 // Revive Adserver ad click on any host (<host>/www/delivery/ck.php?oaparams=...__oadest=<target>)
 // and the phpAdsNew click (<host>/adclick.php?bannerid=<id>&dest=<target>). Sites self-host it.
-// Opt-in: unwrapping removes the click count the advertiser pays for.
+// Opt-in: unwrapping removes the click attribution.
 export const unwrapReviveAdserver = createUnwrapper({
   anyHost: true,
   unwrap: (url) => {

@@ -21,8 +21,8 @@ const extractTurboTarget = createQueryUnwrapper({
 // `/s/` before the host (yandex.<tld>/turbo/s/<host>/<path> and
 // <dashed-host>.turbopages.org/s/<host>/<path>), and
 // the Turbo view on Yandex (yandex.<tld>/turbo?text=<target>, also on www.yandex.<tld>).
-// Opt-in: Turbo serves a stripped-down, optimized rendering of the source page rather than the
-// canonical content. Opt in by passing a custom unwrappers array.
+// Opt-in: unwrapping returns the live page, not the copy. Opt in by passing a custom unwrappers
+// array.
 export const unwrapYandexTurbo = createUnwrapper({
   brands: 'yandex',
   domains: 'turbopages.org',

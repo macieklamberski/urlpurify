@@ -1,7 +1,7 @@
 import { createQueryUnwrapper } from '../utils.js'
 
 // Bizrate comparison-shopping redirect (rd.bizrate.com/rd?t=<target>, also on www.bizrate.com).
-// Opt-in: unwrapping drops the publisher's affiliate commission.
+// Opt-in: unwrapping drops the publisher's commission.
 export const unwrapBizrate = createQueryUnwrapper({
   hosts: ['rd.bizrate.com', 'bizrate.com', 'www.bizrate.com'],
   path: '/rd',

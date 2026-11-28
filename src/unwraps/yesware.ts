@@ -13,7 +13,7 @@ const extractLinkTarget = createQueryUnwrapper({
 
 // Yesware email click tracker (t.yesware.com/tt/<ids>/<target>, with the target's scheme dropped,
 // also t.yesware.com/tl/<ids>?ytl=<target>).
-// Opt-in: unwrapping removes the sender's click stats.
+// Opt-in: unwrapping removes the sender's click count.
 export const unwrapYesware = createUnwrapper({
   hosts,
   unwrap: (url) => {

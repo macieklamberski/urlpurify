@@ -3,7 +3,8 @@ import { createUnwrapper, readParamTarget } from '../utils.js'
 
 // Fortinet FortiMail URL click protection on any host
 // (<gateway host>/fmlurlsvc/?fewReq=<token>&url=<target>).
-// Opt-in: an email security gateway, like Outlook Safe Links. Customers run it on their own hosts.
+// Opt-in: unwrapping skips the gateway's click-time check of the target. Customers run it on their
+// own hosts.
 export const unwrapFortimail = createUnwrapper({
   anyHost: true,
   unwrap: (url) => {

@@ -5,7 +5,7 @@ const pathRegex = /^\/(?:i|ii\/[^/]+)\/(?<secure>s\/)?(?<target>.+)$/i
 
 // AMP cache image (cdn.ampproject.org/i/[s/]<hostname>/<path>), and its resized copy under
 // `/ii/<options>/`, such as `/ii/w680/` or `/ii/AW/`. The `s/` segment marks an https source.
-// Opt-in: unwrapping swaps the cached copy for the original image.
+// Opt-in: unwrapping swaps the resized or optimized copy for the original image.
 export const unwrapAmpCacheImage = createUnwrapper({
   domains: 'cdn.ampproject.org',
   ignoreLinkFragment: true,

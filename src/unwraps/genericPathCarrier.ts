@@ -13,7 +13,8 @@ const encodedMarkupRegex = /%22|%3c|%3e/i
 // A protocol-relative url a site glued onto its own as text, on any host and any path
 // (<host>//<target>), sometimes with a third slash or behind the site's directory, as uCoz writes.
 // The browser reads the glued src as https.
-// Opt-in: on an unknown host a run of slashes may belong to the site's own path.
+// Opt-in: on an unknown host the url may be an argument to the page, not where it leads. On an
+// unknown host a run of slashes may belong to the site's own path.
 export const unwrapGenericPathCarrier = createUnwrapper({
   anyHost: true,
   unwrap: (url) => {

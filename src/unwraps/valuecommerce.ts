@@ -24,7 +24,7 @@ const extractDck = createQueryUnwrapper({
 })
 
 // ValueCommerce affiliate redirect, in the three shapes above.
-// Opt-in: unwrapping removes the publisher's commission.
+// Opt-in: unwrapping drops the publisher's commission.
 export const unwrapValuecommerce = createUnwrapper({
   hosts: ['ck.jp.ap.valuecommerce.com', 'atq.ck.valuecommerce.com', 'dalr.valuecommerce.com'],
   unwrap: (url) => {

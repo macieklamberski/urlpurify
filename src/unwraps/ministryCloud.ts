@@ -5,7 +5,7 @@ const mediaPrefixRegex = /^\/r\/[^/]+\//i
 
 // MinistryCloud sermon media download counter (historian.ministrycloud.com/r/<media id>/<target>),
 // where the target mostly keeps its scheme.
-// Opt-in: unwrapping removes the church's download counts.
+// Opt-in: unwrapping removes the publisher's download counts.
 export const unwrapMinistryCloud = createPathUnwrapper({
   hosts: 'historian.ministrycloud.com',
   prefix: mediaPrefixRegex,

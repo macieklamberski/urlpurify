@@ -10,7 +10,7 @@ const pidPathRegex = /^\/info:ndljp\/pid\/\d+\/(?<target>.+)$/i
 // WARP, the National Diet Library web archive, snapshot (warp.ndl.go.jp/web/<timestamp>/<target>),
 // also the persistent-id form (warp.ndl.go.jp/info:ndljp/pid/<id>/<target>, also on
 // warp.da.ndl.go.jp), with or without the target's scheme.
-// Opt-in: unwrapping returns the live page, which may have changed or be gone.
+// Opt-in: unwrapping returns the live page, not the copy.
 export const unwrapNdlWarp = createUnwrapper({
   hosts: ['warp.ndl.go.jp', 'warp.da.ndl.go.jp'],
   unwrap: (url) => {

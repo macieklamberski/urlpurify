@@ -11,7 +11,7 @@ const browsePathRegex = /^\/en-US\/wa\/browse\/[0-9a-f-]{36}$/i
 
 // PageFreezer public web archive snapshot (public<n>.pagefreezer.com/{browse,content}/<collection>/
 // <capture time>/<target> and us.pagefreezer.com/en-US/wa/browse/<archive id>?url=<target>).
-// Opt-in: unwrapping returns the live page, which may have changed or be gone.
+// Opt-in: unwrapping returns the live page, not the copy.
 export const unwrapPagefreezer = createUnwrapper({
   subdomains: 'pagefreezer.com',
   match: /^(?:public\d+|us)\.pagefreezer\.com$/,

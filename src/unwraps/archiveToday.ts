@@ -7,8 +7,7 @@ const selectionHashRegex = /^#selection-\d+\.\d+-\d+\.\d+$/i
 
 // archive.today snapshot (archive.ph/<timestamp>/<URL>, archive.ph/o/<id>/<URL> and
 // archive.ph/newest/<URL>, on every archive.today mirror domain).
-// Opt-in: a snapshot is a page at a point in time, and unwrapping returns the live page, which may
-// have changed or gone.
+// Opt-in: unwrapping returns the live page, not the copy.
 export const unwrapArchiveToday = createUnwrapper({
   hosts: [
     'archive.is',

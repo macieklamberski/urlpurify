@@ -35,7 +35,7 @@ const extractEntry = createUnwrapper({ hosts, unwrap: readEntry })
 // Hatena Bookmark entry page (b.hatena.ne.jp/entry/<page>, with the scheme, percent-encoded, or
 // without it as /entry/s/<host>/<path> for https and /entry/<host>/<path> for http), and the
 // bookmark form at /entry?url=, /add?url= and /entry/panel/?url=.
-// Opt-in: unwrapping returns the bookmarked page, not the Hatena page that bookmarks it.
+// Opt-in: unwrapping returns the shared page, not the form that shares it.
 export const unwrapHatenaBookmark = createUnwrapper({
   hosts,
   ignoreLinkFragment: true, // An entry page takes it through `extractEntry`

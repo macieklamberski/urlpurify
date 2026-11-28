@@ -42,8 +42,7 @@ const extractors = [
 // www.googleadservices.com/pagead/aclk?adurl=<target>,
 // {adclick,googleads}.g.doubleclick.net/aclk?adurl=<target>,
 // {ad,adclick.g,googleads.g}.doubleclick.net/pcs/click?adurl=<target>).
-// Opt-in: an ad click pays the publisher who showed the ad, and unwrapping removes that payment,
-// the same cost as an affiliate wrapper.
+// Opt-in: unwrapping removes the click attribution.
 export const unwrapGoogleAds = createUnwrapper({
   // The extractors check the exact hosts, these register them in the host index.
   brands: 'google',

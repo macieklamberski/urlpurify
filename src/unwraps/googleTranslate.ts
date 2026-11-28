@@ -61,8 +61,7 @@ const extractWebsiteProxy: UrlUnwrapper = (url) => {
 // Google Translate ([www.]translate.google.<TLD>/translate?u=<target> and /website?u=<target>),
 // its translated frame (translate.googleusercontent.com/translate_c?u=<target>), and its website
 // proxy (<dashed host>.translate.goog/<path>?_x_tr_sl=<lang>), rebuilt without the _x_tr_ params.
-// Opt-in: it renders the target translated, so unwrapping discards the translation the user
-// wanted.
+// Opt-in: unwrapping returns the live page, not the copy.
 export const unwrapGoogleTranslate = createUnwrapper({
   brands: 'google',
   hosts: frameHosts,

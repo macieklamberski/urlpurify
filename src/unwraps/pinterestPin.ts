@@ -6,7 +6,7 @@ const pathRegex = /^\/pin\/create\/(?:button|link|extension|bookmarklet|scraped)
 // Pinterest save button (pinterest.com/pin/create/button/?url=<target>&media=<image>, also /link,
 // /extension, /bookmarklet and /scraped, on pinterest.com, www., the two-letter country hosts such
 // as fr.pinterest.com and the country domains such as pinterest.co.uk).
-// Opt-in: unwrapping returns the shared page, not the pin builder.
+// Opt-in: unwrapping returns the shared page, not the form that shares it.
 export const unwrapPinterestPin = createUnwrapper({
   brands: 'pinterest',
   ignoreLinkFragment: true,

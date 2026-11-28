@@ -13,7 +13,7 @@ const extractRawFeed = createPathUnwrapper({
 
 // Livedoor Reader subscribe link (reader.livedoor.com/subscribe/?url=<feed> and
 // reader.livedoor.com/subscribe/<feed>).
-// Opt-in: the link adds the feed to a Livedoor Reader account, it never redirects to it.
+// Opt-in: unwrapping returns the feed, not the reader's or app's page that adds or plays it.
 export const unwrapLivedoorReader = createUnwrapper({
   hosts,
   ignoreLinkFragment: true, // A raw feed takes it through `extractRawFeed`

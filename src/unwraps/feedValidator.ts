@@ -10,7 +10,7 @@ const archivePathRegex = /^\/validator\/check(?:\.cgi)?$/i
 
 // FeedValidator.org result page (feedvalidator.org/check.cgi?url=<feed>, also /check and on www.),
 // and its copies on www.atomenabled.org/feedvalidator/ and feeds.archive.org/validator/.
-// Opt-in: the link opens the validator's report on the feed, not the feed.
+// Opt-in: unwrapping returns the feed the tool was given, not the tool's view of it.
 export const unwrapFeedValidator = createUnwrapper({
   hosts: [...hosts, 'atomenabled.org', 'www.atomenabled.org', 'feeds.archive.org'],
   ignoreLinkFragment: true,

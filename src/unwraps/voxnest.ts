@@ -5,7 +5,7 @@ const streamPrefixRegex = /^\/stream\/[^/]+\//i
 
 // Voxnest download measurement prefix (audio.voxnest.com/stream/<show id>/<target>), where the
 // target often drops its scheme.
-// Opt-in: unwrapping removes the podcaster's download counts.
+// Opt-in: unwrapping removes the publisher's download counts.
 export const unwrapVoxnest = createUnwrapper({
   hosts: 'audio.voxnest.com',
   unwrap: (url) => {

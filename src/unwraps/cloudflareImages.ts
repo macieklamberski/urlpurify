@@ -9,7 +9,7 @@ const plainPathRegex = /^\/cdn-cgi\/plain\/(?<source>https?(?::|%3a).+)$/i
 // Cloudflare image paths on any zone, in two shapes:
 // - Image Resizing (<zone>/cdn-cgi/image/<options>/<source>).
 // - Passthrough (<zone>/cdn-cgi/plain/<source>).
-// Opt-in: unwrapping swaps the resized copy for the original image.
+// Opt-in: unwrapping swaps the resized or optimized copy for the original image.
 export const unwrapCloudflareImages = createUnwrapper({
   anyHost: true,
   ignoreLinkFragment: true,

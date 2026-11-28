@@ -12,7 +12,7 @@ const fragmentPaths = ['/', '/index.html', '/home']
 // Feedly subscribe links (feedly.com/i/subscription/feed/<feed>, /i/subscription/feed?url=<feed>,
 // /i/discover/sources/search/feed/<feed>, /#subscription/feed/<feed> also after /index.html or
 // /home, the slash after `feed`, and before it in the fragment, also as %2F).
-// Opt-in: the link adds the feed, it never redirects.
+// Opt-in: unwrapping returns the feed, not the reader's or app's page that adds or plays it.
 export const unwrapFeedly = createUnwrapper({
   hosts: ['feedly.com', 'www.feedly.com', 'cloud.feedly.com'],
   ignoreLinkFragment: true,

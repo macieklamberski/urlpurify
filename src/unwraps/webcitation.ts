@@ -5,7 +5,7 @@ const pathRegex = /^\/(?:query|[0-9A-Za-z]{9})$/i
 
 // WebCite archive snapshot (www.webcitation.org/query?url=<target>&date=<date>, or
 // www.webcitation.org/<id>?url=<target>).
-// Opt-in: unwrapping returns the live page, which may have changed or be gone.
+// Opt-in: unwrapping returns the live page, not the copy.
 export const unwrapWebcitation = createQueryUnwrapper({
   hosts: ['webcitation.org', 'www.webcitation.org'],
   path: pathRegex,

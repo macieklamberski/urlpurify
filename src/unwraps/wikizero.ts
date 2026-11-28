@@ -3,7 +3,8 @@ import { createQueryUnwrapper } from '../utils.js'
 
 // WikiZero Wikipedia mirror proxy (www.wikizero.biz/index.php?q=<base64url>). The q param is a
 // base64url-encoded Wikipedia URL without padding.
-// Opt-in: the mirror serves Wikipedia where the reader may not reach it directly.
+// Opt-in: unwrapping returns the live page, not the copy. The mirror serves Wikipedia where the
+// reader may not reach it directly.
 export const unwrapWikizero = createQueryUnwrapper({
   hosts: [
     'wikizero.biz',

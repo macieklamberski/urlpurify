@@ -13,7 +13,7 @@ const trackPrefixRegex = /^\/track\/[^/]+\//i
 
 // Swap download measurement prefix (tracking.swap.fm/track/<show id>/<target>, also on swap.fm
 // and the dev., staging. and tracking-stage. hosts), where the target drops its scheme.
-// Opt-in: unwrapping removes the podcaster's download counts.
+// Opt-in: unwrapping removes the publisher's download counts.
 export const unwrapSwap = createPathUnwrapper({
   hosts,
   prefix: trackPrefixRegex,

@@ -4,7 +4,7 @@ import { createUnwrapper } from '../utils.js'
 const sourcePathRegex = /^\/.*?(?<source>https?(?::|%(?:25)?3a).+)$/i
 
 // ImageKit web proxy (ik.imagekit.io/<id>/[tr:<options>/]<source>).
-// Opt-in: unwrapping swaps the resized copy for the original image.
+// Opt-in: unwrapping swaps the resized or optimized copy for the original image.
 export const unwrapImagekit = createUnwrapper({
   hosts: 'ik.imagekit.io',
   ignoreLinkFragment: true,

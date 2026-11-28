@@ -13,7 +13,7 @@ const emailRedirectPaths = ['/gp/r.html', '/gp/f.html']
 // /x/c/<id>/<URL>) and store redirects on amazon.<tld>:
 // /gp/redirect.html[/ref=<ref>]?location=<URL>, /exec/obidos/redirect?path=<URL>, /gp/r.html and
 // /gp/f.html?U=<URL>, /gp/slredirect/picassoRedirect.html/ref=<ref>?url=<URL>.
-// Opt-in: unwrapping removes the publisher's commission.
+// Opt-in: unwrapping drops the publisher's commission.
 export const unwrapAmazonAffiliate = createUnwrapper({
   brands: 'amazon',
   subdomains: 'amazon-adsystem.com',

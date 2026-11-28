@@ -4,7 +4,7 @@ import { createUnwrapper, readParamTarget } from '../utils.js'
 const paths = ['/save', '/edit', '/edit.php']
 
 // Pocket save links (getpocket.com/save?url=<page>, /edit?url= and /edit.php?url=).
-// Opt-in: unwrapping returns the saved page, not the form that saves it.
+// Opt-in: unwrapping returns the shared page, not the form that shares it.
 export const unwrapPocketSave = createUnwrapper({
   hosts: ['getpocket.com', 'www.getpocket.com'],
   ignoreLinkFragment: true,

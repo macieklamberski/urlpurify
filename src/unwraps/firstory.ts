@@ -13,7 +13,7 @@ const playHosts = [...trackHosts, 'backend.endpoints.firstory-709db.cloud.goog']
 // target percent-encoded, and m.cdn.firstory.me/play.<ext>?url=<target>), also on v1.firstory.me,
 // play.<ext>?url=<target> on backend.endpoints.firstory-709db.cloud.goog, and
 // track.fstry.me/p/<id>/<target>, where the target often drops its scheme.
-// Opt-in: unwrapping removes the podcaster's download counts.
+// Opt-in: unwrapping removes the publisher's download counts.
 export const unwrapFirstory = createUnwrapper({
   hosts: [...playHosts, 'track.fstry.me'],
   unwrap: (url) => {

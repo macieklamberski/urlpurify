@@ -8,7 +8,7 @@ const appPathRegex = /^\/app\/user\/?$/i
 // XING share (xing.com/spi/shares/new?url=<target>, /social_plugins/share/new,
 // /social_plugins/share and /social/share/spi, and the legacy /app/user?op=share&url=, on www. and
 // bare xing.com).
-// Opt-in: unwrapping returns the shared page, not the share form.
+// Opt-in: unwrapping returns the shared page, not the form that shares it.
 export const unwrapXingShare = createUnwrapper({
   hosts: ['xing.com', 'www.xing.com'],
   ignoreLinkFragment: true,

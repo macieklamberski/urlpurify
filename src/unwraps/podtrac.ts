@@ -16,7 +16,7 @@ const playPrefixRegex = /^\/[^/]*\//
 // Podtrac download prefix: dts.podtrac.com/[pts/]redirect.<ext>/<target>, also on
 // dts.podtrac.nytimes.com, [www.]podtrac.com and [www.]podtrac.net/pts/redirect.<ext>[/?]<target>,
 // and play.podtrac.com/<show>/<target>.
-// Opt-in: unwrapping removes the podcaster's download counts.
+// Opt-in: unwrapping removes the publisher's download counts.
 export const unwrapPodtrac = createUnwrapper({
   hosts: ['dts.podtrac.nytimes.com', 'dts.podtrac.com', 'play.podtrac.com', ...ptsHosts],
   unwrap: (url) => {

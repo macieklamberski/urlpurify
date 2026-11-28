@@ -5,7 +5,7 @@ const carrierPrefixRegex = /^\?fileURL=\//i
 
 // Mohtwize download measurement prefix (stats.mohtwize.net/redirect.mp3?fileURL=/<target>), where
 // the target often drops its scheme.
-// Opt-in: unwrapping removes the podcaster's download counts.
+// Opt-in: unwrapping removes the publisher's download counts.
 export const unwrapMohtwize = createUnwrapper({
   hosts: 'stats.mohtwize.net',
   unwrap: (url) => {

@@ -14,7 +14,8 @@ const extractTarget = createQueryUnwrapper({
 
 // Microsoft Defender for Cloud Apps session proxy (mcas-proxyweb.mcas.ms/certificate-checker
 // ?originalUrl=<target>, also on mcas-proxyweb.mcas-gov.us and mcas-proxyweb.mcas-gov.ms).
-// Opt-in: the proxy applies the organization's session policy.
+// Opt-in: unwrapping skips the gateway's click-time check of the target. The proxy applies the
+// organization's session policy.
 export const unwrapMcas = createUnwrapper({
   hosts,
   unwrap: (url) => {

@@ -14,7 +14,7 @@ const extractTarget = createQueryUnwrapper({
 // partner-ads.com Danish affiliate network (partner-ads.com/dk/klikbanner.php?htmlurl=<target>,
 // also on the root), and its deep link with the target in the path
 // (partner-ads.com/dk/c/p/<partner>/b/<banner>/<target>).
-// Opt-in: unwrapping removes the publisher's commission.
+// Opt-in: unwrapping drops the publisher's commission.
 export const unwrapPartnerAds = createUnwrapper({
   domains,
   unwrap: (url) => {

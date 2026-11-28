@@ -12,7 +12,7 @@ const carrierParams: Record<string, string> = {
 
 // LinkSynergy (Rakuten) affiliate redirect on click.linksynergy.com and two merchant hosts:
 // /deeplink?murl=<target>, /link?murl=<target> and /fs-bin/{click,stat}?RD_PARM1=<target>.
-// Opt-in: it is an affiliate link.
+// Opt-in: unwrapping drops the publisher's commission.
 export const unwrapLinksynergy = createUnwrapper({
   hosts,
   unwrap: (url) => {

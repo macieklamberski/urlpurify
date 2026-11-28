@@ -6,7 +6,7 @@ const pathRegex = /^\/r\/[\w-]+\/(?:n\/[\w-]+\/)?(?<target>.+)$/i
 
 // Cloze email click tracker (circulate.it/r/<token>/<target>, also
 // circulate.it/r/<token>/n/<link text>/<target>), with the target's scheme dropped.
-// Opt-in: unwrapping removes the sender's click stats.
+// Opt-in: unwrapping removes the sender's click count.
 export const unwrapCloze = createUnwrapper({
   hosts: ['circulate.it', 'www.circulate.it'],
   unwrap: (url) => {

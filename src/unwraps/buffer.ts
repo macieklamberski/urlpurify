@@ -16,7 +16,7 @@ const isCarrierPath = (url: URL): boolean => {
 
 // Buffer share form (bufferapp.com/add?url=<page>, also buffer.com/add, their www. hosts and
 // publish.buffer.com/compose, where /add redirects).
-// Opt-in: unwrapping returns the shared page, not the form that queues it.
+// Opt-in: unwrapping returns the shared page, not the form that shares it.
 export const unwrapBuffer = createUnwrapper({
   hosts: [...hosts, ...composeHosts],
   ignoreLinkFragment: true,

@@ -9,8 +9,7 @@ const owaPathRegex =
 // /owa/<build>/scripts/premium/redir.aspx, explicit logon's /owa/<mailbox>/redir.aspx, and Exchange
 // 2003's /exchweb/bin/redir.asp?URL=<target>). Each organization runs it on its own host, so the
 // exact path and an http `URL` are the guard, not the host.
-// Opt-in: the click needs a signed-in mailbox, and a reader without one lands on the server's login
-// page.
+// Opt-in: the shim's page needs a sign-in, which unwrapping skips.
 export const unwrapOutlookWebAccess = createUnwrapper({
   anyHost: true,
   unwrap: (url) => {
