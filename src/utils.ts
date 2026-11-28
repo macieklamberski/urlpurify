@@ -40,6 +40,7 @@ export type QueryUnwrapperConfig = UnwrapperOptions &
     index?: number // The value of a repeated param to read, such as -1 for the last
   }
 
+export const httpSchemeRegex = /^https?:/i
 const encodedSchemeRegex = /^https?(?:%3A|:%2F)/i
 
 // A value already decoded once still holds an encoded scheme (`https%3A%2F%2F`, or `https:%2F%2F`
@@ -257,7 +258,6 @@ export const createUnwrapper = (config: UnwrapperConfig): UrlUnwrapper => {
 }
 
 const schemeRegex = /^[a-z][a-z\d+.-]*:/i
-const httpSchemeRegex = /^https?:/i
 
 // A target in a scheme `cleanUrl` cannot read as http, such as an app's own `myapp://open`. A
 // host with a port, `example.com:8080/`, reads as http.
